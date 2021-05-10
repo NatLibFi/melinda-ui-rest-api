@@ -45,4 +45,8 @@ steps:
     image: quay.io/natlibfi/njsscan
     commands:
       - njsscan dist
+---
+kind: signature
+hmac: 72aa323fa70ef2a16b7c409b7d3415a4fcd43a0eba32708e06542681a0af916b
+
 ...
