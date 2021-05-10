@@ -1,0 +1,48 @@
+---
+kind: pipeline
+type: docker
+name: Default
+
+trigger:
+  event:
+    - push
+
+steps:
+
+  - name: generate-tags
+    image: quay.io/natlibfi/drone-gen-tags
+
+  - name: audit
+    image: node:12
+    commands:
+      - npm audit --package-lock-only --audit-level=moderate --production
+
+  - name: install
+    image: node:12
+    commands:
+      - npm ci
+    environment:
+      NPM_CONFIG_IGNORE_SCRIPTS: true
+
+  - name: test
+    image: node:12
+    commands:
+      - npm test
+
+  # No tests
+  #- name: check-coverage
+  #  image: node:12
+  #  commands:
+  #    - npm run check-coverage
+
+  - name: build
+    image: node:12
+    commands:
+      - npm run build
+      - NPM_CONFIG_IGNORE_SCRIPTS=true npm ci --production
+
+  - name: static-security-scan
+    image: quay.io/natlibfi/njsscan
+    commands:
+      - njsscan dist
+...
