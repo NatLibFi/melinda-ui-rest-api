@@ -5,6 +5,8 @@ import AlephStrategy from '@natlibfi/passport-melinda-aleph';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 import {createBibRouter} from './routes';
+import fs from 'fs';
+import path from 'path';
 
 // From config file
 export default function ({
@@ -18,7 +20,7 @@ export default function ({
 
   // Soft shutdown function
   server.on('close', () => {
-    logger.log('info', 'Initiating soft shutdown of Melinda REST API');
+    logger.info('Initiating soft shutdown of Melinda REST API');
     // Things that need soft shutdown
   });
 
@@ -36,28 +38,39 @@ export default function ({
       ownAuthzURL, ownAuthzApiKey
     }));
 
+    logger.debug(`Service URL: ${xServiceURL}`);
+    logger.debug(`User lib: ${userLibrary}`);
+    logger.debug(`Auth URL: ${ownAuthzURL}`);
+    logger.debug(`Auth key: ${ownAuthzApiKey}`);
+
     app.use(passport.initialize());
     app.use('/bib', createBibRouter(sruUrl)); // Must be here to avoid bodyparser
+    app.get('/', handleIndex);
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
 
+    function handleIndex (req, res) { // eslint-disable-line no-unused-vars
+      const page = fs.readFileSync(path.join(__dirname, 'testclient.html'), {encoding: 'utf8'});
+      res.send(page);
+    }
+
     function handleError(err, req, res, next) {
-      logger.log('info', 'App/handleError');
+      logger.info('App/handleError');
       if (err) {
         logger.error(err);
         if (err instanceof ApiError) {
-          logger.log('debug', 'Responding expected');
+          logger.debug('Responding expected:', err);
           return res.status(err.status).send(err.payload);
         }
 
         if (req.aborted) {
-          logger.log('debug', 'Responding timeout');
+          logger.debug('Responding timeout:', err);
           return res.status(httpStatus.REQUEST_TIMEOUT).send(httpStatus['504_MESSAGE']);
         }
 
-        logger.log('debug', 'Responding unexpected');
-        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+        logger.debug('Responding unexpected:', err);
+        return res.send(httpStatus.INTERNAL_SERVER_ERROR);
       }
 
       next();
