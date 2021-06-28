@@ -1,3 +1,7 @@
+import createAuthRouter from './auth';
 import createBibRouter from './bib';
 
-export {createBibRouter};
+export {
+  createAuthRouter,
+  createBibRouter
+};
