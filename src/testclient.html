@@ -93,7 +93,7 @@
           }
         ]
       };
-      insertRecord(demoRecord.fields[0]);
+      //insertRecord(demoRecord.fields[0]);
 
       // Rest fetch
       const uri = `http://localhost:8081/bib/${melindaId}`;
@@ -112,28 +112,38 @@
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          insertRecord(data.fields[4]);
+          insertRecord(data);
         });
     }
 
     //-------------------------------------------------------------------------
     
     function insertRecord(data) {
-      console.log(data);
       const container = document.getElementById('sourceRecord');
       const row = document.createElement('div');
       row.setAttribute('class', 'row')
 
+      const f245 = findField(data, "245");
+      console.log("245:", f245);
+      const title = f245[0].subfields[0].value;
+      
       row.append(
+        makeP("tag", title),
+        /*
         makeP(data.tag, 'tag'),
         makeP(data.ind1 || ' ', 'ind1'),
         makeP(data.ind2 || ' ', 'ind2'),
         makeP("‡" + data.subfields[0].code || ' ', 'code'),
         makeP(data.subfields[0].value || ' ', 'value'),
+        */
       );
       container.appendChild(row);
 
-      function makeP(value, className) {
+      function findField(data, fieldId) {
+        return data.fields.filter(f => f.tag == fieldId);
+      }
+
+      function makeP(className, value) {
         const p = document.createElement('p');
         p.innerHTML = value;
         p.setAttribute('class', className);
