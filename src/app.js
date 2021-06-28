@@ -46,12 +46,12 @@ export default function ({
     app.use(passport.initialize());
     app.use('/auth', createAuthRouter(sruUrl));
     app.use('/bib', createBibRouter(sruUrl));
-    app.get('/', handleIndex);
+    app.get('/test', openTestClient);
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
 
-    function handleIndex (req, res) { // eslint-disable-line no-unused-vars
+    function openTestClient(req, res) { // eslint-disable-line no-unused-vars
       const page = fs.readFileSync(path.join(__dirname, 'testclient/testclient.html'), {encoding: 'utf8'});
       res.send(page);
     }
