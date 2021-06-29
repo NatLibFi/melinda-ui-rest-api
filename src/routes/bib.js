@@ -27,7 +27,13 @@ export default function (sruUrl) {
 
   function fetchOne(req, res) {
     logger.debug(`SRU: ${sruUrl}`);
-    logger.debug(`REQ: ${JSON.stringify(req.params)}`);
+    //logger.debug(`REQ fields: ${Object.keys(req)}`);
+    //logger.debug(`REQ headers: ${JSON.stringify(req.headers)}`);
+    logger.debug(`Header.authorization: ${req.headers.authorization}`);
+    //logger.debug(`REQ passport: ${JSON.stringify(req.passport)}`);
+    //logger.debug(`REQ user: ${JSON.stringify(req.user)}`);
+    //logger.debug(`REQ authInfo: ${JSON.stringify(req.authInfo)}`);
+    logger.debug(`REQ params: ${JSON.stringify(req.params)}`);
 
     // localhost:8081/bib/001234567
     // localhost:8081/bib/000018526 - miksi ei tule?
@@ -51,7 +57,7 @@ export default function (sruUrl) {
     let recordPromise; // eslint-disable-line
 
     function processRecord(data) {
-      logger.debug(`Process record ${data}`);
+      //logger.debug(`Process record ${data}`);
       recordPromise = MARCXML.from(data, {subfieldValues: false});
     }
 
@@ -59,9 +65,9 @@ export default function (sruUrl) {
 
     function endProcessing() {
       logger.debug('End Processing');
-      logger.debug(`record Promise ${recordPromise}`);
+      //logger.debug(`record Promise ${recordPromise}`);
       Promise.resolve(recordPromise).then(result => {
-        logger.debug(`Got result ${result}`);
+        //logger.debug(`Got result ${result}`);
         res.json(result);
       });
     }
