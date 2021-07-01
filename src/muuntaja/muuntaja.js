@@ -11,13 +11,13 @@ console.log('Starting muuntaja');
 
 function onLoad() {
   console.log('Loaded');
-  showPage('login');
+  showTab('login');
 }
 
-function showPage(...pages) {
+function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {
-    if (pages.includes(child.getAttribute('id'))) {
+    if (tabs.includes(child.getAttribute('id'))) {
       child.removeAttribute('hidden');
     } else {
       child.setAttribute('hidden', true);
