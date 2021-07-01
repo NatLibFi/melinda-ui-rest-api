@@ -1,157 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style type="text/css">
-    body {
-      background-color: lightgray;
-    }
+  <script type="text/javascript" src="testclient.js"></script>
+  <link rel="stylesheet" href="testclient.css">
+</head>
 
-    #sourceRecord {
-      /*margin: auto; */
-      margin-top: 10px;
-      font-family: 'monospace';
-      white-space: pre-wrap;
-      overflow-x: auto;
-      background-color: #f9f9f9;
-    }
-
-    #sourceRecord .row {
-      margin-top: 0;
-      display: flex;
-      justify-content: left;
-      align-items: baseline;
-    }
-
-    .code {
-      display: block;
-      color: #e57373;
-      margin-right: 2px;
-    }
-
-    .marker {
-      display: block;
-      color: #e57373;
-      margin-left: 2px;
-    }
-
-    .tag,
-    .ind1,
-    .ind2 {
-      display: block;
-      color: #448aff;
-    }
-  </style>
-  </head>
-
-  <body>
-    <!-- Submit record ID -->
-    <div style="display: flex; padding-bottom: 8px; border-bottom: 1px solid gray;">      
-      <!-- Record to fetch -->
-      Record ID: <input id="melindaId" style="margin-left: 8pt;"/>
-      <!-- <button onClick="getId()">Fetch</button> -->
-      <div style="flex-grow: 1;"></div>
-      <button onClick="clearRecords()">Clear list</button>
-    </div>
+<body onload="initialize()">
+  <!-- Submit record ID -->
+  <div style="display: flex; padding-bottom: 8px; border-bottom: 1px solid gray;">      
+    <!-- Record to fetch -->
+    Record ID: <input id="melindaId" style="margin-left: 8pt;"/>
+    <!-- <button onClick="getId()">Fetch</button> -->
+    <div style="flex-grow: 1;"></div>
+    <button onClick="clearRecords()">Clear list</button>
+  </div>
 
   <!-- List of records fetched -->
   <div id="sourceRecord"></div>
-
-  <!-- Code -->
-  <script>
-    document.getElementById("melindaId").addEventListener("keydown", function(event) {
-      if(event.key === "Enter") {
-        event.preventDefault();
-        const id = event.target.value;
-        loadRecord(id);
-      }
-    })
-
-    //-------------------------------------------------------------------------
-    
-    function loadRecord(melindaId) {
-      console.log('Load:', melindaId)
-      // DEMO
-      const demoRecord = {
-        leader: "demo",
-        fields: [
-          {
-            tag: '100',
-            ind1: ' ',
-            ind2: ' ',
-            subfields: [
-              {code: 'a', value: 'demo'}
-            ]
-          }
-        ]
-      };
-      //insertRecord(demoRecord.fields[0]);
-
-      // Rest fetch
-      const uri = `http://localhost:8081/bib/${melindaId}`;
-
-      let h = new Headers();
-      h.append("Accepts", "application/json");
-
-      const req = new Request(uri, {
-        method: "GET",
-        mode: "no-cors",
-        headers: h,
-        credentials: 'same-origin'
-      });
-
-      fetch(req)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          insertRecord(data);
-        });
-    }
-
-    //-------------------------------------------------------------------------
-    
-    function insertRecord(data) {
-      const container = document.getElementById('sourceRecord');
-      const row = document.createElement('div');
-      row.setAttribute('class', 'row')
-
-      const f100 = findField(data, "100");
-      const author = f100[0].subfields[0].value 
-
-      const f245 = findField(data, "245");
-      const title = f245[0].subfields[0].value;
-      
-      row.append(
-        makeP("tag", author),
-        makeP("tag", title),
-        /*
-        makeP(data.tag, 'tag'),
-        makeP(data.ind1 || ' ', 'ind1'),
-        makeP(data.ind2 || ' ', 'ind2'),
-        makeP("‡" + data.subfields[0].code || ' ', 'code'),
-        makeP(data.subfields[0].value || ' ', 'value'),
-        */
-      );
-      container.appendChild(row);
-
-      function findField(data, fieldId) {
-        return data.fields.filter(f => f.tag == fieldId);
-      }
-
-      function makeP(className, value) {
-        const p = document.createElement('p');
-        p.innerHTML = value;
-        p.setAttribute('class', className);
-        return p;
-      }
-    }
-
-    //-------------------------------------------------------------------------
-
-    function clearRecords() {
-      console.log("Clearing");
-      const container = document.getElementById('sourceRecord');
-      container.innerHTML = "";
-    }
-  </script>
 </body>
 </html>
