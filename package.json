@@ -44,7 +44,11 @@
     "nodemon": "^2.0.7"
   },
   "eslintConfig": {
-    "extends": "@natlibfi/melinda-backend"
+    "extends": "@natlibfi/melinda-backend",
+    "ignorePatterns": [
+      "src/testclient/*",
+      "src/muuntaja/*"
+    ]
   },
   "babel": {
     "presets": [
@@ -54,12 +58,20 @@
           "targets": "maintained node versions"
         }
       ]
+    ],
+    "ignore": [
+      "src/testclient/*",
+      "src/muuntaja/*"
     ]
   },
   "nodemonConfig": {
     "exec": "npm run lint:dev && npm run start:dev",
     "watch": [
       "src/*"
+    ],
+    "ignore": [
+      "src/testclient/*",
+      "src/muuntaja/*"
     ],
     "ext": "js",
     "delay": 2.5
