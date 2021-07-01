@@ -26,9 +26,16 @@
   font-size: 16px;
 }
 
+.NavBar > button {
+  /* font-family: "Material Icons"; */
+  z-index: 2;
+  margin: auto 4px auto 4px;
+}
+
 /* ---------------------------------------------------------------------------- */
 
 .IconBar {
+  z-index: 1;
   position: fixed;
   top: 0;
   left: 0;
@@ -39,7 +46,7 @@
   justify-content: flex-end;
 }
 
-.Iconbar .Icon {
+.Iconbar > .Icon {
   /* font-family: "Material Icons"; */
   font-size: 32px;
   padding: 16px;

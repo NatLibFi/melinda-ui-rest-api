@@ -10,16 +10,16 @@
 
 function initialize() {
   console.log('Initializing');
-  showTab('muuntaja');
+  //showTab('login');
 }
 
 function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {
     if (tabs.includes(child.getAttribute('id'))) {
-      child.removeAttribute('hidden');
+      child.hidden = false;
     } else {
-      child.setAttribute('hidden', true);
+      child.hidden = true;
     }
   }
 }

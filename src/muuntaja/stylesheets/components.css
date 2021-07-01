@@ -1,6 +1,14 @@
 /* ---------------------------------------------------------------------------- */
 /* CSS for generic GUI components */
 
+/* ---------------------------------------------------------------------------- */
+
+/* Filler div to take remaining space */
+div .Filler {
+  flex-grow: 1;
+}
+
+/* ---------------------------------------------------------------------------- */
 /* Icon buttons */
 
 a.Icon, a.Icon:visited {
@@ -20,4 +28,52 @@ a.Icon, a.Icon:visited {
 .Icon.disabled {
   color: gray;
   cursor: default;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Inputs & their labels */
+
+input {
+  border: 0;
+  border-bottom: 1pt solid grey;
+  outline: none;
+  font-size: 15pt;
+}
+
+label {
+  color: rgb(48, 93, 109);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Loading bar */
+
+.progress-bar, .progress-bar:before {
+  height: 3px;
+  width: 100%;
+  margin: 0;
+}
+
+.progress-bar {
+  background-color: #b3d4fc;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.progress-bar:before {
+  background-color: #3f51b5;
+  content: '';
+  animation: running-progress 2s linear infinite;
+  -webkit-animation: running-progress 2s linear infinite;
+}
+
+@keyframes running-progress {
+  0% { margin-left: 0px; margin-right: 100%; }
+  50% { margin-left: 0%; margin-right: 0%; }
+  100% { margin-left: 100%; margin-right: 0%; }
+}
+
+@-webkit-keyframes running-progress {
+  0% { margin-left: 0px; margin-right: 100%; }
+  50% { margin-left: 0%; margin-right: 0%; }
+  100% { margin-left: 100%; margin-right: 0%; }
 }
