@@ -16,18 +16,12 @@ html, body {
   */
   background-color: #305d6d; /* For browsers not support gradients  */
   background-image: linear-gradient(to right, #305d6d, #7bb9ce);
-  /*
-  padding-top: 8pt;
-  padding-bottom: 8pt;
-  padding-left: 8pt;
-  padding-right: 8pt;
-  */
 
   display: flex;
   color: white;
   /*
   flex-direction: row;
-*/
+  */
 }
 
 .NavBar .logo {
@@ -39,11 +33,24 @@ html, body {
   text-transform: uppercase;
   padding-top: 32px;
   font-size: 16px;
-  font-weight: 300;
   /*
-  line-height: 48px;
+  font-weight: 300;
   */
 }
+
+div .Filler {
+  flex-grow: 1;
+}
+
+.NavBar .IconBar {
+  padding-top: 16px;
+  display: flex;
+}
+
+.NavBar .IconBar .material-icons {
+  font-size: 32px;
+}
+
 
 /* ---------------------------------------------------------------------------- */
 
