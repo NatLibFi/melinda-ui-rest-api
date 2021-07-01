@@ -44,7 +44,7 @@ export default function ({
     logger.debug(`Auth key: ${ownAuthzApiKey}`);
 
     app.use(passport.initialize());
-    app.use('/auth', createAuthRouter(sruUrl));
+    app.use('/auth', createAuthRouter());
     app.use('/bib', createBibRouter(sruUrl));
     app.use('/test', express.static(path.join(__dirname, 'testclient/')));
     app.use('/muuntaja', express.static(path.join(__dirname, 'muuntaja/')));
