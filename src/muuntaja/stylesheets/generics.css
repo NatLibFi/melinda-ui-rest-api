@@ -2,6 +2,16 @@
 /* Some generic CSS elements */
 /* ---------------------------------------------------------------------------- */
 
+/* Remove margins and paddings, and set default font to sans-serif */
+
+html, body, div {
+  padding: 0;
+  margin: 0;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 15pt;
+}
+
 /* Filler div to take remaining space */
 div .Filler {
   flex-grow: 1;

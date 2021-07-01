@@ -13,8 +13,6 @@ function initialize() {
   showTab('muuntaja');
 }
 
-//-----------------------------------------------------------------------------
-
 function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {
@@ -24,6 +22,30 @@ function showTab(...tabs) {
       child.setAttribute('hidden', true);
     }
   }
+}
+
+//-----------------------------------------------------------------------------
+// Click callbacks
+//-----------------------------------------------------------------------------
+
+function onNew(e) {
+  console.log("New:", e)
+}
+
+function onSearch(e) {
+  console.log("Search:", e)
+}
+
+function onSave(e) {
+  console.log("Save:", e)
+}
+
+function onSettings(e) {
+  console.log("Settings:", e)
+}
+
+function onAccount(e) {
+  console.log("Account:", e)
 }
 
 //-----------------------------------------------------------------------------

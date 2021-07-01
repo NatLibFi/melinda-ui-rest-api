@@ -1,0 +1,8 @@
+
+/* ---------------------------------------------------------------------------- */
+/* Styles for MARC records */
+
+div.marc-record {
+  font-family: monospace;
+  font-size: 12pt;
+}

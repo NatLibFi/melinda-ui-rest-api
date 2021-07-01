@@ -5,8 +5,10 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <head>
+  <link rel="shortcut icon" href="favicon.png" />
   <script type="text/javascript" src="muuntaja.js"></script>
-  <link rel="stylesheet" href="stylesheets/muuntaja.css">
+  <link rel="stylesheet" href="stylesheets/muuntaja.css" />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 </head>
 
@@ -33,38 +35,41 @@
 
     <div id="muuntaja" hidden>
       <div class="IconBar">
-        <div class="Icon material-icons">help_outline</div>
-        <div class="Icon material-icons">add</div>
-        <div class="Icon material-icons">search</div>
-        <div class="Icon material-icons">save</div>
-        <div class="Icon material-icons">settings</div>
-        <div class="Icon material-icons">account_circle</div>
+        <a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer" class="Icon material-icons">help_outline</a>
+        <div class="Icon material-icons" onClick="onNew(event)">add</div>
+        <div class="Icon material-icons" onClick="onSearch(event)">search</div>
+        <div class="Icon material-icons disabled" onClick="onSave(event)">save</div>
+        <div class="Icon material-icons" onClick="onSettings(event)">settings</div>
+        <div class="Icon material-icons" onClick="onAccount(event)">account_circle</div>
       </div>
       <div class="record-merge-panel">
         <div class="col">
           <div class="header">
-            <label>Lähdetietue</label><br/>
-            <input></input>
+            <div style="flex-grow: 1;"><label>Lähdetietue</label><br/><input /></div>
+            <div class="Icon material-icons disabled">swap_horiz</div>
           </div>
-          <div>
-            <textarea>Testi</textarea>
-          </div>
-        </div>
-        <div class="col">
-          <div class="header">
-            <label>Pohjatietue</label><br/>
-            <input></input>
-          </div>
-          <div>
-            <textarea>Testi</textarea>
+          <div class="marc-record">
+            Testi<br/>
+            Testi<br/>
+            Testi<br/>
           </div>
         </div>
         <div class="col">
           <div class="header">
-            <label>Tulostietue</label>
+            <div style="flex-grow: 1;"><label>Pohjatietue</label><br/><input /></div>
+          </div>
+          <div class="marc-record">
+            Testi<br/>
+            Testi<br/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="header">
+            <div style="flex-grow: 1;">TULOSTIETUE</div>
+            <div class="Icon material-icons disabled">edit</div>
             </div>
-          <div>
-            <textarea>Testi</textarea>
+          <div class="marc-record">
+            Testi<br/>
             </div>
         </div>
       </div>

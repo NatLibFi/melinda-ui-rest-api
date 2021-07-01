@@ -24,9 +24,6 @@
   text-transform: uppercase;
   padding-top: 32px;
   font-size: 16px;
-  /*
-  font-weight: 300;
-  */
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -43,16 +40,7 @@
 }
 
 .Iconbar .Icon {
-  cursor: pointer;
-  transition: background-color .3s;
+  /* font-family: "Material Icons"; */
   font-size: 32px;
   padding: 16px;
 }
-
-.IconBar .Icon:hover {
-  background-color: rgba(0, 0, 0, 0.10);
-}
-
-.IconBar .material-icons {
-}
-
