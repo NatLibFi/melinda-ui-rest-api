@@ -1,7 +1,16 @@
+/* eslint-disable no-console, no-undef, no-unused-vars */
+
 // Auth header
 // backend-commons / commons?
 
 //localhost:8081/muuntaja/
+
+console.log('Loading muuntaja');
+
+function onLoad() {
+  console.log('Loaded');
+  document.getElementById('login').setAttribute('hidden', false);
+}
 
 /*
     onload --> tarkasta selaimen storagesta, onko siellä muuntaja-avain (päätä nimi)
