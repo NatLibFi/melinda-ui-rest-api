@@ -1,22 +1,15 @@
 //*****************************************************************************
+//
+// New "Reactless" Muuntaja Sketch
+//
 //*****************************************************************************
 
-/* eslint-disable no-console, no-undef, no-unused-vars */
-/* eslint-disable functional/no-conditional-statement, array-callback-return */
-/* eslint-disable functional/no-loop-statement */
-
-// Auth header
-// backend-commons / commons?
-
-//import HttpStatus from 'http-status';
-//const HttpStatus = require('http-status');
-
-//*****************************************************************************
-
-console.log('Starting muuntaja');
+//-----------------------------------------------------------------------------
+// Base logic
+//-----------------------------------------------------------------------------
 
 function initialize() {
-  console.log('Loaded');
+  console.log('Initializing');
   showTab('muuntaja');
 }
 
@@ -32,6 +25,13 @@ function showTab(...tabs) {
     }
   }
 }
+
+//-----------------------------------------------------------------------------
+// Authentication
+//-----------------------------------------------------------------------------
+
+// Auth header
+// backend-commons / commons?
 
 /*
 async function getAuthToken(username, password) {

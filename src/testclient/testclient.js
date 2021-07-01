@@ -1,8 +1,8 @@
-/* eslint-disable no-console, no-undef, no-unused-vars */
-/* eslint-disable functional/no-conditional-statement, array-callback-return */
-/* eslint-disable functional/no-loop-statement */
-
-//-------------------------------------------------------------------------
+//*************************************************************************
+//
+// REST API Test Client
+//
+//*************************************************************************
 
 function initialize() {
   document.getElementById('melindaId').addEventListener('keydown', onKeyDown);

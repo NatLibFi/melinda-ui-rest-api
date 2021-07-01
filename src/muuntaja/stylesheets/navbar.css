@@ -1,14 +1,5 @@
-/* CSS file for muuntaja */
-
-html, body {
-  padding: 0;
-  margin: 0;
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
-  font-weight: normal;
-  font-size: 15pt;
-}
-
 /* ---------------------------------------------------------------------------- */
+/* CSS for navbar */
 
 .NavBar {
   /*
@@ -48,6 +39,7 @@ html, body {
   height: 64px;
   display: flex;
   color: white;
+  justify-content: flex-end;
 }
 
 .Iconbar .Icon {
@@ -63,28 +55,4 @@ html, body {
 
 .IconBar .material-icons {
 }
-
-div .Filler {
-  flex-grow: 1;
-}
-
-/* ---------------------------------------------------------------------------- */
-
-div#loading {
-
-}
-
-/* ---------------------------------------------------------------------------- */
-
-div#login {
-  background-color: lightgrey;
-}
-
-/* ---------------------------------------------------------------------------- */
-
-div#muuntaja {
-
-}
-
-/* ---------------------------------------------------------------------------- */
 

@@ -6,7 +6,7 @@
 
 <head>
   <script type="text/javascript" src="muuntaja.js"></script>
-  <link rel="stylesheet" href="muuntaja.css">
+  <link rel="stylesheet" href="stylesheets/muuntaja.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 </head>
 
@@ -15,36 +15,25 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Nav bar -->
+
   <div class="NavBar">
     <img class="logo" src="images/Melinda-logo-white.png"/>
     <div class="AppName">Muuntaja</div>
   </div>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Application "tabs" -->
+
   <div id="root">
 
     <!-- ---------------------------------------------------------------------- -->
-    <!-- Loading tab -->
-    <!-- ---------------------------------------------------------------------- -->
-
-    <div id="loading">
-      Loading...
-    </div>
-
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Login tab -->
-    <!-- ---------------------------------------------------------------------- -->
-
-    <div id="login" hidden>
-      <div>Käyttäjätunnus: <input /></div>
-      <div>Salasana: <input /></div>
-    </div>
-
-    <!-- ---------------------------------------------------------------------- -->
     <!-- Muuntaja tab -->
-    <!-- ---------------------------------------------------------------------- -->
 
     <div id="muuntaja" hidden>
+      Muuntaja
       <div class="IconBar">
-        <div class="Filler"></div>
         <div class="Icon material-icons">help_outline</div>
         <div class="Icon material-icons">add</div>
         <div class="Icon material-icons">search</div>
@@ -52,8 +41,23 @@
         <div class="Icon material-icons">settings</div>
         <div class="Icon material-icons">account_circle</div>
       </div>
-      Muuntaja
     </div>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Login tab -->
+
+    <div id="login" hidden>
+      <div><input placeholder="Tunnus"/></div>
+      <div><input placeholder="Salasana"/></div>
+    </div>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Loading "screen" -->
+
+    <div id="loading">
+      Loading...
+    </div>
+
   </div>
 </body>
 </html>
