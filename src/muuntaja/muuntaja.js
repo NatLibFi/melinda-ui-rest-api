@@ -15,7 +15,7 @@
 
 console.log('Starting muuntaja');
 
-function onLoad() {
+function initialize() {
   console.log('Loaded');
   showTab('muuntaja');
 }

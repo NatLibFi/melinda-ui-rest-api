@@ -38,19 +38,35 @@ html, body {
   */
 }
 
+/* ---------------------------------------------------------------------------- */
+
+.IconBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  color: white;
+}
+
+.Iconbar .Icon {
+  cursor: pointer;
+  transition: background-color .3s;
+  font-size: 32px;
+  padding: 16px;
+}
+
+.IconBar .Icon:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+}
+
+.IconBar .material-icons {
+}
+
 div .Filler {
   flex-grow: 1;
 }
-
-.NavBar .IconBar {
-  padding-top: 16px;
-  display: flex;
-}
-
-.NavBar .IconBar .material-icons {
-  font-size: 32px;
-}
-
 
 /* ---------------------------------------------------------------------------- */
 
