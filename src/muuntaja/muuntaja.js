@@ -1,15 +1,29 @@
 /* eslint-disable no-console, no-undef, no-unused-vars */
+/* eslint-disable functional/no-conditional-statement, array-callback-return */
+/* eslint-disable functional/no-loop-statement */
 
 // Auth header
 // backend-commons / commons?
 
 //localhost:8081/muuntaja/
 
-console.log('Loading muuntaja');
+console.log('Starting muuntaja');
 
 function onLoad() {
   console.log('Loaded');
-  document.getElementById('login').setAttribute('hidden', false);
+  showPage('login');
+  //document.getElementById('login').removeAttribute('hidden');
+}
+
+function showPage(pages) {
+  const root = document.getElementById('root');
+  for (const child of root.children) {
+    if (pages.includes(child.getAttribute('id'))) {
+      child.removeAttribute('hidden');
+    } else {
+      child.setAttribute('hidden', true);
+    }
+  }
 }
 
 /*
