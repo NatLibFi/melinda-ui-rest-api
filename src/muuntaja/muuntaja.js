@@ -12,10 +12,9 @@ console.log('Starting muuntaja');
 function onLoad() {
   console.log('Loaded');
   showPage('login');
-  //document.getElementById('login').removeAttribute('hidden');
 }
 
-function showPage(pages) {
+function showPage(...pages) {
   const root = document.getElementById('root');
   for (const child of root.children) {
     if (pages.includes(child.getAttribute('id'))) {
