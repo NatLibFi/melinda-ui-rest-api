@@ -23,15 +23,52 @@
   <div class="NavBar">
     <img class="logo" src="images/Melinda-logo-white.png"/>
     <div class="AppName">Muuntaja</div>
+    <button onClick='reload()'>Reload</button>
+    <button onClick='showTab("loading")'>Loading</button>
     <button onClick='showTab("login")'>Login</button>
     <button onClick='showTab("muuntaja")'>Muuntaja</button>
-    <button onClick='showTab("loading")'>Loading</button>
   </div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
 
   <div id="root">
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Loading "screen" -->
+
+    <div id="loading">
+      <div class="progress-bar"></div>
+      </div>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Login tab -->
+
+    <div id="login" hidden>
+      <div>
+        <label>Käyttäjätunnus</label>
+        <input id="username" autocomplete="off"/>
+        </div>
+      <div>
+        <label>Salasana</label>
+        <input id="password" type="password" value=""/>
+        </div>
+      <div>
+        <label>Hyväksyn
+        <a href="https://www.kiwi.fi/download/attachments/93205241/melinda-verkkok%C3%A4ytt%C3%B6liittym%C3%A4t%20asiantuntijoille.pdf?api=v2" target="_blank">
+          tietosuojaselosteen</a>
+          ja evästeiden käytön.
+          <br/><br/>
+          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+        </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end;">
+        <button>Kirjaudu</button>
+        </div>
+      <!-- 
+        <div>
+        <div class="progress-bar"></div>
+        </div>  -->
+      </div>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Muuntaja tab -->
@@ -48,7 +85,7 @@
       <div class="record-merge-panel">
         <div class="col">
           <div class="header">
-            <div style="flex-grow: 1;"><label>Lähdetietue</label><br/><input /></div>
+            <div style="flex-grow: 1;"><label>Lähdetietue</label><br/><input autocomplete="off"/></div>
             <div class="Icon material-icons">swap_horiz</div>
           </div>
           <div class="marc-record">
@@ -59,7 +96,7 @@
         </div>
         <div class="col">
           <div class="header">
-            <div style="flex-grow: 1;"><label>Pohjatietue</label><br/><input /></div>
+            <div style="flex-grow: 1;"><label>Pohjatietue</label><br/><input autocomplete="off"/></div>
           </div>
           <div class="marc-record">
             Testi<br/>
@@ -77,39 +114,6 @@
         </div>
       </div>
     </div>
-
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Login tab -->
-
-    <div id="login" hidden>
-      <div>
-        <label>Käyttäjätunnus</label>
-        <input id="username"/>
-        </div>
-      <div>
-        <label>Salasana</label>
-        <input id="password" type="password"/>
-        </div>
-      <div>
-        <label>Hyväksyn
-        <a href="https://www.kiwi.fi/download/attachments/93205241/melinda-verkkok%C3%A4ytt%C3%B6liittym%C3%A4t%20asiantuntijoille.pdf?api=v2" target="_blank">
-          tietosuojaselosteen</a>
-          ja evästeiden käytön.
-          <br/><br/>
-          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-        </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end;">
-        <button>Kirjaudu</button>
-        </div>
-    </div>
-
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Loading "screen" -->
-
-    <div id="loading">
-      <div class="progress-bar"></div>
-      </div>
-
   </div>
 </body>
 </html>

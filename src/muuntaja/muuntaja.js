@@ -48,6 +48,11 @@ function onAccount(e) {
   console.log("Account:", e)
 }
 
+function reload() {
+  // Programmatically reload page to clear fields - does not work
+  location.reload();
+}
+
 //-----------------------------------------------------------------------------
 // Authentication
 //-----------------------------------------------------------------------------
