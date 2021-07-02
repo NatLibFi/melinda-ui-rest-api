@@ -27,13 +27,12 @@ div .Filler {
   cursor: default;
 }
 
-.ToolBar > button:not([disabled]):hover {
-  /* font-family: "Material Icons"; */
-  /* margin: auto 4px auto 4px; */
+.ToolBar > button:enabled:hover {
   background-color: rgba(0, 0, 0, 0.10);
   transition: background-color .3s;
 }
 
+/* Links inside buttons are not decorated */
 button > a, button > a:visited {
   color: inherit;
   text-decoration: none;

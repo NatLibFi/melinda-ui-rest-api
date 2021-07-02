@@ -33,7 +33,10 @@ function onNew(e) {
 }
 
 function onSearch(e) {
-  console.log("Search:", e)
+  console.log("Search:", e);
+  const dialog = document.getElementById("searchDlg");
+  console.log("Dialog:", dialog)
+  //dialog.show();
 }
 
 function onSave(e) {
