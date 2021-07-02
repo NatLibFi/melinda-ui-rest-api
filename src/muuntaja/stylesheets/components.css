@@ -8,6 +8,20 @@ div .Filler {
   flex-grow: 1;
 }
 
+div.FlexBox {
+  display: flex;
+}
+
+div.HBox {
+  display: flex;
+  flex-direction: row;
+}
+
+div.VBox {
+  display: flex;
+  flex-direction: column;
+}
+
 /* ---------------------------------------------------------------------------- */
 /* Buttons inside toolbars, some with icons */
 
@@ -41,15 +55,16 @@ button > a, button > a:visited {
 /* ---------------------------------------------------------------------------- */
 /* Inputs & their labels */
 
-input {
+.Input > label {
+  color: rgb(48, 93, 109);
+  font-size: 12pt;
+}
+
+.Input > input {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
   font-size: 15pt;
-}
-
-label {
-  color: rgb(48, 93, 109);
 }
 
 /* ---------------------------------------------------------------------------- */

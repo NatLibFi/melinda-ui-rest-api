@@ -44,25 +44,28 @@
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
 
-    <div id="login" hidden>
-      <div>
-        <label>Käyttäjätunnus</label>
+    <div id="login" class="VBox" hidden>
+      <div class="VBox Input">
+        <label for="username">Käyttäjätunnus</label>
         <input id="username" autocomplete="off"/>
         </div>
-      <div>
-        <label>Salasana</label>
+      <div class="VBox Input">
+        <label for="password">Salasana</label>
         <input id="password" type="password" value=""/>
         </div>
-      <div>
-        <label>Hyväksyn
-        <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
+      <div class="HBox Input" style="align-items: baseline;">
+        <input id="acceptterms" type="checkbox">
+        <label for="acceptterms" style="padding-left: 8px;">
+          Hyväksyn
+          <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
           tietosuojaselosteen</a>
           ja evästeiden käytön.
           <br/><br/>
           Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
         </div>
+      <div id="info"></div>
       <div style="display: flex; flex-direction: column; align-items: flex-end;">
-        <button>Kirjaudu</button>
+        <button onClick="login(event)">Kirjaudu</button>
         </div>
       <!-- 
         <div>
@@ -85,7 +88,10 @@
       <div class="record-merge-panel">
         <div class="col">
           <div class="ToolBar header">
-            <div style="flex-grow: 1;"><label>Lähdetietue</label><br/><input autocomplete="off"/></div>
+            <div class="VBox Input">
+              <label>Lähdetietue</label>
+              <input autocomplete="off"/>
+              </div>
             <button class="material-icons" disabled>swap_horiz</button>
           </div>
           <div class="marc-record">
@@ -96,7 +102,10 @@
         </div>
         <div class="col">
           <div class="ToolBar header">
-            <div style="flex-grow: 1;"><label>Pohjatietue</label><br/><input autocomplete="off"/></div>
+            <div class="VBox Input">
+              <label>Pohjatietue</label>
+              <input autocomplete="off"/>
+              </div>
           </div>
           <div class="marc-record">
             Testi<br/>
