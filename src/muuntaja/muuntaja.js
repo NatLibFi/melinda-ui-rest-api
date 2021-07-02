@@ -10,7 +10,7 @@
 
 function initialize() {
   console.log('Initializing');
-  //showTab('login');
+  showTab('login');
 }
 
 function showTab(...tabs) {

@@ -9,25 +9,34 @@ div .Filler {
 }
 
 /* ---------------------------------------------------------------------------- */
-/* Icon buttons */
+/* Buttons inside toolbars, some with icons */
 
-a.Icon, a.Icon:visited {
+.ToolBar > button {
+  /* font-family: "Material Icons"; */
+  /* margin: auto 4px auto 4px; */
+  font-size: inherit;
   color: inherit;
-  text-decoration: none;
-}
-
-.Icon:not(.disabled) {
+  border: 0;
+  background-color: transparent;
+  padding: 4px 16px;
   cursor: pointer;
 }
 
-.Icon:not(.disabled):hover {
+.ToolBar > button:disabled {
+  color: gray;
+  cursor: default;
+}
+
+.ToolBar > button:not([disabled]):hover {
+  /* font-family: "Material Icons"; */
+  /* margin: auto 4px auto 4px; */
   background-color: rgba(0, 0, 0, 0.10);
   transition: background-color .3s;
 }
 
-.Icon.disabled {
-  color: gray;
-  cursor: default;
+button > a, button > a:visited {
+  color: inherit;
+  text-decoration: none;
 }
 
 /* ---------------------------------------------------------------------------- */

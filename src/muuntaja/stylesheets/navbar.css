@@ -24,30 +24,22 @@
   text-transform: uppercase;
   padding-top: 32px;
   font-size: 16px;
-}
-
-.NavBar > button {
-  /* font-family: "Material Icons"; */
-  z-index: 2;
-  margin: auto 4px auto 4px;
+  font-weight: 300;
+  line-height: 18px;
 }
 
 /* ---------------------------------------------------------------------------- */
 
 .IconBar {
-  z-index: 1;
+  display: flex;
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
   height: 64px;
-  display: flex;
   color: white;
-  justify-content: flex-end;
 }
+/* ---------------------------------------------------------------------------- */
 
-.Iconbar > .Icon {
-  /* font-family: "Material Icons"; */
+.NavBar > .material-icons, .IconBar > .material-icons {
   font-size: 32px;
-  padding: 16px;
 }

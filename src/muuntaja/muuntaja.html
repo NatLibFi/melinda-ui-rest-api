@@ -20,7 +20,7 @@
   <!-- ------------------------------------------------------------------------ -->
   <!-- Nav bar -->
 
-  <div class="NavBar">
+  <div class="NavBar ToolBar">
     <img class="logo" src="images/Melinda-logo-white.png"/>
     <div class="AppName">Muuntaja</div>
     <button onClick='reload()'>Reload</button>
@@ -74,19 +74,19 @@
     <!-- Muuntaja tab -->
 
     <div id="muuntaja" hidden>
-      <div class="IconBar">
-        <a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer" class="Icon material-icons">help_outline</a>
-        <div class="Icon material-icons" onClick="onNew(event)">add</div>
-        <div class="Icon material-icons" onClick="onSearch(event)">search</div>
-        <div class="Icon material-icons disabled" onClick="onSave(event)">save</div>
-        <div class="Icon material-icons" onClick="onSettings(event)">settings</div>
-        <div class="Icon material-icons" onClick="onAccount(event)">account_circle</div>
+      <div class="IconBar ToolBar">
+        <button class="material-icons"><a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+        <button class="material-icons" onClick="onNew(event)">add</button>
+        <button class="material-icons" onClick="onSearch(event)">search</button>
+        <button class="material-icons" onClick="onSave(event)" disabled>save</button>
+        <button class="material-icons" onClick="onSettings(event)">settings</button>
+        <button class="material-icons" onClick="onAccount(event)">account_circle</button>
       </div>
       <div class="record-merge-panel">
         <div class="col">
-          <div class="header">
+          <div class="ToolBar header">
             <div style="flex-grow: 1;"><label>Lähdetietue</label><br/><input autocomplete="off"/></div>
-            <div class="Icon material-icons">swap_horiz</div>
+            <button class="material-icons" disabled>swap_horiz</button>
           </div>
           <div class="marc-record">
             Testi<br/>
@@ -95,7 +95,7 @@
           </div>
         </div>
         <div class="col">
-          <div class="header">
+          <div class="ToolBar header">
             <div style="flex-grow: 1;"><label>Pohjatietue</label><br/><input autocomplete="off"/></div>
           </div>
           <div class="marc-record">
@@ -104,9 +104,9 @@
           </div>
         </div>
         <div class="col">
-          <div class="header">
+          <div class="ToolBar header">
             <div style="flex-grow: 1;">TULOSTIETUE</div>
-            <div class="Icon material-icons">edit</div>
+            <button class="material-icons" disabled>edit</button>
             </div>
           <div class="marc-record">
             Testi<br/>
