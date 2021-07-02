@@ -4,20 +4,20 @@
 /* ---------------------------------------------------------------------------- */
 
 /* Filler div to take remaining space */
-div .Filler {
+.Filler {
   flex-grow: 1;
 }
 
-div.FlexBox {
+.FlexBox {
   display: flex;
 }
 
-div.HBox {
+.HBox {
   display: flex;
   flex-direction: row;
 }
 
-div.VBox {
+.VBox {
   display: flex;
   flex-direction: column;
 }

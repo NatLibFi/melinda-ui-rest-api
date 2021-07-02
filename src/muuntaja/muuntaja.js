@@ -22,24 +22,21 @@ function showTab(...tabs) {
       child.hidden = true;
     }
   }
-
-  for(const tab of tabs) switch(tab) {
-    case "login": {
-      console.log("Login reset")
-      const inputs = document.querySelectorAll("#root #login input");
-      console.log("Inputs:", inputs)
-      break;
-    }
-    default: break;
-  }
 }
 
+function resetForms(...elems) {
+  for(const elem of elems) {
+    const forms = elem.querySelectorAll("form");
+    for(const form of forms) form.reset();
+  }
+}
 //-----------------------------------------------------------------------------
 // Click callbacks
 //-----------------------------------------------------------------------------
 
 function onNew(e) {
   console.log("New:", e)
+  resetForms(document.getElementById("muuntaja"))
 }
 
 function onSearch(e) {
@@ -62,8 +59,9 @@ function onAccount(e) {
 }
 
 function reload() {
-  // Programmatically reload page to clear fields - does not work
+  // Programmatically reload page and reset forms
   location.reload();
+  resetForms(document.getElementById("root"))
 }
 
 function login(e) {
@@ -73,13 +71,14 @@ function login(e) {
   if(!termschecked) {
     const infodiv = document.querySelector("#login #info")
     infodiv.innerHTML = "Tietosuojaselosteen hyväksyminen vaaditaan"
-    return;
+    return false;
   }
 
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
   console.log("User:", username, "Password:", password)
+  return false;
 }
 
 //-----------------------------------------------------------------------------

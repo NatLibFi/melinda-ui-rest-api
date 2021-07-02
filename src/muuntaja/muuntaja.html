@@ -44,16 +44,16 @@
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
 
-    <div id="login" class="VBox" hidden>
-      <div class="VBox Input">
+    <div id="login" hidden>
+      <form class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="username" autocomplete="off"/>
-        </div>
-      <div class="VBox Input">
+        <input id="username" />
+      </form>
+      <form class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="password" type="password" value=""/>
-        </div>
-      <div class="HBox Input" style="align-items: baseline;">
+        <input id="password" type="password"/>
+      </form>
+      <form class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
         <label for="acceptterms" style="padding-left: 8px;">
           Hyväksyn
@@ -62,10 +62,10 @@
           ja evästeiden käytön.
           <br/><br/>
           Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-        </div>
+          </form>
       <div id="info"></div>
       <div style="display: flex; flex-direction: column; align-items: flex-end;">
-        <button onClick="login(event)">Kirjaudu</button>
+        <button onClick="return login(event)">Kirjaudu</button>
         </div>
       <!-- 
         <div>
@@ -87,13 +87,13 @@
       </div>
       <div class="record-merge-panel">
         <div class="col">
-          <div class="ToolBar header">
-            <div class="VBox Input">
+          <form class="ToolBar HBox header">
+            <div class="Filler VBox Input">
               <label>Lähdetietue</label>
-              <input autocomplete="off"/>
+              <input/>
               </div>
             <button class="material-icons" disabled>swap_horiz</button>
-          </div>
+            </form>
           <div class="marc-record">
             Testi<br/>
             Testi<br/>
@@ -101,20 +101,20 @@
           </div>
         </div>
         <div class="col">
-          <div class="ToolBar header">
-            <div class="VBox Input">
+          <form class="ToolBar header">
+            <div class="Filler VBox Input">
               <label>Pohjatietue</label>
-              <input autocomplete="off"/>
+              <input />
               </div>
-          </div>
+            </form>
           <div class="marc-record">
             Testi<br/>
             Testi<br/>
           </div>
         </div>
         <div class="col">
-          <div class="ToolBar header">
-            <div style="flex-grow: 1;">TULOSTIETUE</div>
+          <div class="ToolBar HBox header">
+            <div class="Filler">TULOSTIETUE</div>
             <button class="material-icons" disabled>edit</button>
             </div>
           <div class="marc-record">
