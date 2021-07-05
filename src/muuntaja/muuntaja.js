@@ -98,16 +98,16 @@ function showTab(...tabs) {
   }
 }
 
-function reload() {
-  // Programmatically reload page and reset forms
-  location.reload();
-}
-
 function resetForms(...elems) {
   for(const elem of elems) {
     const forms = elem.querySelectorAll("form");
     for(const form of forms) form.reset();
   }
+}
+
+function reload() {
+  // Programmatically reload page and reset forms
+  location.reload();
 }
 
 //-----------------------------------------------------------------------------

@@ -38,7 +38,9 @@
   height: 64px;
   color: white;
 }
+
 /* ---------------------------------------------------------------------------- */
+/* NavBar icons are 32px */
 
 .NavBar > .material-icons, .IconBar > .material-icons {
   font-size: 32px;

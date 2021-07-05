@@ -17,6 +17,8 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
+  <script>0</script> <!-- Fix FF bug w/ stylesheet loading -->
+
   <!-- ------------------------------------------------------------------------ -->
   <!-- Nav bar -->
 
@@ -69,10 +71,6 @@
       <div style="display: flex; flex-direction: column; align-items: flex-end;">
         <button onClick="return login(event)">Kirjaudu</button>
         </div>
-      <!-- 
-        <div>
-        <div class="progress-bar"></div>
-        </div>  -->
       </div>
 
     <!-- ---------------------------------------------------------------------- -->
@@ -94,6 +92,7 @@
               <label>Lähdetietue</label>
               <input/>
               </div>
+            <button class="material-icons" onClick="return false;">search</button>
             <button class="material-icons" disabled>swap_horiz</button>
             </form>
           <div class="marc-record">
@@ -103,11 +102,12 @@
           </div>
         </div>
         <div class="col">
-          <form class="ToolBar header">
+          <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
               <input />
               </div>
+            <button class="material-icons" onClick="return false;">search</button>
             </form>
           <div class="marc-record">
             Testi<br/>
