@@ -5,29 +5,50 @@
 //*****************************************************************************
 
 //-----------------------------------------------------------------------------
-// Base logic
+// stored auth token
 //-----------------------------------------------------------------------------
 
 const storage = window.sessionStorage;
 const tokenName = "melinda-user"
 
+function getAuthToken() { return storage.getItem(tokenName); }
+function setAuthToken(token) { return storage.setItem(tokenName, token); }
+function removeAuthToken() { return storage.removeItem(tokenName); }
+
+//-----------------------------------------------------------------------------
+// on page load:
+//-----------------------------------------------------------------------------
+
 function initialize() {
   console.log('Initializing');
-  resetForms(document.getElementById("root"))
 
   // Get auth token, if it exists
-  const authToken = storage.getItem(tokenName);
+  const authToken = getAuthToken();
   if(authToken) {
     // Check auth token
     // If success, switch to muuntaja
-    // If not, switch to login
+    authSuccess();
+    return ;
+    // If not, fall-through to login
   }
+
+  // No token / invalid token -> reset forms & go to login
+  removeAuthToken();
+  resetForms(document.getElementById("root"))
   showTab("login");
 }
 
-function logininfo(msg) {
-  const infodiv = document.querySelector("#login #info")
-  infodiv.innerHTML = msg;
+//-----------------------------------------------------------------------------
+// Login & logout
+//-----------------------------------------------------------------------------
+
+function authSuccess(token) {
+  //console.log("Auth success")
+  if(token) {
+    //console.log("Auth token:", token)
+    setAuthToken(token);
+  }
+  showTab("muuntaja");
 }
 
 function login(e) {
@@ -48,12 +69,15 @@ function login(e) {
 
   console.log("User:", username, "Password:", password)
 
-  // Success
+  // on success
   logininfo("");
-  storage.setItem(tokenName, "x");
-  showTab("muuntaja");
-
+  authSuccess("x");
   return false;
+
+  function logininfo(msg) {
+    const infodiv = document.querySelector("#login #info")
+    infodiv.innerHTML = msg;
+  }  
 }
 
 function logout(e) {
