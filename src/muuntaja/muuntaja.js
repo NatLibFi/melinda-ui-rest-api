@@ -8,10 +8,60 @@
 // Base logic
 //-----------------------------------------------------------------------------
 
+const storage = window.sessionStorage;
+const tokenName = "melinda-user"
+
 function initialize() {
   console.log('Initializing');
-  showTab('login');
+  resetForms(document.getElementById("root"))
+
+  // Get auth token, if it exists
+  const authToken = storage.getItem(tokenName);
+  if(authToken) {
+    // Check auth token
+    // If success, switch to muuntaja
+    // If not, switch to login
+  }
+  showTab("login");
 }
+
+function logininfo(msg) {
+  const infodiv = document.querySelector("#login #info")
+  infodiv.innerHTML = msg;
+}
+
+function login(e) {
+  console.log("Login:", e)
+
+  logininfo("");
+
+  const termschecked = document.querySelector("#login #acceptterms").checked;
+  if(!termschecked) {
+    logininfo("Tietosuojaselosteen hyväksyminen vaaditaan");
+    return false;
+  }
+  
+  logininfo('<div class="progress-bar"></div>');
+  
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  console.log("User:", username, "Password:", password)
+
+  // Success
+  logininfo("");
+  storage.setItem(tokenName, "x");
+  showTab("muuntaja");
+
+  return false;
+}
+
+function logout(e) {
+  storage.removeItem(tokenName);
+  reload();
+}
+
+//-----------------------------------------------------------------------------
 
 function showTab(...tabs) {
   const root = document.getElementById('root');
@@ -24,14 +74,18 @@ function showTab(...tabs) {
   }
 }
 
+function reload() {
+  // Programmatically reload page and reset forms
+  location.reload();
+}
+
 function resetForms(...elems) {
   for(const elem of elems) {
     const forms = elem.querySelectorAll("form");
     for(const form of forms) form.reset();
   }
 }
-//-----------------------------------------------------------------------------
-// Click callbacks
+
 //-----------------------------------------------------------------------------
 
 function onNew(e) {
@@ -56,29 +110,7 @@ function onSettings(e) {
 
 function onAccount(e) {
   console.log("Account:", e)
-}
-
-function reload() {
-  // Programmatically reload page and reset forms
-  location.reload();
-  resetForms(document.getElementById("root"))
-}
-
-function login(e) {
-  console.log("Login:", e)
-
-  const termschecked = document.querySelector("#login #acceptterms").checked;
-  if(!termschecked) {
-    const infodiv = document.querySelector("#login #info")
-    infodiv.innerHTML = "Tietosuojaselosteen hyväksyminen vaaditaan"
-    return false;
-  }
-
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  console.log("User:", username, "Password:", password)
-  return false;
+  logout();
 }
 
 //-----------------------------------------------------------------------------
