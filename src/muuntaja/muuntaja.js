@@ -8,12 +8,38 @@
 // stored auth token
 //-----------------------------------------------------------------------------
 
-const storage = window.sessionStorage;
-const tokenName = "melinda-user"
+const authToken = {
+  storage: window.sessionStorage,
+  name: "melinda-user",
+  get: function() { return this.storage.getItem(this.name); },
+  set: function(token) { return this.storage.setItem(this.name, token); },
+  remove: function() { return this.storage.removeItem(this.name); }  ,
+}
 
-function getAuthToken() { return storage.getItem(tokenName); }
-function setAuthToken(token) { return storage.setItem(tokenName, token); }
-function removeAuthToken() { return storage.removeItem(tokenName); }
+//-----------------------------------------------------------------------------
+
+function showTab(...tabs) {
+  const root = document.getElementById('root');
+  for (const child of root.children) {
+    if (tabs.includes(child.getAttribute('id'))) {
+      child.hidden = false;
+    } else {
+      child.hidden = true;
+    }
+  }
+}
+
+function resetForms(...elems) {
+  for(const elem of elems) {
+    const forms = elem.querySelectorAll("form");
+    for(const form of forms) form.reset();
+  }
+}
+
+function reload() {
+  // Programmatically reload page and reset forms
+  location.reload();
+}
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -23,8 +49,8 @@ function initialize() {
   console.log('Initializing');
 
   // Get auth token, if it exists
-  const authToken = getAuthToken();
-  if(authToken) {
+  const token = authToken.get();
+  if(token) {
     // Check auth token
     // If success, switch to muuntaja
     authSuccess();
@@ -33,7 +59,7 @@ function initialize() {
   }
 
   // No token / invalid token -> reset forms & go to login
-  removeAuthToken();
+  authToken.remove();
   resetForms(document.getElementById("root"))
   showTab("login");
 }
@@ -46,7 +72,7 @@ function authSuccess(token) {
   //console.log("Auth success")
   if(token) {
     //console.log("Auth token:", token)
-    setAuthToken(token);
+    authToken.set(token);
   }
   showTab("muuntaja");
 }
@@ -81,33 +107,8 @@ function login(e) {
 }
 
 function logout(e) {
-  storage.removeItem(tokenName);
+  authToken.remove();
   reload();
-}
-
-//-----------------------------------------------------------------------------
-
-function showTab(...tabs) {
-  const root = document.getElementById('root');
-  for (const child of root.children) {
-    if (tabs.includes(child.getAttribute('id'))) {
-      child.hidden = false;
-    } else {
-      child.hidden = true;
-    }
-  }
-}
-
-function resetForms(...elems) {
-  for(const elem of elems) {
-    const forms = elem.querySelectorAll("form");
-    for(const form of forms) form.reset();
-  }
-}
-
-function reload() {
-  // Programmatically reload page and reset forms
-  location.reload();
 }
 
 //-----------------------------------------------------------------------------
