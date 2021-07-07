@@ -42,6 +42,6 @@
 /* ---------------------------------------------------------------------------- */
 /* NavBar icons are 32px */
 
-.NavBar > .material-icons, .IconBar > .material-icons {
+.NavBar .material-icons, .IconBar .material-icons {
   font-size: 32px;
 }

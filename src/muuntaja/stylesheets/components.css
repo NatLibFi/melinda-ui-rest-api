@@ -25,7 +25,7 @@
 /* ---------------------------------------------------------------------------- */
 /* Buttons inside toolbars, some with icons */
 
-.ToolBar > button {
+.ToolBar button {
   /* font-family: "Material Icons"; */
   /* margin: auto 4px auto 4px; */
   font-size: inherit;
@@ -36,12 +36,12 @@
   cursor: pointer;
 }
 
-.ToolBar > button:disabled {
+.ToolBar button:disabled {
   color: gray;
   cursor: default;
 }
 
-.ToolBar > button:enabled:hover {
+.ToolBar button:enabled:hover {
   background-color: rgba(0, 0, 0, 0.10);
   transition: background-color .3s;
 }
@@ -66,6 +66,33 @@ button > a, button > a:visited {
   outline: none;
   font-size: 15pt;
 }
+
+/* ---------------------------------------------------------------------------- */
+/* Dropdown menus */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.NavBar > .dropdown > button, .IconBar > .dropdown > button {
+  height: 64px;
+}
+
+.dropdown-content {
+  position: absolute;
+  display: none;
+  background-color: white;
+  color: black;
+  font-family: inherit;
+  font-size: inherit;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
 
 /* ---------------------------------------------------------------------------- */
 /* Loading bar */

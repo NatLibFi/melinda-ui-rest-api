@@ -6,10 +6,10 @@
 
 <head>
   <link rel="shortcut icon" href="favicon.png" />
-  <script type="text/javascript" src="muuntaja.js"></script>
   <link rel="stylesheet" href="stylesheets/muuntaja.css" />
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <script type="text/javascript" src="muuntaja.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -17,8 +17,6 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
-  <script>0</script> <!-- Fix FF bug w/ stylesheet loading -->
-
   <!-- ------------------------------------------------------------------------ -->
   <!-- Nav bar -->
 
@@ -82,8 +80,22 @@
         <button class="material-icons" onClick="onNew(event)">add</button>
         <button class="material-icons" onClick="onSearch(event)">search</button>
         <button class="material-icons" onClick="onSave(event)" disabled>save</button>
-        <button class="material-icons" onClick="onSettings(event)">settings</button>
-        <button class="material-icons" onClick="onAccount(event)">account_circle</button>
+        <div class="dropdown">
+          <button class="material-icons" onClick="onSettings(event)">settings</button>
+          <div class="dropdown-content" style="right: 0;">
+            A<br/>
+            B<br/>
+            C<br/>
+          </div>
+          </div>
+        <div class="dropdown">
+          <button class="material-icons" onClick="onAccount(event)">account_circle</button>
+          <div class="dropdown-content" style="right: 0;">
+            A<br/>
+            B<br/>
+            C<br/>
+          </div>
+          </div>
       </div>
       <div class="record-merge-panel">
         <div class="col">
