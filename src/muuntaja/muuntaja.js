@@ -8,11 +8,17 @@
 // stored auth token
 //-----------------------------------------------------------------------------
 
-const authToken = {
+const melindaUser = {
   storage: window.sessionStorage,
   name: "melinda-user",
-  get: function() { return this.storage.getItem(this.name); },
-  set: function(token) { return this.storage.setItem(this.name, token); },
+  get: function() {
+    try {
+      return JSON.parse(this.storage.getItem(this.name));
+    } catch(e) {
+      return undefined;
+    }
+  },
+  set: function(token) { return this.storage.setItem(this.name, JSON.stringify(token)); },
   remove: function() { return this.storage.removeItem(this.name); }  ,
 }
 
@@ -49,35 +55,53 @@ function initialize() {
   console.log('Initializing');
 
   // Get auth token, if it exists
-  const token = authToken.get();
-  if(token) {
-    // Check auth token
-    // If success, switch to muuntaja
-    authSuccess();
-    return ;
-    // If not, fall-through to login
+  const user = melindaUser.get();
+  console.log("User:", user);
+
+  if(user && user.Token) {
+    authRequest(user.Token)
+      .then(response => {
+        if(!response.ok) return noAuth();
+        authSuccess(response);
+      })
+  }
+  else {
+    return noAuth();
   }
 
-  // No token / invalid token -> reset forms & go to login
-  authToken.remove();
-  resetForms(document.getElementById("root"))
-  showTab("login");
+  function noAuth() {
+    melindaUser.remove();
+    resetForms(document.getElementById("root"))
+    showTab("login");  
+  }
 }
 
 //-----------------------------------------------------------------------------
 // Login & logout
 //-----------------------------------------------------------------------------
 
-function authSuccess(token) {
-  //console.log("Auth success")
-  if(token) {
-    //console.log("Auth token:", token)
-    authToken.set(token);
-  }
+function authSuccess(response) {
+  const user = JSON.parse(response.headers.get("User"));
+  console.log(user);
+  melindaUser.set(user);
   showTab("muuntaja");
 }
 
+function authRequest(token) {
+  return fetch(
+    "http://localhost:8081/auth",
+    {
+      method: "POST",
+      headers: {
+        Authorization: token,
+      }
+    }
+  )
+}
+
 function login(e) {
+  e.preventDefault();
+
   console.log("Login:", e)
 
   logininfo("");
@@ -85,7 +109,7 @@ function login(e) {
   const termschecked = document.querySelector("#login #acceptterms").checked;
   if(!termschecked) {
     logininfo("Tietosuojaselosteen hyväksyminen vaaditaan");
-    return false;
+    return;
   }
   
   logininfo('<div class="progress-bar"></div>');
@@ -95,10 +119,27 @@ function login(e) {
 
   console.log("User:", username, "Password:", password)
 
-  // on success
-  logininfo("");
-  authSuccess("x");
-  return false;
+  function generateAuthorizationHeader(username, password = '') {
+    //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+    const encoded = btoa(`${username}:${password}`);
+    return `Basic ${encoded}`;
+  }
+    
+  authRequest(generateAuthorizationHeader(username, password))
+    .then(success)
+    .catch(failure)
+  ;
+
+  function success(response) {
+    if(!response.ok) return failure();
+    authSuccess(response);
+    logininfo("");
+  }
+
+  function failure() {
+    melindaUser.remove();
+    logininfo("Auth failed");
+  }
 
   function logininfo(msg) {
     const infodiv = document.querySelector("#login #info")
@@ -107,7 +148,7 @@ function login(e) {
 }
 
 function logout(e) {
-  authToken.remove();
+  melindaUser.remove();
   reload();
 }
 

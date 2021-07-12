@@ -18,8 +18,10 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 export default function () { // eslint-disable-line no-unused-vars
   const logger = createLogger();
+  logger.debug('Creating auth route');
 
   return new Router()
+    .use(loginfo)
     .use(passport.authenticate('melinda', {session: false}))
     .post('/', create)
     .use(handleError);
@@ -29,14 +31,24 @@ export default function () { // eslint-disable-line no-unused-vars
     next();
   }
 
+  function loginfo(req, res, next) {
+    logger.debug(`Auth in: ${req.headers.authorization}`);
+    next();
+  }
 
   function create(req, res) {
-    const sanitazedUser = sanitaze(req.user);
-    res.set('Token', sanitazedUser);
+    logger.debug(`User: ${JSON.stringify(req.user)}`);
+    logger.debug(`Token: ${req.headers.authorization}`);
+    //const sanitazedUser = sanitaze(req.user);
+    const user = {
+      ...req.user,
+      Token: req.headers.authorization
+    };
+    res.set('User', JSON.stringify(user));
     res.sendStatus(HttpStatus.NO_CONTENT);
   }
 
-  function sanitaze(value) {
+  function sanitaze(value) { // eslint-disable-line no-unused-vars
     return value
       .replace(/\r/gu, '')
       .replace(/%0d/gu, '')
