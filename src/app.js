@@ -46,8 +46,8 @@ export default function ({
     app.use(passport.initialize());
     app.use('/auth', createAuthRouter());
     app.use('/bib', createBibRouter(sruUrl));
-    app.use('/test', express.static(path.join(__dirname, 'testclient/')));
-    app.use('/muuntaja', express.static(path.join(__dirname, 'muuntaja/')));
+    app.use('/test', express.static(path.join(__dirname, 'testclient/'), {index: 'testclient.html'}));
+    app.use('/muuntaja', express.static(path.join(__dirname, 'muuntaja/'), {index: 'muuntaja.html'}));
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
