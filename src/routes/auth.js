@@ -21,7 +21,7 @@ export default function () { // eslint-disable-line no-unused-vars
   logger.debug('Creating auth route');
 
   return new Router()
-    .use(loginfo)
+    //.use(loginfo)
     .use(passport.authenticate('melinda', {session: false}))
     .post('/', create)
     .use(handleError);
@@ -31,17 +31,21 @@ export default function () { // eslint-disable-line no-unused-vars
     next();
   }
 
+  /*
   function loginfo(req, res, next) {
     logger.debug(`Auth in: ${req.headers.authorization}`);
     next();
   }
+*/
 
   function create(req, res) {
     logger.debug(`User: ${JSON.stringify(req.user)}`);
     logger.debug(`Token: ${req.headers.authorization}`);
     //const sanitazedUser = sanitaze(req.user);
+
+    // Strip files
     const user = {
-      ...req.user,
+      Name: req.user.displayName,
       Token: req.headers.authorization
     };
     res.set('User', JSON.stringify(user));

@@ -138,7 +138,7 @@ function login(e) {
 
   function failure() {
     melindaUser.remove();
-    logininfo("Auth failed");
+    logininfo("Tunnus tai salasana ei täsmää");
   }
 
   function logininfo(msg) {
@@ -253,3 +253,4 @@ fetch(req)
     UI reactiton, mutta otetaan material UI
     */
 
+/* Field sort: muuntaja/frontend/js/marc-field-sort.js */
