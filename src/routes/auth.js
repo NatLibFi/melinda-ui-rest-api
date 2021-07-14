@@ -21,7 +21,7 @@ export default function () { // eslint-disable-line no-unused-vars
   logger.debug('Creating auth route');
 
   return new Router()
-    //.use(loginfo)
+    .use(sanitaze)
     .use(passport.authenticate('melinda', {session: false}))
     .post('/', create)
     .use(handleError);
@@ -31,12 +31,26 @@ export default function () { // eslint-disable-line no-unused-vars
     next();
   }
 
-  /*
-  function loginfo(req, res, next) {
-    logger.debug(`Auth in: ${req.headers.authorization}`);
+  function sanitaze(req, res, next) { // eslint-disable-line no-unused-vars
+    //logger.debug(`Auth in: ${req.headers.authorization}`);
+    const auth = req.headers.authorization;
+    const {token} = auth.match(/Basic (?<token>.*)/u).groups;
+    //logger.debug(`Token: ${token}`);
+
+    const decoded = Buffer.from(token, 'base64').toString('ascii');
+    const sanitized = decoded
+      .replace(/\r/gu, '')
+      .replace(/%0d/gu, '')
+      .replace(/%0D/gu, '')
+      .replace(/\n/gu, '')
+      .replace(/%0a/gu, '')
+      .replace(/%0A/gu, '');
+    //logger.debug(`Decoded: ${decoded}`);
+    //logger.debug(`Sanitized: ${sanitized}`);
+    const encoded = Buffer.from(sanitized).toString('base64');
+    req.headers.authorization = `Basic ${encoded}`; // eslint-disable-line functional/immutable-data
     next();
   }
-*/
 
   function create(req, res) {
     logger.debug(`User: ${JSON.stringify(req.user)}`);
@@ -50,15 +64,5 @@ export default function () { // eslint-disable-line no-unused-vars
     };
     res.set('User', JSON.stringify(user));
     res.sendStatus(HttpStatus.NO_CONTENT);
-  }
-
-  function sanitaze(value) { // eslint-disable-line no-unused-vars
-    return value
-      .replace(/\r/gu, '')
-      .replace(/%0d/gu, '')
-      .replace(/%0D/gu, '')
-      .replace(/\n/gu, '')
-      .replace(/%0a/gu, '')
-      .replace(/%0A/gu, '');
   }
 }
