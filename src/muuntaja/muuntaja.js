@@ -33,8 +33,10 @@ function showTab(...tabs) {
   for (const child of root.children) {
     if (tabs.includes(child.getAttribute('id'))) {
       child.hidden = false;
+      child.style.display = null;
     } else {
       child.hidden = true;
+      child.style.display = "none";
     }
   }
 }
@@ -57,6 +59,10 @@ function reload() {
 
 function initialize() {
   console.log('Initializing');
+
+  // First, check if there is a message from server!
+  // If so --> go to server note tab.
+  // If server note has OK button, we go to login/muuntaja
 
   // Get auth token, if it exists
   const user = melindaUser.get();
@@ -93,7 +99,7 @@ function authSuccess(response) {
 
 function authRequest(token) {
   return fetch(
-    `${RESTurl}/auth`,
+    [RESTurl, "auth"].join("/"),
     {
       method: "POST",
       headers: {
@@ -200,7 +206,7 @@ function getRecord(e, dest) {
   sourceDiv.innerHTML = '<div class="progress-bar"></div>';
 
   fetch(
-    `${RESTurl}/bib/${recordID}`,
+    [RESTurl, "bib", recordID].join("/"),
     {
       method: "GET",
       credentials: 'same-origin',

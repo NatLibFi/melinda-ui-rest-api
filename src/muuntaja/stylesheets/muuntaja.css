@@ -21,6 +21,7 @@ div#loading {
 
 #login > * {
   padding: 8px 0;
+  margin-bottom: 16px;
 }
 
 #login input {
