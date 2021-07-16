@@ -25,6 +25,10 @@
 /* ---------------------------------------------------------------------------- */
 /* Buttons inside toolbars, some with icons */
 
+button {
+  /* Flat */
+}
+
 .ToolBar button {
   font-size: inherit;
   color: inherit;

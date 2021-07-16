@@ -49,7 +49,7 @@ export default function (sruUrl) {
       //maxRecordsPerRequest: 1
     });
 
-    client.searchRetrieve(req.params.id)
+    client.searchRetrieve(`rec.id=${req.params.id}`)
       .on('record', record => processRecord(record))
       .on('end', () => endProcessing())
       .on('error', err => handleError(err));

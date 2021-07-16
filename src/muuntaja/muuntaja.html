@@ -103,30 +103,30 @@
           </div>
       </div>
       <div class="record-merge-panel">
-        <div class="col">
+        <div id="source" class="col">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Lähdetietue</label>
-              <input/>
+              <input id="ID"/>
               </div>
-            <button class="material-icons" onClick="return false;">search</button>
+            <button class="material-icons" onclick="getRecord(event, 'source')">search</button>
             <button class="material-icons" disabled>swap_horiz</button>
             </form>
-          <div class="marc-record">
+          <div id="Record" class="marc-record">
             Testi<br/>
             Testi<br/>
             Testi<br/>
           </div>
         </div>
-        <div class="col">
+        <div id="base" class="col">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
-              <input />
+              <input id="ID"/>
               </div>
-            <button class="material-icons" onClick="return false;">search</button>
+              <button class="material-icons" onclick="getRecord(event, 'base')">search</button>
             </form>
-          <div class="marc-record">
+          <div id="Record" class="marc-record">
             Testi<br/>
             Testi<br/>
           </div>
