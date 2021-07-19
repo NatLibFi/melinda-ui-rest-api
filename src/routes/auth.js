@@ -31,9 +31,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   function sanitaze(req, res, next) { // eslint-disable-line no-unused-vars
-    //logger.debug(`Auth in: ${req.headers.authorization}`);
     const auth = req.headers.authorization;
     const {token} = auth.match(/Basic (?<token>.*)/u).groups;
+
+    //logger.debug(`Auth in: ${auth}`);
     //logger.debug(`Token: ${token}`);
 
     const decoded = Buffer.from(token, 'base64').toString('ascii');
@@ -44,8 +45,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       .replace(/\n/gu, '')
       .replace(/%0a/gu, '')
       .replace(/%0A/gu, '');
+
     //logger.debug(`Decoded: ${decoded}`);
     //logger.debug(`Sanitized: ${sanitized}`);
+
     const encoded = Buffer.from(sanitized).toString('base64');
     req.headers.authorization = `Basic ${encoded}`; // eslint-disable-line functional/immutable-data
     next();

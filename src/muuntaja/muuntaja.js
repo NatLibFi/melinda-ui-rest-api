@@ -5,6 +5,10 @@
 //*****************************************************************************
 
 //-----------------------------------------------------------------------------
+
+const RESTurl = "http://localhost:8081"
+
+//-----------------------------------------------------------------------------
 // stored auth token
 //-----------------------------------------------------------------------------
 
@@ -29,8 +33,10 @@ function showTab(...tabs) {
   for (const child of root.children) {
     if (tabs.includes(child.getAttribute('id'))) {
       child.hidden = false;
+      child.style.display = null;
     } else {
       child.hidden = true;
+      child.style.display = "none";
     }
   }
 }
@@ -53,6 +59,10 @@ function reload() {
 
 function initialize() {
   console.log('Initializing');
+
+  // First, check if there is a message from server!
+  // If so --> go to server note tab.
+  // If server note has OK button, we go to login/muuntaja
 
   // Get auth token, if it exists
   const user = melindaUser.get();
@@ -91,7 +101,7 @@ function authSuccess(response) {
 
 function authRequest(token, url = '') {
   return fetch(
-    `http://localhost:8081/auth${url}`,
+    [RESTurl, "auth", url].join("/"),
     {
       method: "POST",
       headers: {
@@ -182,77 +192,114 @@ function onAccount(e) {
 }
 
 //-----------------------------------------------------------------------------
-// Authentication
+// Record fetching
+// TODO: Make this bit more general...
 //-----------------------------------------------------------------------------
 
-// Auth header
-// backend-commons / commons?
+function getRecord(e, dest) {
+  e.preventDefault();
+  console.log("Fetch:", e)
 
-/*
-async function getAuthToken(username, password) {
-  const encodedCreds = generateAuthorizationHeader(username, password);
-  const response = await fetch(`${url}/auth`, {
-    method: 'POST',
-    headers: {
-      //'User-Agent': userAgent,
-      Authorization: encodedCreds
+  const recordID = document.querySelector(`#muuntaja .record-merge-panel #${dest} #ID`).value;
+
+  console.log("ID:", recordID);
+
+  const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
+  sourceDiv.innerHTML = '<div class="progress-bar"></div>';
+
+  fetch(
+    [RESTurl, "bib", recordID].join("/"),
+    {
+      method: "GET",
+      credentials: 'same-origin',
+      mode: 'no-cors',
+      headers: {
+        Accepts: "application/json",
+        Authorization: melindaUser.get().Token,
+      },
     }
-  });
+  )
+  .then(response => response.json())
+  .then(data => showSourceRecord(data, dest));
+}
 
-  if (response.status === HttpStatus.NO_CONTENT) {
-    return response.headers.get('Token');
+function showSourceRecord(data, dest) {
+  console.log(data);
+
+  const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
+
+  // Clear previous content
+  sourceDiv.innerHTML = ""
+
+  addField(sourceDiv, {tag: "LDR", value: data.leader})
+  for(const field of data.fields) {
+    addField(sourceDiv, field);
   }
 
-  throw new ApiError(response.status);
+  //---------------------------------------------------------------------------
+
+  function addField(div, field) {
+    //console.log(field)
+    const row = document.createElement('div');
+    row.setAttribute('class', 'row');
+
+    addTag(row, field.tag)
+    addInd(row, field.ind1, field.ind2)
+
+    if(field.value) {
+      addValue(row, field.value)
+    } else if(field.subfields) {
+      for(const subfield of field.subfields) {
+        addSubfield(row, subfield)
+      }
+    }
+    //return row;
+    div.appendChild(row)
+  }
+
+  //---------------------------------------------------------------------------
+  
+  function addTag(row, value) {
+    row.appendChild(makeSpan("tag", value));
+  }
+
+  function addInd(row, ind1, ind2) {
+    const span = makeSpan("inds");
+    add(span, ind1)
+    add(span, ind2)
+    row.appendChild(span);
+
+    function add(span, ind) {
+      const value = (ind && ind.trim()) || "&nbsp;";
+      span.appendChild(makeSpan("ind", value))
+    }  
+  }
+
+  function addValue(row, value) {
+    row.appendChild(makeSpan("value", value))
+  }
+
+  function addSubfield(row, subfield) {
+    const span = makeSpan("subfield");
+    span.appendChild(makeSubfieldCode(subfield.code))
+    span.appendChild(makeSubfieldData(subfield.value))
+    row.appendChild(span);
+  }
+
+  function makeSubfieldCode(code) {
+    return makeSpan("code", `‡${code}`);
+  }
+
+  function makeSubfieldData(value) {
+    return makeSpan("value", value)
+  }
+
+  function makeSpan(className, value) {
+    const span = document.createElement("span");
+    span.setAttribute('class', className);
+    if(value) span.innerHTML = value;
+    return span;
+  }
 }
-*/
-
-/*
-// Rest fetch
-const uri = `http://localhost:8081/bib/${melindaId}`;
-
-let h = new Headers();
-h.append("Accepts", "application/json");
-
-const req = new Request(uri, {
-  method: "GET",
-  mode: "no-cors",
-  headers: h,
-  credentials: 'same-origin'
-});
-
-fetch(req)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    insertRecord(data);
-  });
-*/
-
-//*****************************************************************************
-
-/*
-    onload --> tarkasta selaimen storagesta, onko siellä muuntaja-avain (päätä nimi)
-    melinda-rest-api -avain = jaetaan kaikkien apukäyttöliittymien kanssa
-    tallenna token, ei user-passwd -paria (response.headers.get("Token"))
-    Jos avain löytyy -->
-
-      1. lähetetään REST:iin (tee auth -route): Auth-route:
-         https://github.com/NatLibFi/melinda-record-import-api/blob/master/src/routes/auth.js
-
-      2. katotaan, onko validi (millä kutsulla? Pyydetään recordia):
-         https://github.com/NatLibFi/melinda-record-import-commons-js/blob/4ff4d2dea852ed91d41a531a650874b57ced07d2/src/api-client.js#L317
-         // Koeta löytää selaimen kirjautumistiedot resetointia varten
-
-      3. Jos on validi --> perussivun lataus (lataa apu-UI)
-
-      4. Jos ei --> login page (käy kattoon: ui-commons) (tee reactiton login page)
-         https://github.com/NatLibFi/melinda-ui-commons/blob/master/frontend/js/components/signin-form-panel.jsx
-
-      5. Koetetaan onko validi -> jos on, tallennetaan tiedot & ladataan UI, jos ei, annetaan virheilmoitus
-         (ilmoitus: salasana tai käyttäjätunnus väärin)
-
-    UI reactiton, mutta otetaan material UI
-    */
 
 /* Field sort: muuntaja/frontend/js/marc-field-sort.js */

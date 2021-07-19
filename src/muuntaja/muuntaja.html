@@ -50,17 +50,18 @@
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
+    <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
 
-    <div id="login" hidden>
-      <form class="VBox Input">
+    <form id="login" class="VBox" style="display: none;">
+      <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="username" />
-      </form>
-      <form class="VBox Input">
+        <input id="username" name="username"/>
+      </div>
+      <div class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="password" type="password"/>
-      </form>
-      <form class="HBox Input" style="align-items: baseline;">
+        <input id="password" type="password" name="password"/>
+      </div>
+      <div class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
         <label for="acceptterms" style="padding-left: 8px;">
           Hyväksyn
@@ -69,12 +70,12 @@
           ja evästeiden käytön.
           <br/><br/>
           Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-          </form>
+          </div>
       <div id="info"></div>
       <div style="display: flex; flex-direction: column; align-items: flex-end;">
         <button onClick="return login(event)">Kirjaudu</button>
         </div>
-      </div>
+      </form>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Muuntaja tab -->
@@ -103,30 +104,30 @@
           </div>
       </div>
       <div class="record-merge-panel">
-        <div class="col">
+        <div id="source" class="col">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Lähdetietue</label>
-              <input/>
+              <input id="ID"/>
               </div>
-            <button class="material-icons" onClick="return false;">search</button>
+            <button class="material-icons" onclick="getRecord(event, 'source')">search</button>
             <button class="material-icons" disabled>swap_horiz</button>
             </form>
-          <div class="marc-record">
+          <div id="Record" class="marc-record">
             Testi<br/>
             Testi<br/>
             Testi<br/>
           </div>
         </div>
-        <div class="col">
+        <div id="base" class="col">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
-              <input />
+              <input id="ID"/>
               </div>
-            <button class="material-icons" onClick="return false;">search</button>
+              <button class="material-icons" onclick="getRecord(event, 'base')">search</button>
             </form>
-          <div class="marc-record">
+          <div id="Record" class="marc-record">
             Testi<br/>
             Testi<br/>
           </div>

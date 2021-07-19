@@ -2,7 +2,30 @@
 /* ---------------------------------------------------------------------------- */
 /* Styles for MARC records */
 
-div.marc-record {
-  font-family: monospace;
-  font-size: 12pt;
+.marc-record, .marc-record * {
+  font-family: "Roboto Mono", monospace;
+  font-size: 14.5px;
+}
+
+.marc-record .row:hover {
+  background-color: lightgray;
+}
+
+.marc-record .row .tag {
+  color: #448aff;
+  margin-right: 12pt;
+}
+
+.marc-record .row .inds {
+  color: #448aff;
+  margin-right: 12pt;
+}
+
+.marc-record .row .subfield {
+  margin-right: 4px;
+}
+
+.marc-record .row .subfield .code {
+  color: #e57373;
+  margin-right: 2px;
 }
