@@ -7,8 +7,7 @@
 
 import HttpStatus from 'http-status';
 import {Router} from 'express';
-import passport from 'passport';
-
+import {generateJwtToken} from '@natlibfi/passport-melinda-jwt';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import createClient from '@natlibfi/sru-client';
@@ -16,13 +15,13 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
-export default function () { // eslint-disable-line no-unused-vars
+export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   logger.debug('Creating auth route');
 
   return new Router()
-    .use(sanitaze)
-    .use(passport.authenticate('melinda', {session: false}))
+    //.use(sanitaze)
+    .post('/verify', verify)
     .post('/', create)
     .use(handleError);
 
@@ -60,9 +59,17 @@ export default function () { // eslint-disable-line no-unused-vars
     // Strip files
     const user = {
       Name: req.user.displayName,
-      Token: req.headers.authorization
+      Token: `melinda ${generateJwtToken(req.user, jwtOptions)}`
     };
+
+    logger.debug(`returning: ${JSON.stringify(user)}`);
+
     res.set('User', JSON.stringify(user));
+    res.sendStatus(HttpStatus.NO_CONTENT);
+  }
+
+  function verify(req, res) {
+    logger.debug(`User: ${JSON.stringify(req.user)}`);
     res.sendStatus(HttpStatus.NO_CONTENT);
   }
 }

@@ -59,7 +59,7 @@ function initialize() {
   console.log("User:", user);
 
   if(user && user.Token) {
-    authRequest(user.Token)
+    authRequest(user.Token, '/verify')
       .then(response => {
         if(!response.ok) return noAuth();
         authSuccess(response);
@@ -72,7 +72,7 @@ function initialize() {
   function noAuth() {
     melindaUser.remove();
     resetForms(document.getElementById("root"))
-    showTab("login");  
+    showTab("login");
   }
 }
 
@@ -82,14 +82,16 @@ function initialize() {
 
 function authSuccess(response) {
   const user = JSON.parse(response.headers.get("User"));
-  console.log(user);
-  melindaUser.set(user);
+  if (user) {
+    console.log(user);
+    melindaUser.set(user);
+  }
   showTab("muuntaja");
 }
 
-function authRequest(token) {
+function authRequest(token, url = '') {
   return fetch(
-    "http://localhost:8081/auth",
+    `http://localhost:8081/auth${url}`,
     {
       method: "POST",
       headers: {
@@ -111,9 +113,9 @@ function login(e) {
     logininfo("Tietosuojaselosteen hyväksyminen vaaditaan");
     return;
   }
-  
+
   logininfo('<div class="progress-bar"></div>');
-  
+
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
@@ -124,7 +126,7 @@ function login(e) {
     const encoded = btoa(`${username}:${password}`);
     return `Basic ${encoded}`;
   }
-    
+
   authRequest(generateAuthorizationHeader(username, password))
     .then(success)
     .catch(failure)
