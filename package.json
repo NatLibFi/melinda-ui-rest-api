@@ -9,7 +9,8 @@
     "test": "npm run lint",
     "lint": "eslint src",
     "lint:dev": "eslint --fix src",
-    "dev": "NODE_ENV=development cross-env DEBUG=1 nodemon"
+    "dev": "NODE_ENV=development cross-env DEBUG=1 nodemon",
+		"build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist"
   },
   "repository": {
     "type": "git",
