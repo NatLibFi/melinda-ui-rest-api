@@ -15,6 +15,7 @@ export const sruUrl = readEnvironmentVariable('SRU_URL');
 
 export const jwtOptions = {
   secretOrPrivateKey: readEnvironmentVariable('JWT_SECRET'),
-  issuer: readEnvironmentVariable('JWT_SECRET', {defaultValue: 'melinda-'}),
-  audience: readEnvironmentVariable('JWT_SECRET', {defaultValue: 'melinda-'})
+  issuer: readEnvironmentVariable('JWT_ISSUER', {defaultValue: 'melinda-'}),
+  audience: readEnvironmentVariable('JWT_AUDIENCE', {defaultValue: 'melinda-'}),
+  algorithms: readEnvironmentVariable('JWT_ALGORITHMS', {defaultValue: ['HS512'], format: (v) => JSON.parse(v)})
 };

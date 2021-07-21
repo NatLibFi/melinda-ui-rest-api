@@ -66,7 +66,7 @@ export default function (sruUrl) {
       //logger.debug(`record Promise ${recordPromise}`);
       Promise.resolve(recordPromise).then(result => {
         //logger.debug(`Got result ${result}`);
-        res.json(result);
+        res.json(result.toObject());
       });
     }
 

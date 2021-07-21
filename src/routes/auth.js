@@ -62,7 +62,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // Strip files
     const user = {
       Name: req.user.displayName,
-      Token: `melinda ${generateJwtToken(req.user, jwtOptions)}`
+      Token: generateJwtToken(req.user, jwtOptions)
     };
 
     logger.debug(`returning: ${JSON.stringify(user)}`);
