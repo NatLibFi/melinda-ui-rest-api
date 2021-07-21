@@ -2,6 +2,7 @@ import express from 'express';
 import httpStatus from 'http-status';
 import passport from 'passport';
 import AlephStrategy from '@natlibfi/passport-melinda-aleph';
+import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 import {createBibRouter, createAuthRouter} from './routes';
@@ -13,7 +14,7 @@ export default function ({
   httpPort, enableProxy,
   xServiceURL, userLibrary,
   ownAuthzURL, ownAuthzApiKey,
-  sruUrl
+  sruUrl, jwtOptions
 }) {
   const logger = createLogger();
   const server = initExpress();
@@ -38,14 +39,20 @@ export default function ({
       ownAuthzURL, ownAuthzApiKey
     }));
 
+    passport.use(new MelindaJwtStrategy({
+      ...jwtOptions,
+      secretOrKey: jwtOptions.secretOrPrivateKey,
+      jwtFromRequest
+    }, verify));
+
     logger.debug(`Service URL: ${xServiceURL}`);
     logger.debug(`User lib: ${userLibrary}`);
     logger.debug(`Auth URL: ${ownAuthzURL}`);
     logger.debug(`Auth key: ${ownAuthzApiKey}`);
 
     app.use(passport.initialize());
-    app.use('/auth', createAuthRouter());
-    app.use('/bib', createBibRouter(sruUrl));
+    app.use('/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
+    app.use('/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
     app.use('/test', express.static(path.join(__dirname, 'testclient/'), {index: 'testclient.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'muuntaja/'), {index: 'muuntaja.html'}));
     app.use(handleError);
@@ -67,7 +74,7 @@ export default function ({
         }
 
         logger.debug('Responding unexpected:', err);
-        return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
       }
 
       next();

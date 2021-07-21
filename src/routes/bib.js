@@ -1,5 +1,4 @@
 import {Router} from 'express';
-import passport from 'passport';
 
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -17,7 +16,6 @@ export default function (sruUrl) {
   }
 
   return new Router()
-    .use(passport.authenticate('melinda', {session: false}))
     .get('/:id', fetchOne)
     .put('/:id', updateOne)
     //.get('/', testFunction)
@@ -68,7 +66,7 @@ export default function (sruUrl) {
       //logger.debug(`record Promise ${recordPromise}`);
       Promise.resolve(recordPromise).then(result => {
         //logger.debug(`Got result ${result}`);
-        res.json(result);
+        res.json(result.toObject());
       });
     }
 
