@@ -5,7 +5,7 @@
  ******************************************************************************
  */
 
-//import HttpStatus from 'http-status';
+import HttpStatus from 'http-status';
 import {Router} from 'express';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -44,6 +44,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
   return new Router()
     .get('/base', getBaseRecords)
+    .get('/merge', mergeRecords)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -55,5 +56,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     logger.debug(`Test`);
     //res.sendStatus(HttpStatus.NO_CONTENT);
     res.json(baseRecords);
+  }
+
+  function mergeRecords(req, res) {
+    res.sendStatus(HttpStatus.NO_CONTENT);
   }
 }
