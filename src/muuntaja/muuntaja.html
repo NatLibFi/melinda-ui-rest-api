@@ -85,15 +85,6 @@
         <button class="material-icons"><a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
         <button class="material-icons" onClick="onNew(event)">add</button>
         <button class="material-icons" onClick="onSearch(event)">search</button>
-        <button class="material-icons" onClick="onSave(event)" disabled>save</button>
-        <div class="dropdown">
-          <button class="material-icons" onClick="onSettings(event)">settings</button>
-          <div class="dropdown-content" style="right: 0;">
-            A<br/>
-            B<br/>
-            C<br/>
-          </div>
-          </div>
         <div class="dropdown">
           <button class="material-icons" onClick="onAccount(event)">account_circle</button>
           <div class="dropdown-content" style="right: 0;">
@@ -126,6 +117,14 @@
               <input id="ID"/>
               </div>
               <button class="material-icons" onclick="getRecord(event, 'base')">search</button>
+              <div class="dropdown">
+                <button class="material-icons" onClick="onSettings(event)">settings</button>
+                <div class="dropdown-content" style="right: 0;">
+                  A<br/>
+                  B<br/>
+                  C<br/>
+                </div>
+                </div>
             </form>
           <div id="Record" class="marc-record">
             Testi<br/>
@@ -136,7 +135,8 @@
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
             <button class="material-icons" disabled>edit</button>
-            </div>
+            <button class="material-icons" onClick="onSave(event)" disabled>save</button>
+          </div>
           <div class="marc-record">
             Testi<br/>
             </div>

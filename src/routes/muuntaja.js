@@ -14,6 +14,9 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
+// Make this a list. Give the records names meant for menu. Add transform options to list.
+// Add handling those to UI
+
 const baseRecords = {
   leader: '00000cam^a22006134i^4500',
   fields: [
@@ -59,6 +62,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   function mergeRecords(req, res) {
+    logger.debug(`Merge`);
     res.sendStatus(HttpStatus.NO_CONTENT);
   }
 }

@@ -30,6 +30,9 @@ const melindaUser = {
 
 // Separate muuntaja parameters to its own record:
 
+// TODO: Store records, including result record
+// TODO: Logic to select base record from options (list of base records, ID from field)
+
 /*
 const melindaMuuntaja = {
   storage: window.sessionStorage,
