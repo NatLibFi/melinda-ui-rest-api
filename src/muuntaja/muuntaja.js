@@ -123,9 +123,8 @@ function authSuccess(response) {
   const sourceRecord = melindaUser.get('sourceRecord');
   const baseRecord = melindaUser.get('baseRecord');
   getRecord(new Event('load'), 'source');
-  getRecord(new Event('load'), 'base');
-
-  getBaseRecords();
+  //getRecord(new Event('load'), 'base');
+  getBaseRecord();
 
   showTab("muuntaja");
 }
@@ -258,11 +257,11 @@ function getRecord(e, dest) {
     .then(response => response.json())
     .then(data => {
       dest === 'source' ? melindaUser.setSourceRecord(recordID) : melindaUser.setBaseRecord(recordID);
-      showSourceRecord(data, dest);
+      showRecord(data, dest);
     });
 }
 
-function showSourceRecord(data, dest) {
+function showRecord(data, dest) {
   console.log(data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
@@ -344,7 +343,7 @@ function showSourceRecord(data, dest) {
 // Get base records
 //-----------------------------------------------------------------------------
 
-function getBaseRecords() {
+function getBaseRecord() {
   const token = melindaUser.get().Token;
 
   fetch(
@@ -361,6 +360,7 @@ function getBaseRecords() {
     .then(response => {
       console.log("base record");
       console.log(response)
+      showRecord(response, "base")
     });
 }
 
