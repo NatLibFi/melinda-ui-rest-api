@@ -28,6 +28,26 @@ const melindaUser = {
   remove: function () {return this.storage.removeItem(this.name);},
 };
 
+// Separate muuntaja parameters to its own record:
+
+/*
+const melindaMuuntaja = {
+  storage: window.sessionStorage,
+  name: "melinda-muuntaja",
+  get: function (jsonField = this.name) {
+    try {
+      return JSON.parse(this.storage.getItem(jsonField));
+    } catch (e) {
+      return undefined;
+    }
+  },
+  set: function (token) {return this.storage.setItem(this.name, JSON.stringify(token));},
+  setSourceRecord: function (record) {return this.storage.setItem('sourceRecord', JSON.stringify(record));},
+  setBaseRecord: function (record) {return this.storage.setItem('baseRecord', JSON.stringify(record));},
+  remove: function () {return this.storage.removeItem(this.name);},
+};
+*/
+
 //-----------------------------------------------------------------------------
 
 function showTab(...tabs) {
@@ -104,6 +124,8 @@ function authSuccess(response) {
   const baseRecord = melindaUser.get('baseRecord');
   getRecord(new Event('load'), 'source');
   getRecord(new Event('load'), 'base');
+
+  getBaseRecords();
 
   showTab("muuntaja");
 }
@@ -316,6 +338,29 @@ function showSourceRecord(data, dest) {
     if (value) span.innerHTML = value;
     return span;
   }
+}
+
+//-----------------------------------------------------------------------------
+// Get base records
+//-----------------------------------------------------------------------------
+
+function getBaseRecords() {
+  const token = melindaUser.get().Token;
+
+  fetch(
+    [RESTurl, "transform"].join("/"),
+    {
+      method: "GET",
+      headers: {
+        Accepts: "application/json",
+        Authorization: token,
+      },
+    }
+  )
+    //.then(response => response.json())
+    .then(data => {
+      console.log("base record");
+    });
 }
 
 /* Field sort: muuntaja/frontend/js/marc-field-sort.js */

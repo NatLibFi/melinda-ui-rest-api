@@ -5,7 +5,7 @@ import AlephStrategy from '@natlibfi/passport-melinda-aleph';
 import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import {createBibRouter, createAuthRouter} from './routes';
+import {createBibRouter, createAuthRouter, createMuuntajaRouter} from './routes';
 //import fs from 'fs';
 import path from 'path';
 
@@ -53,6 +53,7 @@ export default function ({
     app.use(passport.initialize());
     app.use('/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
     app.use('/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
+    app.use('/transform', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
     app.use('/test', express.static(path.join(__dirname, 'testclient/'), {index: 'testclient.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'muuntaja/'), {index: 'muuntaja.html'}));
     app.use(handleError);
