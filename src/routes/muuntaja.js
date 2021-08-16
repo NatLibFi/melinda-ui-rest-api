@@ -5,7 +5,7 @@
  ******************************************************************************
  */
 
-import HttpStatus from 'http-status';
+//import HttpStatus from 'http-status';
 import {Router} from 'express';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -14,12 +14,16 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
+const baseRecords = {
+  'test': 'test'
+};
+
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   logger.debug('Creating muuntaja route');
 
   return new Router()
-    .get('/', test)
+    .get('/base', getBaseRecords)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -27,8 +31,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
-  function test(req, res) {
+  function getBaseRecords(req, res) {
     logger.debug(`Test`);
-    res.sendStatus(HttpStatus.NO_CONTENT);
+    //res.sendStatus(HttpStatus.NO_CONTENT);
+    res.json(baseRecords);
   }
 }

@@ -348,7 +348,7 @@ function getBaseRecords() {
   const token = melindaUser.get().Token;
 
   fetch(
-    [RESTurl, "muuntaja"].join("/"),
+    [RESTurl, "muuntaja", "base"].join("/"),
     {
       method: "GET",
       headers: {
@@ -357,9 +357,10 @@ function getBaseRecords() {
       },
     }
   )
-    //.then(response => response.json())
-    .then(data => {
+    .then(response => response.json())
+    .then(response => {
       console.log("base record");
+      console.log(response)
     });
 }
 
