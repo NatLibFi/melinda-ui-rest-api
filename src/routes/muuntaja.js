@@ -19,7 +19,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   logger.debug('Creating muuntaja route');
 
   return new Router()
-    .post('/', test)
+    .get('/', test)
     .use(handleError);
 
   function handleError(req, res, next) {

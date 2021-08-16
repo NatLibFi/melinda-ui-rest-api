@@ -348,7 +348,7 @@ function getBaseRecords() {
   const token = melindaUser.get().Token;
 
   fetch(
-    [RESTurl, "transform"].join("/"),
+    [RESTurl, "muuntaja"].join("/"),
     {
       method: "GET",
       headers: {
