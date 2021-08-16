@@ -28,12 +28,18 @@ const melindaUser = {
   remove: function () {return this.storage.removeItem(this.name);},
 };
 
-// Separate muuntaja parameters to its own record:
+//-----------------------------------------------------------------------------
+// info needed for muuntaja merge REST call:
+// - Base record
+// - Transform options
+// - Source record
+// - Field selections
+// - User edits
+//-----------------------------------------------------------------------------
 
 // TODO: Store records, including result record
 // TODO: Logic to select base record from options (list of base records, ID from field)
 
-/*
 const melindaMuuntaja = {
   storage: window.sessionStorage,
   name: "melinda-muuntaja",
@@ -49,7 +55,6 @@ const melindaMuuntaja = {
   setBaseRecord: function (record) {return this.storage.setItem('baseRecord', JSON.stringify(record));},
   remove: function () {return this.storage.removeItem(this.name);},
 };
-*/
 
 //-----------------------------------------------------------------------------
 
