@@ -23,8 +23,6 @@ const melindaUser = {
     }
   },
   set: function (token) {return this.storage.setItem(this.name, JSON.stringify(token));},
-  setSourceRecord: function (record) {return this.storage.setItem('sourceRecord', JSON.stringify(record));},
-  setBaseRecord: function (record) {return this.storage.setItem('baseRecord', JSON.stringify(record));},
   remove: function () {return this.storage.removeItem(this.name);},
 };
 
@@ -51,8 +49,14 @@ const melindaMuuntaja = {
     }
   },
   set: function (token) {return this.storage.setItem(this.name, JSON.stringify(token));},
-  setSourceRecord: function (record) {return this.storage.setItem('sourceRecord', JSON.stringify(record));},
-  setBaseRecord: function (record) {return this.storage.setItem('baseRecord', JSON.stringify(record));},
+  setSourceRecord: function (record) {
+    this.storage.setItem('sourceRecord', JSON.stringify(record));
+    tryMerge();
+  },
+  setBaseRecord: function (record) {
+    this.storage.setItem('baseRecord', JSON.stringify(record));
+    tryMerge();
+  },
   remove: function () {return this.storage.removeItem(this.name);},
 };
 
@@ -89,6 +93,9 @@ function reload() {
 
 function initialize() {
   console.log('Initializing');
+
+  melindaMuuntaja.setBaseRecord(null);
+  melindaMuuntaja.setSourceRecord(null);
 
   // First, check if there is a message from server!
   // If so --> go to server note tab.
@@ -128,8 +135,6 @@ function authSuccess(response) {
   }
 
   // Loads last worked records, needs to check if input fields/ storage have record ids and if not put 'em in
-  const sourceRecord = melindaUser.get('sourceRecord');
-  const baseRecord = melindaUser.get('baseRecord');
   getRecord(new Event('load'), 'source');
   //getRecord(new Event('load'), 'base');
   getBaseRecord();
@@ -264,7 +269,7 @@ function getRecord(e, dest) {
   )
     .then(response => response.json())
     .then(data => {
-      dest === 'source' ? melindaUser.setSourceRecord(recordID) : melindaUser.setBaseRecord(recordID);
+      dest === 'source' ? melindaMuuntaja.setSourceRecord(data) : melindaMuuntaja.setBaseRecord(data);
       showRecord(data, dest);
     });
 }
@@ -364,12 +369,45 @@ function getBaseRecord() {
       },
     }
   )
-    .then(response => response.json())
-    .then(response => {
-      console.log("base record");
-      console.log(response)
-      showRecord(response, "base")
-    });
+  .then(response => response.json())
+  .then(response => {
+    melindaMuuntaja.setBaseRecord(response);
+    showRecord(response, "base")
+  });
+}
+
+//-----------------------------------------------------------------------------
+// Merge records
+//-----------------------------------------------------------------------------
+
+function tryMerge() {
+  const token = melindaUser.get().Token;
+
+  source = melindaMuuntaja.get("sourceRecord");
+  base   = melindaMuuntaja.get("baseRecord");
+
+  console.log("Source & Base:", source, base);
+
+  if(!source || !base) return;
+
+  console.log("Merging");
+
+  fetch(
+    [RESTurl, "muuntaja", "merge"].join("/"),
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    body: JSON.stringify({ source: source, base: base })
+    }
+  )
+  .then(response => response.json())
+  .then(content => {
+    console.log("Merged:", content);
+  })
 }
 
 /* Field sort: muuntaja/frontend/js/marc-field-sort.js */
