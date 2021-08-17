@@ -5,10 +5,11 @@
  ******************************************************************************
  */
 
-import {Router} from 'express';
+import express, {Router} from 'express';
 //import HttpStatus from 'http-status';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
+//import defaults from 'defaults';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 
@@ -18,27 +19,33 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 // Add handling those to UI
 
 const baseRecords = {
-  leader: '00000cam^a22006134i^4500',
-  fields: [
-    {tag: '001', value: '000000000'},
-    {tag: '007', value: 'cr^||^||||||||'},
-    {tag: '008', value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^'},
-    {tag: '020', subfields: [
-      {code: 'a', value: ''},
-      {code: 'q', value: 'PDF'}
-    ]},
-    {tag: '041', ind1: '0', subfields: [{code: 'a', value: 'eng'}]},
-    {tag: '337', subfields: [
-      {code: 'a', value: 'tietokonekäyttöinen'},
-      {code: 'b', value: 'c'},
-      {code: '2', value: 'rdamedia'}
-    ]},
-    {tag: '338', subfields: [
-      {code: 'a', value: 'verkkoaineisto'},
-      {code: 'b', value: 'cr'},
-      {code: '2', value: 'rdacarrier'}
-    ]}
-  ]
+  overwrites: {
+    leader: '00000cam^a22006134i^4500',
+    fields: [
+      {tag: '001', value: '000000000'},
+      {tag: '007', value: 'cr^||^||||||||'},
+      {tag: '008', value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^'},
+      {tag: '337', subfields: [
+        {code: 'a', value: 'tietokonekäyttöinen'},
+        {code: 'b', value: 'c'},
+        {code: '2', value: 'rdamedia'}
+      ]},
+      {tag: '338', subfields: [
+        {code: 'a', value: 'verkkoaineisto'},
+        {code: 'b', value: 'cr'},
+        {code: '2', value: 'rdacarrier'}
+      ]}
+    ]
+  },
+  defaults: {
+    fields: [
+      {tag: '020', subfields: [
+        {code: 'a', value: ''},
+        {code: 'q', value: 'PDF'}
+      ]},
+      {tag: '041', ind1: '0', subfields: [{code: 'a', value: 'eng'}]}
+    ]
+  }
 };
 
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
@@ -47,6 +54,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
   return new Router()
     .get('/base', getBaseRecords)
+    .use(express.json())
     .post('/merge', mergeRecords)
     .use(handleError);
 
@@ -56,20 +64,31 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   function getBaseRecords(req, res) {
-    //res.sendStatus(HttpStatus.NO_CONTENT);
     res.json(baseRecords);
   }
 
   function mergeRecords(req, res) {
-    const body = req.params;
 
     logger.debug(`Merge`);
-    logger.debug(JSON.stringify(body));
 
-    //const {source, base} = body;
+    const {source, defaults, overwrites} = req.body;
+
     //logger.debug(JSON.stringify(source));
-    //logger.debug(JSON.stringify(base));
+    //logger.debug(JSON.stringify(base.overwrites));
 
-    res.json({test: 1});
+    const merged = mergeFields(defaults, mergeFields(source, overwrites));
+
+    logger.debug(JSON.stringify(merged));
+
+    res.json(merged);
+
+    function mergeFields(base, overwrites) {
+      const tags = overwrites.fields.map(field => field.tag);
+
+      return {
+        leader: overwrites.leader ? overwrites.leader : base.leader,
+        fields: base.fields.filter(field => !tags.includes(field.tag)).concat(overwrites.fields)
+      };
+    }
   }
 }

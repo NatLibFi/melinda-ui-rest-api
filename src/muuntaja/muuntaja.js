@@ -353,6 +353,19 @@ function showRecord(data, dest) {
 }
 
 //-----------------------------------------------------------------------------
+// Merge base record defaults and overwrites
+//-----------------------------------------------------------------------------
+
+function mergeRecords(base, overwrites) {
+  const tags = overwrites.fields.map(field => field.tag)
+
+  return {
+    leader: overwrites.leader ? overwrites.leader : base.leader,
+    fields: base.fields.filter(field => !tags.includes(field.tag)).concat(overwrites.fields),
+  };
+}
+
+//-----------------------------------------------------------------------------
 // Get base records
 //-----------------------------------------------------------------------------
 
@@ -371,8 +384,11 @@ function getBaseRecord() {
   )
   .then(response => response.json())
   .then(response => {
+    const base = mergeRecords(response.defaults, response.overwrites);
+
+    console.log("Base:", base)
     melindaMuuntaja.setBaseRecord(response);
-    showRecord(response, "base")
+    showRecord(base, "base")
   });
 }
 
@@ -401,12 +417,17 @@ function tryMerge() {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-    body: JSON.stringify({ source: source, base: base })
+    body: JSON.stringify({
+      source: source,
+      defaults: base.defaults,
+      overwrites: base.overwrites
+     })
     }
   )
   .then(response => response.json())
-  .then(content => {
-    console.log("Merged:", content);
+  .then(merged => {
+    console.log("Merged:", merged);
+    showRecord(merged, "result")
   })
 }
 
