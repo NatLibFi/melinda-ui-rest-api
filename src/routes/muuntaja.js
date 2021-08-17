@@ -55,7 +55,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   return new Router()
     .get('/base', getBaseRecords)
     .use(express.json())
-    .post('/merge', mergeRecords)
+    .post('/merge', doMerge)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -67,7 +67,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     res.json(baseRecords);
   }
 
-  function mergeRecords(req, res) {
+  function doMerge(req, res) {
 
     logger.debug(`Merge`);
 
@@ -76,13 +76,18 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //logger.debug(JSON.stringify(source));
     //logger.debug(JSON.stringify(base.overwrites));
 
-    const merged = mergeFields(defaults, mergeFields(source, overwrites));
+    const merged = mergeRecords(defaults, source, overwrites);
 
     logger.debug(JSON.stringify(merged));
 
     res.json(merged);
 
-    function mergeFields(base, overwrites) {
+    function mergeRecords(...records) {
+      logger.debug(records);
+      return records.reduce((a, b) => mergeFields(a, b));
+    }
+
+    function mergeFields(base, overwrites) { // eslint-disable-line no-unused-vars
       const tags = overwrites.fields.map(field => field.tag);
 
       return {
