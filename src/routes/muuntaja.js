@@ -18,6 +18,11 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
 
+/* Base records have two parts:
+   1. defaults, which fill possible missing fields in source record, and
+   2. overwrites, which overwrite fields in source record.
+*/
+
 const baseRecords = {
   overwrites: {
     leader: '00000cam^a22006134i^4500',
@@ -71,23 +76,22 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     logger.debug(`Merge`);
 
-    const {source, defaults, overwrites} = req.body;
+    const {defaults, source, overwrites} = req.body;
 
     //logger.debug(JSON.stringify(source));
     //logger.debug(JSON.stringify(base.overwrites));
 
     const merged = mergeRecords(defaults, source, overwrites);
 
-    logger.debug(JSON.stringify(merged));
+    //logger.debug(JSON.stringify(merged));
 
     res.json(merged);
 
     function mergeRecords(...records) {
-      logger.debug(records);
       return records.reduce((a, b) => mergeFields(a, b));
     }
 
-    function mergeFields(base, overwrites) { // eslint-disable-line no-unused-vars
+    function mergeFields(base, overwrites) {
       const tags = overwrites.fields.map(field => field.tag);
 
       return {
