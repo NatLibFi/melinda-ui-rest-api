@@ -258,7 +258,7 @@ function getRecord(e, dest) {
   console.log(token);
 
   fetch(
-    [RESTurl, "bib", recordID].join("/"),
+    `${RESTurl}/bib/${recordID}`,
     {
       method: "GET",
       headers: {
@@ -373,7 +373,7 @@ function getBaseRecord() {
   const token = melindaUser.get().Token;
 
   fetch(
-    [RESTurl, "muuntaja", "base"].join("/"),
+    `${RESTurl}/muuntaja/base`,
     {
       method: "GET",
       headers: {
@@ -397,10 +397,12 @@ function getBaseRecord() {
 //-----------------------------------------------------------------------------
 
 function tryMerge() {
-  const token = melindaUser.get().Token;
+  const token = melindaUser.get("Token");
 
-  source = melindaMuuntaja.get("sourceRecord");
-  base   = melindaMuuntaja.get("baseRecord");
+  if(!token) return;
+
+  const source = melindaMuuntaja.get("sourceRecord");
+  const base   = melindaMuuntaja.get("baseRecord");
 
   console.log("Source & Base:", source, base);
 
@@ -409,7 +411,7 @@ function tryMerge() {
   console.log("Merging");
 
   fetch(
-    [RESTurl, "muuntaja", "merge"].join("/"),
+    `${RESTurl}/muuntaja/merge`,
     {
       method: 'POST',
       headers: {
@@ -430,5 +432,3 @@ function tryMerge() {
     showRecord(merged, "result")
   })
 }
-
-/* Field sort: muuntaja/frontend/js/marc-field-sort.js */

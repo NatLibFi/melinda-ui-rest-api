@@ -53,6 +53,37 @@ const baseRecords = {
   }
 };
 
+/*
+const options = {
+  "type": [{
+    displayName: "...",
+    description: "...",
+    value: "e2p"
+  }]
+  profile: {
+
+  }
+}
+
+{
+  type: "e2p",
+  profile: "fdsfd"
+  source:
+  base:
+}
+*/
+
+/* Changes applied to merged record in any case */
+const mergeDefaults =
+{
+  overwrites: {
+    fields: [{tag: '001', value: '000000000'}]
+  },
+  defaults: {
+    fields: []
+  }
+};
+
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   logger.debug('Creating muuntaja route');
@@ -76,12 +107,19 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     logger.debug(`Merge`);
 
+    // Muuta ID:eiksi.
+
     const {defaults, source, overwrites} = req.body;
+    // validate source, validate base
 
     //logger.debug(JSON.stringify(source));
     //logger.debug(JSON.stringify(base.overwrites));
 
-    const merged = mergeRecords(defaults, source, overwrites);
+    const merged = mergeRecords(
+      mergeDefaults.defaults,
+      mergeRecords(defaults, source, overwrites),
+      mergeDefaults.overwrites
+    );
 
     //logger.debug(JSON.stringify(merged));
 
@@ -101,3 +139,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
   }
 }
+
+// Jos base on haettu kannasta, niin ID säilyy
+// Uudella tietueella CAT häviää
+
+// Osakohteet (pidä mielessä)
+
+// Add field sort:
+/* Field sort: muuntaja/frontend/js/marc-field-sort.js */
+
+// Recordin käsittely:
+// https://github.com/NatLibFi/marc-record-merge-js/tree/next/src/reducers
