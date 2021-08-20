@@ -73,8 +73,7 @@
       "src/*"
     ],
     "ignore": [
-      "src/testclient/*",
-      "src/muuntaja/*"
+      "src/clients/*"
     ],
     "ext": "js",
     "delay": 2.5
