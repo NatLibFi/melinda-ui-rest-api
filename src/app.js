@@ -6,6 +6,7 @@ import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-mel
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 import {createBibRouter, createAuthRouter, createMuuntajaRouter} from './routes';
+//import {createMuuntajaRouter} from './muuntaja/route';
 //import fs from 'fs';
 import path from 'path';
 

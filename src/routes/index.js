@@ -1,9 +1,9 @@
 import createAuthRouter from './auth';
 import createBibRouter from './bib';
-import createMuuntajaRouter from './muuntaja';
+import createMuuntajaRouter from '../muuntaja/route';
 
 export {
   createAuthRouter,
-  createMuuntajaRouter,
-  createBibRouter
+  createBibRouter,
+  createMuuntajaRouter
 };

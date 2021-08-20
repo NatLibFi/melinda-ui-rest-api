@@ -50,7 +50,7 @@
     "extends": "@natlibfi/melinda-backend",
     "ignorePatterns": [
       "src/clients/*",
-      "src/routes/config/*"
+      "src/muuntaja/config/*"
     ]
   },
   "babel": {
@@ -64,7 +64,7 @@
     ],
     "ignore": [
       "src/clients/*",
-      "src/routes/config/*"
+      "src/muuntaja/config/*"
     ]
   },
   "nodemonConfig": {
