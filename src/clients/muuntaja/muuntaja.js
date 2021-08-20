@@ -6,7 +6,7 @@
 
 //-----------------------------------------------------------------------------
 
-const RESTurl = "http://localhost:8081";
+const RESTurl = 'http://localhost:8081';
 
 //-----------------------------------------------------------------------------
 // stored auth token
@@ -14,16 +14,20 @@ const RESTurl = "http://localhost:8081";
 
 const melindaUser = {
   storage: window.sessionStorage,
-  name: "melinda-user",
-  get: function (jsonField = this.name) {
+  name: 'melinda-user',
+  get (jsonField = this.name) {
     try {
       return JSON.parse(this.storage.getItem(jsonField));
     } catch (e) {
       return undefined;
     }
   },
-  set: function (token) {return this.storage.setItem(this.name, JSON.stringify(token));},
-  remove: function () {return this.storage.removeItem(this.name);},
+  set (token) {
+    return this.storage.setItem(this.name, JSON.stringify(token));
+  },
+  remove () {
+    return this.storage.removeItem(this.name);
+  }
 };
 
 //-----------------------------------------------------------------------------
@@ -40,24 +44,28 @@ const melindaUser = {
 
 const melindaMuuntaja = {
   storage: window.sessionStorage,
-  name: "melinda-muuntaja",
-  get: function (jsonField = this.name) {
+  name: 'melinda-muuntaja',
+  get (jsonField = this.name) {
     try {
       return JSON.parse(this.storage.getItem(jsonField));
     } catch (e) {
       return undefined;
     }
   },
-  set: function (token) {return this.storage.setItem(this.name, JSON.stringify(token));},
-  setSourceRecord: function (record) {
+  set (token) {
+    return this.storage.setItem(this.name, JSON.stringify(token));
+  },
+  setSourceRecord (record) {
     this.storage.setItem('sourceRecord', JSON.stringify(record));
     tryMerge();
   },
-  setBaseRecord: function (record) {
+  setBaseRecord (record) {
     this.storage.setItem('baseRecord', JSON.stringify(record));
     tryMerge();
   },
-  remove: function () {return this.storage.removeItem(this.name);},
+  remove () {
+    return this.storage.removeItem(this.name);
+  }
 };
 
 //-----------------------------------------------------------------------------
@@ -70,15 +78,17 @@ function showTab(...tabs) {
       child.style.display = null;
     } else {
       child.hidden = true;
-      child.style.display = "none";
+      child.style.display = 'none';
     }
   }
 }
 
 function resetForms(...elems) {
   for (const elem of elems) {
-    const forms = elem.querySelectorAll("form");
-    for (const form of forms) form.reset();
+    const forms = elem.querySelectorAll('form');
+    for (const form of forms) {
+      form.reset();
+    }
   }
 }
 
@@ -103,23 +113,24 @@ function initialize() {
 
   // Get auth token, if it exists
   const user = melindaUser.get();
-  console.log("User:", user);
+  console.log('User:', user);
 
   if (user && user.Token) {
     authRequest(user.Token, '/verify')
       .then(response => {
-        if (!response.ok) return noAuth();
+        if (!response.ok) {
+          return noAuth();
+        }
         authSuccess(response);
       });
-  }
-  else {
+  } else {
     return noAuth();
   }
 
   function noAuth() {
     melindaUser.remove();
-    resetForms(document.getElementById("root"));
-    showTab("login");
+    resetForms(document.getElementById('root'));
+    showTab('login');
   }
 }
 
@@ -128,7 +139,7 @@ function initialize() {
 //-----------------------------------------------------------------------------
 
 function authSuccess(response) {
-  const user = JSON.parse(response.headers.get("User"));
+  const user = JSON.parse(response.headers.get('User'));
   if (user) {
     console.log(user);
     melindaUser.set(user);
@@ -139,16 +150,16 @@ function authSuccess(response) {
   //getRecord(new Event('load'), 'base');
   getBaseRecord();
 
-  showTab("muuntaja");
+  showTab('muuntaja');
 }
 
 function authRequest(token, url = '') {
   return fetch(
-    [RESTurl, "auth", url].join("/"),
+    [RESTurl, 'auth', url].join('/'),
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: token,
+        Authorization: token
       }
     }
   );
@@ -157,22 +168,22 @@ function authRequest(token, url = '') {
 function login(e) {
   e.preventDefault();
 
-  console.log("Login:", e);
+  console.log('Login:', e);
 
-  logininfo("");
+  logininfo('');
 
-  const termschecked = document.querySelector("#login #acceptterms").checked;
+  const termschecked = document.querySelector('#login #acceptterms').checked;
   if (!termschecked) {
-    logininfo("Tietosuojaselosteen hyväksyminen vaaditaan");
+    logininfo('Tietosuojaselosteen hyväksyminen vaaditaan');
     return;
   }
 
   logininfo('<div class="progress-bar"></div>');
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-  console.log("User:", username, "Password:", password);
+  console.log('User:', username, 'Password:', password);
 
   function generateAuthorizationHeader(username, password = '') {
     //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
@@ -182,22 +193,22 @@ function login(e) {
 
   authRequest(generateAuthorizationHeader(username, password))
     .then(success)
-    .catch(failure)
-    ;
-
+    .catch(failure);
   function success(response) {
-    if (!response.ok) return failure();
+    if (!response.ok) {
+      return failure();
+    }
     authSuccess(response);
-    logininfo("");
+    logininfo('');
   }
 
   function failure() {
     melindaUser.remove();
-    logininfo("Tunnus tai salasana ei täsmää");
+    logininfo('Tunnus tai salasana ei täsmää');
   }
 
   function logininfo(msg) {
-    const infodiv = document.querySelector("#login #info");
+    const infodiv = document.querySelector('#login #info');
     infodiv.innerHTML = msg;
   }
 }
@@ -210,27 +221,27 @@ function logout(e) {
 //-----------------------------------------------------------------------------
 
 function onNew(e) {
-  console.log("New:", e);
-  resetForms(document.getElementById("muuntaja"));
+  console.log('New:', e);
+  resetForms(document.getElementById('muuntaja'));
 }
 
 function onSearch(e) {
-  console.log("Search:", e);
-  const dialog = document.getElementById("searchDlg");
-  console.log("Dialog:", dialog);
+  console.log('Search:', e);
+  const dialog = document.getElementById('searchDlg');
+  console.log('Dialog:', dialog);
   //dialog.show();
 }
 
 function onSave(e) {
-  console.log("Save:", e);
+  console.log('Save:', e);
 }
 
 function onSettings(e) {
-  console.log("Settings:", e);
+  console.log('Settings:', e);
 }
 
 function onAccount(e) {
-  console.log("Account:", e);
+  console.log('Account:', e);
   logout();
 }
 
@@ -241,7 +252,7 @@ function onAccount(e) {
 
 function getRecord(e, dest) {
   e.preventDefault();
-  console.log("Fetch:", e);
+  console.log('Fetch:', e);
 
   const recordID = document.querySelector(`#muuntaja .record-merge-panel #${dest} #ID`).value;
 
@@ -249,7 +260,7 @@ function getRecord(e, dest) {
     return;
   }
 
-  console.log("ID:", recordID);
+  console.log('ID:', recordID);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
   sourceDiv.innerHTML = '<div class="progress-bar"></div>';
@@ -260,11 +271,11 @@ function getRecord(e, dest) {
   fetch(
     `${RESTurl}/bib/${recordID}`,
     {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accepts: "application/json",
-        Authorization: token,
-      },
+        Accepts: 'application/json',
+        Authorization: token
+      }
     }
   )
     .then(response => response.json())
@@ -280,9 +291,9 @@ function showRecord(data, dest) {
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
 
   // Clear previous content
-  sourceDiv.innerHTML = "";
+  sourceDiv.innerHTML = '';
 
-  addField(sourceDiv, {tag: "LDR", value: data.leader});
+  addField(sourceDiv, {tag: 'LDR', value: data.leader});
   for (const field of data.fields) {
     addField(sourceDiv, field);
   }
@@ -310,44 +321,46 @@ function showRecord(data, dest) {
 
   //---------------------------------------------------------------------------
   function addTag(row, value) {
-    row.appendChild(makeSpan("tag", value));
+    row.appendChild(makeSpan('tag', value));
   }
 
   function addInd(row, ind1, ind2) {
-    const span = makeSpan("inds");
+    const span = makeSpan('inds');
     add(span, ind1);
     add(span, ind2);
     row.appendChild(span);
 
     function add(span, ind) {
-      const value = (ind && ind.trim()) || "&nbsp;";
-      span.appendChild(makeSpan("ind", value));
+      const value = ind && ind.trim() || '&nbsp;';
+      span.appendChild(makeSpan('ind', value));
     }
   }
 
   function addValue(row, value) {
-    row.appendChild(makeSpan("value", value));
+    row.appendChild(makeSpan('value', value));
   }
 
   function addSubfield(row, subfield) {
-    const span = makeSpan("subfield");
+    const span = makeSpan('subfield');
     span.appendChild(makeSubfieldCode(subfield.code));
     span.appendChild(makeSubfieldData(subfield.value));
     row.appendChild(span);
   }
 
   function makeSubfieldCode(code) {
-    return makeSpan("code", `‡${code}`);
+    return makeSpan('code', `‡${code}`);
   }
 
   function makeSubfieldData(value) {
-    return makeSpan("value", value);
+    return makeSpan('value', value);
   }
 
   function makeSpan(className, value) {
-    const span = document.createElement("span");
+    const span = document.createElement('span');
     span.setAttribute('class', className);
-    if (value) span.innerHTML = value;
+    if (value) {
+      span.innerHTML = value;
+    }
     return span;
   }
 }
@@ -357,11 +370,11 @@ function showRecord(data, dest) {
 //-----------------------------------------------------------------------------
 
 function mergeRecords(base, overwrites) {
-  const tags = overwrites.fields.map(field => field.tag)
+  const tags = overwrites.fields.map(field => field.tag);
 
   return {
     leader: overwrites.leader ? overwrites.leader : base.leader,
-    fields: base.fields.filter(field => !tags.includes(field.tag)).concat(overwrites.fields),
+    fields: base.fields.filter(field => !tags.includes(field.tag)).concat(overwrites.fields)
   };
 }
 
@@ -375,21 +388,21 @@ function getBaseRecord() {
   fetch(
     `${RESTurl}/muuntaja/base`,
     {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accepts: "application/json",
-        Authorization: token,
-      },
+        Accepts: 'application/json',
+        Authorization: token
+      }
     }
   )
-  .then(response => response.json())
-  .then(response => {
-    const base = mergeRecords(response.defaults, response.overwrites);
+    .then(response => response.json())
+    .then(response => {
+      const base = mergeRecords(response.defaults, response.overwrites);
 
-    console.log("Base:", base)
-    melindaMuuntaja.setBaseRecord(response);
-    showRecord(base, "base")
-  });
+      console.log('Base:', base);
+      melindaMuuntaja.setBaseRecord(response);
+      showRecord(base, 'base');
+    });
 }
 
 //-----------------------------------------------------------------------------
@@ -397,18 +410,22 @@ function getBaseRecord() {
 //-----------------------------------------------------------------------------
 
 function tryMerge() {
-  const token = melindaUser.get("Token");
+  const token = melindaUser.get('Token');
 
-  if(!token) return;
+  if (!token) {
+    return;
+  }
 
-  const source = melindaMuuntaja.get("sourceRecord");
-  const base   = melindaMuuntaja.get("baseRecord");
+  const source = melindaMuuntaja.get('sourceRecord');
+  const base = melindaMuuntaja.get('baseRecord');
 
-  console.log("Source & Base:", source, base);
+  console.log('Source & Base:', source, base);
 
-  if(!source || !base) return;
+  if (!source || !base) {
+    return;
+  }
 
-  console.log("Merging");
+  console.log('Merging');
 
   fetch(
     `${RESTurl}/muuntaja/merge`,
@@ -417,18 +434,18 @@ function tryMerge() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: token,
+        Authorization: token
       },
-    body: JSON.stringify({
-      source: source,
-      defaults: base.defaults,
-      overwrites: base.overwrites
-     })
+      body: JSON.stringify({
+        source,
+        defaults: base.defaults,
+        overwrites: base.overwrites
+      })
     }
   )
-  .then(response => response.json())
-  .then(merged => {
-    console.log("Merged:", merged);
-    showRecord(merged, "result")
-  })
+    .then(response => response.json())
+    .then(merged => {
+      console.log('Merged:', merged);
+      showRecord(merged, 'result');
+    });
 }

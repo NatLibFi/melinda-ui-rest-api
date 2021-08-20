@@ -49,8 +49,7 @@
   "eslintConfig": {
     "extends": "@natlibfi/melinda-backend",
     "ignorePatterns": [
-      "src/testclient/*",
-      "src/muuntaja/*",
+      "src/clients/*",
       "src/routes/config/*"
     ]
   },
@@ -64,8 +63,7 @@
       ]
     ],
     "ignore": [
-      "src/testclient/*",
-      "src/muuntaja/*",
+      "src/clients/*",
       "src/routes/config/*"
     ]
   },
