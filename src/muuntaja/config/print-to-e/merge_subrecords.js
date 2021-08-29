@@ -34,7 +34,7 @@ import TargetRecord from './target-record';
 import TargetSubrecord from './target-subrecord';
 import * as subrecordMergeTypes from '../subrecord-merge-types';
 
-module.exports = {
+module.exports = { // eslint-disable-line functional/immutable-data
   "name": "Muunna osakohteet",
   "description": "TESTIPROFIILI",
   "mergeType": "demo",

@@ -29,7 +29,7 @@ export default function ({
   return server;
 
   // Add async when you need await in route construction
-  function initExpress() {
+  function initExpress() { // eslint-disable-line max-statements
     const app = express();
 
     app.enable('trust proxy', Boolean(enableProxy));
@@ -61,7 +61,7 @@ export default function ({
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
 
-    function handleError(err, req, res, next) {
+    function handleError(err, req, res, next) { // eslint-disable-line max-statements
       logger.info('App/handleError');
       if (err) {
         logger.error(err);

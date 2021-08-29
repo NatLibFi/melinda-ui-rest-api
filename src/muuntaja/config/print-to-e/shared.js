@@ -34,7 +34,7 @@ import TargetRecord from './target-record';
 import TargetSubrecord from './target-subrecord';
 import * as subrecordMergeTypes from '../subrecord-merge-types';
 
-module.exports = {
+module.exports = { // eslint-disable-line functional/immutable-data
   "name": "Jaetut osakohteet",
   "description": "TESTIPROFIILI",
   "mergeType": "demo",
@@ -57,7 +57,7 @@ module.exports = {
       both: {
         "fields": {
           "100": {"action": "createFrom", "options": {"convertTag": "773", "useExisting": true, "subfields": {"a": {}}}},
-          "245": {"action": "createFrom", "options": {"convertTag": "773", "useExisting": true, "subfields": {"a": {"convertCode": "t", "modifications": [{"type": "replace", "args": [/ \/$/, '']}]}}}},
+          "245": {"action": "createFrom", "options": {"convertTag": "773", "useExisting": true, "subfields": {"a": {"convertCode": "t", "modifications": [{"type": "replace", "args": [/ \/$/u, '']}]}}}},
           "260": {"action": "createFrom", "options": {"convertTag": "773", "useExisting": true, "subfields": {"a": {"convertCode": "d"}, "b": {"convertCode": "d", "append": true, "modifications": [{"type": "prepend", "args": [" "]}]}, "c": {"convertCode": "d", "append": true, "modifications": [{"type": "prepend", "args": [" "]}]}}}}
         }
       },

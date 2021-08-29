@@ -1,3 +1,5 @@
+/* eslint-disable camelcase, prefer-named-capture-group, max-statements, max-lines */
+
 // preferredRecord(pohjatietue), otherRecord(lähdetietue), result.mergedRecord
 import MarcRecord from 'marc-record-js';
 import {isEmpty, isUndefined} from 'lodash';
@@ -22,7 +24,7 @@ export const eToPrintPreset = [
 
 // eToPrint postmerge functions ->
 export function replaceSourceFields(targetRecord, sourcerecord, mergedRecordParam) {
-  const mergeConfigurationFields = /^(1..|041|080|084|240|245|246|250|260|263|264|336|490|500|502|504|505|509|520|546|567|6[^5].|65[^5]|700|710|711|800|810|811|830)$/;
+  const mergeConfigurationFields = /^(1..|041|080|084|240|245|246|250|260|263|264|336|490|500|502|504|505|509|520|546|567|6[^5].|65[^5]|700|710|711|800|810|811|830)$/u;
 
   return replaceFieldsFromSource(mergeConfigurationFields, sourcerecord, mergedRecordParam);
 }
@@ -50,7 +52,7 @@ export function eToPrintSelect008(preferredRecord, otherRecord, mergedRecordPara
 
   const updated008field = indexList.reduce((tag, index) => {
     const replaceWith = targetRecordTag.value[index];
-    tag.value = replaceString(sourceTag, index, replaceWith);
+    tag.value = replaceString(sourceTag, index, replaceWith); // eslint-disable-line functional/immutable-data
     return tag;
   }, sourceTag);
 
@@ -92,7 +94,7 @@ export function eToPrintSelect040(targetRecord, sourceRecord, mergedRecordParam)
       ...sourceRecord.fields[index]
     };
 
-    updated040Field.subfields = postMergeContent;
+    updated040Field.subfields = postMergeContent; // eslint-disable-line functional/immutable-data
 
     const fieldIndex = findIndex(mergedRecordParam, fieldTag);
     const updatedMergedRecordParam = fieldIndex > -1 ? updateParamsfield(mergedRecordParam, updated040Field.subfields, fieldIndex) : addTag(mergedRecordParam, updated040Field);
@@ -112,14 +114,14 @@ function eToPrintSelect020 (targetRecord, sourceRecord, mergedRecordParam) {
   const fieldTag = '020';
   const tag020 = {...filterTag(sourceRecord, fieldTag)};
   const tag776 = filterTag(sourceRecord, '776');
-  const field776a = tag776 !== undefined ? tag776.subfields.find(obj => obj.code === 'z') : '';
+  const field776a = tag776 !== undefined ? tag776.subfields.find(obj => obj.code === 'z') : ''; // eslint-disable-line no-negated-condition
 
   if (!isEmpty(tag020)) {
     const updatedSubfields = tag020.subfields.map((field) => updateValue(field, field776a.value));
-    tag020.subfields = {...updatedSubfields};
+    tag020.subfields = {...updatedSubfields}; // eslint-disable-line functional/immutable-data
 
-    if (tag020.subfields) {
-      tag020.subfields = [
+    if (tag020.subfields) { // eslint-disable-line functional/no-conditional-statement
+      tag020.subfields = [ // eslint-disable-line functional/immutable-data
         {code: 'a', value: field776a.value ? field776a.value : ''},
         {code: 'q', value: ' '}
       ];
@@ -169,8 +171,8 @@ function eToPrintSelect300(targetRecord, sourceRecord, mergedRecordParam) {
     };
 
     // no code a, creates an empty value
-    if (isEmpty(tag300C.subfields.filter(field => field.code === 'a'))) {
-      tag300C.subfields = [...tag300C.subfields, {code: 'a', value: ''}];
+    if (isEmpty(tag300C.subfields.filter(field => field.code === 'a'))) { // eslint-disable-line functional/no-conditional-statement
+      tag300C.subfields = [...tag300C.subfields, {code: 'a', value: ''}]; // eslint-disable-line functional/immutable-data
     }
 
     const updateValues = curry((length, field) => {
@@ -201,7 +203,7 @@ function eToPrintSelect300(targetRecord, sourceRecord, mergedRecordParam) {
   };
 
   function checkMatch(field, subfieldsLength) {
-    const isMatch = (/\((.*?)\)/).exec(field.value);
+    const isMatch = (/\((.*?)\)/u).exec(field.value);
     const punctuation = createAPunctuation(subfieldsLength);
     return isMatch ? `${isMatch[1]} ${punctuation}` : '';
   }
@@ -248,7 +250,7 @@ function eToPrintSelect655(targetRecord, sourceRecord, mergedRecordParam) {
   function filterStrigs(field) {
     const testField = field.filter(obj => {
       if (obj.code === 'a') {
-        const isMatch = obj.value.match(/(e-kirjat|e-böcker|sähköiset julkaisut|elektroniska publikationer|Electronic books)/i);
+        const isMatch = obj.value.match(/(e-kirjat|e-böcker|sähköiset julkaisut|elektroniska publikationer|Electronic books)/iu);
         return isMatch ? isMatch[1] : null;
       }
       return false;
@@ -262,10 +264,10 @@ function eToPrintSelect776(targetRecord, sourceRecord, mergedRecordParam) {
   const tag020Field = {...filterTag(sourceRecord, '020')};
 
   if (!isEmpty(tag020Field)) {
-    const tag020a = tag020Field.subfields.find(field => field.code == 'a');
-    const tag020q = tag020Field.subfields.find(field => field.code == 'q');
+    const tag020a = tag020Field.subfields.find(field => field.code === 'a');
+    const tag020q = tag020Field.subfields.find(field => field.code === 'q');
     const fieldIndex = findIndex(mergedRecordParam, fieldTag);
-    const match = !isUndefined(tag020q) ? testContent(tag020q.value) : null;
+    const match = !isUndefined(tag020q) ? testContent(tag020q.value) : null; // eslint-disable-line no-negated-condition
 
     const base776tag = {
       ...tag020Field,
@@ -276,7 +278,7 @@ function eToPrintSelect776(targetRecord, sourceRecord, mergedRecordParam) {
       subfields: [
         {
           code: 'i',
-          value: match !== null ? `Verkkoaineisto (${match.toUpperCase()}):` : 'Verkkoaineisto:'
+          value: match !== null ? `Verkkoaineisto (${match.toUpperCase()}):` : 'Verkkoaineisto:' // eslint-disable-line no-negated-condition
         },
         {
           code: 'z',
@@ -298,11 +300,11 @@ function eToPrintSelect776(targetRecord, sourceRecord, mergedRecordParam) {
   };
 
   function trim020a(fieldA) {
-    return fieldA ? fieldA.replace(/-/g, '') : '';
+    return fieldA ? fieldA.replace(/-/gu, '') : '';
   }
 
   function testContent(tag020q) {
-    const isMatch = tag020q.match(/\b(\w*pdf|epub\w*)\b/i);
+    const isMatch = tag020q.match(/\b(\w*pdf|epub\w*)\b/iu);
     return isMatch ? isMatch[1] : null;
   }
 
@@ -314,7 +316,7 @@ function eToPrintSelect776(targetRecord, sourceRecord, mergedRecordParam) {
     if (isEmpty(base776tag.subfields[1].value)) {
       const updated776tag = {
         ...base776tag,
-        subfields: base776tag.subfields.filter(field => field.code == 'i')
+        subfields: base776tag.subfields.filter(field => field.code === 'i')
       };
 
       return {
@@ -326,7 +328,7 @@ function eToPrintSelect776(targetRecord, sourceRecord, mergedRecordParam) {
 
   function updateTag(field, updated776tag, fieldIndex, index) {
     if (index === fieldIndex) {
-      return field = updated776tag;
+      return field = updated776tag; // eslint-disable-line no-param-reassign, no-return-assign
     }
     return field;
   }
@@ -380,13 +382,13 @@ export function eToPrintSelect490_830 (targetRecord, sourceRecord, mergedRecordP
 
   const updatedRecord = fieldTag.reduce((record, fieldTag) => {
     const tag = {...filterTag(sourceRecord, fieldTag)};
-    if (!isEmpty(tag)) {
+    if (!isEmpty(tag)) { // eslint-disable-line functional/no-conditional-statement
       const updatedSubfields = {
         ...tag,
         subfields: tag.subfields.map(fieldPresent(tag.subfields.length))
       };
       const recordParams = updatedMergedRecordParams(record, updatedSubfields, findIndex(mergedRecordParam, fieldTag));
-      record = recordParams;
+      record = recordParams; // eslint-disable-line no-param-reassign
     }
 
     return record;

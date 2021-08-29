@@ -113,4 +113,4 @@ const record = new MarcRecord({
 
 decorateFieldsWithUuid(record);
 
-module.exports = record;
+module.exports = record; // eslint-disable-line functional/immutable-data

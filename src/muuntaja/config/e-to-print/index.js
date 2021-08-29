@@ -25,4 +25,4 @@
 * for the JavaScript code in this file.
 *
 */
-exports.default = require('./default');
+exports.default = require('./default'); // eslint-disable-line functional/immutable-data

@@ -25,7 +25,7 @@
 * for the JavaScript code in this file.
 *
 */
-
+/* eslint-disable prefer-named-capture-group, max-lines, max-statements */
 /*
 
 Configuration for the merge function
@@ -91,7 +91,7 @@ import * as subrecordMergeTypes from '../subrecord-merge-types';
 import TargetRecord from './target-record';
 // import * as subrecordMergeTypes from '../subrecord-merge-types';
 
-module.exports = {
+module.exports = { // eslint-disable-line functional/immutable-data
   "name": "Oletus",
   "description": "Muunnos täydentää painetun aineiston tietueen e-aineiston tietueen tiedoilla. Muunnos ei käsittele osakohteita.",
   "mergeType": "eToPrint",
@@ -113,7 +113,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -123,7 +123,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -134,7 +134,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -144,7 +144,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -154,7 +154,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -164,7 +164,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -174,7 +174,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -185,7 +185,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -195,7 +195,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -205,7 +205,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -215,7 +215,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -225,7 +225,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -235,7 +235,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -250,7 +250,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -265,7 +265,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -280,7 +280,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -295,7 +295,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -305,7 +305,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -315,7 +315,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -325,7 +325,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -335,7 +335,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         }
@@ -343,7 +343,7 @@ module.exports = {
     }
   },
   "subrecords": {
-    "mergeType": subrecordMergeTypes.DISALLOW_SUBRECORDS // TODO: needs specs, not valid
+    "mergeType": subrecordMergeTypes.DISALLOW_SUBRECORDS /* TODO: needs specs, not valid */ // eslint-disable-line no-warning-comments
   }
 };
 

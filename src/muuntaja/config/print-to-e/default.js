@@ -85,6 +85,7 @@ mustBeIdentical (true|false)
 
 */
 /*eslint-disable quotes*/
+/* eslint-disable functional/immutable-data, prefer-named-capture-group, max-lines */
 
 import {preset as MergeValidationPreset} from '../../marc-record-merge-validate-service';
 import {preset as PostMergePreset} from '../../marc-record-merge-postmerge-service';
@@ -117,7 +118,7 @@ module.exports = {
                 modifications: [
                   {
                     type: "replace",
-                    args: [/-/g, ""]
+                    args: [/-/gu, ""]
                   }
                 ]
               }
@@ -131,7 +132,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -141,7 +142,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -151,7 +152,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -168,7 +169,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -179,7 +180,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -189,7 +190,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -199,7 +200,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -209,7 +210,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -219,7 +220,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -245,8 +246,8 @@ module.exports = {
             "subfields": {
               "a": {
                 modifications: [
-                  {type: "replace", args: [/ [;:]$/, ""]},
-                  {type: "replace", args: [/ s\./, " sivua"]},
+                  {type: "replace", args: [/ [;:]$/u, ""]},
+                  {type: "replace", args: [/ s\./u, " sivua"]},
                   {type: "wrap", args: ["1 verkkoaineisto (", ")"]}
                 ]
               },
@@ -263,7 +264,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -273,7 +274,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -283,7 +284,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -293,7 +294,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -306,7 +307,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -316,7 +317,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -331,7 +332,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -341,7 +342,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -351,7 +352,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -366,7 +367,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -381,7 +382,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -396,7 +397,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -420,7 +421,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -430,7 +431,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -440,7 +441,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         },
@@ -450,7 +451,7 @@ module.exports = {
             "reduce": {
               "subfields": ["9"],
               "condition": "unless",
-              "value": /[LOWTAG]<(KEEP|DROP)>/
+              "value": /[LOWTAG]<(KEEP|DROP)>/u
             }
           }
         }

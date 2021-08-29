@@ -33,7 +33,7 @@ import {preset as PostMergePreset} from '../../marc-record-merge-postmerge-servi
 import TargetRecord from './target-record';
 import * as subrecordMergeTypes from '../subrecord-merge-types';
 
-module.exports = {
+module.exports = { // eslint-disable-line functional/immutable-data
   "name": "Pidetään osakohteet",
   "description": "TESTIPROFIILI",
   "mergeType": "demo",

@@ -56,4 +56,5 @@ const record = new MarcRecord({
 
 decorateFieldsWithUuid(record);
 
-module.exports = record;
+//module.exports = record;
+export {record};

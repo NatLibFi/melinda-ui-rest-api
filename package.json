@@ -49,8 +49,7 @@
   "eslintConfig": {
     "extends": "@natlibfi/melinda-backend",
     "ignorePatterns": [
-      "src/clients/*",
-      "src/muuntaja/config/*"
+      "src/clients/*"
     ]
   },
   "babel": {
@@ -63,8 +62,7 @@
       ]
     ],
     "ignore": [
-      "src/clients/*",
-      "src/muuntaja/config/*"
+      "src/clients/*"
     ]
   },
   "nodemonConfig": {
