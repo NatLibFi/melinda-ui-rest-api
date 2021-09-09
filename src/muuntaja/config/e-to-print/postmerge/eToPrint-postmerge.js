@@ -1,10 +1,10 @@
 /* eslint-disable camelcase, prefer-named-capture-group, max-statements, max-lines */
 
 // preferredRecord(pohjatietue), otherRecord(lähdetietue), result.mergedRecord
-import MarcRecord from 'marc-record-js';
+import MarcRecord from '@natlibfi/marc-record';
 import {isEmpty, isUndefined} from 'lodash';
-import {hyphenate} from 'isbn-utils';
-import uuid from 'node-uuid';
+import {hyphenate} from 'isbn3';
+import {v4 as uuid} from 'uuid';
 import {curry} from 'ramda';
 import {filterTag, findIndex, updateParamsfield, addTag, updatedMergedRecordParams, addIntoArray, replaceFieldsFromSource} from '../../../utils';
 
@@ -44,37 +44,32 @@ export function eToPrintRemoveTags(preferredRecord, otherRecord, mergedRecordPar
 }
 
 // Replaces 008 string content
-export function eToPrintSelect008(preferredRecord, otherRecord, mergedRecordParam) {
-  const fieldTag = '008';
+export function eToPrintSelect008(baseRecord, sourceRecord, mergedRecordParam) {
+  const [sourceF008] = sourceRecord.get('008');
+  const [baseF008] = baseRecord.get('008');
+
   const indexList = [0, 1, 2, 3, 4, 5, 23, 39];
-  const sourceTag = {...filterTag(otherRecord, fieldTag)};
-  const targetRecordTag = {...filterTag(preferredRecord, fieldTag)};
 
   const updated008field = indexList.reduce((tag, index) => {
-    const replaceWith = targetRecordTag.value[index];
-    tag.value = replaceString(sourceTag, index, replaceWith); // eslint-disable-line functional/immutable-data
+    const replaceWith = baseF008.value[index];
+    tag.value = replaceString(sourceF008, index, replaceWith); // eslint-disable-line functional/immutable-data
     return tag;
-  }, sourceTag);
 
-  const updateTag = curry((updated008field, field) => {
-    if (field.tag === '008') {
-      return updated008field;
+    function replaceString(sourceTag, index, replaceWith) {
+      return sourceTag.value.substring(0, index) + replaceWith + sourceTag.value.substring(index + 1);
     }
-    return field;
-  });
+  }, sourceF008);
 
-  const updatedMergeParams = {
-    ...mergedRecordParam,
-    fields: mergedRecordParam.fields.map(updateTag(updated008field))
-  };
+  const fields = mergedRecordParam.fields.filter(field => field.tag !== '008');
+  const updatedMergedRecord = new MarcRecord({
+    ...mergedRecordParam.leader,
+    ...fields
+  }, {subfieldValues: false});
+  updatedMergedRecord.insertField(updated008field);
 
   return {
-    mergedRecord: new MarcRecord(updatedMergeParams)
+    mergedRecord: updatedMergedRecord
   };
-
-  function replaceString(sourceTag, index, replaceWith) {
-    return sourceTag.value.substring(0, index) + replaceWith + sourceTag.value.substring(index + 1);
-  }
 }
 
 // if tag 040 in fields, imports 040 from sourceRecord and creates/replaces with postMergeContent

@@ -49,8 +49,8 @@ adds 500 a "Lisäpainokset: " (inferred from 250, and 008)
 */
 
 import _, {isEmpty, orderBy, sortBy} from 'lodash';
-import MarcRecord from 'marc-record-js';
-import uuid from 'node-uuid';
+import MarcRecord from '@natlibfi/marc-record';
+import {v4 as uuid} from 'uuid';
 import moment from 'moment';
 import {selectValues, selectRecordId, selectFieldsByValue, fieldHasSubfield, resetComponentHostLinkSubfield, isLinkedFieldOf} from './record-utils';
 import {fieldOrderComparator} from './marc-field-sort';

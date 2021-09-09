@@ -26,10 +26,10 @@
 *
 */
 
-import MarcRecord from 'marc-record-js';
-import {decorateFieldsWithUuid} from '../../record-utils';
+import {MarcRecord} from '@natlibfi/marc-record';
+//import {decorateFieldsWithUuid} from '../../record-utils';
 
-const record = new MarcRecord({
+export const baseRecord = new MarcRecord({
   leader: '00000cam^a22006134i^4500',
   fields: [
     {
@@ -111,6 +111,4 @@ const record = new MarcRecord({
   ]
 });
 
-decorateFieldsWithUuid(record);
-
-module.exports = record; // eslint-disable-line functional/immutable-data
+//decorateFieldsWithUuid(record);

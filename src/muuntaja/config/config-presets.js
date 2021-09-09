@@ -27,6 +27,7 @@
 */
 
 import mergeProfiles from './print-to-e';
+import {baseRecord} from './print-to-e/target-record';
 
 const defaultPreset = {
   default: mergeProfiles.default
@@ -34,6 +35,7 @@ const defaultPreset = {
 
 export const printToE = {
   mergeType: 'printToE',
+  baseRecord,
   'defaults': defaultPreset,
   'aleph': mergeProfiles,
   'kvp': mergeProfiles,

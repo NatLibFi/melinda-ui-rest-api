@@ -410,7 +410,15 @@ function getBaseRecord() {
 //-----------------------------------------------------------------------------
 
 function tryMerge() {
-  const token = melindaUser.get('Token');
+  console.log("try merge");
+
+  const user = melindaUser.get();
+  //console.log('User:', user);
+  if(!user || !user.Token) return;
+  
+  const token = user.Token;
+
+  console.log("Token:", token);
 
   if (!token) {
     return;

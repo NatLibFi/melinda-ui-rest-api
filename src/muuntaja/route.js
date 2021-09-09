@@ -12,6 +12,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import defaults from 'defaults';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
+import {printToE} from './config/config-presets';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -30,24 +31,30 @@ const baseRecords = {
       {tag: '001', value: '000000000'},
       {tag: '007', value: 'cr^||^||||||||'},
       {tag: '008', value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^'},
-      {tag: '337', subfields: [
-        {code: 'a', value: 'tietokonekäyttöinen'},
-        {code: 'b', value: 'c'},
-        {code: '2', value: 'rdamedia'}
-      ]},
-      {tag: '338', subfields: [
-        {code: 'a', value: 'verkkoaineisto'},
-        {code: 'b', value: 'cr'},
-        {code: '2', value: 'rdacarrier'}
-      ]}
+      {
+        tag: '337', subfields: [
+          {code: 'a', value: 'tietokonekäyttöinen'},
+          {code: 'b', value: 'c'},
+          {code: '2', value: 'rdamedia'}
+        ]
+      },
+      {
+        tag: '338', subfields: [
+          {code: 'a', value: 'verkkoaineisto'},
+          {code: 'b', value: 'cr'},
+          {code: '2', value: 'rdacarrier'}
+        ]
+      }
     ]
   },
   defaults: {
     fields: [
-      {tag: '020', subfields: [
-        {code: 'a', value: ''},
-        {code: 'q', value: 'PDF'}
-      ]},
+      {
+        tag: '020', subfields: [
+          {code: 'a', value: ''},
+          {code: 'q', value: 'PDF'}
+        ]
+      },
       {tag: '041', ind1: '0', subfields: [{code: 'a', value: 'eng'}]}
     ]
   }
@@ -74,6 +81,7 @@ const options = {
 */
 
 /* Changes applied to merged record in any case */
+/*
 const mergeDefaults =
 {
   overwrites: {
@@ -83,6 +91,7 @@ const mergeDefaults =
     fields: []
   }
 };
+*/
 
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
@@ -109,36 +118,105 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     // Muuta ID:eiksi.
 
-    const {defaults, source, overwrites} = req.body;
+    const {defaults, source, overwrites} = req.body; // eslint-disable-line
     // validate source, validate base
 
-    //logger.debug(JSON.stringify(source));
     //logger.debug(JSON.stringify(base.overwrites));
 
-    const merged = mergeRecords(
-      mergeDefaults.defaults,
-      mergeRecords(defaults, source, overwrites),
-      mergeDefaults.overwrites
-    );
+    const merged = mergeRecords(source);
 
     //logger.debug(JSON.stringify(merged));
 
     res.json(merged);
+  }
 
-    function mergeRecords(...records) {
-      return records.reduce((a, b) => mergeFields(a, b));
+  //-----------------------------------------------------------------------------
+
+  function mergeRecords(sourceRecord) {
+
+    logger.debug(`update merged record`);
+    logger.debug(JSON.stringify(sourceRecord));
+
+    /* These will be delivered from frontend: */
+
+    const transformType = printToE;
+    const transformProfile = transformType.defaults; // eslint-disable-line
+    const {baseRecord} = transformType; // eslint-disable-line
+
+    logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
+    logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
+
+    /*
+    const getMergeProfile = getState().getIn(['config', 'mergeProfiles', getState().getIn(['config', 'selectedMergeProfile']), 'record']);
+    const defaultProfile = getState().getIn(['config', 'mergeProfiles']);
+    const mergeProfile = getMergeProfile === undefined ? defaultProfile.first() : getMergeProfile;
+    const subrecordMergeType = getState().getIn(['config', 'mergeProfiles', getState().getIn(['config', 'selectedMergeProfile']), 'subrecords', 'mergeType']);
+
+    const mergeConfiguration = mergeProfile.get('mergeConfiguration');
+    const validationRules = mergeProfile.get('validationRules');
+    const postMergeFixes = mergeProfile.get('postMergeFixes');
+    const newFields = mergeProfile.get('newFields');
+
+    //const preferredState = getState().getIn(['targetRecord', 'state']);
+    const baseRecord = preferredState === 'EMPTY' ? mergeProfile.get('targetRecord') : getState().getIn(['targetRecord', 'record']);
+    //const preferredHasSubrecords = preferredState === 'EMPTY' ? false : getState().getIn(['targetRecord', 'hasSubrecords']);
+
+    //const sourceRecord = getState().getIn(['sourceRecord', 'record']);
+    //const otherRecordHasSubrecords = getState().getIn(['sourceRecord', 'hasSubrecords']);
+
+    if (baseRecord && sourceRecord) { //targetRecord and sourceRecord
+      const merge = createRecordMerger(mergeConfiguration);
+      const validationRulesClone = _.clone(validationRules);
+      if (subrecordMergeType === subrecordMergeTypes.DISALLOW_SUBRECORDS) {
+        validationRulesClone.push(MergeValidation.otherRecordDoesNotHaveSubrecords);
+        validationRulesClone.push(MergeValidation.preferredRecordDoesNotHaveSubrecords);
+      }
+
+      MergeValidation.validateMergeCandidates(validationRulesClone, baseRecord, sourceRecord, preferredHasSubrecords, otherRecordHasSubrecords)
+        .then(() => merge(baseRecord, sourceRecord))
+        .then((originalMergedRecord) => {
+          if (!newFields) {
+            return originalMergedRecord;
+          }
+
+          const mergedRecord = new MarcRecord(originalMergedRecord);
+
+          newFields.forEach(field => {
+            const fields = mergedRecord.fields.filter(fieldInMerged => field.tag === fieldInMerged.tag && _.isEqual(field.subfields, fieldInMerged.subfields));
+
+            if (fields.length === 0) {
+              mergedRecord.appendField({...field, uuid: uuid.v4()});
+            }
+          });
+
+          return mergedRecord;
+        })
+        .then(mergedRecord => PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord))
+        .then(result => {
+          dispatch(setMergedRecord(result.record));
+        })
+        .catch(exceptCoreErrors(error => {
+          dispatch(setMergedRecordError(error));
+        }));
+
+      // find pairs for subrecods
+      const sourceSubrecordList = sourceSubrecords(getState());
+      const targetSubrecordList = targetSubrecords(getState());
+
+      const matchedSubrecordPairs = match(sourceSubrecordList, targetSubrecordList);
+
+      dispatch(updateSubrecordArrangement(matchedSubrecordPairs));
+
+      if (subrecordMergeType === subrecordMergeTypes.MERGE || subrecordMergeType === subrecordMergeTypes.SHARED) {
+        dispatch(updateMergedSubrecords(matchedSubrecordPairs));
+      }
     }
 
-    function mergeFields(base, overwrites) {
-      const tags = overwrites.fields.map(field => field.tag);
-
-      return {
-        leader: overwrites.leader ? overwrites.leader : base.leader,
-        fields: base.fields.filter(field => !tags.includes(field.tag)).concat(overwrites.fields)
-      };
-    }
+    /**/
   }
 }
+
+//-----------------------------------------------------------------------------
 
 // Jos base on haettu kannasta, niin ID säilyy
 // Uudella tietueella CAT häviää

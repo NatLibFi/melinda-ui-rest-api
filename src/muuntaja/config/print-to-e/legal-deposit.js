@@ -91,7 +91,7 @@ import {preset as MergeValidationPreset} from '../../marc-record-merge-validate-
 import {preset as PostMergePreset} from '../../marc-record-merge-postmerge-service';
 import TargetRecord from './target-record';
 import * as subrecordMergeTypes from '../subrecord-merge-types';
-import {hyphenate} from 'isbn-utils';
+import {hyphenate} from 'isbn3';
 
 module.exports = {
   "name": "Vapaakappalekirjastot",

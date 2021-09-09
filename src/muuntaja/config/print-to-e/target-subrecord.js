@@ -26,10 +26,10 @@
 *
 */
 
-import MarcRecord from 'marc-record-js';
-import {decorateFieldsWithUuid} from '../../record-utils';
+import {MarcRecord} from '@natlibfi/marc-record';
+//import {decorateFieldsWithUuid} from '../../record-utils';
 
-const record = new MarcRecord({
+export const record = new MarcRecord({
   leader: '^^^^^caa^a22002174i^4500',
   fields: [
     {
@@ -54,7 +54,7 @@ const record = new MarcRecord({
   ]
 });
 
-decorateFieldsWithUuid(record);
+//decorateFieldsWithUuid(record);
 
 //module.exports = record;
-export {record};
+//export {record};

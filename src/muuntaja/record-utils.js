@@ -27,7 +27,7 @@
 */
 
 import _ from 'lodash';
-import uuid from 'uuid';
+import {v4 as uuid} from 'uuid';
 
 const FUTURE_HOST_ID_PLACEHOLDER = '(FI-MELINDA)[future-host-id]';
 

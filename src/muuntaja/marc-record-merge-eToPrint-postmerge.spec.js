@@ -32,9 +32,9 @@ import fs from 'fs';
 import * as MarcRecordMergePostmergeService from './marc-record-merge-postmerge-service';
 import * as eToPrintPostmerge from './config/e-to-print/postmerge/eToPrint-postmerge.js';
 import {decorateFieldsWithUuid} from './record-utils';
-import uuid from 'uuid';
+import {v4 as uuid} from 'uuid';
 
-import MarcRecord from 'marc-record-js';
+import MarcRecord from '@natlibfi/marc-record';
 
 const TEST_CASE_SEPARATOR = '\n\n\n\n';
 

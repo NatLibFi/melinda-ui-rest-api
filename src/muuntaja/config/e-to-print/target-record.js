@@ -26,7 +26,7 @@
 *
 */
 
-import MarcRecord from 'marc-record-js';
+import MarcRecord from '@natlibfi/marc-record';
 import {decorateFieldsWithUuid} from '../../record-utils';
 
 const record = new MarcRecord({

@@ -89,16 +89,16 @@ mustBeIdentical (true|false)
 
 import {preset as MergeValidationPreset} from '../../marc-record-merge-validate-service';
 import {preset as PostMergePreset} from '../../marc-record-merge-postmerge-service';
-import TargetRecord from './target-record';
+import {baseRecord} from './target-record';
 import * as subrecordMergeTypes from '../subrecord-merge-types';
-import {hyphenate} from 'isbn-utils';
+import {hyphenate} from 'isbn3';
 
 module.exports = {
   "name": "Oletus",
   "description": "Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.",
   "mergeType": "printToE",
   "record": {
-    "targetRecord": TargetRecord,
+    "targetRecord": baseRecord,
     "validationRules": MergeValidationPreset.melinda_host,
     "postMergeFixes": PostMergePreset.defaults,
     "mergeConfiguration": {
