@@ -14,7 +14,9 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import defaults from 'defaults';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
+import _ from 'lodash';
 import {printToE} from './config/config-presets';
+import {MarcRecord} from '@natlibfi/marc-record';
 import createRecordMerger from '@natlibfi/marc-record-merge';
 import * as MergeValidation from './marc-record-merge-validate-service';
 import * as PostMerge from './marc-record-merge-postmerge-service';
@@ -137,7 +139,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
   //-----------------------------------------------------------------------------
 
-  async function transformRecord(sourceRecord) {
+  async function transformRecord(sourceRecord) { // eslint-disable-line max-statements
 
     logger.debug(`transformRecord`);
 
@@ -164,10 +166,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     */
 
     const transformType = printToE;
-    const transformProfile = transformType.defaults.default.record;
-
-    //logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
-    //logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
+    //const transformProfile = transformType.defaults.default.record;
+    const transformProfile = transformType.kvp.default.record;
 
     const baseRecord = transformProfile.targetRecord;
     const transformConfiguration = transformProfile.mergeConfiguration;
@@ -178,6 +178,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // Melinda-commons / subrecord picker
     const sourceRecordHasSubrecords = false;
     const baseRecordHasSubrecords = false;
+
+    //logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
+    //logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
 
     //logger.debug(JSON.stringify(sourceRecord));
     //logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
@@ -200,9 +203,30 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       return null;
     }
 
+    function appendNewFields(originalMergedRecord) {
+      if (!newFields) {
+        return originalMergedRecord;
+      }
+
+      const mergedRecord = new MarcRecord(originalMergedRecord);
+
+      newFields.forEach(field => {
+        const fields = mergedRecord.fields.filter(fieldInMerged => field.tag === fieldInMerged.tag && _.isEqual(field.subfields, fieldInMerged.subfields));
+
+        if (fields.length === 0) { // eslint-disable-line functional/no-conditional-statement
+          mergedRecord.appendField({...field});
+        }
+      });
+
+      return mergedRecord;
+    }
+
     const merge = createRecordMerger(transformConfiguration);
-    const mergedRecord = merge(baseRecord, sourceRecord);
-    return PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord).record;
+    const mergedRecord = appendNewFields(merge(baseRecord, sourceRecord));
+    const postMerged = PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord);
+
+    logger.debug(`Notes: ${JSON.stringify(postMerged.notes)}`);
+    return postMerged.record;
 
     /*
     if (baseRecord && sourceRecord) { //targetRecord and sourceRecord
