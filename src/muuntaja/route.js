@@ -102,7 +102,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   return new Router()
     .get('/base', getBaseRecords)
     .use(express.json())
-    .post('/merge', doMerge)
+    .post('/transform', doTransform)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -114,9 +114,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     res.json(baseRecords);
   }
 
-  async function doMerge(req, res) {
+  async function doTransform(req, res) {
 
-    logger.debug(`Merge`);
+    logger.debug(`Transform`);
 
     // Muuta ID:eiksi.
 

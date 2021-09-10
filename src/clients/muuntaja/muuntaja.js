@@ -57,11 +57,11 @@ const melindaMuuntaja = {
   },
   setSourceRecord (record) {
     this.storage.setItem('sourceRecord', JSON.stringify(record));
-    tryMerge();
+    tryTransform();
   },
   setBaseRecord (record) {
     this.storage.setItem('baseRecord', JSON.stringify(record));
-    tryMerge();
+    tryTransform();
   },
   remove () {
     return this.storage.removeItem(this.name);
@@ -409,7 +409,7 @@ function getBaseRecord() {
 // Merge records
 //-----------------------------------------------------------------------------
 
-function tryMerge() {
+function tryTransform() {
   console.log("try merge");
 
   const user = melindaUser.get();
@@ -433,10 +433,10 @@ function tryMerge() {
     return;
   }
 
-  console.log('Merging');
+  console.log('Transforming');
 
   fetch(
-    `${RESTurl}/muuntaja/merge`,
+    `${RESTurl}/muuntaja/transform`,
     {
       method: 'POST',
       headers: {
@@ -452,8 +452,8 @@ function tryMerge() {
     }
   )
     .then(response => response.json())
-    .then(merged => {
-      console.log('Merged:', merged);
-      showRecord(merged, 'result');
+    .then(transformed => {
+      console.log('Transformed:', transformed);
+      showRecord(transformed, 'result');
     });
 }
