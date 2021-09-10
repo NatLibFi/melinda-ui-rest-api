@@ -27,7 +27,7 @@
 */
 
 import {orderBy} from 'lodash';
-import MarcRecord from '@natlibfi/marc-record';
+import {MarcRecord} from '@natlibfi/marc-record';
 
 export function replaceFieldsFromSource(regex, sourcerecord, mergedRecordParam) {
   const fieldsFromSourceRecord = sourcerecord.fields.filter(field => regex.test(field.tag));

@@ -5,6 +5,8 @@
  ******************************************************************************
  */
 
+/* eslint-disable no-unused-vars */
+
 import express, {Router} from 'express';
 //import HttpStatus from 'http-status';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
@@ -13,6 +15,9 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {printToE} from './config/config-presets';
+import createRecordMerger from '@natlibfi/marc-record-merge';
+import * as MergeValidation from './marc-record-merge-validate-service';
+import * as PostMerge from './marc-record-merge-postmerge-service';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -112,7 +117,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     res.json(baseRecords);
   }
 
-  function doMerge(req, res) {
+  async function doMerge(req, res) {
 
     logger.debug(`Merge`);
 
@@ -123,7 +128,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //logger.debug(JSON.stringify(base.overwrites));
 
-    const merged = mergeRecords(source);
+    const merged = await transformRecord(source);
 
     //logger.debug(JSON.stringify(merged));
 
@@ -132,21 +137,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
   //-----------------------------------------------------------------------------
 
-  function mergeRecords(sourceRecord) {
+  async function transformRecord(sourceRecord) {
 
-    logger.debug(`update merged record`);
-    logger.debug(JSON.stringify(sourceRecord));
+    logger.debug(`transformRecord`);
 
     /* These will be delivered from frontend: */
 
-    const transformType = printToE;
-    const transformProfile = transformType.defaults; // eslint-disable-line
-    const {baseRecord} = transformType; // eslint-disable-line
-
-    logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
-    logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
-
     /*
+    // Transform type & profile
     const getMergeProfile = getState().getIn(['config', 'mergeProfiles', getState().getIn(['config', 'selectedMergeProfile']), 'record']);
     const defaultProfile = getState().getIn(['config', 'mergeProfiles']);
     const mergeProfile = getMergeProfile === undefined ? defaultProfile.first() : getMergeProfile;
@@ -163,7 +161,50 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //const sourceRecord = getState().getIn(['sourceRecord', 'record']);
     //const otherRecordHasSubrecords = getState().getIn(['sourceRecord', 'hasSubrecords']);
+    */
 
+    const transformType = printToE;
+    const transformProfile = transformType.defaults.default.record;
+
+    //logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
+    //logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
+
+    const baseRecord = transformProfile.targetRecord;
+    const transformConfiguration = transformProfile.mergeConfiguration;
+    const {validationRules} = transformProfile;
+    const {postMergeFixes} = transformProfile;
+    const {newFields} = transformProfile;
+
+    // Melinda-commons / subrecord picker
+    const sourceRecordHasSubrecords = false;
+    const baseRecordHasSubrecords = false;
+
+    //logger.debug(JSON.stringify(sourceRecord));
+    //logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
+    //logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
+
+    //logger.debug(`Config: ${JSON.stringify(transformConfiguration, null, 2)}`);
+    //logger.debug(`Validation: ${JSON.stringify(validationRules)}`);
+
+    /*
+    const validationRulesClone = _.clone(validationRules);
+    if (subrecordMergeType === subrecordMergeTypes.DISALLOW_SUBRECORDS) {
+      validationRulesClone.push(MergeValidation.otherRecordDoesNotHaveSubrecords);
+      validationRulesClone.push(MergeValidation.preferredRecordDoesNotHaveSubrecords);
+    }
+    */
+
+    const valid = await MergeValidation.validateMergeCandidates(validationRules, baseRecord, sourceRecord, baseRecordHasSubrecords, sourceRecordHasSubrecords);
+
+    if (!valid) {
+      return null;
+    }
+
+    const merge = createRecordMerger(transformConfiguration);
+    const mergedRecord = merge(baseRecord, sourceRecord);
+    return PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord).record;
+
+    /*
     if (baseRecord && sourceRecord) { //targetRecord and sourceRecord
       const merge = createRecordMerger(mergeConfiguration);
       const validationRulesClone = _.clone(validationRules);
@@ -213,6 +254,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     /**/
+    //return mergedRecord;
   }
 }
 
