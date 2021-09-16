@@ -44,10 +44,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   async function doTransform(req, res) { // eslint-disable-line max-statements
-
     logger.debug(`Transform`);
-
-    // Muuta ID:eiksi.
 
     const {sourceID, baseID} = req.body; // eslint-disable-line
 
@@ -55,14 +52,15 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     logger.debug(`baseID: ${baseID}`);
     // validate source, validate base
 
-    const sourceRecord = await getSourceRecord(sourceID);
-    //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
-
     const transformType = printToE;
     //const transformProfile = transformType.defaults.default.record;
     const transformProfile = transformType.kvp.default.record;
 
-    const baseRecord = await getBaseRecord(baseID, transformProfile.targetRecord);
+    const [sourceRecord, baseRecord] = await Promise.all([
+      getSourceRecord(sourceID),
+      getBaseRecord(baseID, transformProfile.targetRecord)
+    ]);
+    //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
     const merged = {
       source: sourceRecord,
