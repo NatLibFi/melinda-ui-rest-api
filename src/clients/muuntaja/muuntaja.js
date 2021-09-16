@@ -67,6 +67,18 @@ const melindaMuuntaja = {
 
 //-----------------------------------------------------------------------------
 
+function startProcess()
+{
+  const progressbar = document.querySelector(`#busybar`);
+  progressbar.className="progress-bar";
+}
+
+function stopProcess()
+{
+  const progressbar = document.querySelector(`#busybar`);
+  progressbar.className="progress-bar-inactive";
+}
+
 function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {
@@ -107,7 +119,7 @@ function initialize() {
   // First, check if there is a message from server!
   // If so --> go to server note tab.
   // If server note has OK button, we go to login/muuntaja
-
+  
   // Get auth token, if it exists
   const user = melindaUser.get();
   console.log('User:', user);
@@ -248,6 +260,11 @@ function showRecord(data, dest) {
 
   if(!data) return;
 
+  if(data.error) {
+    sourceDiv.innerHTML = data.error;
+    return;
+  }
+
   addField(sourceDiv, {tag: 'LDR', value: data.leader});
   for (const field of data.fields) {
     addField(sourceDiv, field);
@@ -344,6 +361,8 @@ function doTransform(event = undefined) {
   console.log('Source ID:', sourceID);
   console.log('Base ID:', baseID);
 
+  startProcess();
+
   fetch(
     `${RESTurl}/muuntaja/transform`,
     {
@@ -363,6 +382,7 @@ function doTransform(event = undefined) {
     .then(transformed => {
       const {source, base, result} = transformed;
       //console.log('Transformed:', transformed);
+      stopProcess();
       showRecord(source, 'source');
       showRecord(base, 'base');
       showRecord(result, 'result');

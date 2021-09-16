@@ -62,14 +62,12 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
-    const merged = {
+    res.json({
       source: sourceRecord,
+      //source: {error: 'Not found'},
       base: baseRecord,
       result: await getResultRecord(sourceRecord, baseRecord)
-    };
-    //logger.debug(JSON.stringify(merged));
-
-    res.json(merged);
+    });
 
     function getSourceRecord(id) {
       if (!id) {
