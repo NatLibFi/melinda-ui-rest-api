@@ -15,6 +15,8 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {transformRecord} from './transform';
+import {getRecordByID} from '../common/common';
+import {printToE} from './config/config-presets';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -26,81 +28,12 @@ import {transformRecord} from './transform';
    2. overwrites, which overwrite fields in source record.
 */
 
-const baseRecords = {
-  overwrites: {
-    leader: '00000cam^a22006134i^4500',
-    fields: [
-      {tag: '001', value: '000000000'},
-      {tag: '007', value: 'cr^||^||||||||'},
-      {tag: '008', value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^'},
-      {
-        tag: '337', subfields: [
-          {code: 'a', value: 'tietokonekäyttöinen'},
-          {code: 'b', value: 'c'},
-          {code: '2', value: 'rdamedia'}
-        ]
-      },
-      {
-        tag: '338', subfields: [
-          {code: 'a', value: 'verkkoaineisto'},
-          {code: 'b', value: 'cr'},
-          {code: '2', value: 'rdacarrier'}
-        ]
-      }
-    ]
-  },
-  defaults: {
-    fields: [
-      {
-        tag: '020', subfields: [
-          {code: 'a', value: ''},
-          {code: 'q', value: 'PDF'}
-        ]
-      },
-      {tag: '041', ind1: '0', subfields: [{code: 'a', value: 'eng'}]}
-    ]
-  }
-};
-
-/*
-const options = {
-  "type": [{
-    displayName: "...",
-    description: "...",
-    value: "e2p"
-  }]
-  profile: {
-
-  }
-}
-
-{
-  type: "e2p",
-  profile: "fdsfd"
-  source:
-  base:
-}
-*/
-
-/* Changes applied to merged record in any case */
-/*
-const mergeDefaults =
-{
-  overwrites: {
-    fields: [{tag: '001', value: '000000000'}]
-  },
-  defaults: {
-    fields: []
-  }
-};
-*/
-
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   logger.debug('Creating muuntaja route');
 
   return new Router()
-    .get('/base', getBaseRecords)
+    //.get('/base', getBaseRecords)
     .use(express.json())
     .post('/transform', doTransform)
     .use(handleError);
@@ -110,26 +43,56 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
-  function getBaseRecords(req, res) {
-    res.json(baseRecords);
-  }
-
-  async function doTransform(req, res) {
+  async function doTransform(req, res) { // eslint-disable-line max-statements
 
     logger.debug(`Transform`);
 
     // Muuta ID:eiksi.
 
-    const {defaults, source, overwrites} = req.body; // eslint-disable-line
+    const {sourceID, baseID} = req.body; // eslint-disable-line
+
+    logger.debug(`sourceID: ${sourceID}`);
+    logger.debug(`baseID: ${baseID}`);
     // validate source, validate base
 
-    //logger.debug(JSON.stringify(base.overwrites));
+    const sourceRecord = await getSourceRecord(sourceID);
+    logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
-    const merged = await transformRecord(logger, source);
+    const transformType = printToE;
+    //const transformProfile = transformType.defaults.default.record;
+    const transformProfile = transformType.kvp.default.record;
 
+    const baseRecord = getBaseRecord(baseID);
+
+    const merged = {
+      source: sourceRecord,
+      base: baseRecord,
+      result: await getResultRecord(sourceRecord, baseRecord)
+    };
     //logger.debug(JSON.stringify(merged));
 
     res.json(merged);
+
+    function getSourceRecord(id) {
+      if (!id) {
+        return null;
+      }
+      return getRecordByID(id);
+    }
+
+    function getBaseRecord(id) {
+      if (!id) {
+        return transformProfile.targetRecord;
+      }
+      return getRecordByID(id);
+    }
+
+    function getResultRecord(source, base) {
+      if (!source) {
+        return null;
+      }
+      return transformRecord(logger, transformProfile, source, base);
+    }
   }
 }
 

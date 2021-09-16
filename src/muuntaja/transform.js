@@ -1,11 +1,10 @@
 import _ from 'lodash';
-import {printToE} from './config/config-presets';
 import {MarcRecord} from '@natlibfi/marc-record';
 import createRecordMerger from '@natlibfi/marc-record-merge';
 import * as MergeValidation from './marc-record-merge-validate-service';
 import * as PostMerge from './marc-record-merge-postmerge-service';
 
-export async function transformRecord(logger, sourceRecord) { // eslint-disable-line max-statements
+export async function transformRecord(logger, transformProfile, sourceRecord, baseRecord) { // eslint-disable-line max-statements
 
   logger.debug(`transformRecord`);
 
@@ -31,11 +30,6 @@ export async function transformRecord(logger, sourceRecord) { // eslint-disable-
   //const otherRecordHasSubrecords = getState().getIn(['sourceRecord', 'hasSubrecords']);
   */
 
-  const transformType = printToE;
-  //const transformProfile = transformType.defaults.default.record;
-  const transformProfile = transformType.kvp.default.record;
-
-  const baseRecord = transformProfile.targetRecord;
   const transformConfiguration = transformProfile.mergeConfiguration;
   const {validationRules} = transformProfile;
   const {postMergeFixes} = transformProfile;

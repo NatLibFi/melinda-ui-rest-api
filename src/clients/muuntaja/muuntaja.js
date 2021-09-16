@@ -57,11 +57,11 @@ const melindaMuuntaja = {
   },
   setSourceRecord (record) {
     this.storage.setItem('sourceRecord', JSON.stringify(record));
-    tryTransform();
+    doTransform();
   },
   setBaseRecord (record) {
     this.storage.setItem('baseRecord', JSON.stringify(record));
-    tryTransform();
+    doTransform();
   },
   remove () {
     return this.storage.removeItem(this.name);
@@ -146,11 +146,12 @@ function authSuccess(response) {
   }
 
   // Loads last worked records, needs to check if input fields/ storage have record ids and if not put 'em in
-  getRecord(new Event('load'), 'source');
+  //getRecord(new Event('load'), 'source');
   //getRecord(new Event('load'), 'base');
-  getBaseRecord();
+  //getBaseRecord();
 
   showTab('muuntaja');
+  doTransform();
 }
 
 function authRequest(token, url = '') {
@@ -409,29 +410,30 @@ function getBaseRecord() {
 // Merge records
 //-----------------------------------------------------------------------------
 
-function tryTransform() {
+function doTransform() {
   console.log("try merge");
 
   const user = melindaUser.get();
   //console.log('User:', user);
-  if(!user || !user.Token) return;
+  if(!user) return;
   
   const token = user.Token;
 
-  console.log("Token:", token);
+  // console.log("Token:", token);
 
-  if (!token) {
-    return;
-  }
+  if (!token) return;
 
-  const source = melindaMuuntaja.get('sourceRecord');
-  const base = melindaMuuntaja.get('baseRecord');
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
-  console.log('Source & Base:', source, base);
+  console.log('Source ID:', sourceID);
+  console.log('Base ID:', baseID);
 
-  if (!source || !base) {
-    return;
-  }
+  //const source = melindaMuuntaja.get('sourceRecord');
+  //const base = melindaMuuntaja.get('baseRecord');
+  //console.log('Source & Base:', source, base);
+
+  // if (!source || !base) return;
 
   console.log('Transforming');
 
@@ -445,15 +447,17 @@ function tryTransform() {
         Authorization: token
       },
       body: JSON.stringify({
-        source,
-        defaults: base.defaults,
-        overwrites: base.overwrites
+        sourceID: sourceID,
+        baseID: baseID,
       })
     }
   )
     .then(response => response.json())
     .then(transformed => {
-      console.log('Transformed:', transformed);
-      showRecord(transformed, 'result');
+      const {source, base, result} = transformed;
+      //console.log('Transformed:', transformed);
+      showRecord(source, 'source');
+      showRecord(base, 'base');
+      showRecord(result, 'result');
     });
 }
