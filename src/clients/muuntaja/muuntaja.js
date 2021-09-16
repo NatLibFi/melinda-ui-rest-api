@@ -69,13 +69,13 @@ const melindaMuuntaja = {
 
 function startProcess()
 {
-  const progressbar = document.querySelector(`#busybar`);
+  const progressbar = document.querySelector(`#progressbar`);
   progressbar.className="progress-bar";
 }
 
 function stopProcess()
 {
-  const progressbar = document.querySelector(`#busybar`);
+  const progressbar = document.querySelector(`#progressbar`);
   progressbar.className="progress-bar-inactive";
 }
 
@@ -382,9 +382,9 @@ function doTransform(event = undefined) {
     .then(transformed => {
       const {source, base, result} = transformed;
       //console.log('Transformed:', transformed);
-      stopProcess();
       showRecord(source, 'source');
       showRecord(base, 'base');
       showRecord(result, 'result');
+      stopProcess();
     });
 }
