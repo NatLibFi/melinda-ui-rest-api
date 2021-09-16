@@ -62,7 +62,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //const transformProfile = transformType.defaults.default.record;
     const transformProfile = transformType.kvp.default.record;
 
-    const baseRecord = getBaseRecord(baseID);
+    const baseRecord = await getBaseRecord(baseID, transformProfile.targetRecord);
 
     const merged = {
       source: sourceRecord,
@@ -80,9 +80,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       return getRecordByID(id);
     }
 
-    function getBaseRecord(id) {
+    function getBaseRecord(id, _default) {
       if (!id) {
-        return transformProfile.targetRecord;
+        return _default;
       }
       return getRecordByID(id);
     }
@@ -99,12 +99,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 //-----------------------------------------------------------------------------
 
 // Jos base on haettu kannasta, niin ID säilyy
-// Uudella tietueella CAT häviää
 
 // Osakohteet (pidä mielessä)
-
-// Add field sort:
-/* Field sort: muuntaja/frontend/js/marc-field-sort.js */
 
 // Recordin käsittely:
 // https://github.com/NatLibFi/marc-record-merge-js/tree/next/src/reducers

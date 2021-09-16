@@ -55,12 +55,12 @@ const melindaMuuntaja = {
   set (token) {
     return this.storage.setItem(this.name, JSON.stringify(token));
   },
-  setSourceRecord (record) {
-    this.storage.setItem('sourceRecord', JSON.stringify(record));
+  setSourceID (id) {
+    this.storage.setItem('sourceRecordID', id);
     doTransform();
   },
-  setBaseRecord (record) {
-    this.storage.setItem('baseRecord', JSON.stringify(record));
+  setBaseID (id) {
+    this.storage.setItem('baseRecordID', id);
     doTransform();
   },
   remove () {
@@ -104,8 +104,8 @@ function reload() {
 function initialize() {
   console.log('Initializing');
 
-  melindaMuuntaja.setBaseRecord(null);
-  melindaMuuntaja.setSourceRecord(null);
+  melindaMuuntaja.setBaseID(null);
+  melindaMuuntaja.setSourceID(null);
 
   // First, check if there is a message from server!
   // If so --> go to server note tab.
@@ -253,19 +253,24 @@ function onAccount(e) {
 
 function getRecord(e, dest) {
   e.preventDefault();
-  console.log('Fetch:', e);
+  //console.log('Fetch:', e);
 
+  /*
   const recordID = document.querySelector(`#muuntaja .record-merge-panel #${dest} #ID`).value;
-
-  if (recordID === '') {
-    return;
-  }
 
   console.log('ID:', recordID);
 
+  dest === 'source' ? melindaMuuntaja.setSourceID(recordID) : melindaMuuntaja.setBaseID(recordID);
+  */
+
+  doTransform();
+
+  /*
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
   sourceDiv.innerHTML = '<div class="progress-bar"></div>';
+*/
 
+  /*
   const token = melindaUser.get().Token;
   console.log(token);
 
@@ -284,15 +289,18 @@ function getRecord(e, dest) {
       dest === 'source' ? melindaMuuntaja.setSourceRecord(data) : melindaMuuntaja.setBaseRecord(data);
       showRecord(data, dest);
     });
+*/
 }
 
 function showRecord(data, dest) {
-  console.log(data);
+  console.log("Show Record:", data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
 
   // Clear previous content
   sourceDiv.innerHTML = '';
+
+  if(!data) return;
 
   addField(sourceDiv, {tag: 'LDR', value: data.leader});
   for (const field of data.fields) {
@@ -401,7 +409,7 @@ function getBaseRecord() {
       const base = mergeRecords(response.defaults, response.overwrites);
 
       console.log('Base:', base);
-      melindaMuuntaja.setBaseRecord(response);
+      melindaMuuntaja.setBaseID(response);
       showRecord(base, 'base');
     });
 }
@@ -425,6 +433,8 @@ function doTransform() {
 
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+  //const sourceID = melindaMuuntaja.storage.getItem("sourceRecordID")
+  //const baseID = melindaMuuntaja.storage.getItem("baseRecordID")
 
   console.log('Source ID:', sourceID);
   console.log('Base ID:', baseID);
