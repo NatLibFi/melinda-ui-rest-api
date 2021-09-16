@@ -101,7 +101,7 @@
               <label>Lähdetietue</label>
               <input id="ID"/>
               </div>
-            <button class="material-icons" onclick="getRecord(event, 'source')">search</button>
+            <button class="material-icons" onclick="doTransform(event)">search</button>
             <button class="material-icons" disabled>swap_horiz</button>
             </form>
           <div id="Record" class="marc-record">
@@ -116,7 +116,7 @@
               <label>Pohjatietue</label>
               <input id="ID"/>
               </div>
-              <button class="material-icons" onclick="getRecord(event, 'base')">search</button>
+              <button class="material-icons" onclick="doTransform(event)">search</button>
               <div class="dropdown">
                 <button class="material-icons" onClick="onSettings(event)">settings</button>
                 <div class="dropdown-content" style="right: 0;">

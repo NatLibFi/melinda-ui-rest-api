@@ -39,9 +39,6 @@ const melindaUser = {
 // - User edits
 //-----------------------------------------------------------------------------
 
-// TODO: Store records, including result record
-// TODO: Logic to select base record from options (list of base records, ID from field)
-
 const melindaMuuntaja = {
   storage: window.sessionStorage,
   name: 'melinda-muuntaja',
@@ -56,12 +53,12 @@ const melindaMuuntaja = {
     return this.storage.setItem(this.name, JSON.stringify(token));
   },
   setSourceID (id) {
-    this.storage.setItem('sourceRecordID', id);
-    doTransform();
+    //this.storage.setItem('sourceRecordID', id);
+    //doTransform();
   },
   setBaseID (id) {
-    this.storage.setItem('baseRecordID', id);
-    doTransform();
+    //this.storage.setItem('baseRecordID', id);
+    //doTransform();
   },
   remove () {
     return this.storage.removeItem(this.name);
@@ -144,11 +141,6 @@ function authSuccess(response) {
     console.log(user);
     melindaUser.set(user);
   }
-
-  // Loads last worked records, needs to check if input fields/ storage have record ids and if not put 'em in
-  //getRecord(new Event('load'), 'source');
-  //getRecord(new Event('load'), 'base');
-  //getBaseRecord();
 
   showTab('muuntaja');
   doTransform();
@@ -246,52 +238,6 @@ function onAccount(e) {
   logout();
 }
 
-//-----------------------------------------------------------------------------
-// Record fetching
-// TODO: Make this bit more general...
-//-----------------------------------------------------------------------------
-
-function getRecord(e, dest) {
-  e.preventDefault();
-  //console.log('Fetch:', e);
-
-  /*
-  const recordID = document.querySelector(`#muuntaja .record-merge-panel #${dest} #ID`).value;
-
-  console.log('ID:', recordID);
-
-  dest === 'source' ? melindaMuuntaja.setSourceID(recordID) : melindaMuuntaja.setBaseID(recordID);
-  */
-
-  doTransform();
-
-  /*
-  const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
-  sourceDiv.innerHTML = '<div class="progress-bar"></div>';
-*/
-
-  /*
-  const token = melindaUser.get().Token;
-  console.log(token);
-
-  fetch(
-    `${RESTurl}/bib/${recordID}`,
-    {
-      method: 'GET',
-      headers: {
-        Accepts: 'application/json',
-        Authorization: token
-      }
-    }
-  )
-    .then(response => response.json())
-    .then(data => {
-      dest === 'source' ? melindaMuuntaja.setSourceRecord(data) : melindaMuuntaja.setBaseRecord(data);
-      showRecord(data, dest);
-    });
-*/
-}
-
 function showRecord(data, dest) {
   console.log("Show Record:", data);
 
@@ -375,51 +321,12 @@ function showRecord(data, dest) {
 }
 
 //-----------------------------------------------------------------------------
-// Merge base record defaults and overwrites
+// Do transform
 //-----------------------------------------------------------------------------
 
-function mergeRecords(base, overwrites) {
-  const tags = overwrites.fields.map(field => field.tag);
-
-  return {
-    leader: overwrites.leader ? overwrites.leader : base.leader,
-    fields: base.fields.filter(field => !tags.includes(field.tag)).concat(overwrites.fields)
-  };
-}
-
-//-----------------------------------------------------------------------------
-// Get base records
-//-----------------------------------------------------------------------------
-
-function getBaseRecord() {
-  const token = melindaUser.get().Token;
-
-  fetch(
-    `${RESTurl}/muuntaja/base`,
-    {
-      method: 'GET',
-      headers: {
-        Accepts: 'application/json',
-        Authorization: token
-      }
-    }
-  )
-    .then(response => response.json())
-    .then(response => {
-      const base = mergeRecords(response.defaults, response.overwrites);
-
-      console.log('Base:', base);
-      melindaMuuntaja.setBaseID(response);
-      showRecord(base, 'base');
-    });
-}
-
-//-----------------------------------------------------------------------------
-// Merge records
-//-----------------------------------------------------------------------------
-
-function doTransform() {
-  console.log("try merge");
+function doTransform(event = undefined) {
+  console.log('Transforming');
+  if(event) event.preventDefault();
 
   const user = melindaUser.get();
   //console.log('User:', user);
@@ -433,19 +340,9 @@ function doTransform() {
 
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
-  //const sourceID = melindaMuuntaja.storage.getItem("sourceRecordID")
-  //const baseID = melindaMuuntaja.storage.getItem("baseRecordID")
 
   console.log('Source ID:', sourceID);
   console.log('Base ID:', baseID);
-
-  //const source = melindaMuuntaja.get('sourceRecord');
-  //const base = melindaMuuntaja.get('baseRecord');
-  //console.log('Source & Base:', source, base);
-
-  // if (!source || !base) return;
-
-  console.log('Transforming');
 
   fetch(
     `${RESTurl}/muuntaja/transform`,

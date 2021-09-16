@@ -56,7 +56,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // validate source, validate base
 
     const sourceRecord = await getSourceRecord(sourceID);
-    logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
+    //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
     const transformType = printToE;
     //const transformProfile = transformType.defaults.default.record;
