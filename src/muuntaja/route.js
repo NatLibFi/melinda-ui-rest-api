@@ -5,8 +5,6 @@
  ******************************************************************************
  */
 
-/* eslint-disable no-unused-vars */
-
 import express, {Router} from 'express';
 //import HttpStatus from 'http-status';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
@@ -46,7 +44,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {sourceID, baseID} = req.body; // eslint-disable-line
+    const {sourceID, baseID} = req.body;
 
     logger.debug(`sourceID: ${sourceID}`);
     logger.debug(`baseID: ${baseID}`);
