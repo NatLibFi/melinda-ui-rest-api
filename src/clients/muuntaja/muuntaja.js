@@ -262,12 +262,20 @@ function showRecord(data, dest) {
 
   if(data.error) {
     sourceDiv.innerHTML = data.error;
-    return;
   }
+  
+  if(data.notes) {
+    sourceDiv.innerHTML = data.notes;
+  }
+  
+  if(data.record)
+  {
+    const record = data.record;
 
-  addField(sourceDiv, {tag: 'LDR', value: data.leader});
-  for (const field of data.fields) {
-    addField(sourceDiv, field);
+    addField(sourceDiv, {tag: 'LDR', value: record.leader});
+    for (const field of record.fields) {
+      addField(sourceDiv, field);
+    }
   }
 
   //---------------------------------------------------------------------------

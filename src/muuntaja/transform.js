@@ -85,8 +85,10 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   const mergedRecord = appendNewFields(merge(baseRecord, sourceRecord));
   const postMerged = PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord);
 
-  logger.debug(`Notes: ${JSON.stringify(postMerged.notes)}`);
-  return postMerged.record;
+  return {
+    notes: postMerged.notes,
+    record: postMerged.record
+  };
 
   /*
   if (baseRecord && sourceRecord) { //targetRecord and sourceRecord

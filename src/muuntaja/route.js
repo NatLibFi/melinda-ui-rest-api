@@ -55,26 +55,23 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     const transformProfile = transformType.kvp.default.record;
 
     const [sourceRecord, baseRecord] = await Promise.all([
-      getSourceRecord(sourceID),
-      getBaseRecord(baseID, transformProfile.targetRecord)
+      getRecord(sourceID),
+      getRecord(baseID, transformProfile.targetRecord)
     ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
     res.json({
-      source: sourceRecord,
-      //source: {error: 'Not found'},
-      base: baseRecord,
+      source: {
+        //error: 'Not found',
+        record: sourceRecord
+      },
+      base: {
+        record: baseRecord
+      },
       result: await getResultRecord(sourceRecord, baseRecord)
     });
 
-    function getSourceRecord(id) {
-      if (!id) {
-        return null;
-      }
-      return getRecordByID(id);
-    }
-
-    function getBaseRecord(id, _default) {
+    function getRecord(id, _default = null) {
       if (!id) {
         return _default;
       }
