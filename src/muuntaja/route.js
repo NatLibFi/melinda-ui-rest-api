@@ -13,18 +13,13 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {transformRecord} from './transform';
-import {getRecordByID} from '../common/common';
+import {getRecordByID} from '../bib/bib';
 import {printToE} from './config/config-presets';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
-
-/* Base records have two parts:
-   1. defaults, which fill possible missing fields in source record, and
-   2. overwrites, which overwrite fields in source record.
-*/
 
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
