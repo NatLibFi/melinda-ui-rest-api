@@ -14,7 +14,41 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {transformRecord} from './transform';
 import {getRecordByID} from '../bib/bib';
-import {printToE} from './config/config-presets';
+
+//import mergeProfiles from './print-to-e';
+//import {baseRecord} from './print-to-e/target-record';
+//import {printToE} from './config/config-presets';
+
+//-----------------------------------------------------------------------------
+
+import p2eDefaultProfile from './config/print-to-e/default';
+
+const profiles = { // eslint-disable-line
+  'p2e': {
+    'kvp': p2eDefaultProfile.record
+  }
+};
+
+/*
+const defaultPreset = {
+  default: mergeProfiles.default
+};
+
+export const printToE = {
+  mergeType: 'printToE',
+  baseRecord,
+  'defaults': defaultPreset,
+  'aleph': mergeProfiles,
+  'kvp': mergeProfiles,
+  'fenni': {
+    'default': mergeProfiles.default,
+    'fennica': mergeProfiles.fennica,
+    'legal_deposit': mergeProfiles.legal_deposit
+  },
+  'selma': defaultPreset,
+  'halti': defaultPreset
+};
+*/
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -45,9 +79,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     logger.debug(`baseID: ${baseID}`);
     // validate source, validate base
 
-    const transformType = printToE;
-    //const transformProfile = transformType.defaults.default.record;
-    const transformProfile = transformType.kvp.default.record;
+    const transformProfile = profiles.p2e.kvp;
 
     const [sourceRecord, baseRecord] = await Promise.all([
       getRecord(sourceID),
