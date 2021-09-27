@@ -20,12 +20,26 @@ import {getRecordByID} from '../bib/bib';
 //import {printToE} from './config/config-presets';
 
 //-----------------------------------------------------------------------------
+// Make this a list. Give the records names meant for menu. Add transform options to list.
+// Add handling those to UI
 
 import p2eDefaultProfile from './config/print-to-e/default';
+//import {preset as MergeValidationPreset} from './marc-record-merge-validate-service';
+//import {preset as PostMergePreset} from './marc-record-merge-postmerge-service';
+//import {baseRecord as p2eDefaultBase} from './config/print-to-e/target-record';
 
-const profiles = { // eslint-disable-line
+const profiles = {
   'p2e': {
-    'kvp': p2eDefaultProfile.record
+    'kvp': {
+      //'baseRecord': p2eDefaultBase,
+      //'validationRules': MergeValidationPreset.melinda_host,
+      //'postMergeFixes': PostMergePreset.defaults,
+      'baseRecord': p2eDefaultProfile.record.targetRecord,
+      'validationRules': p2eDefaultProfile.record.validationRules,
+      'postMergeFixes': p2eDefaultProfile.record.postMergeFixes,
+      'mergeConfiguration': p2eDefaultProfile.record.mergeConfiguration,
+      'newFields': p2eDefaultProfile.record.newFields
+    }
   }
 };
 
@@ -50,10 +64,7 @@ export const printToE = {
 };
 */
 
-// https://github.com/NatLibFi/marc-record-serializers
-
-// Make this a list. Give the records names meant for menu. Add transform options to list.
-// Add handling those to UI
+//-----------------------------------------------------------------------------
 
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
@@ -83,7 +94,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const [sourceRecord, baseRecord] = await Promise.all([
       getRecord(sourceID),
-      getRecord(baseID, transformProfile.targetRecord)
+      getRecord(baseID, transformProfile.baseRecord)
     ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
