@@ -6,9 +6,26 @@ import * as PostMerge from './marc-record-merge-postmerge-service';
 
 export async function transformRecord(logger, transformProfile, sourceRecord, baseRecord) { // eslint-disable-line max-statements
 
-  logger.debug(`transformRecord`);
+  //logger.debug(`transformRecord`);
 
-  /* These will be delivered from frontend: */
+  const transformConfiguration = transformProfile.mergeConfiguration;
+  const {validationRules} = transformProfile;
+  const {postMergeFixes} = transformProfile;
+  const {newFields} = transformProfile;
+
+  // Melinda-commons / subrecord picker
+  const sourceRecordHasSubrecords = false;
+  const baseRecordHasSubrecords = false;
+
+  //logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
+  //logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
+
+  //logger.debug(JSON.stringify(sourceRecord));
+  //logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
+  //logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
+
+  //logger.debug(`Config: ${JSON.stringify(transformConfiguration, null, 2)}`);
+  //logger.debug(`Validation: ${JSON.stringify(validationRules)}`);
 
   /*
   // Transform type & profile
@@ -29,25 +46,6 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   //const sourceRecord = getState().getIn(['sourceRecord', 'record']);
   //const otherRecordHasSubrecords = getState().getIn(['sourceRecord', 'hasSubrecords']);
   */
-
-  const transformConfiguration = transformProfile.mergeConfiguration;
-  const {validationRules} = transformProfile;
-  const {postMergeFixes} = transformProfile;
-  const {newFields} = transformProfile;
-
-  // Melinda-commons / subrecord picker
-  const sourceRecordHasSubrecords = false;
-  const baseRecordHasSubrecords = false;
-
-  //logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
-  //logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
-
-  //logger.debug(JSON.stringify(sourceRecord));
-  //logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
-  //logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
-
-  //logger.debug(`Config: ${JSON.stringify(transformConfiguration, null, 2)}`);
-  //logger.debug(`Validation: ${JSON.stringify(validationRules)}`);
 
   /*
   const validationRulesClone = _.clone(validationRules);

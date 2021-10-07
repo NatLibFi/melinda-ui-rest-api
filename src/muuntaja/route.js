@@ -94,10 +94,12 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const transformProfile = profiles.p2e.kvp;
 
-    const [sourceRecord, baseRecord] = await Promise.all([
-      getRecord(source.ID),
-      getRecord(base.ID, transformProfile.baseRecord)
-    ]);
+    const [sourceRecord, baseRecord] = (
+      await Promise.all([
+        getRecord(source.ID),
+        getRecord(base.ID, transformProfile.baseRecord)
+      ]))
+      .map(record => preProcess(record));
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
     const resultRecord = await getResultRecord(
@@ -110,21 +112,26 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // which input record. Mark them.
 
     res.json({
-      source: removeUnusedUUID(sourceRecord, resultRecord),
-      base: removeUnusedUUID(baseRecord, resultRecord),
-      result: resultRecord,
+      ...postProcess(sourceRecord, baseRecord, resultRecord),
       excluded: {}
     });
 
     async function getRecord(id, _default = null) {
       if (!id) {
-        return {record: addUUID(_default)};
+        return {record: _default};
       }
       try {
-        return {record: addUUID(await getRecordByID(id))};
+        return {record: await getRecordByID(id)};
       } catch (e) {
         return {error: e};
       }
+    }
+
+    function preProcess(record) {
+      return {
+        ...record,
+        record: addUUID(record.record)
+      };
     }
 
     function getResultRecord(source, base) {
@@ -132,6 +139,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         return null;
       }
       return transformRecord(logger, transformProfile, source, base);
+    }
+
+    function postProcess(source, base, result) {
+      return {
+        source: removeUnusedUUID(source, result),
+        base: removeUnusedUUID(base, result),
+        result
+      };
     }
 
     function decorate(record, tag) { // eslint-disable-line

@@ -7,23 +7,24 @@
   font-size: 14.5px;
 }
 
+.marc-record .row-toggable {
+  border: 1px white solid;
+}
+
+.marc-record .row-toggable:hover {
+  border: 1px dashed grey;
+}
+
 .marc-record .row-selected {
-  background-color: lightgreen;
+  background-color: #b2dfdb;
 }
 
 .marc-record .row-unselected {
-  background-color: lightblue;
 }
 
 #result .marc-record .row-unselected {
   display: none;
 }
-
-/*
-.marc-record .row:hover {
-  background-color: lightgray;
-}
-*/
 
 .marc-record .row .tag {
   color: #448aff;

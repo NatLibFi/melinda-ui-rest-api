@@ -310,6 +310,7 @@ function showRecord(data, dest) {
     row.setAttribute('class', 'row');
 
     if(field.uuid) {
+      row.classList.add("row-toggable");
       if(!records.excluded[field.uuid]) {
         row.classList.add("row-selected");
       } else {
