@@ -7,9 +7,23 @@
   font-size: 14.5px;
 }
 
+.marc-record .row-selected {
+  background-color: lightgreen;
+}
+
+.marc-record .row-unselected {
+  background-color: lightblue;
+}
+
+#result .marc-record .row-unselected {
+  display: none;
+}
+
+/*
 .marc-record .row:hover {
   background-color: lightgray;
 }
+*/
 
 .marc-record .row .tag {
   color: #448aff;

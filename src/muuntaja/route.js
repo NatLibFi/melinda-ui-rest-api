@@ -14,6 +14,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {transformRecord} from './transform';
 import {getRecordByID} from '../bib/bib';
+import {v4 as uuid} from 'uuid';
 
 //import mergeProfiles from './print-to-e';
 //import {baseRecord} from './print-to-e/target-record';
@@ -84,36 +85,46 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {sourceID, baseID} = req.body;
+    const {source, base, excluded} = req.body;
 
-    logger.debug(`sourceID: ${sourceID}`);
-    logger.debug(`baseID: ${baseID}`);
+    logger.debug(`sourceID: ${source.ID}`);
+    logger.debug(`baseID: ${base.ID}`);
+    logger.debug(`Excluded: ${excluded}`);
     // validate source, validate base
 
     const transformProfile = profiles.p2e.kvp;
 
     const [sourceRecord, baseRecord] = await Promise.all([
-      getRecord(sourceID),
-      getRecord(baseID, transformProfile.baseRecord)
+      getRecord(source.ID),
+      getRecord(base.ID, transformProfile.baseRecord)
     ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
+    const resultRecord = await getResultRecord(
+      sourceRecord.record,
+      baseRecord.record
+    );
+    //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
+
+    // What we want: (1) determine, which fields in the result record comes from
+    // which input record. Mark them.
+
     res.json({
-      source: {
-        //error: 'Not found',
-        record: sourceRecord
-      },
-      base: {
-        record: baseRecord
-      },
-      result: await getResultRecord(sourceRecord, baseRecord)
+      source: removeUnusedUUID(sourceRecord, resultRecord),
+      base: removeUnusedUUID(baseRecord, resultRecord),
+      result: resultRecord,
+      excluded: {}
     });
 
-    function getRecord(id, _default = null) {
+    async function getRecord(id, _default = null) {
       if (!id) {
-        return _default;
+        return {record: addUUID(_default)};
       }
-      return getRecordByID(id);
+      try {
+        return {record: addUUID(await getRecordByID(id))};
+      } catch (e) {
+        return {error: e};
+      }
     }
 
     function getResultRecord(source, base) {
@@ -122,12 +133,51 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       }
       return transformRecord(logger, transformProfile, source, base);
     }
+
+    function decorate(record, tag) { // eslint-disable-line
+      if (!record) {
+        return null;
+      }
+      return {
+        leader: record.leader,
+        fields: record.fields.map(f => ({...f, ...tag}))
+      };
+    }
+
+    function removeProperty(propKey, {[propKey]: propValue, ...rest}) { // eslint-disable-line
+      return rest;
+    }
+
+    function addUUID(record) { // eslint-disable-line
+      if (!record) {
+        return null;
+      }
+      return {
+        leader: record.leader,
+        fields: record.fields.map(f => ({...f, uuid: uuid()}))
+      };
+    }
+
+    function removeUnusedUUID(record, result) { // eslint-disable-line
+      if (!record.record) {
+        return null;
+      }
+
+      const uuids = result.record.fields.map(f => f.uuid);
+      //logger.debug(`UUIDs: ${uuids}`);
+
+      return {
+        ...record,
+        record: {
+          ...record.record,
+          fields: record.record.fields.map(f => uuids.includes(f.uuid) ? f : removeProperty('uuid', f))
+        }
+      };
+    }
   }
 }
 
 //-----------------------------------------------------------------------------
-
-// Jos base on haettu kannasta, niin ID säilyy
 
 // Osakohteet (pidä mielessä)
 

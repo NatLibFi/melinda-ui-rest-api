@@ -250,6 +250,30 @@ function onAccount(e) {
   logout();
 }
 
+var records = {
+  excluded: {},
+}
+
+function showTransformed()
+{
+  const {source, base, result} = records;
+  console.log('Transformed:', records);
+  showRecord(source, 'source');
+  showRecord(base, 'base');
+  showRecord(result, 'result');
+}
+
+function toggleField(event, uuid) {
+  console.log("Click:", uuid)
+
+  if(!records.excluded[uuid]) {
+    records.excluded[uuid] = true;
+  } else {
+    delete records.excluded[uuid];
+  }
+  showTransformed();
+}
+
 function showRecord(data, dest) {
   console.log("Show Record:", data);
 
@@ -284,6 +308,15 @@ function showRecord(data, dest) {
     //console.log(field)
     const row = document.createElement('div');
     row.setAttribute('class', 'row');
+
+    if(field.uuid) {
+      if(!records.excluded[field.uuid]) {
+        row.classList.add("row-selected");
+      } else {
+        row.classList.add("row-unselected");
+      }
+      row.addEventListener("click", event => toggleField(event, field.uuid))
+    }
 
     addTag(row, field.tag);
     addInd(row, field.ind1, field.ind2);
@@ -381,18 +414,20 @@ function doTransform(event = undefined) {
         Authorization: token
       },
       body: JSON.stringify({
-        sourceID: sourceID,
-        baseID: baseID,
+        source: {
+          ID: sourceID,
+        },
+        base: {
+          ID: baseID,
+        },
+        excluded: records.excluded,
       })
     }
   )
     .then(response => response.json())
     .then(transformed => {
-      const {source, base, result} = transformed;
-      //console.log('Transformed:', transformed);
-      showRecord(source, 'source');
-      showRecord(base, 'base');
-      showRecord(result, 'result');
+      records = transformed;
+      showTransformed();
       stopProcess();
     });
 }
