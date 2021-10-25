@@ -130,7 +130,7 @@
         <div id="result" class="col">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
-            <button class="material-icons" disabled>edit</button>
+            <button class="material-icons" onClick="onEdit(event)">edit</button>
             <button class="material-icons" onClick="onSave(event)" disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
@@ -142,6 +142,11 @@
   <!-- ---------------------------------------------------------------------- -->
   <!-- Search dialog -->
   <dialog id="searchDlg">
+    Testi
+  </dialog>
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Field edit dialog -->
+  <dialog id="fieldEditDlg" open>
     Testi
   </dialog>
 </body>

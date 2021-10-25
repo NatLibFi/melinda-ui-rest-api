@@ -12,6 +12,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import defaults from 'defaults';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
+import '@natlibfi/marc-record'; // eslint-disable-line
 import {transformRecord} from './transform';
 import {getRecordByID} from '../bib/bib';
 import {v4 as uuid} from 'uuid';
@@ -121,9 +122,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         return {record: _default};
       }
       try {
-        return {record: await getRecordByID(id)};
+        const record = await getRecordByID(id);
+        //logger.debug(`Record: ${JSON.stringify(record)}`);
+        return {record};
       } catch (e) {
-        return {error: e};
+        return {error: e.toString()};
       }
     }
 
@@ -138,7 +141,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       if (!source) {
         return null;
       }
-      return transformRecord(logger, transformProfile, source, base);
+      try {
+        return transformRecord(logger, transformProfile, source, base);
+      } catch (e) {
+        return {error: e.toString()};
+      }
     }
 
     function postProcess(source, base, result) {
@@ -174,8 +181,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function removeUnusedUUID(record, result) { // eslint-disable-line
-      if (!record.record) {
-        return null;
+      if (!record || !record.record || !result || !result.record) {
+        return record;
       }
 
       const uuids = result.record.fields.map(f => f.uuid);

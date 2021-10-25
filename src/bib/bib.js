@@ -22,17 +22,43 @@ export function getRecordByID(id) {
   const client = createClient({
     url: config.sruUrl,
     recordSchema: 'marcxml', // Resp = xml
-    //recordSchema: 'marc', // Resp = error
     retrieveAll: false
     //maxRecordsPerRequest: 1
   });
 
-  //let recordPromise; // eslint-disable-line
+  /*
+    const result = await client.searchRetrieve(`rec.id=${id}`)
+      .on('record', record => MARCXML.from(record, {subfieldValues: false}))
+      .on('end', () => resultRecord)
+      .on('error', err => err);
 
-  return new Promise((resolve, reject) => client.searchRetrieve(`rec.id=${id}`)
-    .on('record', record => resolve(MARCXML.from(record, {subfieldValues: false})))
-  //.on('end', () => endProcessing())
-    .on('error', err => reject(err)));
+    return result;
+  */
+
+  return new Promise((resolve, reject) => {
+    let promise; // eslint-disable-line functional/no-let
+
+    // rec.id -> foo.bar --> virhe
+
+    client.searchRetrieve(`rec.id=${id}`)
+      .on('record', xmlString => {
+        promise = MARCXML.from(xmlString, {subfieldValues: false});
+      })
+      .on('end', async () => {
+        if (promise) {
+          try {
+            const record = await promise;
+            resolve(record);
+          } catch (err) {
+            reject(err);
+          }
+          return;
+        }
+        //resolve();
+        reject(Error('Not found.'));
+      })
+      .on('error', err => reject(err));
+  });
 
   /*
   function processRecord(data) {

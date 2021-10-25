@@ -230,6 +230,10 @@ function onNew(e) {
   resetForms(document.getElementById('muuntaja'));
 }
 
+function onEdit(e) {
+  console.log('Edit:', e);
+}
+
 function onSearch(e) {
   console.log('Search:', e);
   const dialog = document.getElementById('searchDlg');
@@ -303,6 +307,7 @@ function showRecord(data, dest) {
   }
 
   //---------------------------------------------------------------------------
+  // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
 
   function addField(div, field) {
     //console.log(field)
@@ -334,6 +339,7 @@ function showRecord(data, dest) {
   }
 
   //---------------------------------------------------------------------------
+  
   function addTag(row, value) {
     row.appendChild(makeSpan('tag', value));
   }
