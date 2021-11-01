@@ -16,10 +16,14 @@
 }
 
 .marc-record .row-selected {
-  background-color: #b2dfdb;
+  background-color: #b2dfdb60;
 }
 
 .marc-record .row-unselected {
+}
+
+.marc-record .row:hover {
+  background-color: rgb(201, 231, 241);
 }
 
 #result .marc-record .row-unselected {

@@ -65,6 +65,12 @@ const melindaMuuntaja = {
   }
 };
 
+var editmode = false;
+
+var records = {
+  excluded: {},
+}
+
 //-----------------------------------------------------------------------------
 
 function startProcess()
@@ -232,12 +238,26 @@ function onNew(e) {
 
 function onEdit(e) {
   console.log('Edit:', e);
+  editmode = !editmode;
+  if(editmode) {
+    e.target.style.background = "lightblue"
+  } else {
+    e.target.style.background = ""
+  }
+  showTransformed()
+}
+
+function ignore(e) {
+  console.log("Ignore")
+  e.stopPropagation();
+  e.preventDefault();
+  return true;
 }
 
 function onSearch(e) {
   console.log('Search:', e);
   const dialog = document.getElementById('searchDlg');
-  console.log('Dialog:', dialog);
+  //console.log('Dialog:', dialog);
   //dialog.show();
 }
 
@@ -254,9 +274,8 @@ function onAccount(e) {
   logout();
 }
 
-var records = {
-  excluded: {},
-}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 function showTransformed()
 {
@@ -264,11 +283,17 @@ function showTransformed()
   console.log('Transformed:', records);
   showRecord(source, 'source');
   showRecord(base, 'base');
-  showRecord(result, 'result');
+  showRecord(result, 'result', editmode = editmode);
 }
 
-function toggleField(event, uuid) {
-  console.log("Click:", uuid)
+//-----------------------------------------------------------------------------
+// Exclude/include fields
+//-----------------------------------------------------------------------------
+
+function toggleField(event, field) {
+  const uuid = field.uuid;
+
+  console.log("Toggle:", uuid)
 
   if(!records.excluded[uuid]) {
     records.excluded[uuid] = true;
@@ -278,7 +303,38 @@ function toggleField(event, uuid) {
   showTransformed();
 }
 
-function showRecord(data, dest) {
+//-----------------------------------------------------------------------------
+// Field edit
+//-----------------------------------------------------------------------------
+
+function editField(event, field) {
+  // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
+  console.log("Edit:", field);
+
+  const dlg = document.querySelector("#fieldEditDlg")
+  console.log(dlg)
+  dlg.style.display = "flex"
+
+  const content = document.querySelector("#fieldEditDlg #field");
+  content.innerHTML = ""
+  addField(content, field);
+
+  const edit = document.querySelector("#fieldEditDlg #edit");
+  edit.innerHTML = ""
+  addField(edit, field)
+  edit.contentEditable = true
+}
+
+function closeDlg(event) {
+  const dlg = document.querySelector("#fieldEditDlg")
+  console.log("Close:", dlg)
+  dlg.style.display = "none"
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+function showRecord(data, dest, editmode = false) {
   console.log("Show Record:", data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
@@ -300,43 +356,45 @@ function showRecord(data, dest) {
   {
     const record = data.record;
 
-    addField(sourceDiv, {tag: 'LDR', value: record.leader});
+    addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
     for (const field of record.fields) {
-      addField(sourceDiv, field);
+      addField(sourceDiv, field, editmode);
     }
   }
+}
 
-  //---------------------------------------------------------------------------
-  // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
-  function addField(div, field) {
-    //console.log(field)
-    const row = document.createElement('div');
-    row.setAttribute('class', 'row');
+function addField(div, field, editmode = false) {
+  //console.log(field)
+  const row = document.createElement('div');
+  row.setAttribute('class', 'row');
 
-    if(field.uuid) {
-      row.classList.add("row-toggable");
-      if(!records.excluded[field.uuid]) {
-        row.classList.add("row-selected");
-      } else {
-        row.classList.add("row-unselected");
-      }
-      row.addEventListener("click", event => toggleField(event, field.uuid))
+  if(editmode) {
+    row.addEventListener("click", event => editField(event, field))
+  } else if(field.uuid) {
+    row.classList.add("row-toggable");
+    if(!records.excluded[field.uuid]) {
+      row.classList.add("row-selected");
+    } else {
+      row.classList.add("row-unselected");
     }
-
-    addTag(row, field.tag);
-    addInd(row, field.ind1, field.ind2);
-
-    if (field.value) {
-      addValue(row, field.value);
-    } else if (field.subfields) {
-      for (const subfield of field.subfields) {
-        addSubfield(row, subfield);
-      }
-    }
-    //return row;
-    div.appendChild(row);
+    row.addEventListener("click", event => toggleField(event, field))
   }
+
+  addTag(row, field.tag);
+  addInd(row, field.ind1, field.ind2);
+
+  if (field.value) {
+    addValue(row, field.value);
+  } else if (field.subfields) {
+    for (const subfield of field.subfields) {
+      addSubfield(row, subfield);
+    }
+  }
+  //return row;
+  div.appendChild(row);
 
   //---------------------------------------------------------------------------
   

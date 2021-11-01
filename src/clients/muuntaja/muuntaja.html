@@ -45,15 +45,10 @@
       </div>
 
     <!-- ---------------------------------------------------------------------- -->
-    <!-- Tab for server side notes -->
-    <div id="server-note" hidden>      
-      </div>
-
-    <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
     <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
 
-    <form id="login" class="VBox" style="display: none;">
+    <form id="login" class="VBox BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
         <input id="username" name="username"/>
@@ -96,7 +91,7 @@
           </div>
       </div>
       <div class="record-merge-panel">
-        <div id="source" class="col">
+        <div id="source" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Lähdetietue</label>
@@ -108,7 +103,7 @@
           <div id="Record" class="marc-record">
           </div>
         </div>
-        <div id="base" class="col">
+        <div id="base" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
@@ -127,7 +122,7 @@
           <div id="Record" class="marc-record">
           </div>
         </div>
-        <div id="result" class="col">
+        <div id="result" class="col BoxShadow">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
             <button class="material-icons" onClick="onEdit(event)">edit</button>
@@ -139,15 +134,29 @@
       </div>
     </div>
   </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Field edit dialog -->
+  <div id="fieldEditDlg" class="modal" onClick="return closeDlg(event)">
+    <div class="modal-content BoxShadow" onClick="return ignore(event)">
+      <span class="close">&times;</span><br/>
+      Field: <span id="field" class="marc-record"></span><br/>
+      Edit: <span id="edit"></span>
+      <button>Cancel</button>
+      <button>OK</button>
+    </div>
+  </div>
+
   <!-- ---------------------------------------------------------------------- -->
   <!-- Search dialog -->
   <dialog id="searchDlg">
     Testi
   </dialog>
+
   <!-- ---------------------------------------------------------------------- -->
-  <!-- Field edit dialog -->
-  <dialog id="fieldEditDlg" open>
-    Testi
-  </dialog>
+  <!-- Tab for server side notes -->
+  <div id="server-note" hidden>      
+  </div>
+
 </body>
 </html>

@@ -95,12 +95,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const transformProfile = profiles.p2e.kvp;
 
-    const [sourceRecord, baseRecord] = (
+    const [sourceRecord, baseRecord] =
       await Promise.all([
         getRecord(source.ID),
         getRecord(base.ID, transformProfile.baseRecord)
-      ]))
-      .map(record => preProcess(record));
+      ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
 
     const resultRecord = await getResultRecord(
@@ -118,28 +117,24 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     });
 
     async function getRecord(id, _default = null) {
+      function preProcess(record) {
+        return {record: addUUID(record)};
+      }
+
       if (!id) {
-        return {record: _default};
+        return preProcess(_default);
       }
       try {
-        const record = await getRecordByID(id);
         //logger.debug(`Record: ${JSON.stringify(record)}`);
-        return {record};
+        return preProcess(await getRecordByID(id));
       } catch (e) {
         return {error: e.toString()};
       }
     }
 
-    function preProcess(record) {
-      return {
-        ...record,
-        record: addUUID(record.record)
-      };
-    }
-
     function getResultRecord(source, base) {
-      if (!source) {
-        return null;
+      if (!source || !base) {
+        return {};
       }
       try {
         return transformRecord(logger, transformProfile, source, base);
@@ -181,7 +176,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function removeUnusedUUID(record, result) { // eslint-disable-line
-      if (!record || !record.record || !result || !result.record) {
+      if (!record.record || !result.record) {
         return record;
       }
 
