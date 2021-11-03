@@ -321,8 +321,45 @@ function editField(event, field) {
 
   const edit = document.querySelector("#fieldEditDlg #edit");
   edit.innerHTML = ""
-  addField(edit, field)
-  edit.contentEditable = true
+
+  edit.appendChild(createTag())
+
+  const subfields = makeDiv("subfields");
+  var sortable = Sortable.create(subfields, {
+    //ghostClass: 'ghost-row',
+    //animation: 150,
+  })
+
+  for (const subfield of field.subfields) {
+    subfields.appendChild(createSubfield(subfield));
+  }
+
+  edit.appendChild(subfields)
+
+  function createTag() {
+    const row = makeDiv("tagrow");
+    row.appendChild(makeInput('tag', field.tag));
+    row.appendChild(makeInput('ind', field.ind1));
+    row.appendChild(makeInput('ind', field.ind2));
+    return row;
+  }
+
+  function createSubfield(subfield) {
+    const row = makeDiv("row")
+    row.appendChild(makeInput('code', subfield.code));
+    row.appendChild(makeInput('value', subfield.value));
+    return row;
+  }
+
+  function makeInput(className, value) {
+    const input = document.createElement('span');
+    input.setAttribute('class', className);
+    if (value) {
+      input.innerHTML = value;
+    }
+    input.contentEditable = true;
+    return input;
+  }
 }
 
 function closeDlg(event) {
@@ -432,15 +469,24 @@ function addField(div, field, editmode = false) {
   function makeSubfieldData(value) {
     return makeSpan('value', value);
   }
+}
 
-  function makeSpan(className, value) {
-    const span = document.createElement('span');
-    span.setAttribute('class', className);
-    if (value) {
-      span.innerHTML = value;
-    }
-    return span;
+function makeDiv(className, value) {
+  const div = document.createElement('div');
+  div.setAttribute('class', className);
+  if (value) {
+    div.innerHTML = value;
   }
+  return div;
+}
+
+function makeSpan(className, value) {
+  const span = document.createElement('span');
+  span.setAttribute('class', className);
+  if (value) {
+    span.innerHTML = value;
+  }
+  return span;
 }
 
 //-----------------------------------------------------------------------------

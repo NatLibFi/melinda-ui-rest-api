@@ -48,3 +48,59 @@
   color: #e57373;
   margin-right: 2px;
 }
+
+/* ---------------------------------------------------------------------------- */
+/* Styles for MARC record field edit */
+
+.fieldedit {
+  /* border: 1px solid grey; */
+  margin: 2px;
+  padding: 2px;
+}
+
+.fieldedit .tagrow {
+  /* border: 1px solid grey; */
+  margin: 2px;
+  padding: 2px;
+}
+
+.fieldedit .subfields {
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+}
+
+.fieldedit .subfields .row {
+  border-top: 1px solid lightgray;
+  padding: 8px;
+  background-color: white;
+}
+
+.fieldedit .subfields .row:first-child {
+  border: none;
+}
+
+.fieldedit .subfields .row:hover {
+  background-color: lightgray;
+}
+
+.fieldedit .subfields .ghost-row {
+  border: 1px solid grey;
+  margin: 2px;
+  padding: 4px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background-color: lightblue;
+}
+
+.fieldedit .tag,
+.fieldedit .ind,
+.fieldedit .code,
+.fieldedit .value
+{
+  border: 1px solid grey;
+  margin: 2px;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  /* background-color: lightgrey; */
+}

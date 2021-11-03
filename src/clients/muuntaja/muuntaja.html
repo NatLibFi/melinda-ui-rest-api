@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="stylesheets/muuntaja.css" />
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <script type="text/javascript" src="muuntaja.js"></script>
 </head>
 
@@ -141,7 +142,7 @@
     <div class="modal-content BoxShadow" onClick="return ignore(event)">
       <span class="close">&times;</span><br/>
       Field: <span id="field" class="marc-record"></span><br/>
-      Edit: <span id="edit"></span>
+      Edit: <div id="edit" class="fieldedit"></div>
       <button>Cancel</button>
       <button>OK</button>
     </div>
