@@ -319,22 +319,23 @@ function editField(event, field) {
   content.innerHTML = ""
   addField(content, field);
 
-  const edit = document.querySelector("#fieldEditDlg #edit");
-  edit.innerHTML = ""
+  const tag = document.querySelector("#fieldEditDlg #tag");
+  tag.innerHTML = ""
+  tag.appendChild(createTag())
 
-  edit.appendChild(createTag())
+  const subfields = document.querySelector("#fieldEditDlg #fieldlist");
+  subfields.innerHTML = ""
 
-  const subfields = makeDiv("subfields");
+/*
   var sortable = Sortable.create(subfields, {
     //ghostClass: 'ghost-row',
-    //animation: 150,
+    animation: 150,
   })
+*/
 
   for (const subfield of field.subfields) {
     subfields.appendChild(createSubfield(subfield));
   }
-
-  edit.appendChild(subfields)
 
   function createTag() {
     const row = makeDiv("tagrow");
@@ -345,10 +346,19 @@ function editField(event, field) {
   }
 
   function createSubfield(subfield) {
-    const row = makeDiv("row")
-    row.appendChild(makeInput('code', subfield.code));
-    row.appendChild(makeInput('value', subfield.value));
+    const row = document.createElement("div")
+    row.classList.add("row")
+    row.appendChild(createField('code', subfield.code));
+    row.appendChild(createField('value', subfield.value));
     return row;
+
+    function createField(className, value, editable = true) {
+      const input = document.createElement('span');
+      input.classList.add(className)
+      input.innerHTML = value;
+      input.contentEditable = editable;
+      return input;
+    }
   }
 
   function makeInput(className, value) {
@@ -362,10 +372,15 @@ function editField(event, field) {
   }
 }
 
-function closeDlg(event) {
+function editDlgClose(event) {
   const dlg = document.querySelector("#fieldEditDlg")
   console.log("Close:", dlg)
   dlg.style.display = "none"
+  return true;
+}
+
+function editDlgOK(event) {
+  return editDlgClose(event);
 }
 
 //-----------------------------------------------------------------------------

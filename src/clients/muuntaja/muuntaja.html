@@ -138,13 +138,15 @@
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Field edit dialog -->
-  <div id="fieldEditDlg" class="modal" onClick="return closeDlg(event)">
+  <div id="fieldEditDlg" class="modal" onClick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onClick="return ignore(event)">
-      <span class="close">&times;</span><br/>
+      <span class="close" onClick="return editDlgClose(event)">&times;</span><br/>
       Field: <span id="field" class="marc-record"></span><br/>
-      Edit: <div id="edit" class="fieldedit"></div>
-      <button>Cancel</button>
-      <button>OK</button>
+      Tag: <div id="tag"></div>
+      <div id="fieldlist" width="100%" class="fieldedit">
+      </div>
+      <button onClick="return editDlgClose(event)">Cancel</button>
+      <button onClick="return editDlgOK(event)">OK</button>
     </div>
   </div>
 

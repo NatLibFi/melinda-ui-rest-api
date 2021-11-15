@@ -70,13 +70,11 @@
 }
 
 .fieldedit .subfields .row {
-  border-top: 1px solid lightgray;
   padding: 8px;
-  background-color: white;
 }
 
-.fieldedit .subfields .row:first-child {
-  border: none;
+.fieldedit .subfields .row:not(:first-child) {
+  /* border-top: 1px solid lightgray; */
 }
 
 .fieldedit .subfields .row:hover {
