@@ -374,32 +374,47 @@ function editField(event, field) {
   }
 }
 
+function editDlgOK(event) {
+  // Read tag & indicators
+  const tag = document.querySelector("#fieldEditDlg #tag #tag").innerHTML;
+  const ind1 = document.querySelector("#fieldEditDlg #tag #ind1").innerHTML;
+  const ind2 = document.querySelector("#fieldEditDlg #tag #ind2").innerHTML;
+
+  var field = {
+    tag: tag,
+    ind1: ind1,
+    ind2: ind2,
+    subfields: [],
+  }
+
+  //console.log("Tag:", tag, ind1, ind2)
+
+  // Read fields
+  const subfields = document.querySelector("#fieldEditDlg #fieldlist").getElementsByClassName("row");
+  //console.log("Fields:", subfields);
+
+  for(subfield of subfields) {
+    const code  = subfield.getElementsByClassName("code")[0].innerHTML;
+    const value = subfield.getElementsByClassName("value")[0].innerHTML;
+    //console.log("Field code:", code, "value:", value)
+    field.subfields.push({
+      code: code,
+      value: value,
+    })
+  }
+
+  console.log("Field:", field)
+
+  // Pairing original and edited field
+
+  return editDlgClose(event);
+}
+
 function editDlgClose(event) {
   const dlg = document.querySelector("#fieldEditDlg")
   console.log("Close:", dlg)
   dlg.style.display = "none"
   return true;
-}
-
-function editDlgOK(event) {
-  // Read tag & indicators
-  const tag = document.querySelector("#fieldEditDlg #tag #tag");
-  const ind1 = document.querySelector("#fieldEditDlg #tag #ind1");
-  const ind2 = document.querySelector("#fieldEditDlg #tag #ind2");
-
-  console.log("Tag:", tag.innerHTML, ind1.innerHTML, ind2.innerHTML)
-
-  // Read fields
-  const fields = document.querySelector("#fieldEditDlg #fieldlist").getElementsByClassName("row");
-  console.log("Fields:", fields);
-
-  for(field of fields) {
-    const code  = field.getElementsByClassName("code")[0].innerHTML;
-    const value = field.getElementsByClassName("value")[0].innerHTML;
-    console.log("Field code:", code, "value:", value)
-  }
-
-  return editDlgClose(event);
 }
 
 //-----------------------------------------------------------------------------
