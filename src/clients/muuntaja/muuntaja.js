@@ -339,21 +339,22 @@ function editField(event, field) {
 
   function createTag() {
     const row = makeDiv("tagrow");
-    row.appendChild(makeInput('tag', field.tag));
-    row.appendChild(makeInput('ind', field.ind1));
-    row.appendChild(makeInput('ind', field.ind2));
+    row.appendChild(makeInput('tag', 'tag', field.tag));
+    row.appendChild(makeInput('ind1', 'ind', field.ind1));
+    row.appendChild(makeInput('ind2', 'ind', field.ind2));
     return row;
   }
 
   function createSubfield(subfield) {
     const row = document.createElement("div")
     row.classList.add("row")
-    row.appendChild(createField('code', subfield.code));
-    row.appendChild(createField('value', subfield.value));
+    row.appendChild(createField('code', 'code', subfield.code));
+    row.appendChild(createField('value', 'value', subfield.value));
     return row;
 
-    function createField(className, value, editable = true) {
+    function createField(name, className, value, editable = true) {
       const input = document.createElement('span');
+      input.setAttribute('id', name);
       input.classList.add(className)
       input.innerHTML = value;
       input.contentEditable = editable;
@@ -361,9 +362,10 @@ function editField(event, field) {
     }
   }
 
-  function makeInput(className, value) {
+  function makeInput(name, className, value) {
     const input = document.createElement('span');
-    input.setAttribute('class', className);
+    input.setAttribute('id', name);
+    input.classList.add(className);
     if (value) {
       input.innerHTML = value;
     }
@@ -380,6 +382,23 @@ function editDlgClose(event) {
 }
 
 function editDlgOK(event) {
+  // Read tag & indicators
+  const tag = document.querySelector("#fieldEditDlg #tag #tag");
+  const ind1 = document.querySelector("#fieldEditDlg #tag #ind1");
+  const ind2 = document.querySelector("#fieldEditDlg #tag #ind2");
+
+  console.log("Tag:", tag.innerHTML, ind1.innerHTML, ind2.innerHTML)
+
+  // Read fields
+  const fields = document.querySelector("#fieldEditDlg #fieldlist").getElementsByClassName("row");
+  console.log("Fields:", fields);
+
+  for(field of fields) {
+    const code  = field.getElementsByClassName("code")[0].innerHTML;
+    const value = field.getElementsByClassName("value")[0].innerHTML;
+    console.log("Field code:", code, "value:", value)
+  }
+
   return editDlgClose(event);
 }
 
