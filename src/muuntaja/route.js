@@ -86,7 +86,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, excluded} = req.body;
+    const {source, base, excluded, edited} = req.body;
 
     logger.debug(`sourceID: ${source.ID}`);
     logger.debug(`baseID: ${base.ID}`);
@@ -113,12 +113,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     res.json({
       ...postProcess(sourceRecord, baseRecord, resultRecord),
-      excluded: {}
+      excluded: {},
+      edited
     });
 
     async function getRecord(id, _default = null) {
       function preProcess(record) {
-        return {record: addUUID(record)};
+        // return {record: addUUID(record)};
+        return {record};
       }
 
       if (!id) {

@@ -65,10 +65,12 @@ const melindaMuuntaja = {
   }
 };
 
-var editmode = false;
+var editmode = true;
+var editing = null;
 
 var records = {
   excluded: {},
+  edited: [],
 }
 
 //-----------------------------------------------------------------------------
@@ -311,8 +313,12 @@ function editField(event, field) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
   console.log("Edit:", field);
 
+  editing = field;
+
+  // Find field from edited fields, if found, fill in data from there
+
   const dlg = document.querySelector("#fieldEditDlg")
-  console.log(dlg)
+  //console.log(dlg)
   dlg.style.display = "flex"
 
   const content = document.querySelector("#fieldEditDlg #field");
@@ -403,16 +409,25 @@ function editDlgOK(event) {
     })
   }
 
-  console.log("Field:", field)
+  //console.log("Original:", editing)
+  //console.log("Edited:", field)
 
   // Pairing original and edited field
 
+  if(!records.edited) {
+    records.edited = []
+  }
+  records.edited.push([editing, field])
+  console.log("Records:", records)
+
+  doTransform();
+  
   return editDlgClose(event);
 }
 
 function editDlgClose(event) {
   const dlg = document.querySelector("#fieldEditDlg")
-  console.log("Close:", dlg)
+  //console.log("Close:", dlg)
   dlg.style.display = "none"
   return true;
 }
@@ -581,6 +596,7 @@ function doTransform(event = undefined) {
           ID: baseID,
         },
         excluded: records.excluded,
+        edited: records.edited,
       })
     }
   )
