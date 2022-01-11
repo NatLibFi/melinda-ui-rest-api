@@ -20,15 +20,18 @@
 }
 
 .marc-record .row-unselected {
+  color:lightgray;
 }
 
 .marc-record .row:hover {
   background-color: rgb(201, 231, 241);
 }
 
+/*
 #result .marc-record .row-unselected {
   display: none;
 }
+*/
 
 .marc-record .row .tag {
   color: #448aff;

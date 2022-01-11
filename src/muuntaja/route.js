@@ -26,6 +26,7 @@ import {v4 as uuid} from 'uuid';
 // Add handling those to UI
 
 import p2eDefaultProfile from './config/print-to-e/default';
+//import {applyPostMergeModifications} from './marc-record-merge-postmerge-service';
 //import {preset as MergeValidationPreset} from './marc-record-merge-validate-service';
 //import {preset as PostMergePreset} from './marc-record-merge-postmerge-service';
 //import {baseRecord as p2eDefaultBase} from './config/print-to-e/target-record';
@@ -90,17 +91,17 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     logger.debug(`sourceID: ${source.ID}`);
     logger.debug(`baseID: ${base.ID}`);
-    logger.debug(`Excluded: ${excluded}`);
+    logger.debug(`Excluded: ${JSON.stringify(excluded, null, 2)}`);
     // validate source, validate base
 
     const transformProfile = profiles.p2e.kvp;
 
     const [sourceRecord, baseRecord] =
       await Promise.all([
-        getRecord(source.ID),
-        getRecord(base.ID, transformProfile.baseRecord)
+        getRecord(source),
+        getRecord(base, transformProfile.baseRecord)
       ]);
-    //logger.debug(`Source record: ${JSON.stringify(sourceRecord)}`);
+    //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
 
     const resultRecord = await getResultRecord(
       sourceRecord.record,
@@ -108,29 +109,35 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     );
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
-    // What we want: (1) determine, which fields in the result record comes from
-    // which input record. Mark them.
-
     res.json({
       ...postProcess(sourceRecord, baseRecord, resultRecord),
-      excluded: {},
+      excluded,
       edited
     });
 
-    async function getRecord(id, _default = null) {
-      function preProcess(record) {
-        // return {record: addUUID(record)};
-        return {record};
-      }
-
-      if (!id) {
-        return preProcess(_default);
+    async function getRecord(record, _default = null) {
+      if (record.record) {
+        return record;
+      } else if (!record.ID) {
+        return {
+          ID: record.ID,
+          record: preProcess(_default)
+        };
       }
       try {
+        logger.debug('Fetching...');
         //logger.debug(`Record: ${JSON.stringify(record)}`);
-        return preProcess(await getRecordByID(id));
+        return {
+          ID: record.ID,
+          record: preProcess(await getRecordByID(record.ID))
+        };
       } catch (e) {
         return {error: e.toString()};
+      }
+
+      function preProcess(record) {
+        return addUUID(record);
+        //return {record};
       }
     }
 
@@ -139,17 +146,42 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         return {};
       }
       try {
-        return transformRecord(logger, transformProfile, source, base);
+        return transformRecord(
+          logger,
+          transformProfile,
+          removeExcluded(source),
+          removeExcluded(base)
+        );
       } catch (e) {
         return {error: e.toString()};
       }
     }
 
+    function removeExcluded(record) {
+      return {
+        leader: record.leader,
+        fields: record.fields.filter(f => !excluded[f.uuid])
+      };
+    }
+
     function postProcess(source, base, result) {
       return {
-        source: removeUnusedUUID(source, result),
-        base: removeUnusedUUID(base, result),
-        result
+        //source: removeUnusedUUID(source, result),
+        //base: removeUnusedUUID(base, result),
+        source,
+        base,
+        transformed: result,
+        result: {
+          ...result,
+          record: applyEdits(result.record)
+        }
+      };
+    }
+
+    function applyEdits(record) {
+      return {
+        ...record,
+        fields: record.fields.map(f => edited[f.uuid] ? edited[f.uuid] : f)
       };
     }
 

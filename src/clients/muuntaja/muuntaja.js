@@ -39,39 +39,15 @@ const melindaUser = {
 // - User edits
 //-----------------------------------------------------------------------------
 
-const melindaMuuntaja = {
-  storage: window.sessionStorage,
-  name: 'melinda-muuntaja',
-  get (jsonField = this.name) {
-    try {
-      return JSON.parse(this.storage.getItem(jsonField));
-    } catch (e) {
-      return undefined;
-    }
-  },
-  set (token) {
-    return this.storage.setItem(this.name, JSON.stringify(token));
-  },
-  setSourceID (id) {
-    //this.storage.setItem('sourceRecordID', id);
-    //doTransform();
-  },
-  setBaseID (id) {
-    //this.storage.setItem('baseRecordID', id);
-    //doTransform();
-  },
-  remove () {
-    return this.storage.removeItem(this.name);
-  }
-};
-
-var editmode = true;
-var editing = null;
-
-var records = {
+var transformed = {
+  source: null,
+  base: null,
   excluded: {},
-  edited: [],
+  edited: {},
 }
+
+var editmode = false;
+var editing = null;
 
 //-----------------------------------------------------------------------------
 
@@ -121,13 +97,6 @@ function reload() {
 function initialize() {
   console.log('Initializing');
 
-  melindaMuuntaja.setBaseID(null);
-  melindaMuuntaja.setSourceID(null);
-
-  // First, check if there is a message from server!
-  // If so --> go to server note tab.
-  // If server note has OK button, we go to login/muuntaja
-  
   // Get auth token, if it exists
   const user = melindaUser.get();
   console.log('User:', user);
@@ -281,8 +250,8 @@ function onAccount(e) {
 
 function showTransformed()
 {
-  const {source, base, result} = records;
-  console.log('Transformed:', records);
+  const {source, base, result} = transformed;
+  console.log('Transformed:', transformed);
   showRecord(source, 'source');
   showRecord(base, 'base');
   showRecord(result, 'result', editmode = editmode);
@@ -297,12 +266,13 @@ function toggleField(event, field) {
 
   console.log("Toggle:", uuid)
 
-  if(!records.excluded[uuid]) {
-    records.excluded[uuid] = true;
+  if(!transformed.excluded[uuid]) {
+    transformed.excluded[uuid] = true;
   } else {
-    delete records.excluded[uuid];
+    delete transformed.excluded[uuid];
   }
-  showTransformed();
+  //showTransformed();
+  doTransform();
 }
 
 //-----------------------------------------------------------------------------
@@ -311,9 +281,10 @@ function toggleField(event, field) {
 
 function editField(event, field) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
-  console.log("Edit:", field);
 
-  editing = field;
+  editing = transformed.transformed.record.fields.find(f => f.uuid == field.uuid);
+
+  console.log("Edit:", editing);
 
   // Find field from edited fields, if found, fill in data from there
 
@@ -323,7 +294,7 @@ function editField(event, field) {
 
   const content = document.querySelector("#fieldEditDlg #field");
   content.innerHTML = ""
-  addField(content, field);
+  addField(content, editing);
 
   const tag = document.querySelector("#fieldEditDlg #tag");
   tag.innerHTML = ""
@@ -391,6 +362,7 @@ function editDlgOK(event) {
     ind1: ind1,
     ind2: ind2,
     subfields: [],
+    uuid: editing.uuid,
   }
 
   //console.log("Tag:", tag, ind1, ind2)
@@ -414,11 +386,14 @@ function editDlgOK(event) {
 
   // Pairing original and edited field
 
+  /*
   if(!records.edited) {
     records.edited = []
   }
-  records.edited.push([editing, field])
-  console.log("Records:", records)
+  */
+  transformed.edited[field.uuid] = field;
+  //records.edited.push([editing, field])
+  //console.log("Records:", records)
 
   doTransform();
   
@@ -476,7 +451,7 @@ function addField(div, field, editmode = false) {
     row.addEventListener("click", event => editField(event, field))
   } else if(field.uuid) {
     row.classList.add("row-toggable");
-    if(!records.excluded[field.uuid]) {
+    if(!transformed.excluded[field.uuid]) {
       row.classList.add("row-selected");
     } else {
       row.classList.add("row-unselected");
@@ -574,8 +549,17 @@ function doTransform(event = undefined) {
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
-  console.log('Source ID:', sourceID);
-  console.log('Base ID:', baseID);
+  if(!transformed.source || sourceID != transformed.source.ID) {
+    transformed.source = { ID: sourceID }
+  }
+
+  if(!transformed.base || baseID != transformed.base.ID) {
+    transformed.base = { ID: baseID }
+  }
+
+  //console.log('Source ID:', sourceID);
+  //console.log('Base ID:', baseID);
+  console.log("Transforming:", transformed);
 
   startProcess();
 
@@ -588,21 +572,12 @@ function doTransform(event = undefined) {
         'Content-Type': 'application/json',
         Authorization: token
       },
-      body: JSON.stringify({
-        source: {
-          ID: sourceID,
-        },
-        base: {
-          ID: baseID,
-        },
-        excluded: records.excluded,
-        edited: records.edited,
-      })
+      body: JSON.stringify(transformed)
     }
   )
     .then(response => response.json())
-    .then(transformed => {
-      records = transformed;
+    .then(records => {
+      transformed = records;
       showTransformed();
       stopProcess();
     });
