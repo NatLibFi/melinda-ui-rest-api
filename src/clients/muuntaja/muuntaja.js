@@ -573,38 +573,57 @@ function doTransform(event = undefined) {
         'Content-Type': 'application/json',
         Authorization: token
       },
-      body: JSON.stringify(transformed)
+      body: JSON.stringify(stripDecorations(transformed))
     }
   )
     .then(response => response.json())
     .then(records => {
-      transformed = records;
-      decorateRecords(records)
-      console.log('Transformed:', records);
+      transformed = decorateRecords(records)
+      console.log('Transformed:', transformed);
       showTransformed();
       stopProcess();
     });
+}
+
+// Strip record decorations
+
+function stripDecorations(query) {
+  const {source, base, transformed, result} = query;
+  return {
+    ...query,
+    source: stripRecordDecorations(source),
+    base: stripRecordDecorations(base),
+    transformed: stripRecordDecorations(transformed),
+    result: stripRecordDecorations(result),
+  }
+}
+
+function stripRecordDecorations(record) {
+  if(record && record.record) {
+    return {
+      ...record,
+      record: {
+        ...record.record,
+        fields: record.record.fields.map(f => ({
+          tag: f.tag,
+          ind1: f.ind1,
+          ind2: f.ind2,
+          value: f.value,
+          subfields: f.subfields,
+          uuid: f.uuid,
+        }))
+      }
+    }
+  } else {
+    return record;
+  }
 }
 
 // Record modifications
 
 function decorateRecords(records) {
 
-  function stripFields(record) {
-    if(record && record.fields) {
-      record.fields = record.fields.map(f => {
-        f = removeProperty("wasUsed", f);
-        f = removeProperty("fromOther", f);
-        f = removeProperty("fromPreferred", f);
-        f = removeProperty("from", f);
-        return f;
-      })
-    }
-  }
-
-  stripFields(records.source.record);
-  stripFields(records.base.record);
-  stripFields(records.result.record);
+  records = stripDecorations(records);
 
   sourceUUIDs = records.source.record.fields.map(f => f.uuid);
   baseUUIDs   = records.base.record.fields.map(f => f.uuid);
@@ -614,6 +633,8 @@ function decorateRecords(records) {
   records.base.record.fields = records.base.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
   records.result.record.fields = records.result.record.fields.map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
   records.result.record.fields = records.result.record.fields.map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+
+  return records;
 
   function decorate(record, tag) { // eslint-disable-line
     if (!record) {
