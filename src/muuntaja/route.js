@@ -92,6 +92,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     logger.debug(`sourceID: ${source.ID}`);
     logger.debug(`baseID: ${base.ID}`);
     logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
+    logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
     // validate source, validate base
 
     const transformProfile = profiles.p2e.kvp;
@@ -179,6 +180,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function applyEdits(record) {
+      if (!record || !record.fields) {
+        return record;
+      }
       return {
         ...record,
         fields: record.fields.map(f => replace[f.uuid] ? replace[f.uuid] : f)

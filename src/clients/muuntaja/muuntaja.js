@@ -267,7 +267,7 @@ function toggleField(event, field) {
   console.log("Toggle:", uuid)
 
   if(!transformed.exclude[uuid]) {
-    transformed.exclude[uuid] = true;
+    transformed.exclude[uuid] = field;
   } else {
     delete transformed.exclude[uuid];
   }

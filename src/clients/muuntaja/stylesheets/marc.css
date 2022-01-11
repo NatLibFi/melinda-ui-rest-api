@@ -20,7 +20,7 @@
 }
 
 .marc-record .row-unselected {
-  color:lightgray;
+  color:gray;
 }
 
 .marc-record .row:hover {
