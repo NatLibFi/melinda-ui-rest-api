@@ -266,7 +266,7 @@ function toggleField(event, field) {
   console.log("Toggle:", uuid)
 
   if(!transformed.exclude[uuid]) {
-    transformed.exclude[uuid] = field;
+    transformed.exclude[uuid] = stripFieldDecorations(field);
   } else {
     delete transformed.exclude[uuid];
   }
@@ -390,7 +390,7 @@ function editDlgOK(event) {
     records.edited = []
   }
   */
-  transformed.replace[field.uuid] = field;
+  transformed.replace[field.uuid] = stripFieldDecorations(field);
   //records.edited.push([editing, field])
   //console.log("Records:", records)
 
@@ -598,20 +598,24 @@ function stripDecorations(query) {
   }
 }
 
+function stripFieldDecorations(f) {
+  return {
+    tag: f.tag,
+    ind1: f.ind1,
+    ind2: f.ind2,
+    value: f.value,
+    subfields: f.subfields,
+    uuid: f.uuid,
+  }
+}
+
 function stripRecordDecorations(record) {
   if(record && record.record) {
     return {
       ...record,
       record: {
         ...record.record,
-        fields: record.record.fields.map(f => ({
-          tag: f.tag,
-          ind1: f.ind1,
-          ind2: f.ind2,
-          value: f.value,
-          subfields: f.subfields,
-          uuid: f.uuid,
-        }))
+        fields: record.record.fields.map(stripFieldDecorations)
       }
     }
   } else {
