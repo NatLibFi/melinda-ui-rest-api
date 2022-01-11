@@ -19,12 +19,16 @@
   color:gray;
 }
 
+.marc-record .row-replaced {
+  background-color: #f1b5f760;
+}
+
 .marc-record .row-fromSource {
   background-color: #b2dfdb60;
 }
 
 .marc-record .row-fromBase {
-  background-color: #ff88ff60;
+  background-color: #f3ff8860;
 }
 
 .marc-record .row:hover {

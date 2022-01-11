@@ -449,15 +449,17 @@ function addField(div, field, editmode = false) {
   if(editmode) {
     row.addEventListener("click", event => editField(event, field))
   } else {
-    if(transformed.exclude[field.uuid]) {
-      row.classList.add("row-excluded");
-    }
-    if(field.from == "source") {
-      row.classList.add("row-fromSource")
-    } else if(field.from == "base") {
-      row.classList.add("row-fromBase")
-    }
     row.addEventListener("click", event => toggleField(event, field))
+  }
+
+  if(transformed.exclude[field.uuid]) {
+    row.classList.add("row-excluded");
+  } else if(transformed.replace[field.uuid]) {
+    row.classList.add("row-replaced");
+  } else if(field.from == "source") {
+    row.classList.add("row-fromSource")
+  } else if(field.from == "base") {
+    row.classList.add("row-fromBase")
   }
 
   addTag(row, field.tag);
