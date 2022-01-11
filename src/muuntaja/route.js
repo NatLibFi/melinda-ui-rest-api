@@ -87,11 +87,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, excluded, edited} = req.body;
+    const {source, base, exclude, replace} = req.body;
 
     logger.debug(`sourceID: ${source.ID}`);
     logger.debug(`baseID: ${base.ID}`);
-    logger.debug(`Excluded: ${JSON.stringify(excluded, null, 2)}`);
+    logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
     // validate source, validate base
 
     const transformProfile = profiles.p2e.kvp;
@@ -111,8 +111,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     res.json({
       ...postProcess(sourceRecord, baseRecord, resultRecord),
-      excluded,
-      edited
+      exclude,
+      replace
     });
 
     async function getRecord(record, _default = null) {
@@ -160,7 +160,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     function removeExcluded(record) {
       return {
         leader: record.leader,
-        fields: record.fields.filter(f => !excluded[f.uuid])
+        fields: record.fields.filter(f => !exclude[f.uuid])
       };
     }
 
@@ -181,7 +181,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     function applyEdits(record) {
       return {
         ...record,
-        fields: record.fields.map(f => edited[f.uuid] ? edited[f.uuid] : f)
+        fields: record.fields.map(f => replace[f.uuid] ? replace[f.uuid] : f)
       };
     }
 

@@ -42,8 +42,8 @@ const melindaUser = {
 var transformed = {
   source: null,
   base: null,
-  excluded: {},
-  edited: {},
+  exclude: {},
+  replace: {},
 }
 
 var editmode = false;
@@ -266,10 +266,10 @@ function toggleField(event, field) {
 
   console.log("Toggle:", uuid)
 
-  if(!transformed.excluded[uuid]) {
-    transformed.excluded[uuid] = true;
+  if(!transformed.exclude[uuid]) {
+    transformed.exclude[uuid] = true;
   } else {
-    delete transformed.excluded[uuid];
+    delete transformed.exclude[uuid];
   }
   //showTransformed();
   doTransform();
@@ -391,7 +391,7 @@ function editDlgOK(event) {
     records.edited = []
   }
   */
-  transformed.edited[field.uuid] = field;
+  transformed.replace[field.uuid] = field;
   //records.edited.push([editing, field])
   //console.log("Records:", records)
 
@@ -451,7 +451,7 @@ function addField(div, field, editmode = false) {
     row.addEventListener("click", event => editField(event, field))
   } else if(field.uuid) {
     row.classList.add("row-toggable");
-    if(!transformed.excluded[field.uuid]) {
+    if(!transformed.exclude[field.uuid]) {
       row.classList.add("row-selected");
     } else {
       row.classList.add("row-unselected");
