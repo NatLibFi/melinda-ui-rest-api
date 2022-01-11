@@ -7,11 +7,11 @@
   font-size: 14.5px;
 }
 
-.marc-record .row-toggable {
+.marc-record .row {
   border: 1px white solid;
 }
 
-.marc-record .row-toggable:hover {
+.marc-record .row:hover {
   border: 1px dashed grey;
 }
 
@@ -20,19 +20,16 @@
 }
 
 .marc-record .row-replaced {
-  background-color: #f1b5f760;
+  background-color: rgb(179, 221, 235);
+  /* background-color: #f1b5f760; */
 }
 
 .marc-record .row-fromSource {
-  background-color: #b2dfdb60;
+  background-color: #b0dfdb60;
 }
 
 .marc-record .row-fromBase {
-  background-color: #f3ff8860;
-}
-
-.marc-record .row:hover {
-  background-color: rgb(201, 231, 241);
+  background-color: #ecf78c60;
 }
 
 .marc-record .row .tag {
