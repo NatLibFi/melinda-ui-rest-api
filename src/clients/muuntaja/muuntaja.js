@@ -410,7 +410,7 @@ function editDlgClose(event) {
 //-----------------------------------------------------------------------------
 
 function showRecord(data, dest, editmode = false) {
-  console.log("Show Record:", data);
+  //console.log("Show Record:", data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
 
@@ -420,11 +420,17 @@ function showRecord(data, dest, editmode = false) {
   if(!data) return;
 
   if(data.error) {
-    sourceDiv.innerHTML = data.error;
+    const error = document.createElement('div');
+    error.classList.add("error")
+    error.innerHTML = data.error;
+    sourceDiv.appendChild(error)
   }
   
   if(data.notes) {
-    sourceDiv.innerHTML = data.notes;
+    const notes = document.createElement('div');
+    notes.classList.add("notes")
+    notes.innerHTML = data.notes;
+    sourceDiv.appendChild(notes)
   }
   
   if(data.record)
@@ -631,14 +637,16 @@ function decorateRecords(records) {
 
   records = stripDecorations(records);
 
-  sourceUUIDs = records.source.record.fields.map(f => f.uuid);
-  baseUUIDs   = records.base.record.fields.map(f => f.uuid);
-  resultUUIDs = records.result.record.fields.map(f => f.uuid);
+  if(records.result.record) {
+    sourceUUIDs = records.source.record.fields.map(f => f.uuid);
+    baseUUIDs   = records.base.record.fields.map(f => f.uuid);
+    resultUUIDs = records.result.record.fields.map(f => f.uuid);
 
-  records.source.record.fields = records.source.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
-  records.base.record.fields = records.base.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
-  records.result.record.fields = records.result.record.fields.map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
-  records.result.record.fields = records.result.record.fields.map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+    records.source.record.fields = records.source.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+    records.base.record.fields = records.base.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+    records.result.record.fields = records.result.record.fields.map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+    records.result.record.fields = records.result.record.fields.map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+  }
 
   return records;
 

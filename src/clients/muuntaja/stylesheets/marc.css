@@ -2,17 +2,35 @@
 /* ---------------------------------------------------------------------------- */
 /* Styles for MARC records */
 
-.marc-record, .marc-record * {
-  font-family: "Roboto Mono", monospace;
+.marc-record {
+  /* margin-left: 20pt; */
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
   font-size: 14.5px;
+  /*
+  font-weight: 400;
+  line-height: 1.5;
+  */
 }
 
 .marc-record .row {
+  font: inherit;
+  /*
+  */
   border: 1px white solid;
+  padding-left: 8px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .marc-record .row:hover {
   border: 1px dashed grey;
+}
+
+.marc-record .error {
+  background-color: #eba0a060;
+  padding: 8px;
+  margin-bottom: 8px;
 }
 
 .marc-record .row-excluded {
@@ -20,7 +38,8 @@
 }
 
 .marc-record .row-replaced {
-  background-color: rgb(179, 221, 235);
+  background-color: #75c4bdb0;
+  /* background-color: rgb(179, 221, 235); */
   /* background-color: #f1b5f760; */
 }
 
@@ -34,12 +53,12 @@
 
 .marc-record .row .tag {
   color: #448aff;
-  margin-right: 12pt;
+  margin-right: 9pt;
 }
 
 .marc-record .row .inds {
   color: #448aff;
-  margin-right: 12pt;
+  margin-right: 9pt;
 }
 
 .marc-record .row .subfield {

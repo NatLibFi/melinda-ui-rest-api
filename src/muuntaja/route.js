@@ -167,13 +167,12 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     function postProcess(source, base, result) {
       return {
-        //source: removeUnusedUUID(source, result),
-        //base: removeUnusedUUID(base, result),
         source,
         base,
         transformed: result,
         result: {
           ...result,
+          //error: 'Hello, world!',
           record: applyEdits(result.record)
         }
       };
@@ -210,23 +209,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       return {
         leader: record.leader,
         fields: record.fields.map(f => ({...f, uuid: uuid()}))
-      };
-    }
-
-    function removeUnusedUUID(record, result) { // eslint-disable-line
-      if (!record.record || !result.record) {
-        return record;
-      }
-
-      const uuids = result.record.fields.map(f => f.uuid);
-      //logger.debug(`UUIDs: ${uuids}`);
-
-      return {
-        ...record,
-        record: {
-          ...record.record,
-          fields: record.record.fields.map(f => uuids.includes(f.uuid) ? f : removeProperty('uuid', f))
-        }
       };
     }
   }
