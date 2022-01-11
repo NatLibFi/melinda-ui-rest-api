@@ -58,7 +58,7 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   try {
     await MergeValidation.validateMergeCandidates(validationRules, baseRecord, sourceRecord, baseRecordHasSubrecords, sourceRecordHasSubrecords);
   } catch (e) {
-    return {error: 'Validation error.'};
+    return {error: `${e.message}: ${e.failureMessages}`};
   }
 
   function appendNewFields(originalMergedRecord) {

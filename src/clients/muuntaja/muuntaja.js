@@ -251,7 +251,6 @@ function onAccount(e) {
 function showTransformed()
 {
   const {source, base, result} = transformed;
-  console.log('Transformed:', transformed);
   showRecord(source, 'source');
   showRecord(base, 'base');
   showRecord(result, 'result', editmode = editmode);
@@ -449,12 +448,14 @@ function addField(div, field, editmode = false) {
 
   if(editmode) {
     row.addEventListener("click", event => editField(event, field))
-  } else if(field.uuid) {
-    row.classList.add("row-toggable");
-    if(!transformed.exclude[field.uuid]) {
-      row.classList.add("row-selected");
-    } else {
-      row.classList.add("row-unselected");
+  } else {
+    if(transformed.exclude[field.uuid]) {
+      row.classList.add("row-excluded");
+    }
+    if(field.from == "source") {
+      row.classList.add("row-fromSource")
+    } else if(field.from == "base") {
+      row.classList.add("row-fromBase")
     }
     row.addEventListener("click", event => toggleField(event, field))
   }
@@ -578,7 +579,53 @@ function doTransform(event = undefined) {
     .then(response => response.json())
     .then(records => {
       transformed = records;
+      decorateRecords(records)
+      console.log('Transformed:', records);
       showTransformed();
       stopProcess();
     });
+}
+
+// Record modifications
+
+function decorateRecords(records) {
+
+  function stripFields(record) {
+    if(record && record.fields) {
+      record.fields = record.fields.map(f => {
+        f = removeProperty("wasUsed", f);
+        f = removeProperty("fromOther", f);
+        f = removeProperty("fromPreferred", f);
+        f = removeProperty("from", f);
+        return f;
+      })
+    }
+  }
+
+  stripFields(records.source.record);
+  stripFields(records.base.record);
+  stripFields(records.result.record);
+
+  sourceUUIDs = records.source.record.fields.map(f => f.uuid);
+  baseUUIDs   = records.base.record.fields.map(f => f.uuid);
+  resultUUIDs = records.result.record.fields.map(f => f.uuid);
+
+  records.source.record.fields = records.source.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+  records.base.record.fields = records.base.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+  records.result.record.fields = records.result.record.fields.map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+  records.result.record.fields = records.result.record.fields.map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+
+  function decorate(record, tag) { // eslint-disable-line
+    if (!record) {
+      return null;
+    }
+    return {
+      leader: record.leader,
+      fields: record.fields.map(f => ({...f, ...tag}))
+    };
+  }
+  
+  function removeProperty(propKey, {[propKey]: propValue, ...rest}) { // eslint-disable-line
+    return rest;
+  }  
 }

@@ -15,23 +15,21 @@
   border: 1px dashed grey;
 }
 
-.marc-record .row-selected {
+.marc-record .row-excluded {
+  color:gray;
+}
+
+.marc-record .row-fromSource {
   background-color: #b2dfdb60;
 }
 
-.marc-record .row-unselected {
-  color:gray;
+.marc-record .row-fromBase {
+  background-color: #ff88ff60;
 }
 
 .marc-record .row:hover {
   background-color: rgb(201, 231, 241);
 }
-
-/*
-#result .marc-record .row-unselected {
-  display: none;
-}
-*/
 
 .marc-record .row .tag {
   color: #448aff;
