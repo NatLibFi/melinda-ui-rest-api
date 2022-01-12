@@ -606,17 +606,6 @@ function stripDecorations(query) {
   }
 }
 
-function stripFieldDecorations(f) {
-  return {
-    tag: f.tag,
-    ind1: f.ind1,
-    ind2: f.ind2,
-    value: f.value,
-    subfields: f.subfields,
-    uuid: f.uuid,
-  }
-}
-
 function stripRecordDecorations(record) {
   if(record && record.record) {
     return {
@@ -631,36 +620,38 @@ function stripRecordDecorations(record) {
   }
 }
 
-// Record modifications
+function stripFieldDecorations(f) {
+  return {
+    tag: f.tag,
+    ind1: f.ind1,
+    ind2: f.ind2,
+    value: f.value,
+    subfields: f.subfields,
+    uuid: f.uuid,
+  }
+}
+
+// Record decorations
 
 function decorateRecords(records) {
 
   records = stripDecorations(records);
 
   if(records.result.record) {
-    sourceUUIDs = records.source.record.fields.map(f => f.uuid);
-    baseUUIDs   = records.base.record.fields.map(f => f.uuid);
-    resultUUIDs = records.result.record.fields.map(f => f.uuid);
+    const sourceFields = records.source.record.fields;
+    const baseFields   = records.base.record.fields;
+    const resultFields = records.result.record.fields;
 
-    records.source.record.fields = records.source.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
-    records.base.record.fields = records.base.record.fields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
-    records.result.record.fields = records.result.record.fields.map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
-    records.result.record.fields = records.result.record.fields.map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+    sourceUUIDs = sourceFields.map(f => f.uuid);
+    baseUUIDs   = baseFields.map(f => f.uuid);
+    resultUUIDs = resultFields.map(f => f.uuid);
+
+    records.source.record.fields = sourceFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+    records.base.record.fields = baseFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+    records.result.record.fields = resultFields
+      .map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+      .map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f);
   }
 
   return records;
-
-  function decorate(record, tag) { // eslint-disable-line
-    if (!record) {
-      return null;
-    }
-    return {
-      leader: record.leader,
-      fields: record.fields.map(f => ({...f, ...tag}))
-    };
-  }
-  
-  function removeProperty(propKey, {[propKey]: propValue, ...rest}) { // eslint-disable-line
-    return rest;
-  }  
 }

@@ -12,10 +12,11 @@
   */
 }
 
-.marc-record .row {
+.marc-record > * {
   font: inherit;
-  /*
-  */
+}
+
+.marc-record .row {
   border: 1px white solid;
   padding-left: 8px;
   padding-right: 4px;
