@@ -473,15 +473,11 @@ export function createRecordMerger(configuration, plugins) {
   function actionControlfield(record_merged, field_other, options, comparators, return_details) {
 
     if (!record_merged.fields.some((field_merged) => field_merged.tag == field_other.tag)) {
-
-      field_other.wasUsed = true;
-      field_other.fromOther = true;
       record_merged.fields.push(clone(field_other));
 
       return !return_details ? undefined : {
         index: record_merged.fields.length - 1
       };
-
     }
 
   }
@@ -772,14 +768,7 @@ export function createRecordMerger(configuration, plugins) {
         insertField(record_merged, field_other_copy);
 
       } else {
-
-        field_other.wasUsed = true;
-        field_other.fromOther = true;
-
-        field_other_copy.wasUsed = true;
-        field_other_copy.fromOther = true;
         insertField(record_merged, field_other_copy);
-
       }
 
     } else {
@@ -819,9 +808,6 @@ export function createRecordMerger(configuration, plugins) {
            * @internal The field that will be copied will contain subfields that are not using in comparison from both records
            */
         field_other_copy.subfields = field_other_copy.subfields.concat(subfields_compare_without);
-
-        field_other.wasUsed = true;
-        field_other_copy.fromOther = true;
 
         /**
            * @internal Combine any subfields
@@ -894,11 +880,7 @@ export function createRecordMerger(configuration, plugins) {
     } else if (fields_merged.length === 0) {
 
       if (!options.requireFieldInBoth) {
-
-        field_other.wasUsed = true;
-        field_other.fromOther = true;
         insertField(record_merged, clone(field_other));
-
       }
 
     } else if (!options.onlyIfMissing) {
@@ -928,9 +910,6 @@ export function createRecordMerger(configuration, plugins) {
         if (subfield_pairs_scores[0] < subfield_pairs_scores[1]) {
 
           field_other_copy = clone(field_other);
-          field_other.wasUsed = true;
-          field_other_copy.fromOther = true;
-
           record_merged.fields.splice(record_merged.fields.indexOf(field_merged), 1, field_other_copy);
 
           if (options.pickMissing) {
@@ -948,9 +927,6 @@ export function createRecordMerger(configuration, plugins) {
            * @internal Use field from other record
            **/
         field_other_copy = clone(field_other);
-        field_other.wasUsed = true;
-        field_other_copy.fromOther = true;
-
         record_merged.fields.splice(record_merged.fields.indexOf(field_merged), 1, field_other_copy);
 
         if (options.pick) {
@@ -1072,9 +1048,6 @@ export function createRecordMerger(configuration, plugins) {
       });
     }
 
-    field_other.wasUsed = true;
-    field_other_copy.fromOther = true;
-
     if (options.convertTag) {
       field_other_copy.tag = options.convertTag;
     }
@@ -1098,11 +1071,6 @@ export function createRecordMerger(configuration, plugins) {
 
     const details = return_details ? {} : undefined,
       record_merged = new MarcRecord(record_preferred);
-
-    record_merged.fields.forEach((field) => {
-      field.wasUsed = true;
-      field.fromPreferred = true;
-    });
 
     record_other.fields.forEach((field) => {
 

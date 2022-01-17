@@ -331,8 +331,7 @@ export function addLOWSIDFieldsFromOther(preferredRecord, otherRecord, mergedRec
   const mergedRecord = new MarcRecord(mergedRecordParam);
 
   const otherRecordLOWFieldList = otherRecord.fields
-    .filter(field => field.tag === 'LOW')
-    .map(markAsPostmergeField);
+    .filter(field => field.tag === 'LOW');
   mergedRecord.fields = mergedRecord.fields.concat(otherRecordLOWFieldList);
 
   const otherRecordLibraryIdList = selectValues(otherRecord, 'LOW', 'a');
@@ -340,11 +339,8 @@ export function addLOWSIDFieldsFromOther(preferredRecord, otherRecord, mergedRec
   otherRecordLibraryIdList.forEach(libraryId => {
     const otherRecordSIDFieldList = selectFieldsByValue(otherRecord, 'SID', 'b', libraryId.toLowerCase());
     if (otherRecordSIDFieldList.length > 0) {
-
-      mergedRecord.fields = _.concat(mergedRecord.fields, otherRecordSIDFieldList.map(markAsPostmergeField));
-
+      mergedRecord.fields = _.concat(mergedRecord.fields, otherRecordSIDFieldList);
     } else {
-
       const otherRecordId = selectRecordId(otherRecord);
 
       mergedRecord.fields.push(createField({
@@ -365,9 +361,7 @@ export function addLOWSIDFieldsFromOther(preferredRecord, otherRecord, mergedRec
       const otherRecordSIDExtraFieldList = selectFieldsByValue(otherRecord, 'SID', 'b', 'volsi');
 
       if (otherRecordSIDExtraFieldList.length > 0) {
-
-        mergedRecord.fields = _.concat(mergedRecord.fields, otherRecordSIDExtraFieldList.map(markAsPostmergeField));
-
+        mergedRecord.fields = _.concat(mergedRecord.fields, otherRecordSIDExtraFieldList);
       }
     }
   });
@@ -444,10 +438,6 @@ export function removeExtra035aFromMerged(preferredRecord, otherRecord, mergedRe
       });
 
       if (field.subfields.length === 0) {
-
-        markFieldAsUnused(otherRecord, field.uuid);
-        markFieldAsUnused(preferredRecord, field.uuid);
-
         return fields;
       }
     }
@@ -596,14 +586,6 @@ export function handle880Fields(preferredRecord, otherRecord, mergedRecordParam)
 
     const linkedFieldsFromOther = _.flatMap(fieldInOther, (fieldWithLink) => otherRecord.fields.filter(isLinkedFieldOf(fieldWithLink)));
 
-    linkedFieldsFromPreferred.forEach(field => {
-      markFieldAsUsed(field, {fromOther: false});
-    });
-
-    linkedFieldsFromOther.forEach(field => {
-      markFieldAsUsed(field, {fromOther: true});
-    });
-
     const linkedFields = _.concat(_.cloneDeep(linkedFieldsFromPreferred), _.cloneDeep(linkedFieldsFromOther));
 
     updateLinks(i + 1, field, linkedFields);
@@ -613,12 +595,6 @@ export function handle880Fields(preferredRecord, otherRecord, mergedRecordParam)
   }).value();
 
   mergedRecord.fields = _.concat(fieldsWithout880, relinked880Fields);
-
-  const dropped880Fields = _.differenceBy(mergedRecordParam.fields, mergedRecord.fields, 'uuid');
-  dropped880Fields.map(field => field.uuid).forEach(uuid => {
-    markFieldAsUnused(preferredRecord, uuid);
-    markFieldAsUnused(otherRecord, uuid);
-  });
 
   return {mergedRecord};
 }
@@ -660,10 +636,8 @@ export function select773Fields(preferredHostRecordId, othterHostRecordId, keepB
       mergedRecord.fields = _.concat(fieldsWithoutLinks, linksToPreferredHost, linksToOtherHost);
     } else if (linksToPreferredHost.length > 0) { // eslint-disable-line functional/no-conditional-statement
       mergedRecord.fields = _.concat(fieldsWithoutLinks, linksToPreferredHost); // eslint-disable-line functional/immutable-data
-      linksToOtherHost.map(field => field.uuid).forEach(uuid => markFieldAsUnused(otherRecord, uuid));
     } else { // eslint-disable-line functional/no-conditional-statement
       mergedRecord.fields = _.concat(fieldsWithoutLinks, linksToOtherHost.map(resetComponentHostLinkSubfield)); // eslint-disable-line functional/immutable-data
-      linksToPreferredHost.map(field => field.uuid).forEach(uuid => markFieldAsUnused(preferredRecord, uuid));
     }
 
     return {
@@ -673,16 +647,9 @@ export function select773Fields(preferredHostRecordId, othterHostRecordId, keepB
   };
 }
 
-
-function markAsPostmergeField(field) {
-  field.fromPostmerge = true; // eslint-disable-line functional/immutable-data
-  return field;
-}
-
 function createField(fieldContent) {
   return _.assign({}, {
     uuid: uuid(),
-    fromPostmerge: true,
     ind1: ' ',
     ind2: ' '
   }, fieldContent);
@@ -690,20 +657,4 @@ function createField(fieldContent) {
 
 function formatDate(date) {
   return moment(date).format('YYYY-MM-DDTHH:mm:ssZ');
-}
-
-function markFieldAsUnused(record, fieldUuid) {
-  record.fields
-    .filter(field => field.uuid === fieldUuid)
-    .forEach(field => {
-      delete field.wasUsed; // eslint-disable-line functional/immutable-data
-      delete field.fromOther; // eslint-disable-line functional/immutable-data
-    });
-}
-
-function markFieldAsUsed(field, opts) {
-  field.wasUsed = true; // eslint-disable-line functional/immutable-data
-  if (opts && opts.fromOther !== undefined) { // eslint-disable-line functional/no-conditional-statement
-    field.fromOther = opts.fromOther; // eslint-disable-line functional/immutable-data
-  }
 }
