@@ -4,7 +4,6 @@
 import MarcRecord from '@natlibfi/marc-record';
 import {isEmpty, isUndefined} from 'lodash';
 import {hyphenate} from 'isbn3';
-import {v4 as uuid} from 'uuid';
 import {curry} from 'ramda';
 import {filterTag, findIndex, updateParamsfield, addTag, updatedMergedRecordParams, addIntoArray, replaceFieldsFromSource} from '../../../utils';
 
@@ -269,7 +268,6 @@ function eToPrintSelect776(targetRecord, sourceRecord, mergedRecordParam) {
       tag: '776',
       ind1: '0',
       ind2: '8',
-      uuid: uuid.v4(),
       subfields: [
         {
           code: 'i',

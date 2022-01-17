@@ -27,7 +27,6 @@
 */
 
 import {MarcRecord} from '@natlibfi/marc-record';
-//import {decorateFieldsWithUuid} from '../../record-utils';
 
 export const baseRecord = new MarcRecord({
   leader: '00000cam^a22006134i^4500',
@@ -110,5 +109,3 @@ export const baseRecord = new MarcRecord({
     }
   ]
 });
-
-//decorateFieldsWithUuid(record);

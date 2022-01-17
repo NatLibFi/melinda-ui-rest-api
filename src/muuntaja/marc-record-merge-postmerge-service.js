@@ -50,7 +50,6 @@ adds 500 a "Lisäpainokset: " (inferred from 250, and 008)
 
 import _, {isEmpty, orderBy, sortBy} from 'lodash';
 import {MarcRecord} from '@natlibfi/marc-record';
-import {v4 as uuid} from 'uuid';
 import moment from 'moment';
 import {selectValues, selectRecordId, selectFieldsByValue, fieldHasSubfield, resetComponentHostLinkSubfield, isLinkedFieldOf} from './record-utils';
 import {fieldOrderComparator} from './marc-field-sort';
@@ -246,8 +245,7 @@ export function printToE200q(preferredRecord, otherRecord, mergedRecordParam) {
           code: 'q',
           value: ' '
         }
-      ],
-      uuid: uuid()
+      ]
     };
 
     const update020 = curry((updatedSubfields, field) => {
@@ -649,7 +647,6 @@ export function select773Fields(preferredHostRecordId, othterHostRecordId, keepB
 
 function createField(fieldContent) {
   return _.assign({}, {
-    uuid: uuid(),
     ind1: ' ',
     ind2: ' '
   }, fieldContent);

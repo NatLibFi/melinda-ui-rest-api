@@ -27,7 +27,6 @@
 */
 
 import _ from 'lodash';
-import {v4 as uuid} from 'uuid';
 
 const FUTURE_HOST_ID_PLACEHOLDER = '(FI-MELINDA)[future-host-id]';
 
@@ -80,18 +79,11 @@ export function selectFirstValue(field, subcode) {
 
 }
 
-export function decorateFieldsWithUuid(record) {
-  record.fields.forEach(field => {
-    field.uuid = uuid.v4(); // eslint-disable-line functional/immutable-data
-  });
-}
-
 export function setRecordId(record, newId) {
 
   record.fields = record.fields.filter((field) => field.tag !== '001'); // eslint-disable-line functional/immutable-data
 
   record.fields.unshift({ // eslint-disable-line functional/immutable-data
-    uuid: uuid.v4(),
     tag: '001',
     value: newId
   });
@@ -103,7 +95,6 @@ export function resetRecordId(record) {
   record.fields = record.fields.filter((field) => field.tag !== '001'); // eslint-disable-line functional/immutable-data
 
   record.fields.unshift({ // eslint-disable-line functional/immutable-data
-    uuid: uuid.v4(),
     tag: '001',
     value: '000000000'
   });
