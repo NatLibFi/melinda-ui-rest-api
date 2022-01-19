@@ -51,7 +51,7 @@ adds 500 a "Lisäpainokset: " (inferred from 250, and 008)
 import _, {isEmpty, orderBy, sortBy} from 'lodash';
 import {MarcRecord} from '@natlibfi/marc-record';
 import moment from 'moment';
-import {selectValues, selectRecordId, selectFieldsByValue, fieldHasSubfield, resetComponentHostLinkSubfield, isLinkedFieldOf} from './record-utils';
+import {selectValues, selectRecordId, selectFieldsByValue, fieldHasSubfield, resetComponentHostLinkSubfield, isLinkedFieldOf} from './marc-record-utils';
 import {fieldOrderComparator} from './marc-field-sort';
 import {eToPrintPreset} from './config/e-to-print/postmerge/eToPrint-postmerge';
 import {curry} from 'ramda';

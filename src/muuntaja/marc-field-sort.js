@@ -27,7 +27,7 @@
 */
 
 import _ from 'lodash';
-import {selectFirstValue, fieldHasSubfield} from './record-utils';
+import {selectFirstValue, fieldHasSubfield} from './marc-record-utils';
 
 const sorterFunctions = [sortByTag, sortByLOW, sortBySID, sortByIndexterms, sortAlphabetically];
 

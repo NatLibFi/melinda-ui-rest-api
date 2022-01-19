@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {MarcRecord} from '@natlibfi/marc-record';
 //import createRecordMerger from '@natlibfi/marc-record-merge';
-import {createRecordMerger} from './record-merge';
+import {createRecordMerger} from './marc-record-merge';
 import * as MergeValidation from './marc-record-merge-validate-service';
 import * as PostMerge from './marc-record-merge-postmerge-service';
 

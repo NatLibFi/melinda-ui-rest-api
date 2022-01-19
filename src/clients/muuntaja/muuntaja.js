@@ -586,8 +586,8 @@ function doTransform(event = undefined) {
   )
     .then(response => response.json())
     .then(records => {
+      console.log('Transformed:', records);
       transformed = decorateRecords(records)
-      console.log('Transformed:', transformed);
       showTransformed();
       stopProcess();
     });
@@ -635,7 +635,7 @@ function stripFieldDecorations(f) {
 
 function decorateRecords(records) {
 
-  records = stripDecorations(records);
+  //records = stripDecorations(records);
 
   if(records.result.record) {
     const sourceFields = records.source.record.fields;
