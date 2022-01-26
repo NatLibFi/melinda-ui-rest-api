@@ -314,40 +314,41 @@ function editField(event, field) {
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
   subfields.innerHTML = ""
 
-//*
-  //var sortable =
-  Sortable.create(subfields, {
-    ghostClass: 'ghost-row',
-    animation: 100,
-  })
-/**/
-
   for (const subfield of field.subfields) {
     subfields.appendChild(createSubfield(subfields, subfield));
   }
+
+//*
+  Sortable.create(subfields, {
+    ghostClass: 'ghost-row',
+    animation: 50,
+  })
+/**/
 }
 
 function createSubfield(parent, subfield) {
   const row = document.createElement("div")
   row.classList.add("subfield")
+  row.appendChild(removeButton());
   row.appendChild(createInput('code', 'code', subfield.code));
   row.appendChild(createInput('value', 'value', subfield.value));
-
-  btn = document.createElement('button');
-  btn.classList.add("material-icons");
-  btn.innerHTML = "close";
-  btn.addEventListener("click", event => {
-    const state = row.getAttribute("disabled");
-    if(state) {
-      row.removeAttribute("disabled");
-    } else {
-      row.setAttribute("disabled", true);
-    }
-    return true;
-  })
-  row.appendChild(btn);
-
   return row;
+
+  function removeButton() {
+    const btn = document.createElement('button');
+    btn.classList.add("material-icons");
+    btn.innerHTML = "close";
+    btn.addEventListener("click", event => {
+      const state = row.getAttribute("disabled");
+      if(state) {
+        row.removeAttribute("disabled");
+      } else {
+        row.setAttribute("disabled", true);
+      }
+      return true;
+    })
+    return btn;  
+  }
 }
 
 function createInput(name, className, value, editable = true) {
@@ -462,11 +463,14 @@ function showRecord(data, dest, editmode = false) {
     addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
     for (const field of record.fields) {
       const row = addField(sourceDiv, field, editmode);
-      if(editmode) {
-        row.addEventListener("click", event => editField(event, field))
-      } else {
-        row.addEventListener("click", event => toggleField(event, field))
-      }    
+      if(field.uuid) {
+        if(editmode) {
+          if(field.subfields) row.addEventListener("click", event => editField(event, field))
+          /* Add here custom field editors */
+        } else {
+          row.addEventListener("click", event => toggleField(event, field))
+        }
+      }
     }
   }
 }
