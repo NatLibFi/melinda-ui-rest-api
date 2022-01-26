@@ -203,17 +203,19 @@ export function printToE_importFields(targetRecord, sourceRecord, mergedRecordPa
 
 export function prinToE300b(preferredRecord, otherRecord, mergedRecordParam) { // eslint-disable-line max-statements
   const tag = findTag(mergedRecordParam.fields, '300');
-  const fieldB = tag.subfields.find(field => field.code === 'b');
-  const fieldIndex = findIndex(mergedRecordParam, '300');
-  if (fieldB) {
-    const semicolon = fieldB.value.substr(-1) === ';';
-    const subfield = semicolon ? removeSemicolon(fieldB) : fieldB;
-    const updatedTag = {
-      ...tag,
-      subfields: tag.subfields.map(field => updatedSubfields(field, subfield.value))
-    };
+  if (tag) {
+    const fieldB = tag.subfields.find(field => field.code === 'b');
+    if (fieldB) {
+      const fieldIndex = findIndex(mergedRecordParam, '300');
+      const semicolon = fieldB.value.substr(-1) === ';';
+      const subfield = semicolon ? removeSemicolon(fieldB) : fieldB;
+      const updatedTag = {
+        ...tag,
+        subfields: tag.subfields.map(field => updatedSubfields(field, subfield.value))
+      };
 
-    return {mergedRecord: new MarcRecord(updateParamsfield(mergedRecordParam, updatedTag.subfields, fieldIndex))};
+      return {mergedRecord: new MarcRecord(updateParamsfield(mergedRecordParam, updatedTag.subfields, fieldIndex))};
+    }
   }
   return {mergedRecord: new MarcRecord(mergedRecordParam)};
 
