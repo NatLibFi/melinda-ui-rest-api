@@ -38,7 +38,8 @@ button {
   color: inherit;
   border: 0;
   background-color: transparent;
-  padding: 4px 16px;
+  /*padding: 4px 16px;*/
+  padding: 4px 14px;
   cursor: pointer;
 }
 

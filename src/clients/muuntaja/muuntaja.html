@@ -83,6 +83,14 @@
         <button class="material-icons"><a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
         <button class="material-icons" onClick="onNew(event)">add</button>
         <button class="material-icons" onClick="onSearch(event)">search</button>
+        <button class="material-icons" onClick="onSave(event)" disabled>save</button>
+        <div class="dropdown">
+          <button class="material-icons" onclick="onSettings(event)">settings</button>
+          <div class="dropdown-content" style="right: 0;">
+            Painetusta&nbsp;E-ainestoksi<br/>
+            E-aineistosta&nbsp;painetuksi<br/>
+          </div>
+          </div>
         <div class="dropdown">
           <button class="material-icons" onClick="onAccount(event)">account_circle</button>
           <div class="dropdown-content" style="right: 0;">
@@ -112,13 +120,6 @@
               <input id="ID"/>
               </div>
               <button class="material-icons" onclick="doTransform(event)">search</button>
-              <div class="dropdown">
-                <button class="material-icons" onclick="onSettings(event)">settings</button>
-                <div class="dropdown-content" style="right: 0;">
-                  Painetusta&nbsp;E-ainestoksi<br/>
-                  E-aineistosta&nbsp;painetuksi<br/>
-                </div>
-                </div>
             </form>
           <div id="Record" class="marc-record">
           </div>
@@ -127,7 +128,6 @@
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
             <button class="material-icons" onClick="onEdit(event)">edit</button>
-            <button class="material-icons" onClick="onSave(event)" disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
             </div>
@@ -146,11 +146,12 @@
       </div>
       <hr/>
       <div class="fieldedit marc-record">
-        <div class="subfield">
+        <div>
           Tag: <span id="tag"></span>
           Ind1: <span id="ind1"></span>
           Ind2: <span id="ind2"></span>
         </div>
+        <hr/>
         <div id="fieldlist" width="100%">
         </div>
         <button onclick="return onAddField(event)">Uusi alakenttä</button>

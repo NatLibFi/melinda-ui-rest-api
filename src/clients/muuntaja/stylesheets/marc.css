@@ -88,8 +88,11 @@
 }
 
 .fieldedit .subfield {
-  padding: 6px 8px;
+  /* padding: 6px 8px; */
   display: flex;
+  align-items: center;
+  padding: 2px;
+  margin: 2px 0px;
 }
 
 .fieldedit .subfield:hover {
