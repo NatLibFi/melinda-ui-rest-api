@@ -12,7 +12,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import defaults from 'defaults';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
-import '@natlibfi/marc-record'; // eslint-disable-line
+import {MarcRecord} from '@natlibfi/marc-record'; // eslint-disable-line no-unused-vars
 import {transformRecord} from './transform';
 import {getRecordByID} from '../bib/bib';
 import {v4 as uuid} from 'uuid';
@@ -26,6 +26,8 @@ import {v4 as uuid} from 'uuid';
 // Add handling those to UI
 
 import p2eDefaultProfile from './config/print-to-e/default';
+import e2pDefaultProfile from './config/e-to-print/default';
+
 //import {applyPostMergeModifications} from './marc-record-merge-postmerge-service';
 //import {preset as MergeValidationPreset} from './marc-record-merge-validate-service';
 //import {preset as PostMergePreset} from './marc-record-merge-postmerge-service';
@@ -43,7 +45,18 @@ const profiles = {
       'mergeConfiguration': p2eDefaultProfile.record.mergeConfiguration,
       'newFields': p2eDefaultProfile.record.newFields
     }
+  },
+  'e2p': {
+    'kvp': {
+      'baseRecord': e2pDefaultProfile.record.targetRecord,
+      'validationRules': e2pDefaultProfile.record.validationRules,
+      'postMergeFixes': e2pDefaultProfile.record.postMergeFixes,
+      'mergeConfiguration': e2pDefaultProfile.record.mergeConfiguration,
+      'newFields': e2pDefaultProfile.record.newFields
+    }
   }
+
+  /**/
 };
 
 /*
@@ -76,6 +89,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   return new Router()
     //.get('/base', getBaseRecords)
     .use(express.json())
+    .get('/profiles', getProfiles)
     .post('/transform', doTransform)
     .use(handleError);
 
@@ -84,18 +98,29 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
+  function getProfiles(req, res) {
+    logger.debug('Get profiles');
+    res.json({
+      'types': {
+        'p2e': 'Painetusta > E-aineistoksi',
+        'e2p': 'E-aineistosta > painetuksi'
+      }
+    });
+  }
+
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
+    const profile = req.body.profile ? req.body.profile : 'p2e';
     const {source, base, exclude, replace} = req.body;
 
-    logger.debug(`sourceID: ${source.ID}`);
-    logger.debug(`baseID: ${base.ID}`);
-    logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
-    logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
-    // validate source, validate base
+    logger.debug(`Profile: ${profile}`);
+    //logger.debug(`sourceID: ${source.ID}`);
+    //logger.debug(`baseID: ${base.ID}`);
+    //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
+    //logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
 
-    const transformProfile = profiles.p2e.kvp;
+    const transformProfile = profiles[profile].kvp;
 
     const [sourceRecord, baseRecord] =
       await Promise.all([
@@ -111,6 +136,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
+      profile,
       ...postProcess(sourceRecord, baseRecord, resultRecord),
       exclude,
       replace
@@ -159,10 +185,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function removeExcluded(record) {
-      return {
+      return new MarcRecord({
         leader: record.leader,
         fields: record.fields.filter(f => !exclude[f.uuid])
-      };
+      });
     }
 
     function postProcess(source, base, result) {
@@ -173,7 +199,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         result: {
           ...result,
           //error: 'Hello, world!',
-          record: applyEdits(result.record)
+          record: new MarcRecord(applyEdits(result.record))
         }
       };
     }

@@ -88,15 +88,15 @@ mustBeIdentical (true|false)
 import {preset as MergeValidationPreset} from '../../marc-record-merge-validate-service';
 import {preset as PostMergePreset} from '../../marc-record-merge-postmerge-service';
 import * as subrecordMergeTypes from '../subrecord-merge-types';
-import TargetRecord from './target-record';
+import {baseRecord} from './target-record';
 // import * as subrecordMergeTypes from '../subrecord-merge-types';
 
-module.exports = { // eslint-disable-line functional/immutable-data
+export default { // eslint-disable-line functional/immutable-data
   "name": "Oletus",
   "description": "Muunnos täydentää painetun aineiston tietueen e-aineiston tietueen tiedoilla. Muunnos ei käsittele osakohteita.",
   "mergeType": "eToPrint",
   "record": {
-    "targetRecord": TargetRecord,
+    "targetRecord": baseRecord,
     "validationRules": MergeValidationPreset.melinda_host,
     "postMergeFixes": PostMergePreset.eToPrintPreset,
     "mergeConfiguration": {

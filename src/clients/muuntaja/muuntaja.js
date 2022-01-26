@@ -124,29 +124,6 @@ function initialize() {
 // Login & logout
 //-----------------------------------------------------------------------------
 
-function authSuccess(response) {
-  const user = JSON.parse(response.headers.get('User'));
-  if (user) {
-    console.log(user);
-    melindaUser.set(user);
-  }
-
-  showTab('muuntaja');
-  doTransform();
-}
-
-function authRequest(token, url = '') {
-  return fetch(
-    [RESTurl, 'auth', url].join('/'),
-    {
-      method: 'POST',
-      headers: {
-        Authorization: token
-      }
-    }
-  );
-}
-
 function login(e) {
   e.preventDefault();
 
@@ -176,13 +153,12 @@ function login(e) {
   authRequest(generateAuthorizationHeader(username, password))
     .then(success)
     .catch(failure);
-  function success(response) {
+
+    function success(response) {
     if (!response.ok) {
       return failure();
     }
     authSuccess(response);
-    logininfo('');
-    stopProcess();
   }
 
   function failure() {
@@ -202,11 +178,125 @@ function logout(e) {
   reload();
 }
 
+function authSuccess(response) {
+  const user = JSON.parse(response.headers.get('User'));
+  if (user) {
+    console.log(user);
+    melindaUser.set(user);
+  }
+
+  profileRequest()
+    .then(response => response.json())
+    .then(profiles => {
+      setProfiles(profiles);
+
+      const username = document.querySelector("#account-menu #username")
+      username.innerHTML = melindaUser.get()["Name"];    
+      showTab('muuntaja');
+      doTransform();
+    })
+  //logininfo('');
+  //stopProcess();
+}
+
+function authRequest(token, url = '') {
+  return fetch(
+    [RESTurl, 'auth', url].join('/'),
+    {
+      method: 'POST',
+      headers: {
+        Authorization: token
+      }
+    }
+  );
+}
+
+function getAuthToken() {
+  const user = melindaUser.get();
+  //console.log('User:', user);
+  if(!user) return;
+  
+  return user.Token;
+}
+
+//-----------------------------------------------------------------------------
+
+function profileRequest() {
+  return fetch(
+    `${RESTurl}/muuntaja/profiles`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: getAuthToken()
+      }
+    }
+  );
+}
+
+function setProfiles(profiles) {
+  console.log("Profiles:", profiles)
+  const menu = document.querySelector("#profile-menu");
+  menu.innerHTML = ""
+
+  menu.appendChild(createMenuItem("Muunnostyyppi", "menu-header"))
+
+  for(const type in profiles.types) {
+    console.log("Type:", type);
+    //const item = createMenuItem(profiles.types[type], "menu-item");
+    const item = createMenuSelection("profile", type, profiles.types[type], "menu-item")
+    item.addEventListener("click", (event) => { return setProfile(event, type); });
+    menu.appendChild(item);
+  }
+
+  menu.appendChild(createMenuBreak())
+  menu.appendChild(createMenuItem("Muunnosprofiili", "menu-header"))
+  menu.appendChild(createMenuItem("KVP", "menu-item"))
+}
+
+function setProfile(event, profile) {
+  transformed.profile = profile;
+  delete transformed.base.record;
+  doTransform();
+  return eventHandled(event);
+}
+
+function createMenuItem(name, className) {
+  const item = document.createElement("div");
+  item.classList.add(className);
+  item.innerHTML = name;
+  return item;
+}
+
+function createMenuSelection(group, value, desc, className) {
+  const id = `${group}-${value}`;
+  const item = createMenuItem("", className);
+  const radiobtn = document.createElement("input")
+  radiobtn.setAttribute("type", "radio");
+  radiobtn.setAttribute("id", id);
+  radiobtn.setAttribute("name", group);
+  radiobtn.setAttribute("value", value);
+  radiobtn.setAttribute("value", value);
+
+  const label = document.createElement("label");
+  label.setAttribute("for", id);
+  label.innerHTML = desc;
+
+  item.appendChild(radiobtn);
+  item.appendChild(label);
+  return item;
+}
+
+function createMenuBreak() {
+  const item = document.createElement("hr");
+  return item;
+}
+
 //-----------------------------------------------------------------------------
 
 function onNew(e) {
   console.log('New:', e);
   resetForms(document.getElementById('muuntaja'));
+  return eventHandled(e);
 }
 
 function onEdit(e) {
@@ -218,35 +308,40 @@ function onEdit(e) {
     e.target.style.background = ""
   }
   showTransformed()
-}
-
-function ignore(e) {
-  console.log("Ignore")
-  e.stopPropagation();
-  e.preventDefault();
-  return true;
+  return eventHandled(e);
 }
 
 function onSearch(e) {
   console.log('Search:', e);
-  const dialog = document.getElementById('searchDlg');
+  //const dialog = document.getElementById('searchDlg');
   //console.log('Dialog:', dialog);
   //dialog.show();
 }
 
 function onSave(e) {
   console.log('Save:', e);
+  return eventHandled(e);
 }
 
 function onSettings(e) {
   console.log('Settings:', e);
-  e.preventDefault();
-  e.stopPropagation();
+  return eventHandled(e);
 }
 
 function onAccount(e) {
   console.log('Account:', e);
   logout();
+}
+
+function ignore(e) {
+  console.log("Ignore")
+  return eventHandled(e);
+}
+
+function eventHandled(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -267,14 +362,14 @@ function showTransformed()
 function toggleField(event, field) {
   const uuid = field.uuid;
 
-  console.log("Toggle:", uuid)
+  //console.log("Toggle:", uuid)
 
   if(!transformed.exclude[uuid]) {
     transformed.exclude[uuid] = stripFieldDecorations(field);
   } else {
     delete transformed.exclude[uuid];
   }
-  //showTransformed();
+
   doTransform();
 }
 
@@ -460,7 +555,10 @@ function showRecord(data, dest, editmode = false) {
   {
     const record = data.record;
 
-    addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
+    if(record.leader) {
+      addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
+    }
+
     for (const field of record.fields) {
       const row = addField(sourceDiv, field, editmode);
       if(field.uuid) {
@@ -571,16 +669,6 @@ function doTransform(event = undefined) {
   console.log('Transforming');
   if(event) event.preventDefault();
 
-  const user = melindaUser.get();
-  //console.log('User:', user);
-  if(!user) return;
-  
-  const token = user.Token;
-
-  // console.log("Token:", token);
-
-  if (!token) return;
-
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
@@ -605,7 +693,7 @@ function doTransform(event = undefined) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: token
+        Authorization: getAuthToken()
       },
       body: JSON.stringify(stripDecorations(transformed))
     }
@@ -659,25 +747,36 @@ function stripFieldDecorations(f) {
 
 // Record decorations
 
-function decorateRecords(records) {
+function decorateRecords(transformed) {
 
   //records = stripDecorations(records);
 
-  if(records.result.record) {
-    const sourceFields = records.source.record.fields;
-    const baseFields   = records.base.record.fields;
-    const resultFields = records.result.record.fields;
+  const sourceFields = getFields(transformed.source.record);
+  const baseFields   = getFields(transformed.base.record);
+  const resultFields = getFields(transformed.result.record);
 
-    sourceUUIDs = sourceFields.map(f => f.uuid);
-    baseUUIDs   = baseFields.map(f => f.uuid);
-    resultUUIDs = resultFields.map(f => f.uuid);
+  sourceUUIDs = sourceFields.map(f => f.uuid);
+  baseUUIDs   = baseFields.map(f => f.uuid);
+  resultUUIDs = resultFields.map(f => f.uuid);
 
-    records.source.record.fields = sourceFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
-    records.base.record.fields = baseFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
-    records.result.record.fields = resultFields
-      .map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
-      .map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f);
+  setFields(transformed.source.record,
+    sourceFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+  );
+  setFields(transformed.base.record,
+    baseFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+  );
+  setFields(transformed.result.record, resultFields
+    .map(f => sourceUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
+    .map(f => baseUUIDs.includes(f.uuid) ? { ...f, from: "base"} : f)
+  );
+
+  return transformed;
+
+  function getFields(record) {
+    return record ? record.fields : [];
   }
 
-  return records;
+  function setFields(record, fields) {
+    if(record) record.fields = fields;
+  }
 }

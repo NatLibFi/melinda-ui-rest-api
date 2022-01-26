@@ -26,9 +26,9 @@
 *
 */
 
-import MarcRecord from '@natlibfi/marc-record';
+import {MarcRecord} from '@natlibfi/marc-record';
 
-export const record = new MarcRecord({
+export const baseRecord = new MarcRecord({
   leader: '00000cam^a22006134i^4500',
   fields: [
     {

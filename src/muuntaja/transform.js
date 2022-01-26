@@ -80,14 +80,18 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
     return mergedRecord;
   }
 
-  const merge = createRecordMerger(transformConfiguration);
-  const mergedRecord = appendNewFields(merge(baseRecord, sourceRecord));
-  const postMerged = PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord);
+  try {
+    const merge = createRecordMerger(transformConfiguration);
+    const mergedRecord = appendNewFields(merge(baseRecord, sourceRecord));
+    const postMerged = PostMerge.applyPostMergeModifications(postMergeFixes, baseRecord, sourceRecord, mergedRecord);
 
-  return {
-    notes: postMerged.notes,
-    record: postMerged.record
-  };
+    return {
+      notes: postMerged.notes,
+      record: postMerged.record
+    };
+  } catch (e) {
+    return {error: `${e.message}: ${e.failureMessages}`};
+  }
 
   /*
   if (baseRecord && sourceRecord) { //targetRecord and sourceRecord

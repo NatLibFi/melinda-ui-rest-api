@@ -89,19 +89,39 @@ button > a, button > a:visited {
 }
 
 .dropdown-content {
-  position: absolute;
   display: none;
+  position: absolute;
+  right: 0;
   background-color: white;
   color: black;
-  font-family: inherit;
-  font-size: inherit;
   min-width: 160px;
-  padding: 8px;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
+
+.dropdown-content .menu-header {
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-weight: bold;
+  text-align: center;
+}
+
+.dropdown-content hr {
+  border: 0px;
+  border-top: 1px solid lightgray;
+}
+
+.dropdown-content .menu-item {
+  padding: 8px 16px;
+  white-space: nowrap;
+  color: #305d6d;
+}
+
+.dropdown-content .menu-item:hover {
+  background-color: lightgrey;
+}
 
 /* ---------------------------------------------------------------------------- */
 /* Box
@@ -138,6 +158,12 @@ button > a, button > a:visited {
   min-height: 25%;
   border: 2px solid grey;
   border-radius: 8px;
+}
+
+.modal-content hr {
+  border: 0px;
+  border-top: 1px solid lightgray;
+  margin: 8px 0px;
 }
 
 .modal-content .close {

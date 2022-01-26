@@ -85,19 +85,12 @@
         <button class="material-icons" onClick="onSearch(event)">search</button>
         <button class="material-icons" onClick="onSave(event)" disabled>save</button>
         <div class="dropdown">
-          <button class="material-icons" onclick="onSettings(event)">settings</button>
-          <div class="dropdown-content" style="right: 0;">
-            Painetusta&nbsp;E-ainestoksi<br/>
-            E-aineistosta&nbsp;painetuksi<br/>
-          </div>
-          </div>
-        <div class="dropdown">
-          <button class="material-icons" onClick="onAccount(event)">account_circle</button>
-          <div class="dropdown-content" style="right: 0;">
-            A<br/>
-            B<br/>
-            C<br/>
-          </div>
+          <button id="account-btn" class="material-icons">account_circle</button>
+          <div id="account-menu" class="dropdown-content">
+            <div class="menu-header" id="username">Tuntematon</div>
+            <hr/>
+            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+            </div>
           </div>
       </div>
       <div class="record-merge-panel">
@@ -107,7 +100,7 @@
               <label>Lähdetietue</label>
               <input id="ID"/>
               </div>
-            <button class="material-icons" onclick="doTransform(event)">search</button>
+            <button class="material-icons" onclick="return doTransform(event)">search</button>
             <button class="material-icons" disabled>swap_horiz</button>
             </form>
           <div id="Record" class="marc-record">
@@ -119,7 +112,11 @@
               <label>Pohjatietue</label>
               <input id="ID"/>
               </div>
-              <button class="material-icons" onclick="doTransform(event)">search</button>
+              <button class="material-icons" onclick="return doTransform(event)">search</button>
+              <div class="dropdown">
+                <button class="material-icons" onclick="return ignore(event);">settings</button>
+                <div id="profile-menu" class="dropdown-content"></div>
+              </div>
             </form>
           <div id="Record" class="marc-record">
           </div>
@@ -138,7 +135,7 @@
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Field edit dialog -->
-  <div id="fieldEditDlg" class="modal" onclick="return ignore(event)">
+  <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
       <span id="field" class="marc-record"></span><br/>
       <div style="display: flex; justify-content: right;">
@@ -146,10 +143,10 @@
       </div>
       <hr/>
       <div class="fieldedit marc-record">
-        <div>
-          Tag: <span id="tag"></span>
-          Ind1: <span id="ind1"></span>
-          Ind2: <span id="ind2"></span>
+        <div style="display: flex;">
+          Tag: <div id="tag"></div>
+          Ind1: <div id="ind1"></div>
+          Ind2: <div id="ind2"></div>
         </div>
         <hr/>
         <div id="fieldlist" width="100%">

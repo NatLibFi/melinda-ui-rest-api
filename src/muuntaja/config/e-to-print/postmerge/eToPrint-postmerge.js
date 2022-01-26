@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, prefer-named-capture-group, max-statements, max-lines */
 
 // preferredRecord(pohjatietue), otherRecord(lähdetietue), result.mergedRecord
-import MarcRecord from '@natlibfi/marc-record';
+import {MarcRecord} from '@natlibfi/marc-record';
 import {isEmpty, isUndefined} from 'lodash';
 import {hyphenate} from 'isbn3';
 import {curry} from 'ramda';
@@ -19,7 +19,6 @@ export const eToPrintPreset = [
   ISBNhyphenate,
   eToPrintSelect490_830
 ];
-
 
 // eToPrint postmerge functions ->
 export function replaceSourceFields(targetRecord, sourcerecord, mergedRecordParam) {
@@ -44,8 +43,9 @@ export function eToPrintRemoveTags(preferredRecord, otherRecord, mergedRecordPar
 
 // Replaces 008 string content
 export function eToPrintSelect008(baseRecord, sourceRecord, mergedRecordParam) {
-  const [sourceF008] = sourceRecord.get('008');
-  const [baseF008] = baseRecord.get('008');
+  //console.log(sourceRecord); // eslint-disable-line
+  const [sourceF008] = new MarcRecord(sourceRecord).get('008');
+  const [baseF008] = new MarcRecord(baseRecord).get('008');
 
   const indexList = [0, 1, 2, 3, 4, 5, 23, 39];
 
@@ -63,7 +63,7 @@ export function eToPrintSelect008(baseRecord, sourceRecord, mergedRecordParam) {
   const updatedMergedRecord = new MarcRecord({
     ...mergedRecordParam.leader,
     ...fields
-  }, {subfieldValues: false});
+  }, {fields: false, subfieldValues: false});
   updatedMergedRecord.insertField(updated008field);
 
   return {
