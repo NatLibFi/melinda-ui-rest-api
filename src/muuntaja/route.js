@@ -103,7 +103,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     res.json({
       'types': {
         'p2e': 'Painetusta > E-aineistoksi',
-        'e2p': 'E-aineistosta > painetuksi'
+        'e2p': 'E-aineistosta > Painetuksi'
       }
     });
   }
