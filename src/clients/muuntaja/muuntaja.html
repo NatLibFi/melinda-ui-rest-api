@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -49,7 +50,7 @@
     <!-- Login tab -->
     <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
 
-    <form id="login" class="VBox BoxShadow" style="display: none;">
+    <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
         <input id="username" name="username"/>
@@ -112,11 +113,10 @@
               </div>
               <button class="material-icons" onclick="doTransform(event)">search</button>
               <div class="dropdown">
-                <button class="material-icons" onClick="onSettings(event)">settings</button>
+                <button class="material-icons" onclick="onSettings(event)">settings</button>
                 <div class="dropdown-content" style="right: 0;">
-                  A<br/>
-                  B<br/>
-                  C<br/>
+                  Painetusta&nbsp;E-ainestoksi<br/>
+                  E-aineistosta&nbsp;painetuksi<br/>
                 </div>
                 </div>
             </form>
@@ -138,15 +138,28 @@
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Field edit dialog -->
-  <div id="fieldEditDlg" class="modal" onClick="return editDlgClose(event)">
-    <div class="modal-content BoxShadow" onClick="return ignore(event)">
-      <span class="close" onClick="return editDlgClose(event)">&times;</span><br/>
-      Field: <span id="field" class="marc-record"></span><br/>
-      Tag: <div id="tag"></div>
-      <div id="fieldlist" width="100%" class="fieldedit">
+  <div id="fieldEditDlg" class="modal" onclick="return ignore(event)">
+    <div class="modal-content BoxShadow" onclick="return ignore(event)">
+      <span id="field" class="marc-record"></span><br/>
+      <div style="display: flex; justify-content: right;">
+        <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
       </div>
-      <button onClick="return editDlgClose(event)">Cancel</button>
-      <button onClick="return editDlgOK(event)">OK</button>
+      <hr/>
+      <div class="fieldedit marc-record">
+        <div class="subfield">
+          Tag: <span id="tag"></span>
+          Ind1: <span id="ind1"></span>
+          Ind2: <span id="ind2"></span>
+        </div>
+        <div id="fieldlist" width="100%">
+        </div>
+        <button onclick="return onAddField(event)">Uusi alakenttä</button>
+      </div>
+      <hr/>
+      <div style="display: flex; justify-content: right;">
+        <button onclick="return editDlgClose(event)">Peru muutokset</button>
+        <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
+      </div>
     </div>
   </div>
 

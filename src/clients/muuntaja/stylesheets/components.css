@@ -131,10 +131,12 @@ button > a, button > a:visited {
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 8px;
-  padding-top: 2px;
+  padding: 16px 8px;
+  min-width: 33%;
   max-width: 50%;
   min-height: 25%;
+  border: 2px solid grey;
+  border-radius: 8px;
 }
 
 .modal-content .close {

@@ -52,75 +52,75 @@
   background-color: #ecf78c60;
 }
 
-.marc-record .row .tag {
+.marc-record .tag {
   color: #448aff;
   margin-right: 9pt;
 }
 
-.marc-record .row .inds {
+.marc-record .inds {
   color: #448aff;
   margin-right: 9pt;
 }
 
-.marc-record .row .subfield {
+.marc-record .subfield {
   margin-right: 4px;
 }
 
-.marc-record .row .subfield .code {
+.marc-record .subfield .code {
   color: #e57373;
   margin-right: 2px;
+}
+
+.marc-record .subfield .value {
 }
 
 /* ---------------------------------------------------------------------------- */
 /* Styles for MARC record field edit */
 
-.fieldedit {
-  /* border: 1px solid grey; */
-  margin: 2px;
-  padding: 2px;
+.modal-content button {
+  margin: 2px 8px;
 }
 
-.fieldedit .tagrow {
-  /* border: 1px solid grey; */
-  margin: 2px;
-  padding: 2px;
-}
-
-.fieldedit .subfields {
-  border: 1px solid lightgrey;
+.fieldedit .editable {
+  border: 1px solid lightgray;
   border-radius: 4px;
+  padding: 4px 8px;
 }
 
-.fieldedit .subfields .row {
-  padding: 8px;
+.fieldedit .subfield {
+  padding: 6px 8px;
+  display: flex;
 }
 
-.fieldedit .subfields .row:not(:first-child) {
-  /* border-top: 1px solid lightgray; */
+.fieldedit .subfield:hover {
+  background-color: rgb(236, 236, 236);
 }
 
-.fieldedit .subfields .row:hover {
-  background-color: lightgray;
+.fieldedit .subfield[disabled] {
+  color: lightgray;
 }
 
-.fieldedit .subfields .ghost-row {
-  border: 1px solid grey;
-  margin: 2px;
-  padding: 4px;
-  margin-top: 8px;
-  margin-bottom: 8px;
+.fieldedit .ghost-row {
+  /* border: 1px solid grey; */
+  /*padding: 6px 10px;*/
   background-color: lightblue;
 }
 
-.fieldedit .tag,
-.fieldedit .ind,
-.fieldedit .code,
-.fieldedit .value
-{
-  border: 1px solid grey;
-  margin: 2px;
-  padding: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
-  /* background-color: lightgrey; */
+.fieldedit button.material-icons {
+  font-size: 16px;
+  color: inherit;
+  border: 0;
+  background-color: transparent;
+  padding: 4px 4px;
+  cursor: pointer;
+}
+
+.fieldedit button.material-icons:disabled {
+  color: gray;
+  cursor: default;
+}
+
+.fieldedit button.material-icons:enabled:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+  /*transition: background-color .10s;*/
 }

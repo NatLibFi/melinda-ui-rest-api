@@ -160,7 +160,7 @@ function login(e) {
     return;
   }
 
-  logininfo('<div class="progress-bar"></div>');
+  startProcess();
 
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
@@ -182,11 +182,13 @@ function login(e) {
     }
     authSuccess(response);
     logininfo('');
+    stopProcess();
   }
 
   function failure() {
     melindaUser.remove();
     logininfo('Tunnus tai salasana ei täsmää');
+    stopProcess();
   }
 
   function logininfo(msg) {
@@ -238,6 +240,8 @@ function onSave(e) {
 
 function onSettings(e) {
   console.log('Settings:', e);
+  e.preventDefault();
+  e.stopPropagation();
 }
 
 function onAccount(e) {
@@ -297,64 +301,80 @@ function editField(event, field) {
 
   const tag = document.querySelector("#fieldEditDlg #tag");
   tag.innerHTML = ""
-  tag.appendChild(createTag())
+  tag.appendChild(createInput('tag', 'tag', field.tag))
+
+  const ind1 = document.querySelector("#fieldEditDlg #ind1");
+  ind1.innerHTML = ""
+  ind1.appendChild(createInput('ind1', 'inds', field.ind1))
+
+  const ind2 = document.querySelector("#fieldEditDlg #ind2");
+  ind2.innerHTML = ""
+  ind2.appendChild(createInput('ind2', 'inds', field.ind2))
 
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
   subfields.innerHTML = ""
 
-/*
-  var sortable = Sortable.create(subfields, {
-    //ghostClass: 'ghost-row',
-    animation: 150,
+//*
+  //var sortable =
+  Sortable.create(subfields, {
+    ghostClass: 'ghost-row',
+    animation: 100,
   })
-*/
+/**/
 
   for (const subfield of field.subfields) {
-    subfields.appendChild(createSubfield(subfield));
+    subfields.appendChild(createSubfield(subfields, subfield));
   }
+}
 
-  function createTag() {
-    const row = makeDiv("tagrow");
-    row.appendChild(makeInput('tag', 'tag', field.tag));
-    row.appendChild(makeInput('ind1', 'ind', field.ind1));
-    row.appendChild(makeInput('ind2', 'ind', field.ind2));
-    return row;
-  }
+function createSubfield(parent, subfield) {
+  const row = document.createElement("div")
+  row.classList.add("subfield")
+  row.appendChild(createInput('code', 'code', subfield.code));
+  row.appendChild(createInput('value', 'value', subfield.value));
 
-  function createSubfield(subfield) {
-    const row = document.createElement("div")
-    row.classList.add("row")
-    row.appendChild(createField('code', 'code', subfield.code));
-    row.appendChild(createField('value', 'value', subfield.value));
-    return row;
-
-    function createField(name, className, value, editable = true) {
-      const input = document.createElement('span');
-      input.setAttribute('id', name);
-      input.classList.add(className)
-      input.innerHTML = value;
-      input.contentEditable = editable;
-      return input;
+  btn = document.createElement('button');
+  btn.classList.add("material-icons");
+  btn.innerHTML = "close";
+  btn.addEventListener("click", event => {
+    const state = row.getAttribute("disabled");
+    if(state) {
+      row.removeAttribute("disabled");
+    } else {
+      row.setAttribute("disabled", true);
     }
-  }
+    return true;
+  })
+  row.appendChild(btn);
 
-  function makeInput(name, className, value) {
-    const input = document.createElement('span');
-    input.setAttribute('id', name);
-    input.classList.add(className);
-    if (value) {
-      input.innerHTML = value;
-    }
-    input.contentEditable = true;
-    return input;
+  return row;
+}
+
+function createInput(name, className, value, editable = true) {
+  const input = document.createElement('span');
+  input.setAttribute('id', name);
+  input.classList.add(className);
+  if(editable) {
+    input.classList.add('editable')
   }
+  input.innerHTML = value;
+  input.contentEditable = editable;
+  return input;
+}
+
+function onAddField(event) {
+  const subfields = document.querySelector("#fieldEditDlg #fieldlist");
+  subfields.appendChild(createSubfield(subfields, {code: '?', value: '?'}))
+  //event.preventDefault();
+  //event.stopPropagation();
+  return true;
 }
 
 function editDlgOK(event) {
   // Read tag & indicators
   const tag = document.querySelector("#fieldEditDlg #tag #tag").innerHTML;
-  const ind1 = document.querySelector("#fieldEditDlg #tag #ind1").innerHTML;
-  const ind2 = document.querySelector("#fieldEditDlg #tag #ind2").innerHTML;
+  const ind1 = document.querySelector("#fieldEditDlg #ind1 #ind1").innerHTML;
+  const ind2 = document.querySelector("#fieldEditDlg #ind2 #ind2").innerHTML;
 
   var field = {
     tag: tag,
@@ -367,10 +387,15 @@ function editDlgOK(event) {
   //console.log("Tag:", tag, ind1, ind2)
 
   // Read fields
-  const subfields = document.querySelector("#fieldEditDlg #fieldlist").getElementsByClassName("row");
+  const subfields = document
+    .querySelector("#fieldEditDlg #fieldlist")
+    .getElementsByClassName("subfield");
   //console.log("Fields:", subfields);
 
   for(subfield of subfields) {
+
+    if(subfield.getAttribute("disabled")) continue;
+
     const code  = subfield.getElementsByClassName("code")[0].innerHTML;
     const value = subfield.getElementsByClassName("value")[0].innerHTML;
     //console.log("Field code:", code, "value:", value)
@@ -381,21 +406,18 @@ function editDlgOK(event) {
   }
 
   //console.log("Original:", editing)
-  //console.log("Edited:", field)
+  console.log("Edited:", field)
 
-  // Pairing original and edited field
-
-  /*
-  if(!records.edited) {
-    records.edited = []
-  }
-  */
   transformed.replace[field.uuid] = stripFieldDecorations(field);
-  //records.edited.push([editing, field])
-  //console.log("Records:", records)
-
   doTransform();
   
+  return editDlgClose(event);
+}
+
+function editDlgUseOriginal(event) {
+  console.log("Using original.");
+  delete transformed.replace[editing.uuid];
+  doTransform();
   return editDlgClose(event);
 }
 
@@ -439,7 +461,12 @@ function showRecord(data, dest, editmode = false) {
 
     addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
     for (const field of record.fields) {
-      addField(sourceDiv, field, editmode);
+      const row = addField(sourceDiv, field, editmode);
+      if(editmode) {
+        row.addEventListener("click", event => editField(event, field))
+      } else {
+        row.addEventListener("click", event => toggleField(event, field))
+      }    
     }
   }
 }
@@ -451,12 +478,6 @@ function addField(div, field, editmode = false) {
   //console.log(field)
   const row = document.createElement('div');
   row.setAttribute('class', 'row');
-
-  if(editmode) {
-    row.addEventListener("click", event => editField(event, field))
-  } else {
-    row.addEventListener("click", event => toggleField(event, field))
-  }
 
   if(transformed.exclude[field.uuid]) {
     row.classList.add("row-excluded");
@@ -478,8 +499,9 @@ function addField(div, field, editmode = false) {
       addSubfield(row, subfield);
     }
   }
-  //return row;
+
   div.appendChild(row);
+  return row;
 
   //---------------------------------------------------------------------------
   
