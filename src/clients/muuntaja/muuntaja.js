@@ -40,6 +40,7 @@ const melindaUser = {
 //-----------------------------------------------------------------------------
 
 var transformed = {
+  profile: null,
   source: null,
   base: null,
   exclude: {},

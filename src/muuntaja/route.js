@@ -192,16 +192,28 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function postProcess(source, base, result) {
-      return {
-        source,
-        base,
-        transformed: result,
-        result: {
-          ...result,
-          //error: 'Hello, world!',
-          record: new MarcRecord(applyEdits(result.record))
-        }
-      };
+      try {
+        return {
+          source,
+          base,
+          transformed: result,
+          result: {
+            ...result,
+            //error: 'Error: Hello, world!',
+            record: new MarcRecord(applyEdits(result.record))
+            //record: applyEdits(result.record)
+          }
+        };
+      } catch (e) {
+        return {
+          source,
+          base,
+          transformed: result,
+          result: {
+            error: e.toString()
+          }
+        };
+      }
     }
 
     function applyEdits(record) {
