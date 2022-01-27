@@ -462,47 +462,27 @@ function createInput(name, className, value, editable = true) {
 function onAddField(event) {
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
   subfields.appendChild(createSubfield(subfields, {code: '?', value: '?'}))
-  //event.preventDefault();
-  //event.stopPropagation();
-  return true;
+  return eventHandled(event);
 }
 
 function editDlgOK(event) {
-  // Read tag & indicators
-  const tag = document.querySelector("#fieldEditDlg #tag #tag").innerHTML;
-  const ind1 = document.querySelector("#fieldEditDlg #ind1 #ind1").innerHTML;
-  const ind2 = document.querySelector("#fieldEditDlg #ind2 #ind2").innerHTML;
 
-  var field = {
-    tag: tag,
-    ind1: ind1,
-    ind2: ind2,
-    subfields: [],
+  const query = (p) => document.querySelector(p);
+
+  const field = {
     uuid: editing.uuid,
+    tag: query("#fieldEditDlg #tag #tag").textContent,
+    ind1: query("#fieldEditDlg #ind1 #ind1").textContent,
+    ind2: query("#fieldEditDlg #ind2 #ind2").textContent,
+    subfields: Array.from(query("#fieldEditDlg #fieldlist").childNodes)
+      .filter(e => e.classList.contains("subfield"))
+      .filter(e => !e.getAttribute("disabled"))
+      .map(elem => ({
+        code:  elem.getElementsByClassName("code")[0].textContent,
+        value: elem.getElementsByClassName("value")[0].textContent
+      }))
   }
 
-  //console.log("Tag:", tag, ind1, ind2)
-
-  // Read fields
-  const subfields = document
-    .querySelector("#fieldEditDlg #fieldlist")
-    .getElementsByClassName("subfield");
-  //console.log("Fields:", subfields);
-
-  for(subfield of subfields) {
-
-    if(subfield.getAttribute("disabled")) continue;
-
-    const code  = subfield.getElementsByClassName("code")[0].innerHTML;
-    const value = subfield.getElementsByClassName("value")[0].innerHTML;
-    //console.log("Field code:", code, "value:", value)
-    field.subfields.push({
-      code: code,
-      value: value,
-    })
-  }
-
-  //console.log("Original:", editing)
   console.log("Edited:", field)
 
   transformed.replace[field.uuid] = stripFieldDecorations(field);
@@ -522,7 +502,7 @@ function editDlgClose(event) {
   const dlg = document.querySelector("#fieldEditDlg")
   //console.log("Close:", dlg)
   dlg.style.display = "none"
-  return true;
+  return eventHandled(event);
 }
 
 //-----------------------------------------------------------------------------
