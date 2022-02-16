@@ -46,14 +46,14 @@ steps:
     commands:
       - njsscan dist
 
-  - name: docker
-    image: plugins/docker
-    settings:
-      repo: quay.io/natlibfi/melinda-user-tools
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
+  #- name: docker
+  #  image: plugins/docker
+  #  settings:
+  #    repo: quay.io/natlibfi/melinda-user-tools
+  #    username:
+  #      from_secret: docker_username
+  #    password:
+  #      from_secret: docker_password
 
 ---
 kind: secret
