@@ -6,7 +6,9 @@
 
 //-----------------------------------------------------------------------------
 
-const RESTurl = 'http://localhost:8081';
+const RESTurl = window.location.protocol + "//" + window.location.host;
+
+//console.log(`REST: ${RESTurl}`);
 
 //-----------------------------------------------------------------------------
 // stored auth token
