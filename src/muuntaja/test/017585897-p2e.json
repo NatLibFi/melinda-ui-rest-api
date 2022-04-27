@@ -1,0 +1,1196 @@
+{
+  "profile": "p2e",
+  "source": {
+    "ID": "017585897",
+    "record": {
+      "leader": "01235cam a22003738i 4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "017585897",
+          "uuid": "b0fb8879-4ad0-400a-b2e8-98356ef227c5"
+        },
+        {
+          "tag": "003",
+          "value": "FI-MELINDA",
+          "uuid": "a373bf88-b822-4f61-bb74-9e245ab5d435"
+        },
+        {
+          "tag": "005",
+          "value": "20220217144155.0",
+          "uuid": "fdc4e4a5-87ea-4dfd-a2df-af4227d92fe0"
+        },
+        {
+          "tag": "008",
+          "value": "211202s2022    fi                  fin  ",
+          "uuid": "91d9189c-3221-464d-b6c5-cb1abb8ad5a6"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "978-951-8986-85-3"
+            },
+            {
+              "code": "q",
+              "value": "nidottu"
+            }
+          ],
+          "uuid": "563bb580-6154-4e9f-8247-cac45d2a70d5",
+          "from": "source"
+        },
+        {
+          "tag": "035",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "(FI-MELINDA)017585897"
+            }
+          ],
+          "uuid": "9c0e56e4-b8bd-4708-a7e4-3d19acb6ad12"
+        },
+        {
+          "tag": "040",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "FI-KV"
+            },
+            {
+              "code": "b",
+              "value": "fin"
+            },
+            {
+              "code": "e",
+              "value": "rda"
+            }
+          ],
+          "uuid": "03538d4e-6ca0-40b7-99f6-e5548b35f3f1"
+        },
+        {
+          "tag": "041",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "fin"
+            }
+          ],
+          "uuid": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6",
+          "from": "source"
+        },
+        {
+          "tag": "042",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "finb"
+            }
+          ],
+          "uuid": "064467c1-dd3a-4419-bb5c-138ae0461ed5"
+        },
+        {
+          "tag": "084",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "69.1"
+            },
+            {
+              "code": "2",
+              "value": "ykl"
+            }
+          ],
+          "uuid": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb",
+          "from": "source"
+        },
+        {
+          "tag": "100",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Holopainen, Tuulikki,"
+            },
+            {
+              "code": "e",
+              "value": "toimittaja."
+            },
+            {
+              "code": "g",
+              "value": "ENNAKKOTIETO"
+            }
+          ],
+          "uuid": "79449e7e-3b1e-42b6-9cc7-42dc14775e46",
+          "from": "source"
+        },
+        {
+          "tag": "245",
+          "ind1": "1",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Yrityksen perustamisopas 2022"
+            },
+            {
+              "code": "b",
+              "value": "käytännön perustamistoimet."
+            }
+          ],
+          "uuid": "b2c44528-81aa-4ae7-a6da-386ae4c8b484",
+          "from": "source"
+        },
+        {
+          "tag": "250",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "32. p."
+            }
+          ],
+          "uuid": "cc61ccc9-50c6-414c-915b-b3a9e759c56c",
+          "from": "source"
+        },
+        {
+          "tag": "263",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "202202"
+            }
+          ],
+          "uuid": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a",
+          "from": "source"
+        },
+        {
+          "tag": "264",
+          "ind1": " ",
+          "ind2": "1",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Hyvinkää :"
+            },
+            {
+              "code": "b",
+              "value": "Asiatieto,"
+            },
+            {
+              "code": "c",
+              "value": "2022"
+            }
+          ],
+          "uuid": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35",
+          "from": "source"
+        },
+        {
+          "tag": "336",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "teksti"
+            },
+            {
+              "code": "b",
+              "value": "txt"
+            },
+            {
+              "code": "2",
+              "value": "rdacontent"
+            }
+          ],
+          "uuid": "bf7f71cb-0931-4cce-b2cc-38a8480a251c",
+          "from": "source"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "käytettävissä ilman laitetta"
+            },
+            {
+              "code": "b",
+              "value": "n"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "uuid": "d5551058-fbcb-4302-81de-b4e387726c5c"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "nide"
+            },
+            {
+              "code": "b",
+              "value": "nc"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "uuid": "ba4b0afa-f206-45dc-a4ef-0995f8e6c396"
+        },
+        {
+          "tag": "500",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
+            }
+          ],
+          "uuid": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d",
+          "from": "source"
+        },
+        {
+          "tag": "594",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
+            }
+          ],
+          "uuid": "849857cb-353f-4f93-be34-e36745a0ca22"
+        },
+        {
+          "tag": "653",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "yrittäjyys"
+            }
+          ],
+          "uuid": "4f90536c-d3d3-4638-8172-1902295e7cef",
+          "from": "source"
+        },
+        {
+          "tag": "653",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "yrityksen perustaminen"
+            }
+          ],
+          "uuid": "50baf050-65fe-4510-be9e-e6b81f59f4f0",
+          "from": "source"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "FENNI-KV"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20211202"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0700"
+            }
+          ],
+          "uuid": "088646fa-f0b8-4260-98dc-46e7b67ce47e"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "LOAD-ELAID"
+            },
+            {
+              "code": "b",
+              "value": "00"
+            },
+            {
+              "code": "c",
+              "value": "20220104"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0639"
+            }
+          ],
+          "uuid": "d8301ffe-ad12-4006-9dc2-17caa2c39386"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "LOAD-ELAID"
+            },
+            {
+              "code": "b",
+              "value": "00"
+            },
+            {
+              "code": "c",
+              "value": "20220115"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0631"
+            }
+          ],
+          "uuid": "3adc9c2d-dff7-4582-b4fa-72607241e6cd"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "LOAD-ELAID"
+            },
+            {
+              "code": "b",
+              "value": "00"
+            },
+            {
+              "code": "c",
+              "value": "20220128"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0631"
+            }
+          ],
+          "uuid": "7045115f-a0db-4514-8261-f6f3c5d92e4a"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "LOAD-ELAID"
+            },
+            {
+              "code": "b",
+              "value": "00"
+            },
+            {
+              "code": "c",
+              "value": "20220201"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0630"
+            }
+          ],
+          "uuid": "f260df16-d0a2-41ec-aae9-c6092ce61bff"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "FENNI-KV"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20220202"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0700"
+            }
+          ],
+          "uuid": "36ca9977-2a07-4db2-9a8c-f212d53940e8"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "KVP4046"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20220217"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1441"
+            }
+          ],
+          "uuid": "c867abd3-40c8-4472-850a-e3a1896df381"
+        }
+      ]
+    }
+  },
+  "base": {
+    "ID": "",
+    "record": {
+      "leader": "00000cam^a22006134i^4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "000000000",
+          "uuid": "d2fb9d2c-64f8-4fdb-8f43-0c8a06183050"
+        },
+        {
+          "tag": "007",
+          "value": "cr^||^||||||||",
+          "uuid": "80786f3f-9fdf-4167-8c27-cd088e10ecae",
+          "from": "base"
+        },
+        {
+          "tag": "008",
+          "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
+          "uuid": "f6f58407-e150-40a8-b52f-296ec59c9caa",
+          "from": "base"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": ""
+            },
+            {
+              "code": "q",
+              "value": "PDF"
+            }
+          ],
+          "uuid": "cba3933f-5f5a-4dcb-a9f9-635e898b994a",
+          "from": "base"
+        },
+        {
+          "tag": "041",
+          "ind1": "0",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "eng"
+            }
+          ],
+          "uuid": "18f17eb8-c50b-4b92-9c23-af5b0be0a779"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "uuid": "3a80d04a-d533-4325-b70e-6bd2c0794772",
+          "from": "base"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "verkkoaineisto"
+            },
+            {
+              "code": "b",
+              "value": "cr"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "uuid": "f89a5dab-4ac5-4d6a-bd34-a253af427d92",
+          "from": "base"
+        }
+      ]
+    }
+  },
+  "transformed": {
+    "notes": [],
+    "record": {
+      "_validationOptions": {},
+      "leader": "00000cam^a22006134i^4500",
+      "fields": [
+        {
+          "ind1": " ",
+          "ind2": " ",
+          "tag": "001",
+          "value": "000000000"
+        },
+        {
+          "tag": "007",
+          "value": "cr^||^||||||||",
+          "uuid": "80786f3f-9fdf-4167-8c27-cd088e10ecae"
+        },
+        {
+          "tag": "008",
+          "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
+          "uuid": "f6f58407-e150-40a8-b52f-296ec59c9caa"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": ""
+            },
+            {
+              "code": "q",
+              "value": "PDF"
+            }
+          ],
+          "uuid": "cba3933f-5f5a-4dcb-a9f9-635e898b994a"
+        },
+        {
+          "tag": "041",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "fin"
+            }
+          ],
+          "uuid": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6"
+        },
+        {
+          "tag": "084",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "69.1"
+            },
+            {
+              "code": "2",
+              "value": "ykl"
+            }
+          ],
+          "uuid": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb"
+        },
+        {
+          "tag": "100",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Holopainen, Tuulikki,"
+            },
+            {
+              "code": "e",
+              "value": "toimittaja."
+            },
+            {
+              "code": "g",
+              "value": "ENNAKKOTIETO"
+            }
+          ],
+          "uuid": "79449e7e-3b1e-42b6-9cc7-42dc14775e46"
+        },
+        {
+          "tag": "245",
+          "ind1": "1",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Yrityksen perustamisopas 2022"
+            },
+            {
+              "code": "b",
+              "value": "käytännön perustamistoimet."
+            }
+          ],
+          "uuid": "b2c44528-81aa-4ae7-a6da-386ae4c8b484"
+        },
+        {
+          "tag": "250",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "32. p."
+            }
+          ],
+          "uuid": "cc61ccc9-50c6-414c-915b-b3a9e759c56c"
+        },
+        {
+          "tag": "263",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "202202"
+            }
+          ],
+          "uuid": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a"
+        },
+        {
+          "tag": "264",
+          "ind1": " ",
+          "ind2": "1",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Hyvinkää :"
+            },
+            {
+              "code": "b",
+              "value": "Asiatieto,"
+            },
+            {
+              "code": "c",
+              "value": "2022"
+            }
+          ],
+          "uuid": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35"
+        },
+        {
+          "tag": "336",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "teksti"
+            },
+            {
+              "code": "b",
+              "value": "txt"
+            },
+            {
+              "code": "2",
+              "value": "rdacontent"
+            }
+          ],
+          "uuid": "bf7f71cb-0931-4cce-b2cc-38a8480a251c"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "uuid": "3a80d04a-d533-4325-b70e-6bd2c0794772"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "verkkoaineisto"
+            },
+            {
+              "code": "b",
+              "value": "cr"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "uuid": "f89a5dab-4ac5-4d6a-bd34-a253af427d92"
+        },
+        {
+          "tag": "500",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
+            }
+          ],
+          "uuid": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d"
+        },
+        {
+          "tag": "530",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Julkaistu myös painettuna."
+            }
+          ]
+        },
+        {
+          "tag": "653",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "yrittäjyys"
+            }
+          ],
+          "uuid": "4f90536c-d3d3-4638-8172-1902295e7cef"
+        },
+        {
+          "tag": "653",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "yrityksen perustaminen"
+            }
+          ],
+          "uuid": "50baf050-65fe-4510-be9e-e6b81f59f4f0"
+        },
+        {
+          "tag": "776",
+          "ind1": "0",
+          "ind2": "8",
+          "subfields": [
+            {
+              "code": "i",
+              "value": "Painettu:"
+            },
+            {
+              "code": "z",
+              "value": "9789518986853"
+            }
+          ],
+          "uuid": "563bb580-6154-4e9f-8247-cac45d2a70d5"
+        },
+        {
+          "tag": "LOW",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "[LOWTAG]"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "result": {
+    "notes": [],
+    "record": {
+      "_validationOptions": {},
+      "leader": "00000cam^a22006134i^4500",
+      "fields": [
+        {
+          "ind1": " ",
+          "ind2": " ",
+          "tag": "001",
+          "value": "000000000"
+        },
+        {
+          "tag": "007",
+          "value": "cr^||^||||||||",
+          "uuid": "80786f3f-9fdf-4167-8c27-cd088e10ecae",
+          "from": "base"
+        },
+        {
+          "tag": "008",
+          "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
+          "uuid": "f6f58407-e150-40a8-b52f-296ec59c9caa",
+          "from": "base"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": ""
+            },
+            {
+              "code": "q",
+              "value": "PDF"
+            }
+          ],
+          "uuid": "cba3933f-5f5a-4dcb-a9f9-635e898b994a",
+          "from": "base"
+        },
+        {
+          "tag": "041",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "fin"
+            }
+          ],
+          "uuid": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6",
+          "from": "source"
+        },
+        {
+          "tag": "084",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "69.1"
+            },
+            {
+              "code": "2",
+              "value": "ykl"
+            }
+          ],
+          "uuid": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb",
+          "from": "source"
+        },
+        {
+          "tag": "100",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Holopainen, Tuulikki,"
+            },
+            {
+              "code": "e",
+              "value": "toimittaja."
+            },
+            {
+              "code": "g",
+              "value": "ENNAKKOTIETO"
+            }
+          ],
+          "uuid": "79449e7e-3b1e-42b6-9cc7-42dc14775e46",
+          "from": "source"
+        },
+        {
+          "tag": "245",
+          "ind1": "1",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Yrityksen perustamisopas 2022"
+            },
+            {
+              "code": "b",
+              "value": "käytännön perustamistoimet."
+            }
+          ],
+          "uuid": "b2c44528-81aa-4ae7-a6da-386ae4c8b484",
+          "from": "source"
+        },
+        {
+          "tag": "250",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "32. p."
+            }
+          ],
+          "uuid": "cc61ccc9-50c6-414c-915b-b3a9e759c56c",
+          "from": "source"
+        },
+        {
+          "tag": "263",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "202202"
+            }
+          ],
+          "uuid": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a",
+          "from": "source"
+        },
+        {
+          "tag": "264",
+          "ind1": " ",
+          "ind2": "1",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Hyvinkää :"
+            },
+            {
+              "code": "b",
+              "value": "Asiatieto,"
+            },
+            {
+              "code": "c",
+              "value": "2022"
+            }
+          ],
+          "uuid": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35",
+          "from": "source"
+        },
+        {
+          "tag": "336",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "teksti"
+            },
+            {
+              "code": "b",
+              "value": "txt"
+            },
+            {
+              "code": "2",
+              "value": "rdacontent"
+            }
+          ],
+          "uuid": "bf7f71cb-0931-4cce-b2cc-38a8480a251c",
+          "from": "source"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "uuid": "3a80d04a-d533-4325-b70e-6bd2c0794772",
+          "from": "base"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "verkkoaineisto"
+            },
+            {
+              "code": "b",
+              "value": "cr"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "uuid": "f89a5dab-4ac5-4d6a-bd34-a253af427d92",
+          "from": "base"
+        },
+        {
+          "tag": "500",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
+            }
+          ],
+          "uuid": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d",
+          "from": "source"
+        },
+        {
+          "tag": "530",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Julkaistu myös painettuna."
+            }
+          ]
+        },
+        {
+          "tag": "653",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "yrittäjyys"
+            }
+          ],
+          "uuid": "4f90536c-d3d3-4638-8172-1902295e7cef",
+          "from": "source"
+        },
+        {
+          "tag": "653",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "yrityksen perustaminen"
+            }
+          ],
+          "uuid": "50baf050-65fe-4510-be9e-e6b81f59f4f0",
+          "from": "source"
+        },
+        {
+          "tag": "776",
+          "ind1": "0",
+          "ind2": "8",
+          "subfields": [
+            {
+              "code": "i",
+              "value": "Painettu:"
+            },
+            {
+              "code": "z",
+              "value": "9789518986853"
+            }
+          ],
+          "uuid": "563bb580-6154-4e9f-8247-cac45d2a70d5",
+          "from": "source"
+        },
+        {
+          "tag": "LOW",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "[LOWTAG]"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "exclude": {},
+  "replace": {}
+}

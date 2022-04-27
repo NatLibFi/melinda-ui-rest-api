@@ -30,6 +30,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
+  /*
   function sanitaze(req, res, next) { // eslint-disable-line no-unused-vars
     const auth = req.headers.authorization;
     const {token} = auth.match(/Basic (?<token>.*)/u).groups;
@@ -53,6 +54,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     req.headers.authorization = `Basic ${encoded}`; // eslint-disable-line functional/immutable-data
     next();
   }
+  */
 
   function create(req, res) {
     logger.debug(`User: ${JSON.stringify(req.user)}`);
@@ -67,12 +69,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     logger.debug(`returning: ${JSON.stringify(user)}`);
 
-    res.set('User', JSON.stringify(user));
-    res.sendStatus(HttpStatus.NO_CONTENT);
+    res
+      .status(HttpStatus.OK)
+      .json(user);
+    //.send();
   }
 
   function verify(req, res) {
     logger.debug(`User: ${JSON.stringify(req.user)}`);
-    res.sendStatus(HttpStatus.NO_CONTENT);
+    res.sendStatus(HttpStatus.OK);
   }
 }

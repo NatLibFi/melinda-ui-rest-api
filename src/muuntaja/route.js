@@ -87,7 +87,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   logger.debug('Creating muuntaja route');
 
   return new Router()
-    //.get('/base', getBaseRecords)
     .use(express.json())
     .get('/profiles', getProfiles)
     .post('/transform', doTransform)
@@ -258,3 +257,5 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
 // Recordin käsittely:
 // https://github.com/NatLibFi/marc-record-merge-js/tree/next/src/reducers
+
+// Hook test
