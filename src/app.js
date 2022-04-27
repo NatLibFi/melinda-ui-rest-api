@@ -11,7 +11,7 @@ import {createBibRouter, createAuthRouter, createMuuntajaRouter} from './routes'
 
 //import {createMuuntajaRouter} from './muuntaja/route';
 //import fs from 'fs';
-//import path from 'path';
+import path from 'path';
 
 // From config file
 export default function ({
@@ -59,8 +59,8 @@ export default function ({
     app.use('/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
     app.use('/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
     app.use('/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
-    //app.use('/client/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
-    //app.use('/client/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/client/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
+    app.use('/client/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
