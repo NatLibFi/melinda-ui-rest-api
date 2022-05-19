@@ -30,53 +30,19 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
-  /*
-  function sanitaze(req, res, next) { // eslint-disable-line no-unused-vars
-    const auth = req.headers.authorization;
-    const {token} = auth.match(/Basic (?<token>.*)/u).groups;
-
-    //logger.debug(`Auth in: ${auth}`);
-    //logger.debug(`Token: ${token}`);
-
-    const decoded = Buffer.from(token, 'base64').toString('ascii');
-    const sanitized = decoded
-      .replace(/\r/gu, '')
-      .replace(/%0d/gu, '')
-      .replace(/%0D/gu, '')
-      .replace(/\n/gu, '')
-      .replace(/%0a/gu, '')
-      .replace(/%0A/gu, '');
-
-    //logger.debug(`Decoded: ${decoded}`);
-    //logger.debug(`Sanitized: ${sanitized}`);
-
-    const encoded = Buffer.from(sanitized).toString('base64');
-    req.headers.authorization = `Basic ${encoded}`; // eslint-disable-line functional/immutable-data
-    next();
-  }
-  */
-
   function create(req, res) {
-    logger.debug(`User: ${JSON.stringify(req.user)}`);
-    logger.debug(`Token: ${req.headers.authorization}`);
-    //const sanitazedUser = sanitaze(req.user);
-
     // Strip files
     const user = {
       Name: req.user.displayName,
       Token: generateJwtToken(req.user, jwtOptions)
     };
 
-    logger.debug(`returning: ${JSON.stringify(user)}`);
-
     res
       .status(HttpStatus.OK)
       .json(user);
-    //.send();
   }
 
   function verify(req, res) {
-    logger.debug(`User: ${JSON.stringify(req.user)}`);
     res.sendStatus(HttpStatus.OK);
   }
 }

@@ -6,9 +6,9 @@
 
 //-----------------------------------------------------------------------------
 
-const RESTurl = window.location.protocol + "//" + window.location.host;
+const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
 
-//console.log(`REST: ${RESTurl}`);
+console.log(`REST: ${RESTurl}`);
 
 //-----------------------------------------------------------------------------
 // stored auth token

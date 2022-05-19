@@ -56,11 +56,12 @@ export default function ({
     }, verify));
 
     app.use(passport.initialize());
-    app.use('/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
-    app.use('/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
-    app.use('/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
-    app.use('/client/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
-    app.use('/client/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
+    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
+    app.use('/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
+    app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));
