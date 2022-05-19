@@ -102,8 +102,7 @@ function initialize() {
 
   // Get auth token, if it exists
   const user = melindaUser.get();
-  console.log('User:', user);
-
+  
   if (user && user.Token) {
     authRequest(user.Token, '/verify')
       .then(response => {
@@ -161,7 +160,6 @@ function login(e) {
     }
     response.json()
       .then(data => {
-        console.log("Auth user:", data);
         authSuccess(data);    
       })
     //for(k of response.headers.entries()) { console.log("Key:", k); }
@@ -186,7 +184,6 @@ function logout(e) {
 }
 
 function authSuccess(user) {
-  console.log("User:", user);
 
   if (user) {
     melindaUser.set(user);
@@ -220,7 +217,6 @@ function authRequest(token, url = '') {
 
 function getAuthToken() {
   const user = melindaUser.get();
-  //console.log('User:', user);
   if(!user) return;
   
   return user.Token;
