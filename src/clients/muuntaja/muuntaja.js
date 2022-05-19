@@ -110,7 +110,7 @@ function initialize() {
         if (!response.ok) {
           return noAuth();
         }
-        authSuccess(response);
+        authSuccess(user);
       });
   } else {
     return noAuth();
@@ -145,8 +145,6 @@ function login(e) {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  console.log('User:', username, 'Password:', password);
-
   function generateAuthorizationHeader(username, password = '') {
     //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
     const encoded = btoa(`${username}:${password}`);
@@ -161,7 +159,13 @@ function login(e) {
     if (!response.ok) {
       return failure();
     }
-    authSuccess(response);
+    response.json()
+      .then(data => {
+        console.log("Auth user:", data);
+        authSuccess(data);    
+      })
+    //for(k of response.headers.entries()) { console.log("Key:", k); }
+    //console.log("Headers:", response.headers.keys().map(k => k))
   }
 
   function failure() {
@@ -181,10 +185,10 @@ function logout(e) {
   reload();
 }
 
-function authSuccess(response) {
-  const user = JSON.parse(response.headers.get('User'));
+function authSuccess(user) {
+  console.log("User:", user);
+
   if (user) {
-    console.log(user);
     melindaUser.set(user);
   }
 
@@ -204,7 +208,7 @@ function authSuccess(response) {
 
 function authRequest(token, url = '') {
   return fetch(
-    [RESTurl, 'auth', url].join('/'),
+    `${RESTurl}/auth/${url}`,
     {
       method: 'POST',
       headers: {
@@ -738,9 +742,9 @@ function decorateRecords(transformed) {
   const baseFields   = getFields(transformed.base.record);
   const resultFields = getFields(transformed.result.record);
 
-  sourceUUIDs = sourceFields.map(f => f.uuid);
-  baseUUIDs   = baseFields.map(f => f.uuid);
-  resultUUIDs = resultFields.map(f => f.uuid);
+  const sourceUUIDs = sourceFields.map(f => f.uuid);
+  const baseUUIDs   = baseFields.map(f => f.uuid);
+  const resultUUIDs = resultFields.map(f => f.uuid);
 
   setFields(transformed.source.record,
     sourceFields.map(f => resultUUIDs.includes(f.uuid) ? { ...f, from: "source"} : f)
