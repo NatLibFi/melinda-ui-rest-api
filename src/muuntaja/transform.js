@@ -2,9 +2,8 @@
 
 /* eslint-disable no-unused-vars */
 
-import {MarcRecord} from '@natlibfi/marc-record';
-import merger, {Reducers} from '@natlibfi/marc-record-merge';
-import {MelindaReducers, MelindaCopyReducerConfigs, MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-merge-reducers';
+//import {MarcRecord} from '@natlibfi/marc-record';
+import merger from '@natlibfi/marc-record-merge';
 
 //-----------------------------------------------------------------------------
 
@@ -19,18 +18,10 @@ export function transformRecord(logger, transformProfile, sourceRecord, baseReco
     logger.debug('**********************************');
 */
 
-  const mergeReducers = [...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)), ...MelindaReducers];
-
   const options = {
+    ...transformProfile,
     base: baseRecord,
-    source: sourceRecord,
-    reducers: mergeReducers,
-    baseValidators: {
-      subfieldValues: false
-    },
-    sourceValidators: {
-      subfieldValues: false
-    }
+    source: sourceRecord
   };
 
   const result = merger(options);

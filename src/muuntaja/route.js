@@ -20,13 +20,7 @@ import p2eDefaultProfile from './config/print-to-e/default';
 
 const profiles = {
   'p2e': {
-    'kvp': {
-      'baseRecord': p2eDefaultProfile.record.targetRecord,
-      'validationRules': {},
-      'postMergeFixes': {},
-      'mergeConfiguration': {},
-      'newFields': {}
-    }
+    'kvp': p2eDefaultProfile
   }
 };
 
@@ -97,7 +91,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     const [sourceRecord, baseRecord] =
       await Promise.all([
         getRecord(source),
-        getRecord(base, transformProfile.baseRecord)
+        getRecord(base, transformProfile.base)
       ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
 
