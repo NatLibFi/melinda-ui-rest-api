@@ -62,6 +62,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   //---------------------------------------------------------------------------
+  // Get available transform profiles
+  //---------------------------------------------------------------------------
 
   function getProfiles(req, res) {
     logger.debug('Get profiles');
@@ -73,6 +75,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     });
   }
 
+  //---------------------------------------------------------------------------
+  // Transform records
   //---------------------------------------------------------------------------
 
   async function doTransform(req, res) { // eslint-disable-line max-statements
@@ -91,7 +95,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //-------------------------------------------------------------------------
 
-    const [sourceRecord, baseRecord] = await loadRecords(source, base, transformProfile.base);
+    const [sourceRecord, baseRecord, refRecord] = await loadRecords(source, base, transformProfile.base);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
 
     //-------------------------------------------------------------------------
@@ -104,18 +108,21 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     res.json({
       profile,
-      ...postProcess(sourceRecord, baseRecord, resultRecord),
+      ...postProcess(sourceRecord, baseRecord, resultRecord, refRecord),
       exclude,
       replace
     });
 
+    //-------------------------------------------------------------------------
+    // Get source & base records
     //-------------------------------------------------------------------------
 
     async function loadRecords(source, base, baseDefault) {
       if (source.ID === '?1') {
         return [
           await loadRecord('./src/muuntaja/test/01/source.json'),
-          await loadRecord('./src/muuntaja/test/01/base.json', baseDefault)
+          await loadRecord('./src/muuntaja/test/01/base.json', baseDefault),
+          await loadRecord('./src/muuntaja/test/01/ref.json')
         ];
       }
       return Promise.all([
@@ -162,25 +169,25 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     //-------------------------------------------------------------------------
+    // Get transformed result
+    //-------------------------------------------------------------------------
 
     function getResultRecord(source, base) {
       if (!source || !base) {
         return {};
       }
-      //try {
-      return {
-        record: merger({
-          ...transformProfile,
-          base: removeExcluded(base),
-          source: removeExcluded(source)
-        })
-      };
+      try {
+        return {
+          record: merger({
+            ...transformProfile,
+            base: removeExcluded(base),
+            source: removeExcluded(source)
+          })
+        };
+      } catch (e) {
+        return {error: e.toString()};
+      }
     }
-
-    /*
-    } catch (e) {
-      return {error: e.toString()};
-    }*/
 
     function removeExcluded(record) {
       return new MarcRecord({
@@ -189,7 +196,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       });
     }
 
-    function postProcess(source, base, result) {
+    //-------------------------------------------------------------------------
+    // Transform postprocess (apply user edits)
+    //-------------------------------------------------------------------------
+
+    function postProcess(source, base, result, reference) {
       try {
         return {
           source,
@@ -197,6 +208,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           transformed: result,
           result: {
             ...result,
+            reference,
             //error: 'Error: Hello, world!',
             record: new MarcRecord(applyEdits(result.record))
             //record: applyEdits(result.record)
@@ -223,6 +235,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         fields: record.fields.map(f => replace[f.uuid] ? replace[f.uuid] : f)
       };
     }
+
+    //-------------------------------------------------------------------------
 
     function decorate(record, tag) { // eslint-disable-line
       if (!record) {
@@ -255,10 +269,3 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
   }
 }
-
-//-----------------------------------------------------------------------------
-
-// Osakohteet (pidä mielessä)
-
-// Recordin käsittely:
-// https://github.com/NatLibFi/marc-record-merge-js/tree/next/src/reducers

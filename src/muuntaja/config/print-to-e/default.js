@@ -98,39 +98,40 @@ function localReducers() {
 
     insert({tag: 'LOW', subfields: [{code: 'a', value: 'KVP'}], uuid: 'a416b908-d550-4682-83c4-0ed39809a683'})
   ];
-
-  function insert(field) {
-    return (base, source) => {
-      base.insertField(field);
-      return base;
-    };
-  }
-
-  function f041(base, source) {
-    //const baseFields = base.get(/^041$/u);
-    const [sourceF041] = source.get(/^041$/u);
-    //const nonIdenticalFields = getNonIdenticalFields(baseFields, sourceFields);
-
-    if (sourceF041) {
-      base.insertField(sourceF041);
-      return base;
-    }
-
-    //if(sourceFields) return sourceFields[0];
-    //return baseFields[0];
-
-    return base;
-
-    /*
-    if (nonIdenticalFields.length === 0) {
-      debug('Identical fields in source and base');
-      return base;
-    }
-
-    return copyFields(base, nonIdenticalFields);
-    */
-  }
 }
+
+function insert(field) {
+  return (base, source) => {
+    base.insertField(field);
+    return base;
+  };
+}
+
+function f041(base, source) {
+  //const baseFields = base.get(/^041$/u);
+  const [sourceF041] = source.get(/^041$/u);
+  //const nonIdenticalFields = getNonIdenticalFields(baseFields, sourceFields);
+
+  if (sourceF041) {
+    base.insertField(sourceF041);
+    return base;
+  }
+
+  //if(sourceFields) return sourceFields[0];
+  //return baseFields[0];
+
+  return base;
+
+  /*
+  if (nonIdenticalFields.length === 0) {
+    debug('Identical fields in source and base');
+    return base;
+  }
+
+  return copyFields(base, nonIdenticalFields);
+  */
+}
+
 
 /*
 export function copyFields(record, fields) {

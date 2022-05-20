@@ -348,17 +348,6 @@ function eventHandled(e) {
 }
 
 //-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
-function showTransformed()
-{
-  const {source, base, result} = transformed;
-  showRecord(source, 'source');
-  showRecord(base, 'base');
-  showRecord(result, 'result', editmode = editmode);
-}
-
-//-----------------------------------------------------------------------------
 // Exclude/include fields
 //-----------------------------------------------------------------------------
 
@@ -510,7 +499,15 @@ function editDlgClose(event) {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-function showRecord(data, dest, editmode = false) {
+function showTransformed()
+{
+  const {source, base, result} = transformed;
+  showRecord(source, 'source');
+  showRecord(base, 'base');
+  showRecord(result, 'result', editmode = editmode);
+}
+
+function showRecord(data, dest, editmode = false, reference = null) {
   console.log("Show Record:", data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
