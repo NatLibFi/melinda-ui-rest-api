@@ -11,6 +11,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {v4 as uuid} from 'uuid';
+import {readFile} from 'fs/promises';
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
@@ -90,11 +91,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //-------------------------------------------------------------------------
 
-    const [sourceRecord, baseRecord] =
-      await Promise.all([
-        getRecord(source),
-        getRecord(base, transformProfile.base)
-      ]);
+    const [sourceRecord, baseRecord] = await loadRecords(source, base, transformProfile.base);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
 
     //-------------------------------------------------------------------------
@@ -114,29 +111,53 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //-------------------------------------------------------------------------
 
-    async function getRecord(record, _default = null) {
-      if (record.record) {
-        return record;
-      } else if (!record.ID) {
-        return {
-          ID: record.ID,
-          record: preProcess(_default)
-        };
+    async function loadRecords(source, base, baseDefault) {
+      if (source.ID === '?1') {
+        return [
+          await loadRecord('./src/muuntaja/test/01/source.json'),
+          await loadRecord('./src/muuntaja/test/01/base.json', baseDefault)
+        ];
       }
-      try {
-        logger.debug('Fetching...');
-        //logger.debug(`Record: ${JSON.stringify(record)}`);
-        return {
-          ID: record.ID,
-          record: preProcess(await getRecordByID(record.ID))
-        };
-      } catch (e) {
-        return {error: e.toString()};
+      return Promise.all([
+        fetchRecord(source),
+        fetchRecord(base, baseDefault)
+      ]);
+
+      async function loadRecord(filename, _default = null) {
+        try {
+          return JSON.parse(await readFile(filename));
+        } catch (e) {
+          if (_default) {
+            return {record: _default};
+          }
+          return {error: e.toString()};
+        }
       }
 
-      function preProcess(record) {
-        return addUUID(record);
-        //return {record};
+      async function fetchRecord(record, _default = null) {
+        if (record.record) {
+          return record;
+        } else if (!record.ID) {
+          return {
+            ID: record.ID,
+            record: preProcess(_default)
+          };
+        }
+        try {
+          logger.debug('Fetching...');
+          //logger.debug(`Record: ${JSON.stringify(record)}`);
+          return {
+            ID: record.ID,
+            record: preProcess(await getRecordByID(record.ID))
+          };
+        } catch (e) {
+          return {error: e.toString()};
+        }
+
+        function preProcess(record) {
+          return addUUID(record);
+          //return {record};
+        }
       }
     }
 
@@ -217,13 +238,19 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       return rest;
     }
 
+    // Add missing UUIDs for tracing fields
     function addUUID(record) { // eslint-disable-line
       if (!record) {
         return null;
       }
       return {
         leader: record.leader,
-        fields: record.fields.map(f => ({...f, uuid: uuid()}))
+        fields: record.fields.map(f => {
+          if (!f.uuid) {
+            return {...f, uuid: uuid()};
+          }
+          return f;
+        })
       };
     }
   }

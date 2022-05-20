@@ -13,9 +13,10 @@ import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc
 //import {MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-muuntaja-reducers'
 
 export default {
-  'name': 'Oletus',
-  'description': 'Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.',
-  'mergeType': 'printToE',
+  name: 'Oletus',
+  description: 'Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.',
+  mergeType: 'printToE',
+
   base: baseRecord(),
   reducers: getReducers(),
   baseValidators: {
@@ -36,14 +37,13 @@ function getReducers() {
 //...MelindaMuuntajaFennicaReducers.map(conf => Reducers.copy(conf)),
 //...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)),
 //...MelindaReducers
+//...copyReducers().map(conf => Reducers.copy(conf)),
 
 //-----------------------------------------------------------------------------
 
 function localReducers() {
 
   return [
-    //...copyReducers().map(conf => Reducers.copy(conf)),
-
     //"020": {"action": "createFrom", "options": {"convertTag": "776", "ind1": "0", "ind2": "8", "subfields": {"i": {"replaceValue": "Painettu:"}, "a": {convertCode: "z", modifications: [{type: "replace", args: [/-/gu, ""]}]}}}},
     //"041": {"action": "copy", "options": {"dropOriginal": true, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
     copy({tagPattern: new RegExp(/^041$/u, 'u'), compareTagsOnly: true}),
@@ -84,6 +84,9 @@ function localReducers() {
 
     //"900": {"action": "copy", "options": {"copyUnless": {"9": {"value": "[LOWTAG]<DROP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP)>/u}}},
     //"910": {"action": "copy", "options": {"copyUnless": {"9": {"value": "[LOWTAG]<DROP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP)>/u}}}
+
+    //-------------------------------------------------------------------------
+    /* New fields */
 
     //{tag: '040', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'FI-NL'}, {code: 'b', value: 'fin'}, {code: 'e', value: 'rda'}]},
     //{tag: '042', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'finb'}]},
@@ -149,15 +152,18 @@ function baseRecord() {
     fields: [
       {
         tag: '001',
-        value: '000000000'
+        value: '000000000',
+        uuid: '07b7a27e-1fc0-4f30-b181-c54cb4e9d039'
       },
       {
         tag: '007',
-        value: 'cr^||^||||||||'
+        value: 'cr^||^||||||||',
+        uuid: '7e290cd1-6bed-4447-8fc3-c1f7e41b760a'
       },
       {
         tag: '008',
-        value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^'
+        value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^',
+        uuid: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
       },
       {
         tag: '041',
@@ -168,7 +174,8 @@ function baseRecord() {
             code: 'a',
             value: 'eng'
           }
-        ]
+        ],
+        uuid: 'ac44d08d-5532-49bc-b2b9-c863cf930b1a'
       },
       {
         tag: '337',
@@ -187,7 +194,8 @@ function baseRecord() {
             code: '2',
             value: 'rdamedia'
           }
-        ]
+        ],
+        uuid: '66029c77-30a4-42a2-bf23-6499ca97fe87'
       },
       {
         tag: '338',
@@ -206,7 +214,8 @@ function baseRecord() {
             code: '2',
             value: 'rdacarrier'
           }
-        ]
+        ],
+        uuid: '55e6067b-8eba-44c1-a53c-293641a40729'
       }
     ]
   });
