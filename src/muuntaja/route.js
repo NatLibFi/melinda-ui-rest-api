@@ -11,7 +11,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {v4 as uuid} from 'uuid';
-import {readFile} from 'fs/promises';
+import {getUnitTestRecords} from './test/getrecords';
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
@@ -117,29 +117,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // Get source & base records
     //-------------------------------------------------------------------------
 
-    async function loadRecords(source, base, baseDefault) {
-      if (source.ID === '?1') {
-        return [
-          await loadRecord('./src/muuntaja/test/01/source.json'),
-          await loadRecord('./src/muuntaja/test/01/base.json', baseDefault),
-          await loadRecord('./src/muuntaja/test/01/ref.json')
-        ];
+    function loadRecords(source, base, baseDefault) {
+      if (source.ID.startsWith('/')) {
+        return getUnitTestRecords(source.ID, baseDefault);
       }
       return Promise.all([
         fetchRecord(source),
         fetchRecord(base, baseDefault)
       ]);
-
-      async function loadRecord(filename, _default = null) {
-        try {
-          return JSON.parse(await readFile(filename));
-        } catch (e) {
-          if (_default) {
-            return {record: _default};
-          }
-          return {error: e.toString()};
-        }
-      }
 
       async function fetchRecord(record, _default = null) {
         if (record.record) {
