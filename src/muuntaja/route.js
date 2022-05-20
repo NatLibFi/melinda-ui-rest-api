@@ -8,7 +8,7 @@
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
-import {transformRecord} from './transform';
+import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {v4 as uuid} from 'uuid';
 
@@ -88,12 +88,16 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const transformProfile = profiles[profile].kvp;
 
+    //-------------------------------------------------------------------------
+
     const [sourceRecord, baseRecord] =
       await Promise.all([
         getRecord(source),
         getRecord(base, transformProfile.base)
       ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
+
+    //-------------------------------------------------------------------------
 
     const resultRecord = getResultRecord(
       sourceRecord.record,
@@ -107,6 +111,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       exclude,
       replace
     });
+
+    //-------------------------------------------------------------------------
 
     async function getRecord(record, _default = null) {
       if (record.record) {
@@ -134,25 +140,26 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       }
     }
 
+    //-------------------------------------------------------------------------
+
     function getResultRecord(source, base) {
       if (!source || !base) {
         return {};
       }
       //try {
       return {
-        record: transformRecord(
-          logger,
-          transformProfile,
-          removeExcluded(source),
-          removeExcluded(base)
-        )
+        record: merger({
+          ...transformProfile,
+          base: removeExcluded(base),
+          source: removeExcluded(source)
+        })
       };
-
-      /*
-      } catch (e) {
-        return {error: e.toString()};
-      }*/
     }
+
+    /*
+    } catch (e) {
+      return {error: e.toString()};
+    }*/
 
     function removeExcluded(record) {
       return new MarcRecord({
