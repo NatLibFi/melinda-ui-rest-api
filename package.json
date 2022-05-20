@@ -31,16 +31,17 @@
   "homepage": "https://github.com/NatLibFi/melinda-ui-rest-api#readme",
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@natlibfi/marc-record": "^6.1.2",
-    "@natlibfi/melinda-backend-commons": "^2.0.2",
-    "@natlibfi/melinda-commons": "^12.0.2",
-    "@natlibfi/passport-melinda-aleph": "^2.0.1",
+    "@natlibfi/marc-record": "^7.0.0",
+    "@natlibfi/marc-record-merge": "^6.0.0-beta.2",
+    "@natlibfi/melinda-marc-record-merge-reducers": "git+https://github.com/NatLibFi/melinda-marc-record-merge-reducers-js.git#in-progress",
+    "@natlibfi/melinda-backend-commons": "^2.0.5",
+    "@natlibfi/melinda-commons": "^12.0.3",
+    "@natlibfi/passport-melinda-aleph": "^2.0.2",
     "@natlibfi/passport-melinda-jwt": "^1.0.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "isbn3": "^1.1.14",
-    "passport": "^0.4.1",
-    "ramda": "^0.27.1",
+    "express": "^4.18.1",
+    "isbn3": "^1.1.22",
+    "passport": "^0.5.3",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -57,7 +58,8 @@
   "eslintConfig": {
     "extends": "@natlibfi/melinda-backend",
     "ignorePatterns": [
-      "src/clients/*"
+      "src/clients/*",
+      "src/muuntaja/reference/*"
     ]
   },
   "babel": {

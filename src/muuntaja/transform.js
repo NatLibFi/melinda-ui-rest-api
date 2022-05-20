@@ -1,12 +1,51 @@
-import _ from 'lodash';
+//*****************************************************************************
+
+/* eslint-disable no-unused-vars */
+
 import {MarcRecord} from '@natlibfi/marc-record';
-//import createRecordMerger from '@natlibfi/marc-record-merge';
-import {createRecordMerger} from './marc-record-merge';
-import * as MergeValidation from './marc-record-merge-validate-service';
-import * as PostMerge from './marc-record-merge-postmerge-service';
+import merger, {Reducers} from '@natlibfi/marc-record-merge';
+import {MelindaReducers, MelindaCopyReducerConfigs, MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-merge-reducers';
 
-export async function transformRecord(logger, transformProfile, sourceRecord, baseRecord) { // eslint-disable-line max-statements
+//-----------------------------------------------------------------------------
 
+export function transformRecord(logger, transformProfile, sourceRecord, baseRecord) { // eslint-disable-line no-unused-vars
+
+  logger.debug('Transforming');
+
+  /*
+  if (reducerProfile === 'default' || reducerProfile === undefined) {
+    const mergeReducers = [...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)), ...MelindaReducers];
+    hasRedusersLoaded(mergeReducers, 'melinda merge');
+    logger.debug('**********************************');
+*/
+
+  const mergeReducers = [...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)), ...MelindaReducers];
+
+  const options = {
+    base: baseRecord,
+    source: sourceRecord,
+    reducers: mergeReducers,
+    baseValidators: {
+      subfieldValues: false
+    },
+    sourceValidators: {
+      subfieldValues: false
+    }
+  };
+
+  const result = merger(options);
+
+  //logger.debug(`Result: ${JSON.stringify(result)}`);
+
+  return result;
+}
+
+
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+
+/*
   //logger.debug(`transformRecord`);
 
   const transformConfiguration = transformProfile.mergeConfiguration;
@@ -17,18 +56,19 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   // Melinda-commons / subrecord picker
   const sourceRecordHasSubrecords = false;
   const baseRecordHasSubrecords = false;
+*/
 
-  //logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
-  //logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
+//logger.debug(`Transform profile: ${JSON.stringify(transformProfile, null, 2)}`);
+//logger.debug(`Transform record: ${JSON.stringify(transformRecord, null, 2)}`);
 
-  //logger.debug(JSON.stringify(sourceRecord));
-  //logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
-  //logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
+//logger.debug(JSON.stringify(sourceRecord));
+//logger.debug(`Transform profile: ${JSON.stringify(transformProfile)}`);
+//logger.debug(`Base record: ${JSON.stringify(baseRecord)}`);
 
-  //logger.debug(`Config: ${JSON.stringify(transformConfiguration, null, 2)}`);
-  //logger.debug(`Validation: ${JSON.stringify(validationRules)}`);
+//logger.debug(`Config: ${JSON.stringify(transformConfiguration, null, 2)}`);
+//logger.debug(`Validation: ${JSON.stringify(validationRules)}`);
 
-  /*
+/*
   // Transform type & profile
   const getMergeProfile = getState().getIn(['config', 'mergeProfiles', getState().getIn(['config', 'selectedMergeProfile']), 'record']);
   const defaultProfile = getState().getIn(['config', 'mergeProfiles']);
@@ -48,7 +88,7 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   //const otherRecordHasSubrecords = getState().getIn(['sourceRecord', 'hasSubrecords']);
   */
 
-  /*
+/*
   const validationRulesClone = _.clone(validationRules);
   if (subrecordMergeType === subrecordMergeTypes.DISALLOW_SUBRECORDS) {
     validationRulesClone.push(MergeValidation.otherRecordDoesNotHaveSubrecords);
@@ -56,6 +96,7 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   }
   */
 
+/*
   try {
     await MergeValidation.validateMergeCandidates(validationRules, baseRecord, sourceRecord, baseRecordHasSubrecords, sourceRecordHasSubrecords);
   } catch (e) {
@@ -92,8 +133,9 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   } catch (e) {
     return {error: `${e.message}: ${e.failureMessages}`};
   }
+*/
 
-  /*
+/*
   if (baseRecord && sourceRecord) { //targetRecord and sourceRecord
     const merge = createRecordMerger(mergeConfiguration);
     const validationRulesClone = _.clone(validationRules);
@@ -143,5 +185,4 @@ export async function transformRecord(logger, transformProfile, sourceRecord, ba
   }
 
   /**/
-  //return mergedRecord;
-}
+//return mergedRecord;

@@ -6,64 +6,31 @@
  */
 
 import express, {Router} from 'express';
-//import HttpStatus from 'http-status';
-//import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-//import defaults from 'defaults';
-//import createClient from '@natlibfi/sru-client';
-//import {MARCXML} from '@natlibfi/marc-record-serializers';
-import {MarcRecord} from '@natlibfi/marc-record'; // eslint-disable-line no-unused-vars
+import {MarcRecord} from '@natlibfi/marc-record';
 import {transformRecord} from './transform';
 import {getRecordByID} from '../bib/bib';
 import {v4 as uuid} from 'uuid';
-
-//import mergeProfiles from './print-to-e';
-//import {baseRecord} from './print-to-e/target-record';
-//import {printToE} from './config/config-presets';
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
 
 import p2eDefaultProfile from './config/print-to-e/default';
-import e2pDefaultProfile from './config/e-to-print/default';
-
-//import {applyPostMergeModifications} from './marc-record-merge-postmerge-service';
-//import {preset as MergeValidationPreset} from './marc-record-merge-validate-service';
-//import {preset as PostMergePreset} from './marc-record-merge-postmerge-service';
-//import {baseRecord as p2eDefaultBase} from './config/print-to-e/target-record';
 
 const profiles = {
   'p2e': {
     'kvp': {
-      //'baseRecord': p2eDefaultBase,
-      //'validationRules': MergeValidationPreset.melinda_host,
-      //'postMergeFixes': PostMergePreset.defaults,
       'baseRecord': p2eDefaultProfile.record.targetRecord,
-      'validationRules': p2eDefaultProfile.record.validationRules,
-      'postMergeFixes': p2eDefaultProfile.record.postMergeFixes,
-      'mergeConfiguration': p2eDefaultProfile.record.mergeConfiguration,
-      'newFields': p2eDefaultProfile.record.newFields
-    }
-  },
-  'e2p': {
-    'kvp': {
-      'baseRecord': e2pDefaultProfile.record.targetRecord,
-      'validationRules': e2pDefaultProfile.record.validationRules,
-      'postMergeFixes': e2pDefaultProfile.record.postMergeFixes,
-      'mergeConfiguration': e2pDefaultProfile.record.mergeConfiguration,
-      'newFields': e2pDefaultProfile.record.newFields
+      'validationRules': {},
+      'postMergeFixes': {},
+      'mergeConfiguration': {},
+      'newFields': {}
     }
   }
-
-  /**/
 };
 
 /*
-const defaultPreset = {
-  default: mergeProfiles.default
-};
-
 export const printToE = {
   mergeType: 'printToE',
   baseRecord,
@@ -92,10 +59,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     .post('/transform', doTransform)
     .use(handleError);
 
+  //---------------------------------------------------------------------------
+
   function handleError(req, res, next) {
     logger.error('Error', req, res);
     next();
   }
+
+  //---------------------------------------------------------------------------
 
   function getProfiles(req, res) {
     logger.debug('Get profiles');
@@ -107,13 +78,15 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     });
   }
 
+  //---------------------------------------------------------------------------
+
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
     const profile = req.body.profile ? req.body.profile : 'p2e';
     const {source, base, exclude, replace} = req.body;
 
-    logger.debug(`Profile: ${profile}`);
+    //logger.debug(`Profile: ${profile}`);
     //logger.debug(`sourceID: ${source.ID}`);
     //logger.debug(`baseID: ${base.ID}`);
     //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
@@ -128,7 +101,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       ]);
     //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
 
-    const resultRecord = await getResultRecord(
+    const resultRecord = getResultRecord(
       sourceRecord.record,
       baseRecord.record
     );
@@ -171,16 +144,20 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       if (!source || !base) {
         return {};
       }
-      try {
-        return transformRecord(
+      //try {
+      return {
+        record: transformRecord(
           logger,
           transformProfile,
           removeExcluded(source),
           removeExcluded(base)
-        );
+        )
+      };
+
+      /*
       } catch (e) {
         return {error: e.toString()};
-      }
+      }*/
     }
 
     function removeExcluded(record) {
@@ -215,7 +192,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       }
     }
 
-    function applyEdits(record) {
+    function applyEdits(record) { // eslint-disable-line
       if (!record || !record.fields) {
         return record;
       }
@@ -257,5 +234,3 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
 // Recordin käsittely:
 // https://github.com/NatLibFi/marc-record-merge-js/tree/next/src/reducers
-
-// Hook test

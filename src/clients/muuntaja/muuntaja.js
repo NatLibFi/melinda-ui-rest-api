@@ -511,7 +511,7 @@ function editDlgClose(event) {
 //-----------------------------------------------------------------------------
 
 function showRecord(data, dest, editmode = false) {
-  //console.log("Show Record:", data);
+  console.log("Show Record:", data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
 
