@@ -12,31 +12,32 @@ import {Reducers} from '@natlibfi/marc-record-merge';
 //import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
 //import {MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-muuntaja-reducers'
 
-import {baseRecord} from './baseRecord';
-import {controlReducers} from './controlFields';
+import {createBase} from './baseRecord';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
+const logger = createLogger();
 
 export default {
   name: 'Oletus',
   description: 'Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.',
   mergeType: 'printToE',
 
-  base: baseRecord,
-  reducers: getReducers(),
+  getReducers,
+  createBase,
+
   baseValidators: {
     subfieldValues: false
   },
   sourceValidators: {
     subfieldValues: false
-  },
-  preferSource: true
+  }
 };
 
 //-----------------------------------------------------------------------------
 
-function getReducers() {
+function getReducers(opts) {
   return [
-    ...controlReducers,
-    ...localReducers()
+    ...controlReducers(opts),
+    ...localReducers(opts)
   ];
 }
 
@@ -47,8 +48,27 @@ function getReducers() {
 
 //-----------------------------------------------------------------------------
 
-function localReducers() {
+function controlReducers(opts) {
+  return [
+    // Copy language tags before processing
+    Reducers.copy({tagPattern: new RegExp(/^041$/u, 'u'), compareTagsOnly: true}),
 
+    // Control fields
+    Reducers.copy({tagPattern: /^001$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^002$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^003$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^004$/u, compareTagsOnly: true}),
+    //Reducers.copy({tagPattern: /^005$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^006$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^007$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^008$/u, compareTagsOnly: true}),
+    Reducers.copy({tagPattern: /^009$/u, compareTagsOnly: true})
+  ];
+}
+
+//-----------------------------------------------------------------------------
+
+function localReducers(opts) {
   return [
     //replace({tag: '001', value: 'N/A'}),
 
@@ -105,7 +125,7 @@ function localReducers() {
     //{tag: '901', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: new901}, {code: '5', value: 'FENNI'}]},
 
     //insert({tag: '001', value: 'N/A'}),
-    insert({tag: 'LOW', subfields: [{code: 'a', value: 'KVP'}], uuid: 'a416b908-d550-4682-83c4-0ed39809a683'})
+    addLOW(opts)
   ];
 }
 
@@ -131,6 +151,31 @@ function replace(field) {
   };
 }
 */
+
+//-----------------------------------------------------------------------------
+
+function addLOW(opts) {
+  return (base, source) => {
+    const {LOW} = opts;
+    if (!LOW) {
+      return base;
+    }
+
+    const subfield = {code: 'a', value: LOW};
+
+    // Check if it already exists in base LOW
+    const hasLOW = base.containsFieldWithValue('LOW', [subfield]);
+    //logger.debug(`LOW: ${LOW} -> ${JSON.stringify(hasLOW)}`);
+
+    if (!hasLOW) {
+      base.insertField({tag: 'LOW', subfields: [subfield]}); //, uuid: 'a416b908-d550-4682-83c4-0ed39809a683'});
+      return base;
+    }
+    return base;
+  };
+}
+
+//-----------------------------------------------------------------------------
 
 function f041(base, source) {
   //const baseFields = base.get(/^041$/u);

@@ -94,10 +94,16 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const transformProfile = profiles[profile].kvp;
 
+    const options = {
+      format: 'PDF',
+      LOW: 'KVP'
+    };
+
     //-------------------------------------------------------------------------
 
-    const [sourceRecord, baseRecord, refRecord] = await loadRecords(source, base, transformProfile.base);
-    //logger.debug(`Source record: ${JSON.stringify(sourceRecord, null, 2)}`);
+    const {sourceRecord, baseRecord, refRecord} = await loadRecords(source, base);
+
+    //logger.debug(`Base record: ${JSON.stringify(baseRecord, null, 2)}`);
 
     //-------------------------------------------------------------------------
 
@@ -118,23 +124,39 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // Get source & base records
     //-------------------------------------------------------------------------
 
-    function loadRecords(source, base, baseDefault) {
-      if (source.ID.startsWith('/')) {
-        return getUnitTestRecords(source.ID, baseDefault);
-      }
-      return Promise.all([
-        fetchRecord(source),
-        fetchRecord(base, baseDefault)
-      ]);
+    async function loadRecords(source, base) {
+      const [sourceRecord, baseRecord, refRecord] = await load();
 
-      async function fetchRecord(record, _default = null) {
+      //logger.debug(`Loaded source: ${JSON.stringify(sourceRecord, null, 2)}`);
+      //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
+
+      return {
+        sourceRecord,
+        baseRecord: baseRecord || getBase(sourceRecord),
+        refRecord
+      };
+
+      function getBase(source) { // eslint-disable-line no-unused-vars
+        return {
+          record: transformProfile.createBase(source.record, options)
+        };
+      }
+
+      function load() {
+        if (source.ID.startsWith('/')) {
+          return getUnitTestRecords(source.ID);
+        }
+        return Promise.all([
+          fetchRecord(source),
+          fetchRecord(base)
+        ]);
+      }
+
+      async function fetchRecord(record) {
         if (record.record) {
           return record;
         } else if (!record.ID) {
-          return {
-            ID: record.ID,
-            record: preProcess(_default)
-          };
+          return null;
         }
         try {
           logger.debug('Fetching...');
@@ -166,6 +188,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         return {
           record: merger({
             ...transformProfile,
+            reducers: transformProfile.getReducers(options),
             base: removeExcluded(base),
             source: removeExcluded(source)
           })
@@ -189,7 +212,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     function postProcess(source, base, result, reference) {
       try {
         const edited = applyEdits(result.record);
-        const sorted = sortFields(edited);
+        const sorted = sortFields(edited); // eslint-disable-line no-unused-vars
 
         return {
           source,
@@ -199,7 +222,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             ...result,
             reference,
             //error: 'Error: Hello, world!',
-            record: sorted
+            record: edited
             //record: applyEdits(result.record)
           }
         };

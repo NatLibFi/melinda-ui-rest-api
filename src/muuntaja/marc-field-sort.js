@@ -45,9 +45,9 @@ export function fieldOrderComparator(fieldA, fieldB) {
 const sortIndex = {
   LDR: '000',
   STA: '0091',
-  LOW: '9991',
-  SID: '9992',
-  CAT: '9993',
+  SID: '9991',
+  CAT: '9992',
+  LOW: '9993',
   HLI: '9994'
 };
 

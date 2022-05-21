@@ -14,7 +14,7 @@ console.log(`REST: ${RESTurl}`);
 
 //-----------------------------------------------------------------------------
 
-export function authRequest(token, url = '') {
+function doAuthRequest(token, url = '') {
   return fetch(
     `${RESTurl}/auth/${url}`,
     {
@@ -23,7 +23,19 @@ export function authRequest(token, url = '') {
         Authorization: token
       }
     }
-  );
+  )
+  .then(response => {
+    if (!response.ok) throw undefined;
+    return response;
+  });
+}
+
+export function authRequest(token) {
+  return doAuthRequest(token).then(response => response.json())
+}
+
+export function authVerify(token) {
+  return doAuthRequest(token, 'verify')
 }
 
 //-----------------------------------------------------------------------------
@@ -37,7 +49,8 @@ export function profileRequest() {
         Authorization: getAuthToken()
       }
     }
-  );
+  )
+  .then(response => response.json());
 }
 
 //-----------------------------------------------------------------------------

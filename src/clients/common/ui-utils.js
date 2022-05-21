@@ -46,3 +46,36 @@ export function reload() {
   // Programmatically reload page and reset forms
   location.reload();
 }
+
+//-----------------------------------------------------------------------------
+
+export function createMenuItem(name, className) {
+  const item = document.createElement("div");
+  item.classList.add(className);
+  item.innerHTML = name;
+  return item;
+}
+
+export function createMenuSelection(group, value, desc, className) {
+  const id = `${group}-${value}`;
+  const item = createMenuItem("", className);
+  const radiobtn = document.createElement("input")
+  radiobtn.setAttribute("type", "radio");
+  radiobtn.setAttribute("id", id);
+  radiobtn.setAttribute("name", group);
+  radiobtn.setAttribute("value", value);
+  radiobtn.setAttribute("value", value);
+
+  const label = document.createElement("label");
+  label.setAttribute("for", id);
+  label.innerHTML = desc;
+
+  item.appendChild(radiobtn);
+  item.appendChild(label);
+  return item;
+}
+
+export function createMenuBreak() {
+  const item = document.createElement("hr");
+  return item;
+}
