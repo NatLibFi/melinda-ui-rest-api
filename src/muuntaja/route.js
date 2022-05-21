@@ -171,11 +171,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         } catch (e) {
           return {error: e.toString()};
         }
+      }
 
-        function preProcess(record) {
-          return addUUID(record);
-          //return {record};
-        }
+      function preProcess(record) {
+        return addUUID(record);
+        //return {record};
       }
     }
 
