@@ -4,15 +4,25 @@
 //
 //*****************************************************************************
 
-import {getAuthToken} from "../common/auth.js"
+import {Account} from "../common/auth.js"
 
 //-----------------------------------------------------------------------------
 
-export const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
+const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
 
-console.log(`REST: ${RESTurl}`);
+//console.log(`REST: ${RESTurl}`);
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+// Authentication
+//*****************************************************************************
+
+export function authRequest(token) {
+  return doAuthRequest(token).then(response => response.json())
+}
+
+export function authVerify(token) {
+  return doAuthRequest(token, 'verify')
+}
 
 function doAuthRequest(token, url = '') {
   return fetch(
@@ -30,15 +40,9 @@ function doAuthRequest(token, url = '') {
   });
 }
 
-export function authRequest(token) {
-  return doAuthRequest(token).then(response => response.json())
-}
-
-export function authVerify(token) {
-  return doAuthRequest(token, 'verify')
-}
-
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+// Transformations
+//*****************************************************************************
 
 export function profileRequest() {
   return fetch(
@@ -46,7 +50,7 @@ export function profileRequest() {
     {
       method: 'GET',
       headers: {
-        Authorization: getAuthToken()
+        Authorization: Account.getToken()
       }
     }
   )
@@ -63,7 +67,7 @@ export function transformRequest(transformed) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: getAuthToken()
+        Authorization: Account.getToken()
       },
       body: JSON.stringify(transformed)
     }

@@ -18,7 +18,7 @@ import {addUUID} from './marc-record-utils';
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
 
-import p2eDefaultProfile from './config/print-to-e/default';
+import p2eDefaultProfile from './config/print-to-e/';
 
 const profiles = {
   'p2e': {
@@ -131,12 +131,15 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
 
       return {
-        sourceRecord,
-        baseRecord: baseRecord || getBase(sourceRecord),
+        sourceRecord: sourceRecord || {},
+        baseRecord: baseRecord ? baseRecord : getBase(sourceRecord),
         refRecord
       };
 
       function getBase(source) { // eslint-disable-line no-unused-vars
+        if (!source || !source.record) {
+          return {};
+        }
         return {
           record: transformProfile.createBase(source.record, options)
         };

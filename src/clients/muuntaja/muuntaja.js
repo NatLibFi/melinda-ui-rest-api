@@ -8,8 +8,8 @@ import {startProcess, stopProcess} from "../common/ui-utils.js";
 import {showTab, resetForms, reload} from "../common/ui-utils.js";
 import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui-utils.js";
 
-import {melindaUser, createToken} from "../common/auth.js"
-import {authRequest, authVerify, profileRequest, transformRequest} from "../common/rest.js";
+import {Account} from "../common/auth.js"
+import {profileRequest, transformRequest} from "../common/rest.js";
 import {transformed, showTransformed, stripFieldDecorations} from "../common/marc-record-ui.js";
 
 //-----------------------------------------------------------------------------
@@ -19,16 +19,12 @@ import {transformed, showTransformed, stripFieldDecorations} from "../common/mar
 window.initialize = function () {
   console.log('Initializing');
 
-  // Get auth token, if it exists
-  const user = melindaUser.get();
-  const token = user && user.Token || null;
-
-  authVerify(token)
-    .then(response => authSuccess(user))
+  Account.verify()
+    .then(response => authSuccess(Account.get()))
     .catch(noAuth);
 
   function noAuth() {
-    melindaUser.remove();
+    Account.remove();
     resetForms(document.getElementById('root'));
     showTab('login');
   }
@@ -53,14 +49,13 @@ window.login = function (e) {
 
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-  const token = createToken(username, password);
 
   startProcess();
 
-  authRequest(token)
+  Account.login(username, password)
     .then(user => authSuccess(user))
     .catch(err => {
-      melindaUser.remove();
+      Account.remove();
       logininfo('Tunnus tai salasana ei täsmää');
     })
     .finally(stopProcess);
@@ -72,22 +67,18 @@ window.login = function (e) {
 }
 
 function logout(e) {
-  melindaUser.remove();
+  Account.logout();
   reload();
 }
 
 function authSuccess(user) {
-
-  if (user) {
-    melindaUser.set(user);
-  }
 
   profileRequest()
     .then(profiles => {
       setProfiles(profiles);
 
       const username = document.querySelector("#account-menu #username")
-      username.innerHTML = melindaUser.get()["Name"];
+      username.innerHTML = Account.get()["Name"];
       showTab('muuntaja');
       doTransform();
     })
