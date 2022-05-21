@@ -26,7 +26,7 @@
 *
 */
 
-import _ from 'lodash';
+//import _ from 'lodash';
 import {selectFirstValue, fieldHasSubfield} from './marc-record-utils';
 
 const sorterFunctions = [sortByTag, sortByLOW, sortBySID, sortByIndexterms, sortAlphabetically];
@@ -53,7 +53,7 @@ const sortIndex = {
 
 function getSortIndex(tag) {
   if (isNaN(tag)) {
-    return _.get(sortIndex, tag, '9999');
+    return sortIndex[tag] || '9999';
   }
   return tag;
 }
@@ -127,7 +127,7 @@ function sortByIndexterms(fieldA, fieldB) { // eslint-disable-line complexity, m
     '662'
   ];
 
-  if (fieldA.tag === fieldB.tag && _.includes(indexTermFields, fieldA.tag)) {
+  if (fieldA.tag === fieldB.tag && indexTermFields.includes(fieldA.tag)) {
     if (fieldA.ind2 > fieldB.ind2) {
       return 1;
     }
@@ -138,8 +138,8 @@ function sortByIndexterms(fieldA, fieldB) { // eslint-disable-line complexity, m
     const dictionaryA = selectFirstValue(fieldA, '2');
     const dictionaryB = selectFirstValue(fieldB, '2');
 
-    const orderByDictionaryA = _.get(dictionarySortIndex, dictionaryA, dictionaryA);
-    const orderByDictionaryB = _.get(dictionarySortIndex, dictionaryB, dictionaryB);
+    const orderByDictionaryA = dictionarySortIndex[dictionaryA] || dictionaryA;
+    const orderByDictionaryB = dictionarySortIndex[dictionaryB] || dictionaryB;
 
     if (orderByDictionaryA > orderByDictionaryB) {
       return 1;

@@ -8,10 +8,11 @@
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
+import {fieldOrderComparator} from './marc-field-sort';
 import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
-import {v4 as uuid} from 'uuid';
 import {getUnitTestRecords} from './test/getrecords';
+import {addUUID} from './marc-record-utils';
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
@@ -187,6 +188,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     function postProcess(source, base, result, reference) {
       try {
+        const edited = applyEdits(result.record);
+        const sorted = sortFields(edited);
+
         return {
           source,
           base,
@@ -195,7 +199,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             ...result,
             reference,
             //error: 'Error: Hello, world!',
-            record: new MarcRecord(applyEdits(result.record))
+            record: sorted
             //record: applyEdits(result.record)
           }
         };
@@ -211,6 +215,16 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       }
     }
 
+    function sortFields(record) {
+      if (!record || !record.fields) {
+        return record;
+      }
+      return {
+        ...record,
+        fields: record.fields.slice().sort(fieldOrderComparator)
+      };
+    }
+
     function applyEdits(record) { // eslint-disable-line
       if (!record || !record.fields) {
         return record;
@@ -221,36 +235,5 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       };
     }
 
-    //-------------------------------------------------------------------------
-
-    function decorate(record, tag) { // eslint-disable-line
-      if (!record) {
-        return null;
-      }
-      return {
-        leader: record.leader,
-        fields: record.fields.map(f => ({...f, ...tag}))
-      };
-    }
-
-    function removeProperty(propKey, {[propKey]: propValue, ...rest}) { // eslint-disable-line
-      return rest;
-    }
-
-    // Add missing UUIDs for tracing fields
-    function addUUID(record) { // eslint-disable-line
-      if (!record) {
-        return null;
-      }
-      return {
-        leader: record.leader,
-        fields: record.fields.map(f => {
-          if (!f.uuid) {
-            return {...f, uuid: uuid()};
-          }
-          return f;
-        })
-      };
-    }
   }
 }

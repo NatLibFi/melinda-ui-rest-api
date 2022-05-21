@@ -61,6 +61,7 @@ export default function ({
     app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
     app.use('/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/common', express.static(path.join(__dirname, 'clients/common/'), {index: 'index.html'}));
     app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use(handleError);
 

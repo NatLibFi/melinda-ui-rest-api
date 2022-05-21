@@ -8,16 +8,19 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import {Reducers} from '@natlibfi/marc-record-merge';
-import copy from '@natlibfi/marc-record-merge/dist/reducers/copy';
-import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
+//import copy from '@natlibfi/marc-record-merge/dist/reducers/copy';
+//import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
 //import {MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-muuntaja-reducers'
+
+import {baseRecord} from './baseRecord';
+import {controlReducers} from './controlFields';
 
 export default {
   name: 'Oletus',
   description: 'Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.',
   mergeType: 'printToE',
 
-  base: baseRecord(),
+  base: baseRecord,
   reducers: getReducers(),
   baseValidators: {
     subfieldValues: false
@@ -31,7 +34,10 @@ export default {
 //-----------------------------------------------------------------------------
 
 function getReducers() {
-  return [...localReducers()];
+  return [
+    ...controlReducers,
+    ...localReducers()
+  ];
 }
 
 //...MelindaMuuntajaFennicaReducers.map(conf => Reducers.copy(conf)),
@@ -44,9 +50,11 @@ function getReducers() {
 function localReducers() {
 
   return [
+    //replace({tag: '001', value: 'N/A'}),
+
     //"020": {"action": "createFrom", "options": {"convertTag": "776", "ind1": "0", "ind2": "8", "subfields": {"i": {"replaceValue": "Painettu:"}, "a": {convertCode: "z", modifications: [{type: "replace", args: [/-/gu, ""]}]}}}},
     //"041": {"action": "copy", "options": {"dropOriginal": true, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
-    copy({tagPattern: new RegExp(/^041$/u, 'u'), compareTagsOnly: true}),
+    //copy({tagPattern: new RegExp(/^041$/u, 'u'), compareTagsOnly: true}),
 
     //"080": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     //"084": {"action": "copy", "options": {"copyIf": {"9": {"value": "[LOWTAG]<KEEP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
@@ -96,8 +104,13 @@ function localReducers() {
     //{tag: '856', ind1: '4', ind2: '0', subfields: [{code: 'u', value: ''}, {code: 'z', value: 'Käytettävissä vapaakappalekirjastoissa'}, {code: '5', value: 'FI-Vapaa'}]},
     //{tag: '901', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: new901}, {code: '5', value: 'FENNI'}]},
 
+    //insert({tag: '001', value: 'N/A'}),
     insert({tag: 'LOW', subfields: [{code: 'a', value: 'KVP'}], uuid: 'a416b908-d550-4682-83c4-0ed39809a683'})
   ];
+}
+
+function copy(options) {
+  return Reducers.copy(options);
 }
 
 function insert(field) {
@@ -106,6 +119,18 @@ function insert(field) {
     return base;
   };
 }
+
+/*
+function replace(field) {
+  return (base, source) => {
+    const {tag} = field;
+    return new MarcRecord({
+      leader: base.leader,
+      fields: base.fields.map(f => f.tag === tag ? field : f)
+    });
+  };
+}
+*/
 
 function f041(base, source) {
   //const baseFields = base.get(/^041$/u);
@@ -144,80 +169,3 @@ export function copyFields(record, fields) {
   return record;
 }
 */
-
-//-----------------------------------------------------------------------------
-
-function baseRecord() {
-  return new MarcRecord({
-    leader: '00000cam^a22006134i^4500',
-    fields: [
-      {
-        tag: '001',
-        value: '000000000',
-        uuid: '07b7a27e-1fc0-4f30-b181-c54cb4e9d039'
-      },
-      {
-        tag: '007',
-        value: 'cr^||^||||||||',
-        uuid: '7e290cd1-6bed-4447-8fc3-c1f7e41b760a'
-      },
-      {
-        tag: '008',
-        value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^',
-        uuid: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
-      },
-      {
-        tag: '041',
-        ind1: '0',
-        ind2: ' ',
-        subfields: [
-          {
-            code: 'a',
-            value: 'eng'
-          }
-        ],
-        uuid: 'ac44d08d-5532-49bc-b2b9-c863cf930b1a'
-      },
-      {
-        tag: '337',
-        ind1: ' ',
-        ind2: ' ',
-        subfields: [
-          {
-            code: 'a',
-            value: 'tietokonekäyttöinen'
-          },
-          {
-            code: 'b',
-            value: 'c'
-          },
-          {
-            code: '2',
-            value: 'rdamedia'
-          }
-        ],
-        uuid: '66029c77-30a4-42a2-bf23-6499ca97fe87'
-      },
-      {
-        tag: '338',
-        ind1: ' ',
-        ind2: ' ',
-        subfields: [
-          {
-            code: 'a',
-            value: 'verkkoaineisto'
-          },
-          {
-            code: 'b',
-            value: 'cr'
-          },
-          {
-            code: '2',
-            value: 'rdacarrier'
-          }
-        ],
-        uuid: '55e6067b-8eba-44c1-a53c-293641a40729'
-      }
-    ]
-  });
-}
