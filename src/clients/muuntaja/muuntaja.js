@@ -86,28 +86,44 @@ function authSuccess(user) {
 
 //-----------------------------------------------------------------------------
 
-function setProfiles(profiles) {
-  console.log("Profiles:", profiles)
+function setProfiles(options) {
+  console.log("Profiles:", options)
   const menu = document.querySelector("#profile-menu");
   menu.innerHTML = ""
 
   menu.appendChild(createMenuItem("Muunnostyyppi", "menu-header"))
 
-  for (const type in profiles.types) {
-    console.log("Type:", type);
+  for (const type in options.type) {
+    //console.log("Type:", type);
     //const item = createMenuItem(profiles.types[type], "menu-item");
-    const item = createMenuSelection("profile", type, profiles.types[type], "menu-item")
-    item.addEventListener("click", (event) => {return setProfile(event, type);});
+    const item = createMenuSelection("type", type, options.type[type], "menu-item")
+    item.addEventListener("click", (event) => {return setTransformType(event, type);});
     menu.appendChild(item);
   }
 
   menu.appendChild(createMenuBreak())
   menu.appendChild(createMenuItem("Muunnosprofiili", "menu-header"))
-  menu.appendChild(createMenuItem("KVP", "menu-item"))
+  //menu.appendChild(createMenuItem("KVP", "menu-item"))
+
+  for (const profile in options.profile) {
+    //console.log("Type:", type);
+    //const item = createMenuItem(profiles.types[type], "menu-item");
+    const item = createMenuSelection("profile", profile, options.profile[profile], "menu-item")
+    item.addEventListener("click", (event) => {return setTransformProfile(event, profile);});
+    menu.appendChild(item);
+  }
 }
 
-function setProfile(event, profile) {
-  transformed.profile = profile;
+function setTransformType(event, value) {
+  transformed.options.type = value;
+  delete transformed.base.record;
+  doTransform();
+  return eventHandled(event);
+}
+
+function setTransformProfile(event, value) {
+  console.log("Profile:", value)
+  transformed.options.profile = value;
   delete transformed.base.record;
   doTransform();
   return eventHandled(event);

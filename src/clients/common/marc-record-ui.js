@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------------
 
 export var transformed = {
-  profile: null,
+  options: {},
   source: null,
   base: null,
   exclude: {},

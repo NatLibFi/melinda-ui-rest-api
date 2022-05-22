@@ -18,12 +18,10 @@ import {addUUID} from './marc-record-utils';
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
 
-import p2eDefaultProfile from './config/print-to-e/';
+import p2eProfile from './config/print-to-e/';
 
 const profiles = {
-  'p2e': {
-    'kvp': p2eDefaultProfile
-  }
+  'p2e': p2eProfile
 };
 
 /*
@@ -69,9 +67,13 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   function getProfiles(req, res) {
     logger.debug('Get profiles');
     res.json({
-      'types': {
+      type: {
         'p2e': 'Painetusta > E-aineistoksi',
         'e2p': 'E-aineistosta > Painetuksi'
+      },
+      profile: {
+        'KVP': 'Oletus',
+        'FENNI': 'Fennica'
       }
     });
   }
@@ -83,21 +85,25 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const profile = req.body.profile ? req.body.profile : 'p2e';
     const {source, base, exclude, replace} = req.body;
 
-    //logger.debug(`Profile: ${profile}`);
+    const options = processOptions(req.body.options);
+
+    function processOptions(opts) {
+      return {
+        type: opts.type || 'p2e',
+        format: 'PDF',
+        LOWTAG: opts.profile
+      };
+    }
+
+    const transformProfile = profiles[options.type];
+
+    //logger.debug(`Options: ${JSON.stringify(options, null, 2)}`);
     //logger.debug(`sourceID: ${source.ID}`);
     //logger.debug(`baseID: ${base.ID}`);
     //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
     //logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
-
-    const transformProfile = profiles[profile].kvp;
-
-    const options = {
-      format: 'PDF',
-      LOW: 'KVP'
-    };
 
     //-------------------------------------------------------------------------
 
@@ -114,7 +120,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
-      profile,
+      options: req.body.options,
       ...postProcess(sourceRecord, baseRecord, resultRecord, refRecord),
       exclude,
       replace
