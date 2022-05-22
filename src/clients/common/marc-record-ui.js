@@ -296,8 +296,15 @@ function addField(div, field, editmode = false) {
     }
   }
 
+  function text2HTML(value) {
+    return value
+      .replace("<", "&lt;")
+      .replace(">", "&gt;")
+    ;
+  }
+
   function addValue(row, value) {
-    row.appendChild(makeSpan('value', value));
+    row.appendChild(makeSpan('value', text2HTML(value)));
   }
 
   function addSubfield(row, subfield) {

@@ -1,0 +1,11 @@
+Cases:
+
+1) New ISBNs from source 776 fields are included:
+
+- No duplicate ISBNs
+
+2) 
+
+Suitable test records:
+
+002438447

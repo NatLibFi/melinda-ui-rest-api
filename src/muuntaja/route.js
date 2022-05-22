@@ -8,11 +8,12 @@
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
-import {fieldOrderComparator} from './marc-field-sort';
 import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {getUnitTestRecords} from './test/getrecords';
-import {addUUID} from './marc-record-utils';
+
+import {sortFields} from './marc-utils/marc-field-sort';
+import {addUUID} from './marc-utils/marc-utils';
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
@@ -130,6 +131,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     // Get source & base records
     //-------------------------------------------------------------------------
 
+    // Make: Run "autoexcluder" for new source records.
+    // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
+
     async function loadRecords(source, base) {
       const [sourceRecord, baseRecord, refRecord] = await load();
 
@@ -193,18 +197,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       if (!source || !base) {
         return {};
       }
-      try {
-        return {
-          record: merger({
-            ...transformProfile,
-            reducers: transformProfile.getReducers(options),
-            base: removeExcluded(base),
-            source: removeExcluded(source)
-          })
-        };
-      } catch (e) {
-        return {error: e.toString()};
-      }
+      return {
+        record: merger({
+          ...transformProfile,
+          reducers: transformProfile.getReducers(options),
+          base: removeExcluded(base),
+          source: removeExcluded(source)
+        })
+      };
     }
 
     function removeExcluded(record) {
@@ -232,7 +232,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             reference,
             //error: 'Error: Hello, world!',
             record: edited
-            //record: applyEdits(result.record)
           }
         };
       } catch (e) {
@@ -245,16 +244,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           }
         };
       }
-    }
-
-    function sortFields(record) {
-      if (!record || !record.fields) {
-        return record;
-      }
-      return {
-        ...record,
-        fields: record.fields.slice().sort(fieldOrderComparator)
-      };
     }
 
     function applyEdits(record) { // eslint-disable-line

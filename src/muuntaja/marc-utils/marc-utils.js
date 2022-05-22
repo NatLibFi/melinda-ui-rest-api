@@ -11,24 +11,6 @@ import {v4 as uuid} from 'uuid';
 
 //-----------------------------------------------------------------------------
 
-export function fieldHasSubfield(code, value) {
-  const querySubfield = {code, value};
-
-  return function (field) {
-    return field.subfields.some(subfield => subfield === querySubfield);
-  };
-}
-
-export function selectFirstValue(field, subcode) {
-  if (field.subfields) {
-    return field.subfields
-      .filter(subfield => subcode.equals ? subcode.equals(subfield.code) : subcode === subfield.code)
-      .map(subfield => subfield.value)
-      .slice(1);
-  }
-  return field.value;
-}
-
 export function replaceField(record, field) {
   const {tag} = field;
   record.removeField(tag);
@@ -62,13 +44,14 @@ function removeProperty(propKey, {[propKey]: propValue, ...rest}) { // eslint-di
 
 // Add missing UUIDs for tracing fields
 export function addUUID(record) { // eslint-disable-line
+  const exclude = ['001', '005'];
   if (!record) {
     return null;
   }
   return {
     leader: record.leader,
     fields: record.fields.map(f => {
-      if (f.uuid || ['001', '005'].includes(f.tag)) {
+      if (f.uuid || exclude.includes(f.tag)) {
         return f;
       }
       return {...f, uuid: uuid()};
@@ -106,8 +89,15 @@ export function f008Split(field) {
 }
 
 export function f008toString(f008) {
-  const value = {
-    created: '      ',
-    ...f008
-  };
+  return [
+    f008.created,
+    f008.pubtype,
+    f008.year1,
+    f008.year2,
+    f008.country,
+    f008.empty,
+    f008.language,
+    f008.transformed,
+    f008.organisation
+  ].join('');
 }

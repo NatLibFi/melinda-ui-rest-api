@@ -27,7 +27,21 @@
 */
 
 //import _ from 'lodash';
-import {selectFirstValue, fieldHasSubfield} from './marc-record-utils';
+import {selectFirstValue, fieldHasSubfield} from './marc-subfields';
+
+//-----------------------------------------------------------------------------
+
+export function sortFields(record) {
+  if (!record || !record.fields) {
+    return record;
+  }
+  return {
+    ...record,
+    fields: record.fields.slice().sort(fieldOrderComparator)
+  };
+}
+
+//-----------------------------------------------------------------------------
 
 const sorterFunctions = [sortByTag, sortByLOW, sortBySID, sortByIndexterms, sortAlphabetically];
 
