@@ -35,7 +35,8 @@
 }
 
 .marc-record .row-excluded {
-  color:gray;
+  /* color:gray; */
+  opacity: 0.5;
 }
 
 .marc-record .row-fromSource {

@@ -15,7 +15,7 @@ import {Reducers} from '@natlibfi/marc-record-merge';
 //import copy from '@natlibfi/marc-record-merge/dist/reducers/copy';
 //import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
 //import {MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-muuntaja-reducers'
-import {update008, update020, update530} from './updates';
+import {update008, update020, update530, updateLOW} from './updates';
 
 import {createBase} from './createBaseRecord';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -42,7 +42,7 @@ export default {
 function getReducers(opts) {
   return [
     ...mergeFields(opts),
-    ...missingFields(opts)
+    ...fieldsFennica(opts)
     //...MelindaMuuntajaFennicaReducers.map(conf => Reducers.copy(conf)),
     //...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)),
     //...MelindaReducers
@@ -71,11 +71,11 @@ function insert(field) {
   };
 }
 
-function missing(field, opts = {}) {
+function addMissing(field, opts = {}) {
   return (base, source) => {
-    const {tag, subfields} = field;
+    const {tag} = field;
     //logger.debug(`Missing: ${JSON.stringify(field)}`);
-    const hasField = base.containsFieldWithValue(tag, [opts.compareTagsOnly ? null : subfields]);
+    const [hasField] = base.get(tag);
     if (!hasField) {
       base.insertField(field);
       return base;
@@ -96,48 +96,28 @@ function replace(field) {
 }
 */
 
-/*
-function overrideFields(opts)
-{
-  const fields = [
-    {tag: '530', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'Julkaistu myös painettuna.'}, {code: '9', value: 'FENNI<KEEP>'}]}
-  ]
-}
-*/
-
 //-----------------------------------------------------------------------------
-// Add missing fields
+// Add Fennica fields
 
-function missingFields(opts) {
-  const {LOWTAG} = opts;
-  const fields1 = [LOWTAG ? {tag: 'LOW', subfields: [{code: 'a', value: LOWTAG}]} : null].filter(f => f).map(f => missing(f));
-  const fields2 = [].filter(f => f).map(f => missing(f, {compareTagsOnly: true}));
-  const fenni = [
+function fieldsFennica(opts) {
+  if (opts.LOWTAG !== 'FENNI') {
+    return [];
+  }
+  return [
     {tag: '506', ind1: '1', ind2: ' ', subfields: [{code: 'a', value: 'Aineisto on käytettävissä vapaakappalekirjastoissa.'}, {code: 'f', value: 'Online access with authorization.'}, {code: '2', value: 'star'}, {code: '5', value: 'FI-Vapaa'}, {code: '9', value: 'FENNI<KEEP>'}]},
     {tag: '540', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'Aineisto on käytettävissä tutkimus- ja muihin tarkoituksiin;'}, {code: 'b', value: 'Kansalliskirjasto;'}, {code: 'c', value: 'Laki kulttuuriaineistojen tallettamisesta ja säilyttämisestä'}, {code: 'u', value: 'http://www.finlex.fi/fi/laki/ajantasa/2007/20071433'}, {code: '5', value: 'FI-Vapaa'}, {code: '9', value: 'FENNI<KEEP>'}]},
     {tag: '856', ind1: '4', ind2: '0', subfields: [{code: 'u', value: ''}, {code: 'z', value: 'Käytettävissä vapaakappalekirjastoissa'}, {code: '5', value: 'FI-Vapaa'}]},
     {tag: '901', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'SUyyyyMMDD'}, {code: '5', value: 'FENNI'}]}
-  ].filter(f => f).map(f => missing(f, {compareTagsOnly: true}));
-
-  return [
-    ...fields1,
-    ...fields2,
-    ...LOWTAG === 'FENNI' ? fenni : []
-  ];
+  ].filter(f => f).map(f => addMissing(f));
 }
 
 //-----------------------------------------------------------------------------
 // Merge fields
 
 function mergeFields(opts) {
-  return [...localReducers(opts)];
-}
-
-//-----------------------------------------------------------------------------
-
-function localReducers(opts) {
   return [
     //-------------------------------------------------------------------------
+    copy('003'),
     update008(opts),
 
     //"020": {"action": "createFrom", "options": {"convertTag": "776", "ind1": "0", "ind2": "8", "subfields": {"i": {"replaceValue": "Painettu:"}, "a": {convertCode: "z", modifications: [{type: "replace", args: [/-/gu, ""]}]}}}},
@@ -233,6 +213,10 @@ function localReducers(opts) {
     //"900": {"action": "copy", "options": {"copyUnless": {"9": {"value": "[LOWTAG]<DROP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP)>/u}}},
     //"910": {"action": "copy", "options": {"copyUnless": {"9": {"value": "[LOWTAG]<DROP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP)>/u}}}
     copy('900'),
-    copy('910')
+    copy('910'),
+
+    //-------------------------------------------------------------------------
+    // LOW tags
+    updateLOW(opts)
   ];
 }

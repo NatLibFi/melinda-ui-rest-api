@@ -88,6 +88,8 @@ function authSuccess(user) {
 
 function setProfiles(options) {
   console.log("Profiles:", options)
+  transformed.options = options.defaults;
+  
   const menu = document.querySelector("#profile-menu");
   menu.innerHTML = ""
 

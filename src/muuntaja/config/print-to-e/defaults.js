@@ -20,14 +20,14 @@ const defaultFieldValues = {
     value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|   |^',
     uuid: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
   },
-  '020': {
+  '020': (opts) => ({
     ind1: ' ', ind2: ' ',
     subfields: [
       {code: 'a', value: ''},
-      {code: 'q', value: ''}
+      {code: 'q', value: opts.format}
     ],
     uuid: '1ed797e0-1026-425b-9ef4-fc4d3771914a'
-  },
+  }),
   '040': {
     ind1: ' ', ind2: ' ',
     subfields: [
@@ -95,15 +95,33 @@ const defaultFieldValues = {
       {code: '9', value: 'FENNI<KEEP>'}
     ],
     uuid: 'd046fbea-5c5c-4f1f-84de-c8ae5bd19043'
+  },
+
+  //---------------------------------------------------------------------------
+  // Generally for testing purposes
+  'LOW/KVP': {
+    tag: 'LOW', ind1: ' ', ind2: ' ',
+    subfields: [{code: 'a', value: 'KVP'}],
+    uuid: '9a77bccc-d0fe-4d6d-a326-b3cf666b3b0a'
+  },
+  'LOW/ALMA': {
+    tag: 'LOW', ind1: ' ', ind2: ' ',
+    subfields: [{code: 'a', value: 'ALMA'}],
+    uuid: 'e0d789ec-6548-4db0-85ae-4cd2e4acbe2f'
+  },
+  'LOW/FENNI': {
+    tag: 'LOW', ind1: ' ', ind2: ' ',
+    subfields: [{code: 'a', value: 'FENNI'}],
+    uuid: 'd8efb4ce-b01f-433f-8a1a-76bc5313d785'
   }
 };
 
 //-----------------------------------------------------------------------------
 
-export function getDefaultValue(tag) {
+export function getDefaultValue(tag, opts = {}) {
   const value = defaultFieldValues[tag];
   if (value) {
-    return {tag, ...value};
+    return {tag, ...typeof value === 'function' ? value(opts) : value};
   }
   return null;
 }

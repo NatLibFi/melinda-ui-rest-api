@@ -14,7 +14,7 @@ import {getDefaultValue} from './defaults';
 
 import {f008Split, f008Get} from '../../marc-utils/marc-utils';
 import {sortFields} from '../../marc-utils/marc-field-sort';
-import {update020} from './updates';
+import {updateLOW} from './updates';
 
 const logger = createLogger();
 
@@ -28,21 +28,27 @@ export function createBase(source, options) {
     ...getSourceInfo(new MarcRecord(source))
   };
 
-  return sortFields(merger({
-    baseValidators: {
-      fields: false,
-      subfields: false,
-      subfieldValues: false
-    },
-    sourceValidators: {
-      subfieldValues: false
-    },
-    reducers: getReducers(opts),
-    base: {
+  const baseValidators = {
+    fields: false,
+    //subfields: false,
+    subfieldValues: false
+  };
+  const sourceValidators = {
+    subfieldValues: false
+  };
+
+  const base = new MarcRecord(
+    {
       leader: getDefaultValue('LDR').value,
       fields: []
     },
-    source
+    baseValidators
+  );
+
+  return sortFields(merger({
+    base, baseValidators,
+    source, sourceValidators,
+    reducers: getReducers(opts)
   }));
 }
 
@@ -53,6 +59,9 @@ function getReducers(options) {
   const placeholders = [
     fillDefault('001'),
     fillDefault('005')
+    //fillDefault('LOW/KVP'),
+    //fillDefault('LOW/ALMA'),
+    //fillDefault('LOW/FENNI')
   ];
 
   return [
@@ -70,24 +79,23 @@ function getReducers(options) {
     fillDefault('506/1'),
     fillDefault('506/2')
     //fillDefault('530') // 530 is added, if there is no generated 776
+    //updateLOW(options)
 
     //Reducers.copy({tagPattern: new RegExp(/^041$/u, 'u')}),
-    //addLanguage(options),
-    //addFormat(options)
   ];
 
   function fillDefault(tag) {
     return (base, source) => {
-      const field = getDefaultValue(tag);
+      const field = getDefaultValue(tag, options);
       //logger.debug(`Inserting: ${JSON.stringify(field)}`);
       //base.insertField(field);
-      return {
+      return new MarcRecord({
         leader: base.leader,
         fields: [
           ...base.fields,
           field
         ].filter(f => f)
-      };
+      });
     };
   }
 }

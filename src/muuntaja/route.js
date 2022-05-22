@@ -75,6 +75,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       profile: {
         'KVP': 'Oletus',
         'FENNI': 'Fennica'
+      },
+      defaults: {
+        type: 'p2e',
+        profile: 'KVP',
+        format: 'PDF'
       }
     });
   }
@@ -91,9 +96,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     const options = processOptions(req.body.options);
 
     function processOptions(opts) {
+      //logger.debug(`User options: ${JSON.stringify(opts, null, 2)}`);
       return {
-        type: opts.type || 'p2e',
-        format: 'PDF',
+        type: 'p2e',
+        format: '',
+        ...opts,
         LOWTAG: opts.profile
       };
     }
@@ -231,7 +238,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             ...result,
             reference,
             //error: 'Error: Hello, world!',
-            record: edited
+            record: sorted
           }
         };
       } catch (e) {
