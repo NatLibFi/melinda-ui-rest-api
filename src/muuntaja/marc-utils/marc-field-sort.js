@@ -26,7 +26,8 @@
 *
 */
 
-//import _ from 'lodash';
+/* eslint-disable no-unused-vars */
+
 import {selectFirstValue, fieldHasSubfield} from './marc-subfields';
 
 //-----------------------------------------------------------------------------
@@ -43,7 +44,8 @@ export function sortFields(record) {
 
 //-----------------------------------------------------------------------------
 
-const sorterFunctions = [sortByTag, sortByLOW, sortBySID, sortByIndexterms, sortAlphabetically];
+//const sorterFunctions = [sortByTag, sortByLOW, sortBySID, sortByIndexterms, sortAlphabetically];
+const sorterFunctions = [sortByTag, sortByLOW, sortBySID, sortByIndexterms];
 
 export function fieldOrderComparator(fieldA, fieldB) {
   for (const sortFn of sorterFunctions) { // eslint-disable-line functional/no-loop-statement
