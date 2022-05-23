@@ -74,7 +74,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         'e2p': 'E-aineistosta > Painetuksi'
       },
       profile: {
-        'KVP': 'Oletus',
+        'KVP': 'Kirjastoverkkopalvelut',
         'FENNI': 'Fennica'
       },
       defaults: {

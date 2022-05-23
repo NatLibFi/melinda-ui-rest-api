@@ -60,11 +60,11 @@ export function fieldOrderComparator(fieldA, fieldB) {
 
 const sortIndex = {
   LDR: '000',
-  STA: '0091',
-  SID: '9991',
-  CAT: '9992',
-  LOW: '9993',
-  HLI: '9994'
+  STA: '99.1',
+  SID: '899.1',
+  CAT: '899.2',
+  LOW: '899.3',
+  HLI: '899.4'
 };
 
 function getSortIndex(tag) {

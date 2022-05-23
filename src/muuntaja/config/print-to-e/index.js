@@ -126,6 +126,8 @@ function mergeFields(opts) {
     //"041": {"action": "copy", "options": {"dropOriginal": true, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
     copy('041'),
 
+    //copy('042'),
+
     //"080": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     //"084": {"action": "copy", "options": {"copyIf": {"9": {"value": "[LOWTAG]<KEEP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
     copy('080'),
@@ -155,7 +157,7 @@ function mergeFields(opts) {
     // Fyysisen kuvailun kentät 3xx:
     //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},
     //copy('300'),
-    copy('336'),
+    copy('336'), // compare tags only
 
     //-------------------------------------------------------------------------
     // Sarjamerkintökentät 4xx:
