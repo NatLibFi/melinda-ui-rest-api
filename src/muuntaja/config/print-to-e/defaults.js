@@ -37,11 +37,11 @@ const defaultFieldValues = {
     ],
     uuid: '6f4d044c-28f4-4616-9edb-89ec47856cab'
   },
-  '041': {
+  '041': (opts) => ({
     tag: '041', ind1: '0', ind2: ' ',
-    subfields: [{code: 'a', value: ''}], // Can be updated from source
+    subfields: [{code: 'a', value: opts.language}],
     uuid: 'ac44d08d-5532-49bc-b2b9-c863cf930b1a'
-  },
+  }),
   '042': {
     tag: '042', ind1: ' ', ind2: ' ',
     subfields: [{code: 'a', value: 'finb'}],

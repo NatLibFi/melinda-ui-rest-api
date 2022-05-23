@@ -9,6 +9,7 @@
 import {MarcRecord} from '@natlibfi/marc-record';
 
 import {createLogger} from '@natlibfi/melinda-backend-commons';
+import {fromAlephId} from '@natlibfi/melinda-commons/dist/utils';
 const logger = createLogger();
 
 //-----------------------------------------------------------------------------
@@ -26,8 +27,20 @@ export const Subfield = {
   },
   dropByValue(subfields, value) {
     return subfields.filter(s => s.value !== value);
-  }
+  },
 
+  fromFields(...fields) {
+    return fields.flat().map(f => f.subfields).flat();
+  },
+
+  from(record, ...tag) {
+    const fields = tag.map(tag => record.get(tag)).flat();
+    return Subfield.fromFields(fields);
+  },
+
+  concat(...subfields) {
+    return [...subfields.flat(2)];
+  }
 };
 
 //-----------------------------------------------------------------------------

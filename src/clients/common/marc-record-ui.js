@@ -19,6 +19,7 @@ export var transformed = {
   base: null,
   exclude: {},
   replace: {},
+  insert: null,
 }
 
 window.editmode = false;
@@ -60,11 +61,10 @@ function toggleField(event, field) {
 // Field edit
 //-----------------------------------------------------------------------------
 
-function editField(event, field) {
+export function editField(event, field) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
 
   editing = transformed.transformed.record.fields.find(f => f.uuid == field.uuid);
-
   console.log("Edit:", editing);
 
   // Find field from edited fields, if found, fill in data from there
@@ -167,7 +167,11 @@ window.editDlgOK = function(event) {
 
   console.log("Edited:", field)
 
-  transformed.replace[field.uuid] = stripFieldDecorations(field);
+  if(field.uuid) {
+    transformed.replace[field.uuid] = stripFieldDecorations(field);
+  } else {
+    transformed.insert = field;
+  }
   doTransform();
   
   return editDlgClose(event);
@@ -196,7 +200,7 @@ export function showTransformed(update = undefined)
 
   const {source, base, result} = transformed;
   showRecord(source, 'source');
-  showRecord(base, 'base');
+  showRecord(base, 'base', editmode = editmode);
   showRecord(result, 'result', editmode = editmode);
 }
 
@@ -233,7 +237,14 @@ function showRecord(data, dest, editmode = false, reference = null) {
     }
 
     for (const field of record.fields) {
-      const row = addField(sourceDiv, field, editmode);
+
+      function replaced(field) {
+        if(!field.uuid) return field;
+        return transformed.replace[field.uuid] || field;
+      }
+
+      const row = addField(sourceDiv, replaced(field), editmode);
+
       if(field.uuid) {
         if(editmode) {
           if(field.subfields) row.addEventListener("click", event => editField(event, field))

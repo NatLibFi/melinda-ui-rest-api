@@ -10,7 +10,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui
 
 import {Account} from "../common/auth.js"
 import {profileRequest, transformRequest} from "../common/rest.js";
-import {transformed, showTransformed, stripFieldDecorations} from "../common/marc-record-ui.js";
+import {transformed, showTransformed, stripFieldDecorations, editField} from "../common/marc-record-ui.js";
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -149,6 +149,14 @@ window.onEdit = function (e) {
   }
   showTransformed()
   return eventHandled(e);
+}
+
+window.onNewField = function(e) {
+  editField(e, {
+    tag: "", ind1: "", ind2: "",
+    subfields: []
+  });  
+  return eventHandled(e)
 }
 
 window.onSearch = function (e) {

@@ -14,6 +14,7 @@ import {getUnitTestRecords} from './test/getrecords';
 
 import {sortFields} from './marc-utils/marc-field-sort';
 import {addUUID} from './marc-utils/marc-utils';
+import {v4 as uuid} from 'uuid';
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
@@ -91,7 +92,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, exclude, replace} = req.body;
+    const {source, base, exclude, replace, insert} = req.body;
 
     const options = processOptions(req.body.options);
 
@@ -117,6 +118,16 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const {sourceRecord, baseRecord, refRecord} = await loadRecords(source, base);
 
+    if (insert && baseRecord.record) { // eslint-disable-line functional/no-conditional-statement
+      try {
+        const r = new MarcRecord(baseRecord.record, {subFieldValues: false});
+        r.insertField({...insert, uuid: uuid()});
+        baseRecord.record = r; // eslint-disable-line functional/immutable-data
+      } catch (e) {
+        baseRecord.error = e.toString(); // eslint-disable-line functional/immutable-data
+      }
+    }
+
     //logger.debug(`Base record: ${JSON.stringify(baseRecord, null, 2)}`);
 
     //-------------------------------------------------------------------------
@@ -131,7 +142,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       options: req.body.options,
       ...postProcess(sourceRecord, baseRecord, resultRecord, refRecord),
       exclude,
-      replace
+      replace,
+      insert: null
     });
 
     //-------------------------------------------------------------------------
@@ -158,6 +170,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           return {};
         }
         return {
+          ID: '',
           record: transformProfile.createBase(source.record, options)
         };
       }

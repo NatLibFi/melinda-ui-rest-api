@@ -48,7 +48,8 @@
 }
 
 .marc-record .row-replaced {
-  background-color: rgb(255, 238, 241);
+  background-color: #f8fcd8;
+  /* background-color: rgb(255, 238, 241); */
   /* background-color: #75c4bdb0; */
   /* background-color: rgb(179, 221, 235); */
   /* background-color: #f1b5f760; */

@@ -51,14 +51,15 @@ export function update008(opts) { // eslint-disable-line no-unused-vars
 }
 
 //-----------------------------------------------------------------------------
-// F020: Update ISBN & formats from source 776
+// F020: Update ISBN & formats from source 776 fields
 //-----------------------------------------------------------------------------
 
 export function update020(opts) { // eslint-disable-line no-unused-vars
   return (base, source) => { // eslint-disable-line no-unused-vars
-    // Get ISBNs from source 776 fields
 
-    const source776 = source.get('776').map(f => f.subfields).flat();
+    // Get ISBNs (subcode z values) from source 776 fields
+
+    const source776 = Subfield.from(source, '776');
     const sourceISBNs = Subfield.getByCode(source776, 'z').map(s => s.value);
 
     if (!sourceISBNs.length) {
@@ -67,19 +68,14 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
 
     //logger.debug(`Source ISBNs: ${JSON.stringify(sourceISBNs, null, 2)}`);
 
-    // Get ISBNs from base F020
+    // Pop ISBNs (subcode a values) from base F020
     const base020 = base.get('020');
-    //logger.debug(`Base020: ${JSON.stringify(base020, null, 2)}`);
     base020.forEach(f => base.removeField(f));
 
-    const baseSubfields = base020
-      .map(f => f.subfields)
-      .flat();
+    const baseSubfields = Subfield.fromFields(base020);
+    const baseISBNs = Subfield.getByCode(baseSubfields, 'a').map(s => s.value);
 
-    const baseISBNs = baseSubfields
-      .filter(s => s.code === 'a')
-      .map(s => s.value);
-
+    //logger.debug(`Base020: ${JSON.stringify(base020, null, 2)}`);
     //logger.debug(`Base ISBNs: ${JSON.stringify(baseISBNs, null, 2)}`);
 
     // New ISBNs
@@ -87,16 +83,11 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
 
     //logger.debug(`New ISBNs: ${JSON.stringify(newISBNs, null, 2)}`);
 
-    const field = {
+    base.insertField({
       tag: '020', ind1: ' ', ind2: ' ',
-      subfields: [
-        ...newSubfields,
-        ...baseSubfields
-      ],
+      subfields: Subfield.concat(baseSubfields, newSubfields),
       uuid: '09d0afca-a46b-4ca8-a869-a1b036a657d1'
-    };
-    //logger.debug(`New 020: ${JSON.stringify(field, null, 2)}`);
-    base.insertField(field);
+    });
     return base;
   };
 }
