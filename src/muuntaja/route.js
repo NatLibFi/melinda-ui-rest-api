@@ -12,8 +12,7 @@ import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {getUnitTestRecords} from './test/getrecords';
 
-import {sortFields} from './marc-utils/marc-field-sort';
-import {addUUID} from './marc-utils/marc-utils';
+import {addUUID} from '../marc-utils/marc-utils';
 import {v4 as uuid} from 'uuid';
 
 //-----------------------------------------------------------------------------
@@ -21,6 +20,7 @@ import {v4 as uuid} from 'uuid';
 // Add handling those to UI
 
 import p2eProfile from './config/print-to-e/';
+import {sortFields} from '../marc-utils/marc-field-sort';
 
 const profiles = {
   'p2e': p2eProfile
@@ -240,8 +240,13 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     function postProcess(source, base, result, reference) {
       try {
-        const edited = applyEdits(result.record);
-        const sorted = sortFields(edited); // eslint-disable-line no-unused-vars
+
+        /*
+        const edited = new MarcRecord(applyEdits(result.record)).sortFields();
+        /*/
+        const edited = sortFields(new MarcRecord(applyEdits(result.record)));
+
+        /**/
 
         return {
           source,
@@ -251,7 +256,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             ...result,
             reference,
             //error: 'Error: Hello, world!',
-            record: sorted
+            record: edited
           }
         };
       } catch (e) {

@@ -28,8 +28,6 @@
 
 /* eslint-disable no-unused-vars */
 
-import {selectFirstValue, fieldHasSubfield} from './marc-subfields';
-
 //-----------------------------------------------------------------------------
 
 export function sortFields(record) {
@@ -238,4 +236,24 @@ function sortAlphabetically(fieldA, fieldB) {
     }
   }
   return 0;
+}
+
+//-----------------------------------------------------------------------------
+
+function fieldHasSubfield(code, value) {
+  const querySubfield = {code, value};
+
+  return function (field) {
+    return field.subfields.some(subfield => subfield === querySubfield);
+  };
+}
+
+function selectFirstValue(field, subcode) {
+  if (field.subfields) {
+    return field.subfields
+      .filter(subfield => subcode.equals ? subcode.equals(subfield.code) : subcode === subfield.code)
+      .map(subfield => subfield.value)
+      .slice(1);
+  }
+  return field.value;
 }

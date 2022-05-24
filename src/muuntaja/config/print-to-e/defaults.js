@@ -4,6 +4,8 @@
 //
 //*****************************************************************************
 
+import moment from 'moment';
+
 const defaultFieldValues = {
   'LDR': {value: '00000cam^a22006134i^4500'},
   '001': {value: '<placeholder>'},
@@ -90,12 +92,64 @@ const defaultFieldValues = {
   },
   '530': {
     ind1: ' ', ind2: ' ',
+    subfields: [{code: 'a', value: 'Julkaistu myös painettuna.'}],
+    uuid: 'd046fbea-5c5c-4f1f-84de-c8ae5bd19043'
+  },
+
+  //---------------------------------------------------------------------------
+  // Default LOW
+  'LOW': (opts) => ({
+    tag: 'LOW', ind1: ' ', ind2: ' ',
+    subfields: [{code: 'a', value: opts.LOWTAG}],
+    uuid: '98e21f26-9908-4419-8afa-83f56172b801'
+  }),
+
+  //---------------------------------------------------------------------------
+  // Default values for Fennica fields.
+  '506/FENNI': {
+    tag: '506', ind1: '1', ind2: ' ',
+    subfields: [
+      {code: 'a', value: 'Aineisto on käytettävissä vapaakappalekirjastoissa.'},
+      {code: 'f', value: 'Online access with authorization.'},
+      {code: '2', value: 'star'},
+      {code: '5', value: 'FI-Vapaa'},
+      {code: '9', value: 'FENNI<KEEP>'}
+    ]
+  },
+  '530/FENNI': {
+    tag: '530', ind1: ' ', ind2: ' ',
     subfields: [
       {code: 'a', value: 'Julkaistu myös painettuna.'},
       {code: '9', value: 'FENNI<KEEP>'}
     ],
     uuid: 'd046fbea-5c5c-4f1f-84de-c8ae5bd19043'
   },
+  '540/FENNI': {
+    tag: '540', ind1: ' ', ind2: ' ',
+    subfields: [
+      {code: 'a', value: 'Aineisto on käytettävissä tutkimus- ja muihin tarkoituksiin;'},
+      {code: 'b', value: 'Kansalliskirjasto;'},
+      {code: 'c', value: 'Laki kulttuuriaineistojen tallettamisesta ja säilyttämisestä'},
+      {code: 'u', value: 'http://www.finlex.fi/fi/laki/ajantasa/2007/20071433'},
+      {code: '5', value: 'FI-Vapaa'},
+      {code: '9', value: 'FENNI<KEEP>'}
+    ]
+  },
+  '856/FENNI': {
+    tag: '856', ind1: '4', ind2: '0',
+    subfields: [
+      {code: 'u', value: ''},
+      {code: 'z', value: 'Käytettävissä vapaakappalekirjastoissa'},
+      {code: '5', value: 'FI-Vapaa'}
+    ]
+  },
+  '901/FENNI': (opts) => ({ // eslint-disable-line no-unused-vars
+    tag: '901', ind1: ' ', ind2: ' ',
+    subfields: [
+      {code: 'a', value: `SU${moment().format('YYYYMMDD')}`},
+      {code: '5', value: 'FENNI'}
+    ]
+  }),
 
   //---------------------------------------------------------------------------
   // Generally for testing purposes

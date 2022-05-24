@@ -16,6 +16,7 @@ import {Reducers} from '@natlibfi/marc-record-merge';
 //import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
 //import {MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-muuntaja-reducers'
 import {update008, update020, update530, updateLOW} from './updates';
+import {getDefaultValue, getFieldOrDefault} from './defaults';
 
 import {createBase} from './createBaseRecord';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -104,11 +105,20 @@ function fieldsFennica(opts) {
     return [];
   }
   return [
-    {tag: '506', ind1: '1', ind2: ' ', subfields: [{code: 'a', value: 'Aineisto on käytettävissä vapaakappalekirjastoissa.'}, {code: 'f', value: 'Online access with authorization.'}, {code: '2', value: 'star'}, {code: '5', value: 'FI-Vapaa'}, {code: '9', value: 'FENNI<KEEP>'}]},
-    {tag: '540', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'Aineisto on käytettävissä tutkimus- ja muihin tarkoituksiin;'}, {code: 'b', value: 'Kansalliskirjasto;'}, {code: 'c', value: 'Laki kulttuuriaineistojen tallettamisesta ja säilyttämisestä'}, {code: 'u', value: 'http://www.finlex.fi/fi/laki/ajantasa/2007/20071433'}, {code: '5', value: 'FI-Vapaa'}, {code: '9', value: 'FENNI<KEEP>'}]},
-    {tag: '856', ind1: '4', ind2: '0', subfields: [{code: 'u', value: ''}, {code: 'z', value: 'Käytettävissä vapaakappalekirjastoissa'}, {code: '5', value: 'FI-Vapaa'}]},
-    {tag: '901', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'SUyyyyMMDD'}, {code: '5', value: 'FENNI'}]}
-  ].filter(f => f).map(f => addMissing(f));
+    fillDefault('506/FENNI'),
+    //fillDefault('530/FENNI'),
+    fillDefault('540/FENNI'),
+    fillDefault('856/FENNI'),
+    fillDefault('901/FENNI')
+  ];
+
+  function fillDefault(tag) {
+    return (base, source) => {
+      const field = getDefaultValue(tag, opts);
+      base.insertField(field);
+      return base;
+    };
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -117,7 +127,7 @@ function fieldsFennica(opts) {
 function mergeFields(opts) {
   return [
     //-------------------------------------------------------------------------
-    copy('003'),
+    //copy('003'),
     update008(opts),
 
     //"020": {"action": "createFrom", "options": {"convertTag": "776", "ind1": "0", "ind2": "8", "subfields": {"i": {"replaceValue": "Painettu:"}, "a": {convertCode: "z", modifications: [{type: "replace", args: [/-/gu, ""]}]}}}},
@@ -173,6 +183,7 @@ function mergeFields(opts) {
     copy('506'),
     copy('509'),
     copy('520'),
+    copy('530'),
     //update530(),
 
     //copy(/^5\d\d$/u),

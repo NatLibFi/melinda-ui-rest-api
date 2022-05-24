@@ -8,8 +8,8 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 
-import {f008Split, f008Get, f008toString} from '../../marc-utils/marc-utils';
-import {Subfield} from '../../marc-utils/marc-subfields';
+import {f008Split, f008Get, f008toString} from '../../../marc-utils/marc-utils';
+import {Subfield} from '../../../marc-utils/marc-subfields';
 import {getDefaultValue, getFieldOrDefault} from './defaults';
 
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -56,10 +56,14 @@ export function update008(opts) { // eslint-disable-line no-unused-vars
 
 export function update020(opts) { // eslint-disable-line no-unused-vars
   return (base, source) => { // eslint-disable-line no-unused-vars
-
     // Get ISBNs (subcode z values) from source 776 fields
 
     const source776 = Subfield.from(source, '776');
+
+    //logger.debug(`Source 776: ${JSON.stringify(source776, null, 2)}`);
+    //const grouped = Subfield.groupByTrailingCode(source776, 'z');
+    //logger.debug(`Grouped: ${JSON.stringify(grouped, null, 2)}`);
+
     const sourceISBNs = Subfield.getByCode(source776, 'z').map(s => s.value);
 
     if (!sourceISBNs.length) {
@@ -69,8 +73,13 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
     //logger.debug(`Source ISBNs: ${JSON.stringify(sourceISBNs, null, 2)}`);
 
     // Pop ISBNs (subcode a values) from base F020
+
+    /*
+    const base020 = base.pop('020'); // eslint-disable-line functional/immutable-data
+    /*/
     const base020 = base.get('020');
-    base020.forEach(f => base.removeField(f));
+    base020.forEach(f => base.removeField(f)); // eslint-disable-line functional/immutable-data
+    /**/
 
     const baseSubfields = Subfield.fromFields(base020);
     const baseISBNs = Subfield.getByCode(baseSubfields, 'a').map(s => s.value);
@@ -158,18 +167,13 @@ export function updateLOW(opts) { // eslint-disable-line no-unused-vars
       return base;
     }
 
-    const [hasLOW] = base.get('LOW')
-      .map(f => f.subfields)
-      .flat()
+    const [hasLOW] = Subfield.from(base, 'LOW')
       .filter(s => s.code === 'a')
       .filter(s => s.value === LOWTAG);
     //logger.debug(`LOW: ${JSON.stringify(LOWs, null, 2)}`);
     if (!hasLOW) {
-      base.insertField({
-        tag: 'LOW', ind1: ' ', ind2: ' ',
-        subfields: [{code: 'a', value: LOWTAG}],
-        uuid: '2b41748e-8347-4ae7-ab9b-f422af92ce38'
-      });
+      const LOW = getDefaultValue('LOW', opts);
+      base.insertField(LOW);
       return base;
     }
     return base;

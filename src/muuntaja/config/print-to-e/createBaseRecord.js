@@ -12,8 +12,8 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 import {getDefaultValue} from './defaults';
 
-import {f008Split, f008Get} from '../../marc-utils/marc-utils';
-import {sortFields} from '../../marc-utils/marc-field-sort';
+import {f008Split, f008Get} from '../../../marc-utils/marc-utils';
+import {sortFields} from '../../../marc-utils/marc-field-sort';
 import {updateLOW} from './updates';
 
 const logger = createLogger();
@@ -45,11 +45,21 @@ export function createBase(source, options) {
     baseValidators
   );
 
-  return sortFields(merger({
+  /*
+  return merger({
     base, baseValidators,
     source, sourceValidators,
     reducers: getReducers(opts)
-  }));
+  }).sortFields();
+  /*/
+  const result = merger({
+    base, baseValidators,
+    source, sourceValidators,
+    reducers: getReducers(opts)
+  });
+  return sortFields(result);
+
+  /**/
 }
 
 //-----------------------------------------------------------------------------
@@ -57,16 +67,26 @@ export function createBase(source, options) {
 
 function getReducers(options) {
   const placeholders = [
-    fillDefault('001'),
-    fillDefault('005')
     //fillDefault('LOW/KVP'),
     //fillDefault('LOW/ALMA'),
     //fillDefault('LOW/FENNI')
+
+    fillDefault('001'),
+    fillDefault('003'),
+    fillDefault('005')
+  ];
+
+  const fenniFields = [
+    //fillDefault('506/FENNI'),
+    fillDefault('530/FENNI')
+    //fillDefault('540/FENNI'),
+    //fillDefault('856/FENNI'),
+    //fillDefault('901/FENNI')
   ];
 
   return [
     ...placeholders,
-    fillDefault('003'),
+    ...options.LOWTAG === 'FENNI' ? fenniFields : [],
     fillDefault('007'),
     fillDefault('008'),
     fillDefault('020'),
@@ -87,15 +107,8 @@ function getReducers(options) {
   function fillDefault(tag) {
     return (base, source) => {
       const field = getDefaultValue(tag, options);
-      //logger.debug(`Inserting: ${JSON.stringify(field)}`);
-      //base.insertField(field);
-      return new MarcRecord({
-        leader: base.leader,
-        fields: [
-          ...base.fields,
-          field
-        ].filter(f => f)
-      });
+      base.insertField(field);
+      return base;
     };
   }
 }
