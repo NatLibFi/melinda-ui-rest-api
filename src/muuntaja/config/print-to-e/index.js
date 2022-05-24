@@ -28,14 +28,7 @@ export default {
   mergeType: 'printToE',
 
   getReducers,
-  createBase,
-
-  baseValidators: {
-    subfieldValues: false
-  },
-  sourceValidators: {
-    subfieldValues: false
-  }
+  createBase
 };
 
 //-----------------------------------------------------------------------------
@@ -53,16 +46,15 @@ function getReducers(opts) {
 
 //-----------------------------------------------------------------------------
 
-function copy(tag, opts) {
-  return Reducers.copy({tagPattern: tag});
-
-  /*
+function log(opts) {
   return (base, source) => {
-    const fields = source.get(tag);
-    fields.map(f => base.insertField(f));
+    logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
     return base;
   };
-  */
+}
+
+function copy(tag, opts) {
+  return Reducers.copy({tagPattern: tag});
 }
 
 function insert(field) {
@@ -134,9 +126,8 @@ function mergeFields(opts) {
     update020(opts),
 
     //"041": {"action": "copy", "options": {"dropOriginal": true, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
+    //copy('023')
     copy('041'),
-
-    //copy('042'),
 
     //"080": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     //"084": {"action": "copy", "options": {"copyIf": {"9": {"value": "[LOWTAG]<KEEP>"}}, "reduce": {"subfields": ["9"], "condition": "unless", "value": /[LOWTAG]<(KEEP|DROP)>/u}}},
@@ -178,12 +169,7 @@ function mergeFields(opts) {
     //-------------------------------------------------------------------------
     // Huomautuskentät 5xx:
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
-    copy('504'),
-    copy('505'),
-    copy('506'),
-    copy('509'),
-    copy('520'),
-    copy('530'),
+    copy(/^5\d\d$/u),
     //update530(),
 
     //copy(/^5\d\d$/u),
@@ -192,7 +178,7 @@ function mergeFields(opts) {
     // Asiasanakentät 6xx:
     //"6..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     //copy({tagPattern: new RegExp(/^6\d\d$/u, 'u')})
-    /* FENNI = kopioidaan vain ne, joissa on FENNI<KEEP> */
+    // FENNI = kopioidaan vain ne, joissa on FENNI<KEEP>
     copy(/^6\d\d$/u),
 
     //-------------------------------------------------------------------------

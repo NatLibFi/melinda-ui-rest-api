@@ -74,13 +74,9 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
 
     // Pop ISBNs (subcode a values) from base F020
 
-    /*
     const base020 = base.pop('020'); // eslint-disable-line functional/immutable-data
-    /*/
-    const base020 = base.get('020');
-    base020.forEach(f => base.removeField(f)); // eslint-disable-line functional/immutable-data
-    /**/
 
+    const [uuid] = base020.map(f => f.uuid);
     const baseSubfields = Subfield.fromFields(base020);
     const baseISBNs = Subfield.getByCode(baseSubfields, 'a').map(s => s.value);
 
@@ -95,7 +91,7 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
     base.insertField({
       tag: '020', ind1: ' ', ind2: ' ',
       subfields: Subfield.concat(baseSubfields, newSubfields),
-      uuid: '09d0afca-a46b-4ca8-a869-a1b036a657d1'
+      uuid: uuid || '09d0afca-a46b-4ca8-a869-a1b036a657d1'
     });
     return base;
   };

@@ -10,10 +10,11 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 const logger = createLogger();
 
 export function getUnitTestRecords(testcase) {
+  //logger.debug(`Test case: ${testcase}`);
   switch (testcase) {
   case '/01': return loadFromFiles(testcase);
-  case '/f41/01': return loadFromSingleFile(testcase);
-  case '/f41/02': return loadFromSingleFile(testcase);
+  case '/F041/01': return loadFromSingleFile(testcase);
+  case '/F041/02': return loadFromSingleFile(testcase);
   default: return [
     null,
     null,
@@ -40,7 +41,9 @@ export function getUnitTestRecords(testcase) {
 
   async function loadJSON(filename) {
     try {
-      const content = await readFile(`./src/muuntaja/test/${filename}.json`);
+      const path = `./src/muuntaja/test/${filename}.json`;
+      //logger.debug(`Load JSON: ${path}`);
+      const content = await readFile(path);
       return JSON.parse(content);
     } catch (e) {
       //return {error: e.toString()};

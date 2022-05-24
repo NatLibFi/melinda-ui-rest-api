@@ -8,19 +8,21 @@
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
-import merger from '@natlibfi/marc-record-merge';
+//import merger from '@natlibfi/marc-record-merge';
+import merger from './merger';
 import {getRecordByID} from '../bib/bib';
 import {getUnitTestRecords} from './test/getrecords';
 
 import {addUUID} from '../marc-utils/marc-utils';
 import {v4 as uuid} from 'uuid';
 
+MarcRecord.setValidationOptions({subfieldValues: false});
+
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
 
 import p2eProfile from './config/print-to-e/';
-import {sortFields} from '../marc-utils/marc-field-sort';
 
 const profiles = {
   'p2e': p2eProfile
@@ -120,7 +122,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     if (insert && baseRecord.record) { // eslint-disable-line functional/no-conditional-statement
       try {
-        const r = new MarcRecord(baseRecord.record, {subFieldValues: false});
+        const r = new MarcRecord(baseRecord.record);
         r.insertField({...insert, uuid: uuid()});
         baseRecord.record = r; // eslint-disable-line functional/immutable-data
       } catch (e) {
@@ -217,6 +219,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       if (!source || !base) {
         return {};
       }
+      //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
+      //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
+
       return {
         record: merger({
           ...transformProfile,
@@ -228,10 +233,13 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function removeExcluded(record) {
-      return new MarcRecord({
-        leader: record.leader,
-        fields: record.fields.filter(f => !exclude[f.uuid])
-      });
+      return new MarcRecord(
+        {
+          leader: record.leader,
+          fields: record.fields.filter(f => !exclude[f.uuid])
+        },
+        {subfieldValues: false}
+      );
     }
 
     //-------------------------------------------------------------------------
@@ -240,14 +248,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     function postProcess(source, base, result, reference) {
       try {
-
-        /*
-        const edited = new MarcRecord(applyEdits(result.record)).sortFields();
-        /*/
-        const edited = sortFields(new MarcRecord(applyEdits(result.record)));
-
-        /**/
-
         return {
           source,
           base,
@@ -256,7 +256,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             ...result,
             reference,
             //error: 'Error: Hello, world!',
-            record: edited
+            record: applyEdits(result.record)
           }
         };
       } catch (e) {
@@ -275,11 +275,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       if (!record || !record.fields) {
         return record;
       }
-      return {
+      return new MarcRecord({
         ...record,
         fields: record.fields.map(f => replace[f.uuid] ? replace[f.uuid] : f)
-      };
+      }).sortFields();
     }
-
   }
 }

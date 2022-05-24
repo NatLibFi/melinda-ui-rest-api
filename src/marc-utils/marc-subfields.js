@@ -51,7 +51,7 @@ export const Subfield = {
   // a group. Examples:
   //
   // F020: [a: ISBN, q: format] -> group with leading a
-  // 776: [i: format, z: ISBN] -> group with trailing z
+  // F776: [i: format, z: ISBN] -> group with trailing z
 
   groupByLeadingCode(subfields, code) {
     return subfields.reduce(

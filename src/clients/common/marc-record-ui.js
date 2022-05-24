@@ -48,7 +48,7 @@ function toggleField(event, field) {
 
   //console.log("Toggle:", uuid)
 
-  if(!transformed.exclude[uuid]) {
+  if (!transformed.exclude[uuid]) {
     transformed.exclude[uuid] = stripFieldDecorations(field);
   } else {
     delete transformed.exclude[uuid];
@@ -62,7 +62,7 @@ function toggleField(event, field) {
 //-----------------------------------------------------------------------------
 
 export function editField(event, field) {
-  // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050 
+  // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
 
   editing = transformed.transformed.record.fields.find(f => f.uuid == field.uuid);
   console.log("Edit:", editing);
@@ -73,9 +73,11 @@ export function editField(event, field) {
   //console.log(dlg)
   dlg.style.display = "flex"
 
-  const content = document.querySelector("#fieldEditDlg #field");
-  content.innerHTML = ""
-  addField(content, editing);
+  if (editing) {
+    const content = document.querySelector("#fieldEditDlg #field");
+    content.innerHTML = ""
+    addField(content, editing);
+  }
 
   const tag = document.querySelector("#fieldEditDlg #tag");
   tag.innerHTML = ""
@@ -96,12 +98,12 @@ export function editField(event, field) {
     subfields.appendChild(createSubfield(subfields, subfield));
   }
 
-//*
+  //*
   Sortable.create(subfields, {
     ghostClass: 'ghost-row',
     animation: 50,
   })
-/**/
+  /**/
 }
 
 function createSubfield(parent, subfield) {
@@ -118,14 +120,14 @@ function createSubfield(parent, subfield) {
     btn.innerHTML = "close";
     btn.addEventListener("click", event => {
       const state = row.getAttribute("disabled");
-      if(state) {
+      if (state) {
         row.removeAttribute("disabled");
       } else {
         row.setAttribute("disabled", true);
       }
       return true;
     })
-    return btn;  
+    return btn;
   }
 }
 
@@ -133,7 +135,7 @@ function createInput(name, className, value, editable = true) {
   const input = document.createElement('span');
   input.setAttribute('id', name);
   input.classList.add(className);
-  if(editable) {
+  if (editable) {
     input.classList.add('editable')
   }
   input.innerHTML = value;
@@ -141,13 +143,13 @@ function createInput(name, className, value, editable = true) {
   return input;
 }
 
-window.onAddField = function(event) {
+window.onAddField = function (event) {
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
   subfields.appendChild(createSubfield(subfields, {code: '?', value: '?'}))
   return eventHandled(event);
 }
 
-window.editDlgOK = function(event) {
+window.editDlgOK = function (event) {
 
   const query = (p) => document.querySelector(p);
 
@@ -160,31 +162,31 @@ window.editDlgOK = function(event) {
       .filter(e => e.classList.contains("subfield"))
       .filter(e => !e.getAttribute("disabled"))
       .map(elem => ({
-        code:  elem.getElementsByClassName("code")[0].textContent,
+        code: elem.getElementsByClassName("code")[0].textContent,
         value: elem.getElementsByClassName("value")[0].textContent
       }))
   }
 
   console.log("Edited:", field)
 
-  if(field.uuid) {
+  if (field.uuid) {
     transformed.replace[field.uuid] = stripFieldDecorations(field);
   } else {
     transformed.insert = field;
   }
   doTransform();
-  
+
   return editDlgClose(event);
 }
 
-window.editDlgUseOriginal = function(event) {
+window.editDlgUseOriginal = function (event) {
   console.log("Using original.");
   delete transformed.replace[editing.uuid];
   doTransform();
   return editDlgClose(event);
 }
 
-window.editDlgClose = function(event) {
+window.editDlgClose = function (event) {
   const dlg = document.querySelector("#fieldEditDlg")
   //console.log("Close:", dlg)
   dlg.style.display = "none"
@@ -194,9 +196,8 @@ window.editDlgClose = function(event) {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-export function showTransformed(update = undefined)
-{
-  if(update) transformed = update;
+export function showTransformed(update = undefined) {
+  if (update) transformed = update;
 
   const {source, base, result} = transformed;
   showRecord(source, 'source');
@@ -212,42 +213,41 @@ function showRecord(data, dest, editmode = false, reference = null) {
   // Clear previous content
   sourceDiv.innerHTML = '';
 
-  if(!data) return;
+  if (!data) return;
 
-  if(data.error) {
+  if (data.error) {
     const error = document.createElement('div');
     error.classList.add("error")
     error.innerHTML = data.error;
     sourceDiv.appendChild(error)
   }
-  
-  if(data.notes) {
+
+  if (data.notes) {
     const notes = document.createElement('div');
     notes.classList.add("notes")
     notes.innerHTML = data.notes;
     sourceDiv.appendChild(notes)
   }
-  
-  if(data.record)
-  {
+
+  if (data.record) {
     const record = data.record;
 
-    if(record.leader) {
+    if (record.leader) {
       addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
     }
 
     for (const field of record.fields) {
 
       function replaced(field) {
-        if(!field.uuid) return field;
+        if (!field.uuid) return field;
         return transformed.replace[field.uuid] || field;
       }
 
       const row = addField(sourceDiv, replaced(field), editmode);
 
-      if(field.uuid) {
-        if(editmode) {
-          if(field.subfields) row.addEventListener("click", event => editField(event, field))
+      if (field.uuid) {
+        if (editmode) {
+          if (field.subfields) row.addEventListener("click", event => editField(event, field))
           /* Add here custom field editors */
         } else {
           row.addEventListener("click", event => toggleField(event, field))
@@ -265,13 +265,13 @@ function addField(div, field, editmode = false) {
   const row = document.createElement('div');
   row.setAttribute('class', 'row');
 
-  if(transformed.exclude[field.uuid]) {
+  if (transformed.exclude[field.uuid]) {
     row.classList.add("row-excluded");
-  } else if(transformed.replace[field.uuid]) {
+  } else if (transformed.replace[field.uuid]) {
     row.classList.add("row-replaced");
-  } else if(field.from == "source") {
+  } else if (field.from == "source") {
     row.classList.add("row-fromSource")
-  } else if(field.from == "base") {
+  } else if (field.from == "base") {
     row.classList.add("row-fromBase")
   }
 
@@ -290,7 +290,7 @@ function addField(div, field, editmode = false) {
   return row;
 
   //---------------------------------------------------------------------------
-  
+
   function addTag(row, value) {
     row.appendChild(makeSpan('tag', value));
   }
@@ -311,7 +311,7 @@ function addField(div, field, editmode = false) {
     return value
       .replace("<", "&lt;")
       .replace(">", "&gt;")
-    ;
+      ;
   }
 
   function addValue(row, value) {

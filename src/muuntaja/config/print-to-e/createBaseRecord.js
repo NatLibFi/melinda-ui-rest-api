@@ -7,13 +7,13 @@
 /* eslint-disable no-unused-vars */
 
 import {MarcRecord} from '@natlibfi/marc-record';
-import merger, {Reducers} from '@natlibfi/marc-record-merge';
+import merger from '../../merger';
+import {Reducers} from '@natlibfi/marc-record-merge';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 import {getDefaultValue} from './defaults';
 
 import {f008Split, f008Get} from '../../../marc-utils/marc-utils';
-import {sortFields} from '../../../marc-utils/marc-field-sort';
 import {updateLOW} from './updates';
 
 const logger = createLogger();
@@ -23,21 +23,15 @@ const logger = createLogger();
 
 export function createBase(source, options) {
 
-  const opts = {
-    ...options,
-    ...getSourceInfo(new MarcRecord(source))
-  };
-
   const baseValidators = {
     fields: false,
-    //subfields: false,
     subfieldValues: false
   };
   const sourceValidators = {
     subfieldValues: false
   };
 
-  const base = new MarcRecord(
+  const baseRecord = new MarcRecord(
     {
       leader: getDefaultValue('LDR').value,
       fields: []
@@ -45,16 +39,25 @@ export function createBase(source, options) {
     baseValidators
   );
 
-  /*
+  const sourceRecord = new MarcRecord(source, sourceValidators);
+
+  const opts = {
+    ...options,
+    ...getSourceInfo(sourceRecord)
+  };
+
+
+  //*
   return merger({
-    base, baseValidators,
-    source, sourceValidators,
+    base: baseRecord,
+    source: sourceRecord,
     reducers: getReducers(opts)
   }).sortFields();
+
   /*/
   const result = merger({
-    base, baseValidators,
-    source, sourceValidators,
+    base: baseRecord,
+    source: sourceRecord,
     reducers: getReducers(opts)
   });
   return sortFields(result);
