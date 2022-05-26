@@ -56,13 +56,13 @@ export function update008(opts) { // eslint-disable-line no-unused-vars
 
 export function update020(opts) { // eslint-disable-line no-unused-vars
   return (base, source) => { // eslint-disable-line no-unused-vars
-    // Get ISBNs (subcode z values) from source 776 fields
 
+    // Get ISBNs (subcode z values) from source 776 fields
     const source776 = Subfield.from(source, '776');
 
     //logger.debug(`Source 776: ${JSON.stringify(source776, null, 2)}`);
-    //const grouped = Subfield.groupByTrailingCode(source776, 'z');
-    //logger.debug(`Grouped: ${JSON.stringify(grouped, null, 2)}`);
+    const grouped = Subfield.groupByTrailingCode(source776, 'z');
+    grouped.forEach(g => logger.debug(`Grouped: ${JSON.stringify(g.map(s => s.value))}`));
 
     const sourceISBNs = Subfield.getByCode(source776, 'z').map(s => s.value);
 
@@ -76,7 +76,6 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
 
     const base020 = base.pop('020'); // eslint-disable-line functional/immutable-data
 
-    const [uuid] = base020.map(f => f.uuid);
     const baseSubfields = Subfield.fromFields(base020);
     const baseISBNs = Subfield.getByCode(baseSubfields, 'a').map(s => s.value);
 
@@ -91,7 +90,7 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
     base.insertField({
       tag: '020', ind1: ' ', ind2: ' ',
       subfields: Subfield.concat(baseSubfields, newSubfields),
-      uuid: uuid || '09d0afca-a46b-4ca8-a869-a1b036a657d1'
+      uuid: '09d0afca-a46b-4ca8-a869-a1b036a657d1'
     });
     return base;
   };

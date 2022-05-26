@@ -69,15 +69,6 @@ export function createBase(source, options) {
 // Create base record
 
 function getReducers(options) {
-  const placeholders = [
-    //fillDefault('LOW/KVP'),
-    //fillDefault('LOW/ALMA'),
-    //fillDefault('LOW/FENNI')
-
-    fillDefault('001'),
-    fillDefault('003'),
-    fillDefault('005')
-  ];
 
   const fenniFields = [
     //fillDefault('506/FENNI'),
@@ -88,8 +79,19 @@ function getReducers(options) {
   ];
 
   return [
-    ...placeholders,
+    // Placeholders (for testing purposes)
+    //fillDefault('LOW/KVP'),
+    //fillDefault('LOW/ALMA'),
+    //fillDefault('LOW/FENNI')
+
+    //fillDefault('001'),
+    //fillDefault('003'),
+    //fillDefault('005')
+
+    // Fenni fields (for testing purposes)
     ...options.LOWTAG === 'FENNI' ? fenniFields : [],
+
+    // Default fields
     fillDefault('007'),
     fillDefault('008'),
     fillDefault('020'),
