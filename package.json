@@ -9,23 +9,17 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "babel-node ./src/index",
-    "test": "npm run lint",
-    "lint": "eslint src",
-    "lint:dev": "eslint --fix src",
-    "dev": "NODE_ENV=development cross-env DEBUG=1 nodemon",
-    "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist"
-  },
-  "scripts2": {
     "prepare": "npm run build",
     "lint": "eslint src",
     "lint:dev": "eslint --fix src",
-    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/*.spec.js",
+    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/**/*.spec.js",
     "test": "npm run lint && npm run test:base",
     "test:dev": "clear && npm run lint:dev && npm run coverage",
     "coverage": "npm run coverage:unit && npm run coverage:report",
     "coverage:unit": "nyc --silent npm run test:base",
     "coverage:report": "nyc report --reporter=text",
     "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
+    "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon",
     "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
   },
   "repository": {
@@ -51,6 +45,7 @@
     "@natlibfi/melinda-marc-record-merge-reducers": "^1.0.0-alpha.3",
     "@natlibfi/passport-melinda-aleph": "^2.0.2",
     "@natlibfi/passport-melinda-jwt": "^1.0.1",
+    "debug": "^4.3.4",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "isbn3": "^1.1.22",
@@ -63,14 +58,13 @@
     "@babel/eslint-parser": "^7.18.2",
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.18.2",
-    "@natlibfi/eslint-config-melinda-backend": "^2.0.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
     "@natlibfi/fixugen": "^1.1.0-alpha.3",
     "@natlibfi/fixura": "^2.2.1",
-    "chai": "^4.3.6",
     "cross-env": "^7.0.3",
-    "debug": "^4.3.4",
     "eslint": "^8.16.0",
-    "mocha": "^10.0.0",
+    "@natlibfi/eslint-config-melinda-backend": "^2.0.0",
     "nodemon": "^2.0.16",
     "nyc": "^15.1.0"
   },
@@ -100,9 +94,28 @@
       "src/*"
     ],
     "ignore": [
-      "src/clients/*"
+      "src/clients/*",
+      "src/muuntaja/reference/*"
     ],
     "ext": "js",
     "delay": 2.5
+  },
+  "nyc": {
+    "exclude": [
+      "*/*.spec.js"
+    ],
+    "reporter": [
+      "lcov",
+      "html"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100
   }
 }

@@ -13,7 +13,7 @@ import merger from './merger';
 import {getRecordByID} from '../bib/bib';
 import {getUnitTestRecords} from './test/getrecords';
 
-import {addUUID} from '../marc-utils/marc-utils';
+import {addUUID} from '../marcUtils/marcUtils';
 import {v4 as uuid} from 'uuid';
 
 MarcRecord.setValidationOptions({subfieldValues: false});

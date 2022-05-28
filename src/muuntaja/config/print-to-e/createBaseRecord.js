@@ -13,7 +13,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 import {getDefaultValue} from './defaults';
 
-import {f008Split, f008Get} from '../../../marc-utils/marc-utils';
+import {f008Split, f008Get} from '../../../marcUtils/marcUtils';
 import {updateLOW} from './updates';
 
 const logger = createLogger();

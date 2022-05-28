@@ -8,8 +8,8 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 
-import {f008Split, f008Get, f008toString} from '../../../marc-utils/marc-utils';
-import {Subfield} from '../../../marc-utils/marc-subfields';
+import {f008Split, f008Get, f008toString} from '../../../marcUtils/marcUtils';
+import {Subfield} from '../../../marcUtils/marcSubfields';
 import {getDefaultValue, getFieldOrDefault} from './defaults';
 
 import {createLogger} from '@natlibfi/melinda-backend-commons';
