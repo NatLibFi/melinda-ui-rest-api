@@ -20,7 +20,10 @@ const logger = createLogger();
 //-----------------------------------------------------------------------------
 
 export function update008(opts) { // eslint-disable-line no-unused-vars
-  return (base, source) => {
+  return (baseRecord, sourceRecord) => {
+    const base = new MarcRecord(baseRecord);
+    const source = new MarcRecord(sourceRecord);
+
     const source008 = f008Get(source);
 
     if (!source008) {
@@ -55,7 +58,9 @@ export function update008(opts) { // eslint-disable-line no-unused-vars
 //-----------------------------------------------------------------------------
 
 export function update020(opts) { // eslint-disable-line no-unused-vars
-  return (base, source) => { // eslint-disable-line no-unused-vars
+  return (baseRecord, sourceRecord) => { // eslint-disable-line no-unused-vars
+    const base = new MarcRecord(baseRecord);
+    const source = new MarcRecord(sourceRecord);
 
     // Get ISBNs (subcode z values) from source 776 fields
     const source776 = Subfield.from(source, '776');
@@ -151,7 +156,10 @@ export function update776(opts) { // eslint-disable-line no-unused-vars
 //-----------------------------------------------------------------------------
 
 export function updateLOW(opts) { // eslint-disable-line no-unused-vars
-  return (base, source) => {
+  return (baseRecord, sourceRecord) => {
+    const base = new MarcRecord(baseRecord);
+    const source = new MarcRecord(sourceRecord);
+
     const {LOWTAG} = opts;
 
     //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);

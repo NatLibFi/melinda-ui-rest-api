@@ -168,7 +168,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       };
 
       function getBase(source) { // eslint-disable-line no-unused-vars
-        if (!source || !source.record) {
+        if (!source?.record) {
           return {};
         }
         return {
@@ -188,11 +188,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       }
 
       async function fetchRecord(record) {
-        if (record.record) {
+        if (record?.record) {
           return record;
-        } else if (!record.ID) {
+        }
+
+        if (!record?.ID) {
           return null;
         }
+
         try {
           logger.debug('Fetching...');
           //logger.debug(`Record: ${JSON.stringify(record)}`);
@@ -272,7 +275,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function applyEdits(record) { // eslint-disable-line
-      if (!record || !record.fields) {
+      if (!record?.fields) {
         return record;
       }
       return new MarcRecord({
