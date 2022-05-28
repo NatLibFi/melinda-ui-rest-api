@@ -7,8 +7,7 @@
 /* eslint-disable no-unused-vars */
 
 import {MarcRecord} from '@natlibfi/marc-record';
-import merger from '../../merger';
-import {Reducers} from '@natlibfi/marc-record-merge';
+import merger, {Reducers} from '@natlibfi/marc-record-merge';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 import {getDefaultValue} from './defaults';

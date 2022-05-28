@@ -8,8 +8,7 @@
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
-//import merger from '@natlibfi/marc-record-merge';
-import merger from './merger';
+import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {getUnitTestRecords} from './test/getrecords';
 
