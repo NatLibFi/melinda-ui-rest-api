@@ -67,6 +67,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   // Get available transform profiles
   //---------------------------------------------------------------------------
 
+  function optDefaults() {
+    return {
+      type: 'p2e',
+      profile: 'KVP',
+      format: 'PDF'
+    };
+  }
+
   function getProfiles(req, res) {
     logger.debug('Get profiles');
     res.json({
@@ -78,11 +86,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         'KVP': 'Kirjastoverkkopalvelut',
         'FENNI': 'Fennica'
       },
-      defaults: {
-        type: 'p2e',
-        profile: 'KVP',
-        format: 'PDF'
-      }
+      defaults: optDefaults()
     });
   }
 
@@ -98,14 +102,12 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       base: null,
       exclude: {},
       replace: {},
-      insert: {},
+      insert: null,
       ...req.body
     };
 
     const options = (opts => ({
-      type: 'p2e',
-      profile: 'KVP',
-      format: '',
+      ...optDefaults(),
       ...opts,
       LOWTAG: opts?.profile ? opts.profile : 'XXX'
     }))(req.body.options);

@@ -121,14 +121,6 @@ window.doFetch = function (event = undefined) {
   if (!transformed.base || baseID != transformed.base.ID) {
     transformed.base = {ID: baseID}
   }
-  /*
-  else {
-    transformed.base = {
-      ID: transformed.base.ID,
-      record: transformed.base.ID,
-    }
-  }
-  */
 
   //console.log('Source ID:', sourceID);
   //console.log('Base ID:', baseID);
