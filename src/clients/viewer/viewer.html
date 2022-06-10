@@ -93,45 +93,43 @@
           </div>
       </div>
       <div class="record-merge-panel">
-        <div id="source" class="col BoxShadow">
+
+        <div id="record1" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Lähdetietue</label>
               <input id="ID"/>
               </div>
-            <button class="material-icons" onclick="return doTransform(event)">search</button>
-            <button class="material-icons" disabled>swap_horiz</button>
+            <button class="material-icons" onclick="return doFetch(event)">search</button>
             </form>
           <div id="Record" class="marc-record">
           </div>
         </div>
-        <div id="base" class="col BoxShadow">
+
+        <div id="record2" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
-              <label>Pohjatietue</label>
+              <label>Lähdetietue</label>
               <input id="ID"/>
               </div>
-              <button class="material-icons" onclick="doTransform(event)">search</button>
-              <button class="material-icons" onClick="onNewField(event)">add</button>
-              <div class="dropdown">
-                <button class="material-icons" onclick="return ignore(event);">settings</button>
-                <div id="profile-menu" class="dropdown-content"></div>
-              </div>
+            <button class="material-icons" onclick="return doFetch(event)">search</button>
             </form>
           <div id="Record" class="marc-record">
           </div>
         </div>
-        <!--
-        <div id="result" class="col BoxShadow">
-          <div class="ToolBar HBox header">
-            <div class="Filler">TULOSTIETUE</div>
-            <button class="material-icons" onClick="onEdit(event)">edit</button>
-            <button class="material-icons" onClick="onSave(event)" disabled>save</button>
-          </div>
+
+        <div id="record3" class="col BoxShadow">
+          <form class="ToolBar HBox header">
+            <div class="Filler VBox Input">
+              <label>Lähdetietue</label>
+              <input id="ID"/>
+              </div>
+            <button class="material-icons" onclick="return doFetch(event)">search</button>
+            </form>
           <div id="Record" class="marc-record">
-            </div>
+          </div>
         </div>
-      -->
+
       </div>
     </div>
   </div>

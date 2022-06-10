@@ -93,19 +93,22 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, exclude, replace, insert} = req.body;
+    const {source, base, exclude, replace, insert} = {
+      source: null,
+      base: null,
+      exclude: {},
+      replace: {},
+      insert: {},
+      ...req.body
+    };
 
-    const options = processOptions(req.body.options);
-
-    function processOptions(opts) {
-      //logger.debug(`User options: ${JSON.stringify(opts, null, 2)}`);
-      return {
-        type: 'p2e',
-        format: '',
-        ...opts,
-        LOWTAG: opts.profile
-      };
-    }
+    const options = (opts => ({
+      type: 'p2e',
+      profile: 'KVP',
+      format: '',
+      ...opts,
+      LOWTAG: opts?.profile ? opts.profile : 'XXX'
+    }))(req.body.options);
 
     const transformProfile = profiles[options.type];
 
@@ -137,7 +140,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       sourceRecord.record,
       baseRecord.record
     );
-    //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
+    logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
       options: req.body.options,
@@ -235,6 +238,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     }
 
     function removeExcluded(record) {
+
+      /*
+      return record;
+
+      /*/
       return new MarcRecord(
         {
           leader: record.leader,
@@ -242,6 +250,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         },
         {subfieldValues: false}
       );
+
+      /**/
     }
 
     //-------------------------------------------------------------------------

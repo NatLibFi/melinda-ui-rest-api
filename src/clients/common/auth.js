@@ -13,7 +13,7 @@ import {authVerify, authRequest} from "./rest.js";
 export const Account = {
   storage: window.sessionStorage,
   name: 'melinda-user',
-  
+
   get(jsonField = this.name) {
     try {
       return JSON.parse(this.storage.getItem(jsonField));
@@ -48,7 +48,10 @@ export const Account = {
 
     const token = createToken(username, password);
     return authRequest(token).then(user => {
-      if (user) this.set(user);
+      if (user) {
+        //console.log("Storing user", user);
+        this.set(user);
+      }
       return user;
     })
   },

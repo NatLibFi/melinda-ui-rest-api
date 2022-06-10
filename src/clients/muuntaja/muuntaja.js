@@ -4,13 +4,13 @@
 //
 //*****************************************************************************
 
-import {startProcess, stopProcess} from "../common/ui-utils.js";
-import {showTab, resetForms, reload} from "../common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui-utils.js";
+import {startProcess, stopProcess} from "/common/ui-utils.js";
+import {showTab, resetForms, reload} from "/common/ui-utils.js";
+import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
 
-import {Account} from "../common/auth.js"
-import {profileRequest, transformRequest} from "../common/rest.js";
-import {transformed, updateTransformed, showRecord, editField} from "../common/marc-record-ui.js";
+import {Account} from "/common/auth.js"
+import {profileRequest, transformRequest} from "/common/rest.js";
+import {transformed, updateTransformed, showRecord, editField} from "/common/marc-record-ui.js";
 
 //-----------------------------------------------------------------------------
 // on page load:
