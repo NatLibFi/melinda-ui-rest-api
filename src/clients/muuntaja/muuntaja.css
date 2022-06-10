@@ -1,9 +1,9 @@
 /* CSS file for muuntaja */
 
-@import "generics.css";
-@import "components.css";
-@import "navbar.css";
-@import "marc.css";
+@import "/common/stylesheets/generics.css";
+@import "/common/stylesheets/navbar.css";
+@import "/common/stylesheets/marc.css";
+@import "/common/stylesheets/components.css";
 
 /* ---------------------------------------------------------------------------- */
 
