@@ -28,6 +28,15 @@ var editing = null;
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
+export function updateTransformed(update) {
+  if(update) {
+    transformed = update;
+  }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
 export function stripFieldDecorations(f) {
   return {
     tag: f.tag,
@@ -196,16 +205,7 @@ window.editDlgClose = function (event) {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-export function showTransformed(update = undefined) {
-  if (update) transformed = update;
-
-  const {source, base, result} = transformed;
-  showRecord(source, 'source');
-  showRecord(base, 'base', editmode = editmode);
-  showRecord(result, 'result', editmode = editmode);
-}
-
-function showRecord(data, dest, editmode = false, reference = null) {
+export function showRecord(data, dest, editmode = false, reference = null) {
   console.log("Show Record:", data);
 
   const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);

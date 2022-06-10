@@ -10,7 +10,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui
 
 import {Account} from "../common/auth.js"
 import {profileRequest, transformRequest} from "../common/rest.js";
-import {transformed, showTransformed, stripFieldDecorations, editField} from "../common/marc-record-ui.js";
+import {transformed, updateTransformed, showRecord, editField} from "../common/marc-record-ui.js";
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -89,7 +89,7 @@ function authSuccess(user) {
 function setProfiles(options) {
   console.log("Profiles:", options)
   transformed.options = options.defaults;
-  
+
   const menu = document.querySelector("#profile-menu");
   menu.innerHTML = ""
 
@@ -155,7 +155,7 @@ window.onNewField = function(e) {
   editField(e, {
     tag: "", ind1: "", ind2: "",
     subfields: []
-  });  
+  });
   return eventHandled(e)
 }
 
@@ -193,6 +193,19 @@ window.eventHandled = function (e) {
 }
 
 //-----------------------------------------------------------------------------
+// Show transformation results
+//-----------------------------------------------------------------------------
+
+function showTransformed(update = undefined) {
+  updateTransformed(update);
+
+  const {source, base, result} = transformed;
+  showRecord(source, 'source');
+  showRecord(base, 'base', editmode = editmode);
+  showRecord(result, 'result', editmode = editmode);
+}
+
+//-----------------------------------------------------------------------------
 // Do transform
 //-----------------------------------------------------------------------------
 
@@ -224,33 +237,6 @@ window.doTransform = function (event = undefined) {
       showTransformed(decorateRecords(records));
       stopProcess();
     });
-}
-
-// Strip record decorations
-
-function stripDecorations(query) {
-  const {source, base, transformed, result} = query;
-  return {
-    ...query,
-    source: stripRecordDecorations(source),
-    base: stripRecordDecorations(base),
-    transformed: stripRecordDecorations(transformed),
-    result: stripRecordDecorations(result),
-  }
-}
-
-function stripRecordDecorations(record) {
-  if (record && record.record) {
-    return {
-      ...record,
-      record: {
-        ...record.record,
-        fields: record.record.fields.map(stripFieldDecorations)
-      }
-    }
-  } else {
-    return record;
-  }
 }
 
 // Record decorations
