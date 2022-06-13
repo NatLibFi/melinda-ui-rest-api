@@ -110,14 +110,10 @@ window.doFetch = function (event = undefined) {
   if (event) event.preventDefault();
 
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #record1 #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #record2 #ID`).value;
+  //const baseID = document.querySelector(`#muuntaja .record-merge-panel #record2 #ID`).value;
 
   if (!transformed.source || sourceID != transformed.source.ID) {
     transformed.source = {ID: sourceID}
-  }
-
-  if (!transformed.base || baseID != transformed.base.ID) {
-    transformed.base = {ID: baseID}
   }
 
   //console.log('Source ID:', sourceID);
@@ -132,6 +128,5 @@ window.doFetch = function (event = undefined) {
       stopProcess();
       console.log('Fetched:', records);
       showRecord(records.source, 'record1');
-      showRecord(records.base, 'record2');
     });
 }

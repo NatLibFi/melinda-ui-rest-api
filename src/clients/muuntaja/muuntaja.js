@@ -217,8 +217,6 @@ window.doTransform = function (event = undefined) {
   //console.log('Base ID:', baseID);
   console.log("Transforming:", transformed);
 
-  startProcess();
-
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
@@ -230,12 +228,14 @@ window.doTransform = function (event = undefined) {
     transformed.base = {ID: baseID}
   }
 
+  startProcess();
+
   transformRequest(transformed)
     .then(response => response.json())
     .then(records => {
+      stopProcess();
       console.log('Transformed:', records);
       showTransformed(decorateRecords(records));
-      stopProcess();
     });
 }
 

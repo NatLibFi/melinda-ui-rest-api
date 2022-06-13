@@ -62,6 +62,7 @@ export default function ({
     app.use('/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
+    app.use('/edit', express.static(path.join(__dirname, 'clients/edit/'), {index: 'edit.html'}));
     app.use('/common', express.static(path.join(__dirname, 'clients/common/')));
     app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use(handleError);
