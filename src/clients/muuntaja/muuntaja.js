@@ -211,6 +211,7 @@ function showTransformed(update = undefined) {
   }
 
   const {source, base, result} = transformed;
+
   showRecord(source, 'source');
   showRecord(base, 'base', editmode = editmode);
   showRecord(result, 'result', editmode = editmode);
@@ -233,14 +234,14 @@ function decorateRecords(transformed) {
   const resultUUIDs = getUUIDs(resultFields);
 
   setFields(transformed.source.record,
-    sourceFields.map(f => resultUUIDs.includes(f.uuid) ? {...f, from: "source"} : f)
+    sourceFields.map(f => resultUUIDs.includes(f.id) ? {...f, from: "source"} : f)
   );
   setFields(transformed.base.record,
-    baseFields.map(f => resultUUIDs.includes(f.uuid) ? {...f, from: "base"} : f)
+    baseFields.map(f => resultUUIDs.includes(f.id) ? {...f, from: "base"} : f)
   );
   setFields(transformed.result.record, resultFields
-    .map(f => sourceUUIDs.includes(f.uuid) ? {...f, from: "source"} : f)
-    .map(f => baseUUIDs.includes(f.uuid) ? {...f, from: "base"} : f)
+    .map(f => sourceUUIDs.includes(f.id) ? {...f, from: "source"} : f)
+    .map(f => baseUUIDs.includes(f.id) ? {...f, from: "base"} : f)
   );
 
   return transformed;
@@ -250,7 +251,7 @@ function decorateRecords(transformed) {
   }
 
   function getUUIDs(fields) {
-    return fields.map(f => f.uuid).filter(uuid => uuid);
+    return fields.map(f => f.id).filter(id => id);
   }
 
   function setFields(record, fields) {

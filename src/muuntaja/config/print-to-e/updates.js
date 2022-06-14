@@ -95,7 +95,7 @@ export function update020(opts) { // eslint-disable-line no-unused-vars
     base.insertField({
       tag: '020', ind1: ' ', ind2: ' ',
       subfields: Subfield.concat(baseSubfields, newSubfields),
-      uuid: '09d0afca-a46b-4ca8-a869-a1b036a657d1'
+      id: '09d0afca-a46b-4ca8-a869-a1b036a657d1'
     });
     return base;
   };

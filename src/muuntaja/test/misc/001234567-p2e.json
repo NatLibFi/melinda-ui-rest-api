@@ -7,22 +7,22 @@
         {
           "tag": "001",
           "value": "001234567",
-          "uuid": "9af4bd5f-8b46-4af6-99fc-b2423e20992c"
+          "id": "9af4bd5f-8b46-4af6-99fc-b2423e20992c"
         },
         {
           "tag": "003",
           "value": "FI-MELINDA",
-          "uuid": "011a2ee4-e197-426c-936d-076690b82020"
+          "id": "011a2ee4-e197-426c-936d-076690b82020"
         },
         {
           "tag": "005",
           "value": "20210611112008.0",
-          "uuid": "d0a24fad-059d-4b92-b928-2aca8f0834f7"
+          "id": "d0a24fad-059d-4b92-b928-2aca8f0834f7"
         },
         {
           "tag": "008",
           "value": "890904s1985    be |||||||||||||||||fre||",
-          "uuid": "7be2ba7c-7cdc-46d6-8eac-383935aa5655"
+          "id": "7be2ba7c-7cdc-46d6-8eac-383935aa5655"
         },
         {
           "tag": "035",
@@ -34,7 +34,7 @@
               "value": "(FI-MELINDA)001234567"
             }
           ],
-          "uuid": "74e42ff8-f0da-4cc2-89af-86448045a5db"
+          "id": "74e42ff8-f0da-4cc2-89af-86448045a5db"
         },
         {
           "tag": "041",
@@ -46,7 +46,7 @@
               "value": "fre"
             }
           ],
-          "uuid": "2e15d37a-7f8d-40ef-9d3b-75b48253159c",
+          "id": "2e15d37a-7f8d-40ef-9d3b-75b48253159c",
           "from": "source"
         },
         {
@@ -59,7 +59,7 @@
               "value": "581.4"
             }
           ],
-          "uuid": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566",
+          "id": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566",
           "from": "source"
         },
         {
@@ -76,7 +76,7 @@
               "value": "(8)"
             }
           ],
-          "uuid": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec",
+          "id": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec",
           "from": "source"
         },
         {
@@ -89,7 +89,7 @@
               "value": "Dechamps, Roger."
             }
           ],
-          "uuid": "13fb4840-5764-4d3b-9e4e-9435e6489e30",
+          "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30",
           "from": "source"
         },
         {
@@ -114,7 +114,7 @@
               "value": "par Roger Dechamps."
             }
           ],
-          "uuid": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e",
+          "id": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e",
           "from": "source"
         },
         {
@@ -131,7 +131,7 @@
               "value": "1985."
             }
           ],
-          "uuid": "0a3d2c68-07ef-4ffd-a726-581c6d39352a",
+          "id": "0a3d2c68-07ef-4ffd-a726-581c6d39352a",
           "from": "source"
         },
         {
@@ -144,7 +144,7 @@
               "value": "471 s."
             }
           ],
-          "uuid": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4",
+          "id": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4",
           "from": "source"
         },
         {
@@ -165,7 +165,7 @@
               "value": "rdacontent"
             }
           ],
-          "uuid": "f66926b8-10fe-47c7-a5e1-b06dae7e757a",
+          "id": "f66926b8-10fe-47c7-a5e1-b06dae7e757a",
           "from": "source"
         },
         {
@@ -186,7 +186,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "69089e35-f750-4cd7-9918-b3b5527c7a96"
+          "id": "69089e35-f750-4cd7-9918-b3b5527c7a96"
         },
         {
           "tag": "338",
@@ -206,7 +206,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "b20f4930-1855-473c-a8d3-d8cc33c1cfc8"
+          "id": "b20f4930-1855-473c-a8d3-d8cc33c1cfc8"
         },
         {
           "tag": "490",
@@ -226,7 +226,7 @@
               "value": "14"
             }
           ],
-          "uuid": "8422a785-803e-49ff-8e49-de2da34766e5",
+          "id": "8422a785-803e-49ff-8e49-de2da34766e5",
           "from": "source"
         },
         {
@@ -251,7 +251,7 @@
               "value": "14."
             }
           ],
-          "uuid": "5e33b132-5e9f-4b71-81c8-1d6097383722",
+          "id": "5e33b132-5e9f-4b71-81c8-1d6097383722",
           "from": "source"
         },
         {
@@ -268,7 +268,7 @@
               "value": "helka"
             }
           ],
-          "uuid": "eef5aef1-2c57-488a-917b-866796ad83a7"
+          "id": "eef5aef1-2c57-488a-917b-866796ad83a7"
         },
         {
           "tag": "CAT",
@@ -295,7 +295,7 @@
               "value": "0817"
             }
           ],
-          "uuid": "d0566522-7c1e-4358-b34e-458308968d0e"
+          "id": "d0566522-7c1e-4358-b34e-458308968d0e"
         },
         {
           "tag": "CAT",
@@ -322,7 +322,7 @@
               "value": "0153"
             }
           ],
-          "uuid": "f52681d5-6abd-482a-9c8e-c7646d07c365"
+          "id": "f52681d5-6abd-482a-9c8e-c7646d07c365"
         },
         {
           "tag": "CAT",
@@ -349,7 +349,7 @@
               "value": "0821"
             }
           ],
-          "uuid": "0f9efc42-420f-4758-a35b-de03b763bf7f"
+          "id": "0f9efc42-420f-4758-a35b-de03b763bf7f"
         },
         {
           "tag": "CAT",
@@ -377,7 +377,7 @@
               "value": "1311"
             }
           ],
-          "uuid": "5ecdfdb9-f4dc-4d9d-aca3-84f8f4891f11"
+          "id": "5ecdfdb9-f4dc-4d9d-aca3-84f8f4891f11"
         },
         {
           "tag": "CAT",
@@ -405,7 +405,7 @@
               "value": "1311"
             }
           ],
-          "uuid": "f4e2c6d2-ca25-42e1-812f-79acb5c18540"
+          "id": "f4e2c6d2-ca25-42e1-812f-79acb5c18540"
         },
         {
           "tag": "CAT",
@@ -433,7 +433,7 @@
               "value": "1315"
             }
           ],
-          "uuid": "e0d9bafd-1b3d-4dae-a915-948fa89ea70c"
+          "id": "e0d9bafd-1b3d-4dae-a915-948fa89ea70c"
         },
         {
           "tag": "CAT",
@@ -461,7 +461,7 @@
               "value": "1315"
             }
           ],
-          "uuid": "677f40bd-ba03-48a9-bf6d-c7e8f975566f"
+          "id": "677f40bd-ba03-48a9-bf6d-c7e8f975566f"
         },
         {
           "tag": "CAT",
@@ -488,7 +488,7 @@
               "value": "1316"
             }
           ],
-          "uuid": "48c5dd84-f38f-49c5-9856-c0a239de226e"
+          "id": "48c5dd84-f38f-49c5-9856-c0a239de226e"
         },
         {
           "tag": "CAT",
@@ -515,7 +515,7 @@
               "value": "1415"
             }
           ],
-          "uuid": "0ca2e9af-51c6-46e9-8575-3e047e5c7dc2"
+          "id": "0ca2e9af-51c6-46e9-8575-3e047e5c7dc2"
         },
         {
           "tag": "CAT",
@@ -542,7 +542,7 @@
               "value": "1415"
             }
           ],
-          "uuid": "611e672a-34a9-4b69-ba5a-bd0d3e33c74f"
+          "id": "611e672a-34a9-4b69-ba5a-bd0d3e33c74f"
         },
         {
           "tag": "CAT",
@@ -569,7 +569,7 @@
               "value": "1336"
             }
           ],
-          "uuid": "75306164-35b5-4446-be77-9c8d282ecfee"
+          "id": "75306164-35b5-4446-be77-9c8d282ecfee"
         },
         {
           "tag": "CAT",
@@ -596,7 +596,7 @@
               "value": "1120"
             }
           ],
-          "uuid": "becf9739-7018-4096-8644-952d9c1cd766"
+          "id": "becf9739-7018-4096-8644-952d9c1cd766"
         },
         {
           "tag": "LOW",
@@ -608,7 +608,7 @@
               "value": "HELKA"
             }
           ],
-          "uuid": "91985721-4562-4c7f-9d92-9e17f30021ee"
+          "id": "91985721-4562-4c7f-9d92-9e17f30021ee"
         }
       ]
     }
@@ -621,18 +621,18 @@
         {
           "tag": "001",
           "value": "000000000",
-          "uuid": "07b7a27e-1fc0-4f30-b181-c54cb4e9d039"
+          "id": "07b7a27e-1fc0-4f30-b181-c54cb4e9d039"
         },
         {
           "tag": "007",
           "value": "cr^||^||||||||",
-          "uuid": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a",
+          "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a",
           "from": "base"
         },
         {
           "tag": "008",
           "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
-          "uuid": "4bc968f1-9186-4d04-ba09-7537d0c4ee95",
+          "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95",
           "from": "base"
         },
         {
@@ -649,7 +649,7 @@
               "value": "PDF"
             }
           ],
-          "uuid": "56c9673d-a2bf-408f-b796-f513e15c17ae",
+          "id": "56c9673d-a2bf-408f-b796-f513e15c17ae",
           "from": "base"
         },
         {
@@ -662,7 +662,7 @@
               "value": "eng"
             }
           ],
-          "uuid": "ac44d08d-5532-49bc-b2b9-c863cf930b1a"
+          "id": "ac44d08d-5532-49bc-b2b9-c863cf930b1a"
         },
         {
           "tag": "337",
@@ -682,7 +682,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "66029c77-30a4-42a2-bf23-6499ca97fe87",
+          "id": "66029c77-30a4-42a2-bf23-6499ca97fe87",
           "from": "base"
         },
         {
@@ -703,7 +703,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "55e6067b-8eba-44c1-a53c-293641a40729",
+          "id": "55e6067b-8eba-44c1-a53c-293641a40729",
           "from": "base"
         }
       ]
@@ -724,12 +724,12 @@
         {
           "tag": "007",
           "value": "cr^||^||||||||",
-          "uuid": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a"
+          "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a"
         },
         {
           "tag": "008",
           "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
-          "uuid": "4bc968f1-9186-4d04-ba09-7537d0c4ee95"
+          "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95"
         },
         {
           "tag": "020",
@@ -745,7 +745,7 @@
               "value": "PDF"
             }
           ],
-          "uuid": "56c9673d-a2bf-408f-b796-f513e15c17ae"
+          "id": "56c9673d-a2bf-408f-b796-f513e15c17ae"
         },
         {
           "tag": "041",
@@ -757,7 +757,7 @@
               "value": "fre"
             }
           ],
-          "uuid": "2e15d37a-7f8d-40ef-9d3b-75b48253159c"
+          "id": "2e15d37a-7f8d-40ef-9d3b-75b48253159c"
         },
         {
           "tag": "080",
@@ -769,7 +769,7 @@
               "value": "581.4"
             }
           ],
-          "uuid": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566"
+          "id": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566"
         },
         {
           "tag": "080",
@@ -785,7 +785,7 @@
               "value": "(8)"
             }
           ],
-          "uuid": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec"
+          "id": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec"
         },
         {
           "tag": "100",
@@ -797,7 +797,7 @@
               "value": "Dechamps, Roger."
             }
           ],
-          "uuid": "13fb4840-5764-4d3b-9e4e-9435e6489e30"
+          "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30"
         },
         {
           "tag": "245",
@@ -821,7 +821,7 @@
               "value": "par Roger Dechamps."
             }
           ],
-          "uuid": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e"
+          "id": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e"
         },
         {
           "tag": "260",
@@ -837,7 +837,7 @@
               "value": "1985."
             }
           ],
-          "uuid": "0a3d2c68-07ef-4ffd-a726-581c6d39352a"
+          "id": "0a3d2c68-07ef-4ffd-a726-581c6d39352a"
         },
         {
           "tag": "300",
@@ -849,7 +849,7 @@
               "value": "1 verkkoaineisto (471 sivua)"
             }
           ],
-          "uuid": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4"
+          "id": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4"
         },
         {
           "tag": "336",
@@ -869,7 +869,7 @@
               "value": "rdacontent"
             }
           ],
-          "uuid": "f66926b8-10fe-47c7-a5e1-b06dae7e757a"
+          "id": "f66926b8-10fe-47c7-a5e1-b06dae7e757a"
         },
         {
           "tag": "337",
@@ -889,7 +889,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "66029c77-30a4-42a2-bf23-6499ca97fe87"
+          "id": "66029c77-30a4-42a2-bf23-6499ca97fe87"
         },
         {
           "tag": "338",
@@ -909,7 +909,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "55e6067b-8eba-44c1-a53c-293641a40729"
+          "id": "55e6067b-8eba-44c1-a53c-293641a40729"
         },
         {
           "tag": "490",
@@ -929,7 +929,7 @@
               "value": "14"
             }
           ],
-          "uuid": "8422a785-803e-49ff-8e49-de2da34766e5"
+          "id": "8422a785-803e-49ff-8e49-de2da34766e5"
         },
         {
           "tag": "530",
@@ -964,7 +964,7 @@
               "value": "14."
             }
           ],
-          "uuid": "5e33b132-5e9f-4b71-81c8-1d6097383722"
+          "id": "5e33b132-5e9f-4b71-81c8-1d6097383722"
         },
         {
           "tag": "LOW",
@@ -995,13 +995,13 @@
         {
           "tag": "007",
           "value": "cr^||^||||||||",
-          "uuid": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a",
+          "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a",
           "from": "base"
         },
         {
           "tag": "008",
           "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
-          "uuid": "4bc968f1-9186-4d04-ba09-7537d0c4ee95",
+          "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95",
           "from": "base"
         },
         {
@@ -1018,7 +1018,7 @@
               "value": "PDF"
             }
           ],
-          "uuid": "56c9673d-a2bf-408f-b796-f513e15c17ae",
+          "id": "56c9673d-a2bf-408f-b796-f513e15c17ae",
           "from": "base"
         },
         {
@@ -1031,7 +1031,7 @@
               "value": "fre"
             }
           ],
-          "uuid": "2e15d37a-7f8d-40ef-9d3b-75b48253159c",
+          "id": "2e15d37a-7f8d-40ef-9d3b-75b48253159c",
           "from": "source"
         },
         {
@@ -1044,7 +1044,7 @@
               "value": "581.4"
             }
           ],
-          "uuid": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566",
+          "id": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566",
           "from": "source"
         },
         {
@@ -1061,7 +1061,7 @@
               "value": "(8)"
             }
           ],
-          "uuid": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec",
+          "id": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec",
           "from": "source"
         },
         {
@@ -1074,7 +1074,7 @@
               "value": "Dechamps, Roger."
             }
           ],
-          "uuid": "13fb4840-5764-4d3b-9e4e-9435e6489e30",
+          "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30",
           "from": "source"
         },
         {
@@ -1099,7 +1099,7 @@
               "value": "par Roger Dechamps."
             }
           ],
-          "uuid": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e",
+          "id": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e",
           "from": "source"
         },
         {
@@ -1116,7 +1116,7 @@
               "value": "1985."
             }
           ],
-          "uuid": "0a3d2c68-07ef-4ffd-a726-581c6d39352a",
+          "id": "0a3d2c68-07ef-4ffd-a726-581c6d39352a",
           "from": "source"
         },
         {
@@ -1129,7 +1129,7 @@
               "value": "1 verkkoaineisto (471 sivua)"
             }
           ],
-          "uuid": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4",
+          "id": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4",
           "from": "source"
         },
         {
@@ -1150,7 +1150,7 @@
               "value": "rdacontent"
             }
           ],
-          "uuid": "f66926b8-10fe-47c7-a5e1-b06dae7e757a",
+          "id": "f66926b8-10fe-47c7-a5e1-b06dae7e757a",
           "from": "source"
         },
         {
@@ -1171,7 +1171,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "66029c77-30a4-42a2-bf23-6499ca97fe87",
+          "id": "66029c77-30a4-42a2-bf23-6499ca97fe87",
           "from": "base"
         },
         {
@@ -1192,7 +1192,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "55e6067b-8eba-44c1-a53c-293641a40729",
+          "id": "55e6067b-8eba-44c1-a53c-293641a40729",
           "from": "base"
         },
         {
@@ -1213,7 +1213,7 @@
               "value": "14"
             }
           ],
-          "uuid": "8422a785-803e-49ff-8e49-de2da34766e5",
+          "id": "8422a785-803e-49ff-8e49-de2da34766e5",
           "from": "source"
         },
         {
@@ -1249,7 +1249,7 @@
               "value": "14."
             }
           ],
-          "uuid": "5e33b132-5e9f-4b71-81c8-1d6097383722",
+          "id": "5e33b132-5e9f-4b71-81c8-1d6097383722",
           "from": "source"
         },
         {

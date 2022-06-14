@@ -12,12 +12,12 @@
             "value": "Dechamps, Roger."
           }
         ],
-        "uuid": "13fb4840-5764-4d3b-9e4e-9435e6489e30"
+        "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30"
       },
       {
         "tag": "001",
         "value": "001234567",
-        "uuid": "9af4bd5f-8b46-4af6-99fc-b2423e20992c"
+        "id": "9af4bd5f-8b46-4af6-99fc-b2423e20992c"
       }
     ]
   }

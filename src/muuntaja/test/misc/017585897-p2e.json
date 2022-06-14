@@ -8,22 +8,22 @@
         {
           "tag": "001",
           "value": "017585897",
-          "uuid": "b0fb8879-4ad0-400a-b2e8-98356ef227c5"
+          "id": "b0fb8879-4ad0-400a-b2e8-98356ef227c5"
         },
         {
           "tag": "003",
           "value": "FI-MELINDA",
-          "uuid": "a373bf88-b822-4f61-bb74-9e245ab5d435"
+          "id": "a373bf88-b822-4f61-bb74-9e245ab5d435"
         },
         {
           "tag": "005",
           "value": "20220217144155.0",
-          "uuid": "fdc4e4a5-87ea-4dfd-a2df-af4227d92fe0"
+          "id": "fdc4e4a5-87ea-4dfd-a2df-af4227d92fe0"
         },
         {
           "tag": "008",
           "value": "211202s2022    fi                  fin  ",
-          "uuid": "91d9189c-3221-464d-b6c5-cb1abb8ad5a6"
+          "id": "91d9189c-3221-464d-b6c5-cb1abb8ad5a6"
         },
         {
           "tag": "020",
@@ -39,7 +39,7 @@
               "value": "nidottu"
             }
           ],
-          "uuid": "563bb580-6154-4e9f-8247-cac45d2a70d5",
+          "id": "563bb580-6154-4e9f-8247-cac45d2a70d5",
           "from": "source"
         },
         {
@@ -52,7 +52,7 @@
               "value": "(FI-MELINDA)017585897"
             }
           ],
-          "uuid": "9c0e56e4-b8bd-4708-a7e4-3d19acb6ad12"
+          "id": "9c0e56e4-b8bd-4708-a7e4-3d19acb6ad12"
         },
         {
           "tag": "040",
@@ -72,7 +72,7 @@
               "value": "rda"
             }
           ],
-          "uuid": "03538d4e-6ca0-40b7-99f6-e5548b35f3f1"
+          "id": "03538d4e-6ca0-40b7-99f6-e5548b35f3f1"
         },
         {
           "tag": "041",
@@ -84,7 +84,7 @@
               "value": "fin"
             }
           ],
-          "uuid": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6",
+          "id": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6",
           "from": "source"
         },
         {
@@ -97,7 +97,7 @@
               "value": "finb"
             }
           ],
-          "uuid": "064467c1-dd3a-4419-bb5c-138ae0461ed5"
+          "id": "064467c1-dd3a-4419-bb5c-138ae0461ed5"
         },
         {
           "tag": "084",
@@ -113,7 +113,7 @@
               "value": "ykl"
             }
           ],
-          "uuid": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb",
+          "id": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb",
           "from": "source"
         },
         {
@@ -134,7 +134,7 @@
               "value": "ENNAKKOTIETO"
             }
           ],
-          "uuid": "79449e7e-3b1e-42b6-9cc7-42dc14775e46",
+          "id": "79449e7e-3b1e-42b6-9cc7-42dc14775e46",
           "from": "source"
         },
         {
@@ -151,7 +151,7 @@
               "value": "käytännön perustamistoimet."
             }
           ],
-          "uuid": "b2c44528-81aa-4ae7-a6da-386ae4c8b484",
+          "id": "b2c44528-81aa-4ae7-a6da-386ae4c8b484",
           "from": "source"
         },
         {
@@ -164,7 +164,7 @@
               "value": "32. p."
             }
           ],
-          "uuid": "cc61ccc9-50c6-414c-915b-b3a9e759c56c",
+          "id": "cc61ccc9-50c6-414c-915b-b3a9e759c56c",
           "from": "source"
         },
         {
@@ -177,7 +177,7 @@
               "value": "202202"
             }
           ],
-          "uuid": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a",
+          "id": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a",
           "from": "source"
         },
         {
@@ -198,7 +198,7 @@
               "value": "2022"
             }
           ],
-          "uuid": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35",
+          "id": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35",
           "from": "source"
         },
         {
@@ -219,7 +219,7 @@
               "value": "rdacontent"
             }
           ],
-          "uuid": "bf7f71cb-0931-4cce-b2cc-38a8480a251c",
+          "id": "bf7f71cb-0931-4cce-b2cc-38a8480a251c",
           "from": "source"
         },
         {
@@ -240,7 +240,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "d5551058-fbcb-4302-81de-b4e387726c5c"
+          "id": "d5551058-fbcb-4302-81de-b4e387726c5c"
         },
         {
           "tag": "338",
@@ -260,7 +260,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "ba4b0afa-f206-45dc-a4ef-0995f8e6c396"
+          "id": "ba4b0afa-f206-45dc-a4ef-0995f8e6c396"
         },
         {
           "tag": "500",
@@ -272,7 +272,7 @@
               "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
             }
           ],
-          "uuid": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d",
+          "id": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d",
           "from": "source"
         },
         {
@@ -285,7 +285,7 @@
               "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
             }
           ],
-          "uuid": "849857cb-353f-4f93-be34-e36745a0ca22"
+          "id": "849857cb-353f-4f93-be34-e36745a0ca22"
         },
         {
           "tag": "653",
@@ -297,7 +297,7 @@
               "value": "yrittäjyys"
             }
           ],
-          "uuid": "4f90536c-d3d3-4638-8172-1902295e7cef",
+          "id": "4f90536c-d3d3-4638-8172-1902295e7cef",
           "from": "source"
         },
         {
@@ -310,7 +310,7 @@
               "value": "yrityksen perustaminen"
             }
           ],
-          "uuid": "50baf050-65fe-4510-be9e-e6b81f59f4f0",
+          "id": "50baf050-65fe-4510-be9e-e6b81f59f4f0",
           "from": "source"
         },
         {
@@ -339,7 +339,7 @@
               "value": "0700"
             }
           ],
-          "uuid": "088646fa-f0b8-4260-98dc-46e7b67ce47e"
+          "id": "088646fa-f0b8-4260-98dc-46e7b67ce47e"
         },
         {
           "tag": "CAT",
@@ -367,7 +367,7 @@
               "value": "0639"
             }
           ],
-          "uuid": "d8301ffe-ad12-4006-9dc2-17caa2c39386"
+          "id": "d8301ffe-ad12-4006-9dc2-17caa2c39386"
         },
         {
           "tag": "CAT",
@@ -395,7 +395,7 @@
               "value": "0631"
             }
           ],
-          "uuid": "3adc9c2d-dff7-4582-b4fa-72607241e6cd"
+          "id": "3adc9c2d-dff7-4582-b4fa-72607241e6cd"
         },
         {
           "tag": "CAT",
@@ -423,7 +423,7 @@
               "value": "0631"
             }
           ],
-          "uuid": "7045115f-a0db-4514-8261-f6f3c5d92e4a"
+          "id": "7045115f-a0db-4514-8261-f6f3c5d92e4a"
         },
         {
           "tag": "CAT",
@@ -451,7 +451,7 @@
               "value": "0630"
             }
           ],
-          "uuid": "f260df16-d0a2-41ec-aae9-c6092ce61bff"
+          "id": "f260df16-d0a2-41ec-aae9-c6092ce61bff"
         },
         {
           "tag": "CAT",
@@ -479,7 +479,7 @@
               "value": "0700"
             }
           ],
-          "uuid": "36ca9977-2a07-4db2-9a8c-f212d53940e8"
+          "id": "36ca9977-2a07-4db2-9a8c-f212d53940e8"
         },
         {
           "tag": "CAT",
@@ -507,7 +507,7 @@
               "value": "1441"
             }
           ],
-          "uuid": "c867abd3-40c8-4472-850a-e3a1896df381"
+          "id": "c867abd3-40c8-4472-850a-e3a1896df381"
         }
       ]
     }
@@ -520,18 +520,18 @@
         {
           "tag": "001",
           "value": "000000000",
-          "uuid": "d2fb9d2c-64f8-4fdb-8f43-0c8a06183050"
+          "id": "d2fb9d2c-64f8-4fdb-8f43-0c8a06183050"
         },
         {
           "tag": "007",
           "value": "cr^||^||||||||",
-          "uuid": "80786f3f-9fdf-4167-8c27-cd088e10ecae",
+          "id": "80786f3f-9fdf-4167-8c27-cd088e10ecae",
           "from": "base"
         },
         {
           "tag": "008",
           "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
-          "uuid": "f6f58407-e150-40a8-b52f-296ec59c9caa",
+          "id": "f6f58407-e150-40a8-b52f-296ec59c9caa",
           "from": "base"
         },
         {
@@ -548,7 +548,7 @@
               "value": "PDF"
             }
           ],
-          "uuid": "cba3933f-5f5a-4dcb-a9f9-635e898b994a",
+          "id": "cba3933f-5f5a-4dcb-a9f9-635e898b994a",
           "from": "base"
         },
         {
@@ -561,7 +561,7 @@
               "value": "eng"
             }
           ],
-          "uuid": "18f17eb8-c50b-4b92-9c23-af5b0be0a779"
+          "id": "18f17eb8-c50b-4b92-9c23-af5b0be0a779"
         },
         {
           "tag": "337",
@@ -581,7 +581,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "3a80d04a-d533-4325-b70e-6bd2c0794772",
+          "id": "3a80d04a-d533-4325-b70e-6bd2c0794772",
           "from": "base"
         },
         {
@@ -602,7 +602,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "f89a5dab-4ac5-4d6a-bd34-a253af427d92",
+          "id": "f89a5dab-4ac5-4d6a-bd34-a253af427d92",
           "from": "base"
         }
       ]
@@ -623,12 +623,12 @@
         {
           "tag": "007",
           "value": "cr^||^||||||||",
-          "uuid": "80786f3f-9fdf-4167-8c27-cd088e10ecae"
+          "id": "80786f3f-9fdf-4167-8c27-cd088e10ecae"
         },
         {
           "tag": "008",
           "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
-          "uuid": "f6f58407-e150-40a8-b52f-296ec59c9caa"
+          "id": "f6f58407-e150-40a8-b52f-296ec59c9caa"
         },
         {
           "tag": "020",
@@ -644,7 +644,7 @@
               "value": "PDF"
             }
           ],
-          "uuid": "cba3933f-5f5a-4dcb-a9f9-635e898b994a"
+          "id": "cba3933f-5f5a-4dcb-a9f9-635e898b994a"
         },
         {
           "tag": "041",
@@ -656,7 +656,7 @@
               "value": "fin"
             }
           ],
-          "uuid": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6"
+          "id": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6"
         },
         {
           "tag": "084",
@@ -672,7 +672,7 @@
               "value": "ykl"
             }
           ],
-          "uuid": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb"
+          "id": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb"
         },
         {
           "tag": "100",
@@ -692,7 +692,7 @@
               "value": "ENNAKKOTIETO"
             }
           ],
-          "uuid": "79449e7e-3b1e-42b6-9cc7-42dc14775e46"
+          "id": "79449e7e-3b1e-42b6-9cc7-42dc14775e46"
         },
         {
           "tag": "245",
@@ -708,7 +708,7 @@
               "value": "käytännön perustamistoimet."
             }
           ],
-          "uuid": "b2c44528-81aa-4ae7-a6da-386ae4c8b484"
+          "id": "b2c44528-81aa-4ae7-a6da-386ae4c8b484"
         },
         {
           "tag": "250",
@@ -720,7 +720,7 @@
               "value": "32. p."
             }
           ],
-          "uuid": "cc61ccc9-50c6-414c-915b-b3a9e759c56c"
+          "id": "cc61ccc9-50c6-414c-915b-b3a9e759c56c"
         },
         {
           "tag": "263",
@@ -732,7 +732,7 @@
               "value": "202202"
             }
           ],
-          "uuid": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a"
+          "id": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a"
         },
         {
           "tag": "264",
@@ -752,7 +752,7 @@
               "value": "2022"
             }
           ],
-          "uuid": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35"
+          "id": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35"
         },
         {
           "tag": "336",
@@ -772,7 +772,7 @@
               "value": "rdacontent"
             }
           ],
-          "uuid": "bf7f71cb-0931-4cce-b2cc-38a8480a251c"
+          "id": "bf7f71cb-0931-4cce-b2cc-38a8480a251c"
         },
         {
           "tag": "337",
@@ -792,7 +792,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "3a80d04a-d533-4325-b70e-6bd2c0794772"
+          "id": "3a80d04a-d533-4325-b70e-6bd2c0794772"
         },
         {
           "tag": "338",
@@ -812,7 +812,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "f89a5dab-4ac5-4d6a-bd34-a253af427d92"
+          "id": "f89a5dab-4ac5-4d6a-bd34-a253af427d92"
         },
         {
           "tag": "500",
@@ -824,7 +824,7 @@
               "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
             }
           ],
-          "uuid": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d"
+          "id": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d"
         },
         {
           "tag": "530",
@@ -847,7 +847,7 @@
               "value": "yrittäjyys"
             }
           ],
-          "uuid": "4f90536c-d3d3-4638-8172-1902295e7cef"
+          "id": "4f90536c-d3d3-4638-8172-1902295e7cef"
         },
         {
           "tag": "653",
@@ -859,7 +859,7 @@
               "value": "yrityksen perustaminen"
             }
           ],
-          "uuid": "50baf050-65fe-4510-be9e-e6b81f59f4f0"
+          "id": "50baf050-65fe-4510-be9e-e6b81f59f4f0"
         },
         {
           "tag": "776",
@@ -875,7 +875,7 @@
               "value": "9789518986853"
             }
           ],
-          "uuid": "563bb580-6154-4e9f-8247-cac45d2a70d5"
+          "id": "563bb580-6154-4e9f-8247-cac45d2a70d5"
         },
         {
           "tag": "LOW",
@@ -906,13 +906,13 @@
         {
           "tag": "007",
           "value": "cr^||^||||||||",
-          "uuid": "80786f3f-9fdf-4167-8c27-cd088e10ecae",
+          "id": "80786f3f-9fdf-4167-8c27-cd088e10ecae",
           "from": "base"
         },
         {
           "tag": "008",
           "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
-          "uuid": "f6f58407-e150-40a8-b52f-296ec59c9caa",
+          "id": "f6f58407-e150-40a8-b52f-296ec59c9caa",
           "from": "base"
         },
         {
@@ -929,7 +929,7 @@
               "value": "PDF"
             }
           ],
-          "uuid": "cba3933f-5f5a-4dcb-a9f9-635e898b994a",
+          "id": "cba3933f-5f5a-4dcb-a9f9-635e898b994a",
           "from": "base"
         },
         {
@@ -942,7 +942,7 @@
               "value": "fin"
             }
           ],
-          "uuid": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6",
+          "id": "9391bfcb-d3eb-4561-b3a9-bcfdff9ab9e6",
           "from": "source"
         },
         {
@@ -959,7 +959,7 @@
               "value": "ykl"
             }
           ],
-          "uuid": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb",
+          "id": "a614a5f8-3cc0-4162-a1e3-fc7c7ab7effb",
           "from": "source"
         },
         {
@@ -980,7 +980,7 @@
               "value": "ENNAKKOTIETO"
             }
           ],
-          "uuid": "79449e7e-3b1e-42b6-9cc7-42dc14775e46",
+          "id": "79449e7e-3b1e-42b6-9cc7-42dc14775e46",
           "from": "source"
         },
         {
@@ -997,7 +997,7 @@
               "value": "käytännön perustamistoimet."
             }
           ],
-          "uuid": "b2c44528-81aa-4ae7-a6da-386ae4c8b484",
+          "id": "b2c44528-81aa-4ae7-a6da-386ae4c8b484",
           "from": "source"
         },
         {
@@ -1010,7 +1010,7 @@
               "value": "32. p."
             }
           ],
-          "uuid": "cc61ccc9-50c6-414c-915b-b3a9e759c56c",
+          "id": "cc61ccc9-50c6-414c-915b-b3a9e759c56c",
           "from": "source"
         },
         {
@@ -1023,7 +1023,7 @@
               "value": "202202"
             }
           ],
-          "uuid": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a",
+          "id": "038e73d5-2c30-4ef4-9e4e-8dd210f0af9a",
           "from": "source"
         },
         {
@@ -1044,7 +1044,7 @@
               "value": "2022"
             }
           ],
-          "uuid": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35",
+          "id": "704f3d00-ddce-4b7d-adb7-09cb8e0a6a35",
           "from": "source"
         },
         {
@@ -1065,7 +1065,7 @@
               "value": "rdacontent"
             }
           ],
-          "uuid": "bf7f71cb-0931-4cce-b2cc-38a8480a251c",
+          "id": "bf7f71cb-0931-4cce-b2cc-38a8480a251c",
           "from": "source"
         },
         {
@@ -1086,7 +1086,7 @@
               "value": "rdamedia"
             }
           ],
-          "uuid": "3a80d04a-d533-4325-b70e-6bd2c0794772",
+          "id": "3a80d04a-d533-4325-b70e-6bd2c0794772",
           "from": "base"
         },
         {
@@ -1107,7 +1107,7 @@
               "value": "rdacarrier"
             }
           ],
-          "uuid": "f89a5dab-4ac5-4d6a-bd34-a253af427d92",
+          "id": "f89a5dab-4ac5-4d6a-bd34-a253af427d92",
           "from": "base"
         },
         {
@@ -1120,7 +1120,7 @@
               "value": "ENNAKKOTIETO / KIRJAVÄLITYS"
             }
           ],
-          "uuid": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d",
+          "id": "9efcdf03-e71f-4c13-ace5-815b9b4ef96d",
           "from": "source"
         },
         {
@@ -1144,7 +1144,7 @@
               "value": "yrittäjyys"
             }
           ],
-          "uuid": "4f90536c-d3d3-4638-8172-1902295e7cef",
+          "id": "4f90536c-d3d3-4638-8172-1902295e7cef",
           "from": "source"
         },
         {
@@ -1157,7 +1157,7 @@
               "value": "yrityksen perustaminen"
             }
           ],
-          "uuid": "50baf050-65fe-4510-be9e-e6b81f59f4f0",
+          "id": "50baf050-65fe-4510-be9e-e6b81f59f4f0",
           "from": "source"
         },
         {
@@ -1174,7 +1174,7 @@
               "value": "9789518986853"
             }
           ],
-          "uuid": "563bb580-6154-4e9f-8247-cac45d2a70d5",
+          "id": "563bb580-6154-4e9f-8247-cac45d2a70d5",
           "from": "source"
         },
         {

@@ -36,10 +36,10 @@ export function addFieldIDs(record) {
   return {
     leader: record.leader,
     fields: record.fields.map(f => {
-      if (f.uuid || exclude.includes(f.tag)) {
+      if (f.id || exclude.includes(f.tag)) {
         return f;
       }
-      return {...f, uuid: uuid()};
+      return {...f, id: uuid()};
     })
   };
 }
@@ -48,7 +48,7 @@ export function addFieldIDs(record) {
 
 export function insertField(record, field) {
   //const r = new MarcRecord(record);
-  record.insertField({...field, uuid: uuid()});
+  record.insertField({...field, id: uuid()});
 }
 
 //-----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ export function removeExcluded(record, exclude, validationOptions) {
   return new MarcRecord(
     {
       ...record,
-      fields: record.fields.filter(f => !exclude[f.uuid])
+      fields: record.fields.filter(f => !exclude[f.id])
     },
     validationOptions
   );
@@ -77,7 +77,7 @@ export function applyEdits(record, replace, validationOptions = {}) { // eslint-
   return new MarcRecord(
     {
       ...record,
-      fields: record.fields.map(f => replace[f.uuid] ? replace[f.uuid] : f)
+      fields: record.fields.map(f => replace[f.id] ? replace[f.id] : f)
     },
     validationOptions
   );

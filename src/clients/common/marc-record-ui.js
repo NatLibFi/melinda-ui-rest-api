@@ -41,8 +41,8 @@ export function showRecord(data, dest) {
 
       /*
       function replaced(field) {
-        if (!field.uuid) return field;
-        return transformed.replace[field.uuid] || field;
+        if (!field.id) return field;
+        return transformed.replace[field.id] || field;
       }
 
       const row = addField(recordDiv, replaced(field), editmode);
@@ -50,7 +50,7 @@ export function showRecord(data, dest) {
       addField(recordDiv, field);
 
       /*
-      if (field.uuid) {
+      if (field.id) {
         if (editmode) {
           if (field.subfields) row.addEventListener("click", event => editField(event, field))
           // Add here custom field editors
@@ -72,9 +72,9 @@ function addField(div, field) {
   row.setAttribute('class', 'row');
 
   /*
-  if (transformed.exclude[field.uuid]) {
+  if (transformed.exclude[field.id]) {
     row.classList.add("row-excluded");
-  } else if (transformed.replace[field.uuid]) {
+  } else if (transformed.replace[field.id]) {
     row.classList.add("row-replaced");
   } else if (field.from == "source") {
     row.classList.add("row-fromSource")
@@ -165,14 +165,14 @@ function makeSpan(className, value) {
 //-----------------------------------------------------------------------------
 
 function toggleField(event, field, exclude) {
-  const uuid = field.uuid;
+  const id = field.id;
 
-  //console.log("Toggle:", uuid)
+  //console.log("Toggle:", id)
 
-  if (!exclude[uuid]) {
-    exclude[uuid] = stripFieldDecorations(field);
+  if (!exclude[id]) {
+    exclude[id] = stripFieldDecorations(field);
   } else {
-    delete exclude[uuid];
+    delete exclude[id];
   }
 
   console.log("Make callback here.")
@@ -188,7 +188,7 @@ var editing = null;
 export function editField(event, field) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
 
-  editing = transformed.transformed.record.fields.find(f => f.uuid == field.uuid);
+  editing = transformed.transformed.record.fields.find(f => f.id == field.id);
   console.log("Edit:", editing);
 
   // Find field from edited fields, if found, fill in data from there
@@ -278,7 +278,7 @@ window.editDlgOK = function (event) {
   const query = (p) => document.querySelector(p);
 
   const field = {
-    uuid: editing.uuid,
+    id: editing.id,
     tag: query("#fieldEditDlg #tag #tag").textContent,
     ind1: query("#fieldEditDlg #ind1 #ind1").textContent,
     ind2: query("#fieldEditDlg #ind2 #ind2").textContent,
@@ -293,8 +293,8 @@ window.editDlgOK = function (event) {
 
   console.log("Edited:", field)
 
-  if (field.uuid) {
-    transformed.replace[field.uuid] = stripFieldDecorations(field);
+  if (field.id) {
+    transformed.replace[field.id] = stripFieldDecorations(field);
   } else {
     transformed.insert = field;
   }
@@ -305,7 +305,7 @@ window.editDlgOK = function (event) {
 
 window.editDlgUseOriginal = function (event) {
   console.log("Using original.");
-  delete transformed.replace[editing.uuid];
+  delete transformed.replace[editing.id];
   doTransform();
   return editDlgClose(event);
 }
