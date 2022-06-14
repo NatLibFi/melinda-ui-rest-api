@@ -12,8 +12,7 @@ import merger from '@natlibfi/marc-record-merge';
 import {getRecordByID} from '../bib/bib';
 import {getUnitTestRecords} from './test/getrecords';
 
-import {addUUID} from '../marcUtils/marcUtils';
-import {v4 as uuid} from 'uuid';
+import {removeExcluded, applyEdits, addFieldIDs, insertField} from '../record/recordService';
 
 MarcRecord.setValidationOptions({subfieldValues: false});
 
@@ -126,9 +125,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     if (insert && baseRecord.record) { // eslint-disable-line functional/no-conditional-statement
       try {
-        const r = new MarcRecord(baseRecord.record);
-        r.insertField({...insert, uuid: uuid()});
-        baseRecord.record = r; // eslint-disable-line functional/immutable-data
+        insertField(baseRecord.record, insert, {subfieldValues: false});
       } catch (e) {
         baseRecord.error = e.toString(); // eslint-disable-line functional/immutable-data
       }
@@ -205,16 +202,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           //logger.debug(`Record: ${JSON.stringify(record)}`);
           return {
             ID: record.ID,
-            record: preProcess(await getRecordByID(record.ID))
+            record: addFieldIDs(await getRecordByID(record.ID))
           };
         } catch (e) {
           return {error: e.toString()};
         }
-      }
-
-      function preProcess(record) {
-        return addUUID(record);
-        //return {record};
       }
     }
 
@@ -233,27 +225,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         record: merger({
           ...transformProfile,
           reducers: transformProfile.getReducers(options),
-          base: removeExcluded(base),
-          source: removeExcluded(source)
+          base: removeExcluded(base, exclude, {subfieldValues: false}),
+          source: removeExcluded(source, exclude, {subfieldValues: false})
         })
       };
-    }
-
-    function removeExcluded(record) {
-
-      /*
-      return record;
-
-      /*/
-      return new MarcRecord(
-        {
-          leader: record.leader,
-          fields: record.fields.filter(f => !exclude[f.uuid])
-        },
-        {subfieldValues: false}
-      );
-
-      /**/
     }
 
     //-------------------------------------------------------------------------
@@ -270,7 +245,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
             ...result,
             reference,
             //error: 'Error: Hello, world!',
-            record: applyEdits(result.record)
+            record: applyEdits(result.record, replace, {subfieldValues: false})
           }
         };
       } catch (e) {
@@ -283,16 +258,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           }
         };
       }
-    }
-
-    function applyEdits(record) { // eslint-disable-line
-      if (!record?.fields) {
-        return record;
-      }
-      return new MarcRecord({
-        ...record,
-        fields: record.fields.map(f => replace[f.uuid] ? replace[f.uuid] : f)
-      }).sortFields();
     }
   }
 }

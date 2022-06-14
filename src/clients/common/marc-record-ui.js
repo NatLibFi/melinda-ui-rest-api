@@ -5,70 +5,185 @@
 //*****************************************************************************
 
 //-----------------------------------------------------------------------------
-// info needed for muuntaja merge REST call:
-// - Base record
-// - Transform options
-// - Source record
-// - Field selections
-// - User edits
 //-----------------------------------------------------------------------------
 
-export var transformed = {
-  options: {},
-  source: null,
-  base: null,
-  exclude: {},
-  replace: {},
-  insert: null,
-}
+export function showRecord(data, dest) {
+  console.log("Show Record:", data);
 
-window.editmode = false;
-var editing = null;
+  // Get div to fill in the fields
+  const recordDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
+  recordDiv.innerHTML = '';
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+  if (!data) return;
 
-export function updateTransformed(update) {
-  if(update) {
-    transformed = update;
+  if (data.error) {
+    const error = document.createElement('div');
+    error.classList.add("error")
+    error.innerHTML = data.error;
+    recordDiv.appendChild(error)
+  }
+
+  if (data.notes) {
+    const notes = document.createElement('div');
+    notes.classList.add("notes")
+    notes.innerHTML = data.notes;
+    recordDiv.appendChild(notes)
+  }
+
+  if (data.record) {
+    const record = data.record;
+
+    if (record.leader) {
+      addField(recordDiv, {tag: 'LDR', value: record.leader});
+    }
+
+    for (const field of record.fields) {
+
+      /*
+      function replaced(field) {
+        if (!field.uuid) return field;
+        return transformed.replace[field.uuid] || field;
+      }
+
+      const row = addField(recordDiv, replaced(field), editmode);
+      */
+      addField(recordDiv, field);
+
+      /*
+      if (field.uuid) {
+        if (editmode) {
+          if (field.subfields) row.addEventListener("click", event => editField(event, field))
+          // Add here custom field editors
+        } else {
+          row.addEventListener("click", event => toggleField(event, field))
+        }
+      }
+      */
+    }
   }
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-export function stripFieldDecorations(f) {
-  return {
-    tag: f.tag,
-    ind1: f.ind1,
-    ind2: f.ind2,
-    value: f.value,
-    subfields: f.subfields,
-    uuid: f.uuid,
+function addField(div, field) {
+  //console.log(field)
+  const row = document.createElement('div');
+  row.setAttribute('class', 'row');
+
+  /*
+  if (transformed.exclude[field.uuid]) {
+    row.classList.add("row-excluded");
+  } else if (transformed.replace[field.uuid]) {
+    row.classList.add("row-replaced");
+  } else if (field.from == "source") {
+    row.classList.add("row-fromSource")
+  } else if (field.from == "base") {
+    row.classList.add("row-fromBase")
   }
+  */
+
+  addTag(row, field.tag);
+  addInd(row, field.ind1, field.ind2);
+
+  if (field.value) {
+    addValue(row, field.value);
+  } else if (field.subfields) {
+    for (const subfield of field.subfields) {
+      addSubfield(row, subfield);
+    }
+  }
+
+  div.appendChild(row);
+  return row;
+
+  //---------------------------------------------------------------------------
+
+  function addTag(row, value) {
+    row.appendChild(makeSpan('tag', value));
+  }
+
+  function addInd(row, ind1, ind2) {
+    const span = makeSpan('inds');
+    add(span, ind1);
+    add(span, ind2);
+    row.appendChild(span);
+
+    function add(span, ind) {
+      const value = ind && ind.trim() || '&nbsp;';
+      span.appendChild(makeSpan('ind', value));
+    }
+  }
+
+  function text2HTML(value) {
+    return value
+      .replace("<", "&lt;")
+      .replace(">", "&gt;")
+      ;
+  }
+
+  function addValue(row, value) {
+    row.appendChild(makeSpan('value', text2HTML(value)));
+  }
+
+  function addSubfield(row, subfield) {
+    const span = makeSpan('subfield');
+    span.appendChild(makeSubfieldCode(subfield.code));
+    span.appendChild(makeSubfieldData(subfield.value));
+    row.appendChild(span);
+  }
+
+  function makeSubfieldCode(code) {
+    return makeSpan('code', `‡${code}`);
+  }
+
+  function makeSubfieldData(value) {
+    return makeSpan('value', value);
+  }
+}
+
+function makeDiv(className, value) {
+  const div = document.createElement('div');
+  div.setAttribute('class', className);
+  if (value) {
+    div.innerHTML = value;
+  }
+  return div;
+}
+
+function makeSpan(className, value) {
+  const span = document.createElement('span');
+  span.setAttribute('class', className);
+  if (value) {
+    span.innerHTML = value;
+  }
+  return span;
 }
 
 //-----------------------------------------------------------------------------
 // Exclude/include fields
 //-----------------------------------------------------------------------------
 
-function toggleField(event, field) {
+function toggleField(event, field, exclude) {
   const uuid = field.uuid;
 
   //console.log("Toggle:", uuid)
 
-  if (!transformed.exclude[uuid]) {
-    transformed.exclude[uuid] = stripFieldDecorations(field);
+  if (!exclude[uuid]) {
+    exclude[uuid] = stripFieldDecorations(field);
   } else {
-    delete transformed.exclude[uuid];
+    delete exclude[uuid];
   }
 
-  doTransform();
+  console.log("Make callback here.")
+  //doTransform();
 }
 
 //-----------------------------------------------------------------------------
 // Field edit
 //-----------------------------------------------------------------------------
+
+var editing = null;
 
 export function editField(event, field) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
@@ -200,154 +315,4 @@ window.editDlgClose = function (event) {
   //console.log("Close:", dlg)
   dlg.style.display = "none"
   return eventHandled(event);
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
-export function showRecord(data, dest, editmode = false, reference = null) {
-  console.log("Show Record:", data);
-
-  const sourceDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
-
-  // Clear previous content
-  sourceDiv.innerHTML = '';
-
-  if (!data) return;
-
-  if (data.error) {
-    const error = document.createElement('div');
-    error.classList.add("error")
-    error.innerHTML = data.error;
-    sourceDiv.appendChild(error)
-  }
-
-  if (data.notes) {
-    const notes = document.createElement('div');
-    notes.classList.add("notes")
-    notes.innerHTML = data.notes;
-    sourceDiv.appendChild(notes)
-  }
-
-  if (data.record) {
-    const record = data.record;
-
-    if (record.leader) {
-      addField(sourceDiv, {tag: 'LDR', value: record.leader}, editmode);
-    }
-
-    for (const field of record.fields) {
-
-      function replaced(field) {
-        if (!field.uuid) return field;
-        return transformed.replace[field.uuid] || field;
-      }
-
-      const row = addField(sourceDiv, replaced(field), editmode);
-
-      if (field.uuid) {
-        if (editmode) {
-          if (field.subfields) row.addEventListener("click", event => editField(event, field))
-          /* Add here custom field editors */
-        } else {
-          row.addEventListener("click", event => toggleField(event, field))
-        }
-      }
-    }
-  }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
-function addField(div, field, editmode = false) {
-  //console.log(field)
-  const row = document.createElement('div');
-  row.setAttribute('class', 'row');
-
-  if (transformed.exclude[field.uuid]) {
-    row.classList.add("row-excluded");
-  } else if (transformed.replace[field.uuid]) {
-    row.classList.add("row-replaced");
-  } else if (field.from == "source") {
-    row.classList.add("row-fromSource")
-  } else if (field.from == "base") {
-    row.classList.add("row-fromBase")
-  }
-
-  addTag(row, field.tag);
-  addInd(row, field.ind1, field.ind2);
-
-  if (field.value) {
-    addValue(row, field.value);
-  } else if (field.subfields) {
-    for (const subfield of field.subfields) {
-      addSubfield(row, subfield);
-    }
-  }
-
-  div.appendChild(row);
-  return row;
-
-  //---------------------------------------------------------------------------
-
-  function addTag(row, value) {
-    row.appendChild(makeSpan('tag', value));
-  }
-
-  function addInd(row, ind1, ind2) {
-    const span = makeSpan('inds');
-    add(span, ind1);
-    add(span, ind2);
-    row.appendChild(span);
-
-    function add(span, ind) {
-      const value = ind && ind.trim() || '&nbsp;';
-      span.appendChild(makeSpan('ind', value));
-    }
-  }
-
-  function text2HTML(value) {
-    return value
-      .replace("<", "&lt;")
-      .replace(">", "&gt;")
-      ;
-  }
-
-  function addValue(row, value) {
-    row.appendChild(makeSpan('value', text2HTML(value)));
-  }
-
-  function addSubfield(row, subfield) {
-    const span = makeSpan('subfield');
-    span.appendChild(makeSubfieldCode(subfield.code));
-    span.appendChild(makeSubfieldData(subfield.value));
-    row.appendChild(span);
-  }
-
-  function makeSubfieldCode(code) {
-    return makeSpan('code', `‡${code}`);
-  }
-
-  function makeSubfieldData(value) {
-    return makeSpan('value', value);
-  }
-}
-
-function makeDiv(className, value) {
-  const div = document.createElement('div');
-  div.setAttribute('class', className);
-  if (value) {
-    div.innerHTML = value;
-  }
-  return div;
-}
-
-function makeSpan(className, value) {
-  const span = document.createElement('span');
-  span.setAttribute('class', className);
-  if (value) {
-    span.innerHTML = value;
-  }
-  return span;
 }

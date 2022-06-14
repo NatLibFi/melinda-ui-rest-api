@@ -7,7 +7,7 @@ import AlephStrategy from '@natlibfi/passport-melinda-aleph';
 import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import {createBibRouter, createAuthRouter, createMuuntajaRouter} from './routes';
+import {createAuthRouter, createBibRouter, createRecordRouter, createMuuntajaRouter} from './routes';
 
 //import {createMuuntajaRouter} from './muuntaja/route';
 //import fs from 'fs';
@@ -56,15 +56,21 @@ export default function ({
     }, verify));
 
     app.use(passport.initialize());
+
+    // REST API
     app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
     app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
+    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRouter(sruUrl));
     app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
+
+    // Clients
     app.use('/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
     app.use('/edit', express.static(path.join(__dirname, 'clients/edit/'), {index: 'edit.html'}));
     app.use('/common', express.static(path.join(__dirname, 'clients/common/')));
     app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
+
     app.use(handleError);
 
     return app.listen(httpPort, () => logger.log('info', `Started Melinda REST API in port ${httpPort}`));

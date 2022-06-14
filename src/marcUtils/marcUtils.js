@@ -7,27 +7,19 @@
 /* eslint-disable no-unused-vars */
 
 import {MarcRecord} from '@natlibfi/marc-record';
-import {v4 as uuid} from 'uuid';
 
 //-----------------------------------------------------------------------------
 
+/*
 export function replaceField(record, field) {
   const {tag} = field;
   record.removeField(tag);
   record.insertField(field);
   return record;
-
-  /*
-  return new MarcRecord({
-    leader: record.leader,
-    fields: [
-      ...record.fields.filter(f => f.tag !== tag),
-      field
-    ]
-  });
-  */
 }
+*/
 
+/*
 export function decorate(record, tag) { // eslint-disable-line
   if (!record) {
     return null;
@@ -41,23 +33,7 @@ export function decorate(record, tag) { // eslint-disable-line
 function removeProperty(propKey, {[propKey]: propValue, ...rest}) { // eslint-disable-line
   return rest;
 }
-
-// Add missing UUIDs for tracing fields
-export function addUUID(record) { // eslint-disable-line
-  const exclude = ['001', '005'];
-  if (!record) {
-    return null;
-  }
-  return {
-    leader: record.leader,
-    fields: record.fields.map(f => {
-      if (f.uuid || exclude.includes(f.tag)) {
-        return f;
-      }
-      return {...f, uuid: uuid()};
-    })
-  };
-}
+*/
 
 //-----------------------------------------------------------------------------
 

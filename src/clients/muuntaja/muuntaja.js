@@ -11,7 +11,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-u
 
 import {Account, doLogin, logout} from "/common/auth.js"
 import {profileRequest, transformRequest} from "/common/rest.js";
-import {transformed, updateTransformed, showRecord, editField} from "/common/marc-record-ui.js";
+import {showRecord, editField} from "/common/marc-record-ui.js";
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -147,17 +147,24 @@ window.eventHandled = function (e) {
 }
 
 //-----------------------------------------------------------------------------
-// Show transformation results
+// info needed for muuntaja merge REST call:
+// - Base record
+// - Transform options
+// - Source record
+// - Field selections
+// - User edits
 //-----------------------------------------------------------------------------
 
-function showTransformed(update = undefined) {
-  updateTransformed(update);
-
-  const {source, base, result} = transformed;
-  showRecord(source, 'source');
-  showRecord(base, 'base', editmode = editmode);
-  showRecord(result, 'result', editmode = editmode);
+var transformed = {
+  options: {},
+  source: null,
+  base: null,
+  exclude: {},
+  replace: {},
+  insert: null,
 }
+
+window.editmode = false;
 
 //-----------------------------------------------------------------------------
 // Do transform
@@ -189,10 +196,28 @@ window.doTransform = function (event = undefined) {
     .then(records => {
       stopProcess();
       console.log('Transformed:', records);
-      showTransformed(decorateRecords(records));
+      showTransformed(records);
     });
 }
 
+//-----------------------------------------------------------------------------
+// Show transformation results
+//-----------------------------------------------------------------------------
+
+function showTransformed(update = undefined) {
+  //updateTransformed(update);
+  if(update) {
+    transformed = update;
+  }
+
+  const {source, base, result} = transformed;
+  showRecord(source, 'source');
+  showRecord(base, 'base', editmode = editmode);
+  showRecord(result, 'result', editmode = editmode);
+}
+
+/*
+//-----------------------------------------------------------------------------
 // Record decorations
 
 function decorateRecords(transformed) {
@@ -232,3 +257,4 @@ function decorateRecords(transformed) {
     if (record) record.fields = fields;
   }
 }
+*/
