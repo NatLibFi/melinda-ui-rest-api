@@ -7,81 +7,47 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-export function showRecord(data, dest) {
-  console.log("Show Record:", data);
+export function showRecord(record, dest, decorator = {}) {
+  console.log("Show Record:", record);
 
   // Get div to fill in the fields
   const recordDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
   recordDiv.innerHTML = '';
 
-  if (!data) return;
+  if (!record) return;
 
-  if (data.error) {
+  if (record.error) {
     const error = document.createElement('div');
     error.classList.add("error")
-    error.innerHTML = data.error;
+    error.innerHTML = record.error;
     recordDiv.appendChild(error)
   }
 
-  if (data.notes) {
+  if (record.notes) {
     const notes = document.createElement('div');
     notes.classList.add("notes")
-    notes.innerHTML = data.notes;
+    notes.innerHTML = record.notes;
     recordDiv.appendChild(notes)
   }
 
-  if (data.record) {
-    const record = data.record;
+  if (record.leader) {
+    addField(recordDiv, {tag: 'LDR', value: record.leader});
+  }
 
-    if (record.leader) {
-      addField(recordDiv, {tag: 'LDR', value: record.leader});
-    }
-
-    for (const field of record.fields) {
-
-      /*
-      function replaced(field) {
-        if (!field.id) return field;
-        return transformed.replace[field.id] || field;
-      }
-
-      const row = addField(recordDiv, replaced(field), editmode);
-      */
-      addField(recordDiv, field);
-
-      /*
-      if (field.id) {
-        if (editmode) {
-          if (field.subfields) row.addEventListener("click", event => editField(event, field))
-          // Add here custom field editors
-        } else {
-          row.addEventListener("click", event => toggleField(event, field))
-        }
-      }
-      */
-    }
+  for (const field of record.fields) {
+    addField(recordDiv, decorator.getContent(field), decorator);
   }
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-function addField(div, field) {
+function addField(div, field, decorator = null) {
   //console.log(field)
   const row = document.createElement('div');
-  row.setAttribute('class', 'row');
-
-  /*
-  if (transformed.exclude[field.id]) {
-    row.classList.add("row-excluded");
-  } else if (transformed.replace[field.id]) {
-    row.classList.add("row-replaced");
-  } else if (field.from == "source") {
-    row.classList.add("row-fromSource")
-  } else if (field.from == "base") {
-    row.classList.add("row-fromBase")
-  }
-  */
+  row.classList.add('row');
+  decorator?.decorateField(row, field)
+  row.addEventListener("click", event => decorator?.onClick(event, field))
 
   addTag(row, field.tag);
   addInd(row, field.ind1, field.ind2);
@@ -161,35 +127,17 @@ function makeSpan(className, value) {
 }
 
 //-----------------------------------------------------------------------------
-// Exclude/include fields
-//-----------------------------------------------------------------------------
-
-function toggleField(event, field, exclude) {
-  const id = field.id;
-
-  //console.log("Toggle:", id)
-
-  if (!exclude[id]) {
-    exclude[id] = stripFieldDecorations(field);
-  } else {
-    delete exclude[id];
-  }
-
-  console.log("Make callback here.")
-  //doTransform();
-}
-
-//-----------------------------------------------------------------------------
 // Field edit
 //-----------------------------------------------------------------------------
 
 var editing = null;
 
-export function editField(event, field) {
+export function editField(field, original = null) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
 
-  editing = transformed.transformed.record.fields.find(f => f.id == field.id);
-  console.log("Edit:", editing);
+  editing = field
+  //editing = transformed.transformed.record.fields.find(f => f.id == field.id);
+  //console.log("Edit:", editing);
 
   // Find field from edited fields, if found, fill in data from there
 
@@ -197,10 +145,15 @@ export function editField(event, field) {
   //console.log(dlg)
   dlg.style.display = "flex"
 
-  if (editing) {
+  if (original) {
+    const div = document.querySelector("#fieldEditDlg #original");
+    div.hidden = false
     const content = document.querySelector("#fieldEditDlg #field");
     content.innerHTML = ""
-    addField(content, editing);
+    addField(content, original);
+  } else {
+    const div = document.querySelector("#fieldEditDlg #original");
+    div.hidden = true
   }
 
   const tag = document.querySelector("#fieldEditDlg #tag");
@@ -219,7 +172,7 @@ export function editField(event, field) {
   subfields.innerHTML = ""
 
   for (const subfield of field.subfields) {
-    subfields.appendChild(createSubfield(subfields, subfield));
+    createSubfield(subfields, subfield);
   }
 
   //*
@@ -236,6 +189,7 @@ function createSubfield(parent, subfield) {
   row.appendChild(removeButton());
   row.appendChild(createInput('code', 'code', subfield.code));
   row.appendChild(createInput('value', 'value', subfield.value));
+  parent.appendChild(row)
   return row;
 
   function removeButton() {
@@ -269,7 +223,7 @@ function createInput(name, className, value, editable = true) {
 
 window.onAddField = function (event) {
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
-  subfields.appendChild(createSubfield(subfields, {code: '?', value: '?'}))
+  createSubfield(subfields, {code: '?', value: '?'})
   return eventHandled(event);
 }
 
@@ -291,22 +245,13 @@ window.editDlgOK = function (event) {
       }))
   }
 
-  console.log("Edited:", field)
-
-  if (field.id) {
-    transformed.replace[field.id] = stripFieldDecorations(field);
-  } else {
-    transformed.insert = field;
-  }
-  doTransform();
-
+  editSaveField(field)
   return editDlgClose(event);
 }
 
 window.editDlgUseOriginal = function (event) {
   console.log("Using original.");
-  delete transformed.replace[editing.id];
-  doTransform();
+  editUseOriginal(editing)
   return editDlgClose(event);
 }
 

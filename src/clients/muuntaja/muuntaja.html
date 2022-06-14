@@ -130,11 +130,13 @@
   <!-- Field edit dialog -->
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
-      <span id="field" class="marc-record"></span><br/>
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
+      <div id="original" hidden>
+        <span id="field" class="marc-record"></span><br/>
+        <div style="display: flex; justify-content: right;">
+          <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
+        </div>
+        <hr/>
       </div>
-      <hr/>
       <div class="fieldedit marc-record">
         <div style="display: flex;">
           Tag: <div id="tag"></div>

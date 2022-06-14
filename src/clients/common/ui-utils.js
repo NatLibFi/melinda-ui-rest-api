@@ -10,6 +10,19 @@ export {setNavBar, startProcess, stopProcess}
 
 //-----------------------------------------------------------------------------
 
+window.eventHandled = function (e) {
+  e.stopPropagation();
+  e.preventDefault();
+  return true;
+}
+
+window.ignore = function (e) {
+  console.log("Ignore")
+  return eventHandled(e);
+}
+
+//-----------------------------------------------------------------------------
+
 export function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {

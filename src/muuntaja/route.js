@@ -123,9 +123,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     const {sourceRecord, baseRecord, refRecord} = await loadRecords(source, base);
 
-    if (insert && baseRecord.record) { // eslint-disable-line functional/no-conditional-statement
+    if (insert && baseRecord) { // eslint-disable-line functional/no-conditional-statement
       try {
-        insertField(baseRecord.record, insert, {subfieldValues: false});
+        insertField(baseRecord, insert, {subfieldValues: false});
       } catch (e) {
         baseRecord.error = e.toString(); // eslint-disable-line functional/immutable-data
       }
@@ -136,8 +136,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //-------------------------------------------------------------------------
 
     const resultRecord = getResultRecord(
-      sourceRecord.record,
-      baseRecord.record
+      sourceRecord,
+      baseRecord
     );
     logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
@@ -169,12 +169,12 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       };
 
       function getBase(source) { // eslint-disable-line no-unused-vars
-        if (!source?.record) {
+        if (!source) {
           return {};
         }
         return {
           ID: '',
-          record: transformProfile.createBase(source.record, options)
+          ...transformProfile.createBase(source, options)
         };
       }
 
@@ -189,7 +189,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       }
 
       async function fetchRecord(record) {
-        if (record?.record) {
+        if (record?.leader) {
           return record;
         }
 
@@ -201,11 +201,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           logger.debug('Fetching...');
           //logger.debug(`Record: ${JSON.stringify(record)}`);
           return {
-            ID: record.ID,
-            record: addFieldIDs(await getRecordByID(record.ID))
+            ...record,
+            ...addFieldIDs(await getRecordByID(record.ID))
           };
         } catch (e) {
-          return {error: e.toString()};
+          return {
+            ...record,
+            error: e.toString()
+          };
         }
       }
     }
@@ -215,20 +218,18 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //-------------------------------------------------------------------------
 
     function getResultRecord(source, base) {
-      if (!source || !base) {
+      if (!source?.leader || !base?.leader) {
         return {};
       }
       //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
       //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
 
-      return {
-        record: merger({
-          ...transformProfile,
-          reducers: transformProfile.getReducers(options),
-          base: removeExcluded(base, exclude, {subfieldValues: false}),
-          source: removeExcluded(source, exclude, {subfieldValues: false})
-        })
-      };
+      return merger({
+        ...transformProfile,
+        reducers: transformProfile.getReducers(options),
+        base: removeExcluded(base, exclude, {subfieldValues: false}),
+        source: removeExcluded(source, exclude, {subfieldValues: false})
+      });
     }
 
     //-------------------------------------------------------------------------
@@ -243,10 +244,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           transformed: result,
           result: {
             ...result,
-            reference,
             //error: 'Error: Hello, world!',
-            record: applyEdits(result.record, replace, {subfieldValues: false})
-          }
+            ...applyEdits(result, replace, {subfieldValues: false})
+          },
+          reference
         };
       } catch (e) {
         return {
@@ -255,7 +256,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
           transformed: result,
           result: {
             error: e.toString()
-          }
+          },
+          reference
         };
       }
     }

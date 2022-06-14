@@ -106,7 +106,7 @@ window.onEdit = function (e) {
 }
 
 window.onNewField = function(e) {
-  editField(e, {
+  editField({
     tag: "", ind1: "", ind2: "",
     subfields: []
   });
@@ -135,17 +135,6 @@ window.onAccount = function (e) {
   logout();
 }
 
-window.ignore = function (e) {
-  console.log("Ignore")
-  return eventHandled(e);
-}
-
-window.eventHandled = function (e) {
-  e.stopPropagation();
-  e.preventDefault();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // info needed for muuntaja merge REST call:
 // - Base record
@@ -154,6 +143,11 @@ window.eventHandled = function (e) {
 // - Field selections
 // - User edits
 //-----------------------------------------------------------------------------
+
+var lookup = {
+  original: {},
+  from: {},
+}
 
 var transformed = {
   options: {},
@@ -201,6 +195,83 @@ window.doTransform = function (event = undefined) {
 }
 
 //-----------------------------------------------------------------------------
+// Field view decorator
+//-----------------------------------------------------------------------------
+
+function getContent(field) {
+  return transformed.replace[field.id] ?? field
+}
+
+function getOriginal(field) {
+  return lookup.original[field.id] ?? field
+}
+
+function decorateField(div, field) {
+  if (transformed.exclude[field.id]) {
+    div.classList.add("row-excluded")
+  }
+  if (transformed.replace[field.id]) {
+    div.classList.add("row-replaced")
+    return;
+  }
+  const from = lookup.from[field.id]
+  if(from == "source") {
+    div.classList.add("row-fromSource")
+  }
+  if(from == "base") {
+    div.classList.add("row-fromBase")
+  }
+}
+
+function onFieldClick(event, field) {
+  //console.log("Click", field)
+  if(editmode) {
+    editField(getContent(field), getOriginal(field))
+  } else {
+    toggleField(field)
+  }
+  return eventHandled(event)
+
+  function toggleField(field) {
+    const id = field.id;
+
+    //console.log("Toggle:", id)
+
+    if (!transformed.exclude[id]) {
+      transformed.exclude[id] = true;
+    } else {
+      delete transformed.exclude[id];
+    }
+
+    doTransform();
+  }
+}
+
+window.editSaveField = function(field) {
+  console.log("Saving field:", field)
+
+  if (field.id) {
+    transformed.replace[field.id] = field;
+  } else {
+    transformed.insert = field;
+  }
+  doTransform();
+}
+
+window.editUseOriginal = function(field) {
+  delete transformed.replace[field.id];
+  doTransform();
+}
+
+const decorator = {
+  getContent,
+  getOriginal,
+  decorateField,
+
+  onClick: onFieldClick,
+}
+
+//-----------------------------------------------------------------------------
 // Show transformation results
 //-----------------------------------------------------------------------------
 
@@ -212,50 +283,35 @@ function showTransformed(update = undefined) {
 
   const {source, base, result} = transformed;
 
-  showRecord(source, 'source');
-  showRecord(base, 'base', editmode = editmode);
-  showRecord(result, 'result', editmode = editmode);
-}
+  // Get field source for decorator
+  const sourceFields = getFields(transformed.source);
+  const baseFields = getFields(transformed.base);
+  const resultFields = getFields(transformed.result);
 
-/*
-//-----------------------------------------------------------------------------
-// Record decorations
+  const resultIDs = resultFields.map(f => f.id)
+  const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id))
+  const includedBaseIDs = baseFields.map(f => f.id).filter(id => resultIDs.includes(id))
 
-function decorateRecords(transformed) {
+  lookup.from = {
+    ...includedSourceIDs.reduce((a, id) => ({...a, [id]: "source"}), {}),
+    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: "base"}), {})
+  }
 
-  //records = stripDecorations(records);
+  lookup.original = getLookup(sourceFields.concat(baseFields))
 
-  const sourceFields = getFields(transformed.source.record);
-  const baseFields = getFields(transformed.base.record);
-  const resultFields = getFields(transformed.result.record);
+  //console.log(transformed.from)
 
-  const sourceUUIDs = getUUIDs(sourceFields);
-  const baseUUIDs = getUUIDs(baseFields);
-  const resultUUIDs = getUUIDs(resultFields);
-
-  setFields(transformed.source.record,
-    sourceFields.map(f => resultUUIDs.includes(f.id) ? {...f, from: "source"} : f)
-  );
-  setFields(transformed.base.record,
-    baseFields.map(f => resultUUIDs.includes(f.id) ? {...f, from: "base"} : f)
-  );
-  setFields(transformed.result.record, resultFields
-    .map(f => sourceUUIDs.includes(f.id) ? {...f, from: "source"} : f)
-    .map(f => baseUUIDs.includes(f.id) ? {...f, from: "base"} : f)
-  );
-
-  return transformed;
+  // Show records
+  showRecord(source, 'source', decorator);
+  showRecord(base, 'base', decorator);
+  showRecord(result, 'result', decorator);
 
   function getFields(record) {
-    return record ? record.fields : [];
+    return record?.fields ?? []
   }
 
-  function getUUIDs(fields) {
-    return fields.map(f => f.id).filter(id => id);
+  function getLookup(fields) {
+    return fields.reduce((a, field) => ({...a, [field.id]: field}), {})
   }
 
-  function setFields(record, fields) {
-    if (record) record.fields = fields;
-  }
 }
-*/

@@ -39,20 +39,20 @@
   opacity: 0.5;
 }
 
+.marc-record .row-replaced {
+  /* background-color: #f8fcd8; */
+  background-color: rgb(255, 238, 241);
+  /* background-color: #75c4bdb0; */
+  /* background-color: rgb(179, 221, 235); */
+  /* background-color: #f1b5f760; */
+}
+
 .marc-record .row-fromSource {
   background-color: #ebfaf9;
 }
 
 .marc-record .row-fromBase {
   background-color: #f8fcd8;
-}
-
-.marc-record .row-replaced {
-  background-color: #f8fcd8;
-  /* background-color: rgb(255, 238, 241); */
-  /* background-color: #75c4bdb0; */
-  /* background-color: rgb(179, 221, 235); */
-  /* background-color: #f1b5f760; */
 }
 
 .marc-record .tag {
