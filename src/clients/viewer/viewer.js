@@ -4,11 +4,11 @@
 //
 //*****************************************************************************
 
-import {startProcess, stopProcess} from "/common/ui-utils.js";
+import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
 import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui-utils.js";
 
-import {Account} from "/common/auth.js"
+import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 
@@ -24,63 +24,16 @@ var transformed = {
 window.initialize = function () {
   console.log('Initializing');
 
-  Account.verify()
-    .then(response => authSuccess(Account.get()))
-    .catch(noAuth);
+  setNavBar(document.querySelector('#navbar'), "Viewer")
 
-  function noAuth() {
-    Account.remove();
-    resetForms(document.getElementById('root'));
-    showTab('login');
+  doLogin(authSuccess);
+
+  function authSuccess(user) {
+    const username = document.querySelector("#account-menu #username")
+    username.innerHTML = Account.get()["Name"];
+    showTab('muuntaja');
+    doFetch();
   }
-}
-
-//-----------------------------------------------------------------------------
-// Login & logout
-//-----------------------------------------------------------------------------
-
-window.login = function (e) {
-  e.preventDefault();
-
-  console.log('Login:', e);
-
-  logininfo('');
-
-  const termschecked = document.querySelector('#login #acceptterms').checked;
-  if (!termschecked) {
-    logininfo('Tietosuojaselosteen hyväksyminen vaaditaan');
-    return;
-  }
-
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  startProcess();
-
-  Account.login(username, password)
-    .then(user => authSuccess(user))
-    .catch(err => {
-      Account.remove();
-      logininfo('Tunnus tai salasana ei täsmää');
-    })
-    .finally(stopProcess);
-
-  function logininfo(msg) {
-    const infodiv = document.querySelector('#login #info');
-    infodiv.innerHTML = msg;
-  }
-}
-
-function logout(e) {
-  Account.logout();
-  reload();
-}
-
-function authSuccess(user) {
-  const username = document.querySelector("#account-menu #username")
-  username.innerHTML = Account.get()["Name"];
-  showTab('muuntaja');
-  doFetch();
 }
 
 //-----------------------------------------------------------------------------

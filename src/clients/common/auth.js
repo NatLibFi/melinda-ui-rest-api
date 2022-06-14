@@ -5,14 +5,20 @@
 //*****************************************************************************
 
 import {authVerify, authRequest} from "./rest.js";
+import {reload, resetForms, showTab} from "./ui-utils.js"
+import { startProcess, stopProcess } from "./ui-utils.js";
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+//
 // stored auth token
-//-----------------------------------------------------------------------------
+//
+//*****************************************************************************
 
 export const Account = {
   storage: window.sessionStorage,
   name: 'melinda-user',
+
+  //---------------------------------------------------------------------------
 
   get(jsonField = this.name) {
     try {
@@ -34,6 +40,8 @@ export const Account = {
 
     return user.Token;
   },
+
+  //---------------------------------------------------------------------------
 
   verify() {
     return authVerify(this.getToken())
@@ -59,4 +67,59 @@ export const Account = {
   logout() {
     this.remove()
   }
+
+  //---------------------------------------------------------------------------
 };
+
+//*****************************************************************************
+//
+// Login & logout
+//
+//*****************************************************************************
+
+export function doLogin(onSuccess) {
+
+  window.login = function(e) {
+    eventHandled(e)
+
+    logininfo('');
+
+    const termschecked = document.querySelector('#login #acceptterms').checked;
+    if (!termschecked) {
+      logininfo('Tietosuojaselosteen hyväksyminen vaaditaan');
+      return;
+    }
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    startProcess();
+
+    Account.login(username, password)
+      .then(user => onSuccess(user))
+      .catch(err => {
+        Account.remove();
+        logininfo('Tunnus tai salasana ei täsmää');
+      })
+      .finally(stopProcess);
+      function logininfo(msg) {
+        const infodiv = document.querySelector('#login #info');
+        infodiv.innerHTML = msg;
+      }
+  }
+
+  Account.verify()
+    .then(response => onSuccess(Account.get()))
+    .catch(noAuth);
+
+  function noAuth() {
+    Account.remove();
+    resetForms(document.getElementById('root'));
+    showTab('login');
+  }
+}
+
+export function logout(e) {
+  Account.logout();
+  reload();
+}

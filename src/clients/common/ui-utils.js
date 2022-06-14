@@ -4,19 +4,9 @@
 //
 //*****************************************************************************
 
-//-----------------------------------------------------------------------------
+import { setNavBar, startProcess, stopProcess } from "./navbar.js";
 
-export function startProcess()
-{
-  const progressbar = document.querySelector(`#progressbar`);
-  progressbar.className="progress-bar";
-}
-
-export function stopProcess()
-{
-  const progressbar = document.querySelector(`#progressbar`);
-  progressbar.className="progress-bar-inactive";
-}
+export {setNavBar, startProcess, stopProcess}
 
 //-----------------------------------------------------------------------------
 
