@@ -155,7 +155,7 @@ var transformed = {
   base: null,
   exclude: {},
   replace: {},
-  insert: null,
+  include: [],
 }
 
 window.editmode = false;
@@ -235,7 +235,7 @@ function onFieldClick(event, field) {
   function toggleField(field) {
     const id = field.id;
 
-    //console.log("Toggle:", id)
+    console.log("Toggle:", id)
 
     if (!transformed.exclude[id]) {
       transformed.exclude[id] = true;
@@ -253,7 +253,7 @@ window.editSaveField = function(field) {
   if (field.id) {
     transformed.replace[field.id] = field;
   } else {
-    transformed.insert = field;
+    transformed.include.push(field);
   }
   doTransform();
 }
@@ -284,9 +284,9 @@ function showTransformed(update = undefined) {
   const {source, base, result} = transformed;
 
   // Get field source for decorator
-  const sourceFields = getFields(transformed.source);
-  const baseFields = getFields(transformed.base);
-  const resultFields = getFields(transformed.result);
+  const sourceFields = getFields(source);
+  const baseFields = getFields(base);
+  const resultFields = getFields(result);
 
   const resultIDs = resultFields.map(f => f.id)
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id))

@@ -34,8 +34,9 @@ export function showRecord(record, dest, decorator = {}) {
     addField(recordDiv, {tag: 'LDR', value: record.leader});
   }
 
-  for (const field of record.fields) {
-    addField(recordDiv, decorator.getContent(field), decorator);
+  if(record.fields) for (const field of record.fields) {
+    content = decorator?.getContent ? decorator.getContent(field) : field
+    addField(recordDiv, content, decorator);
   }
 }
 
@@ -46,8 +47,12 @@ function addField(div, field, decorator = null) {
   //console.log(field)
   const row = document.createElement('div');
   row.classList.add('row');
-  decorator?.decorateField(row, field)
-  row.addEventListener("click", event => decorator?.onClick(event, field))
+  if(decorator?.decorateField) {
+    decorator.decorateField(row, field)
+  }
+  if(decorator?.onClick) {
+    row.addEventListener("click", event => decorator.onClick(event, field))
+  }
 
   addTag(row, field.tag);
   addInd(row, field.ind1, field.ind2);

@@ -21,6 +21,10 @@ const logger = createLogger();
 
 export function update008(opts) { // eslint-disable-line no-unused-vars
   return (baseRecord, sourceRecord) => {
+
+    //logger.debug(`Base: ${JSON.stringify(baseRecord, null, 2)}`);
+    //logger.debug(`Source: ${JSON.stringify(sourceRecord)}`);
+
     const base = new MarcRecord(baseRecord);
     const source = new MarcRecord(sourceRecord);
 

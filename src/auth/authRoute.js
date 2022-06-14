@@ -1,11 +1,9 @@
 /******************************************************************************
  *
- * Record fetching and modifying for UIs
+ * Authentication
  *
  ******************************************************************************
  */
-
-/* eslint-disable no-unused-vars */
 
 import HttpStatus from 'http-status';
 import {Router} from 'express';
@@ -19,11 +17,12 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
-  logger.debug('Creating auth route');
+  //logger.debug('Creating auth route');
 
   return new Router()
-    //.post('/verify', verify)
-    //.post('/', create)
+    //.use(sanitaze)
+    .post('/verify', verify)
+    .post('/', create)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -31,7 +30,6 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
-  /*
   function create(req, res) {
     // Strip files
     const user = {
@@ -47,5 +45,4 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   function verify(req, res) {
     res.sendStatus(HttpStatus.OK);
   }
-  */
 }

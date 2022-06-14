@@ -11,10 +11,12 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui
 import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
+import {getRecord} from "../common/rest.js";
 
-var transformed = {
-  source: {},
-  base: {}
+var viewing = {
+  record1: {},
+  record2: {},
+  record3: {}
 }
 
 //-----------------------------------------------------------------------------
@@ -43,48 +45,49 @@ window.onAccount = function (e) {
   logout();
 }
 
-window.ignore = function (e) {
-  console.log("Ignore")
-  return eventHandled(e);
-}
-
-window.eventHandled = function (e) {
-  e.stopPropagation();
-  e.preventDefault();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Do transform
 //-----------------------------------------------------------------------------
 
+var transformed = {
+  record1: {},
+  record2: {},
+  record3: {}
+}
+
 window.doFetch = function (event = undefined) {
+  eventHandled(event)
+
   console.log('Fetching...');
-  if (event) event.preventDefault();
 
-  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #record1 #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #record2 #ID`).value;
+  const ID1 = document.querySelector(`#muuntaja .record-merge-panel #record1 #ID`).value;
+  const ID2 = document.querySelector(`#muuntaja .record-merge-panel #record2 #ID`).value;
+  const ID3 = document.querySelector(`#muuntaja .record-merge-panel #record3 #ID`).value;
 
-  if (!transformed.source || sourceID != transformed.source.ID) {
-    transformed.source = {ID: sourceID}
+  if(ID1 !== "" && ID1 !== record1?.ID) {
+    getRecord(ID1)
+      .then(response => response.json())
+      .then(record => {
+        transformed.record1 = record;
+        showRecord(transformed.record1, "record1")
+      })
   }
 
-  if (!transformed.base || baseID != transformed.base.ID) {
-    transformed.base = {ID: baseID}
+  if(ID2 !== "" && ID2 !== record2?.ID) {
+    getRecord(ID2)
+      .then(response => response.json())
+      .then(record => {
+        transformed.record2 = record;
+        showRecord(transformed.record2, "record2")
+      })
   }
 
-  //console.log('Source ID:', sourceID);
-  //console.log('Base ID:', baseID);
-  console.log("Fetching:", transformed);
-
-  startProcess();
-
-  transformRequest(transformed)
-    .then(response => response.json())
-    .then(records => {
-      stopProcess();
-      console.log('Fetched:', records);
-      showRecord(records.source, 'record1');
-      showRecord(records.base, 'record2');
-    });
+  if(ID3 !== "" && ID3 !== record3?.ID) {
+    getRecord(ID3)
+      .then(response => response.json())
+      .then(record => {
+        transformed.record3 = record;
+        showRecord(transformed.record3, "record3")
+      })
+  }
 }

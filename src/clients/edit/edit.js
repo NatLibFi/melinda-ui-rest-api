@@ -4,19 +4,14 @@
 //
 //*****************************************************************************
 
+import {setNavBar} from "../common/navbar.js";
 import {startProcess, stopProcess} from "/common/ui-utils.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
 import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui-utils.js";
 
 import {Account, doLogin, logout} from "/common/auth.js"
-import {transformRequest} from "/common/rest.js";
-import {showRecord} from "/common/marc-record-ui.js";
-import {setNavBar} from "../common/navbar.js";
-
-var transformed = {
-  source: {},
-  base: {}
-}
+import {showRecord, editField} from "/common/marc-record-ui.js";
+import {modifyRecord} from "../common/rest.js";
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -44,15 +39,113 @@ window.onAccount = function (e) {
   logout();
 }
 
-window.ignore = function (e) {
-  console.log("Ignore")
+window.onEdit = function (e) {
+  console.log('Edit:', e);
+  editmode = !editmode;
+  if (editmode) {
+    e.target.style.background = "lightblue"
+  } else {
+    e.target.style.background = ""
+  }
+  showTransformed()
   return eventHandled(e);
 }
 
-window.eventHandled = function (e) {
-  e.stopPropagation();
-  e.preventDefault();
-  return true;
+window.onNewField = function(e) {
+  editField({
+    tag: "", ind1: "", ind2: "",
+    subfields: []
+  });
+  return eventHandled(e)
+}
+
+//-----------------------------------------------------------------------------
+// Field decorating
+//-----------------------------------------------------------------------------
+
+var transformed = {
+  source: {},
+  include: [],
+  exclude: {},
+  replace: {}
+}
+
+var lookup = {
+  original: {},
+  included: {}
+}
+
+var editmode = false;
+
+function getContent(field) {
+  return transformed.replace[field.id] ?? field
+}
+
+function getOriginal(field) {
+  return lookup.original[field.id] ?? field
+}
+
+function decorateField(div, field) {
+  if (transformed.exclude[field.id]) {
+    div.classList.add("row-excluded")
+  }
+  if (transformed.replace[field.id]) {
+    div.classList.add("row-replaced")
+    return;
+  }
+  if(lookup.included[field.id]) {
+    div.classList.add("row-included")
+  }
+}
+
+function onFieldClick(event, field) {
+  //console.log("Click", field)
+  if(editmode) {
+    editField(getContent(field), getOriginal(field))
+  } else {
+    toggleField(field)
+  }
+  return eventHandled(event)
+
+  function toggleField(field) {
+    const id = field.id;
+
+    console.log("Toggle:", id)
+
+    if(lookup.included[id]) {
+      transformed.include.filter(f => f.id != id)
+    } else if (!transformed.exclude[id]) {
+      transformed.exclude[id] = true;
+    } else {
+      delete transformed.exclude[id];
+    }
+
+    doFetch();
+  }
+}
+
+window.editSaveField = function(field) {
+  console.log("Saving field:", field)
+
+  if (field.id) {
+    transformed.replace[field.id] = field;
+  } else {
+    transformed.include.push(field);
+  }
+  doFetch();
+}
+
+window.editUseOriginal = function(field) {
+  delete transformed.replace[field.id];
+  doFetch();
+}
+
+const decorator = {
+  getContent,
+  getOriginal,
+  decorateField,
+
+  onClick: onFieldClick,
 }
 
 //-----------------------------------------------------------------------------
@@ -76,12 +169,32 @@ window.doFetch = function (event = undefined) {
 
   startProcess();
 
-  transformRequest(transformed)
+  modifyRecord(transformed)
+    .then(response => { stopProcess(); return response; })
     .then(response => response.json())
-    .then(records => {
-      stopProcess();
-      console.log('Fetched:', records);
-      showRecord(records.source, 'source');
-      showRecord(records.source, 'result');
-    });
+    .then(records => showTransformed(records))
 }
+
+function showTransformed(records)
+{
+  console.log('Fetched:', records);
+
+  if(records) {
+    transformed = records;
+  }
+
+  lookup.original = getLookup(getFields(transformed.source))
+  lookup.included = getLookup(transformed.include)
+
+  showRecord(transformed.source, 'source', decorator);
+  showRecord(transformed.result, 'result', decorator);
+
+  function getFields(record) {
+    return record?.fields ?? []
+  }
+
+  function getLookup(fields) {
+    return fields.reduce((a, field) => ({...a, [field.id]: field}), {})
+  }
+}
+

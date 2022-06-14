@@ -41,7 +41,40 @@ function doAuthRequest(token, url = '') {
 }
 
 //*****************************************************************************
-// Transformations
+// Single records
+//*****************************************************************************
+
+export function getRecord(id) {
+  return fetch(
+    `${RESTurl}/bib/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: Account.getToken()
+      }
+    }
+  )
+}
+
+export function modifyRecord(transforming) {
+  return fetch(
+    `${RESTurl}/record/modify`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: Account.getToken()
+      },
+      body: JSON.stringify(transforming)
+    }
+  )
+}
+
+//*****************************************************************************
+// Transformations (Muuntaja)
 //*****************************************************************************
 
 export function profileRequest() {

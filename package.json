@@ -33,7 +33,7 @@
     "coverage:unit": "nyc --silent npm run test:base",
     "coverage:report": "nyc report --reporter=text",
     "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
-    "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon",
+    "dev": "cross-env DEBUG=1 NODE_ENV=development nodemon",
     "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
   },
   "dependencies": {

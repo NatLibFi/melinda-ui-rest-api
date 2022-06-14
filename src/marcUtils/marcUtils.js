@@ -10,6 +10,14 @@ import {MarcRecord} from '@natlibfi/marc-record';
 
 //-----------------------------------------------------------------------------
 
+export const noValidation = {
+  fields: false,
+  subfields: false,
+  subfieldValues: false
+};
+
+//-----------------------------------------------------------------------------
+
 /*
 export function replaceField(record, field) {
   const {tag} = field;

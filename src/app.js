@@ -7,9 +7,12 @@ import AlephStrategy from '@natlibfi/passport-melinda-aleph';
 import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
-import {createAuthRouter, createBibRouter, createRecordRouter, createMuuntajaRouter} from './routes';
 
-//import {createMuuntajaRouter} from './muuntaja/route';
+import createAuthRoute from './auth/authRoute';
+import createBibRoute from './bib/bibRoute';
+import createRecordRoute from './record/recordRoute';
+import createMuuntajaRoute from './muuntaja/muuntajaRoute';
+
 //import fs from 'fs';
 import path from 'path';
 
@@ -35,10 +38,10 @@ export default function ({
   function initExpress() { // eslint-disable-line max-statements
     const app = express();
 
-    logger.debug(`Service URL: ${xServiceURL}`);
-    logger.debug(`User lib: ${userLibrary}`);
-    logger.debug(`Auth URL: ${ownAuthzURL}`);
-    logger.debug(`Auth key: ${ownAuthzApiKey}`);
+    //logger.debug(`Service URL: ${xServiceURL}`);
+    //logger.debug(`User lib: ${userLibrary}`);
+    //logger.debug(`Auth URL: ${ownAuthzURL}`);
+    //logger.debug(`Auth key: ${ownAuthzApiKey}`);
 
     app.enable('trust proxy', Boolean(enableProxy));
     app.use(createExpressLogger());
@@ -58,17 +61,17 @@ export default function ({
     app.use(passport.initialize());
 
     // REST API
-    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRouter(jwtOptions));
-    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRouter(sruUrl));
-    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRouter(sruUrl));
-    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRouter(sruUrl));
+    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
+    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRoute(sruUrl));
+    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
 
     // Clients
-    app.use('/test', express.static(path.join(__dirname, 'clients/test'), {index: 'testclient.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
     app.use('/edit', express.static(path.join(__dirname, 'clients/edit/'), {index: 'edit.html'}));
     app.use('/common', express.static(path.join(__dirname, 'clients/common/')));
+    app.use('/login', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
 
     app.use(handleError);

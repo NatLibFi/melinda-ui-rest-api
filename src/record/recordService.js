@@ -9,76 +9,137 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import {v4 as uuid} from 'uuid';
+import {getRecordByID} from '../bib/bibService';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 export {uuid};
 
+const logger = createLogger();
+
 //-----------------------------------------------------------------------------
-// Would be better to use structure:
-//
-// record {
-//   id: ...
-//   record: { leader, fields }
-//   error: ...
-// }
-//
+// Records with field IDs
+
+export async function getRecordWithIDs(record) {
+  //logger.debug(`Record: ${JSON.stringify(record, null, 2)}`);
+  const result = await fetch(record);
+  //logger.debug(`Result: ${JSON.stringify(record, null, 2)}`);
+  return {
+    ...record,
+    ...addMissingIDs(result)
+  };
+
+  function fetch(record) {
+    if (record?.leader) {
+      return record;
+    }
+    if (!record?.ID) {
+      return record;
+    }
+    return getRecordByID(record.ID);
+  }
+}
+
 //-----------------------------------------------------------------------------
+
+export function asMarcRecord(record, validationOptions = {}) {
+  if (!record?.leader) {
+    return record;
+  }
+
+  try {
+    return {
+      ...record,
+      fields: MarcRecord.clone(record, validationOptions).sortFields().fields
+    };
+  } catch (e) {
+    return {
+      error: e.toString(),
+      ...record
+    };
+  }
+}
 
 //-----------------------------------------------------------------------------
 // Add IDs for tracing fields
 
-export function addFieldIDs(record) {
-  //const exclude = ['001', '005'];
-  const exclude = [];
-
-  if (!record) {
-    return null;
+export function addMissingIDs(record) {
+  if (!record?.fields) {
+    return record;
   }
   return {
-    leader: record.leader,
-    fields: record.fields.map(f => {
-      if (f.id || exclude.includes(f.tag)) {
-        return f;
-      }
-      return {...f, id: uuid()};
-    })
+    ...record,
+    fields: generateMissingIDs(record.fields)
+  };
+}
+
+export function generateMissingIDs(fields) {
+  if (!fields) {
+    return fields;
+  }
+  return fields.map(f => f.id ? f : {...f, id: uuid()});
+}
+
+//-----------------------------------------------------------------------------
+// Record modify services
+
+export function modifyRecord(source, include, exclude, replace) {
+  if (!source) {
+    return null;
+  }
+  const result = replaceFields(excludeFields(includeFields(source, include), exclude), replace);
+
+  //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
+  //logger.debug(`Result: ${JSON.stringify(result)}`);
+
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+
+export function includeFields(record, fields) {
+  if (!fields) {
+    return record;
+  }
+
+  return {
+    ...record,
+    fields: [
+      ...record?.fields ? record.fields : [],
+      ...generateMissingIDs(fields)
+    ]
   };
 }
 
 //-----------------------------------------------------------------------------
 
-export function insertField(record, field) {
-  //const r = new MarcRecord(record);
-  record.insertField({...field, id: uuid()});
-}
+export function excludeFields(record, exclude) {
+  if (!exclude) {
+    return record;
+  }
 
-//-----------------------------------------------------------------------------
-
-export function removeExcluded(record, exclude, validationOptions) {
   if (!record?.fields) {
     return record;
   }
 
-  return new MarcRecord(
-    {
-      ...record,
-      fields: record.fields.filter(f => !exclude[f.id])
-    },
-    validationOptions
-  );
+  return {
+    ...record,
+    fields: record.fields.filter(f => !exclude[f.id])
+  };
 }
 
 //-----------------------------------------------------------------------------
 
-export function applyEdits(record, replace, validationOptions = {}) { // eslint-disable-line
+export function replaceFields(record, replace) { // eslint-disable-line
+  if (!replace) {
+    return record;
+  }
+
   if (!record?.fields) {
     return record;
   }
 
-  return new MarcRecord(
-    {
-      ...record,
-      fields: record.fields.map(f => replace[f.id] ? replace[f.id] : f)
-    },
-    validationOptions
-  );
+  return {
+    ...record,
+    fields: record.fields.map(f => replace[f.id] ? replace[f.id] : f)
+  };
 }

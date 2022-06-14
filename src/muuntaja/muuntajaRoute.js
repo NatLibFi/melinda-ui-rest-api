@@ -9,10 +9,8 @@ import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
-import {getRecordByID} from '../bib/bib';
+import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from '../record/recordService';
 import {getUnitTestRecords} from './test/getrecords';
-
-import {removeExcluded, applyEdits, addFieldIDs, insertField} from '../record/recordService';
 
 MarcRecord.setValidationOptions({subfieldValues: false});
 
@@ -20,7 +18,7 @@ MarcRecord.setValidationOptions({subfieldValues: false});
 // Make this a list. Give the records names meant for menu. Add transform options to list.
 // Add handling those to UI
 
-import p2eProfile from './config/print-to-e/';
+import p2eProfile from './config/print-to-e';
 
 const profiles = {
   'p2e': p2eProfile
@@ -47,7 +45,7 @@ export const printToE = {
 
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
-  logger.debug('Creating muuntaja route');
+  //logger.debug('Creating muuntaja route');
 
   return new Router()
     .use(express.json())
@@ -75,7 +73,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   function getProfiles(req, res) {
-    logger.debug('Get profiles');
+    //logger.debug('Get profiles');
     res.json({
       type: {
         'p2e': 'Painetusta > E-aineistoksi',
@@ -96,14 +94,15 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, exclude, replace, insert} = {
+    const {source, base, exclude, replace} = {
       source: null,
       base: null,
       exclude: {},
       replace: {},
-      insert: null,
       ...req.body
     };
+
+    const include = generateMissingIDs(req.body.include);
 
     const options = (opts => ({
       ...optDefaults(),
@@ -121,17 +120,9 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //-------------------------------------------------------------------------
 
+    //const include = generateMissingIDs(req.body.include ?? []);
+
     const {sourceRecord, baseRecord, refRecord} = await loadRecords(source, base);
-
-    if (insert && baseRecord) { // eslint-disable-line functional/no-conditional-statement
-      try {
-        insertField(baseRecord, insert, {subfieldValues: false});
-      } catch (e) {
-        baseRecord.error = e.toString(); // eslint-disable-line functional/immutable-data
-      }
-    }
-
-    //logger.debug(`Base record: ${JSON.stringify(baseRecord, null, 2)}`);
 
     //-------------------------------------------------------------------------
 
@@ -139,14 +130,14 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       sourceRecord,
       baseRecord
     );
-    logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
+    //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
       options: req.body.options,
       ...postProcess(sourceRecord, baseRecord, resultRecord, refRecord),
       exclude,
       replace,
-      insert: null
+      include: []
     });
 
     //-------------------------------------------------------------------------
@@ -163,17 +154,20 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
 
       return {
-        sourceRecord: sourceRecord || {},
-        baseRecord: baseRecord ? baseRecord : getBase(sourceRecord),
+        sourceRecord,
+        baseRecord: modifyRecord(getBase(baseRecord, sourceRecord), include, null, null),
         refRecord
       };
 
-      function getBase(source) { // eslint-disable-line no-unused-vars
-        if (!source) {
-          return {};
+      function getBase(base, source) { // eslint-disable-line no-unused-vars
+        if (base?.leader) {
+          return base;
+        }
+        if (!source?.leader) {
+          return base;
         }
         return {
-          ID: '',
+          ...base,
           ...transformProfile.createBase(source, options)
         };
       }
@@ -188,22 +182,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         ]);
       }
 
-      async function fetchRecord(record) {
-        if (record?.leader) {
-          return record;
-        }
-
-        if (!record?.ID) {
-          return null;
-        }
-
+      function fetchRecord(record) {
         try {
           logger.debug('Fetching...');
           //logger.debug(`Record: ${JSON.stringify(record)}`);
-          return {
-            ...record,
-            ...addFieldIDs(await getRecordByID(record.ID))
-          };
+          return getRecordWithIDs(record);
         } catch (e) {
           return {
             ...record,
@@ -227,8 +210,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       return merger({
         ...transformProfile,
         reducers: transformProfile.getReducers(options),
-        base: removeExcluded(base, exclude, {subfieldValues: false}),
-        source: removeExcluded(source, exclude, {subfieldValues: false})
+        source: modifyRecord(source, null, exclude, null),
+        base: modifyRecord(base, null, exclude, null)
       });
     }
 
@@ -237,29 +220,13 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     //-------------------------------------------------------------------------
 
     function postProcess(source, base, result, reference) {
-      try {
-        return {
-          source,
-          base,
-          transformed: result,
-          result: {
-            ...result,
-            //error: 'Error: Hello, world!',
-            ...applyEdits(result, replace, {subfieldValues: false})
-          },
-          reference
-        };
-      } catch (e) {
-        return {
-          source,
-          base,
-          transformed: result,
-          result: {
-            error: e.toString()
-          },
-          reference
-        };
-      }
+      return {
+        source: asMarcRecord(source),
+        base: asMarcRecord(base),
+        transformed: result,
+        result: asMarcRecord(modifyRecord(result, null, null, replace)),
+        reference
+      };
     }
   }
 }

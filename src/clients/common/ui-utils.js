@@ -11,8 +11,10 @@ export {setNavBar, startProcess, stopProcess}
 //-----------------------------------------------------------------------------
 
 window.eventHandled = function (e) {
-  e.stopPropagation();
-  e.preventDefault();
+  if(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
   return true;
 }
 

@@ -34,6 +34,11 @@
   margin-bottom: 8px;
 }
 
+.marc-record .row-included {
+  background-color: #f8fcd8;
+  /* color:gray; */
+}
+
 .marc-record .row-excluded {
   /* color:gray; */
   opacity: 0.5;

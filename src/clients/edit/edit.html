@@ -11,6 +11,8 @@
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
   <script type="module" src="edit.js"></script>
 </head>
 
@@ -98,6 +100,8 @@
         <div id="result" class="col BoxShadow">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
+            <button class="material-icons" onClick="onNewField(event)">add</button>
+            <button class="material-icons" onClick="onEdit(event)">edit</button>
             <button class="material-icons" onClick="onSave(event)" disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
@@ -112,11 +116,13 @@
   <!-- Field edit dialog -->
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
-      <span id="field" class="marc-record"></span><br/>
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
+      <div id="original" hidden>
+        <span id="field" class="marc-record"></span><br/>
+        <div style="display: flex; justify-content: right;">
+          <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
+        </div>
+        <hr/>
       </div>
-      <hr/>
       <div class="fieldedit marc-record">
         <div style="display: flex;">
           Tag: <div id="tag"></div>
@@ -135,12 +141,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ---------------------------------------------------------------------- -->
-  <!-- Search dialog -->
-  <dialog id="searchDlg">
-    Testi
-  </dialog>
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Tab for server side notes -->

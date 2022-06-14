@@ -2,6 +2,7 @@
 import * as config from '../config';
 import createClient from '@natlibfi/sru-client';
 import {MARCXML} from '@natlibfi/marc-record-serializers';
+import {noValidation} from '../marcUtils/marcUtils';
 
 /*
 function readRecord(client, recordId) {
@@ -42,13 +43,13 @@ export function getRecordByID(id) {
 
     client.searchRetrieve(`rec.id=${id}`)
       .on('record', xmlString => {
-        promise = MARCXML.from(xmlString, {subfieldValues: false});
+        promise = MARCXML.from(xmlString, noValidation);
       })
       .on('end', async () => {
         if (promise) {
           try {
-            const record = await promise;
-            resolve(record);
+            const {leader, fields} = await promise;
+            resolve({ID: id, leader, fields});
           } catch (err) {
             reject(err);
           }
