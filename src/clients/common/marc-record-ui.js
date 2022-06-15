@@ -35,7 +35,7 @@ export function showRecord(record, dest, decorator = {}) {
   }
 
   if(record.fields) for (const field of record.fields) {
-    content = decorator?.getContent ? decorator.getContent(field) : field
+    const content = decorator?.getContent ? decorator.getContent(field) : field
     addField(recordDiv, content, decorator);
   }
 }
