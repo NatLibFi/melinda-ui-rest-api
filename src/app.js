@@ -12,6 +12,7 @@ import createAuthRoute from './auth/authRoute';
 import createBibRoute from './bib/bibRoute';
 import createRecordRoute from './record/recordRoute';
 import createMuuntajaRoute from './muuntaja/muuntajaRoute';
+import createViewerRoute from './viewer/viewerRoute';
 
 //import fs from 'fs';
 import path from 'path';
@@ -21,7 +22,7 @@ export default function ({
   httpPort, enableProxy,
   xServiceURL, userLibrary,
   ownAuthzURL, ownAuthzApiKey,
-  sruUrl, jwtOptions
+  sruUrl, jwtOptions, melindaApiOptions
 }) {
   const logger = createLogger();
   const server = initExpress();
@@ -60,12 +61,6 @@ export default function ({
 
     app.use(passport.initialize());
 
-    // REST API
-    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
-    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRoute(sruUrl));
-    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
-    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
-
     // Clients
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
@@ -73,6 +68,13 @@ export default function ({
     app.use('/common', express.static(path.join(__dirname, 'clients/common/')));
     app.use('/login', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
+
+    // REST API
+    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
+    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRoute(sruUrl));
+    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
+    app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
 
     app.use(handleError);
 

@@ -1,6 +1,13 @@
 /* ---------------------------------------------------------------------------- */
 /* CSS for navbar */
 
+/* Montserrat - Designed by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly */
+/* source https://fonts.google.com/specimen/Montserrat 2022-07-28*/
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("../fonts/Montserrat-Regular.ttf");
+}
+
 .NavBar {
   /*
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
@@ -28,8 +35,9 @@
   display: inline-block;
   text-transform: uppercase;
   padding-top: 32px;
+  font-family: 'Montserrat-Regular', Arial, sans-serif;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 100;
   line-height: 18px;
 }
 

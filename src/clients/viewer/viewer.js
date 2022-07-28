@@ -11,7 +11,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui
 import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {getRecord} from "../common/rest.js";
+import {getMatchLog, getMergeLog} from "../common/rest.js";
 
 var viewing = {
   record1: {},
@@ -33,8 +33,20 @@ window.initialize = function () {
   function authSuccess(user) {
     const username = document.querySelector("#account-menu #username")
     username.innerHTML = Account.get()["Name"];
-    showTab('muuntaja');
-    doFetch();
+    showTab('viewer');
+    const {id, sequence} = parseUrlParameters();
+  }
+
+  function parseUrlParameters() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get('id') || '';
+    const sequence = urlParams.get('sequence') || '';
+
+    document.querySelector(`#viewer #id`).defaultValue = id;
+    document.querySelector(`#viewer #sequence`).defaultValue = sequence;
+
+    return {id, sequence};
   }
 }
 
@@ -55,39 +67,40 @@ var transformed = {
   record3: {}
 }
 
-window.doFetch = function (event = undefined) {
+window.doSearchPress = function (event = undefined) {
+  const id = document.querySelector(`#viewer #id`).value || '';
+  const sequence = document.querySelector(`#viewer #sequence`).value || 1;
+
+  doFetch(event, id, sequence);
+}
+
+window.doFetch = function (event = undefined, id = '', sequence) {
   eventHandled(event)
 
   console.log('Fetching...');
 
-  const ID1 = document.querySelector(`#muuntaja .record-merge-panel #record1 #ID`).value;
-  const ID2 = document.querySelector(`#muuntaja .record-merge-panel #record2 #ID`).value;
-  const ID3 = document.querySelector(`#muuntaja .record-merge-panel #record3 #ID`).value;
-
-  if(ID1 !== "" && ID1 !== record1?.ID) {
-    getRecord(ID1)
-      .then(response => response.json())
-      .then(record => {
-        transformed.record1 = record;
-        showRecord(transformed.record1, "record1")
-      })
+  if (id === '') {
+    console.log('Nothing to fetching...');
+    return;
   }
 
-  if(ID2 !== "" && ID2 !== record2?.ID) {
-    getRecord(ID2)
-      .then(response => response.json())
-      .then(record => {
-        transformed.record2 = record;
-        showRecord(transformed.record2, "record2")
-      })
-  }
+  window.history.pushState('', 'viewer', `/viewer/?id=${id}&sequence=${sequence}`);
+  //id=74dce3cb-4205-426c-8fad-4389e785e9eb
+  //sequence=11
+  getMergeLog(id, sequence)
+    .then(response => {
+      console.log('Got response!');
+      console.log(response);
+      return response.json();
+    })
+    .then(log => {
+      console.log(log);
+      showRecord(log[0].incomingRecord, "record1", {}, 'viewer');
+      showRecord(log[0].databaseRecord, "record2", {}, 'viewer');
+      showRecord(log[0].mergedRecord, "record3", {}, 'viewer');
+    })
+}
 
-  if(ID3 !== "" && ID3 !== record3?.ID) {
-    getRecord(ID3)
-      .then(response => response.json())
-      .then(record => {
-        transformed.record3 = record;
-        showRecord(transformed.record3, "record3")
-      })
-  }
+window.copyLink = function () {
+  navigator.clipboard.writeText(window.location);
 }

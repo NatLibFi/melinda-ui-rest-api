@@ -7,7 +7,6 @@
 import {Account} from "../common/auth.js"
 
 //-----------------------------------------------------------------------------
-
 const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
 
 //console.log(`REST: ${RESTurl}`);
@@ -34,10 +33,10 @@ function doAuthRequest(token, url = '') {
       }
     }
   )
-  .then(response => {
-    if (!response.ok) throw undefined;
-    return response;
-  });
+    .then(response => {
+      if (!response.ok) throw undefined;
+      return response;
+    });
 }
 
 //*****************************************************************************
@@ -87,7 +86,7 @@ export function profileRequest() {
       }
     }
   )
-  .then(response => response.json());
+    .then(response => response.json());
 }
 
 //-----------------------------------------------------------------------------
@@ -103,6 +102,49 @@ export function transformRequest(transformed) {
         Authorization: Account.getToken()
       },
       body: JSON.stringify(transformed)
+    }
+  )
+}
+
+//*****************************************************************************
+// LOGS (viewer)
+//*****************************************************************************
+
+export function getMatchLog(id, sequence) {
+  return fetch(
+    `${RESTurl}/viewer/match-log/${id}${sequence ? `/${sequence}` : ''}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        Authorization: Account.getToken()
+      }
+    }
+  )
+}
+
+export function getMatchValidationLog(id, sequence) {
+  return fetch(
+    `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `/${sequence}` : ''}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        Authorization: Account.getToken()
+      }
+    }
+  )
+}
+
+export function getMergeLog(id, sequence) {
+  return fetch(
+    `${RESTurl}/viewer/merge-log/${id}${sequence ? `/${sequence}` : ''}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        Authorization: Account.getToken()
+      }
     }
   )
 }

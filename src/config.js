@@ -19,3 +19,9 @@ export const jwtOptions = {
   audience: readEnvironmentVariable('JWT_AUDIENCE', {defaultValue: 'melinda-'}),
   algorithms: readEnvironmentVariable('JWT_ALGORITHMS', {defaultValue: ['HS512'], format: (v) => JSON.parse(v)})
 };
+
+export const melindaApiOptions = {
+  melindaApiUrl: readEnvironmentVariable('MELINDA_API_URL', {defaultValue: false}),
+  melindaApiUsername: readEnvironmentVariable('MELINDA_API_USERNAME', {defaultValue: ''}),
+  melindaApiPassword: readEnvironmentVariable('MELINDA_API_PASSWORD', {defaultValue: ''})
+};

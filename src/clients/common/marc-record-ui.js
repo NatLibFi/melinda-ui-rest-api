@@ -7,11 +7,11 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-export function showRecord(record, dest, decorator = {}) {
+export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja') {
   console.log("Show Record:", record);
 
   // Get div to fill in the fields
-  const recordDiv = document.querySelector(`#muuntaja .record-merge-panel #${dest} #Record`);
+  const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
   recordDiv.innerHTML = '';
 
   if (!record) return;

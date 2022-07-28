@@ -17,6 +17,8 @@
 }
 
 .marc-record .row {
+  display: flex;
+  flex-wrap: wrap;
   border: 1px white solid;
   padding-left: 8px;
   padding-right: 4px;
