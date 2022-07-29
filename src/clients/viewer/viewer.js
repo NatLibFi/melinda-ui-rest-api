@@ -107,7 +107,7 @@ window.copyLink = function (event) {
     return;
   }
 
-  navigator.clipboard.writeText(`${window.location}/?id=${id}&sequence=${sequence}`);
+  navigator.clipboard.writeText(`${window.location}?id=${id}&sequence=${sequence}`);
 }
 
 window.protect = function (event = undefined) {
