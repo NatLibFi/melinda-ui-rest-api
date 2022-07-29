@@ -28,6 +28,8 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     .get('/match-log/:id/:sequence', getMatchLog)
     .get('/match-validation-log/:id/:sequence', getMatchValidationLog)
     .get('/merge-log/:id/:sequence', getMergeLog)
+    .put('/protect/:id/:sequence', protectLog)
+    .delete('/remove/:id', removeLog)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -75,5 +77,25 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     const result = await logService.getMergeLog(params);
     logger.debug(JSON.stringify(result));
     res.json(result);
+  }
+
+  function protectLog(req, res, next) {
+    const params = {
+      correlationId: req.params.id,
+      sequence: req.params.sequence
+    };
+
+    logger.debug(`Protecting log id: ${params.correlationId}, sequence: ${params.sequence}`);
+    res.status(200);
+  }
+
+  function removeLog(req, res, next) {
+    const params = {
+      correlationId: req.params.id,
+      logItemType: req.query.logType || undefined
+    };
+
+    logger.debug(`Removing log: ${params.correlationId}`);
+    res.status(200);
   }
 }

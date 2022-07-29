@@ -123,6 +123,8 @@ export function getMatchLog(id, sequence) {
   )
 }
 
+//-----------------------------------------------------------------------------
+
 export function getMatchValidationLog(id, sequence) {
   return fetch(
     `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `/${sequence}` : ''}`,
@@ -136,11 +138,43 @@ export function getMatchValidationLog(id, sequence) {
   )
 }
 
+//-----------------------------------------------------------------------------
+
 export function getMergeLog(id, sequence) {
   return fetch(
     `${RESTurl}/viewer/merge-log/${id}${sequence ? `/${sequence}` : ''}`,
     {
       method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        Authorization: Account.getToken()
+      }
+    }
+  )
+}
+
+//-----------------------------------------------------------------------------
+
+export function protectLog(id, sequence) {
+  return fetch(
+    `${RESTurl}/viewer/protect/${id}${sequence ? `/${sequence}` : ''}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        Authorization: Account.getToken()
+      }
+    }
+  )
+}
+
+//-----------------------------------------------------------------------------
+
+export function removeLog(id, logType) {
+  return fetch(
+    `${RESTurl}/viewer/remove/${id}${sequence ? `?logType=${logType}` : ''}`,
+    {
+      method: 'DELETE',
       headers: {
         'Accept': 'application/json',
         Authorization: Account.getToken()

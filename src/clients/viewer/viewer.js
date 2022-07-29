@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// New "Reactless" Muuntaja Sketch
+// New "Reactless" Viewer Sketch
 //
 //*****************************************************************************
 
@@ -11,7 +11,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui
 import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {getMatchLog, getMergeLog} from "../common/rest.js";
+import {getMergeLog, protectLog, removeLog} from "../common/rest.js";
 
 var viewing = {
   record1: {},
@@ -34,7 +34,7 @@ window.initialize = function () {
     const username = document.querySelector("#account-menu #username")
     username.innerHTML = Account.get()["Name"];
     showTab('viewer');
-    const {id, sequence} = parseUrlParameters();
+    parseUrlParameters();
   }
 
   function parseUrlParameters() {
@@ -45,8 +45,7 @@ window.initialize = function () {
 
     document.querySelector(`#viewer #id`).defaultValue = id;
     document.querySelector(`#viewer #sequence`).defaultValue = sequence;
-
-    return {id, sequence};
+    window.history.pushState('', 'viewer', `/viewer/`);
   }
 }
 
@@ -58,7 +57,7 @@ window.onAccount = function (e) {
 }
 
 //-----------------------------------------------------------------------------
-// Do transform
+// Do button actions
 //-----------------------------------------------------------------------------
 
 var transformed = {
@@ -84,9 +83,6 @@ window.doFetch = function (event = undefined, id = '', sequence) {
     return;
   }
 
-  window.history.pushState('', 'viewer', `/viewer/?id=${id}&sequence=${sequence}`);
-  //id=74dce3cb-4205-426c-8fad-4389e785e9eb
-  //sequence=11
   getMergeLog(id, sequence)
     .then(response => {
       console.log('Got response!');
@@ -101,6 +97,48 @@ window.doFetch = function (event = undefined, id = '', sequence) {
     })
 }
 
-window.copyLink = function () {
-  navigator.clipboard.writeText(window.location);
+window.copyLink = function (event) {
+  eventHandled(event)
+
+  const id = document.querySelector(`#viewer #id`).value || '';
+  const sequence = document.querySelector(`#viewer #sequence`).value || '';
+  if (id === '' || sequence === '') {
+    navigator.clipboard.writeText(window.location);
+    return;
+  }
+
+  navigator.clipboard.writeText(`${window.location}/?id=${id}&sequence=${sequence}`);
+}
+
+window.protect = function (event = undefined) {
+  eventHandled(event)
+  console.log('Protecting...');
+
+
+  const id = document.querySelector(`#viewer #id`).value || '';
+  const sequence = document.querySelector(`#viewer #sequence`).value || 1;
+
+  if (id === '') {
+    console.log('Nothing to protect...');
+    return;
+  }
+
+  protectLog(id, sequence)
+    .then(response => console.log(response));
+}
+
+window.remove = function (event = undefined) {
+  eventHandled(event)
+  console.log('Removing...');
+
+  const id = document.querySelector(`#viewer #id`).value || '';
+  const logType = 'MERGE_LOG';
+
+  if (id === '') {
+    console.log('Nothing to remove...');
+    return;
+  }
+
+  removeLog(id, logType)
+    .then(response => console.log(response));
 }
