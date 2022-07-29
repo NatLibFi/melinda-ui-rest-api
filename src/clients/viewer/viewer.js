@@ -75,12 +75,12 @@ window.doSearchPress = function (event = undefined) {
 
 window.doFetch = function (event = undefined, id = '', sequence) {
   eventHandled(event)
-
+  startProcess();
   console.log('Fetching...');
 
   if (id === '') {
     console.log('Nothing to fetching...');
-    return;
+    return stopProcess();
   }
 
   getMergeLog(id, sequence)
@@ -94,6 +94,7 @@ window.doFetch = function (event = undefined, id = '', sequence) {
       showRecord(log[0].incomingRecord, "record1", {}, 'viewer');
       showRecord(log[0].databaseRecord, "record2", {}, 'viewer');
       showRecord(log[0].mergedRecord, "record3", {}, 'viewer');
+      stopProcess();
     })
 }
 
@@ -130,15 +131,19 @@ window.protect = function (event = undefined) {
 window.remove = function (event = undefined) {
   eventHandled(event)
   console.log('Removing...');
+  startProcess();
 
   const id = document.querySelector(`#viewer #id`).value || '';
   const logType = 'MERGE_LOG';
 
   if (id === '') {
     console.log('Nothing to remove...');
-    return;
+    return stopProcess();
   }
 
   removeLog(id, logType)
-    .then(response => console.log(response));
+    .then(response => {
+      console.log(response)
+      stopProcess();
+    });
 }
