@@ -1,0 +1,139 @@
+
+/* ---------------------------------------------------------------------------- */
+/* Styles for MARC records */
+
+.marc-record {
+  /* margin-left: 20pt; */
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-size: 14.5px;
+  /*
+  font-weight: 400;
+  line-height: 1.5;
+  */
+}
+
+.marc-record > * {
+  font: inherit;
+}
+
+.marc-record .row {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px white solid;
+  padding-left: 8px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.marc-record .row:hover {
+  border: 1px dashed grey;
+}
+
+.marc-record .error {
+  background-color: #eba0a060;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.marc-record .row-included {
+  background-color: #f8fcd8;
+  /* color:gray; */
+}
+
+.marc-record .row-excluded {
+  /* color:gray; */
+  opacity: 0.5;
+}
+
+.marc-record .row-replaced {
+  /* background-color: #f8fcd8; */
+  background-color: rgb(255, 238, 241);
+  /* background-color: #75c4bdb0; */
+  /* background-color: rgb(179, 221, 235); */
+  /* background-color: #f1b5f760; */
+}
+
+.marc-record .row-fromSource {
+  background-color: #ebfaf9;
+}
+
+.marc-record .row-fromBase {
+  background-color: #f8fcd8;
+}
+
+.marc-record .tag {
+  color: #448aff;
+  margin-right: 9pt;
+}
+
+.marc-record .inds {
+  color: #448aff;
+  margin-right: 9pt;
+}
+
+.marc-record .subfield {
+  margin-right: 4px;
+}
+
+.marc-record .subfield .code {
+  color: #e57373;
+  margin-right: 2px;
+}
+
+.marc-record .subfield .value {
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Styles for MARC record field edit */
+
+.modal-content button {
+  margin: 2px 8px;
+}
+
+.fieldedit .editable {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.fieldedit .subfield {
+  /* padding: 6px 8px; */
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  margin: 2px 0px;
+}
+
+.fieldedit .subfield:hover {
+  background-color: rgb(236, 236, 236);
+}
+
+.fieldedit .subfield[disabled] {
+  color: lightgray;
+}
+
+.fieldedit .ghost-row {
+  /* border: 1px solid grey; */
+  /*padding: 6px 10px;*/
+  background-color: lightblue;
+}
+
+.fieldedit button.material-icons {
+  font-size: 16px;
+  color: inherit;
+  border: 0;
+  background-color: transparent;
+  padding: 4px 4px;
+  cursor: pointer;
+}
+
+.fieldedit button.material-icons:disabled {
+  color: gray;
+  cursor: default;
+}
+
+.fieldedit button.material-icons:enabled:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+  /*transition: background-color .10s;*/
+}

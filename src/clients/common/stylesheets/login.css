@@ -1,0 +1,23 @@
+/* ---------------------------------------------------------------------------- */
+
+#login {
+  margin: 50px auto;
+  max-width: 400px;
+  padding: 8px;
+}
+
+#login > * {
+  padding: 8px 0;
+  margin-bottom: 16px;
+}
+
+#login input {
+  font-size: 16pt;
+  padding-top: 4px;
+  background-color: rgb(232, 240, 254);
+  font-size: 2rem;
+  border-bottom: 1px solid #4caf50;
+  -webkit-box-shadow: 0 1px 0 0 #4caf50;
+  box-shadow: 0 1px 0 0 #4caf50;
+}
+

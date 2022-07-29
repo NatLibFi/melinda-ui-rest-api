@@ -1,2 +1,4 @@
 # melinda-ui-rest-api
-Restfull api for melinda uis
+
+REST API for Melinda UIs.
+

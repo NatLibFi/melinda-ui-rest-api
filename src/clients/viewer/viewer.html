@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- Head -->
+<!-- -------------------------------------------------------------------------- -->
+
+<head>
+  <link rel="shortcut icon" href="/common/images/favicon.png" />
+  <link rel="stylesheet" href="viewer.css" />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script type="module" src="viewer.js"></script>
+</head>
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- Body -->
+<!-- -------------------------------------------------------------------------- -->
+
+<body onload="initialize()">
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Nav bar -->
+
+  <div id="navbar"></div>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Application "tabs" -->
+
+  <div id="root">
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Loading "screen" -->
+
+    <div id="loading">
+    </div>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Login tab -->
+    <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
+
+    <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
+      <div class="VBox Input">
+        <label for="username">Käyttäjätunnus</label>
+        <input id="username" name="username" />
+      </div>
+      <div class="VBox Input">
+        <label for="password">Salasana</label>
+        <input id="password" type="password" name="password" />
+      </div>
+      <div class="HBox Input" style="align-items: baseline;">
+        <input id="acceptterms" type="checkbox">
+        <label for="acceptterms" style="padding-left: 8px;">
+          Hyväksyn
+          <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
+            tietosuojaselosteen</a>
+          ja evästeiden käytön.
+          <br /><br />
+          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+      </div>
+      <div id="info"></div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end;">
+        <button onClick="return login(event)">Kirjaudu</button>
+      </div>
+    </form>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Muuntaja tab -->
+
+    <div id="viewer" hidden>
+      <div class="IconBar ToolBar">
+        <button class="material-icons"><a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
+            rel="noopener noreferrer">help_outline</a></button>
+        <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
+        <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
+        <div class="dropdown">
+          <button id="account-btn" class="material-icons">account_circle</button>
+          <div id="account-menu" class="dropdown-content">
+            <div class="menu-header" id="username">Tuntematon</div>
+            <hr />
+            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+          </div>
+        </div>
+      </div>
+      <div class="tools ToolBar">
+        <form class="ToolBar HBox">
+          <div class="Filler VBox Input">
+            <label>Id (Correlation id)</label>
+            <input class="inputField" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+          </div>
+          <div class="Filler VBox Input">
+            <label>Sequence</label>
+            <input class="inputField" id="sequence" type="number" placeholder=1 />
+          </div>
+          <button class="material-icons tooltip" data-text="Etsi" onclick="return doSearchPress(event)">search</button>
+        </form>
+        <button id="protect" class="material-icons tooltip" data-text="Turvaa" onclick="return protect(event)">push_pin</button>
+        <button id="share" class="material-icons tooltip" data-text="Jaa" onclick="return copyLink(event)">share</button>
+        <button id="delete" class="material-icons tooltip" data-text="Poista" onclick="return remove(event)">delete</button>
+        <button id="settings" class="material-icons tooltip" data-text="Asetukset">settings</button>
+      </div>
+      <div class="record-merge-panel">
+
+        <div class="col">
+          <div id="record1" class="BoxShadow">
+            <div class="header">
+              <p>Yhdistyvä tietue</p>
+            </div>
+            <div id="Record" class="marc-record">
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div id="record2" class="BoxShadow">
+            <div class="header">
+              <p>Pohja tietue</p>
+            </div>
+            <div id="Record" class="marc-record">
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div id="record3" class="BoxShadow">
+            <div class="header">
+              <p>Yhdistetty tietue</p>
+            </div>
+            <div id="Record" class="marc-record">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Field edit dialog -->
+  <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
+    <div class="modal-content BoxShadow" onclick="return ignore(event)">
+      <span id="field" class="marc-record"></span><br />
+      <div style="display: flex; justify-content: right;">
+        <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
+      </div>
+      <hr />
+      <div class="fieldedit marc-record">
+        <div style="display: flex;">
+          Tag: <div id="tag"></div>
+          Ind1: <div id="ind1"></div>
+          Ind2: <div id="ind2"></div>
+        </div>
+        <hr />
+        <div id="fieldlist" width="100%">
+        </div>
+        <button onclick="return onAddField(event)">Uusi osakenttä</button>
+      </div>
+      <hr />
+      <div style="display: flex; justify-content: right;">
+        <button onclick="return editDlgClose(event)">Peru muutokset</button>
+        <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Search dialog -->
+  <dialog id="searchDlg">
+    Testi
+  </dialog>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Tab for server side notes -->
+  <div id="server-note" hidden>
+  </div>
+
+</body>
+
+</html>

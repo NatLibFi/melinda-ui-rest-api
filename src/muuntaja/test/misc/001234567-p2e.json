@@ -1,0 +1,1271 @@
+{
+  "source": {
+    "ID": "001234567",
+    "record": {
+      "leader": "01471cam a22003974i 4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "001234567",
+          "id": "9af4bd5f-8b46-4af6-99fc-b2423e20992c"
+        },
+        {
+          "tag": "003",
+          "value": "FI-MELINDA",
+          "id": "011a2ee4-e197-426c-936d-076690b82020"
+        },
+        {
+          "tag": "005",
+          "value": "20210611112008.0",
+          "id": "d0a24fad-059d-4b92-b928-2aca8f0834f7"
+        },
+        {
+          "tag": "008",
+          "value": "890904s1985    be |||||||||||||||||fre||",
+          "id": "7be2ba7c-7cdc-46d6-8eac-383935aa5655"
+        },
+        {
+          "tag": "035",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "(FI-MELINDA)001234567"
+            }
+          ],
+          "id": "74e42ff8-f0da-4cc2-89af-86448045a5db"
+        },
+        {
+          "tag": "041",
+          "ind1": "0",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "fre"
+            }
+          ],
+          "id": "2e15d37a-7f8d-40ef-9d3b-75b48253159c",
+          "from": "source"
+        },
+        {
+          "tag": "080",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "581.4"
+            }
+          ],
+          "id": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566",
+          "from": "source"
+        },
+        {
+          "tag": "080",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "582.6/.9"
+            },
+            {
+              "code": "x",
+              "value": "(8)"
+            }
+          ],
+          "id": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec",
+          "from": "source"
+        },
+        {
+          "tag": "100",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Dechamps, Roger."
+            }
+          ],
+          "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30",
+          "from": "source"
+        },
+        {
+          "tag": "245",
+          "ind1": "1",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Etude anatomique de bois d'Amerique du sud."
+            },
+            {
+              "code": "n",
+              "value": "Vol. 3,"
+            },
+            {
+              "code": "p",
+              "value": "Linaceae a Quinaceae /"
+            },
+            {
+              "code": "c",
+              "value": "par Roger Dechamps."
+            }
+          ],
+          "id": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e",
+          "from": "source"
+        },
+        {
+          "tag": "260",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Tervuren,"
+            },
+            {
+              "code": "c",
+              "value": "1985."
+            }
+          ],
+          "id": "0a3d2c68-07ef-4ffd-a726-581c6d39352a",
+          "from": "source"
+        },
+        {
+          "tag": "300",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "471 s."
+            }
+          ],
+          "id": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4",
+          "from": "source"
+        },
+        {
+          "tag": "336",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "teksti"
+            },
+            {
+              "code": "b",
+              "value": "txt"
+            },
+            {
+              "code": "2",
+              "value": "rdacontent"
+            }
+          ],
+          "id": "f66926b8-10fe-47c7-a5e1-b06dae7e757a",
+          "from": "source"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "käytettävissä ilman laitetta"
+            },
+            {
+              "code": "b",
+              "value": "n"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "id": "69089e35-f750-4cd7-9918-b3b5527c7a96"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "nide"
+            },
+            {
+              "code": "b",
+              "value": "nc"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "id": "b20f4930-1855-473c-a8d3-d8cc33c1cfc8"
+        },
+        {
+          "tag": "490",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Annalen / Koninklijk Museum voor Midden-Afrika, Economische wetenschappen,"
+            },
+            {
+              "code": "x",
+              "value": "0773-4123 ;"
+            },
+            {
+              "code": "v",
+              "value": "14"
+            }
+          ],
+          "id": "8422a785-803e-49ff-8e49-de2da34766e5",
+          "from": "source"
+        },
+        {
+          "tag": "830",
+          "ind1": " ",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Annalen / Koninklijk Museum voor Midden-Afrika,"
+            },
+            {
+              "code": "p",
+              "value": "Economische wetenschappen,"
+            },
+            {
+              "code": "x",
+              "value": "0773-4123 ;"
+            },
+            {
+              "code": "v",
+              "value": "14."
+            }
+          ],
+          "id": "5e33b132-5e9f-4b71-81c8-1d6097383722",
+          "from": "source"
+        },
+        {
+          "tag": "SID",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "c",
+              "value": "261898"
+            },
+            {
+              "code": "b",
+              "value": "helka"
+            }
+          ],
+          "id": "eef5aef1-2c57-488a-917b-866796ad83a7"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "CONV-ISBD"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20120402"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0817"
+            }
+          ],
+          "id": "d0566522-7c1e-4358-b34e-458308968d0e"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "LOAD-HELKA"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20140809"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0153"
+            }
+          ],
+          "id": "f52681d5-6abd-482a-9c8e-c7646d07c365"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "CONV-RDA"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20160319"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "0821"
+            }
+          ],
+          "id": "0f9efc42-420f-4758-a35b-de03b763bf7f"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1311"
+            }
+          ],
+          "id": "5ecdfdb9-f4dc-4d9d-aca3-84f8f4891f11"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1311"
+            }
+          ],
+          "id": "f4e2c6d2-ca25-42e1-812f-79acb5c18540"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1315"
+            }
+          ],
+          "id": "e0d9bafd-1b3d-4dae-a915-948fa89ea70c"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b",
+              "value": "30"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1315"
+            }
+          ],
+          "id": "677f40bd-ba03-48a9-bf6d-c7e8f975566f"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1316"
+            }
+          ],
+          "id": "48c5dd84-f38f-49c5-9856-c0a239de226e"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1415"
+            }
+          ],
+          "id": "0ca2e9af-51c6-46e9-8575-3e047e5c7dc2"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20210305"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1415"
+            }
+          ],
+          "id": "611e672a-34a9-4b69-ba5a-bd0d3e33c74f"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "MINTTU"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20210422"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1336"
+            }
+          ],
+          "id": "75306164-35b5-4446-be77-9c8d282ecfee"
+        },
+        {
+          "tag": "CAT",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "LOAD-ALINK"
+            },
+            {
+              "code": "b"
+            },
+            {
+              "code": "c",
+              "value": "20210611"
+            },
+            {
+              "code": "l",
+              "value": "FIN01"
+            },
+            {
+              "code": "h",
+              "value": "1120"
+            }
+          ],
+          "id": "becf9739-7018-4096-8644-952d9c1cd766"
+        },
+        {
+          "tag": "LOW",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "HELKA"
+            }
+          ],
+          "id": "91985721-4562-4c7f-9d92-9e17f30021ee"
+        }
+      ]
+    }
+  },
+  "base": {
+    "ID": "",
+    "record": {
+      "leader": "00000cam^a22006134i^4500",
+      "fields": [
+        {
+          "tag": "001",
+          "value": "000000000",
+          "id": "07b7a27e-1fc0-4f30-b181-c54cb4e9d039"
+        },
+        {
+          "tag": "007",
+          "value": "cr^||^||||||||",
+          "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a",
+          "from": "base"
+        },
+        {
+          "tag": "008",
+          "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
+          "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95",
+          "from": "base"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": ""
+            },
+            {
+              "code": "q",
+              "value": "PDF"
+            }
+          ],
+          "id": "56c9673d-a2bf-408f-b796-f513e15c17ae",
+          "from": "base"
+        },
+        {
+          "tag": "041",
+          "ind1": "0",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "eng"
+            }
+          ],
+          "id": "ac44d08d-5532-49bc-b2b9-c863cf930b1a"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "id": "66029c77-30a4-42a2-bf23-6499ca97fe87",
+          "from": "base"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "verkkoaineisto"
+            },
+            {
+              "code": "b",
+              "value": "cr"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "id": "55e6067b-8eba-44c1-a53c-293641a40729",
+          "from": "base"
+        }
+      ]
+    }
+  },
+  "transformed": {
+    "notes": [],
+    "record": {
+      "_validationOptions": {},
+      "leader": "00000cam^a22006134i^4500",
+      "fields": [
+        {
+          "ind1": " ",
+          "ind2": " ",
+          "tag": "001",
+          "value": "000000000"
+        },
+        {
+          "tag": "007",
+          "value": "cr^||^||||||||",
+          "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a"
+        },
+        {
+          "tag": "008",
+          "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
+          "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": ""
+            },
+            {
+              "code": "q",
+              "value": "PDF"
+            }
+          ],
+          "id": "56c9673d-a2bf-408f-b796-f513e15c17ae"
+        },
+        {
+          "tag": "041",
+          "ind1": "0",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "fre"
+            }
+          ],
+          "id": "2e15d37a-7f8d-40ef-9d3b-75b48253159c"
+        },
+        {
+          "tag": "080",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "581.4"
+            }
+          ],
+          "id": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566"
+        },
+        {
+          "tag": "080",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "582.6/.9"
+            },
+            {
+              "code": "x",
+              "value": "(8)"
+            }
+          ],
+          "id": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec"
+        },
+        {
+          "tag": "100",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Dechamps, Roger."
+            }
+          ],
+          "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30"
+        },
+        {
+          "tag": "245",
+          "ind1": "1",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Etude anatomique de bois d'Amerique du sud."
+            },
+            {
+              "code": "n",
+              "value": "Vol. 3,"
+            },
+            {
+              "code": "p",
+              "value": "Linaceae a Quinaceae /"
+            },
+            {
+              "code": "c",
+              "value": "par Roger Dechamps."
+            }
+          ],
+          "id": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e"
+        },
+        {
+          "tag": "260",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Tervuren,"
+            },
+            {
+              "code": "c",
+              "value": "1985."
+            }
+          ],
+          "id": "0a3d2c68-07ef-4ffd-a726-581c6d39352a"
+        },
+        {
+          "tag": "300",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "1 verkkoaineisto (471 sivua)"
+            }
+          ],
+          "id": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4"
+        },
+        {
+          "tag": "336",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "teksti"
+            },
+            {
+              "code": "b",
+              "value": "txt"
+            },
+            {
+              "code": "2",
+              "value": "rdacontent"
+            }
+          ],
+          "id": "f66926b8-10fe-47c7-a5e1-b06dae7e757a"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "id": "66029c77-30a4-42a2-bf23-6499ca97fe87"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "verkkoaineisto"
+            },
+            {
+              "code": "b",
+              "value": "cr"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "id": "55e6067b-8eba-44c1-a53c-293641a40729"
+        },
+        {
+          "tag": "490",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Annalen / Koninklijk Museum voor Midden-Afrika, Economische wetenschappen,"
+            },
+            {
+              "code": "x",
+              "value": ";"
+            },
+            {
+              "code": "v",
+              "value": "14"
+            }
+          ],
+          "id": "8422a785-803e-49ff-8e49-de2da34766e5"
+        },
+        {
+          "tag": "530",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Julkaistu myös painettuna."
+            }
+          ]
+        },
+        {
+          "tag": "830",
+          "ind1": " ",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Annalen / Koninklijk Museum voor Midden-Afrika,"
+            },
+            {
+              "code": "p",
+              "value": "Economische wetenschappen,"
+            },
+            {
+              "code": "x",
+              "value": ";"
+            },
+            {
+              "code": "v",
+              "value": "14."
+            }
+          ],
+          "id": "5e33b132-5e9f-4b71-81c8-1d6097383722"
+        },
+        {
+          "tag": "LOW",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "[LOWTAG]"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "result": {
+    "notes": [],
+    "record": {
+      "_validationOptions": {},
+      "leader": "00000cam^a22006134i^4500",
+      "fields": [
+        {
+          "ind1": " ",
+          "ind2": " ",
+          "tag": "001",
+          "value": "000000000"
+        },
+        {
+          "tag": "007",
+          "value": "cr^||^||||||||",
+          "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a",
+          "from": "base"
+        },
+        {
+          "tag": "008",
+          "value": "^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|fin|^",
+          "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95",
+          "from": "base"
+        },
+        {
+          "tag": "020",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": ""
+            },
+            {
+              "code": "q",
+              "value": "PDF"
+            }
+          ],
+          "id": "56c9673d-a2bf-408f-b796-f513e15c17ae",
+          "from": "base"
+        },
+        {
+          "tag": "041",
+          "ind1": "0",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "fre"
+            }
+          ],
+          "id": "2e15d37a-7f8d-40ef-9d3b-75b48253159c",
+          "from": "source"
+        },
+        {
+          "tag": "080",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "581.4"
+            }
+          ],
+          "id": "d0e6d9ef-03f2-4c69-843b-a90a1a46e566",
+          "from": "source"
+        },
+        {
+          "tag": "080",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "582.6/.9"
+            },
+            {
+              "code": "x",
+              "value": "(8)"
+            }
+          ],
+          "id": "f8cc9d4b-ec2d-40ff-84d6-8a17060306ec",
+          "from": "source"
+        },
+        {
+          "tag": "100",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Dechamps, Roger."
+            }
+          ],
+          "id": "13fb4840-5764-4d3b-9e4e-9435e6489e30",
+          "from": "source"
+        },
+        {
+          "tag": "245",
+          "ind1": "1",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Etude anatomique de bois d'Amerique du sud."
+            },
+            {
+              "code": "n",
+              "value": "Vol. 3,"
+            },
+            {
+              "code": "p",
+              "value": "Linaceae a Quinaceae /"
+            },
+            {
+              "code": "c",
+              "value": "par Roger Dechamps."
+            }
+          ],
+          "id": "994b7efb-bf0e-4f9f-bb7f-60cdf6985b9e",
+          "from": "source"
+        },
+        {
+          "tag": "260",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Tervuren,"
+            },
+            {
+              "code": "c",
+              "value": "1985."
+            }
+          ],
+          "id": "0a3d2c68-07ef-4ffd-a726-581c6d39352a",
+          "from": "source"
+        },
+        {
+          "tag": "300",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "1 verkkoaineisto (471 sivua)"
+            }
+          ],
+          "id": "697e6a0b-003d-4dd6-bd0b-e8c90f6ccee4",
+          "from": "source"
+        },
+        {
+          "tag": "336",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "teksti"
+            },
+            {
+              "code": "b",
+              "value": "txt"
+            },
+            {
+              "code": "2",
+              "value": "rdacontent"
+            }
+          ],
+          "id": "f66926b8-10fe-47c7-a5e1-b06dae7e757a",
+          "from": "source"
+        },
+        {
+          "tag": "337",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "tietokonekäyttöinen"
+            },
+            {
+              "code": "b",
+              "value": "c"
+            },
+            {
+              "code": "2",
+              "value": "rdamedia"
+            }
+          ],
+          "id": "66029c77-30a4-42a2-bf23-6499ca97fe87",
+          "from": "base"
+        },
+        {
+          "tag": "338",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "verkkoaineisto"
+            },
+            {
+              "code": "b",
+              "value": "cr"
+            },
+            {
+              "code": "2",
+              "value": "rdacarrier"
+            }
+          ],
+          "id": "55e6067b-8eba-44c1-a53c-293641a40729",
+          "from": "base"
+        },
+        {
+          "tag": "490",
+          "ind1": "1",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Annalen / Koninklijk Museum voor Midden-Afrika, Economische wetenschappen,"
+            },
+            {
+              "code": "x",
+              "value": ";"
+            },
+            {
+              "code": "v",
+              "value": "14"
+            }
+          ],
+          "id": "8422a785-803e-49ff-8e49-de2da34766e5",
+          "from": "source"
+        },
+        {
+          "tag": "530",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Julkaistu myös painettuna."
+            }
+          ]
+        },
+        {
+          "tag": "830",
+          "ind1": " ",
+          "ind2": "0",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "Annalen / Koninklijk Museum voor Midden-Afrika,"
+            },
+            {
+              "code": "p",
+              "value": "Economische wetenschappen,"
+            },
+            {
+              "code": "x",
+              "value": ";"
+            },
+            {
+              "code": "v",
+              "value": "14."
+            }
+          ],
+          "id": "5e33b132-5e9f-4b71-81c8-1d6097383722",
+          "from": "source"
+        },
+        {
+          "tag": "LOW",
+          "ind1": " ",
+          "ind2": " ",
+          "subfields": [
+            {
+              "code": "a",
+              "value": "[LOWTAG]"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "exclude": {},
+  "replace": {}
+}
