@@ -27,6 +27,9 @@ window.initialize = function () {
   console.log('Initializing');
 
   setNavBar(document.querySelector('#navbar'), "Viewer")
+  const select = document.querySelector(`#viewer #sequence`);
+  select.innerHTML = '';
+  select.setAttribute('disabled', false)
 
   doLogin(authSuccess);
 
@@ -44,7 +47,11 @@ window.initialize = function () {
     const sequence = urlParams.get('sequence') || '';
 
     document.querySelector(`#viewer #id`).defaultValue = id;
-    document.querySelector(`#viewer #sequence`).defaultValue = sequence;
+    const select = document.querySelector(`#viewer #sequence`);
+    const seqOption = createOption(sequence, sequence);
+    select.add(seqOption);
+    select.value = sequence;
+
     window.history.pushState('', 'viewer', `/viewer/`);
   }
 }
@@ -68,14 +75,18 @@ var transformed = {
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
-  const sequence = document.querySelector(`#viewer #sequence`).value || 1;
+  const sequence = document.querySelector('#viewer #sequence').value || 0
+  const logType = document.querySelector(`#viewer #logType`).value || 'MERGE_LOG';
 
-  doFetch(event, id, sequence);
+  doFetch(event, id, sequence, logType);
 }
 
-window.doFetch = function (event = undefined, id = '', sequence) {
+window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event)
   startProcess();
+  const select = document.querySelector(`#viewer #sequence`);
+  select.innerHTML = '';
+  select.setAttribute('disabled', false)
   console.log('Fetching...');
 
   if (id === '') {
@@ -83,19 +94,43 @@ window.doFetch = function (event = undefined, id = '', sequence) {
     return stopProcess();
   }
 
-  getMergeLog(id, sequence)
-    .then(response => {
-      console.log('Got response!');
-      console.log(response);
-      return response.json();
-    })
-    .then(log => {
-      console.log(log);
-      showRecord(log[0].incomingRecord, "record1", {}, 'viewer');
-      showRecord(log[0].databaseRecord, "record2", {}, 'viewer');
-      showRecord(log[0].mergedRecord, "record3", {}, 'viewer');
+  getMergeLog(id)
+    .then(logs => {
+      console.log(JSON.stringify(logs));
+      const keys = Object.keys(logs);
+      if (keys.length === 0) {
+        select.add(createOption('0', 0));
+        window.sessionStorage.setItem('logs', JSON.stringify({'0': {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}}}));
+        stopProcess();
+        // TODO toast 404 not found
+        select.value = 0;
+        return select.dispatchEvent(new Event('change'));;
+      }
+
+      const refactorLogs = Object.fromEntries(keys.map(key => [logs[key].blobSequence, logs[key]]));
+      const refactoredKeys = Object.keys(refactorLogs);
+      window.sessionStorage.setItem('logs', JSON.stringify(refactorLogs));
+      select.removeAttribute('disabled');
+      refactoredKeys.forEach(key => {
+        select.add(createOption(key, key));
+      });
+
+      if (sequence !== 0 && refactoredKeys.includes(sequence)) {
+        select.value = sequence;
+      }
+      select.dispatchEvent(new Event('change'));
+
       stopProcess();
     })
+}
+
+window.loadLog = (event) => {
+  eventHandled(event)
+  const logs = JSON.parse(window.sessionStorage.getItem('logs'));
+
+  showRecord(logs[event.target.value].incomingRecord, "record1", {}, 'viewer');
+  showRecord(logs[event.target.value].databaseRecord, "record2", {}, 'viewer');
+  showRecord(logs[event.target.value].mergedRecord, "record3", {}, 'viewer');
 }
 
 window.copyLink = function (event) {
@@ -146,4 +181,12 @@ window.remove = function (event = undefined) {
       console.log(response)
       stopProcess();
     });
+}
+
+function createOption(text, value) {
+  const option = document.createElement("option");
+  option.text = text;
+  option.value = value;
+
+  return option;
 }

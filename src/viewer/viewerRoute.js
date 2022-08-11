@@ -25,10 +25,10 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
   const logService = createLogService(restApiLogClient);
 
   return new Router(melindaApiOptions)
-    .get('/match-log/:id/:sequence', getMatchLog)
-    .get('/match-validation-log/:id/:sequence', getMatchValidationLog)
-    .get('/merge-log/:id/:sequence', getMergeLog)
-    .put('/protect/:id/:sequence', protectLog)
+    .get('/match-log/:id', getMatchLog)
+    .get('/match-validation-log/:id', getMatchValidationLog)
+    .get('/merge-log/:id', getMergeLog)
+    .put('/protect/:id', protectLog)
     .delete('/remove/:id', removeLog)
     .use(handleError);
 
@@ -39,10 +39,12 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
 
   async function getMatchLog(req, res, next) {
     logger.verbose('GET getMatchLog');
+    const {id: correlationId} = req.params;
+    const {sequence: blobSequence} = req.query || {};
 
     const params = {
-      correlationId: req.params.id,
-      blobSequence: req.params.sequence
+      correlationId,
+      ...blobSequence
     };
 
     logger.debug(JSON.stringify(params));
@@ -54,9 +56,12 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
   async function getMatchValidationLog(req, res, next) {
     logger.verbose('GET getMatchValidationLog');
 
+    const {id: correlationId} = req.params;
+    const {sequence: blobSequence} = req.query || {};
+
     const params = {
-      correlationId: req.params.id,
-      blobSequence: req.params.sequence
+      correlationId,
+      ...blobSequence
     };
 
     logger.debug(JSON.stringify(params));
@@ -68,21 +73,27 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
   async function getMergeLog(req, res, next) {
     logger.verbose('GET getMergeLog');
 
+    const {id: correlationId} = req.params;
+    const {sequence: blobSequence} = req.query || {};
+
     const params = {
-      correlationId: req.params.id,
-      blobSequence: req.params.sequence
+      correlationId,
+      ...blobSequence
     };
 
     logger.debug(JSON.stringify(params));
     const result = await logService.getMergeLog(params);
-    logger.debug(JSON.stringify(result));
+    logger.debug('*******************************************');
     res.json(result);
   }
 
   function protectLog(req, res, next) {
+    const {id: correlationId} = req.params || {};
+    const {sequence: blobSequence} = req.query || {};
+
     const params = {
-      correlationId: req.params.id,
-      sequence: req.params.sequence
+      ...correlationId,
+      ...blobSequence
     };
 
     logger.debug(`Protecting log id: ${params.correlationId}, sequence: ${params.sequence}`);
@@ -90,9 +101,12 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
   }
 
   function removeLog(req, res, next) {
+    const {id: correlationId} = req.params || {};
+    const {logType: logItemType} = req.query || {};
+
     const params = {
-      correlationId: req.params.id,
-      logItemType: req.query.logType || undefined
+      ...correlationId,
+      ...logItemType
     };
 
     logger.debug(`Removing log: ${params.correlationId}`);

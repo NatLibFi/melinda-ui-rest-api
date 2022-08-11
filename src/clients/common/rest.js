@@ -112,7 +112,7 @@ export function transformRequest(transformed) {
 
 export function getMatchLog(id, sequence) {
   return fetch(
-    `${RESTurl}/viewer/match-log/${id}${sequence ? `/${sequence}` : ''}`,
+    `${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`,
     {
       method: 'GET',
       headers: {
@@ -127,7 +127,7 @@ export function getMatchLog(id, sequence) {
 
 export function getMatchValidationLog(id, sequence) {
   return fetch(
-    `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `/${sequence}` : ''}`,
+    `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`,
     {
       method: 'GET',
       headers: {
@@ -140,9 +140,9 @@ export function getMatchValidationLog(id, sequence) {
 
 //-----------------------------------------------------------------------------
 
-export function getMergeLog(id, sequence) {
-  return fetch(
-    `${RESTurl}/viewer/merge-log/${id}${sequence ? `/${sequence}` : ''}`,
+export async function getMergeLog(id, sequence) {
+  const result = await fetch(
+    `${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`,
     {
       method: 'GET',
       headers: {
@@ -151,13 +151,14 @@ export function getMergeLog(id, sequence) {
       }
     }
   )
+  return result.json();
 }
 
 //-----------------------------------------------------------------------------
 
-export function protectLog(id, sequence) {
+export async function protectLog(id, sequence) {
   return fetch(
-    `${RESTurl}/viewer/protect/${id}${sequence ? `/${sequence}` : ''}`,
+    `${RESTurl}/viewer/protect/${id}${sequence ? `?sequence=${sequence}` : ''}`,
     {
       method: 'PUT',
       headers: {
