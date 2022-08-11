@@ -90,16 +90,21 @@
             <label>Id (Correlation id)</label>
             <input class="inputField" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
           </div>
-          <div class="Filler VBox Input">
+          <div class="VBox Input">
             <label>Sequence</label>
-            <input class="inputField" id="sequence" type="number" placeholder=1 />
+            <select id="sequence" disabled="true" onchange="return loadLog(event)">
+            </select>
           </div>
+          <input type="hidden" id="logType" value="mergeLog" />
           <button class="material-icons tooltip" data-text="Etsi" onclick="return doSearchPress(event)">search</button>
         </form>
-        <button id="protect" class="material-icons tooltip" data-text="Turvaa" onclick="return protect(event)">push_pin</button>
-        <button id="share" class="material-icons tooltip" data-text="Jaa" onclick="return copyLink(event)">share</button>
-        <button id="delete" class="material-icons tooltip" data-text="Poista" onclick="return remove(event)">delete</button>
-        <button id="settings" class="material-icons tooltip" data-text="Asetukset">settings</button>
+        <button id="protect" class="material-icons tooltip" data-text="Turvaa"
+          onclick="return protect(event)" disabled="true">push_pin</button>
+        <button id="share" class="material-icons tooltip" data-text="Jaa"
+          onclick="return copyLink(event)">share</button>
+        <button id="delete" class="material-icons tooltip" data-text="Poista"
+          onclick="return remove(event)" disabled="true">delete</button>
+        <button id="settings" class="material-icons tooltip" data-text="Asetukset" disabled="true">settings</button>
       </div>
       <div class="record-merge-panel">
 
