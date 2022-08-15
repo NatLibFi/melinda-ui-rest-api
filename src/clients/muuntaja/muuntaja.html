@@ -72,9 +72,9 @@
 
     <div id="muuntaja" hidden>
       <div class="IconBar ToolBar">
-        <button class="material-icons"><a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-        <button class="material-icons" onClick="onNew(event)">add</button>
-        <button class="material-icons" onClick="onSearch(event)">search</button>
+        <button class="material-icons tooltip" tooltip-text="Ohjeet"><a href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+        <button class="material-icons tooltip" tooltip-text="Uusi" onClick="onNew(event)">add</button>
+        <button class="material-icons tooltip" tooltip-text="Etsi" onClick="onSearch(event)">search</button>
         <div class="dropdown">
           <button id="account-btn" class="material-icons">account_circle</button>
           <div id="account-menu" class="dropdown-content">
@@ -91,8 +91,8 @@
               <label>Lähdetietue</label>
               <input id="ID"/>
               </div>
-            <button class="material-icons" onclick="return doTransform(event)">search</button>
-            <button class="material-icons" disabled>swap_horiz</button>
+            <button class="material-icons tooltip" tooltip-text="Hae" onclick="return doTransform(event)">search</button>
+            <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
             </form>
           <div id="Record" class="marc-record">
           </div>
@@ -103,8 +103,8 @@
               <label>Pohjatietue</label>
               <input id="ID"/>
               </div>
-              <button class="material-icons" onclick="doTransform(event)">search</button>
-              <button class="material-icons" onClick="onNewField(event)">add</button>
+              <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
+              <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
               <div class="dropdown">
                 <button class="material-icons" onclick="return ignore(event);">settings</button>
                 <div id="profile-menu" class="dropdown-content"></div>
@@ -116,8 +116,8 @@
         <div id="result" class="col BoxShadow">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
-            <button class="material-icons" onClick="onEdit(event)">edit</button>
-            <button class="material-icons" onClick="onSave(event)" disabled>save</button>
+            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
+            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
             </div>
