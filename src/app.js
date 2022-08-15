@@ -46,7 +46,12 @@ export default function ({
 
     app.enable('trust proxy', Boolean(enableProxy));
     app.use(createExpressLogger());
-    app.use(cors());
+
+    const corsOptions = {
+      origin: 'hhttps://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi',
+      optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    };
+    app.use(cors(corsOptions));
 
     passport.use(new AlephStrategy({
       xServiceURL, userLibrary,
@@ -66,6 +71,7 @@ export default function ({
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
     app.use('/edit', express.static(path.join(__dirname, 'clients/edit/'), {index: 'edit.html'}));
     app.use('/common', express.static(path.join(__dirname, 'clients/common/')));
+    app.use('/keycloak', express.static(path.join(__dirname, 'clients/keycloakLogin/'), {index: 'keycloakLogin.html'}));
     app.use('/login', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
 

@@ -1,0 +1,118 @@
+/* CSS file for muuntaja */
+
+@import "/common/stylesheets/common.css";
+
+/* ---------------------------------------------------------------------------- */
+
+div#loading {}
+
+/* ---------------------------------------------------------------------------- */
+
+div#tools {}
+
+.tools .Input>label {
+  color: rgb(48, 93, 109);
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.tools .Input>input {
+  border: 0;
+  border-bottom: 1pt solid grey;
+  outline: none;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-size: 1em;
+  width: 37ch;
+}
+
+.tools #sequence {
+  width: 6ch;
+  text-align: end;
+  margin-left: 1ch;
+}
+
+.tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100vw;
+  font-size: 32px;
+  height: 40px;
+}
+
+.tools button {
+  position: relative;
+}
+
+.tools .tooltip:hover:after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  right:0;
+  top: 100%;
+  padding: 0.4em;
+  border-radius: 0px 0px 4px 4px;
+  /* basic styles */
+  background: rgb(182, 225, 224);
+  color: #000;
+  font-size: 0.3em;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+}
+
+/* ---------------------------------------------------------------------------- */
+
+div#muuntaja {}
+
+@media screen and (min-width: 1100px) {
+  #viewer .record-merge-panel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .record-merge-panel .col {
+    width: 32vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5vw;
+  }
+}
+
+@media screen and (max-width: 1099px) {
+  #viewer .record-merge-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .record-merge-panel .col {
+    width: 99vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5vw;
+  }
+}
+
+.col>* {
+  padding: 8pt;
+}
+
+.col .header {
+  height: 48px;
+  text-transform: uppercase;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  border-bottom: 1px solid lightgrey;
+  align-items: center;
+}
+
+.header .material-icons {
+  padding: 8px;
+  font-size: 32px;
+}
+
+.header label {
+  font-size: 12pt;
+  /*color: grey;*/
+}
