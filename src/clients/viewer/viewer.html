@@ -96,17 +96,15 @@
             </select>
           </div>
           <input type="hidden" id="logType" value="mergeLog" />
-          <button class="material-icons tooltip" data-text="Etsi" onclick="return doSearchPress(event)">search</button>
+          <button class="material-icons tooltip" tooltip-text="Etsi" onclick="return doSearchPress(event)">search</button>
         </form>
-        <button id="protect" class="material-icons tooltip" data-text="Turvaa"
+        <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa"
           onclick="return protect(event)" disabled="true">push_pin</button>
-        <button id="share" class="material-icons tooltip" data-text="Jaa"
+        <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
           onclick="return copyLink(event)">share</button>
-        <button id="delete" class="material-icons tooltip" data-text="Poista"
+        <button id="delete" class="material-icons tooltip" tooltip-text="Poista"
           onclick="return remove(event)" disabled="true">delete</button>
-        <button id="settings" class="material-icons tooltip" data-text="Asetukset" disabled="true">settings</button>
-        <button onclick="keycloak.login()">Login</button>
-        <div id="events" ></div>
+        <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
       </div>
       <div class="record-merge-panel">
 

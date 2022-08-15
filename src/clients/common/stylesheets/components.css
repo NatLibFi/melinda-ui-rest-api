@@ -22,6 +22,29 @@
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Tooltips */
+/* ---------------------------------------------------------------------------- */
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip:hover:after {
+  content: attr(tooltip-text);
+  position: absolute;
+  left: 0;
+  right:0;
+  top: 100%;
+  padding: 0.4em;
+  border-radius: 0px 0px 4px 4px;
+  /* basic styles */
+  background: rgb(182, 225, 224);
+  color: #000;
+  font-size: 0.3em;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+}
+
+/* ---------------------------------------------------------------------------- */
 /* Buttons inside toolbars, some with icons */
 /* ---------------------------------------------------------------------------- */
 
