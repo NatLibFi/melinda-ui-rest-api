@@ -6,12 +6,13 @@
 
 import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui-utils.js";
+import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
 
 import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {getMergeLog, protectLog, removeLog} from "../common/rest.js";
+import {getMergeLog, protectLog, removeLog} from "/common/rest.js";
+import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -84,6 +85,7 @@ window.doSearchPress = function (event = undefined) {
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event)
   startProcess();
+  idbClear();
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
   select.setAttribute('disabled', false)
@@ -100,7 +102,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
       const keys = Object.keys(logs);
       if (keys.length === 0) {
         select.add(createOption('0', 0));
-        window.sessionStorage.setItem('logs', JSON.stringify({'0': {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}}}));
+        idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
         stopProcess();
         // TODO toast 404 not found
         select.value = 0;
@@ -109,9 +111,10 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
       const refactorLogs = Object.fromEntries(keys.map(key => [logs[key].blobSequence, logs[key]]));
       const refactoredKeys = Object.keys(refactorLogs);
-      window.sessionStorage.setItem('logs', JSON.stringify(refactorLogs));
+
       select.removeAttribute('disabled');
       refactoredKeys.forEach(key => {
+        idbSet(key, refactorLogs[key]);
         select.add(createOption(key, key));
       });
 
@@ -126,11 +129,11 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
 window.loadLog = (event) => {
   eventHandled(event)
-  const logs = JSON.parse(window.sessionStorage.getItem('logs'));
-
-  showRecord(logs[event.target.value].incomingRecord, "record1", {}, 'viewer');
-  showRecord(logs[event.target.value].databaseRecord, "record2", {}, 'viewer');
-  showRecord(logs[event.target.value].mergedRecord, "record3", {}, 'viewer');
+  idbGet(event.target.value).then(data => {
+    showRecord(data.incomingRecord, "record1", {}, 'viewer');
+    showRecord(data.databaseRecord, "record2", {}, 'viewer');
+    showRecord(data.mergedRecord, "record3", {}, 'viewer');
+  });
 }
 
 window.copyLink = function (event) {
