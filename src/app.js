@@ -48,7 +48,7 @@ export default function ({
     app.use(createExpressLogger());
 
     const corsOptions = {
-      origin: 'hhttps://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi',
+      origin: 'https://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi',
       optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
     };
     app.use(cors(corsOptions));

@@ -86,9 +86,10 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   eventHandled(event)
   startProcess();
   idbClear();
-  const select = document.querySelector(`#viewer #sequence`);
-  select.innerHTML = '';
-  select.setAttribute('disabled', false)
+  const sequenceSelect = document.querySelector(`#viewer #sequence`);
+  const matchSelect = document.querySelector(`#viewer #match`);
+  sequenceSelect.innerHTML = '';
+  sequenceSelect.setAttribute('disabled', false)
   const col3 = document.querySelector('#viewer #record3').parentElement;
   console.log('Fetching...');
 
@@ -98,6 +99,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   }
 
   if (logType === 'MERGE_LOG') {
+    matchSelect.style.visibility = 'hidden';
     col3.style.display = 'block';
     getMergeLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
