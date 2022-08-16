@@ -43,7 +43,7 @@
     "@natlibfi/melinda-backend-commons": "^2.0.5",
     "@natlibfi/melinda-commons": "^12.0.3",
     "@natlibfi/melinda-marc-record-merge-reducers": "1.0.0-alpha.6",
-    "@natlibfi/melinda-rest-api-client": "3.0.0-alpha.2",
+    "@natlibfi/melinda-rest-api-client": "3.0.0-alpha.3",
     "@natlibfi/passport-melinda-aleph": "^2.0.2",
     "@natlibfi/passport-melinda-jwt": "^1.0.1",
     "cors": "^2.8.5",

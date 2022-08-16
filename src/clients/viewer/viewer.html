@@ -86,6 +86,13 @@
       </div>
       <div class="tools ToolBar">
         <form class="ToolBar HBox">
+          <div class="VBox Input">
+            <label>Log type</label>
+            <select id="logType">
+              <option value="MERGE_LOG">Merge</option>
+              <option value="MATCH_VALIDATION_LOG">Match validation</option>
+            </select>
+          </div>
           <div class="Filler VBox Input">
             <label>Id (Correlation id)</label>
             <input class="inputField" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
@@ -96,14 +103,15 @@
             </select>
           </div>
           <input type="hidden" id="logType" value="mergeLog" />
-          <button class="material-icons tooltip" tooltip-text="Etsi" onclick="return doSearchPress(event)">search</button>
+          <button class="material-icons tooltip" tooltip-text="Etsi"
+            onclick="return doSearchPress(event)">search</button>
         </form>
-        <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa"
-          onclick="return protect(event)" disabled="true">push_pin</button>
+        <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
+          disabled="true">push_pin</button>
         <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
           onclick="return copyLink(event)">share</button>
-        <button id="delete" class="material-icons tooltip" tooltip-text="Poista"
-          onclick="return remove(event)" disabled="true">delete</button>
+        <button id="delete" class="material-icons tooltip" tooltip-text="Poista" onclick="return remove(event)"
+          disabled="true">delete</button>
         <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
       </div>
       <div class="record-merge-panel">
@@ -111,7 +119,10 @@
         <div class="col">
           <div id="record1" class="BoxShadow">
             <div class="header">
-              <p>Yhdistyvä tietue</p>
+              <p class="title">Yhdistyvä tietue</p>
+            </div>
+            <div class="note">
+              <ul class="additional"></ul>
             </div>
             <div id="Record" class="marc-record">
             </div>
@@ -121,7 +132,11 @@
         <div class="col">
           <div id="record2" class="BoxShadow">
             <div class="header">
-              <p>Pohjatietue</p>
+              <p class="title">Pohjatietue</p>
+              <select id="match" onchange="return loadMatch(event)"></select>
+            </div>
+            <div class="note">
+              <ul class="additional"></ul>
             </div>
             <div id="Record" class="marc-record">
             </div>
@@ -131,7 +146,10 @@
         <div class="col">
           <div id="record3" class="BoxShadow">
             <div class="header">
-              <p>Yhdistetty tietue</p>
+              <p class="title">Yhdistetty tietue</p>
+            </div>
+            <div class="note">
+              <ul class="additional"></ul>
             </div>
             <div id="Record" class="marc-record">
             </div>
@@ -182,4 +200,5 @@
   </div>
 
 </body>
+
 </html>

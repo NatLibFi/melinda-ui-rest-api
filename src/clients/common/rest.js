@@ -111,38 +111,23 @@ export function transformRequest(transformed) {
 //*****************************************************************************
 
 export function getMatchLog(id, sequence) {
-  return fetch(
-    `${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  )
+  return fetchLogs(`${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
 
 //-----------------------------------------------------------------------------
 
 export function getMatchValidationLog(id, sequence) {
-  return fetch(
-    `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  )
+  return fetchLogs(`${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
 
 //-----------------------------------------------------------------------------
 
-export async function getMergeLog(id, sequence) {
-  const result = await fetch(
-    `${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`,
+export function getMergeLog(id, sequence) {
+  return fetchLogs(`${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+}
+
+async function fetchLogs(url) {
+  const result = await fetch(url,
     {
       method: 'GET',
       headers: {

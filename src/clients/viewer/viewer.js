@@ -11,7 +11,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-u
 import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {getMergeLog, protectLog, removeLog} from "/common/rest.js";
+import {getMatchValidationLog, getMergeLog, protectLog, removeLog} from "/common/rest.js";
 import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
 
 var viewing = {
@@ -77,7 +77,7 @@ var transformed = {
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector('#viewer #sequence').value || 0
-  const logType = document.querySelector(`#viewer #logType`).value || 'MERGE_LOG';
+  const logType = document.querySelector(`#viewer #logType`).value;
 
   doFetch(event, id, sequence, logType);
 }
@@ -86,9 +86,11 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   eventHandled(event)
   startProcess();
   idbClear();
-  const select = document.querySelector(`#viewer #sequence`);
-  select.innerHTML = '';
-  select.setAttribute('disabled', false)
+  const sequenceSelect = document.querySelector('#viewer #sequence');
+  const matchSelect = document.querySelector('.col .header #match');
+  sequenceSelect.innerHTML = '';
+  sequenceSelect.setAttribute('disabled', false)
+  const col3 = document.querySelector('#viewer #record3').parentElement;
   console.log('Fetching...');
 
   if (id === '') {
@@ -96,44 +98,86 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     return stopProcess();
   }
 
-  getMergeLog(id)
-    .then(logs => {
-      console.log(JSON.stringify(logs));
-      const keys = Object.keys(logs);
-      if (keys.length === 0) {
-        select.add(createOption('0', 0));
-        idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
-        stopProcess();
-        // TODO toast 404 not found
-        select.value = 0;
-        return select.dispatchEvent(new Event('change'));;
-      }
+  if (logType === 'MERGE_LOG') {
+    matchSelect.style.visibility = 'hidden';
+    col3.style.display = 'block';
+    getMergeLog(id).then(logs => setDataToIndexDB(logs, sequence));
+  }
 
-      const refactorLogs = Object.fromEntries(keys.map(key => [logs[key].blobSequence, logs[key]]));
-      const refactoredKeys = Object.keys(refactorLogs);
-
-      select.removeAttribute('disabled');
-      refactoredKeys.forEach(key => {
-        idbSet(key, refactorLogs[key]);
-        select.add(createOption(key, key));
-      });
-
-      if (sequence !== 0 && refactoredKeys.includes(sequence)) {
-        select.value = sequence;
-      }
-      select.dispatchEvent(new Event('change'));
-
-      stopProcess();
-    })
+  if (logType === 'MATCH_VALIDATION_LOG') {
+    col3.style.display = 'none';
+    getMatchValidationLog(id).then(logs => setDataToIndexDB(logs, sequence));
+  }
 }
 
 window.loadLog = (event) => {
   eventHandled(event)
-  idbGet(event.target.value).then(data => {
-    showRecord(data.incomingRecord, "record1", {}, 'viewer');
-    showRecord(data.databaseRecord, "record2", {}, 'viewer');
-    showRecord(data.mergedRecord, "record3", {}, 'viewer');
-  });
+  const logType = document.querySelector(`#viewer #logType`).value;
+  const matchSelect = document.querySelector('.col .header #match');
+
+  if (logType === 'MERGE_LOG') {
+
+    idbGet(event.target.value).then(data => {
+      setRecordTopInfo('record1', 'Yhdistyvä tietue', false);
+      showRecord(data.incomingRecord, "record1", {}, 'viewer');
+      setRecordTopInfo('record2', 'Pohjatietue', false);
+      showRecord(data.databaseRecord, "record2", {}, 'viewer');
+      showRecord(data.mergedRecord, "record3", {}, 'viewer');
+    });
+  }
+
+  if (logType === 'MATCH_VALIDATION_LOG') {
+    idbGet(event.target.value).then(data => {
+      if (data.matchValidationResult && data.matchValidationResult.length < 1) {
+        matchSelect.innerHTML = '';
+        matchSelect.add(createOption('notFound', '0'));
+        matchSelect.value = 'notFound';
+        return matchSelect.dispatchEvent(new Event('change'));
+      }
+
+      matchSelect.innerHTML = '';
+      data.matchValidationResult.forEach((result, index) => {
+        matchSelect.add(createOption(result.matchSequence, index));
+      });
+      matchSelect.value = 0;
+      matchSelect.dispatchEvent(new Event('change'));
+    });
+  }
+
+  window.loadMatch = (event) => {
+    const sequence = document.querySelector(`#viewer #sequence`).value;
+    showRecord({}, "record3", {}, 'viewer');
+
+    if (event.target.value === 'notFound') {
+      return idbGet(sequence).then(data => {
+        setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
+        showRecord(data.incomingRecord, "record1", {}, 'viewer');
+        setRecordTopInfo('record2', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
+        showRecord({}, "record2", {}, 'viewer');
+      });
+    }
+
+    idbGet(sequence).then(data => {
+      setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
+      showRecord(data.incomingRecord, "record1", {}, 'viewer');
+      const {record, note} = getMergeCandidateInfo(data.matchValidationResult[event.target.value]);
+      setRecordTopInfo('record2', 'Vastaava Melinda tietue', note);
+      showRecord(record, "record2", {}, 'viewer');
+    });
+  }
+
+  function getMergeCandidateInfo(data) {
+    const record = data?.candidate?.record
+    const id = data?.candidate?.id;
+    const probability = data?.probability;
+    const action = data?.action;
+    const preferenceRecord = data?.preference?.value;
+    const preference = data?.preference?.name;
+    return {
+      record,
+      note: `<li>Melinda-ID: ${id}</li><li>Käypäisyys: ${probability * 100}%</li><li>Yhdistämistapa: ${action}</li><li>Yhdistäessä pohjana: ${preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda tietue'}</li><li>Peruste: ${preference}</li>`
+    }
+  }
 }
 
 window.copyLink = function (event) {
@@ -184,6 +228,55 @@ window.remove = function (event = undefined) {
       console.log(response)
       stopProcess();
     });
+}
+
+function setDataToIndexDB(logs, sequence) {
+  const select = document.querySelector(`#viewer #sequence`);
+  console.log(JSON.stringify(logs));
+  const keys = Object.keys(logs);
+
+  if (keys.length === 0) {
+    select.add(createOption('0', 0));
+    idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
+    stopProcess();
+    // TODO toast 404 not found
+    select.value = 0;
+    return select.dispatchEvent(new Event('change'));;
+  }
+
+  const refactorLogs = Object.fromEntries(keys.map(key => [logs[key].blobSequence, logs[key]]));
+  const refactoredKeys = Object.keys(refactorLogs);
+
+  select.removeAttribute('disabled');
+  refactoredKeys.forEach(key => {
+    idbSet(key, refactorLogs[key]);
+    select.add(createOption(key, key));
+  });
+
+  if (sequence !== 0 && refactoredKeys.includes(sequence)) {
+    select.value = sequence;
+  }
+
+  select.dispatchEvent(new Event('change'));
+
+  stopProcess();
+}
+
+function setRecordTopInfo(record, title, additional = false) {
+  document.querySelector(`#viewer #${record} .title`).innerHTML = `${title}`;
+  const matchSelect = document.querySelector('.col .header #match');
+  if (matchSelect.childElementCount > 1) {
+    matchSelect.style.visibility = 'visible';
+  }
+
+  if (additional === false) {
+    document.querySelector(`#viewer #${record} .note`).style.display = 'none';
+  }
+
+  if (additional !== false) {
+    document.querySelector(`#viewer #${record} .note`).style.display = 'block';
+    document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
+  }
 }
 
 function createOption(text, value) {

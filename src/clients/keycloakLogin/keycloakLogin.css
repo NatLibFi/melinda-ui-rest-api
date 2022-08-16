@@ -32,17 +32,6 @@ div#tools {}
   margin-left: 1ch;
 }
 
-.tools #logType {
-  text-align: end;
-  margin-right: 1ch;
-}
-
-.tools>.dropdown,
-.tools>.dropdown>button {
-  height: 40px;
-  font-size: 32px;
-}
-
 .tools {
   display: flex;
   flex-direction: row;
@@ -53,7 +42,6 @@ div#tools {}
   height: 40px;
 }
 
-/*
 .tools button {
   position: relative;
 }
@@ -62,16 +50,16 @@ div#tools {}
   content: attr(data-text);
   position: absolute;
   left: 0;
-  right: 0;
+  right:0;
   top: 100%;
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
+  /* basic styles */
   background: rgb(182, 225, 224);
   color: #000;
   font-size: 0.3em;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
 }
-*/
 
 /* ---------------------------------------------------------------------------- */
 
@@ -82,7 +70,7 @@ div#muuntaja {}
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-evenly;
   }
 
   .record-merge-panel .col {
@@ -112,28 +100,11 @@ div#muuntaja {}
 }
 
 .col .header {
-  height: 32px;
+  height: 48px;
   text-transform: uppercase;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   border-bottom: 1px solid lightgrey;
   align-items: center;
-  display: flex;
-}
-
-.col .note {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  border-bottom: 1px solid lightgrey;
-  align-items: center;
-  display: none;
-}
-
-.col .header .title {
-  flex: 4;
-}
-
-.col .header #match {
-  flex: 1;
-  visibility: hidden;
 }
 
 .header .material-icons {
