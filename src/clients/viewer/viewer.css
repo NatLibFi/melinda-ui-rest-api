@@ -53,6 +53,7 @@ div#tools {}
   height: 40px;
 }
 
+/*
 .tools button {
   position: relative;
 }
@@ -65,12 +66,12 @@ div#tools {}
   top: 100%;
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
-  /* basic styles */
   background: rgb(182, 225, 224);
   color: #000;
   font-size: 0.3em;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
 }
+*/
 
 /* ---------------------------------------------------------------------------- */
 
