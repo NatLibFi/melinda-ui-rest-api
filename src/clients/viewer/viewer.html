@@ -86,7 +86,7 @@
       </div>
       <div class="tools ToolBar">
         <form class="ToolBar HBox">
-          <div class="VBox Select">
+          <div class="Select VBox">
             <label>Log type</label>
             <select id="logType">
               <option value="MERGE_LOG">Merge</option>
@@ -97,7 +97,7 @@
             <label>Id (Correlation id)</label>
             <input class="inputField" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
           </div>
-          <div class="VBox Select">
+          <div class="Select VBox">
             <label>Sequence</label>
             <select id="sequence" disabled="true" onchange="return loadLog(event)">
             </select>
@@ -138,7 +138,7 @@
             <div class="header">
               <p class="title">Melinda-tietue</p>
               <div class="VBox Select">
-                <label>Match tietue</label>
+                <label>Match nro.</label>
                 <select id="match" onchange="return loadMatch(event)"></select>
               </div>
               <div class="show-hide-buttons-wrap">

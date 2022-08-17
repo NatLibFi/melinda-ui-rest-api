@@ -48,7 +48,10 @@ window.initialize = function () {
     const logType = urlParams.get('logType') || 'MERGE_LOG';
     const sequence = urlParams.get('sequence') || '';
 
-    document.querySelector(`#viewer #id`).defaultValue = id;
+    if (id !== '') {
+      document.querySelector(`#viewer #id`).defaultValue = id;
+    }
+
     document.querySelector(`#viewer #logType`).value = logType;
     const select = document.querySelector(`#viewer #sequence`);
     const seqOption = createOption(sequence, sequence);
@@ -78,19 +81,19 @@ var transformed = {
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
-  const sequence = document.querySelector('#viewer #sequence').value || 0
+  const sequence = document.querySelector('#viewer #sequence').value || 0;
   const logType = document.querySelector(`#viewer #logType`).value;
 
   doFetch(event, id, sequence, logType);
 }
 
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
-  eventHandled(event)
+  eventHandled(event);
   startProcess();
   idbClear();
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
-  sequenceSelect.setAttribute('disabled', false)
+  sequenceSelect.setAttribute('disabled', false);
   const col3 = document.querySelector('#viewer #record3').parentElement;
   console.log('Fetching...');
 
@@ -111,12 +114,12 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 }
 
 window.loadLog = (event) => {
-  eventHandled(event)
+  eventHandled(event);
   const logType = document.querySelector(`#viewer #logType`).value;
   const matchSelectWrap = document.querySelector('.col .header .Select');
   matchSelectWrap.style.visibility = 'hidden';
   const matchSelect = document.querySelector('.col .header #match');
-  matchSelect.innerHTML = ''
+  matchSelect.innerHTML = '';
 
   if (logType === 'MERGE_LOG') {
 
@@ -147,7 +150,7 @@ window.loadLog = (event) => {
   }
 
   window.loadMatch = (event) => {
-    eventHandled(event)
+    eventHandled(event);
     const sequenceSelect = document.querySelector(`#viewer #sequence`).value;
     const matchSelectWrap = document.querySelector(`.col .header .Select`);
     showRecord({}, "record3", {}, 'viewer');
@@ -173,7 +176,7 @@ window.loadLog = (event) => {
   }
 
   function getMergeCandidateInfo(data) {
-    const record = data?.candidate?.record
+    const record = data?.candidate?.record;
     const id = data?.candidate?.id;
     const probability = data?.probability;
     const action = data?.action !== false ? data.action : 'Ei yhdistetä';
@@ -187,21 +190,21 @@ window.loadLog = (event) => {
 }
 
 window.showNote = (event, record) => {
-  eventHandled(event)
-  document.querySelector(`#viewer #${record} #showNote`).style.display = 'none'
-  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block'
-  document.querySelector(`#viewer #${record} .note`).style.display = 'block'
+  eventHandled(event);
+  document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
+  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
+  document.querySelector(`#viewer #${record} .note`).style.display = 'block';
 }
 
 window.hideNote = (event, record) => {
-  eventHandled(event)
-  document.querySelector(`#viewer #${record} #showNote`).style.display = 'block'
-  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none'
-  document.querySelector(`#viewer #${record} .note`).style.display = 'none'
+  eventHandled(event);
+  document.querySelector(`#viewer #${record} #showNote`).style.display = 'block';
+  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
+  document.querySelector(`#viewer #${record} .note`).style.display = 'none';
 }
 
 window.copyLink = function (event) {
-  eventHandled(event)
+  eventHandled(event);
 
   const logType = document.querySelector(`#viewer #logType`).value || '';
   const id = document.querySelector(`#viewer #id`).value || '';
@@ -215,7 +218,7 @@ window.copyLink = function (event) {
 }
 
 window.protect = function (event = undefined) {
-  eventHandled(event)
+  eventHandled(event);
   console.log('Protecting...');
 
 
@@ -246,7 +249,7 @@ window.remove = function (event = undefined) {
 
   removeLog(id, logType)
     .then(response => {
-      console.log(response)
+      console.log(response);
       stopProcess();
     });
 }
@@ -288,14 +291,15 @@ function setRecordTopInfo(record, title, additional = false) {
 
   if (additional === false) {
     document.querySelector(`#viewer #${record} .note`).style.display = 'none';
-    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none'
-    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none'
+    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
   }
 
   if (additional !== false) {
     document.querySelector(`#viewer #${record} .note`).style.display = 'block';
     document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
-    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block'
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
+    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
   }
 }
 
