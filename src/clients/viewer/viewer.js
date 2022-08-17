@@ -299,6 +299,7 @@ function setRecordTopInfo(record, title, additional = false) {
   if (additional !== false) {
     document.querySelector(`#viewer #${record} .note`).style.display = 'block';
     document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
+    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
     document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
   }
 }
