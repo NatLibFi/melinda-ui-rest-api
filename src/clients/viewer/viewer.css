@@ -10,14 +10,14 @@ div#loading {}
 
 div#tools {}
 
-.tools .Input>label {
+.tools .ToolBar .Input>label {
   color: rgb(48, 93, 109);
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   font-size: 0.8em;
   text-align: center;
 }
 
-.tools .Input>input {
+.tools .ToolBar .Input>input {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
@@ -26,7 +26,7 @@ div#tools {}
   width: 37ch;
 }
 
-.tools .Select>label {
+.tools .ToolBar .Select>label, .header .Select>label {
   color: rgb(48, 93, 109);
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   font-size: 0.8em;
@@ -34,7 +34,7 @@ div#tools {}
   text-transform: none;
 }
 
-.tools .Select>select {
+.tools .ToolBar .Select>select, .header .Select>select {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
@@ -136,7 +136,7 @@ div#muuntaja {}
 
 .col .header #match {
   text-align: end;
-  min-width: 12ch;
+  min-width: 8ch;
 }
 
 .show-hide-buttons {

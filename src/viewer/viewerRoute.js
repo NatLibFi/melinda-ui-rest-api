@@ -44,7 +44,8 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
 
     const params = {
       correlationId,
-      ...blobSequence
+      ...blobSequence,
+      limit: 0
     };
 
     logger.debug(JSON.stringify(params));
