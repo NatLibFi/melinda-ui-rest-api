@@ -20,7 +20,14 @@ import {showRecord, editField} from "/common/marc-record-ui.js";
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(document.querySelector('#navbar'), "Muuntaja")
+  setNavBar(
+    document.querySelector('#navbar'),
+    "Muuntaja",
+    {
+      helpButton: {link:"https://www.kiwi.fi/x/iBcvBQ"},
+      newButton: true,
+      searchButton: true
+    });
 
   doLogin(authSuccess);
 

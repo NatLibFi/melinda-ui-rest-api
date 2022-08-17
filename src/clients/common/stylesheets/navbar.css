@@ -12,7 +12,8 @@
   /*
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
   */
-  background-color: #305d6d; /* For browsers not support gradients  */
+  background-color: #305d6d;
+  /* For browsers not support gradients  */
 
   /*
   background-image: linear-gradient(to right, #305d6d, #7bb9ce);
@@ -41,20 +42,26 @@
   line-height: 18px;
 }
 
+.NavBar .Spacer {
+  flex: 1;
+}
+
 /* ---------------------------------------------------------------------------- */
 
 .IconBar {
   display: flex;
-  position: fixed;
-  top: 0;
-  right: 0;
   height: 64px;
   color: white;
 }
 
-/* ---------------------------------------------------------------------------- */
 /* NavBar icons are 32px */
-
-.NavBar .material-icons, .IconBar .material-icons {
+.NavBar .material-icons,
+.IconBar .material-icons {
   font-size: 32px;
 }
+
+.IconBar .dropdown .dropdown-content {
+  z-index: 2;
+}
+
+/* ---------------------------------------------------------------------------- */

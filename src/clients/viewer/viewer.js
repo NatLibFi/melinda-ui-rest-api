@@ -27,7 +27,7 @@ var viewing = {
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(document.querySelector('#navbar'), "Viewer")
+  setNavBar(document.querySelector('#navbar'), "Viewer", {})
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
   select.setAttribute('disabled', false)
