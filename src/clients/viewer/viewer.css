@@ -26,6 +26,22 @@ div#tools {}
   width: 37ch;
 }
 
+.Select>label {
+  color: rgb(48, 93, 109);
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-size: 0.8em;
+  text-align: center;
+  text-transform: none;
+}
+
+.Select>select {
+  border: 0;
+  border-bottom: 1pt solid grey;
+  outline: none;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-size: 1em;
+}
+
 .tools #sequence {
   width: 6ch;
   text-align: end;
@@ -112,7 +128,7 @@ div#muuntaja {}
 }
 
 .col .header {
-  height: 32px;
+  height: 40px;
   text-transform: uppercase;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   border-bottom: 1px solid lightgrey;
@@ -131,9 +147,33 @@ div#muuntaja {}
   flex: 4;
 }
 
-.col .header #match {
+.col .header .Select {
   flex: 1;
   visibility: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.col .header #match {
+  text-align: end;
+  min-width: 12ch;
+}
+
+.show-hide-buttons {
+  font-size: 2em;
+  color: inherit;
+  border: 0;
+  background-color: transparent;
+  /*padding: 4px 16px;*/
+  cursor: pointer;
+}
+
+.show-hide-buttons-wrap #showNote {
+  display: none;
+}
+
+.show-hide-buttons-wrap #hideNote {
+  display: none;
 }
 
 .header .material-icons {
