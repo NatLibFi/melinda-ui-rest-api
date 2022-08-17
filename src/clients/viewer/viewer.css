@@ -26,7 +26,7 @@ div#tools {}
   width: 37ch;
 }
 
-.Select>label {
+.tools .Select>label {
   color: rgb(48, 93, 109);
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   font-size: 0.8em;
@@ -34,7 +34,7 @@ div#tools {}
   text-transform: none;
 }
 
-.Select>select {
+.tools .Select>select {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
@@ -68,26 +68,6 @@ div#tools {}
   font-size: 32px;
   height: 40px;
 }
-
-/*
-.tools button {
-  position: relative;
-}
-
-.tools .tooltip:hover:after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  padding: 0.4em;
-  border-radius: 0px 0px 4px 4px;
-  background: rgb(182, 225, 224);
-  color: #000;
-  font-size: 0.3em;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-}
-*/
 
 /* ---------------------------------------------------------------------------- */
 
