@@ -11,7 +11,7 @@ import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-u
 import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {getMatchValidationLog, getMergeLog, protectLog, removeLog} from "/common/rest.js";
+import {getMatchLog, getMergeLog, protectLog, removeLog} from "/common/rest.js";
 import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
 
 var viewing = {
@@ -45,9 +45,11 @@ window.initialize = function () {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get('id') || '';
+    const logType = urlParams.get('logType') || 'MERGE_LOG';
     const sequence = urlParams.get('sequence') || '';
 
     document.querySelector(`#viewer #id`).defaultValue = id;
+    document.querySelector(`#viewer #logType`).value = logType;
     const select = document.querySelector(`#viewer #sequence`);
     const seqOption = createOption(sequence, sequence);
     select.add(seqOption);
@@ -87,7 +89,6 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   startProcess();
   idbClear();
   const sequenceSelect = document.querySelector('#viewer #sequence');
-  const matchSelect = document.querySelector('.col .header #match');
   sequenceSelect.innerHTML = '';
   sequenceSelect.setAttribute('disabled', false)
   const col3 = document.querySelector('#viewer #record3').parentElement;
@@ -99,43 +100,44 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   }
 
   if (logType === 'MERGE_LOG') {
-    matchSelect.style.visibility = 'hidden';
     col3.style.display = 'block';
     getMergeLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
 
-  if (logType === 'MATCH_VALIDATION_LOG') {
+  if (logType === 'MATCH_LOG') {
     col3.style.display = 'none';
-    getMatchValidationLog(id).then(logs => setDataToIndexDB(logs, sequence));
+    getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
 }
 
 window.loadLog = (event) => {
   eventHandled(event)
   const logType = document.querySelector(`#viewer #logType`).value;
+  const matchSelectWrap = document.querySelector('.col .header .Select');
+  matchSelectWrap.style.visibility = 'hidden';
   const matchSelect = document.querySelector('.col .header #match');
+  matchSelect.innerHTML = ''
 
   if (logType === 'MERGE_LOG') {
 
     idbGet(event.target.value).then(data => {
-      setRecordTopInfo('record1', 'Yhdistyvä tietue', false);
+      setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.value === 'A' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      setRecordTopInfo('record2', 'Pohjatietue', false);
+      setRecordTopInfo('record2', `Melinda-tietue${data.preference.value === 'B' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.databaseRecord, "record2", {}, 'viewer');
+      setRecordTopInfo('record3', 'Yhdistetty tietue', `<li>Luonti aika: ${data.creationTime}</li>`);
       showRecord(data.mergedRecord, "record3", {}, 'viewer');
     });
   }
 
-  if (logType === 'MATCH_VALIDATION_LOG') {
+  if (logType === 'MATCH_LOG') {
     idbGet(event.target.value).then(data => {
       if (data.matchValidationResult && data.matchValidationResult.length < 1) {
-        matchSelect.innerHTML = '';
         matchSelect.add(createOption('notFound', '0'));
         matchSelect.value = 'notFound';
         return matchSelect.dispatchEvent(new Event('change'));
       }
 
-      matchSelect.innerHTML = '';
       data.matchValidationResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
       });
@@ -145,11 +147,14 @@ window.loadLog = (event) => {
   }
 
   window.loadMatch = (event) => {
-    const sequence = document.querySelector(`#viewer #sequence`).value;
+    eventHandled(event)
+    const sequenceSelect = document.querySelector(`#viewer #sequence`).value;
+    const matchSelectWrap = document.querySelector(`.col .header .Select`);
     showRecord({}, "record3", {}, 'viewer');
 
     if (event.target.value === 'notFound') {
-      return idbGet(sequence).then(data => {
+      return idbGet(sequenceSelect).then(data => {
+        matchSelectWrap.style.visibility = 'hidden';
         setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
         showRecord(data.incomingRecord, "record1", {}, 'viewer');
         setRecordTopInfo('record2', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
@@ -157,11 +162,12 @@ window.loadLog = (event) => {
       });
     }
 
-    idbGet(sequence).then(data => {
+    idbGet(sequenceSelect).then(data => {
+      matchSelectWrap.style.visibility = data.matchValidationResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
       const {record, note} = getMergeCandidateInfo(data.matchValidationResult[event.target.value]);
-      setRecordTopInfo('record2', 'Vastaava Melinda tietue', note);
+      setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, "record2", {}, 'viewer');
     });
   }
@@ -170,19 +176,34 @@ window.loadLog = (event) => {
     const record = data?.candidate?.record
     const id = data?.candidate?.id;
     const probability = data?.probability;
-    const action = data?.action;
+    const action = data?.action !== false ? data.action : 'Ei yhdistetä';
     const preferenceRecord = data?.preference?.value;
-    const preference = data?.preference?.name;
+    const preference = data?.preference !== false ? data.preference.name : data?.message;
     return {
       record,
-      note: `<li>Melinda-ID: ${id}</li><li>Käypäisyys: ${probability * 100}%</li><li>Yhdistämistapa: ${action}</li><li>Yhdistäessä pohjana: ${preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda tietue'}</li><li>Peruste: ${preference}</li>`
+      note: `<li>Melinda-ID: ${id}</li><li>Käypäisyys: ${probability * 100}%</li><li>Yhdistämistapa: ${action}</li><li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li><li>Peruste: ${preference}</li>`
     }
   }
+}
+
+window.showNote = (event, record) => {
+  eventHandled(event)
+  document.querySelector(`#viewer #${record} #showNote`).style.display = 'none'
+  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block'
+  document.querySelector(`#viewer #${record} .note`).style.display = 'block'
+}
+
+window.hideNote = (event, record) => {
+  eventHandled(event)
+  document.querySelector(`#viewer #${record} #showNote`).style.display = 'block'
+  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none'
+  document.querySelector(`#viewer #${record} .note`).style.display = 'none'
 }
 
 window.copyLink = function (event) {
   eventHandled(event)
 
+  const logType = document.querySelector(`#viewer #logType`).value || '';
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || '';
   if (id === '' || sequence === '') {
@@ -190,7 +211,7 @@ window.copyLink = function (event) {
     return;
   }
 
-  navigator.clipboard.writeText(`${window.location}?id=${id}&sequence=${sequence}`);
+  navigator.clipboard.writeText(`${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`);
 }
 
 window.protect = function (event = undefined) {
@@ -264,18 +285,17 @@ function setDataToIndexDB(logs, sequence) {
 
 function setRecordTopInfo(record, title, additional = false) {
   document.querySelector(`#viewer #${record} .title`).innerHTML = `${title}`;
-  const matchSelect = document.querySelector('.col .header #match');
-  if (matchSelect.childElementCount > 1) {
-    matchSelect.style.visibility = 'visible';
-  }
 
   if (additional === false) {
     document.querySelector(`#viewer #${record} .note`).style.display = 'none';
+    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none'
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none'
   }
 
   if (additional !== false) {
     document.querySelector(`#viewer #${record} .note`).style.display = 'block';
     document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block'
   }
 }
 
