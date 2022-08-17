@@ -135,13 +135,13 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGet(event.target.value).then(data => {
-      if (data.matchValidationResult && data.matchValidationResult.length < 1) {
+      if (data.matchResult && data.matchResult.length < 1) {
         matchSelect.add(createOption('notFound', '0'));
         matchSelect.value = 'notFound';
         return matchSelect.dispatchEvent(new Event('change'));
       }
 
-      data.matchValidationResult.forEach((result, index) => {
+      data.matchResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
       });
 
@@ -167,10 +167,10 @@ window.loadLog = (event) => {
     }
 
     idbGet(sequenceSelect).then(data => {
-      matchSelectWrap.style.visibility = data.matchValidationResult.length > 1 ? 'visible' : 'hidden';
+      matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      const {record, note} = getMergeCandidateInfo(data.matchValidationResult[event.target.value]);
+      const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, "record2", {}, 'viewer');
     });
