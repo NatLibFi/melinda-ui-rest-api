@@ -128,7 +128,7 @@ div#muuntaja {}
 }
 
 .col .header {
-  height: 40px;
+  height: 32px;
   text-transform: uppercase;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   border-bottom: 1px solid lightgrey;
