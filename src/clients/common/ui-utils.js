@@ -4,9 +4,9 @@
 //
 //*****************************************************************************
 
-import { setNavBar, startProcess, stopProcess } from "./navbar.js";
+import {setAppName, showMainMenu, addButtonToNavBar, startProcess, stopProcess} from "./navbar.js";
 
-export {setNavBar, startProcess, stopProcess}
+export {setAppName, showMainMenu, addButtonToNavBar, startProcess, stopProcess}
 
 //-----------------------------------------------------------------------------
 

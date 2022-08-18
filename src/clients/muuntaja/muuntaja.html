@@ -25,7 +25,23 @@
   <!-- ------------------------------------------------------------------------ -->
   <!-- Nav bar -->
 
-  <div id="navbar"></div>
+  <div id="navbar">
+    <div class="NavBar ToolBar">
+      <img class="logo" src="/common/images/Melinda-logo-white.png" />
+      <div class="AppName"></div>
+      <div class="Spacer"></div>
+      <div class="nav-bar-button-wrap IconBar ToolBar"></div>
+      <div id="main-menu" class="dropdown IconBar ToolBar">
+        <button id="account-btn" class="material-icons">account_circle</button>
+        <div id="account-menu" class="dropdown-content">
+          <div class="menu-header" id="username">Tuntematon</div>
+          <hr />
+          <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+        </div>
+      </div>
+    </div>
+    <div id="progressbar" class="progress-bar-inactive"></div>
+  </div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->

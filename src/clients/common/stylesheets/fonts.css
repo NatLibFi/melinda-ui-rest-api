@@ -1,0 +1,14 @@
+/* RobotoFlex - Designed by Font Bureau, David Berlow, Santiago Orozco, Irene Vlachou, Ilya Ruderman, Yury Ostromentsky, Mikhail Strukov */
+/* source https://fonts.google.com/specimen/Roboto+Flex 2022-08-18*/
+
+/* Montserrat - Designed by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly */
+/* source https://fonts.google.com/specimen/Montserrat 2022-07-28*/
+
+@font-face {
+  font-family: "RobotoFlex-Regular";
+  src: url("../fonts/RobotoFlex-Regular.ttf");
+}
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("../fonts/Montserrat-Regular.ttf");
+}

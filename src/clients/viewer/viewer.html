@@ -24,7 +24,23 @@
   <!-- ------------------------------------------------------------------------ -->
   <!-- Nav bar -->
 
-  <div id="navbar"></div>
+  <div id="navbar">
+    <div class="NavBar ToolBar">
+      <img class="logo" src="/common/images/Melinda-logo-white.png" />
+      <div class="AppName"></div>
+      <div class="Spacer"></div>
+      <div class="nav-bar-button-wrap IconBar ToolBar"></div>
+      <div id="main-menu" class="dropdown IconBar ToolBar">
+        <button id="account-btn" class="material-icons">account_circle</button>
+        <div id="account-menu" class="dropdown-content">
+          <div class="menu-header" id="username">Tuntematon</div>
+          <hr />
+          <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+        </div>
+      </div>
+    </div>
+    <div id="progressbar" class="progress-bar-inactive"></div>
+  </div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
@@ -107,8 +123,10 @@
             <div class="header">
               <p class="title">Sisääntuleva tietue</p>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record1')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record1')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record1')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record1')">expand_less</button>
               </div>
             </div>
             <div class="note">
@@ -128,8 +146,10 @@
                 <select id="match" onchange="return loadMatch(event)"></select>
               </div>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record2')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record2')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record2')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record2')">expand_less</button>
               </div>
             </div>
             <div class="note">
@@ -145,8 +165,10 @@
             <div class="header">
               <p class="title">Yhdistetty tietue</p>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record3')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record3')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record3')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record3')">expand_less</button>
               </div>
             </div>
             <div class="note">

@@ -4,7 +4,7 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
+import {setAppName, showMainMenu, addButtonToNavBar, startProcess, stopProcess} from "/common/navbar.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
 import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
 
@@ -27,7 +27,7 @@ var viewing = {
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(document.querySelector('#navbar'), "Viewer", {})
+  setAppName("Viewer");
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
   select.setAttribute('disabled', false)
@@ -35,8 +35,12 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
+    showMainMenu();
     const username = document.querySelector("#account-menu #username")
     username.innerHTML = Account.get()["Name"];
+    addButtonToNavBar('Apua', 'help_outline', false, "https://www.kiwi.fi/x/iBcvBQ");
+    addButtonToNavBar('Uusi', 'add', resetForms);
+    addButtonToNavBar('Etsi', 'search');
     showTab('viewer');
     parseUrlParameters();
   }

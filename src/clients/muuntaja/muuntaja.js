@@ -4,8 +4,7 @@
 //
 //*****************************************************************************
 
-import {setNavBar} from "/common/ui-utils.js";
-import {startProcess, stopProcess} from "/common/ui-utils.js";
+import {setAppName, showMainMenu, addButtonToNavBar, startProcess, stopProcess} from "/common/navbar.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
 import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
 
@@ -20,18 +19,15 @@ import {showRecord, editField} from "/common/marc-record-ui.js";
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(
-    document.querySelector('#navbar'),
-    "Muuntaja",
-    {
-      helpButton: {link:"https://www.kiwi.fi/x/iBcvBQ"},
-      newButton: true,
-      searchButton: true
-    });
+  setAppName("Muuntaja");
 
   doLogin(authSuccess);
 
   function authSuccess(user) {
+    showMainMenu();
+    addButtonToNavBar('Apua', 'help_outline', false, "https://www.kiwi.fi/x/iBcvBQ");
+    addButtonToNavBar('Uusi', 'add', resetForms);
+    addButtonToNavBar('Etsi', 'search');
 
     profileRequest()
       .then(profiles => {
