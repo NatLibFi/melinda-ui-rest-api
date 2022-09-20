@@ -8,6 +8,7 @@ import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-mel
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
+import createArtikkelitRoute from './artikkelit/artikkelitRoute';
 import createAuthRoute from './auth/authRoute';
 import createBibRoute from './bib/bibRoute';
 import createRecordRoute from './record/recordRoute';
@@ -18,14 +19,14 @@ import createViewerRoute from './viewer/viewerRoute';
 import path from 'path';
 
 // From config file
-export default function ({
+export default async function ({
   httpPort, enableProxy,
   xServiceURL, userLibrary,
   ownAuthzURL, ownAuthzApiKey,
   sruUrl, jwtOptions, melindaApiOptions
 }) {
   const logger = createLogger();
-  const server = initExpress();
+  const server = await initExpress();
 
   // Soft shutdown function
   server.on('close', () => {
@@ -36,7 +37,7 @@ export default function ({
   return server;
 
   // Add async when you need await in route construction
-  function initExpress() { // eslint-disable-line max-statements
+  async function initExpress() { // eslint-disable-line max-statements
     const app = express();
 
     //logger.debug(`Service URL: ${xServiceURL}`);
@@ -67,19 +68,21 @@ export default function ({
     app.use(passport.initialize());
 
     // Clients
-    app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
-    app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
-    app.use('/edit', express.static(path.join(__dirname, 'clients/edit/'), {index: 'edit.html'}));
+    app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
+    app.use('/artikkelit', express.static(path.join(__dirname, 'clients/artikkelit/'), {index: 'artikkelit.html'}));
     app.use('/common', express.static(path.join(__dirname, 'clients/common/')));
+    app.use('/edit', express.static(path.join(__dirname, 'clients/edit/'), {index: 'edit.html'}));
     app.use('/keycloak', express.static(path.join(__dirname, 'clients/keycloakLogin/'), {index: 'keycloakLogin.html'}));
     app.use('/login', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
-    app.use('/', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
+    app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
 
     // REST API
+    app.use('/rest/artikkelit', createArtikkelitRoute());
     app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
-    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), createBibRoute(sruUrl));
-    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
+    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
     app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
+    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
 
     app.use(handleError);

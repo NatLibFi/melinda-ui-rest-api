@@ -1,0 +1,62 @@
+[
+  {
+  "value": "fin",
+  "text": "suomi"
+  },
+  {
+  "value": "eng",
+  "text": "englanti"
+  },
+  {
+  "value": "swe",
+  "text": "ruotsi"
+  },
+  {
+  "value": "esp",
+  "text": "espanja"
+  },
+  {
+  "value": "ita",
+  "text": "italia"
+  },
+  {
+  "value": "nor",
+  "text": "norja"
+  },
+  {
+  "value": "fre",
+  "text": "ranska"
+  },
+  {
+  "value": "ger",
+  "text": "saksa"
+  },
+  {
+  "value": "dan",
+  "text": "tanska"
+  },
+  {
+  "value": "rus",
+  "text": "venäjä"
+  },
+  {
+  "value": "est",
+  "text": "viro"
+  },
+  {
+  "value": "smn",
+  "text": "inarinsaame"
+  },
+  {
+  "value": "sme",
+  "text": "pohj.saame"
+  },
+  {
+  "value": "smi",
+  "text": "muu saam."
+  },
+  {
+  "value": "krl",
+  "text": "karjala"
+  }
+]

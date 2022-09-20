@@ -1,0 +1,22 @@
+[
+  {
+  "value": "A1",
+  "text": "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä"
+  },
+  {
+  "value": "A2",
+  "text": "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä"
+  },
+  {
+  "value": "B1",
+  "text": "B1 - Kirjoitus tieteellisessä aikakauslehdessä"
+  },
+  {
+  "value": "D1",
+  "text": "D1 - Artikkeli ammattilehdessä"
+  },
+  {
+  "value": "E1",
+  "text": "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli"
+  }
+]

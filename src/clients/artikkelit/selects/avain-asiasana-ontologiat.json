@@ -1,0 +1,66 @@
+[
+  {
+    "value": "term_yso",
+    "text": "YSO"
+  },
+  {
+    "value": "term_yso_geo",
+    "text": "YSO-paikat"
+  },
+  {
+    "value": "term_cn",
+    "text": "Suomalaiset yhteisönimet"
+  },
+  {
+    "value": "term_slm",
+    "text": "Lajityyppi/muoto (SLM)"
+  },
+  {
+    "value": "term_allfo",
+    "text": "ALLFO"
+  },
+  {
+    "value": "term_allfo_geo",
+    "text": "ALLFO-orter"
+  },
+  {
+    "value": "term_fgf",
+    "text": "Genre/form (FGF)"
+  },
+  {
+    "value": "term_afo",
+    "text": "AFO"
+  },
+  {
+    "value": "term_kassu",
+    "text": "Kassu"
+  },
+  {
+    "value": "term_soto",
+    "text": "SOTO"
+  },
+  {
+    "value": "term_finmesh",
+    "text": "FinMeSH"
+  },
+  {
+    "value": "term_maotao",
+    "text": "MAO/TAO"
+  },
+  {
+    "value": "term_other",
+    "text": "Muu"
+  },
+  {
+    "value": "term_other_person",
+    "text": "Muu - Henkilö"
+  },
+  {
+    "value": "term_other_community",
+    "text": "Muu - Yhteisö"
+  },
+  {
+    "value": "term_other_time",
+    "text": "Muu - Aikamääre"
+  }
+]

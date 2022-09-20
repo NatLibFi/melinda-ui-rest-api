@@ -25,6 +25,22 @@ window.ignore = function (e) {
 
 //-----------------------------------------------------------------------------
 
+export function formToJson(formSubmitEvent) {
+  const formData = new FormData(formSubmitEvent.target);
+  const formJson = {};
+  formData.forEach((value, key) => {
+    if (key.indexOf('-array') > -1) {
+      if (formJson[key] === undefined) {
+        return formJson[key] = [value];
+      }
+      return formJson[key].push(value)
+    }
+
+    return formJson[key] = value
+  });
+  return formJson;
+}
+
 export function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {
