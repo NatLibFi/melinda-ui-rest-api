@@ -2,12 +2,13 @@ import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
 import {Account, doLogin, logout} from "/common/auth.js"
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
 import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes} from "./constants.js";
-import {getArtikkeliRecord, getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda} from "../common/rest.js";
+import {getArtikkeliRecord, getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda, getOntologyWords} from "../common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 import {formToJson} from "/common/ui-utils.js";
-import {idbGet, idbSet, idbClear, idbKeys} from "/artikkelit/indexDB.js"
-import {addTempOrganization, getTempOrganizationList, removeTempOrganization, resetTempOrganizationList, createP, createIconButton, createHiddenInput, addAuthorToIdbIndex} from "./utils.js";
+import {idbGet, idbSet, idbClear, idbKeys, idbAddValueToLastIndex} from "/artikkelit/indexDB.js"
+import {addTempOrganization, getTempOrganizationList, removeTempOrganization, resetTempOrganizationList, createP, createIconButton, createHiddenInput, setOptions} from "./utils.js";
 import {idbDel} from "./indexDB.js";
+import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "./sessionStorageManager.js";
 
 
 
@@ -24,13 +25,18 @@ window.initialize = function () {
     showTab('artikkelit-lisaa');
     fillFormOptions();
 
-    document.getElementById("haku-julkaisu-title-form").addEventListener("submit", searchPublications);
-    document.getElementById("haku-julkaisu-melinda-form").addEventListener("submit", searchPublications);
-    document.getElementById("haku-julkaisu-isbn-form").addEventListener("submit", searchPublications);
-    document.getElementById("haku-julkaisu-issn-form").addEventListener("submit", searchPublications);
+    document.getElementById("julkaisu-haku-title-form").addEventListener("submit", searchPublications);
+    document.getElementById("julkaisu-haku-melinda-form").addEventListener("submit", searchPublications);
+    document.getElementById("julkaisu-haku-isbn-form").addEventListener("submit", searchPublications);
+    document.getElementById("julkaisu-haku-issn-form").addEventListener("submit", searchPublications);
     document.getElementById("tekija-lisaa-form").addEventListener("submit", addAuthor);
+    document.getElementById("asiasana-haku-yso-form").addEventListener("submit", searchOntologyWords);
+    document.getElementById("asiasana-lisaa-form").addEventListener("submit", addOntologyWord);
+
     resetSearchResultSelect();
+    resetOntologySelect();
     refreshAuthorsList();
+    refreshOntologyWordList();
   }
 }
 
@@ -39,14 +45,18 @@ window.sourceTypeChange = (event) => {
 }
 
 window.showAndHideSearchInputs = (event) => {
-  document.getElementById(`haku-julkaisu-title-form`).style.display = 'none';
-  document.getElementById(`haku-julkaisu-issn-form`).style.display = 'none';
-  document.getElementById(`haku-julkaisu-isbn-form`).style.display = 'none';
-  document.getElementById(`haku-julkaisu-melinda-form`).style.display = 'none';
+  document.getElementById(`julkaisu-haku-title-form`).style.display = 'none';
+  document.getElementById(`julkaisu-haku-issn-form`).style.display = 'none';
+  document.getElementById(`julkaisu-haku-isbn-form`).style.display = 'none';
+  document.getElementById(`julkaisu-haku-melinda-form`).style.display = 'none';
 
   // console.log(event.target.value);
 
-  document.getElementById(`haku-julkaisu-${event.target.value}-form`).style.display = 'block';
+  document.getElementById(`julkaisu-haku-${event.target.value}-form`).style.display = 'block';
+}
+
+window.ontologySearchResultChange = () => {
+
 }
 
 window.searchResultChange = (event) => {
@@ -62,21 +72,25 @@ window.searchResultChange = (event) => {
       document.getElementById(`lehden-vuodet-min`).innerHTML = data.publisherInfo.publisherYears.start;
       document.getElementById(`lehden-vuodet-max`).innerHTML = data.publisherInfo.publisherYears.end;
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
-
-      const formData = collectFormData();
-      getArtikkeliRecord({...data, ...formData}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
     });
   }
 }
 
 window.doUpdate = (event) => {
   event.preventDefault();
-  const tietueIndex = document.getElementById('haku-tulos-lista').value;
-
-  idbGet('artoSources', parseInt(tietueIndex)).then(data => {
-    const formData = collectFormData();
-    getArtikkeliRecord({...data, ...formData}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
-  });
+  const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
+  idbKeys('artoAuthors').then(keys => {
+    const promises = [];
+    promises.push(idbGet('artoSources', parseInt(tietueIndex)));
+    const reversedKeys = keys.reverse();
+    reversedKeys.forEach(key => promises.push(idbGet('artoAuthors', key)));
+    Promise.all(promises).then(data => {
+      const [source, ...authors] = data;
+      console.log(data);
+      const formData = collectFormData();
+      getArtikkeliRecord({source, ...formData, authors}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
+    });
+  })
 }
 
 window.addOrganizationForAuthor = (event) => {
@@ -125,20 +139,27 @@ window.resetAuthor = (event) => {
 
 function collectFormData() {
   return {
-    journalNumberPublishingYear: document.getElementById(`numeron-vuosi`).value,
-    journalNumberVol: document.getElementById(`numeron-vol`).value,
-    journalNumberNro: document.getElementById(`numeron-numero`).value,
-    journalNumberPages: document.getElementById(`numeron-sivut`).value,
-    articleTitle: document.getElementById(`artikkelin-otsikko`).value,
-    articleLanguage: document.getElementById(`artikkelin-kieli`).value,
-    articleLink: document.getElementById(`artikkelin-linkki`).value
+    journalNumber: {
+      publishingYear: document.getElementById(`numeron-vuosi`).value,
+      volume: document.getElementById(`numeron-vol`).value,
+      number: document.getElementById(`numeron-numero`).value,
+      pages: document.getElementById(`numeron-sivut`).value
+    },
+    article: {
+      title: document.getElementById(`artikkelin-otsikko`).value,
+      language: document.getElementById(`artikkelin-kieli`).value,
+      link: document.getElementById(`artikkelin-linkki`).value
+    },
+    abstract: {
+      text: document.getElementById(`tiivistelma-abstrakti`).value,
+      language: document.getElementById(`tiivistelma-kieli`).value
+    }
   };
 }
 
-function resetSearchResultSelect() {
-  const select = document.getElementById('haku-tulos-lista');
+function resetSearchResultSelect(searching) {
+  const select = document.getElementById('julkaisu-haku-tulos-lista');
   select.innerHTML = '';
-  setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
   document.getElementById(`lehden-nimi`).innerHTML = '';
   document.getElementById(`lehden-melindaId`).innerHTML = '';
   document.getElementById(`lehden-issn`).innerHTML = '';
@@ -147,13 +168,19 @@ function resetSearchResultSelect() {
   document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = '';
   document.getElementById(`lehden-vuodet-min`).innerHTML = '';
   document.getElementById(`lehden-vuodet-max`).innerHTML = '';
+
+  if (searching) {
+    return setOptions(select, [{value: '', text: 'Etsitään...'}], true);
+  }
+
+  setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
 }
 
 function searchPublications(event) {
   event.preventDefault();
 
-  resetSearchResultSelect();
-  const hakuTyyppi = document.getElementById(`haku-tyyppi`).value;
+  resetSearchResultSelect(true);
+  const hakuTyyppi = document.getElementById(`julkaisu-haku-tyyppi`).value;
   const sourceType = document.querySelector('#kuvailtava-kohde').value;
   const formJson = formToJson(event);
 
@@ -173,11 +200,19 @@ function searchPublications(event) {
   throw new Error('Invalid search type!');
 }
 
+function searchOntologyWords(event) {
+  event.preventDefault();
+  resetOntologySelect(true);
+  const formJson = formToJson(event);
+  getOntologyWords(formJson['asiasana-ontologia'], formJson['haku-arvo']).then(data => setOntologyWords(data.results));
+}
+
 function setRecordsToSearch(records) {
-  const select = document.getElementById('haku-tulos-lista');
   if (records.length === 0) {
     return resetSearchResultSelect();
   }
+
+  const select = document.getElementById('julkaisu-haku-tulos-lista');
   const data = records.map((record, index) => {
     const title = record.data.title;
     idbSet('artoSources', index, record.data);
@@ -185,6 +220,33 @@ function setRecordsToSearch(records) {
   });
 
   setOptions(select, data);
+}
+
+function setOntologyWords(words) {
+  if (words.length === 0) {
+    return resetOntologySelect();
+  }
+
+  const select = document.getElementById('asiasana-haku-tulos-lista');
+  const data = words.map((word, index) => {
+    const title = `${word.prefLabel}${word.altLabel ? ` (${word.altLabel})` : ''}`;
+    addValueToSessionStoreList('ontologyTempList', {identifier: index, ...word});
+    return {value: index, text: title};
+  });
+
+  setOptions(select, data);
+}
+
+function resetOntologySelect(searching) {
+  const select = document.getElementById('asiasana-haku-tulos-lista');
+  select.innerHTML = '';
+
+  if (searching) {
+    resetSessionStoreList('ontologyTempList');
+    return setOptions(select, [{value: '', text: 'Etsitään...'}], true);
+  }
+
+  setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
 }
 
 function resetAuthor(event) {
@@ -203,11 +265,15 @@ window.removeAuthor = (event, key) => {
   idbDel('artoAuthors', key).then(() => refreshAuthorsList());
 }
 
+window.removeOntologyWord = (event, key) => {
+  event.preventDefault();
+  idbDel('artoOntologyWords', key).then(() => refreshOntologyWordList());
+}
+
 function addAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const authorsTempOrganizations = getTempOrganizationList();
-
 
   const data = {
     firstName: formJson['tekija-etunimi'],
@@ -216,8 +282,46 @@ function addAuthor(event) {
     authorsTempOrganizations
   }
 
-  addAuthorToIdbIndex(data).then(() => {
+  idbAddValueToLastIndex('artoAuthors', data).then(() => {
     refreshAuthorsList();
+  });
+}
+
+function addOntologyWord(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+  const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
+  console.log(ontologyWord);
+
+  if (ontologyWord) {
+    // idbIndex save
+    idbAddValueToLastIndex('artoOntologyWords', ontologyWord).then(() => {
+      // refresh ontology word list
+      refreshOntologyWordList();
+    })
+  }
+}
+
+function refreshOntologyWordList() {
+  const ontologyWordList = document.getElementById('asiasana-list');
+  ontologyWordList.innerHTML = '';
+
+  idbKeys('artoOntologyWords').then(keys => {
+    keys.forEach(key => {
+      idbGet('artoOntologyWords', key).then(word => {
+        const form = document.createElement('form');
+        form.classList.add('full-width');
+        const removeButton = createIconButton('close', ['no-border'], `return removeOntologyWord(event, ${key})`, 'Poista')
+        form.appendChild(removeButton);
+        const pRelator = createP(word.prefLabel);
+        pRelator.classList.add('capitalize');
+        form.appendChild(pRelator);
+        form.appendChild(createP(word.vocab, '&nbsp;-&nbsp;'));
+        form.appendChild(createP(word.lang, '&nbsp;/&nbsp;'));
+        form.appendChild(createP(word.uri, '&nbsp;-&nbsp;'));
+        ontologyWordList.appendChild(form)
+      });
+    });
   });
 }
 
@@ -268,7 +372,7 @@ async function fillSelectOptions() {
   for (var index = 0; index < selects.length; index += 1) {
     const select = selects[index];
 
-    if (select.name.indexOf('haku-tyyppi') === 0) {
+    if (select.name.indexOf('julkaisu-haku-tyyppi') === 0) {
       setOptions(select, searchTypes);
     }
 
@@ -316,21 +420,4 @@ function fillDatalistOptions() {
       setOptions(datalist, organizations);
     }
   }
-}
-
-function setOptions(element, jsonArray, disabled = false) {
-  element.innerHTML = '';
-  jsonArray.forEach((obj, index) => {
-    const opt = document.createElement('option');
-    opt.value = obj.value;
-    opt.innerHTML = obj.text;
-    opt.selected = disabled;
-    opt.disabled = disabled;
-    element.append(opt);
-    if (element.nodeName === 'select' && index === 0) {
-      element.selectedIndex = 0;
-    }
-  });
-
-  element.dispatchEvent(new Event('change'));
 }

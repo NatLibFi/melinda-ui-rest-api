@@ -4,6 +4,7 @@
 //
 //*****************************************************************************
 
+import {getOntologyOptions} from "../artikkelit/utils.js";
 import {Account} from "../common/auth.js"
 
 //-----------------------------------------------------------------------------
@@ -111,27 +112,33 @@ export function transformRequest(transformed) {
 //*****************************************************************************
 
 export function getPublicationByISSN(issn, type = 'journal') {
-  return fetchPublications(`${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`);
+  return fetchFromRest(`${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`);
 }
 
 export function getPublicationByISBN(isbn, type = 'journal') {
-  return fetchPublications(`${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`);
+  return fetchFromRest(`${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`);
 }
 
 export function getPublicationByMelinda(melindaId, type = 'journal') {
-  return fetchPublications(`${RESTurl}/bib/${melindaId}?arto=1&type=${type}`);
+  return fetchFromRest(`${RESTurl}/bib/${melindaId}?arto=1&type=${type}`);
 }
 
 export function getPublicationByTitle(title, type = 'journal') {
-  return fetchPublications(`${RESTurl}/bib/title/${title}?arto=1&type=${type}`);
+  return fetchFromRest(`${RESTurl}/bib/title/${title}?arto=1&type=${type}`);
 }
 
 export function getArtikkeliRecord(data) {
-  console.log(`body: ${data}`);
-  return fetchPublications(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
+  //console.log(`body: ${data}`);
+  return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
 }
 
-async function fetchPublications(url, method = 'GET', body = undefined) {
+export function getOntologyWords(ontology, query){
+  const {searchVocab, language} = getOntologyOptions(ontology)
+
+  return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
+}
+
+async function fetchFromRest(url, method = 'GET', body = undefined) {
   const result = await fetch(url,
     {
       method,

@@ -14,18 +14,12 @@ export function createArtikkelitService() {
 
   function generateRecord(data) {
     console.log(data); // eslint-disable-line
-    const {
-      isElectronic,
-      journalNumberPublishingYear,
-      journalNumberVol,
-      journalNumberNro,
-      journalNumberPages,
-      articleTitle,
-      articleLanguage,
-      publishing,
-      articleLink // eslint-disable-line
-    } = data;
-    const {issn, melindaId} = parseIncomingData(data);
+    // eslint-disable-next-line no-unused-vars
+    const {source, journalNumber, abstract, article, authors} = data;
+    const {isElectronic, publishing} = source;
+    const {issn, melindaId} = parseIncomingData(source);
+    const {language: articleLanguage, title: articleTitle} = article;
+
 
     const sourceType = 'journal'; // journal or book
     const abstractLanguages = []; // languages from abstracts form value
@@ -44,7 +38,7 @@ export function createArtikkelitService() {
         ...generatef041(articleLanguage, abstractLanguages),
         ...generatef080(), // (lisäkentät)
         ...generatef084(), // (lisäkentät)
-        ...generatef100sf110sf700sf710s(),
+        ...generatef100sf110sf700sf710s(authors),
         ...generatef245(articleTitle),
         ...generatef246(otherTitle),
         ...generatef336(),
@@ -57,7 +51,7 @@ export function createArtikkelitService() {
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
         ...generatef599(), // local notes (lisäkentät)
-        ...generatef773(sourceType, journalNumberPages, {journalMelindaId: melindaId, journalYear: journalNumberPublishingYear, journalNumber: journalNumberNro, journalVolume: journalNumberVol}, {title: articleTitle, publishing}, isbn, issn),
+        ...generatef773(sourceType, journalNumber, melindaId, article, publishing, isbn, issn),
         ...generatef787(), // review books
         ...generatef856(), // referenceLinks
         ...generatef960()

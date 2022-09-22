@@ -89,67 +89,67 @@ export const authorRelators = [
 
 export const ontologyTypes = [
   {
-    "value": "termYso",
-    "text": "YSO"
+    "value": "yso",
+    "text": "YSO - Yleinen suomalainen ontologia"
   },
   {
-    "value": "termYsoGeo",
+    "value": "ysoPaikat",
     "text": "YSO-paikat"
   },
   {
-    "value": "termCn",
+    "value": "yhteiso",
     "text": "Suomalaiset yhteisönimet"
   },
   {
-    "value": "termSlm",
-    "text": "Lajityyppi/muoto (SLM)"
+    "value": "slm",
+    "text": "SLM - Suomalainen lajityyppi- ja muotosanasto"
   },
   {
-    "value": "termAllfo",
-    "text": "ALLFO"
+    "value": "allfo",
+    "text": "ALLFO - Allmän finländsk ontologi "
   },
   {
-    "value": "termAllfoGeo",
+    "value": "allfoOrter",
     "text": "ALLFO-orter"
   },
   {
-    "value": "termFgf",
-    "text": "Genre/form (FGF)"
+    "value": "fgf",
+    "text": "FGF - Finländsk genre- och formlista "
   },
   {
-    "value": "termAfo",
-    "text": "AFO"
+    "value": "afo",
+    "text": "AFO - Luonnonvara- ja ympäristöontologia"
   },
   {
-    "value": "termKassu",
-    "text": "Kassu"
+    "value": "kassu",
+    "text": "Kassu - Kasvien suomenkieliset nimet"
   },
   {
-    "value": "termSoto",
-    "text": "SOTO"
+    "value": "soto",
+    "text": "SOTO - Sotatieteen ontologia"
   },
   {
-    "value": "termFinmesh",
-    "text": "FinMeSH"
+    "value": "finmesh",
+    "text": "MeSH / FinMeSH"
   },
   {
-    "value": "termMaotao",
-    "text": "MAO/TAO"
+    "value": "maotao",
+    "text": "MAO/TAO - Museoalan ja taideteollisuusalan ontologia"
   },
   {
-    "value": "termOther",
+    "value": "other",
     "text": "Muu"
   },
   {
-    "value": "termOtherPerson",
+    "value": "otherPerson",
     "text": "Muu - Henkilö"
   },
   {
-    "value": "termOtherCommunity",
+    "value": "otherCommunity",
     "text": "Muu - Yhteisö"
   },
   {
-    "value": "termOtherTime",
+    "value": "otherTime",
     "text": "Muu - Aikamääre"
   }
 ]
@@ -157,63 +157,63 @@ export const ontologyTypes = [
 export const languages = [
   {
     "value": "fin",
-    "text": "suomi"
+    "text": "Suomi"
   },
   {
     "value": "eng",
-    "text": "englanti"
+    "text": "Englanti"
   },
   {
     "value": "swe",
-    "text": "ruotsi"
+    "text": "Ruotsi"
   },
   {
     "value": "esp",
-    "text": "espanja"
+    "text": "Espanja"
   },
   {
     "value": "ita",
-    "text": "italia"
+    "text": "Italia"
   },
   {
     "value": "nor",
-    "text": "norja"
+    "text": "Norja"
   },
   {
     "value": "fre",
-    "text": "ranska"
+    "text": "Ranska"
   },
   {
     "value": "ger",
-    "text": "saksa"
+    "text": "Saksa"
   },
   {
     "value": "dan",
-    "text": "tanska"
+    "text": "Tanska"
   },
   {
     "value": "rus",
-    "text": "venäjä"
+    "text": "Venäjä"
   },
   {
     "value": "est",
-    "text": "viro"
+    "text": "Viro"
   },
   {
     "value": "smn",
-    "text": "inarinsaame"
+    "text": "Inarinsaame"
   },
   {
     "value": "sme",
-    "text": "pohj.saame"
+    "text": "Pohj.saame"
   },
   {
     "value": "smi",
-    "text": "muu saam."
+    "text": "Muu saam."
   },
   {
     "value": "krl",
-    "text": "karjala"
+    "text": "Karjala"
   }
 ]
 

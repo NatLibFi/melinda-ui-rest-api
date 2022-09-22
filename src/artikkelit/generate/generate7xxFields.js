@@ -1,52 +1,52 @@
-export function generatef773(sourceType, articlePages, journal = false, book = false, isbn = false, issn = false) {
+export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, {title}, publishing, isbn, issn) {
   return [
     {
-      tag: '773', ind1: '0', ind2: ' ', subfields: [...selectSubfields(sourceType, articlePages, issn, isbn, book, journal)]
+      tag: '773', ind1: '0', ind2: ' ', subfields: [...selectSubfields()]
     }
   ];
 
-  function selectSubfields(sourceType, articlePages, issn, isbn, {title, publishing}, {journalMelindaId, journalYear, journalNumber, journalVolume = ''}) {
+  function selectSubfields() {
     if (sourceType === 'journal') {
       return [
-        {code: 'w', value: journalMelindaId},
+        {code: 'w', value: melindaId},
         {code: 't', value: title},
         {code: 'd', value: publishing},
         {code: 'x', value: `${issn}. -`},
-        ...getSubfieldG(journalVolume, journalYear, journalNumber, articlePages)
+        ...getSubfieldG(volume, publishingYear, number, pages)
       ];
     }
 
     if (sourceType === 'book') {
       return [
-        {code: 'w', value: journalMelindaId},
+        {code: 'w', value: melindaId},
         {code: 't', value: title},
         {code: 'd', value: publishing},
         ...selectSubfield(isbn, 'z'),
         ...selectSubfield(issn, 'x'),
-        {code: 'k', value: journalMelindaId},
-        {code: 'g', value: articlePages}
+        {code: 'k', value: melindaId},
+        {code: 'g', value: pages}
       ];
     }
 
     return [
       {code: 'z', value: `${isbn}. -`},
-      {code: 'g', value: articlePages}
+      {code: 'g', value: pages}
     ];
 
-    function getSubfieldG(journalVolume, journalYear, journalNumber, articlePages) {
-      const value = `${journalVolume}(${journalYear}) : ${journalNumber}, s. ${articlePages}`;
+    function getSubfieldG() {
+      const value = `${volume}(${publishingYear}) : ${number}, s. ${pages}`;
 
       return [{code: 'g', value}];
     }
   }
-}
 
-function selectSubfield(value, code = false) {
-  if (value) {
-    return [{code, value}];
+  function selectSubfield(value, code = false) {
+    if (value) {
+      return [{code, value}];
+    }
+
+    return [];
   }
-
-  return [];
 }
 
 

@@ -107,6 +107,7 @@ button > a, button > a:visited {
 .Input > label {
   color: rgb(48, 93, 109);
   font-size: 12pt;
+  margin-right: 8px;
 }
 
 .Input > input {
@@ -131,13 +132,19 @@ button > a, button > a:visited {
 .Select > label {
   color: rgb(48, 93, 109);
   font-size: 12pt;
+  margin-right: 8px;
 }
 
 .Select > select {
   border: 0;
   border-bottom: 1pt solid grey;
+  background: #fff;
   outline: none;
   font-size: 15pt;
+}
+
+.Select > select > option {
+  text-transform: capitalize;
 }
 
 /* ---------------------------------------------------------------------------- */

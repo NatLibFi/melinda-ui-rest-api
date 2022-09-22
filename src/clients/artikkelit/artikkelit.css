@@ -144,17 +144,40 @@ div#muuntaja {}
   flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 20px;
+  border-radius: 8px;
 }
 
 .full-width {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
+  line-height: 20px;
 }
 
 .justify-content-end {
   justify-content: end;
+}
+
+.full-width label {
+  overflow:visible;
+  white-space: nowrap;
+}
+
+.full-width select {
+  width: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-width select option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-width p {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .full-width button {
@@ -165,29 +188,6 @@ div#muuntaja {}
   text-transform: capitalize;
 }
 
-#tekija-organisaatiot-list:nth-child(2) {
-  background-color: lightgray;
-}
-
-#tekija-organisaatiot-list .full-width p {
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-
-#tekija-organisaatiot-list .full-width button {
-  border: 0px;
-}
-
-#tekija-list .full-width {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-#tekija-list .full-width p {
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
 
 button.no-border {
   border: 0px;

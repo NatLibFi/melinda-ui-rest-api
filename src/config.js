@@ -12,6 +12,7 @@ export const ownAuthzApiKey = readEnvironmentVariable('OWN_AUTHZ_API_KEY');
 //export const ownAuthzApiKey = 'xxx';
 
 export const sruUrl = readEnvironmentVariable('SRU_URL');
+export const fintoUrl = readEnvironmentVariable('FINTO_URL');
 
 export const jwtOptions = {
   secretOrPrivateKey: readEnvironmentVariable('JWT_SECRET'),

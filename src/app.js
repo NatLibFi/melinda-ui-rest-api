@@ -14,7 +14,7 @@ import createBibRoute from './bib/bibRoute';
 import createRecordRoute from './record/recordRoute';
 import createMuuntajaRoute from './muuntaja/muuntajaRoute';
 import createViewerRoute from './viewer/viewerRoute';
-
+import createOntologyRoute from './ontologies/ontologyRoute';
 //import fs from 'fs';
 import path from 'path';
 
@@ -23,7 +23,8 @@ export default async function ({
   httpPort, enableProxy,
   xServiceURL, userLibrary,
   ownAuthzURL, ownAuthzApiKey,
-  sruUrl, jwtOptions, melindaApiOptions
+  sruUrl, jwtOptions, melindaApiOptions,
+  fintoUrl
 }) {
   const logger = createLogger();
   const server = await initExpress();
@@ -82,6 +83,7 @@ export default async function ({
     app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
     app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
     app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
+    app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
 

@@ -84,15 +84,54 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
   return button;
 }
 
-export function addAuthorToIdbIndex({firstName, lastName, relator, authorsTempOrganizations}) {
-  return idbKeys('artoAuthors').then(indexes => {
-    if (indexes.length === 0) {
-      return idbSet('artoAuthors', 1, {firstName, lastName, relator, authorsTempOrganizations});
+export function getOntologyOptions(ontology) {
+  const sweOntologies = ["allfo", "allfoOrter", "fgf"];
+  const localOntologies = ["other", "otherPerson", "otherCommunity", "otherTime"];
+
+  const vocabularies = {
+    yso: 'yso',
+    allfo: 'yso',
+    slm: 'slm',
+    fgf: 'slm',
+    ysoPaikat: 'yso-paikat',
+    allfoOrter: 'yso-paikat',
+    kassu: 'kassu',
+    afo: 'afo',
+    maotao: 'maotao',
+    soto: 'soto',
+    yhteiso: 'cn',
+    finmesh: 'mesh'
+  }
+
+  const searchVocab = vocabularies[ontology];
+  const language = sweOntologies.includes(ontology) ? 'sv' : 'fi';
+
+  if (localOntologies.includes(ontology)) {
+    return {
+      searchVocab: 'local',
+      language
+    };
+  }
+
+  return {
+    searchVocab,
+    language
+  };
+}
+
+export function setOptions(element, jsonArray, disabled = false) {
+  element.innerHTML = '';
+  jsonArray.forEach((obj, index) => {
+    const opt = document.createElement('option');
+    opt.value = obj.value;
+    opt.innerHTML = obj.text;
+    opt.selected = disabled;
+    opt.disabled = disabled;
+    element.append(opt);
+    if (element.nodeName === 'select' && index === 0) {
+      element.selectedIndex = 0;
     }
-
-    const lastIndex = [...indexes].pop();
-    const newIndex = lastIndex + 1;
-
-    return idbSet('artoAuthors', newIndex, {firstName, lastName, relator, authorsTempOrganizations});
   });
+
+  element.dispatchEvent(new Event('change'));
 }
