@@ -36,6 +36,14 @@ export async function idbKeys(tableName) {
   return (await dbPromise).getAllKeys(tableName);
 };
 
+export async function idbGetStoredValues(tableName) {
+  const keys = await idbKeys(tableName);
+  const promises = keys.map(async key => await idbGet(tableName, key));
+
+  const results = await Promise.all(promises);
+  return results;
+}
+
 export function idbAddValueToLastIndex(idbTable, value) {
   return idbKeys(idbTable).then(indexes => {
     if (indexes.length === 0) {

@@ -26,7 +26,8 @@ div#tools {}
   width: 37ch;
 }
 
-.tools .ToolBar .Select>label, .header .Select>label {
+.tools .ToolBar .Select>label,
+.header .Select>label {
   color: rgb(48, 93, 109);
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   font-size: 0.8em;
@@ -34,7 +35,8 @@ div#tools {}
   text-transform: none;
 }
 
-.tools .ToolBar .Select>select, .header .Select>select {
+.tools .ToolBar .Select>select,
+.header .Select>select {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
@@ -88,7 +90,7 @@ div#muuntaja {}
     padding: 0.5vw;
   }
 
-  .record-merge-panel > div:first-of-type {
+  .record-merge-panel>div:first-of-type {
     width: 64vw;
     display: flex;
     flex-direction: column;
@@ -147,12 +149,17 @@ div#muuntaja {}
   border-radius: 8px;
 }
 
+.half-width {
+  width: 50%;
+}
+
 .full-width {
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   line-height: 20px;
+  gap: 8px;
 }
 
 .justify-content-end {
@@ -160,7 +167,7 @@ div#muuntaja {}
 }
 
 .full-width label {
-  overflow:visible;
+  overflow: visible;
   white-space: nowrap;
 }
 
@@ -188,7 +195,6 @@ div#muuntaja {}
   text-transform: capitalize;
 }
 
-
 button.no-border {
   border: 0px;
 }
@@ -198,31 +204,30 @@ button.no-border {
   align-items: center;
 }
 
-.col .InfoField {
-  width: 100%;
+fieldset {
   display: flex;
   flex-wrap: wrap;
 }
 
-.col .InfoField .panel {
-  width: 50%;
+fieldset .panel {
+  flex-grow: 1;
 }
 
-.col .InfoField .panel .wrap {
+fieldset .panel .wrap {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.col .InfoField .wrap label {
+fieldset .wrap label {
   text-align: end;
   margin-right: 10px;
   line-height: 32px;
   color: rgb(48, 93, 109);
 }
 
-.col .InfoField .wrap p {
+fieldset .wrap p {
   line-height: 32px;
   margin: 0px;
   margin-right: 5px;
@@ -239,4 +244,3 @@ button.no-border {
 .col .Input input {
   flex-grow: 3;
 }
-

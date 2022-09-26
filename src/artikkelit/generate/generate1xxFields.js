@@ -5,7 +5,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
   }
 
   const authorFields = authors.map((author, index) => {
-    if (index === 1) {
+    if (index === 0) {
       //  <xsl:when test="$position = 1">
       return generate100or110();
     }

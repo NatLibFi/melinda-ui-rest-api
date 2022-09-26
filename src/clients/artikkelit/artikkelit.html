@@ -91,7 +91,7 @@
         <div class="col">
           <div class="BoxShadow">
             <div class="header">
-              <p class="title">Lisää tietue</p>
+              <p class="title">Kuvailtavan artikkelin tiedot</p>
             </div>
             <div>
               <fieldset>
@@ -157,44 +157,42 @@
               </fieldset>
               <fieldset>
                 <legend>Lehden tiedot:</legend>
-                <div class="InfoField">
-                  <div class="panel">
-                    <div id="lehden-nimi-wrap" class="wrap">
-                      <label for="lehden-nimi">Nimi:</label>
-                      <p id="lehden-nimi" name="lehden-nimi"> </p>
-                    </div>
-                    <div id="lehden-melindaId-wrap" class="wrap">
-                      <label for="lehden-melindaId">Melinda id:</label>
-                      <p id="lehden-melindaId" name="lehden-melindaId"> </p>
-                    </div>
-                    <div id="lehden-issn-wrap" class="wrap">
-                      <label for="lehden-issn">ISSN:</label>
-                      <p id="lehden-issn" name="lehden-issn"> </p>
-                    </div>
-                    <div id="lehden-isbn-wrap" class="wrap">
-                      <label for="lehden-isbn">ISBN:</label>
-                      <p id="lehden-isbn" name="lehden-isbn"> </p>
-                    </div>
+                <div class="panel">
+                  <div id="lehden-nimi-wrap" class="wrap">
+                    <label for="lehden-nimi">Nimi:</label>
+                    <p id="lehden-nimi" name="lehden-nimi"> </p>
                   </div>
-                  <div class="panel">
-                    <div id="lehden-julkaisu-tyyppi-wrap" class="wrap">
-                      <label for="lehden-julkaisu-tyyppi">Julkaisu tyyppi:</label>
-                      <p id="lehden-julkaisu-tyyppi" name="lehden-julkaisu-tyyppi"> </p>
-                    </div>
-                    <div id="lehden-elektroninen-julkaisu-wrap" class="wrap">
-                      <label for="lehden-elektroninen-julkaisu">Elektroninen julkaisu:</label>
-                      <p id="lehden-elektroninen-julkaisu" name="lehden-elektroninen-julkaisu"></p>
-                    </div>
-                    <div id="lehden-vuodet-wrap" class="wrap">
-                      <label for="lehden-vuodet-min">Julkaisu vuodet:</label>
-                      <p id="lehden-vuodet-min" name="lehden-vuodet-min"> </p>
-                      <p> - </p>
-                      <p id="lehden-vuodet-max" name="lehden-vuodet-max"> </p>
-                    </div>
-                    <div id="lehden-paikka-wrap" class="wrap">
-                      <label for="lehden-paikka">Julkaisu paikka:</label>
-                      <p id="lehden-paikka" name="lehden-paikka"> </p>
-                    </div>
+                  <div id="lehden-melindaId-wrap" class="wrap">
+                    <label for="lehden-melindaId">Melinda id:</label>
+                    <p id="lehden-melindaId" name="lehden-melindaId"> </p>
+                  </div>
+                  <div id="lehden-issn-wrap" class="wrap">
+                    <label for="lehden-issn">ISSN:</label>
+                    <p id="lehden-issn" name="lehden-issn"> </p>
+                  </div>
+                  <div id="lehden-isbn-wrap" class="wrap">
+                    <label for="lehden-isbn">ISBN:</label>
+                    <p id="lehden-isbn" name="lehden-isbn"> </p>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div id="lehden-julkaisu-tyyppi-wrap" class="wrap">
+                    <label for="lehden-julkaisu-tyyppi">Julkaisu tyyppi:</label>
+                    <p id="lehden-julkaisu-tyyppi" name="lehden-julkaisu-tyyppi"> </p>
+                  </div>
+                  <div id="lehden-elektroninen-julkaisu-wrap" class="wrap">
+                    <label for="lehden-elektroninen-julkaisu">Elektroninen julkaisu:</label>
+                    <p id="lehden-elektroninen-julkaisu" name="lehden-elektroninen-julkaisu"></p>
+                  </div>
+                  <div id="lehden-vuodet-wrap" class="wrap">
+                    <label for="lehden-vuodet-min">Julkaisu vuodet:</label>
+                    <p id="lehden-vuodet-min" name="lehden-vuodet-min"> </p>
+                    <p> - </p>
+                    <p id="lehden-vuodet-max" name="lehden-vuodet-max"> </p>
+                  </div>
+                  <div id="lehden-paikka-wrap" class="wrap">
+                    <label for="lehden-paikka">Julkaisu paikka:</label>
+                    <p id="lehden-paikka" name="lehden-paikka"> </p>
                   </div>
                 </div>
               </fieldset>
@@ -226,16 +224,20 @@
                 <legend>Artikkelin tiedot:</legend>
                 <div class="Input full-width">
                   <label for="artikkelin-otsikko">Otsikko:</label>
-                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko">
+                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128">
+                </div>
+                <div class="Input full-width">
+                  <label for="artikkelin-muu-nimeke">Muu nimeke:</label>
+                  <input type="text" id="artikkelin-muu-nimeke" name="artikkelin-muu-nimeke" maxLength="128">
                 </div>
                 <div class="Select full-width">
                   <label for="artikkelin-kieli">Kieli:</label>
-                  <select id="artikkelin-kieli" name="artikkelin-kieli">
+                  <select id="artikkelin-kieli" name="artikkelin-kieli" maxLength="128">
                   </select>
                 </div>
                 <div class="Input full-width">
                   <label for="artikkelin-linkki">Linkki kokotekstiin:</label>
-                  <input type="text" id="artikkelin-linkki" name="artikkelin-linkki">
+                  <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
                 </div>
               </fieldset>
               <fieldset>
@@ -298,7 +300,7 @@
                 </div>
               </fieldset>
               <fieldset>
-                <legend>Lisää asia/avainsana tiedot:</legend>
+                <legend>Lisää asia- ja/tai avainsanat:</legend>
                 <form id="asiasana-haku-yso-form">
                   <div class="Select full-width">
                     <label for="asiasana-ontologia">Tyyppi:</label>
@@ -324,7 +326,7 @@
                 </form>
               </fieldset>
               <fieldset>
-                <legend>Lisätyt Asia/avainsanat:</legend>
+                <legend>Lisätyt asia- ja/tai avainsanat:</legend>
                 <div id="asiasana-list">
                 </div>
               </fieldset>
@@ -356,14 +358,55 @@
               </fieldset>
               <fieldset>
                 <legend>Lisäkentät:</legend>
-                Yleinen huomautus
-                Muu nimeke
-                Poimintakoodi 598 $a
-                Poimintakoodi 599 $a $x
-                UDK 080 $a$x
-                UDK 080 $a$x
-                Muu luokitus 084 $aLuokituksen lähde $2
-                Muu luokitus 084 $aLuokituksen lähde $2
+                <form class="full-width">
+                  <div class="Input full-width">
+                    <label for="lisakenttat-yleinen-huomautus">Yleinen huomautus:</label>
+                    <input type="text" id="lisakenttat-yleinen-huomautus" name="lisakenttat-yleinen-huomautus"
+                      maxLength="128">
+                  </div>
+                  <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
+                </form>
+                <div class="Input full-width">
+                  <label for="lisakenttat-poimintakoodi598a">Poimintakoodi (598 $a):</label>
+                  <input type="text" id="lisakenttat-tpoimintakoodi598a" name="lisakenttat-poimintakoodi598a"
+                    maxLength="128">
+                </div>
+                <div class="full-width">
+                  <div class="Input half-width">
+                    <label for="lisakenttat-poimintakoodi599a">Poimintakoodi (599 $a):</label>
+                    <input type="text" id="lisakenttat-poimintakoodi599a" name="lisakenttat-poimintakoodi599a"
+                      maxLength="128">
+                  </div>
+                  <div class="Input half-width">
+                    <label for="lisakenttat-poimintakoodi599x">Poimintakoodi (599 $x):</label>
+                    <input type="text" id="lisakenttat-poimintakoodi599x" name="lisakenttat-poimintakoodi599x"
+                      maxLength="128">
+                  </div>
+                </div>
+                <form class="full-width">
+                  <div class="Input full-width">
+                    <label for="lisakenttat-UDK080a">UDK (080 $a):</label>
+                    <input type="text" id="lisakenttat-UDK080a" name="lisakenttat-UDK080a" maxLength="128">
+                  </div>
+                  <div class="Input full-width">
+                    <label for="lisakenttat-UDK080x">UDK (080 $x):</label>
+                    <input type="text" id="lisakenttat-UDK080x" name="lisakenttat-UDK080x" maxLength="128">
+                  </div>
+                  <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
+                </form>
+                <form class="full-width">
+                  <div class="Input full-width">
+                    <label for="lisakenttat-muu-luokitus-084a">Muu luokitus (084 $a):</label>
+                    <input type="text" id="lisakenttat-muu-luokitus-084a" name="lisakenttat-muu-luokitus-084a"
+                      maxLength="128">
+                  </div>
+                  <div class="Input full-width">
+                    <label for="lisakenttat-luokituksen-lahde-0842">Luokituksen lähde (084 $2):</label>
+                    <input type="text" id="lisakenttat-luokituksen-lahde-0842" name="lisakenttat-luokituksen-lahde-0842"
+                      maxLength="128">
+                  </div>
+                  <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
+                </form>
               </fieldset>
             </div>
           </div>

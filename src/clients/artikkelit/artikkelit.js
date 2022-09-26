@@ -7,7 +7,7 @@ import {showRecord} from "/common/marc-record-ui.js";
 import {formToJson} from "/common/ui-utils.js";
 import {idbGet, idbSet, idbClear, idbKeys, idbAddValueToLastIndex} from "/artikkelit/indexDB.js"
 import {addTempOrganization, getTempOrganizationList, removeTempOrganization, resetTempOrganizationList, createP, createIconButton, createHiddenInput, setOptions} from "./utils.js";
-import {idbDel} from "./indexDB.js";
+import {idbDel, idbGetStoredValues} from "./indexDB.js";
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "./sessionStorageManager.js";
 
 
@@ -79,18 +79,12 @@ window.searchResultChange = (event) => {
 window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
-  idbKeys('artoAuthors').then(keys => {
-    const promises = [];
-    promises.push(idbGet('artoSources', parseInt(tietueIndex)));
-    const reversedKeys = keys.reverse();
-    reversedKeys.forEach(key => promises.push(idbGet('artoAuthors', key)));
-    Promise.all(promises).then(data => {
-      const [source, ...authors] = data;
-      console.log(data);
+
+  Promise.all([idbGet('artoSources', parseInt(tietueIndex)), idbGetStoredValues('artoAuthors'), idbGetStoredValues('artoOntologyWords')])
+    .then(([source, authors, ontologyWords]) => {
       const formData = collectFormData();
-      getArtikkeliRecord({source, ...formData, authors}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
+      getArtikkeliRecord({source, ...formData, authors, ontologyWords}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
     });
-  })
 }
 
 window.addOrganizationForAuthor = (event) => {
@@ -147,6 +141,7 @@ function collectFormData() {
     },
     article: {
       title: document.getElementById(`artikkelin-otsikko`).value,
+      titleOther: document.getElementById(`artikkelin-muu-nimeke`).value,
       language: document.getElementById(`artikkelin-kieli`).value,
       link: document.getElementById(`artikkelin-linkki`).value
     },
@@ -316,13 +311,19 @@ function refreshOntologyWordList() {
         const pRelator = createP(word.prefLabel);
         pRelator.classList.add('capitalize');
         form.appendChild(pRelator);
-        form.appendChild(createP(word.vocab, '&nbsp;-&nbsp;'));
-        form.appendChild(createP(word.lang, '&nbsp;/&nbsp;'));
+        form.appendChild(generateVocabInfo(word));
         form.appendChild(createP(word.uri, '&nbsp;-&nbsp;'));
         ontologyWordList.appendChild(form)
       });
     });
   });
+
+  function generateVocabInfo(word) {
+    if (['yso', 'yso-paikat', 'yso-aika'].includes(word.vocab)) {
+      return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
+    }
+    return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
+  }
 }
 
 function refreshAuthorsList() {

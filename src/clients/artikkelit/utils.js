@@ -85,16 +85,18 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
 }
 
 export function getOntologyOptions(ontology) {
-  const sweOntologies = ["allfo", "allfoOrter", "fgf"];
+  const sweOntologies = ["allfo", "allfoOrter", "allfoTid", "fgf"];
   const localOntologies = ["other", "otherPerson", "otherCommunity", "otherTime"];
 
   const vocabularies = {
     yso: 'yso',
     allfo: 'yso',
-    slm: 'slm',
-    fgf: 'slm',
     ysoPaikat: 'yso-paikat',
     allfoOrter: 'yso-paikat',
+    ysoAika: 'yso-aika',
+    allfoTid: 'yso-aika',
+    slm: 'slm',
+    fgf: 'slm',
     kassu: 'kassu',
     afo: 'afo',
     maotao: 'maotao',
