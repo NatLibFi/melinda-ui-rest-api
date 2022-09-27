@@ -1,21 +1,22 @@
 import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
 import {Account, doLogin, logout} from "/common/auth.js"
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes} from "./constants.js";
 import {getArtikkeliRecord, getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda, getOntologyWords} from "../common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 import {formToJson} from "/common/ui-utils.js";
-import {idbGet, idbSet, idbClear, idbKeys, idbAddValueToLastIndex} from "/artikkelit/indexDB.js"
-import {addTempOrganization, getTempOrganizationList, removeTempOrganization, resetTempOrganizationList, createP, createIconButton, createHiddenInput, setOptions} from "./utils.js";
-import {idbDel, idbGetStoredValues} from "./indexDB.js";
+import {idbGet, idbSet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
+import {createP, createIconButton, createHiddenInput, setOptions} from "./utils.js";
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "./sessionStorageManager.js";
-
-
+import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
+import {addAbstract, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
+import {addOntologyWord, searchOntologyWords, refreshOntologyWordList, resetOntologySelect} from "/artikkelit/interfaces/ontologyWords.js";
+import {fillFormOptions, fillDatalistOptions} from "/artikkelit/interfaces/loadData.js";
+import {} from "./interfaces/authors.js";
+//import { } from "./interfaces/";
 
 window.initialize = function () {
   console.log('Initializing');
-  setNavBar(document.querySelector('#navbar'), "artikkelit")
-  resetTempOrganizationList();
+  setNavBar(document.querySelector('#navbar'), "artikkelit");
 
   doLogin(authSuccess);
 
@@ -24,18 +25,20 @@ window.initialize = function () {
     // username.innerHTML = Account.get()["Name"];
     showTab('artikkelit-lisaa');
     fillFormOptions();
+    initAuthors();
 
     document.getElementById("julkaisu-haku-title-form").addEventListener("submit", searchPublications);
     document.getElementById("julkaisu-haku-melinda-form").addEventListener("submit", searchPublications);
     document.getElementById("julkaisu-haku-isbn-form").addEventListener("submit", searchPublications);
     document.getElementById("julkaisu-haku-issn-form").addEventListener("submit", searchPublications);
-    document.getElementById("tekija-lisaa-form").addEventListener("submit", addAuthor);
+    document.getElementById("tiivistelma-lisaa-form").addEventListener("submit", addAbstract);
     document.getElementById("asiasana-haku-yso-form").addEventListener("submit", searchOntologyWords);
     document.getElementById("asiasana-lisaa-form").addEventListener("submit", addOntologyWord);
 
     resetSearchResultSelect();
     resetOntologySelect();
-    refreshAuthorsList();
+
+    refreshAbstractList();
     refreshOntologyWordList();
   }
 }
@@ -80,51 +83,15 @@ window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
-  Promise.all([idbGet('artoSources', parseInt(tietueIndex)), idbGetStoredValues('artoAuthors'), idbGetStoredValues('artoOntologyWords')])
-    .then(([source, authors, ontologyWords]) => {
-      const formData = collectFormData();
-      getArtikkeliRecord({source, ...formData, authors, ontologyWords}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
-    });
-}
-
-window.addOrganizationForAuthor = (event) => {
-  event.preventDefault();
-  const organizationInput = document.getElementById('tekija-organisaatio');
-  const organizationInputValue = organizationInput.value;
-  const organizationList = document.getElementById('tekija-organisaatiot-list');
-  const [organizationNameAndShortTerm = false, code = false, note = false] = organizationInputValue.split(' - ');
-  const [organizationName, organizationShortTerm] = organizationNameAndShortTerm.split(' (').map(value => value.replace(')', ''));
-
-  const addListEntry = addTempOrganization({organizationName, code, organizationShortTerm, note});
-  if (addListEntry) {
-    const form = document.createElement('form');
-    form.classList.add('full-width');
-    const removeButton = createIconButton('close', ['no-border'], `return removeOrganizationForAuthor(event, "${code}")`, 'Poista')
-    form.appendChild(removeButton);
-    form.appendChild(createP(organizationName));
-
-    if (organizationShortTerm) {
-      form.appendChild(createP(organizationShortTerm, '&nbsp;/&nbsp;'));
-    }
-
-    if (code) {
-      form.appendChild(createP(code, '&nbsp;/&nbsp;'));
-    }
-
-    if (note) {
-      form.appendChild(createP(note, '&nbsp;(', ')'));
-    }
-
-    organizationList.appendChild(form);
-    organizationInput.value = '';
+  if (tietueIndex === '') {
+    return false;
   }
-}
 
-window.removeOrganizationForAuthor = (event, code) => {
-  event.preventDefault();
-  removeTempOrganization(code);
-  const form = event.target.parentElement;
-  form.remove();
+  Promise.all([idbGet('artoSources', parseInt(tietueIndex)), idbGetStoredValues('artoAuthors'), idbGetStoredValues('artoOntologyWords'), idbGetStoredValues('artoAbstracts')])
+    .then(([source, authors, ontologyWords, abstracts]) => {
+      const formData = collectFormData();
+      getArtikkeliRecord({source, ...formData, authors, ontologyWords, abstracts}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
+    });
 }
 
 window.resetAuthor = (event) => {
@@ -143,7 +110,9 @@ function collectFormData() {
       title: document.getElementById(`artikkelin-otsikko`).value,
       titleOther: document.getElementById(`artikkelin-muu-nimeke`).value,
       language: document.getElementById(`artikkelin-kieli`).value,
-      link: document.getElementById(`artikkelin-linkki`).value
+      link: document.getElementById(`artikkelin-linkki`).value,
+      type: document.getElementById(`artikkelin-tyyppi`).value,
+      repeating: document.getElementById(`artikkelin-toistuva`).value
     },
     abstract: {
       text: document.getElementById(`tiivistelma-abstrakti`).value,
@@ -195,13 +164,6 @@ function searchPublications(event) {
   throw new Error('Invalid search type!');
 }
 
-function searchOntologyWords(event) {
-  event.preventDefault();
-  resetOntologySelect(true);
-  const formJson = formToJson(event);
-  getOntologyWords(formJson['asiasana-ontologia'], formJson['haku-arvo']).then(data => setOntologyWords(data.results));
-}
-
 function setRecordsToSearch(records) {
   if (records.length === 0) {
     return resetSearchResultSelect();
@@ -217,208 +179,22 @@ function setRecordsToSearch(records) {
   setOptions(select, data);
 }
 
-function setOntologyWords(words) {
-  if (words.length === 0) {
-    return resetOntologySelect();
-  }
-
-  const select = document.getElementById('asiasana-haku-tulos-lista');
-  const data = words.map((word, index) => {
-    const title = `${word.prefLabel}${word.altLabel ? ` (${word.altLabel})` : ''}`;
-    addValueToSessionStoreList('ontologyTempList', {identifier: index, ...word});
-    return {value: index, text: title};
-  });
-
-  setOptions(select, data);
-}
-
-function resetOntologySelect(searching) {
-  const select = document.getElementById('asiasana-haku-tulos-lista');
-  select.innerHTML = '';
-
-  if (searching) {
-    resetSessionStoreList('ontologyTempList');
-    return setOptions(select, [{value: '', text: 'Etsitään...'}], true);
-  }
-
-  setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
-}
-
-function resetAuthor(event) {
-  event.preventDefault();
-  resetTempOrganizationList();
-  const organizationList = document.getElementById('tekija-organisaatiot-list');
-  organizationList.innerHTML = '';
-  document.getElementById('tekija-etunimi').value = '';
-  document.getElementById('tekija-sukunimi').value = '';
-  document.getElementById('tekija-rooli').value = 'kirjoittaja';
-  document.getElementById('tekija-organisaatio').value = '';
-}
-
 window.removeAuthor = (event, key) => {
   event.preventDefault();
   idbDel('artoAuthors', key).then(() => refreshAuthorsList());
 }
 
+window.removeOrgForAuthor = (event, key) => {
+  event.preventDefault();
+  idbDel('artoAuthorTempOrg', key).then(() => refreshAuthorOrganizationList());
+}
+
+window.removeAbstract = (event, key) => {
+  event.preventDefault();
+  idbDel('artoAbstracts', key).then(() => refreshAbstractList());
+}
+
 window.removeOntologyWord = (event, key) => {
   event.preventDefault();
   idbDel('artoOntologyWords', key).then(() => refreshOntologyWordList());
-}
-
-function addAuthor(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-  const authorsTempOrganizations = getTempOrganizationList();
-
-  const data = {
-    firstName: formJson['tekija-etunimi'],
-    lastName: formJson['tekija-sukunimi'],
-    relator: formJson['tekija-rooli'],
-    authorsTempOrganizations
-  }
-
-  idbAddValueToLastIndex('artoAuthors', data).then(() => {
-    refreshAuthorsList();
-  });
-}
-
-function addOntologyWord(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-  const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
-  console.log(ontologyWord);
-
-  if (ontologyWord) {
-    // idbIndex save
-    idbAddValueToLastIndex('artoOntologyWords', ontologyWord).then(() => {
-      // refresh ontology word list
-      refreshOntologyWordList();
-    })
-  }
-}
-
-function refreshOntologyWordList() {
-  const ontologyWordList = document.getElementById('asiasana-list');
-  ontologyWordList.innerHTML = '';
-
-  idbKeys('artoOntologyWords').then(keys => {
-    keys.forEach(key => {
-      idbGet('artoOntologyWords', key).then(word => {
-        const form = document.createElement('form');
-        form.classList.add('full-width');
-        const removeButton = createIconButton('close', ['no-border'], `return removeOntologyWord(event, ${key})`, 'Poista')
-        form.appendChild(removeButton);
-        const pRelator = createP(word.prefLabel);
-        pRelator.classList.add('capitalize');
-        form.appendChild(pRelator);
-        form.appendChild(generateVocabInfo(word));
-        form.appendChild(createP(word.uri, '&nbsp;-&nbsp;'));
-        ontologyWordList.appendChild(form)
-      });
-    });
-  });
-
-  function generateVocabInfo(word) {
-    if (['yso', 'yso-paikat', 'yso-aika'].includes(word.vocab)) {
-      return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
-    }
-    return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
-  }
-}
-
-function refreshAuthorsList() {
-  const authorList = document.getElementById('tekija-list');
-  authorList.innerHTML = '';
-
-  idbKeys('artoAuthors').then(keys => {
-    keys.forEach(key => {
-      idbGet('artoAuthors', key).then(author => {
-        const form = document.createElement('form');
-        form.classList.add('full-width');
-        const removeButton = createIconButton('close', ['no-border'], `return removeAuthor(event, ${key})`, 'Poista')
-        form.appendChild(removeButton);
-        const pRelator = createP(author.relator);
-        pRelator.classList.add('capitalize');
-        form.appendChild(pRelator);
-        form.appendChild(createP(author.lastName, '&nbsp;-&nbsp;'));
-        form.appendChild(createP(author.firstName, ',&nbsp;'));
-        author.authorsTempOrganizations.forEach(organization => {
-          form.appendChild(createP(organization.organizationName, '&nbsp;-&nbsp;'));
-          if (organization.code) {
-            form.appendChild(createP(organization.code, '&nbsp;/&nbsp;'));
-          }
-
-          if (organization.organizationShortTerm && !organization.code) {
-            form.appendChild(createP(organization.organizationShortTerm, '&nbsp;/&nbsp;'));
-          }
-
-          if (organization.note) {
-            form.appendChild(createP(organization.note, '&nbsp;(', ')'));
-          }
-        });
-        authorList.appendChild(form)
-      });
-    });
-  });
-}
-
-function fillFormOptions() {
-  fillSelectOptions();
-  fillDatalistOptions();
-}
-
-async function fillSelectOptions() {
-  const selects = document.getElementsByTagName('select');
-  //console.log(selects);
-  for (var index = 0; index < selects.length; index += 1) {
-    const select = selects[index];
-
-    if (select.name.indexOf('julkaisu-haku-tyyppi') === 0) {
-      setOptions(select, searchTypes);
-    }
-
-    if (select.name.indexOf('kuvailtava-kohde') === 0) {
-      setOptions(select, sourceTypes);
-    }
-
-    if (select.name.indexOf('-kieli') !== -1) {
-      setOptions(select, languages);
-    }
-
-    if (select.name.indexOf('-rooli') !== -1) {
-      setOptions(select, authorRelators);
-    }
-
-    if (select.name.indexOf('-ontologia') !== -1) {
-      setOptions(select, ontologyTypes);
-    }
-  }
-}
-
-function fillDatalistOptions() {
-  const datalists = document.getElementsByTagName('datalist');
-  //console.log(datalists);
-  const sourceType = document.querySelector('#kuvailtava-kohde').value;
-  //console.log(sourceType);
-  for (var index = 0; index < datalists.length; index += 1) {
-    const datalist = datalists[index];
-
-    if (datalist.id.indexOf('-tyyppi-lista') !== -1) {
-      if (sourceType === 'book') {
-        setOptions(datalist, articleTypesBooks);
-      }
-
-      if (sourceType === 'journal') {
-        setOptions(datalist, articleTypesJournal);
-      }
-    }
-
-    if (datalist.id.indexOf('-tieteenala-lista') !== -1) {
-      setOptions(datalist, sciences);
-    }
-
-    if (datalist.id.indexOf('-organisaatio-lista') !== -1) {
-      setOptions(datalist, organizations);
-    }
-  }
 }

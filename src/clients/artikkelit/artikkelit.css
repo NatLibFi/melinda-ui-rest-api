@@ -204,9 +204,17 @@ button.no-border {
   align-items: center;
 }
 
+.col .Input input {
+  flex-grow: 1;
+}
+
 fieldset {
   display: flex;
   flex-wrap: wrap;
+}
+
+form > * {
+  margin-top: 8px;
 }
 
 fieldset .panel {
@@ -239,8 +247,4 @@ fieldset .wrap p {
 
 .col form {
   width: 100%;
-}
-
-.col .Input input {
-  flex-grow: 3;
 }

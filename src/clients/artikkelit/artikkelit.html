@@ -239,6 +239,45 @@
                   <label for="artikkelin-linkki">Linkki kokotekstiin:</label>
                   <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
                 </div>
+                <div class="Input full-width">
+                  <label for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
+                  <input type="text" id="artikkelin-tyyppi" class="full-width" name="artikkelin-tyyppi"
+                    list="artikkelin-tyyppi-lista">
+                  <datalist id="artikkelin-tyyppi-lista">
+                  </datalist>
+                </div>
+                <div class="Input full-width">
+                  <label for="artikkelin-toistuva">Toistuva palsta:</label>
+                  <input type="text" id="artikkelin-toistuva" class="full-width" name="artikkelin-toistuva">
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Lisä tiedot:</legend>
+                <form>
+                  <div class="Input full-width">
+                    <label for="lisa-tiedot-tieteenala">Tieteenala:</label>
+                    <input type="text" id="lisa-tiedot-tieteenala" class="full-width" name="lisa-tiedot-tieteenala"
+                      list="lisa-tiedot-tieteenala-lista">
+                    <datalist id="lisa-tiedot-tieteenala-lista">
+                    </datalist>
+                    <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
+                  </div>
+                </form>
+                <form>
+                  <div class="Input full-width">
+                    <label for="lisa-tiedot-metodologia">Metodologia:</label>
+                    <input type="text" id="lisa-tiedot-metodologia" class="full-width" name="lisa-tiedot-metodologia"
+                      pattern="^[\p{L}\p{N}\p{P}\p{S}\p{Zs}]+$" maxlength="128">
+                    <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
+                  </div>
+                </form>
+              </fieldset>
+              <fieldset>
+                <legend>Lisätyt tieteenalat ja metodologiat:</legend>
+                <div id="tieteenalat-list">
+                </div>
+                <div id="metodologiat-list">
+                </div>
               </fieldset>
               <fieldset>
                 <legend>Lisää tekijä:</legend>
@@ -259,17 +298,16 @@
                       maxlength="128">
                   </div>
                 </form>
-                <div id="tekija-organisaatiot-list" class="full-width">
+                <div id="tekija-organisaatiot-list">
                 </div>
-                <form>
+                <form id="tekija-lisaa-organisaatio" name="tekija-lisaa-organisaatio">
                   <div class="Input full-width">
                     <label for="tekija-organisaatio">Lisää tekijälle organisaatio:</label>
                     <input type="text" id="tekija-organisaatio" name="tekija-organisaatio"
                       list="tekija-organisaatio-lista">
                     <datalist id="tekija-organisaatio-lista">
                     </datalist>
-                    <button class="material-icons tooltip no-border" tooltip-text="Lisää"
-                      onclick="return addOrganizationForAuthor(event)">add</button>
+                    <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
                   </div>
                 </form>
                 <div class="full-width justify-content-end">
@@ -288,15 +326,27 @@
               </fieldset>
               <fieldset>
                 <legend>Tiivistelmä tiedot:</legend>
-                <div class="Input full-width">
-                  <label for="tiivistelma-abstrakti">Tiivistelmä/abstrakti:</label>
-                  <textarea id="tiivistelma-abstrakti" name="tiivistelma-abstrakti" class="full-width" rows="5"
-                    cols="100"></textarea>
-                </div>
-                <div class="Select full-width">
-                  <label for="tiivistelma-kieli">Kieli:</label>
-                  <select id="tiivistelma-kieli" name="tiivistelma-kieli">
-                  </select>
+                <form id="tiivistelma-lisaa-form" name="tiivistelma-lisaa-form">
+                  <div class="Select full-width">
+                    <label for="tiivistelma-kieli">Kieli:</label>
+                    <select id="tiivistelma-kieli" name="tiivistelma-kieli">
+                    </select>
+                  </div>
+                  <div class="Input full-width">
+                    <label for="tiivistelma-abstrakti">Tiivistelmä/abstrakti:</label>
+                    <textarea id="tiivistelma-abstrakti" name="tiivistelma-abstrakti" class="full-width" rows="5"
+                      cols="100"></textarea>
+                  </div>
+                  <div class="full-width justify-content-end">
+                    <div class="Button">
+                      <button type="submit">Lisää tiivistelmä</button>
+                    </div>
+                  </div>
+                </form>
+              </fieldset>
+              <fieldset>
+                <legend>Lisätyt tiivistelmät/abstraktit:</legend>
+                <div id="tiivistelmat-list">
                 </div>
               </fieldset>
               <fieldset>
@@ -328,32 +378,6 @@
               <fieldset>
                 <legend>Lisätyt asia- ja/tai avainsanat:</legend>
                 <div id="asiasana-list">
-                </div>
-              </fieldset>
-              <fieldset>
-                <legend>Lisä tiedot:</legend>
-                <div class="Input full-width">
-                  <label for="lisa-tiedot-tyyppi">Artikkelin tyyppi:</label>
-                  <input type="text" id="lisa-tiedot-tyyppi" class="full-width" name="lisa-tiedot-tyyppi"
-                    list="lisa-tiedot-tyyppi-lista">
-                  <datalist id="lisa-tiedot-tyyppi-lista">
-                  </datalist>
-                </div>
-                <div class="Input full-width">
-                  <label for="lisa-tiedot-toistuva">Toistuva palsta:</label>
-                  <input type="text" id="lisa-tiedot-toistuva" class="full-width" name="lisa-tiedot-toistuva">
-                </div>
-                <div class="Input full-width">
-                  <label for="lisa-tiedot-tieteenala">Tieteenala:</label>
-                  <input type="text" id="lisa-tiedot-tieteenala" class="full-width" name="lisa-tiedot-tieteenala"
-                    list="lisa-tiedot-tieteenala-lista">
-                  <datalist id="lisa-tiedot-tieteenala-lista">
-                  </datalist>
-                </div>
-                <div class="Input full-width">
-                  <label for="lisa-tiedot-metodologia">Metodologia:</label>
-                  <input type="text" id="lisa-tiedot-metodologia" class="full-width" name="lisa-tiedot-metodologia"
-                    pattern="^[\p{L}\p{N}\p{P}\p{S}\p{Zs}]+$" maxlength="128">
                 </div>
               </fieldset>
               <fieldset>
@@ -407,6 +431,15 @@
                   </div>
                   <button class="material-icons tooltip no-border" tooltip-text="Lisää">add</button>
                 </form>
+              </fieldset>
+              <fieldset>
+                <legend>Lisätyt lisäkentät:</legend>
+                <div id="huomautukset-list">
+                </div>
+                <div id="udk-list">
+                </div>
+                <div id="muu-luokitus-list">
+                </div>
               </fieldset>
             </div>
           </div>
