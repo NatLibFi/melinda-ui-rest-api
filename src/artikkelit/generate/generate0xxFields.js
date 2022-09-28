@@ -16,7 +16,11 @@ export function generatef041(articleLanguage, abstractLanguages = []) {
   }
 }
 
-export function generatef080() {
+export function generatef080(udks = false) {
+  if (!udks) {
+    return [];
+  }
+
   // <xsl:if test="set/groups/group[@name='universal_decimal_classification_number']">
   // <xsl:for-each select="set/groups/group[@name='universal_decimal_classification_number']/values">
   //   <xsl:if test="element[@name='a']">
@@ -42,7 +46,11 @@ export function generatef080() {
   return [{tag: '080', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'todo'}, {code: 'b', value: 'todo'}]}];
 }
 
-export function generatef084() {
+export function generatef084(otherRatings = false) {
+  if (!otherRatings) {
+    return [];
+  }
+
   //   <xsl:if test="set/groups/group[@name='other_classification_number']">
   //   <xsl:for-each select="set/groups/group[@name='other_classification_number']/values">
   //     <xsl:if test="element[@name='a']">

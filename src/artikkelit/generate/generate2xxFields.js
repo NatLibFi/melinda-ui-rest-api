@@ -1,5 +1,5 @@
 
-export function generatef245(articleTitle) {
+export function generatef245(articleTitle = false) {
   //   <xsl:element name="datafield">
   //   <xsl:attribute name="tag">245</xsl:attribute>
   //   <xsl:attribute name="ind1">
@@ -31,7 +31,11 @@ export function generatef245(articleTitle) {
   //   </subfield>
   // </xsl:element>
 
-  return [{tag: '245', ind1: '?', ind2: '0', subfields: [{code: 'a', value: `${articleTitle}`}]}];
+  if (articleTitle) {
+    return [{tag: '245', ind1: '?', ind2: '0', subfields: [{code: 'a', value: `${articleTitle}`}]}];
+  }
+
+  return [];
 }
 
 export function generatef246(otherTitle = false) {

@@ -1,6 +1,7 @@
-export function createP(value, before = '', after = '') {
+export function createP(value, before = '', after = '', classList = []) {
   const p = document.createElement('p');
   p.innerHTML = `${before}${value}${after}`;
+  classList.forEach(htmlClass => p.classList.add(htmlClass));
   return p;
 }
 
@@ -16,6 +17,8 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
   const button = document.createElement('button');
   button.innerHTML = icon;
   button.classList.add('material-icons');
+  button.classList.add('icon');
+
   classList.forEach(htmlClass => button.classList.add(htmlClass));
   if (onclickAttribute) {
     button.setAttribute('onclick', onclickAttribute);

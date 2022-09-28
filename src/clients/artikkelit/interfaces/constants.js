@@ -164,63 +164,63 @@ export const ontologyTypes = [
 
 export const languages = [
   {
-    value: "fin",
+    value: "fi;fin;Suomi",
     text: "Suomi"
   },
   {
-    value: "eng",
+    value: "en;eng;Englanti",
     text: "Englanti"
   },
   {
-    value: "swe",
+    value: "sv;swe;Ruotsi",
     text: "Ruotsi"
   },
   {
-    value: "esp",
+    value: "es;esp;Espanja",
     text: "Espanja"
   },
   {
-    value: "ita",
+    value: "it;ita;Italia",
     text: "Italia"
   },
   {
-    value: "nor",
+    value: "no;nor;Norja",
     text: "Norja"
   },
   {
-    value: "fre",
+    value: "fr;fre;Ranska",
     text: "Ranska"
   },
   {
-    value: "ger",
+    value: "de;ger;Saksa",
     text: "Saksa"
   },
   {
-    value: "dan",
+    value: "da;dan;Tanska",
     text: "Tanska"
   },
   {
-    value: "rus",
+    value: "ru;rus;Venäjä",
     text: "Venäjä"
   },
   {
-    value: "est",
+    value: "et;est;Viro",
     text: "Viro"
   },
   {
-    value: "smn",
+    value: "smn;smn;Inarinsaame",
     text: "Inarinsaame"
   },
   {
-    value: "sme",
+    value: "sme;sme;Pohj.saame",
     text: "Pohj.saame"
   },
   {
-    value: "smi",
+    value: "smi;smi;Muu saam.",
     text: "Muu saam."
   },
   {
-    value: "krl",
+    value: "krl;krl;Karjala",
     text: "Karjala"
   }
 ]
@@ -345,7 +345,7 @@ export const sciences = [
   },
   {
     value: "3 - Lääke- ja terveystieteet - 3123 - Naisten- ja lastentaudit",
-    text: ""
+    text: "Lääke- ja terveystieteet - Naisten- ja lastentaudit"
   },
   {
     value: "3 - Lääke- ja terveystieteet - 3124 - Neurologia ja psykiatria",

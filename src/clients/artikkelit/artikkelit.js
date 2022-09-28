@@ -5,13 +5,13 @@ import {getArtikkeliRecord, getPublicationByISSN, getPublicationByISBN, getPubli
 import {showRecord} from "/common/marc-record-ui.js";
 import {formToJson} from "/common/ui-utils.js";
 import {idbGet, idbSet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
-import {createP, createIconButton, createHiddenInput, setOptions} from "./utils.js";
-import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "./sessionStorageManager.js";
+import {setOptions} from "/artikkelit/utils.js";
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
-import {addAbstract, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
-import {addOntologyWord, searchOntologyWords, refreshOntologyWordList, resetOntologySelect} from "/artikkelit/interfaces/ontologyWords.js";
+import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
+import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
 import {fillFormOptions, fillDatalistOptions} from "/artikkelit/interfaces/loadData.js";
-import {} from "./interfaces/authors.js";
+import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
+import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -25,26 +25,43 @@ window.initialize = function () {
     // username.innerHTML = Account.get()["Name"];
     showTab('artikkelit-lisaa');
     fillFormOptions();
+    initArticle();
     initAuthors();
+    initAbstracts();
+    initOntologyWords();
+    initAdditionalFields();
 
     document.getElementById("julkaisu-haku-title-form").addEventListener("submit", searchPublications);
     document.getElementById("julkaisu-haku-melinda-form").addEventListener("submit", searchPublications);
     document.getElementById("julkaisu-haku-isbn-form").addEventListener("submit", searchPublications);
     document.getElementById("julkaisu-haku-issn-form").addEventListener("submit", searchPublications);
-    document.getElementById("tiivistelma-lisaa-form").addEventListener("submit", addAbstract);
-    document.getElementById("asiasana-haku-yso-form").addEventListener("submit", searchOntologyWords);
-    document.getElementById("asiasana-lisaa-form").addEventListener("submit", addOntologyWord);
 
     resetSearchResultSelect();
-    resetOntologySelect();
-
-    refreshAbstractList();
-    refreshOntologyWordList();
   }
 }
 
 window.sourceTypeChange = (event) => {
+  event.preventDefault();
   fillDatalistOptions();
+
+  const sourceType = event.target.value;
+  if (sourceType === 'journal') {
+    document.getElementById(`numeron-vol-wrap`).style.display = 'block';
+    document.getElementById(`numeron-numero-wrap`).style.display = 'block';
+    document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
+    document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'block';
+    document.getElementById(`lehden-issn-wrap`).style.display = 'block';
+    document.getElementById(`lehden-isbn-wrap`).style.display = 'none';
+  }
+
+  if (sourceType === 'book') {
+    document.getElementById(`numeron-vol-wrap`).style.display = 'none';
+    document.getElementById(`numeron-numero-wrap`).style.display = 'none';
+    document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
+    document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'none';
+    document.getElementById(`lehden-issn-wrap`).style.display = 'none';
+    document.getElementById(`lehden-isbn-wrap`).style.display = 'block';
+  }
 }
 
 window.showAndHideSearchInputs = (event) => {
@@ -87,11 +104,41 @@ window.doUpdate = (event) => {
     return false;
   }
 
-  Promise.all([idbGet('artoSources', parseInt(tietueIndex)), idbGetStoredValues('artoAuthors'), idbGetStoredValues('artoOntologyWords'), idbGetStoredValues('artoAbstracts')])
-    .then(([source, authors, ontologyWords, abstracts]) => {
-      const formData = collectFormData();
-      getArtikkeliRecord({source, ...formData, authors, ontologyWords, abstracts}).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
-    });
+  Promise.all([
+    idbGet('artoSources', parseInt(tietueIndex)),
+    idbGetStoredValues('artoSciences'),
+    idbGetStoredValues('artoMetodologys'),
+    idbGetStoredValues('artoAuthors'),
+    idbGetStoredValues('artoOntologyWords'),
+    idbGetStoredValues('artoAbstracts'),
+    idbGetStoredValues('artoNotes'),
+    idbGetStoredValues('artoUDKs'),
+    idbGetStoredValues('artoOtherRatings')
+  ]).then(([
+    source,
+    sciences,
+    metodologys,
+    authors,
+    ontologyWords,
+    abstracts,
+    notes,
+    udks,
+    otherRatings
+  ]) => {
+    const formData = collectFormData();
+    getArtikkeliRecord({
+      source,
+      ...formData,
+      sciences,
+      metodologys,
+      authors,
+      ontologyWords,
+      abstracts,
+      notes,
+      udks,
+      otherRatings
+    }).then(({record}) => showRecord(record, "record1", {}, 'artikkelit-lisaa'));
+  });
 }
 
 window.resetAuthor = (event) => {
@@ -99,6 +146,7 @@ window.resetAuthor = (event) => {
 }
 
 function collectFormData() {
+  const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
@@ -109,15 +157,13 @@ function collectFormData() {
     article: {
       title: document.getElementById(`artikkelin-otsikko`).value,
       titleOther: document.getElementById(`artikkelin-muu-nimeke`).value,
-      language: document.getElementById(`artikkelin-kieli`).value,
+      language: {iso6391, iso6392b, ui},
       link: document.getElementById(`artikkelin-linkki`).value,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      repeating: document.getElementById(`artikkelin-toistuva`).value
-    },
-    abstract: {
-      text: document.getElementById(`tiivistelma-abstrakti`).value,
-      language: document.getElementById(`tiivistelma-kieli`).value
+      reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
+      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
     }
+
   };
 }
 
@@ -179,6 +225,16 @@ function setRecordsToSearch(records) {
   setOptions(select, data);
 }
 
+window.removeScience = (event, key) => {
+  event.preventDefault();
+  idbDel('artoSciences', key).then(() => refreshSciencesList());
+}
+
+window.removeMetodology = (event, key) => {
+  event.preventDefault();
+  idbDel('artoMetodologys', key).then(() => refreshMetodologysList());
+}
+
 window.removeAuthor = (event, key) => {
   event.preventDefault();
   idbDel('artoAuthors', key).then(() => refreshAuthorsList());
@@ -197,4 +253,19 @@ window.removeAbstract = (event, key) => {
 window.removeOntologyWord = (event, key) => {
   event.preventDefault();
   idbDel('artoOntologyWords', key).then(() => refreshOntologyWordList());
+}
+
+window.removeNote = (event, key) => {
+  event.preventDefault();
+  idbDel('artoNotes', key).then(() => refreshNotesList());
+}
+
+window.removeUDK = (event, key) => {
+  event.preventDefault();
+  idbDel('artoUDKs', key).then(() => refreshUDKsList());
+}
+
+window.removeotherRating = (event, key) => {
+  event.preventDefault();
+  idbDel('artoOtherRatings', key).then(() => refreshOtherRatingsList());
 }

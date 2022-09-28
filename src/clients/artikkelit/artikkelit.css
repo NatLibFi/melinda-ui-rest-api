@@ -129,6 +129,14 @@ div#muuntaja {}
   flex: 4;
 }
 
+.col .hidden {
+  display: none;
+}
+
+.col form {
+  width: 100%;
+}
+
 .header .material-icons {
   padding: 8px;
   font-size: 32px;
@@ -139,16 +147,6 @@ div#muuntaja {}
   /*color: grey;*/
 }
 
-.col fieldset {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-}
-
 .half-width {
   width: 50%;
 }
@@ -156,14 +154,9 @@ div#muuntaja {}
 .full-width {
   width: 100%;
   display: flex;
-  flex-wrap: nowrap;
   align-items: center;
+  align-content: center;
   line-height: 20px;
-  gap: 8px;
-}
-
-.justify-content-end {
-  justify-content: end;
 }
 
 .full-width label {
@@ -187,6 +180,10 @@ div#muuntaja {}
   margin-bottom: 2px;
 }
 
+.full-width p:last-of-type {
+  flex-grow: 1;
+}
+
 .full-width button {
   margin-left: 8px;
 }
@@ -195,56 +192,79 @@ div#muuntaja {}
   text-transform: capitalize;
 }
 
-button.no-border {
-  border: 0px;
-}
-
-.col .Input {
-  display: flex;
-  align-items: center;
-}
-
-.col .Input input {
-  flex-grow: 1;
+form>* {
+  margin-top: 8px;
 }
 
 fieldset {
   display: flex;
+  align-items: center;
+  flex-direction: row;
   flex-wrap: wrap;
-}
-
-form > * {
-  margin-top: 8px;
+  gap: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
 }
 
 fieldset .panel {
-  flex-grow: 1;
-}
-
-fieldset .panel .wrap {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  width: 49%;
   align-items: center;
 }
 
-fieldset .wrap label {
+fieldset .panel>.full-width {
+  display: flex;
+}
+
+fieldset .panel label {
+  display: inline-flex;
+  font-family: "Roboto", "Roboto Mono", monospace;
   text-align: end;
   margin-right: 10px;
-  line-height: 32px;
+  line-height: 40px;
   color: rgb(48, 93, 109);
 }
 
-fieldset .wrap p {
-  line-height: 32px;
-  margin: 0px;
-  margin-right: 5px;
+fieldset .panel p {
+  display: inline-flex;
+  line-height: 40px;
 }
 
-.col .hidden {
-  display: none;
+.long-text {
+  word-break: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  flex-grow: 1;
 }
 
-.col form {
+.label-text {
+  color: rgb(48, 93, 109);
+  font-family: "Roboto", "Roboto Mono", monospace;
+  font-size: 12pt;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.justify-content-end {
+  justify-content: end;
+  display: inline-flex;
+}
+
+.justify-content-end form {
+  width: auto;
+}
+
+#artikkelin-osasto-toistuva-wrap,
+#artikkelin-arvostelu-tyyppi-wrap,
+#tieteenalat-list,
+#metodologiat-list,
+#tekija-organisaatiot-list,
+#tekija-list,
+#tiivistelmat-list,
+#asiasana-list,
+#huomautukset-list,
+#udk-list,
+#muu-luokitus-list {
   width: 100%;
 }

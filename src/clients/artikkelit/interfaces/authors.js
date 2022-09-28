@@ -3,9 +3,12 @@ import {formToJson} from "/common/ui-utils.js";
 import {createIconButton, createP} from "/artikkelit/utils.js"
 
 export function initAuthors() {
-  console.log('initializing authors...')
+  console.log('initializing authors...');
   document.getElementById("tekija-lisaa-form").addEventListener("submit", addAuthor);
   document.getElementById("tekija-lisaa-organisaatio").addEventListener("submit", addOrganizationForAuthor);
+
+  document.getElementById("tyhjenna-tekijat-form").addEventListener("submit", clearAuthors);
+
   refreshAuthorsList();
   refreshAuthorOrganizationList();
 }
@@ -48,32 +51,48 @@ export function refreshAuthorsList() {
   idbGetStoredValues('artoAuthors').then(authors => {
     authors.forEach(authorData => {
       const form = document.createElement('form');
-      form.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border'], `return removeAuthor(event, ${authorData.key})`, 'Poista')
-      form.appendChild(removeButton);
+      const div = document.createElement('div');
+      div.classList.add('full-width');
+      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista')
+      div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
-      form.appendChild(pRelator);
-      form.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
-      form.appendChild(createP(authorData.firstName, ',&nbsp;'));
+      div.appendChild(pRelator);
+      div.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
+      div.appendChild(createP(authorData.firstName, ',&nbsp;'));
       authorData.authorsTempOrganizations.forEach(organization => {
-        form.appendChild(createP(organization.organizationName, '&nbsp;-&nbsp;'));
+        div.appendChild(createP(organization.organizationName, '&nbsp;-&nbsp;'));
         if (organization.code) {
-          form.appendChild(createP(organization.code, '&nbsp;/&nbsp;'));
+          div.appendChild(createP(organization.code, '&nbsp;/&nbsp;'));
         }
 
         if (organization.organizationShortTerm && !organization.code) {
-          form.appendChild(createP(organization.organizationShortTerm, '&nbsp;/&nbsp;'));
+          div.appendChild(createP(organization.organizationShortTerm, '&nbsp;/&nbsp;'));
         }
 
         if (organization.note) {
-          form.appendChild(createP(organization.note, '&nbsp;(', ')'));
+          div.appendChild(createP(organization.note, '&nbsp;(', ')'));
         }
       });
+      div.appendChild(removeButton);
+      form.appendChild(div);
       authorList.appendChild(form)
-    })
+    });
+
+    if (authors.length > 1) {
+      document.getElementById("tyhjenna-tekijat-form").style.display = 'block';
+    }
+
+    if (authors.length < 2) {
+      document.getElementById("tyhjenna-tekijat-form").style.display = 'none';
+    }
   });
 };
+
+export function clearAuthors(event) {
+  event.preventDefault();
+  idbClear('artoAuthors').then(() => refreshAuthorsList());
+}
 
 // artoAuthorTempOrg
 export function addOrganizationForAuthor(event) {
@@ -96,23 +115,25 @@ export function refreshAuthorOrganizationList() {
   idbGetStoredValues('artoAuthorTempOrg').then(tempOrgs => {
     tempOrgs.forEach(tempOrgData => {
       const form = document.createElement('form');
-      form.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista')
-      form.appendChild(removeButton);
-      form.appendChild(createP(tempOrgData.organizationName));
+      const div = document.createElement('div');
+      div.classList.add('full-width');
+      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista')
+      div.appendChild(createP('Organisaatio', '', '&nbsp;-&nbsp;', ['label-text']));
+      div.appendChild(createP(tempOrgData.organizationName));
 
       if (tempOrgData.organizationShortTerm) {
-        form.appendChild(createP(tempOrgData.organizationShortTerm, '&nbsp;/&nbsp;'));
+        div.appendChild(createP(tempOrgData.organizationShortTerm, '&nbsp;/&nbsp;'));
       }
 
       if (tempOrgData.code) {
-        form.appendChild(createP(tempOrgData.code, '&nbsp;/&nbsp;'));
+        div.appendChild(createP(tempOrgData.code, '&nbsp;/&nbsp;'));
       }
 
       if (tempOrgData.note) {
-        form.appendChild(createP(tempOrgData.note, '&nbsp;(', ')'));
+        div.appendChild(createP(tempOrgData.note, '&nbsp;(', ')'));
       }
-
+      div.appendChild(removeButton);
+      form.appendChild(div);
       organizationList.appendChild(form);
     });
   });

@@ -1,4 +1,4 @@
-export function generatef500(generalNotes = false) {
+export function generatef500(notes = false) {
   //<xsl:for-each select="set/elements/element[@name='note_general']/values">
   //  <datafield tag="500" ind1=" " ind2=" ">
   //    <subfield code="a">
@@ -16,8 +16,8 @@ export function generatef500(generalNotes = false) {
   //  </xsl:otherwise>
   //</xsl:choose>
   //</xsl:variable>
-  if (generalNotes) {
-    return generalNotes.map(notes => ({
+  if (notes) {
+    return notes.map(notes => ({
       tag: '500', ind1: ' ', ind2: ' ',
       subfields: [{code: 'a', value: notes.value}]
     }));

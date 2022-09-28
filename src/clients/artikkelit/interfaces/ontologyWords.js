@@ -1,5 +1,21 @@
 import {setOptions} from "/artikkelit/utils.js"
-import {idbAddValueToLastIndex, idbGetStoredValues} from "/artikkelit/indexDB.js"
+import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "/artikkelit/sessionStorageManager.js"
+import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
+import {createIconButton, createP} from "/artikkelit/utils.js"
+import {formToJson} from "/common/ui-utils.js";
+import {getOntologyWords} from "/common/rest.js";
+
+
+export function initOntologyWords() {
+  console.log('initializing ontology...')
+  document.getElementById("asiasana-haku-yso-form").addEventListener("submit", searchOntologyWords);
+  document.getElementById("asiasana-lisaa-form").addEventListener("submit", addOntologyWord);
+
+  document.getElementById("tyhjenna-asiasanat-form").addEventListener("submit", clearOntologyWords);
+
+  resetOntologySelect();
+  refreshOntologyWordList();
+}
 
 export function searchOntologyWords(event) {
   event.preventDefault();
@@ -58,16 +74,27 @@ export function refreshOntologyWordList() {
   idbGetStoredValues('artoOntologyWords').then(ontologyWords => {
     ontologyWords.forEach(wordData => {
       const form = document.createElement('form');
-      form.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
-      form.appendChild(removeButton);
+      const div = document.createElement('div');
+      div.classList.add('full-width');
+      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
+      div.appendChild(createP('Asia- tai avainsana', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(wordData.prefLabel);
       pRelator.classList.add('capitalize');
-      form.appendChild(pRelator);
-      form.appendChild(generateVocabInfo(wordData));
-      form.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;'));
+      div.appendChild(pRelator);
+      div.appendChild(generateVocabInfo(wordData));
+      div.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;', '', ['long-text']));
+      div.appendChild(removeButton);
+      form.appendChild(div);
       ontologyWordList.appendChild(form);
     });
+
+    if (ontologyWords.length > 1) {
+      document.getElementById("tyhjenna-asiasanat-form").style.display = 'block';
+    }
+
+    if (ontologyWords.length < 2) {
+      document.getElementById("tyhjenna-asiasanat-form").style.display = 'none';
+    }
   });
 
   function generateVocabInfo(word) {
@@ -76,4 +103,9 @@ export function refreshOntologyWordList() {
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }
+}
+
+export function clearOntologyWords(event) {
+  event.preventDefault();
+  idbClear('artoOntologyWords').then(() => refreshOntologyWordList());
 }

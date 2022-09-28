@@ -2,7 +2,18 @@
 
 import {openDB} from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
 
-const tableNames = ['artoSources', 'artoAuthors', 'artoOntologyWords', 'artoAbstracts', 'artoAuthorTempOrg'];
+const tableNames = [
+  'artoSources',
+  'artoAuthors',
+  'artoOntologyWords',
+  'artoAbstracts',
+  'artoAuthorTempOrg',
+  'artoSciences',
+  'artoMetodologys',
+  'artoUDKs',
+  'artoNotes',
+  'artoOtherRatings'
+];
 
 const dbPromise = openDB('melinda-arto', 1, {
   upgrade(db) {
@@ -10,7 +21,7 @@ const dbPromise = openDB('melinda-arto', 1, {
   }
 });
 
-export function getTableNames(){
+export function getTableNames() {
   return tableNames;
 }
 
@@ -37,7 +48,7 @@ export async function idbKeys(tableName) {
 export async function idbGetStoredValues(tableName) {
   const keys = await idbKeys(tableName);
   const promises = keys.map(async key => {
-    const data =  await idbGet(tableName, key)
+    const data = await idbGet(tableName, key)
     return {key, ...data};
   });
 
