@@ -1,8 +1,6 @@
-import {setOptions} from "/artikkelit/utils.js"
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "/artikkelit/sessionStorageManager.js"
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {createIconButton, createP} from "/artikkelit/utils.js"
-import {formToJson} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, setOptions} from "/common/ui-utils.js";
 import {getOntologyWords} from "/common/rest.js";
 
 

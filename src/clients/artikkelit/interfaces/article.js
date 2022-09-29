@@ -1,6 +1,5 @@
-import {formToJson} from "/common/ui-utils.js";
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {createIconButton, createP} from "/artikkelit/utils.js"
+import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
 
 export function initArticle() {
   console.log('initializing article...')

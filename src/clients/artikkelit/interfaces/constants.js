@@ -345,7 +345,7 @@ export const sciences = [
   },
   {
     value: "3 - Lääke- ja terveystieteet - 3123 - Naisten- ja lastentaudit",
-    text: "Lääke- ja terveystieteet - Naisten- ja lastentaudit"
+    text: ""
   },
   {
     value: "3 - Lääke- ja terveystieteet - 3124 - Neurologia ja psykiatria",

@@ -1,6 +1,5 @@
 import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from "/artikkelit/indexDB.js"
-import {formToJson} from "/common/ui-utils.js";
-import {createIconButton, createP} from "/artikkelit/utils.js"
+import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
 
 export function initAuthors() {
   console.log('initializing authors...');

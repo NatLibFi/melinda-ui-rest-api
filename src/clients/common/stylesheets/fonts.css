@@ -1,0 +1,83 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("/common/fonts/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto-flex";
+  src: url("/common/fonts/RobotoFlex-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto-mono";
+  src: url("/common/fonts/RobotoMono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto-serif";
+  src: url("/common/fonts/RobotoSerif-Regular.ttf") format("truetype");
+}
+
+/*
+1sp   0.0625rem
+10sp	0.625rem
+11sp  0.6875rem
+12sp	0.75rem
+14sp  0.875rem
+16sp  1rem
+20sp  1,25rem
+24sp	1.5rem
+28sp  1.75rem
+30px  1.875rem
+32px  2rem
+40sp  2,5rem
+60sp	3.75rem
+*/
+
+:root{
+  --font-family-headline: "Roboto", "Roboto-mono", "Roboto-serif";
+  --font-family-title: "Roboto", "Roboto-mono", "Roboto-serif";
+  --font-family-label: "Roboto", "Roboto-mono", "Roboto-serif";
+  --font-family-content: "Roboto", "Roboto-serif", "Roboto-mono";
+
+  --font-size-icon-large: 2rem;
+  --font-size-icon-normal: 1.5rem;
+  --font-size-headline-large: 2rem;
+  --font-size-headline-normal: 1.75rem;
+  --font-size-headline-small: 1.5rem;
+  --font-size-title-large: 1,375rem;
+  --font-size-title-normal: 1rem;
+  --font-size-title-small: 0.875rem;
+  --font-size-label-large: 0.875rem;
+  --font-size-label-normal: 0.75rem;
+  --font-size-label-small: 0.6875rem;
+  --font-size-content-large: 1rem;
+  --font-size-content-normal: 0.875rem;
+  --font-size-content-small: 0.75rem;
+
+  --font-weight-headline-large: 400;
+  --font-weight-headline-normal: 400;
+  --font-weight-headline-small: 400;
+  --font-weight-title-large: 400;
+  --font-weight-title-normal: 500;
+  --font-weight-title-small: 500;
+  --font-weight-label-large: 500;
+  --font-weight-label-normal: 500;
+  --font-weight-label-small: 500;
+  --font-weight-content-large: 400;
+  --font-weight-content-normal: 400;
+  --font-weight-content-small: 400;
+
+  --font-line-height-headline-large: 2.5rem;
+  --font-line-height-headline-normal: 2.25rem;
+  --font-line-height-headline-small: 2rem;
+  --font-line-height-title-large: 1.75rem;
+  --font-line-height-title-normal: 1.5rem;
+  --font-line-height-title-small: 1.25rem;
+  --font-line-height-label-large: 1,25rem;
+  --font-line-height-label-normal: 1rem;
+  --font-line-height-label-small: 1rem;
+  --font-line-height-content-large: 1.5rem;
+  --font-line-height-content-normal: 1,25rem;
+  --font-line-height-content-small: 1rem;
+}

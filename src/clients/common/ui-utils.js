@@ -41,6 +41,57 @@ export function formToJson(formSubmitEvent) {
   return formJson;
 }
 
+export function createP(value, before = '', after = '', classList = []) {
+  const p = document.createElement('p');
+  p.innerHTML = `${before}${value}${after}`;
+  classList.forEach(htmlClass => p.classList.add(htmlClass));
+  return p;
+}
+
+export function createHiddenInput(value, name) {
+  const input = document.createElement('input');
+  input.setAttribute("type", 'hidden');
+  input.setAttribute("value", value);
+  input.setAttribute("name", name);
+  return input;
+}
+
+export function createIconButton(icon, classList = [], onclickAttribute = false, tooltip = false) {
+  const button = document.createElement('button');
+  button.innerHTML = icon;
+  button.classList.add('material-icons');
+  button.classList.add('icon');
+
+  classList.forEach(htmlClass => button.classList.add(htmlClass));
+  if (onclickAttribute) {
+    button.setAttribute('onclick', onclickAttribute);
+  }
+
+  if (tooltip) {
+    button.classList.add('tooltip');
+    button.setAttribute("tooltip-text", tooltip);
+  }
+
+  return button;
+}
+
+export function setOptions(element, jsonArray, disabled = false) {
+  element.innerHTML = '';
+  jsonArray.forEach((obj, index) => {
+    const opt = document.createElement('option');
+    opt.value = obj.value;
+    opt.innerHTML = obj.text;
+    opt.selected = disabled;
+    opt.disabled = disabled;
+    element.append(opt);
+    if (element.nodeName === 'select' && index === 0) {
+      element.selectedIndex = 0;
+    }
+  });
+
+  element.dispatchEvent(new Event('change'));
+}
+
 export function showTab(...tabs) {
   const root = document.getElementById('root');
   for (const child of root.children) {

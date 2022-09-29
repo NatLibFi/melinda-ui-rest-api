@@ -1,3 +1,5 @@
+@import "/common/stylesheets/fonts.css";
+
 /* ---------------------------------------------------------------------------- */
 /* CSS for generic GUI components */
 /* ---------------------------------------------------------------------------- */
@@ -41,7 +43,7 @@
   background: rgb(182, 225, 224);
   color: #000;
   font-size: 0.3em;
-  font-family: "Roboto", "Roboto Mono", monospace;
+  font-family: "Roboto", "Roboto-mono", "Roboto-serif";
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -49,8 +51,9 @@
 /* ---------------------------------------------------------------------------- */
 
 button {
-  font-size: inherit;
-  font-family: "Roboto", "Roboto Mono", monospace;
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
+  font-family: "Roboto-mono", "Roboto", "Roboto-serif";
   color: inherit;
   border: 1px solid grey;
   background-color: transparent;
@@ -58,7 +61,6 @@ button {
   padding: 4px 14px;
   cursor: pointer;
   border-radius: 1em;
-  font-weight: normal;
 }
 
 button.no-border {
@@ -72,12 +74,12 @@ button.no-border.negative {
 }
 
 button.icon {
-  font-size: 24px;
-  border-radius: 20px;
-  min-height: 40px;
-  min-width: 40px;
-  max-height: 40px;
-  max-width: 40px;
+  font-size: var(--font-size-icon-normal);
+  border-radius: 0.75rem;
+  min-height: var(--font-line-height-content-normal);
+  min-width: var(--font-line-height-content-normal);
+  max-height: var(--font-line-height-content-normal);
+  max-width: var(--font-line-height-content-normal);
   padding: 4px;
 }
 
@@ -92,7 +94,8 @@ button.negative {
 }
 
 .Button input {
-  font-size: inherit;
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
   color: inherit;
   border: 1px solid grey;
   background-color: transparent;
@@ -107,7 +110,8 @@ button.negative {
 }
 
 .ToolBar button {
-  font-size: inherit;
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
   color: inherit;
   border: 0;
   background-color: transparent;
@@ -144,17 +148,27 @@ button>a:visited {
 
 .Input>label {
   color: rgb(48, 93, 109);
-  font-family: "Roboto", "Roboto Mono", monospace;
-  font-size: 12pt;
+  font-family: "Roboto-mono", "Roboto", "Roboto-serif";
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
   margin-right: 8px;
 }
 
 .Input>input {
+  font-family: var(--font-family-content);
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-size: 15pt;
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-content-normal);
   flex-grow: 1;
+}
+
+.Input>datalist>option {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
+  text-transform: capitalize;
 }
 
 .Input>input:valid {
@@ -171,24 +185,30 @@ button>a:visited {
 
 .Select>label {
   color: rgb(48, 93, 109);
-  font-family: "Roboto", "Roboto Mono", monospace;
-  font-size: 12pt;
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
   margin-right: 8px;
 }
 
 .Select>select {
+  font-family: var(--font-family-content);
   border: 0;
   border-bottom: 1pt solid grey;
   background: #fff;
   outline: none;
-  font-size: 15pt;
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-content-normal);
 }
 
 .Select>select:focus {
-  background: #ccc;
+  background: #ddd;
 }
 
 .Select>select>option {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
   text-transform: capitalize;
 }
 
