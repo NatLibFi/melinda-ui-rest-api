@@ -6,7 +6,7 @@
 
 import {authVerify, authRequest} from "./rest.js";
 import {reload, resetForms, showTab} from "./ui-utils.js"
-import { startProcess, stopProcess } from "./ui-utils.js";
+import {startProcess, stopProcess} from "./ui-utils.js";
 
 //*****************************************************************************
 //
@@ -48,20 +48,23 @@ export const Account = {
   },
 
   login(username, password) {
-    function createToken(username, password = '') {
-      //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
-      const encoded = btoa(`${username}:${password}`);
-      return `Basic ${encoded}`;
-    }
-
     const token = createToken(username, password);
+
     return authRequest(token).then(user => {
       if (user) {
         //console.log("Storing user", user);
         this.set(user);
       }
+
+      console.log(user);
       return user;
     })
+
+    function createToken(username, password = '') {
+      //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+      const encoded = btoa(`${username}:${password}`);
+      return `Basic ${encoded}`;
+    }
   },
 
   logout() {
@@ -79,7 +82,7 @@ export const Account = {
 
 export function doLogin(onSuccess) {
 
-  window.login = function(e) {
+  window.login = function (e) {
     eventHandled(e)
 
     logininfo('');
@@ -90,22 +93,23 @@ export function doLogin(onSuccess) {
       return;
     }
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
 
     startProcess();
 
     Account.login(username, password)
       .then(user => onSuccess(user))
       .catch(err => {
+        console.log(err);
         Account.remove();
         logininfo('Tunnus tai salasana ei täsmää');
       })
       .finally(stopProcess);
-      function logininfo(msg) {
-        const infodiv = document.querySelector('#login #info');
-        infodiv.innerHTML = msg;
-      }
+    function logininfo(msg) {
+      const infodiv = document.querySelector('#login #info');
+      infodiv.innerHTML = msg;
+    }
   }
 
   Account.verify()

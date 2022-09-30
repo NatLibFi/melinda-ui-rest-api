@@ -1,0 +1,231 @@
+/* CSS file for muuntaja */
+@import "/common/stylesheets/fonts.css";
+@import "/common/stylesheets/common.css";
+
+/* ---------------------------------------------------------------------------- */
+
+div#loading {}
+
+/* ---------------------------------------------------------------------------- */
+
+div#tools {}
+
+.tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100vw;
+}
+
+/* ---------------------------------------------------------------------------- */
+
+div#muuntaja {}
+
+@media screen and (min-width: 1100px) {
+  #artikkelit-lisaa .record-merge-panel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .record-merge-panel .col {
+    width: 32vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5vw;
+  }
+
+  .record-merge-panel>div:first-of-type {
+    width: 64vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5vw;
+  }
+}
+
+@media screen and (max-width: 1099px) {
+  #artikkelit-lisaa .record-merge-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .record-merge-panel .col {
+    width: 99vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5vw;
+  }
+}
+
+.col>* {
+  padding: 8pt;
+}
+
+.header {
+  text-transform: uppercase;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-normal);
+  font-weight: var(--font-weight-headline-normal);
+  line-height: var(--font-line-height-headline-normal);
+  border-bottom: 1px solid lightgrey;
+  align-items: center;
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.header .material-icons {
+  font-size: var(--font-size-icon-normal);
+}
+
+.header label {
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
+  line-height: var(--font-line-height-label-normal);
+  /*color: grey;*/
+}
+
+.half-width {
+  width: 50%;
+}
+
+.full-width {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 5px;
+}
+
+.full-width label {
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.full-width select {
+  width: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-width select option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-width p {
+  margin: 0px;
+}
+
+.full-width p:last-of-type {
+  flex-grow: 1;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+fieldset {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+fieldset legend {
+  font-size: var(--font-size-title-large);
+  font-weight: var(--font-weight-title-large);
+}
+
+fieldset .panel {
+  width: 49%;
+  align-items: center;
+}
+
+fieldset .panel>.full-width {
+  display: flex;
+}
+
+fieldset .panel label {
+  display: inline-flex;
+  font-family: var(--font-family-label);
+  text-align: end;
+  margin-right: 10px;
+  line-height: var(--font-line-height-label-normal);
+  color: rgb(48, 93, 109);
+}
+
+fieldset .panel p {
+  display: inline-flex;
+  line-height: var(--font-line-height-content-normal);
+}
+
+.long-text {
+  word-break: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  flex-grow: 1;
+}
+
+.label-text {
+  color: rgb(48, 93, 109);
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
+}
+
+.title-text {
+  color: rgb(48, 93, 109);
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-title-normal);
+  font-weight: var(--font-weight-title-normal);
+
+}
+
+.content-text {
+  color: rgb(0, 0, 0);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-content-normal);
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.justify-content-end {
+  display: inline-flex;
+  justify-content: end;
+}
+.justify-content-end>form {
+  width: auto;
+}
+
+#artikkelin-osasto-toistuva-wrap,
+#artikkelin-arvostelu-tyyppi-wrap,
+#tieteenalat-list,
+#metodologiat-list,
+#tekija-organisaatiot-list,
+#tekija-list,
+#tiivistelmat-list,
+#asiasana-list,
+#huomautukset-list,
+#udk-list,
+#muu-luokitus-list {
+  width: 100%;
+}

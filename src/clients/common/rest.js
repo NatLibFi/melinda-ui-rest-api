@@ -4,6 +4,7 @@
 //
 //*****************************************************************************
 
+import {getOntologyOptions} from "../artikkelit/utils.js";
 import {Account} from "../common/auth.js"
 
 //-----------------------------------------------------------------------------
@@ -105,6 +106,52 @@ export function transformRequest(transformed) {
     }
   )
 }
+
+//*****************************************************************************
+// Artikkelit (artikkelit)
+//*****************************************************************************
+
+export function getPublicationByISSN(issn, type = 'journal') {
+  return fetchFromRest(`${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`);
+}
+
+export function getPublicationByISBN(isbn, type = 'journal') {
+  return fetchFromRest(`${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`);
+}
+
+export function getPublicationByMelinda(melindaId, type = 'journal') {
+  return fetchFromRest(`${RESTurl}/bib/${melindaId}?arto=1&type=${type}`);
+}
+
+export function getPublicationByTitle(title, type = 'journal') {
+  return fetchFromRest(`${RESTurl}/bib/title/${title}?arto=1&type=${type}`);
+}
+
+export function getArtikkeliRecord(data) {
+  //console.log(`body: ${data}`);
+  return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
+}
+
+export function getOntologyWords(ontology, query){
+  const {searchVocab, language} = getOntologyOptions(ontology)
+
+  return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
+}
+
+async function fetchFromRest(url, method = 'GET', body = undefined) {
+  const result = await fetch(url,
+    {
+      method,
+      headers: {
+        'Accept': 'application/json',
+      },
+      body
+    }
+  ).then(result => result.json());
+
+  return result;
+}
+
 
 //*****************************************************************************
 // LOGS (viewer)
