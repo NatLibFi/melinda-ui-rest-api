@@ -100,6 +100,24 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
       console.log(error); // eslint-disable-line
       res.status(500);
     }
+
+  async function fetchOneByMelindaId(req, res) {
+    try {
+      const {id} = req.params;
+
+      logger.debug(`Params..: ${JSON.stringify(req.params)}`);
+      logger.debug(`Query..: ${JSON.stringify(req.query)}`);
+      logger.debug(`Fetching: ${id}`);
+
+      const result = await bibService.getRecordByID(id, req.query);
+      res.json(result);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.status).send(error.payload);
+      }
+      console.log(error); // eslint-disable-line
+      res.status(500);
+    }
   }
 
   //---------------------------------------------------------------------------
