@@ -147,9 +147,13 @@ async function fetchFromRest(url, method = 'GET', body = undefined) {
       },
       body
     }
-  ).then(result => result.json());
+  );
 
-  return result;
+  if (result.ok) {
+    return result.json();
+  }
+
+  return {error: {status: result.status, message: result.text()}};
 }
 
 
