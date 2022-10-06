@@ -15,14 +15,13 @@ export function createArtikkelitService() {
   return {generateRecord};
 
   function generateRecord(data) {
-    console.log(data); // eslint-disable-line
+
+    console.log(data); // eslint-disable-line        
     // eslint-disable-next-line no-unused-vars
-    const {source, journalNumber, abstract, article, authors, ontologyWords, notes, udks, otherRatings} = data;
+    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings} = data;
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-
-
     const sourceType = 'journal'; // journal or book
     const abstractLanguages = []; // languages from abstracts form value (language.iso6392b)
     const year = '2022'; // journal year form value / book year form value / current year form value
@@ -46,7 +45,7 @@ export function createArtikkelitService() {
         ...generatef380(article.reviewType),
         ...generatef490(article.sectionOrColumn),
         ...generatef500(notes), // general notes
-        ...generatef520(), // Absracts
+        ...generatef520(abstracts), // Abstracts
         ...generatef567(), // Metodologys
         ...generatef591(sourceType, [{label: 'todo', value: 'todo'}]),
         ...generatef593(journalJufo, year),

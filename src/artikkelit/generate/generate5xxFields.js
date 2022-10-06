@@ -1,24 +1,10 @@
 export function generatef500(notes = false) {
-  //<xsl:for-each select="set/elements/element[@name='note_general']/values">
-  //  <datafield tag="500" ind1=" " ind2=" ">
-  //    <subfield code="a">
-  //      <xsl:value-of select="value" />
-  //    </subfield>
-  //  </datafield>
-  //</xsl:for-each>
-  //<xsl:variable name="articleType">
-  //<xsl:choose>
-  //  <xsl:when test="set/elements/element[@name='articleType_journal']">
-  //    <xsl:value-of select="set/elements/element[@name='articleType_journal']/values[1]/value[@name='value']" />
-  //  </xsl:when>
-  //  <xsl:otherwise>
-  //    <xsl:value-of select="set/elements/element[@name='articleType_book']/values[1]/value[@name='value']" />
-  //  </xsl:otherwise>
-  //</xsl:choose>
-  //</xsl:variable>
+
   if (notes) {
     return notes.map(notes => ({
-      tag: '500', ind1: ' ', ind2: ' ',
+      tag: '500',
+      ind1: ' ',
+      ind2: ' ',
       subfields: [{code: 'a', value: notes.value}]
     }));
   }
@@ -27,18 +13,16 @@ export function generatef500(notes = false) {
 }
 
 export function generatef520(abstracts) {
-  //<xsl:if test="set/groups/group[@name='abstract']/values">
-  //  <xsl:for-each select="set/groups/group[@name='abstract']/values">
-  //    <datafield tag="520" ind1=" " ind2=" ">
-  //      <subfield code="a">
-  //        <xsl:value-of select="element[@name='term']/values[1]/value[@name='value']" />
-  //        <xsl:text>.</xsl:text>
-  //      </subfield>
-  //    </datafield>
-  //  </xsl:for-each>
-  //</xsl:if>
+
   if (abstracts) {
-    return abstracts.flatMap(abstract => [{tag: '520', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: abstract}]}]);
+    return abstracts.flatMap(elem => [
+      {
+        tag: '520',
+        ind1: ' ',
+        ind2: ' ',
+        subfields: [{code: 'a', value: elem.abstract}]
+      }
+    ]);
   }
 
   return [];
