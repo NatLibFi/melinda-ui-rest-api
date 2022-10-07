@@ -1,3 +1,5 @@
+
+
 import {generatef005, generatef007, generatef008, generateLeader} from './generate/generateControlFields';
 import {generatef041, generatef080, generatef084} from './generate/generate0xxFields';
 import {generatef245, generatef246} from './generate/generate2xxFields';
@@ -27,7 +29,10 @@ export function createArtikkelitService() {
     const year = '2022'; // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
-
+    const {simpleGroups} = source; // ***
+    const {localNotes599} = simpleGroups; // ***
+console.log('   ***   simpleGroups:',simpleGroups) // eslint-disable-line 
+console.log('   ***   localNotes599:',localNotes599) // eslint-disable-line 
     const record = {
       leader: generateLeader(sourceType),
       fields: [
@@ -50,7 +55,7 @@ export function createArtikkelitService() {
         ...generatef591(sourceType, [{label: 'todo', value: 'todo'}]),
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
-        ...generatef599(), // local notes (lisäkentät)
+        ...generatef599(localNotes599), // local notes (lisäkentät)
         ...generatef6xxs(ontologyWords),
         ...generatef773(sourceType, journalNumber, melindaId, article, publishing, isbn, issn),
         ...generatef787(), // review books

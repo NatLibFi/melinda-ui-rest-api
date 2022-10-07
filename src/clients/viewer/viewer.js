@@ -124,11 +124,11 @@ window.loadLog = (event) => {
   if (logType === 'MERGE_LOG') {
 
     idbGet(event.target.value).then(data => {
-      setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.value === 'A' ? ' (Suositaan)' : ''}`, false);
+      setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      setRecordTopInfo('record2', `Melinda-tietue${data.preference.value === 'B' ? ' (Suositaan)' : ''}`, false);
+      setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.databaseRecord, "record2", {}, 'viewer');
-      setRecordTopInfo('record3', 'Yhdistetty tietue', `<li>Luonti aika: ${data.creationTime}</li>`);
+      setRecordTopInfo('record3', 'Yhdistetty tietue', `<li>Luontiaika: ${data.creationTime}</li>`);
       showRecord(data.mergedRecord, "record3", {}, 'viewer');
     });
   }

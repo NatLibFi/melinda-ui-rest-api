@@ -49,11 +49,7 @@ export default async function ({
     app.enable('trust proxy', Boolean(enableProxy));
     app.use(createExpressLogger());
 
-    const corsOptions = {
-      origin: 'https://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi',
-      optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-    };
-    app.use(cors(corsOptions));
+    app.use(cors());
 
     passport.use(new AlephStrategy({
       xServiceURL, userLibrary,

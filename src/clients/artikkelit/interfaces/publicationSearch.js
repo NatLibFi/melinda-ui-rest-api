@@ -87,16 +87,40 @@ function searchPublications(event) {
   const formJson = formToJson(event);
 
   if (hakuTyyppi === 'issn') {
-    return getPublicationByISSN(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch([result]));
+    return getPublicationByISSN(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch([result]);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
   if (hakuTyyppi === 'isbn') {
-    return getPublicationByISBN(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch([result]));
+    return getPublicationByISBN(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch([result]);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
   if (hakuTyyppi === 'title') {
-    return getPublicationByTitle(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch(result));
+    return getPublicationByTitle(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch(result);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
   if (hakuTyyppi === 'melinda') {
-    return getPublicationByMelinda(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch([result]));
+    return getPublicationByMelinda(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch([result]);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
 
   throw new Error('Invalid search type!');

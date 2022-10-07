@@ -69,7 +69,7 @@ export function generatef598(localNotesf598 = false) {
   return [];
 }
 
-export function generatef599(localNotesf599 = false) {
+export function generatef599(localNotesf599) {
   //<xsl:if test="set/groups/group[@name='local_notes_599']">
   //  <xsl:for-each select="set/groups/group[@name='local_notes_599']/values">
   //    <xsl:if test="element[@name='a']">
@@ -87,6 +87,7 @@ export function generatef599(localNotesf599 = false) {
   //    </xsl:if>
   //  </xsl:for-each>
   //</xsl:if>
+  console.log('   ***   localNotesf599:', localNotesf599); // eslint-disable-line 
   if (localNotesf599) {
     return localNotesf599.flatMap(notes => ({
       tag: 599, ind1: ' ', ind2: ' ',

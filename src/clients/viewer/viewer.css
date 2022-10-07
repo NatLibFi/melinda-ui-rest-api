@@ -10,36 +10,32 @@ div#loading {}
 
 div#tools {}
 
-.tools .ToolBar .Input>label {
+.Input>label,
+.Select>label {
   color: rgb(48, 93, 109);
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: 0.8em;
+  font-family: var(--font-family-label);
+  font-size:  var(--font-size-label-normal);
   text-align: center;
 }
 
-.tools .ToolBar .Input>input {
+.Input>input {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: 1em;
-  width: 37ch;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-normal);
 }
 
-.tools .ToolBar .Select>label, .header .Select>label {
-  color: rgb(48, 93, 109);
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: 0.8em;
-  text-align: center;
-  text-transform: none;
-}
-
-.tools .ToolBar .Select>select, .header .Select>select {
+.Select>select {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: 1em;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-normal);
+}
+
+.ToolBar button {
+  font-size: var(--font-size-icon-normal);
 }
 
 .tools #sequence {
@@ -65,8 +61,11 @@ div#tools {}
   justify-content: center;
   align-items: flex-end;
   width: 100vw;
-  font-size: 32px;
   height: 40px;
+}
+
+.uuidInput {
+  width: 37ch;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -110,7 +109,10 @@ div#muuntaja {}
 .col .header {
   height: 40px;
   text-transform: uppercase;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-normal);
+  font-weight: var(--font-weight-headline-normal);
+  line-height: var(--font-line-height-headline-normal);
   border-bottom: 1px solid lightgrey;
   align-items: center;
   display: flex;
@@ -162,6 +164,8 @@ div#muuntaja {}
 }
 
 .header label {
-  font-size: 12pt;
+  font-size: var(--font-size-label-normal);
+  font-weight: var(--font-weight-label-normal);
+  line-height: var(--font-line-height-label-normal);
   /*color: grey;*/
 }

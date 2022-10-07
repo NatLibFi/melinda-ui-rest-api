@@ -121,8 +121,12 @@ function collectFormData() {
       type: document.getElementById(`artikkelin-tyyppi`).value,
       reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
+    },
+    collecting: {
+      f589a: document.getElementById(`poimintatiedot-poimintakoodi598a`).value,
+      f599a: document.getElementById(`poimintatiedot-poimintakoodi599a`).value,
+      f599x: document.getElementById(`poimintatiedot-poimintakoodi599x`).value
     }
-
   };
 }
 
