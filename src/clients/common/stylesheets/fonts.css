@@ -1,3 +1,10 @@
+/* Montserrat - Designed by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly */
+/* source https://fonts.google.com/specimen/Montserrat 2022-07-28*/
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("/common/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
 @font-face {
   font-family: "Roboto";
   src: url("/common/fonts/Roboto-Regular.ttf") format("truetype");
