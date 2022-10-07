@@ -24,7 +24,6 @@ div#tools {}
   outline: none;
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-normal);
-  width: 37ch;
 }
 
 .Select>select {
@@ -63,6 +62,10 @@ div#tools {}
   align-items: flex-end;
   width: 100vw;
   height: 40px;
+}
+
+.uuidInput {
+  width: 37ch;
 }
 
 /* ---------------------------------------------------------------------------- */
