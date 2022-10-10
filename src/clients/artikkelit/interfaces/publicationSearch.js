@@ -150,7 +150,7 @@ function refreshSearchResultSelect() {
       const title = record.title;
       const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
       const years = record.years;
-      const text = `${title}, ${publicationType}: ${years}`;
+      const text = `${title} (${publicationType}: ${years})`;
       return {value: record.key, text};
     });
 
