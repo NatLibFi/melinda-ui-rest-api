@@ -91,7 +91,14 @@ function collectCommonData(record) {
     const [start, end] = publisherYearsNotParsed ? publisherYearsNotParsed.split('-') : ['', ''];
     return {
       publishing: `${publisherLocation} ${publisher} ${publisherYearsNotParsed}`,
-      publisherInfo: {publisherLocation, publisher, publisherYears: {start, end}}
+      publisherInfo: {
+        publisherLocation: publisherLocation.replace(titleTrimCharacters, '').trim(),
+        publisher: publisher.replace(titleTrimCharacters, '').trim(),
+        publisherYears: {
+          start: start.replace(titleTrimCharacters, '').trim(),
+          end: end.replace(titleTrimCharacters, '').trim()
+        }
+      }
     };
   }
 }
