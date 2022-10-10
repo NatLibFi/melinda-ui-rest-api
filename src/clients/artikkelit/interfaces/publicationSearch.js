@@ -145,8 +145,13 @@ function refreshSearchResultSelect() {
 
   idbGetStoredValues('artoSources').then(sources => {
     const data = sources.map(record => {
+      // console.log(record);
+      // isElectronic: true, years: "1995-"
       const title = record.title;
-      return {value: record.key, text: title};
+      const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
+      const years = record.years;
+      const text = `${title}, ${publicationType}: ${years}`;
+      return {value: record.key, text};
     });
 
     setOptions(select, data);
