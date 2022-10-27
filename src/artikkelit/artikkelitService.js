@@ -20,19 +20,19 @@ export function createArtikkelitService() {
 
     console.log(data); // eslint-disable-line        
     // eslint-disable-next-line no-unused-vars
-    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings} = data;
+    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting} = data;
+    const titleFor773t = source.title;
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const sourceType = 'journal'; // journal or book
-    const abstractLanguages = []; // languages from abstracts form value (language.iso6392b)
+    const sourceType = getSourceType(source);
+    const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
+    const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
     const year = '2022'; // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
-    const {simpleGroups} = source; // ***
-    const {localNotes599} = simpleGroups; // ***
-console.log('   ***   simpleGroups:',simpleGroups) // eslint-disable-line 
-console.log('   ***   localNotes599:',localNotes599) // eslint-disable-line 
+    const {f599a, f599x} = collecting;
+
     const record = {
       leader: generateLeader(sourceType),
       fields: [
@@ -55,9 +55,9 @@ console.log('   ***   localNotes599:',localNotes599) // eslint-disable-line
         ...generatef591(sourceType, [{label: 'todo', value: 'todo'}]),
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
-        ...generatef599(localNotes599), // local notes (lisäkentät)
+        ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
-        ...generatef773(sourceType, journalNumber, melindaId, article, publishing, isbn, issn),
+        ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),
         ...generatef787(), // review books
         ...generatef856(), // referenceLinks
         ...generatef960()
@@ -76,4 +76,27 @@ console.log('   ***   localNotes599:',localNotes599) // eslint-disable-line
       melindaId
     };
   }
+}
+
+function getSourceType(input) {
+  const found = input.sourceType;
+  const get3rd = found.substr(2, 1);
+  const get4th = found.substr(3, 1);
+
+  if (get4th.includes('s', 'i')) {
+    return 'journal';
+  }
+
+  if (get4th.includes('c', 'm')) {
+    return 'book';
+  }
+
+  if (get3rd.includes('a')) {
+    return 'text';
+  }
+
+  if (get3rd.includes('g', 'i', 'm')) {
+    return 'electronic';
+  }
+
 }
