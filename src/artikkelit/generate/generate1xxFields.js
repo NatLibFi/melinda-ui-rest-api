@@ -30,8 +30,8 @@ export function generatef100sf110sf700sf710s(authors = []) {
     }
 
     function generateSubfields() {
-      const subA = {code: 'a', value: `${author.lastName}, ${author.firstName}.`};
-      const subE = {code: 'e', value: author.relator};
+      const subA = {code: 'a', value: `${author.lastName}, ${author.firstName},`};
+      const subE = {code: 'e', value: `${author.relator}.`};
       const subU = generateOrganizations();
       const subG = generateOrgnCodes();
       return [subA, subE, subU, subG];
