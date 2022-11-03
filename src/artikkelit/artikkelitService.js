@@ -43,7 +43,7 @@ export function createArtikkelitService() {
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
         ...generatef100sf110sf700sf710s(authors),
-        ...generatef245(articleTitle),
+        ...generatef245(articleTitle, authors),
         ...generatef246(articleTitleOther),
         ...generatef336(),
         ...generatef337(isElectronic),

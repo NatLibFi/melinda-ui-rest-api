@@ -1,16 +1,24 @@
 
-export function generatef245(articleTitle) {
+export function generatef245(articleTitle, authors) {
 
   if (articleTitle) {
     return [
       {tag: '245',
-        ind1: ' ',
-        ind2: ' ',
-        subfields: [{code: 'a', value: `${articleTitle}`}]}
+        ind1: ind1Value(),
+        ind2: '0',
+        subfields: [{code: 'a', value: `${articleTitle}.`}]}
     ];
   }
 
   return [];
+
+  function ind1Value () {
+    if (authors.length === 0) {
+      return '0';
+    }
+    return '1';
+  }
+
 }
 
 export function generatef246(otherTitle = false) {
@@ -22,7 +30,7 @@ export function generatef246(otherTitle = false) {
   // </datafield>
   //</xsl:if>
   if (otherTitle) {
-    return [{tag: '246', ind1: '3', ind2: ' ', subfields: [{code: 'a', value: `${otherTitle}`}]}];
+    return [{tag: '246', ind1: '3', ind2: '0', subfields: [{code: 'a', value: `${otherTitle}`}]}];
   }
 
   return [];
