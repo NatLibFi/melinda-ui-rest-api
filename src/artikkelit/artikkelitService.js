@@ -20,7 +20,7 @@ export function createArtikkelitService() {
 
     console.log(data); // eslint-disable-line        
     // eslint-disable-next-line no-unused-vars
-    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting} = data;
+    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences} = data;
     const titleFor773t = source.title;
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
@@ -52,7 +52,7 @@ export function createArtikkelitService() {
         ...generatef500(notes), // general notes
         ...generatef520(abstracts), // Abstracts
         ...generatef567(), // Metodologys
-        ...generatef591(sourceType, [{label: 'todo', value: 'todo'}]),
+        ...generatef591(sourceType, sciences),
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
         ...generatef599(f599a, f599x),
