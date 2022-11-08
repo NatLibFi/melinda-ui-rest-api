@@ -49,11 +49,7 @@ export default async function ({
     app.enable('trust proxy', Boolean(enableProxy));
     app.use(createExpressLogger());
 
-    const corsOptions = {
-      origin: 'https://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi',
-      optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-    };
-    app.use(cors(corsOptions));
+    app.use(cors());
 
     passport.use(new AlephStrategy({
       xServiceURL, userLibrary,
@@ -82,7 +78,7 @@ export default async function ({
     app.use('/rest/artikkelit', createArtikkelitRoute());
     app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
     app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
-    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), await createMuuntajaRoute(sruUrl));
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));

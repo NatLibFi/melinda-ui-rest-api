@@ -1,3 +1,5 @@
+
+
 import {generatef005, generatef007, generatef008, generateLeader} from './generate/generateControlFields';
 import {generatef041, generatef080, generatef084} from './generate/generate0xxFields';
 import {generatef245, generatef246} from './generate/generate2xxFields';
@@ -18,15 +20,18 @@ export function createArtikkelitService() {
 
     console.log(data); // eslint-disable-line        
     // eslint-disable-next-line no-unused-vars
-    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings} = data;
+    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences} = data;
+    const titleFor773t = source.title;
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const sourceType = 'journal'; // journal or book
-    const abstractLanguages = []; // languages from abstracts form value (language.iso6392b)
+    const sourceType = getSourceType(source);
+    const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
+    const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
     const year = '2022'; // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
+    const {f599a, f599x} = collecting;
 
     const record = {
       leader: generateLeader(sourceType),
@@ -38,7 +43,7 @@ export function createArtikkelitService() {
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
         ...generatef100sf110sf700sf710s(authors),
-        ...generatef245(articleTitle),
+        ...generatef245(articleTitle, authors),
         ...generatef246(articleTitleOther),
         ...generatef336(),
         ...generatef337(isElectronic),
@@ -47,12 +52,12 @@ export function createArtikkelitService() {
         ...generatef500(notes), // general notes
         ...generatef520(abstracts), // Abstracts
         ...generatef567(), // Metodologys
-        ...generatef591(sourceType, [{label: 'todo', value: 'todo'}]),
+        ...generatef591(sourceType, sciences),
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
-        ...generatef599(), // local notes (lisäkentät)
+        ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
-        ...generatef773(sourceType, journalNumber, melindaId, article, publishing, isbn, issn),
+        ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),
         ...generatef787(), // review books
         ...generatef856(), // referenceLinks
         ...generatef960()
@@ -71,4 +76,27 @@ export function createArtikkelitService() {
       melindaId
     };
   }
+}
+
+function getSourceType(input) {
+  const found = input.sourceType;
+  const get3rd = found.substr(2, 1);
+  const get4th = found.substr(3, 1);
+
+  if (get4th.includes('s', 'i')) {
+    return 'journal';
+  }
+
+  if (get4th.includes('c', 'm')) {
+    return 'book';
+  }
+
+  if (get3rd.includes('a')) {
+    return 'text';
+  }
+
+  if (get3rd.includes('g', 'i', 'm')) {
+    return 'electronic';
+  }
+
 }

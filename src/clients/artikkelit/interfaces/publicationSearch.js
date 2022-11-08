@@ -87,16 +87,40 @@ function searchPublications(event) {
   const formJson = formToJson(event);
 
   if (hakuTyyppi === 'issn') {
-    return getPublicationByISSN(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch([result]));
+    return getPublicationByISSN(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch([result]);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
   if (hakuTyyppi === 'isbn') {
-    return getPublicationByISBN(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch([result]));
+    return getPublicationByISBN(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch([result]);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
   if (hakuTyyppi === 'title') {
-    return getPublicationByTitle(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch(result));
+    return getPublicationByTitle(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch(result);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
   if (hakuTyyppi === 'melinda') {
-    return getPublicationByMelinda(formJson['haku-arvo'], sourceType).then(result => setRecordsToSearch([result]));
+    return getPublicationByMelinda(formJson['haku-arvo'], sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch([result]);
+      }
+
+      return resetSearchResultSelect();
+    });
   }
 
   throw new Error('Invalid search type!');
@@ -121,8 +145,13 @@ function refreshSearchResultSelect() {
 
   idbGetStoredValues('artoSources').then(sources => {
     const data = sources.map(record => {
+      console.log(record);
+      // isElectronic: true, years: "1995-"
       const title = record.title;
-      return {value: record.key, text: title};
+      const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
+      const years = `${record.publisherInfo.publisherYears.start}-${record.publisherInfo.publisherYears.end}`;
+      const text = `${title} (${publicationType}: ${years})`;
+      return {value: record.key, text};
     });
 
     setOptions(select, data);

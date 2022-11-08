@@ -27,36 +27,60 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
   //---------------------------------------------------------------------------
 
   async function fetchOneByTitle(req, res) {
-    const {title} = req.params;
+    try {
+      const {title} = req.params;
 
-    logger.debug(`Params..: ${JSON.stringify(req.params)}`);
-    logger.debug(`Query..: ${JSON.stringify(req.query)}`);
-    logger.debug(`Fetching: ${title}`);
+      logger.debug(`Params..: ${JSON.stringify(req.params)}`);
+      logger.debug(`Query..: ${JSON.stringify(req.query)}`);
+      logger.debug(`Fetching: ${title}`);
 
-    const result = await bibService.getRecordByTitle(title, req.query);
-    res.json(result);
+      const result = await bibService.getRecordByTitle(title, req.query);
+      res.json(result);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.status).send(error.payload);
+      }
+      console.log(error); // eslint-disable-line
+      res.status(500);
+    }
   }
 
   async function fetchOneByIsbn(req, res) {
-    const {isbn} = req.params;
+    try {
+      const {isbn} = req.params;
 
-    logger.debug(`Params..: ${JSON.stringify(req.params)}`);
-    logger.debug(`Query..: ${JSON.stringify(req.query)}`);
-    logger.debug(`Fetching: ${isbn}`);
+      logger.debug(`Params..: ${JSON.stringify(req.params)}`);
+      logger.debug(`Query..: ${JSON.stringify(req.query)}`);
+      logger.debug(`Fetching: ${isbn}`);
 
-    const result = await bibService.getRecordByIsbn(isbn, req.query);
-    res.json(result);
+      const result = await bibService.getRecordByIsbn(isbn, req.query);
+      res.json(result);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.status).send(error.payload);
+      }
+      console.log(error); // eslint-disable-line
+      res.status(500);
+    }
   }
 
   async function fetchOneByIssn(req, res) {
-    const {issn} = req.params;
+    try {
+      const {issn} = req.params;
 
-    logger.debug(`Params..: ${JSON.stringify(req.params)}`);
-    logger.debug(`Query..: ${JSON.stringify(req.query)}`);
-    logger.debug(`Fetching: ${issn}`);
+      logger.debug(`Params..: ${JSON.stringify(req.params)}`);
+      logger.debug(`Query..: ${JSON.stringify(req.query)}`);
+      logger.debug(`Fetching: ${issn}`);
 
-    const result = await bibService.getRecordByIssn(issn, req.query);
-    res.json(result);
+      const result = await bibService.getRecordByIssn(issn, req.query);
+      res.json(result);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.status).send(error.payload);
+      }
+      console.log(error); // eslint-disable-line
+      res.status(500);
+    }
   }
 
   async function fetchOneByMelindaId(req, res) {

@@ -19,7 +19,7 @@ const logger = createLogger();
 //-----------------------------------------------------------------------------
 // Records with field IDs
 
-export async function getRecordWithIDs(record) {
+export async function getRecordWithIDs(bibService, record) {
   //logger.debug(`Record: ${JSON.stringify(record, null, 2)}`);
   const result = await fetch(record);
   //logger.debug(`Result: ${JSON.stringify(record, null, 2)}`);
@@ -35,7 +35,7 @@ export async function getRecordWithIDs(record) {
     if (!record?.ID) {
       return record;
     }
-    return getRecordByID(record.ID);
+    return bibService.getRecordByID(record.ID);
   }
 }
 
