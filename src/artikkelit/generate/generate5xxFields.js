@@ -37,10 +37,11 @@ export function generatef567(methodologys) {
 }
 
 export function generatef591(articleType, articleSciences) {
-  return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: articleType}, ...selectArticleSciences(articleSciences)]}];
+
+  return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: articleType}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
 
   function selectArticleSciences(articleSciences) {
-    return articleSciences.flatMap(science => [{code: 'h', value: science.label}, {code: 'i', value: science.value}]);
+    return articleSciences.flatMap(science => [{code: 'h', value: science.subject}, {code: 'i', value: science.subCategory}]);
   }
 }
 
@@ -69,39 +70,16 @@ export function generatef598(localNotesf598 = false) {
   return [];
 }
 
-export function generatef599(localNotesf599) {
-  //<xsl:if test="set/groups/group[@name='local_notes_599']">
-  //  <xsl:for-each select="set/groups/group[@name='local_notes_599']/values">
-  //    <xsl:if test="element[@name='a']">
-  //      <datafield tag="599" ind1=" " ind2=" ">
-  //        <subfield code="a">
-  //          <xsl:value-of select="element[@name='a']/values[1]/value[@name='value']" />
-  //        </subfield>
-  //        <xsl:if test="element[@name='x']">
-  //          <subfield code="x">
-  //            <xsl:value-of select="element[@name='x']/values[1]/value[@name='value']" />
-  //          </subfield>
-  //        </xsl:if>
-  //        <subfield code="5">ARTO</subfield>
-  //      </datafield>
-  //    </xsl:if>
-  //  </xsl:for-each>
-  //</xsl:if>
-  console.log('   ***   localNotesf599:', localNotesf599); // eslint-disable-line 
-  if (localNotesf599) {
-    return localNotesf599.flatMap(notes => ({
-      tag: 599, ind1: ' ', ind2: ' ',
-      subfields: [{code: 'a', value: notes.a}, ...selectNotesX(notes)]
-    }));
-  }
+export function generatef599(f599a, f599x) {
+
+  if (f599a || f599x) {
+    return [
+      {tag: '599',
+        ind1: ' ',
+        ind2: ' ',
+        subfields: [{code: 'a', value: f599a}, {code: 'x', value: f599x}]}
+    ];
+}
 
   return [];
-
-  function selectNotesX(notes) {
-    if (notes.x !== undefined) {
-      return [{code: 'x', value: notes.x}];
-    }
-
-    return [];
-  }
 }
