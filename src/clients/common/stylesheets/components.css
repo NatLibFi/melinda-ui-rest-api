@@ -168,7 +168,6 @@ button>a:visited {
   font-family: var(--font-family-content);
   font-size: var(--font-size-label-normal);
   font-weight: var(--font-weight-label-normal);
-  text-transform: capitalize;
 }
 
 .Input>input:valid {
@@ -209,7 +208,6 @@ button>a:visited {
   font-family: var(--font-family-content);
   font-size: var(--font-size-label-normal);
   font-weight: var(--font-weight-label-normal);
-  text-transform: capitalize;
 }
 
 /* ---------------------------------------------------------------------------- */

@@ -12,11 +12,11 @@ export const sourceTypes = [
 export const searchTypes = [
   {
     value: "title",
-    text: "Nimellä"
+    text: "Julkaisun nimellä"
   },
   {
     value: "melinda",
-    text: "Melinda ID"
+    text: "Melinda-ID"
   },
   {
     value: "issn",
