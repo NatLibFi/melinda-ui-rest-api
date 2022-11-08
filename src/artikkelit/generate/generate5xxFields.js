@@ -78,7 +78,6 @@ export function generatef599(f599a, f599x) {
         ind2: ' ',
         subfields: [{code: 'a', value: f599a}, {code: 'x', value: f599x}]}
     ];
-}
-
+  }
   return [];
 }
