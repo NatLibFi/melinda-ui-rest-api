@@ -78,7 +78,7 @@ export default async function ({
     app.use('/rest/artikkelit', createArtikkelitRoute());
     app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
     app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
-    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), createMuuntajaRoute(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), await createMuuntajaRoute(sruUrl));
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
