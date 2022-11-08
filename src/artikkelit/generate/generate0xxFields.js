@@ -1,7 +1,8 @@
 import {onlyUnique} from './generateUtils';
 
-export function generatef041(articleLanguage, abstractLanguages = []) {
+export function generatef041(articleLanguage, abstractLanguages) {
   const abstractLanguageSubfields = generateAbstractLanguageSubfields(abstractLanguages.filter(onlyUnique));
+
   return [
     {
       tag: '041',
@@ -16,34 +17,30 @@ export function generatef041(articleLanguage, abstractLanguages = []) {
   }
 }
 
-export function generatef080(udks = false) {
+export function generatef080(udks) {
+
   if (!udks) {
     return [];
   }
 
-  // <xsl:if test="set/groups/group[@name='universal_decimal_classification_number']">
-  // <xsl:for-each select="set/groups/group[@name='universal_decimal_classification_number']/values">
-  //   <xsl:if test="element[@name='a']">
+  // may have these subfields: a & x
+  const udkResult = udks.map(buildRows);
 
-  //     <datafield tag="080" ind1=" " ind2=" ">
+  function buildRows(element) {
+    if (element !== undefined) {
+      return {
+        tag: '080',
+        ind1: ' ',
+        ind2: ' ',
+        subfields: [
+          {code: 'a', value: element.a080},
+          {code: 'x', value: element.x080}
+        ]
+      };
+    }
+  }
 
-  //       <subfield code="a">
-  //         <xsl:value-of select="element[@name='a']/values[1]/value[@name='value']" />
-  //       </subfield>
-
-  //       <xsl:if test="element[@name='x']">
-  //         <subfield code="x">
-  //           <xsl:value-of select="element[@name='x']/values[1]/value[@name='value']" />
-  //         </subfield>
-  //       </xsl:if>
-
-  //     </datafield>
-
-  //   </xsl:if>
-  // </xsl:for-each>
-  // </xsl:if>
-
-  return [{tag: '080', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'todo'}, {code: 'b', value: 'todo'}]}];
+  return udkResult;
 }
 
 export function generatef084(otherRatings = false) {
@@ -51,27 +48,21 @@ export function generatef084(otherRatings = false) {
     return [];
   }
 
-  //   <xsl:if test="set/groups/group[@name='other_classification_number']">
-  //   <xsl:for-each select="set/groups/group[@name='other_classification_number']/values">
-  //     <xsl:if test="element[@name='a']">
+  const otherRatingsResult = otherRatings.map(buildRows);
 
-  //       <datafield tag="084" ind1=" " ind2=" ">
+  function buildRows(element) {
+    if (element !== undefined) {
+      return {
+        tag: '084',
+        ind1: ' ',
+        ind2: ' ',
+        subfields: [
+          {code: 'a', value: element.a084},
+          {code: '2', value: element.two084}
+        ]
+      };
+    }
+  }
 
-  //         <subfield code="a">
-  //           <xsl:value-of select="element[@name='a']/values[1]/value[@name='value']" />
-  //         </subfield>
-
-  //         <xsl:if test="element[@name='two']">
-  //           <subfield code="2">
-  //             <xsl:value-of select="element[@name='two']/values[1]/value[@name='value']" />
-  //           </subfield>
-  //         </xsl:if>
-
-  //       </datafield>
-
-  //     </xsl:if>
-  //   </xsl:for-each>
-  // </xsl:if>
-
-  return [{tag: '084', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'todo'}, {code: '2', value: 'todo'}]}];
+  return otherRatingsResult;
 }
