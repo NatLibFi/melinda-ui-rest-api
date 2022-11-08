@@ -39,7 +39,7 @@ export async function createBibService(sruUrl) {
 
   async function getRecordByID(id, additionalQueryParams) {
     const record = await sruOperator.getRecordByID(id, additionalQueryParams);
-    if (parseBoolean(additionalQueryParams.arto)) {
+    if (parseBoolean(additionalQueryParams?.arto)) {
       return {leader: record.leader, fields: record.fields, data: collectData(record)};
     }
     return {ID: id, ...record};

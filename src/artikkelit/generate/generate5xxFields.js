@@ -37,10 +37,11 @@ export function generatef567(methodologys) {
 }
 
 export function generatef591(articleType, articleSciences) {
-  return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: articleType}, ...selectArticleSciences(articleSciences)]}];
+
+  return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: articleType}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
 
   function selectArticleSciences(articleSciences) {
-    return articleSciences.flatMap(science => [{code: 'h', value: science.label}, {code: 'i', value: science.value}]);
+    return articleSciences.flatMap(science => [{code: 'h', value: science.subject}, {code: 'i', value: science.subCategory}]);
   }
 }
 
@@ -70,7 +71,6 @@ export function generatef598(localNotesf598 = false) {
 }
 
 export function generatef599(f599a, f599x) {
-
   if (f599a || f599x) {
     return [
       {tag: '599',
@@ -79,6 +79,5 @@ export function generatef599(f599a, f599x) {
         subfields: [{code: 'a', value: f599a}, {code: 'x', value: f599x}]}
     ];
   }
-
   return [];
 }
