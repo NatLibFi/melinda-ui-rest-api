@@ -71,7 +71,6 @@ export function generatef598(localNotesf598 = false) {
 }
 
 export function generatef599(f599a, f599x) {
-
   if (f599a || f599x) {
     return [
       {tag: '599',
