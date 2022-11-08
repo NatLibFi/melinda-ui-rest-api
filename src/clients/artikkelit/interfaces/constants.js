@@ -937,3 +937,35 @@ export const organizations = [
     text: ""
   }
 ]
+
+// (https://finto.fi/mts/fi/page/m991)
+export const reviewTypesList = [
+  {
+    value: "elokuva-arvostelu",
+    text: ""
+  },
+  {
+    value: "kirja-arvostelu",
+    text: ""
+  },
+  {
+    value: "musiikkiarvostelu",
+    text: ""
+  } ,
+  {
+    value: "sirkusarvostelu",
+    text: ""
+  },
+  {
+    value: "taidearvostelu",
+    text: ""
+  },
+  {
+    value: "tanssiarvostelu",
+    text: ""
+  },
+  {
+    value: "teatteriarvostelu",
+    text: ""
+  }
+]
