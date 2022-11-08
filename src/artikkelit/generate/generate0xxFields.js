@@ -1,7 +1,8 @@
 import {onlyUnique} from './generateUtils';
 
-export function generatef041(articleLanguage, abstractLanguages = []) {
+export function generatef041(articleLanguage, abstractLanguages) {
   const abstractLanguageSubfields = generateAbstractLanguageSubfields(abstractLanguages.filter(onlyUnique));
+
   return [
     {
       tag: '041',

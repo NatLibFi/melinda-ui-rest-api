@@ -11,6 +11,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
 import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from '../record/recordService';
 import {getUnitTestRecords} from './test/getrecords';
+import {createBibService} from '../bib/bibService';
 
 MarcRecord.setValidationOptions({subfieldValues: false});
 
@@ -43,8 +44,10 @@ export const printToE = {
 
 //-----------------------------------------------------------------------------
 
-export default function (jwtOptions) { // eslint-disable-line no-unused-vars
+export default async function (sruUrl) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
+  const bibService = await createBibService(sruUrl);
+
   //logger.debug('Creating muuntaja route');
 
   return new Router()
@@ -186,7 +189,7 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
         try {
           logger.debug('Fetching...');
           //logger.debug(`Record: ${JSON.stringify(record)}`);
-          return getRecordWithIDs(record);
+          return getRecordWithIDs(bibService, record);
         } catch (e) {
           return {
             ...record,
