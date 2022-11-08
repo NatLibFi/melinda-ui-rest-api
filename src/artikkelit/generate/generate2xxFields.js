@@ -1,41 +1,24 @@
 
-export function generatef245(articleTitle = false) {
-  //   <xsl:element name="datafield">
-  //   <xsl:attribute name="tag">245</xsl:attribute>
-  //   <xsl:attribute name="ind1">
-
-  //     <xsl:choose>
-  //       <xsl:when test="set/groups/group[@name='author']">
-  //         <xsl:text>1</xsl:text>
-  //       </xsl:when>
-  //       <xsl:otherwise>
-  //         <xsl:text>0</xsl:text>
-  //       </xsl:otherwise>
-  //     </xsl:choose>
-
-  //   </xsl:attribute>
-  //   <xsl:attribute name="ind2">
-  //     <xsl:text>0</xsl:text>
-  //   </xsl:attribute>
-  //   <subfield code="a">
-  //     <xsl:choose>
-  //       <xsl:when test="$sourceType = 'journal'">
-  //         <xsl:value-of select="set/elements/element[@name='articleTitle_journal']/values[1]/value[@name='value']" />
-  //         <xsl:text>.</xsl:text>
-  //       </xsl:when>
-  //       <xsl:otherwise>
-  //         <xsl:value-of select="set/elements/element[@name='articleTitle_book']/values[1]/value[@name='value']" />
-  //         <xsl:text>.</xsl:text>
-  //       </xsl:otherwise>
-  //     </xsl:choose>
-  //   </subfield>
-  // </xsl:element>
+export function generatef245(articleTitle, authors) {
 
   if (articleTitle) {
-    return [{tag: '245', ind1: '?', ind2: '0', subfields: [{code: 'a', value: `${articleTitle}`}]}];
+    return [
+      {tag: '245',
+        ind1: ind1Value(),
+        ind2: '0',
+        subfields: [{code: 'a', value: `${articleTitle}.`}]}
+    ];
   }
 
   return [];
+
+  function ind1Value () {
+    if (authors.length === 0) {
+      return '0';
+    }
+    return '1';
+  }
+
 }
 
 export function generatef246(otherTitle = false) {
@@ -47,7 +30,7 @@ export function generatef246(otherTitle = false) {
   // </datafield>
   //</xsl:if>
   if (otherTitle) {
-    return [{tag: '246', ind1: '3', ind2: ' ', subfields: [{code: 'a', value: `${otherTitle}`}]}];
+    return [{tag: '246', ind1: '3', ind2: '0', subfields: [{code: 'a', value: `${otherTitle}`}]}];
   }
 
   return [];
