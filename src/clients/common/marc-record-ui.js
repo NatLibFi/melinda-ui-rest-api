@@ -82,7 +82,7 @@ function addField(div, field, decorator = null) {
 
     function add(span, ind) {
       const value = ind && ind.trim() || '&nbsp;';
-      span.appendChild(makeSpan('ind', value));
+      span.appendChild(makeSpan('ind', null, value));
     }
   }
 
@@ -115,11 +115,13 @@ function makeDiv(className, value) {
   return div;
 }
 
-function makeSpan(className, value) {
+function makeSpan(className, text, html) {
   const span = document.createElement('span');
   span.setAttribute('class', className);
-  if (value) {
-    span.textContent = value;
+  if (text) {
+    span.textContent = text;
+  } else if (html) {
+    span.innerHTML = html;
   }
   return span;
 }
