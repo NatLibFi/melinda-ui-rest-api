@@ -93,7 +93,7 @@
     ]
   },
   "nodemonConfig": {
-    "exec": "DEBUG=@natlibfi* npm run lint:dev && npm run start:dev",
+    "exec": "npm run lint:dev && npm run start:dev",
     "watch": [
       "src/*"
     ],

@@ -1,4 +1,4 @@
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes} from "/artikkelit/interfaces/constants.js";
+import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList} from "/artikkelit/interfaces/constants.js";
 import {setOptions} from "/common/ui-utils.js"
 
 export function fillFormOptions() {
@@ -59,5 +59,10 @@ export function fillDatalistOptions() {
     if (datalist.id.indexOf('-organisaatio-lista') !== -1) {
       setOptions(datalist, organizations);
     }
+
+    if (datalist.id.indexOf('-luokitus-lista') !== -1) {
+      setOptions(datalist, reviewTypesList);
+    }
+
   }
 }

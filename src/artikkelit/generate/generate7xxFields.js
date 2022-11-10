@@ -1,4 +1,4 @@
-export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, {title}, publishing, isbn, issn) {
+export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t) {
   return [
     {
       tag: '773', ind1: '0', ind2: ' ', subfields: [...selectSubfields()]
@@ -8,8 +8,9 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
   function selectSubfields() {
     if (sourceType === 'journal') {
       return [
+        {code: '7', value: SourceTypeAsCode},
         {code: 'w', value: melindaId},
-        {code: 't', value: title},
+        {code: 't', value: `${titleFor773t}. -`},
         {code: 'd', value: publishing},
         {code: 'x', value: `${issn}. -`},
         ...getSubfieldG(volume, publishingYear, number, pages)
@@ -18,8 +19,9 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
     if (sourceType === 'book') {
       return [
+        {code: '7', value: SourceTypeAsCode},
         {code: 'w', value: melindaId},
-        {code: 't', value: title},
+        {code: 't', value: titleFor773t},
         {code: 'd', value: publishing},
         ...selectSubfield(isbn, 'z'),
         ...selectSubfield(issn, 'x'),
@@ -34,7 +36,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     ];
 
     function getSubfieldG() {
-      const value = `${volume}(${publishingYear}) : ${number}, s. ${pages}`;
+      const value = `${volume} (${publishingYear}) : ${number}, s. ${pages}`;
 
       return [{code: 'g', value}];
     }
