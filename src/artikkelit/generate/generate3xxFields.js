@@ -1,5 +1,5 @@
 export function generatef336() {
-  return [{tag: '336', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'text'}, {code: 'b', value: 'txt'}, {code: '2', value: 'rdacontent'}]}];
+  return [{tag: '336', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'teksti'}, {code: 'b', value: 'txt'}, {code: '2', value: 'rdacontent'}]}];
 }
 
 export function generatef337(isElectronic) {

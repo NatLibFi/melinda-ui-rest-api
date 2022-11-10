@@ -10,7 +10,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
       return [
         {code: '7', value: SourceTypeAsCode},
         {code: 'w', value: melindaId},
-        {code: 't', value: titleFor773t},
+        {code: 't', value: `${titleFor773t}. -`},
         {code: 'd', value: publishing},
         {code: 'x', value: `${issn}. -`},
         ...getSubfieldG(volume, publishingYear, number, pages)
