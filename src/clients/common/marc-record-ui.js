@@ -18,7 +18,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
 
   if (record.error) {
     const error = document.createElement('div');
-    error.textContent.add("error")
+    error.classList.add("error")
     error.textContent = record.error;
     recordDiv.appendChild(error)
   }
