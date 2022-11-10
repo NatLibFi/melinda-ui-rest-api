@@ -18,15 +18,15 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
 
   if (record.error) {
     const error = document.createElement('div');
-    error.classList.add("error")
-    error.innerHTML = record.error;
+    error.textContent.add("error")
+    error.textContent = record.error;
     recordDiv.appendChild(error)
   }
 
   if (record.notes) {
     const notes = document.createElement('div');
     notes.classList.add("notes")
-    notes.innerHTML = record.notes;
+    notes.textContent = record.notes;
     recordDiv.appendChild(notes)
   }
 
@@ -216,7 +216,7 @@ function createInput(name, className, value, editable = true) {
   if (editable) {
     input.classList.add('editable')
   }
-  input.innerHTML = value;
+  input.textContent = value;
   input.contentEditable = editable;
   return input;
 }
