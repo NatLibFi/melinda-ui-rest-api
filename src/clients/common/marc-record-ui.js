@@ -86,15 +86,8 @@ function addField(div, field, decorator = null) {
     }
   }
 
-  function text2HTML(value) {
-    return value
-      .replace("<", "&lt;")
-      .replace(">", "&gt;")
-      ;
-  }
-
   function addValue(row, value) {
-    row.appendChild(makeSpan('value', text2HTML(value)));
+    row.appendChild(makeSpan('value', value));
   }
 
   function addSubfield(row, subfield) {
@@ -117,7 +110,7 @@ function makeDiv(className, value) {
   const div = document.createElement('div');
   div.setAttribute('class', className);
   if (value) {
-    div.innerHTML = value;
+    div.textContent = value;
   }
   return div;
 }
@@ -126,7 +119,7 @@ function makeSpan(className, value) {
   const span = document.createElement('span');
   span.setAttribute('class', className);
   if (value) {
-    span.innerHTML = value;
+    span.textContent = value;
   }
   return span;
 }
