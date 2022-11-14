@@ -2,7 +2,7 @@
 import {MarcRecord} from '@natlibfi/marc-record';
 import {getSubfieldValue, getSubfieldValues, getIsElectronic, getRecordType, getSourceType} from './collectorUtils';
 
-const titleTrimCharacters = /,|\.|-|;|:|_|\/|'|"|\+|!|\?/gu;
+const titleTrimCharacters = /\s?(?:,|\.|-|;|:|_|\/|'|"|\+|!|\?)\s?$/gu;
 
 export function collectData(jsonRecord) {
   const record = new MarcRecord(jsonRecord, {subfieldValues: false});
@@ -12,7 +12,7 @@ export function collectData(jsonRecord) {
 
   const authors = collectAuthorInfo(record);
   const titles = record.get(/245/u).flatMap(field => field.subfields.filter(sub => sub.code === 'a' || sub.code === 'b' || sub.code === 'n' || sub.code === 'p').map(sub => sub.value));
-  const title = titles.map(titlePart => String(titlePart).replace(titleTrimCharacters, '').replace(/\s{2}/u, ' ')).join(':');
+  const title = titles.map(titlePart => String(titlePart).replace(titleTrimCharacters, '').replace(/\s{2}/u, ' ')).join(' : ');
 
   const publicationInfo = collectPublicationInfo(recordType, record);
   const commonData = collectCommonData(record);
@@ -91,7 +91,14 @@ function collectCommonData(record) {
     const [start, end] = publisherYearsNotParsed ? publisherYearsNotParsed.split('-') : ['', ''];
     return {
       publishing: `${publisherLocation} ${publisher} ${publisherYearsNotParsed}`,
-      publisherInfo: {publisherLocation, publisher, publisherYears: {start, end}}
+      publisherInfo: {
+        publisherLocation: publisherLocation.replace(titleTrimCharacters, '').trim(),
+        publisher: publisher.replace(titleTrimCharacters, '').trim(),
+        publisherYears: {
+          start: start.replace(titleTrimCharacters, '').trim(),
+          end: end.replace(titleTrimCharacters, '').trim()
+        }
+      }
     };
   }
 }
