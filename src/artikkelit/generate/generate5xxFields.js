@@ -30,7 +30,7 @@ export function generatef520(abstracts) {
 
 export function generatef567(methodologys) {
   if (methodologys) {
-    return methodologys.map(methodology => ({tag: '567', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: methodology}]}));
+    return methodologys.map(methodology => ({tag: '567', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: `${methodology.value}.`}]}));
   }
 
   return [];

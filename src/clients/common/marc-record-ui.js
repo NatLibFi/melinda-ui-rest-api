@@ -19,14 +19,14 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   if (record.error) {
     const error = document.createElement('div');
     error.classList.add("error")
-    error.innerHTML = record.error;
+    error.textContent = record.error;
     recordDiv.appendChild(error)
   }
 
   if (record.notes) {
     const notes = document.createElement('div');
     notes.classList.add("notes")
-    notes.innerHTML = record.notes;
+    notes.textContent = record.notes;
     recordDiv.appendChild(notes)
   }
 
@@ -82,19 +82,12 @@ function addField(div, field, decorator = null) {
 
     function add(span, ind) {
       const value = ind && ind.trim() || '&nbsp;';
-      span.appendChild(makeSpan('ind', value));
+      span.appendChild(makeSpan('ind', null, value));
     }
   }
 
-  function text2HTML(value) {
-    return value
-      .replace("<", "&lt;")
-      .replace(">", "&gt;")
-      ;
-  }
-
   function addValue(row, value) {
-    row.appendChild(makeSpan('value', text2HTML(value)));
+    row.appendChild(makeSpan('value', value));
   }
 
   function addSubfield(row, subfield) {
@@ -117,16 +110,18 @@ function makeDiv(className, value) {
   const div = document.createElement('div');
   div.setAttribute('class', className);
   if (value) {
-    div.innerHTML = value;
+    div.textContent = value;
   }
   return div;
 }
 
-function makeSpan(className, value) {
+function makeSpan(className, text, html) {
   const span = document.createElement('span');
   span.setAttribute('class', className);
-  if (value) {
-    span.innerHTML = value;
+  if (text) {
+    span.textContent = text;
+  } else if (html) {
+    span.innerHTML = html;
   }
   return span;
 }
@@ -221,7 +216,7 @@ function createInput(name, className, value, editable = true) {
   if (editable) {
     input.classList.add('editable')
   }
-  input.innerHTML = value;
+  input.textContent = value;
   input.contentEditable = editable;
   return input;
 }
