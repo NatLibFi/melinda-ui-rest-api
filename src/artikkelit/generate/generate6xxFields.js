@@ -68,7 +68,7 @@ function generatef648(vocab, prefLabel, lang) {
       tag: '648', ind1: ' ', ind2: '7',
       subfields: [
         {code: 'a', value: prefLabel},
-        {code: '2', value: generateSubfield2Value(vocab, lang)}
+        {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))}
       ]
     }
   ];
@@ -81,7 +81,7 @@ function generatef650(vocab, prefLabel, lang, uri, subdivision = false) {
       subfields: [
         {code: 'a', value: prefLabel},
         ...selectSubfield(subdivision, 'x'),
-        {code: '2', value: generateSubfield2Value(vocab, lang)},
+        {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         {code: '0', value: uri}
       ]
     }
@@ -95,7 +95,7 @@ function generatef651(vocab, prefLabel, lang, uri, subdivision = false) {
       subfields: [
         {code: 'a', value: prefLabel},
         ...selectSubfield(subdivision, 'z'),
-        {code: '2', value: generateSubfield2Value(vocab, lang)},
+        {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         {code: '0', value: uri}
       ]
     }
@@ -117,7 +117,7 @@ function generatef655(vocab, prefLabel, lang, uri, subdivision = false) {
       subfields: [
         {code: 'a', value: prefLabel},
         ...selectSubfield(subdivision, 'x'),
-        {code: '2', value: generateSubfield2Value(vocab, lang)},
+        {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         {code: '0', value: uri}
       ]
     }
@@ -175,4 +175,12 @@ function sortFields(ontologyWordDatas, vocabOrder = [], langOrder = false) {
   }
 
   return ontologyWordDataOrderedByVocab.flatMap(ontologyVocabList => ontologyVocabList);
+}
+
+function convertLangs(langCode) {
+  if (langCode === 'fi') {
+    return 'fin';
+  }
+
+  return langCode;
 }
