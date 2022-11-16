@@ -84,18 +84,28 @@
             </div>
           </div>
       </div>
-      <div class="record-merge-panel">
-        <div class="col BoxShadow">
-          <div class="ToolBar HBox header">
-            <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
-            <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
+      <div class="tools ToolBar col">
+        <div class="ToolBar BoxShadow header HBox">
             <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
             <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
+            <div class="Select VBox">
+              <label>Muunnostyyppi</label>
+              <select id="">
+                <option value="">Painetusta > E-aineistoksi</option>
+                <option value="">E-aineistosta > Painetuksi</option>
+              </select>
+            </div>
+            <div class="Select VBox">
+              <label>Muunnosprofiili</label>
+              <select id="">
+                <option value="">Kirjastoverkkopalvelut</option>
+                <option value="">Fennica</option>
+              </select>
+            </div>
             <div class="dropdown">
-              <button class="material-icons" onclick="return ignore(event);">settings</button>
+              <!-- <button class="material-icons" onclick="return ignore(event);">settings</button> -->
               <div id="profile-menu" class="dropdown-content"></div>
             </div>
-          </div>
         </div>
       </div>
       <div class="record-merge-panel">
@@ -106,7 +116,7 @@
               <input id="ID"/>
               </div>
             <button class="material-icons tooltip" tooltip-text="Hae" onclick="return doTransform(event)">search</button>
-            <!-- <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button> -->
+            <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
             </form>
           <div id="Record" class="marc-record">
           </div>
@@ -118,11 +128,7 @@
               <input id="ID"/>
               </div>
               <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
-              <!-- <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
-              <div class="dropdown">
-                <button class="material-icons" onclick="return ignore(event);">settings</button>
-                <div id="profile-menu" class="dropdown-content"></div>
-              </div> -->
+              <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
             </form>
           <div id="Record" class="marc-record">
           </div>
@@ -130,8 +136,6 @@
         <div id="result" class="col BoxShadow">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
-            <!-- <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
-            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button> -->
           </div>
           <div id="Record" class="marc-record">
             </div>
