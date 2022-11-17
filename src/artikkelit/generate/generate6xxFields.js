@@ -31,7 +31,7 @@ export function generatef6xxs(terms) {
     }
 
     if (['otherTime', 'yso-aika'].includes(vocab)) {
-      return generatef648(vocab, prefLabel, lang);
+      return generatef648(vocab, prefLabel, lang, uri);
     }
 
     if (['yso', 'kassu', 'soto', 'afo', 'finmesh', 'maotao'].includes(vocab)) {
@@ -62,16 +62,26 @@ function generatef610(prefLabel) {
   return [{tag: '610', ind1: '2', ind2: '4', subfields: [{code: 'a', value: prefLabel}]}];
 }
 
-function generatef648(vocab, prefLabel, lang) {
+function generatef648(vocab, prefLabel, lang, uri) {
   return [
     {
       tag: '648', ind1: ' ', ind2: '7',
       subfields: [
         {code: 'a', value: prefLabel},
-        {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))}
+        {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
+        ...generateSubfield0()
       ]
     }
   ];
+
+  function generateSubfield0() {
+    if (vocab === 'yso-aika') {
+      return [{code: '0', value: uri}];
+    }
+
+    return [];
+  }
+
 }
 
 function generatef650(vocab, prefLabel, lang, uri, subdivision = false) {
@@ -182,5 +192,8 @@ function convertLangs(langCode) {
     return 'fin';
   }
 
+  if (langCode === 'sv') {
+    return 'swe';
+  }
   return langCode;
 }
