@@ -152,10 +152,11 @@ export function createMenuBreak() {
   return item;
 }
 
-export function createDropdownItem(name, classNames) {
+export function createDropdownItem(name, classNames, labelText) {
   const item = document.createElement("div");
   item.classList.add(...classNames);
   item.innerHTML = name;
+  item.appendChild(createSelectLabel(labelText));
   return item;
 }
 

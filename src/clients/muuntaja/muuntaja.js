@@ -7,12 +7,8 @@
 import {setNavBar} from "/common/ui-utils.js";
 import {startProcess, stopProcess} from "/common/ui-utils.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak,
-        createMenuItem,
-        createMenuSelection,
-        createDropdownItem,
+import {createDropdownItem,
         createSelectItem,
-        createSelectLabel,
         createSelectOption} from "/common/ui-utils.js";
 
 import {Account, doLogin, logout} from "/common/auth.js"
@@ -53,35 +49,33 @@ function setProfiles(options) {
   const typeOptions = document.querySelector("#type-options");
   typeOptions.innerHTML = "";
 
-  const typeDropdown = createDropdownItem("", ["Select", "VBox"]);
-  typeOptions.appendChild(typeDropdown);
-
+  const typeDropdown = createDropdownItem("", ["Select", "VBox"], "Muunnostyyppi");
   const typeSelect = createSelectItem("type");
-  typeSelect.addEventListener("change", (event) => {return setTransformType(event, event.target.value);});
-  const typeLabel = createSelectLabel("Muunnostyyppi");
-  typeDropdown.appendChild(typeLabel);
+  typeSelect.addEventListener("change", (event) => {
+    return setTransformType(event, event.target.value);
+  });
+
+  typeOptions.appendChild(typeDropdown);
   typeDropdown.appendChild(typeSelect);
 
   for (const type in options.type) {
-    const item = createSelectOption(type, options.type[type]);
-    typeSelect.appendChild(item);
+    typeSelect.appendChild(createSelectOption(type, options.type[type]));
   }
 
   const profileOptions = document.querySelector("#profile-options");
   profileOptions.innerHTML = "";
 
-  const profileDropdown = createDropdownItem("", ["Select", "VBox"]);
-  profileOptions.appendChild(profileDropdown);
-
+  const profileDropdown = createDropdownItem("", ["Select", "VBox"], "Muunnosprofiili");
   const profileSelect = createSelectItem("profile");
-  profileSelect.addEventListener("change", (event) => {return setTransformProfile(event, event.target.value);});
-  const profileLabel = createSelectLabel("Muunnosprofiili");
-  profileDropdown.appendChild(profileLabel);
+  profileSelect.addEventListener("change", (event) => {
+    return setTransformProfile(event, event.target.value);
+  });
+
+  profileOptions.appendChild(profileDropdown);
   profileDropdown.appendChild(profileSelect);
 
   for (const profile in options.profile) {
-    const item = createSelectOption(profile, options.profile[profile]);
-    profileSelect.appendChild(item);
+    profileSelect.appendChild(createSelectOption(profile, options.profile[profile]));
   }
 }
 
