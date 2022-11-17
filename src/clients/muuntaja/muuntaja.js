@@ -83,31 +83,6 @@ function setProfiles(options) {
     const item = createSelectOption(profile, options.profile[profile]);
     profileSelect.appendChild(item);
   }
-
-  const menu = document.querySelector("#profile-menu");
-  menu.innerHTML = ""
-
-  menu.appendChild(createMenuItem("Muunnostyyppi", "menu-header"))
-
-  for (const type in options.type) {
-    //console.log("Type:", type);
-    //const item = createMenuItem(profiles.types[type], "menu-item");
-    const item = createMenuSelection("type", type, options.type[type], "menu-item")
-    item.addEventListener("click", (event) => {return setTransformType(event, type);});
-    menu.appendChild(item);
-  }
-
-  menu.appendChild(createMenuBreak())
-  menu.appendChild(createMenuItem("Muunnosprofiili", "menu-header"))
-  //menu.appendChild(createMenuItem("KVP", "menu-item"))
-
-  for (const profile in options.profile) {
-    //console.log("Type:", type);
-    //const item = createMenuItem(profiles.types[type], "menu-item");
-    const item = createMenuSelection("profile", profile, options.profile[profile], "menu-item")
-    item.addEventListener("click", (event) => {return setTransformProfile(event, profile);});
-    menu.appendChild(item);
-  }
 }
 
 function setTransformType(event, value) {
