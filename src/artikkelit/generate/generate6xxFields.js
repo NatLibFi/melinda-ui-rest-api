@@ -195,6 +195,5 @@ function convertLangs(langCode) {
   if (langCode === 'sv') {
     return 'swe';
   }
-
   return langCode;
 }
