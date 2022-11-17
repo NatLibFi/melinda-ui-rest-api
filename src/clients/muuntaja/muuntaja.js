@@ -7,7 +7,13 @@
 import {setNavBar} from "/common/ui-utils.js";
 import {startProcess, stopProcess} from "/common/ui-utils.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
+import {createMenuBreak,
+        createMenuItem,
+        createMenuSelection,
+        createDropdownItem,
+        createSelectItem,
+        createSelectLabel,
+        createSelectOption} from "/common/ui-utils.js";
 
 import {Account, doLogin, logout} from "/common/auth.js"
 import {profileRequest, transformRequest} from "/common/rest.js";
@@ -43,6 +49,40 @@ window.initialize = function () {
 function setProfiles(options) {
   console.log("Profiles:", options)
   transformed.options = options.defaults;
+
+  const typeOptions = document.querySelector("#type-options");
+  typeOptions.innerHTML = "";
+
+  const typeDropdown = createDropdownItem("", ["Select", "VBox"]);
+  typeOptions.appendChild(typeDropdown);
+
+  const typeSelect = createSelectItem("type");
+  typeSelect.addEventListener("change", (event) => {return setTransformType(event, event.target.value);});
+  const typeLabel = createSelectLabel("Muunnostyyppi");
+  typeDropdown.appendChild(typeLabel);
+  typeDropdown.appendChild(typeSelect);
+
+  for (const type in options.type) {
+    const item = createSelectOption(type, options.type[type]);
+    typeSelect.appendChild(item);
+  }
+
+  const profileOptions = document.querySelector("#profile-options");
+  profileOptions.innerHTML = "";
+
+  const profileDropdown = createDropdownItem("", ["Select", "VBox"]);
+  profileOptions.appendChild(profileDropdown);
+
+  const profileSelect = createSelectItem("profile");
+  profileSelect.addEventListener("change", (event) => {return setTransformProfile(event, event.target.value);});
+  const profileLabel = createSelectLabel("Muunnosprofiili");
+  profileDropdown.appendChild(profileLabel);
+  profileDropdown.appendChild(profileSelect);
+
+  for (const profile in options.profile) {
+    const item = createSelectOption(profile, options.profile[profile]);
+    profileSelect.appendChild(item);
+  }
 
   const menu = document.querySelector("#profile-menu");
   menu.innerHTML = ""

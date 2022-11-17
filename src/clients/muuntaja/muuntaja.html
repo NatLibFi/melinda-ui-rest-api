@@ -88,6 +88,8 @@
         <div class="ToolBar BoxShadow header HBox">
             <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
             <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
+            <div id="type-options"></div>
+            <div id="profile-options"></div>
             <div class="Select VBox">
               <label>Muunnostyyppi</label>
               <select id="">
@@ -103,7 +105,7 @@
               </select>
             </div>
             <div class="dropdown">
-              <!-- <button class="material-icons" onclick="return ignore(event);">settings</button> -->
+              <button class="material-icons" onclick="return ignore(event);">settings</button>
               <div id="profile-menu" class="dropdown-content"></div>
             </div>
         </div>
