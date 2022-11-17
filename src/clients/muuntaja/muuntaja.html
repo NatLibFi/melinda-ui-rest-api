@@ -96,7 +96,6 @@
       <!-- ------------------------------------------------------------------------ -->
       <!-- Record-Merge Panel -->
       <div class="record-merge-panel">
-
         <div id="source" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
@@ -116,10 +115,10 @@
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
               <input id="ID"/>
-              </div>
-              <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
-              <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
-            </form>
+            </div>
+            <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
+            <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
+          </form>
           <div id="Record" class="marc-record">
           </div>
         </div>
@@ -131,10 +130,7 @@
           <div id="Record" class="marc-record">
           </div>
         </div>
-
       </div>
-
-
     </div>
   </div>
 
@@ -142,7 +138,6 @@
   <!-- Field edit dialog -->
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
-
       <div id="original" hidden>
         <span id="field" class="marc-record"></span><br />
         <div style="display: flex; justify-content: right;">
