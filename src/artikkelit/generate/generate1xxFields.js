@@ -12,12 +12,17 @@ export function generatef100sf110sf700sf710s(authors = []) {
     return generate700or710();
 
     function generate100or110() {
+      if (authors[0].firstName === ' ' && authors[0].lastName === ' ') {
+        return []; // hit space key on both means skip
+      }
+
       return {
         tag: author.relator === 'yhteisö' ? '110' : '100',
         ind1: '1',
         ind2: ' ',
         subfields: generateSubfields()
       };
+
     }
 
     function generate700or710() {
