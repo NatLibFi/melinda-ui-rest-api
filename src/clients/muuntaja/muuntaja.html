@@ -84,11 +84,18 @@
           </div>
         </div>
       </div>
+      <div class="tools ToolBar col">
+        <div class="ToolBar BoxShadow header HBox">
+            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
+            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
+            <div id="type-options"></div>
+            <div id="profile-options"></div>
+        </div>
+      </div>
 
       <!-- ------------------------------------------------------------------------ -->
       <!-- Record-Merge Panel -->
       <div class="record-merge-panel">
-
         <div id="source" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
@@ -107,14 +114,10 @@
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
-              <input id="ID" />
+              <input id="ID"/>
             </div>
             <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
             <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
-            <div class="dropdown">
-              <button class="material-icons" onclick="return ignore(event);">settings</button>
-              <div id="profile-menu" class="dropdown-content"></div>
-            </div>
           </form>
           <div id="Record" class="marc-record">
           </div>
@@ -123,17 +126,11 @@
         <div id="result" class="col BoxShadow">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
-            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
-            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)"
-              disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
           </div>
         </div>
-
       </div>
-
-
     </div>
   </div>
 
@@ -141,7 +138,6 @@
   <!-- Field edit dialog -->
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
-
       <div id="original" hidden>
         <span id="field" class="marc-record"></span><br />
         <div style="display: flex; justify-content: right;">

@@ -7,7 +7,9 @@
 import {setNavBar} from "/common/ui-utils.js";
 import {startProcess, stopProcess} from "/common/ui-utils.js";
 import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
+import {createDropdownItem,
+        createSelectItem,
+        createSelectOption} from "/common/ui-utils.js";
 
 import {Account, doLogin, logout} from "/common/auth.js"
 import {profileRequest, transformRequest} from "/common/rest.js";
@@ -44,29 +46,36 @@ function setProfiles(options) {
   console.log("Profiles:", options)
   transformed.options = options.defaults;
 
-  const menu = document.querySelector("#profile-menu");
-  menu.innerHTML = ""
+  const typeOptions = document.querySelector("#type-options");
+  typeOptions.innerHTML = "";
 
-  menu.appendChild(createMenuItem("Muunnostyyppi", "menu-header"))
+  const typeDropdown = createDropdownItem("", ["Select", "VBox"], "Muunnostyyppi");
+  const typeSelect = createSelectItem("type");
+  typeSelect.addEventListener("change", (event) => {
+    return setTransformType(event, event.target.value);
+  });
+
+  typeOptions.appendChild(typeDropdown);
+  typeDropdown.appendChild(typeSelect);
 
   for (const type in options.type) {
-    //console.log("Type:", type);
-    //const item = createMenuItem(profiles.types[type], "menu-item");
-    const item = createMenuSelection("type", type, options.type[type], "menu-item")
-    item.addEventListener("click", (event) => {return setTransformType(event, type);});
-    menu.appendChild(item);
+    typeSelect.appendChild(createSelectOption(type, options.type[type]));
   }
 
-  menu.appendChild(createMenuBreak())
-  menu.appendChild(createMenuItem("Muunnosprofiili", "menu-header"))
-  //menu.appendChild(createMenuItem("KVP", "menu-item"))
+  const profileOptions = document.querySelector("#profile-options");
+  profileOptions.innerHTML = "";
+
+  const profileDropdown = createDropdownItem("", ["Select", "VBox"], "Muunnosprofiili");
+  const profileSelect = createSelectItem("profile");
+  profileSelect.addEventListener("change", (event) => {
+    return setTransformProfile(event, event.target.value);
+  });
+
+  profileOptions.appendChild(profileDropdown);
+  profileDropdown.appendChild(profileSelect);
 
   for (const profile in options.profile) {
-    //console.log("Type:", type);
-    //const item = createMenuItem(profiles.types[type], "menu-item");
-    const item = createMenuSelection("profile", profile, options.profile[profile], "menu-item")
-    item.addEventListener("click", (event) => {return setTransformProfile(event, profile);});
-    menu.appendChild(item);
+    profileSelect.appendChild(createSelectOption(profile, options.profile[profile]));
   }
 }
 
