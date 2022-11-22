@@ -34,20 +34,32 @@ export function generatef100sf110sf700sf710s(authors = []) {
       };
     }
 
-    function generateSubfieldsForPerson() {
+    function generateSubfieldsForPerson() { // 100 & 700
       const subA = {code: 'a', value: `${author.lastName}, ${author.firstName},`};
       const subE = {code: 'e', value: `${author.relator}.`};
-      const subU = generateOrganizations();
-      const subG = generateOrgnCodes();
-      return [subA, subE, subU, subG];
+      const mapOrgnNames = author.authorsTempOrganizations.map(elem => `${elem.organizationName}`);
+
+      if (mapOrgnNames.length > 0) {
+        const subU = generateOrganizations();
+        const subG = generateOrgnCodes();
+        return [subA, subE, subU, subG];
+      }
+
+      return [subA, subE];
     }
 
-    function generateSubfieldsForYhteiso() {
-      // subA ends in dot (.) & only lastName; subE NOT in 110,710
+    function generateSubfieldsForYhteiso() { // 110 & 710
+      // Here subA ends in dot (.) & uses only lastName; subE NOT used in 110,710
       const subA = {code: 'a', value: `${author.lastName}.`};
-      const subU = generateOrganizations();
-      const subG = generateOrgnCodes();
-      return [subA, subU, subG];
+      const mapOrgnNames = author.authorsTempOrganizations.map(elem => `${elem.organizationName}`);
+
+      if (mapOrgnNames.length > 0) {
+        const subU = generateOrganizations();
+        const subG = generateOrgnCodes();
+        return [subA, subU, subG];
+      }
+
+      return [subA];
     }
 
     function generateOrganizations() {
@@ -55,6 +67,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
       const editOrgnNames = mapOrgnNames.toString().replaceAll(',', ' ; ');
       return {code: 'u', value: `${editOrgnNames}`};
     }
+
 
     function generateOrgnCodes() {
       const code = author.authorsTempOrganizations.map(elem => `${elem.code}`);
