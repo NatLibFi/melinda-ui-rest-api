@@ -13,7 +13,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
     function generate100or110() {
       if (authors[0].firstName === ' ' && authors[0].lastName === ' ') {
-        return []; // hit space key on both means skip
+        return []; // hit space key on both means skip this
       }
 
       return {
