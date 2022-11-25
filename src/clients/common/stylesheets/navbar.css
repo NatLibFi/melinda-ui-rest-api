@@ -42,6 +42,11 @@
   top: 8px;
 }
 
+.dropdown-btn {
+  position: relative;
+  display: inline-block;
+}
+
 .page-dropdown-content {
   display: none;
   position: absolute;
@@ -70,6 +75,10 @@
   padding: 8px 16px;
   white-space: nowrap;
   color: #305d6d;
+}
+
+a:any-link {
+  text-decoration: none;
 }
 
 .page-dropdown-content .menu-item:hover {

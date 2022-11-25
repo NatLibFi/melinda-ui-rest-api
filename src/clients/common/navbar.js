@@ -1,72 +1,69 @@
 
 export function setNavBar(elem, name) {
-  const topDiv = document.createElement("div");
-  const navBar = document.createElement("div");
+  const navBar = createItem("div", ["NavBar", "ToolBar"]);
   elem.appendChild(navBar);
-  navBar.classList.add("NavBar", "ToolBar");
-
-  const img = document.createElement("img");
-  img.className = "logo";
-  img.src = "/common/images/Melinda-logo-white.png";
-  navBar.appendChild(img);
+  navBar.appendChild(createImageItem());
   
-  const appName = document.createElement("div");
-  appName.className = "AppName";
-  const btn = document.createElement("button");
-  btn.className = "dropdown";
-  btn.addEventListener("click", () => {togglePages()});
-  btn.innerHTML = `${name}<span class="material-icons">arrow_drop_down</span>`;
-  appName.appendChild(btn);
+  const appName = createItem("div", ["AppName"]);
+  
+  const btn = createButtonItem(name);
   navBar.appendChild(appName);
+  appName.appendChild(btn);
+  btn.appendChild(createDropdownMenu(name));
 
-  const dropdownMenu = document.createElement("ul");
-  dropdownMenu.className = "page-dropdown-content";
-  dropdownMenu.id = "pageDropdown";
-  const artikkelit = document.createElement("li");
-  // artikkelit.className = "menu-item";
-  const artikkelitLink = document.createElement("a");
-  artikkelitLink.href = "/artikkelit";
-  // artikkelitLink.className = "menu-item";
-  const artikkelitText = document.createElement("div");
-  artikkelitText.className = "menu-item";
-  artikkelitText.innerHTML = "Artikkelit";
-  artikkelitLink.appendChild(artikkelitText);
-  artikkelit.appendChild(artikkelitLink);
-  // artikkelit.href = "/artikkelit";
-  // artikkelit.innerHTML = "Artikkelit";
-  dropdownMenu.appendChild(artikkelit);
-  btn.appendChild(dropdownMenu);
+  elem.appendChild(createItem("div", ["progress-bar-inactive"], "progressbar"));
 
+  function createItem(elemTag, clsList = [], id = "") {
+    const item = document.createElement(elemTag);
+    if (clsList.length > 0) item.classList.add(...clsList);
+    if (id.length > 0) item.id = id;
+    return item;
+  }
 
-  const progressBar = document.createElement("div");
-  progressBar.id = "progressbar";
-  progressBar.className = "progress-bar-inactive";
-  elem.appendChild(progressBar);
-  // elem.innerHTML = `<div>\
-  // <div class="NavBar ToolBar">\
-  //   <img class="logo" src="/common/images/Melinda-logo-white.png"/>\
-  //   <div class="AppName">\
-  //     <button onclick="showPages()">${name}<span class="material-icons">arrow_drop_down</span></button>\
-  //   </div>\
-  //   <div class="dropdown-content" id="pageDropdown">\
-  //     <a href="/artikkelit">Artikkelit</a>\
-  //   </div>\
-  //   <div class="Select VBox">\
-  //     <label for="page">Vaihda sivua</label>
-  //     <select id="page" onChange="window.location.href=this.value">\
-  //       <option value="" selected hidden disabled>--</option>\
-  //       <option value="/artikkelit">Artikkelit</option>\
-  //       <option value="/edit">Muokkaus</option>\
-  //       <option value="/keycloak">Keycloak</option>\
-  //       <option value="/muuntaja">Muuntaja</option>\
-  //       <option value="/viewer">Viewer</option>\
-  //     </select>\
-  //   </div>\
-  // </div>\
-  // <div id="progressbar" class="progress-bar-inactive"></div>\
-  // </div>`
+  function createImageItem() {
+    const img = createItem("img", ["logo"]);
+    img.src = "/common/images/Melinda-logo-white.png";
+    return img;
+  }
+
+  function createButtonItem(name) {
+    const btn = createItem("button", ["dropdown-btn"]);
+    btn.addEventListener("click", () => {togglePages()});
+    btn.innerHTML = `${name}<span class="material-icons">arrow_drop_down</span>`;
+    return btn;
+  }
+
+  function createDropdownMenu(name) {
+    const pageData = ["Artikkelit", "Keycloak", "Muokkaus", "Muuntaja", "Viewer"];
+    const dropdownMenu = createItem("ul", ["page-dropdown-content"], "pageDropdown");
+    for (var page of pageData) {
+      if (page.toLowerCase() !== name.toLowerCase()) {
+        const listElem = createItem("li");
+        const linkElem = createItem("a");
+        linkElem.href = page === "Muokkaus" ? "/edit" : `/${page.toLowerCase()}`;
+        const linkTextElem = createItem("div", ["menu-item"]);
+        linkTextElem.innerHTML = page;
+        linkElem.appendChild(linkTextElem);
+        listElem.appendChild(linkElem);
+        dropdownMenu.appendChild(listElem);
+      }
+    }
+
+    return dropdownMenu;
+  }
+
   function togglePages() {
     document.querySelector("#pageDropdown").classList.toggle("show-pages");
+  }
+
+  // Hide page list if the user clicks outsife of it while open
+  window.onclick = function(e) {
+    if (!e.target.matches(".dropdown-btn") && (!e.target.matches(".material-icons"))) {
+      var dropdown = document.querySelector("#pageDropdown");
+      if (dropdown.classList.contains("show-pages")) {
+        dropdown.classList.remove("show-pages");
+      }
+    }
   }
 }
 
