@@ -35,8 +35,23 @@ window.initialize = function () {
         const username = document.querySelector("#account-menu #username")
         username.innerHTML = Account.get()["Name"];
         showTab('muuntaja');
+        parseUrlParameters();
         doTransform();
       })
+  }
+
+  function parseUrlParameters() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const sourceId = urlParams.get("sourceId") || "";
+    const baseId = urlParams.get("baseId") || "";
+    const type = urlParams.get("type") || "p2e";
+    const profile = urlParams.get("profile") || "KVP";
+
+    document.querySelector(".record-merge-panel #source #ID").defaultValue = sourceId;
+    document.querySelector(".record-merge-panel #base #ID").defaultValue = baseId;
+    document.querySelector("#type-options [name='type']").value = type;
+    document.querySelector("#profile-options [name='profile']").value = profile;
   }
 }
 
