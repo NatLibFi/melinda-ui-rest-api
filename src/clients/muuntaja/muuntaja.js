@@ -41,8 +41,7 @@ window.initialize = function () {
   }
 
   function parseUrlParameters() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+    const urlParams = new URLSearchParams(window.location.search);
     const sourceId = urlParams.get("sourceId") || "";
     const baseId = urlParams.get("baseId") || "";
     const type = urlParams.get("type") || "p2e";
@@ -52,6 +51,22 @@ window.initialize = function () {
     document.querySelector(".record-merge-panel #base #ID").defaultValue = baseId;
     document.querySelector("#type-options [name='type']").value = type;
     document.querySelector("#profile-options [name='profile']").value = profile;
+  }
+
+  document.querySelector(".record-merge-panel #source #ID").addEventListener("input", updateUrlParameters)
+  document.querySelector(".record-merge-panel #base #ID").addEventListener("input", updateUrlParameters)
+
+  function updateUrlParameters(e) {
+    const isOnPath = (id) => e.composedPath().some(element => element.id === id);
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (isOnPath("source") && isOnPath("ID")) {
+      urlParams.set("sourceId", e.target.value);
+    }
+    if (isOnPath("base") && isOnPath("ID")) {
+      urlParams.set("baseId", e.target.value);
+    }
+    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${urlParams}`));
   }
 }
 
