@@ -58,15 +58,23 @@ window.initialize = function () {
 
   function updateUrlParameters(e) {
     const isOnPath = (id) => e.composedPath().some(element => element.id === id);
+    const removeIfEmpty = (id) => {if (e.target.value === "") urlParams.delete(id)}
     const urlParams = new URLSearchParams(window.location.search);
     
     if (isOnPath("source") && isOnPath("ID")) {
       urlParams.set("sourceId", e.target.value);
+      removeIfEmpty("sourceId");
     }
     if (isOnPath("base") && isOnPath("ID")) {
       urlParams.set("baseId", e.target.value);
+      removeIfEmpty("baseId");
     }
+    
     window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${urlParams}`));
+
+    if (window.location.search === "") {
+      window.history.replaceState({}, "", "/muuntaja/")
+    }
   }
 }
 
