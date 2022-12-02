@@ -53,8 +53,8 @@ window.initialize = function () {
     document.querySelector("#profile-options [name='profile']").value = profile;
   }
 
-  document.querySelector(".record-merge-panel #source #ID").addEventListener("input", updateUrlParameters)
-  document.querySelector(".record-merge-panel #base #ID").addEventListener("input", updateUrlParameters)
+  document.querySelector(".record-merge-panel #source #ID").addEventListener("input", updateUrlParameters);
+  document.querySelector(".record-merge-panel #base #ID").addEventListener("input", updateUrlParameters);
 
   function updateUrlParameters(e) {
     const isOnPath = (id) => e.composedPath().some(element => element.id === id);
@@ -65,6 +65,7 @@ window.initialize = function () {
       urlParams.set("sourceId", e.target.value);
       removeIfEmpty("sourceId");
     }
+    
     if (isOnPath("base") && isOnPath("ID")) {
       urlParams.set("baseId", e.target.value);
       removeIfEmpty("baseId");
@@ -180,6 +181,23 @@ window.onSettings = function (e) {
 window.onAccount = function (e) {
   console.log('Account:', e);
   logout();
+}
+
+window.copyLink = function (e) {
+  eventHandled(e);
+
+  const type = document.querySelector("#type-options [name='type']").value;
+  const profile = document.querySelector("#profile-options [name='profile']").value;
+  var leadingChar = "";
+
+  if (window.location.href.includes("?")) {
+    if (window.location.search !== "") {
+      leadingChar = "&";
+    }
+  } else {
+    leadingChar = "?";
+  }
+  navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
 }
 
 //-----------------------------------------------------------------------------
