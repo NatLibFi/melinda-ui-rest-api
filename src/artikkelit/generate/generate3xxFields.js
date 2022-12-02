@@ -21,32 +21,34 @@ export function generatef380(reviewType = false) {
     return [];
   }
 
+  const subfield2 = {code: '2', value: 'mts/fin'};
+
   if (reviewType === 'kirja-arvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'kirja-arvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2187'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'kirja-arvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2187'}]}];
   }
 
   if (reviewType === 'teatteriarvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'teatteriarvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2180'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'teatteriarvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2180'}]}];
   }
 
   if (reviewType === 'sirkusarvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'sirkusarvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2182'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'sirkusarvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2182'}]}];
   }
 
   if (reviewType === 'elokuva-arvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'elokuva-arvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2183'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'elokuva-arvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2183'}]}];
   }
 
   if (reviewType === 'tanssiarvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'tanssiarvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2184'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'tanssiarvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2184'}]}];
   }
 
   if (reviewType === 'musiikkiarvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'musiikkiarvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2185'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'musiikkiarvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2185'}]}];
   }
 
   if (reviewType === 'taidearvostelu') {
-    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'taidearvostelu'}, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2186'}]}];
+    return [{tag: '380', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: 'taidearvostelu'}, subfield2, {code: '0', value: 'http://urn.fi/URN:NBN:fi:au:mts:m2186'}]}];
   }
 
   return [];
