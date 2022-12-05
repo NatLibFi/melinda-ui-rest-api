@@ -58,3 +58,33 @@ div#muuntaja {
   padding-right: 5px;
   padding-left: 5px;
 }
+
+.popup {
+  display: none;
+  position: absolute;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  right: 21%;
+  top: 9.5%;
+  font-size: medium;
+  animation-name: fade;
+  animation-duration: 4s;
+}
+
+@keyframes fade {
+  0% {
+    display: block;
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}

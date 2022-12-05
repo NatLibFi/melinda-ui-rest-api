@@ -197,7 +197,23 @@ window.copyLink = function (e) {
   } else {
     leadingChar = "?";
   }
+
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
+  
+  // Fade in and fade out popup text
+  var popup = document.querySelector(".popup");
+  fadeIn(popup);
+  fadeOut(popup);
+
+  function fadeIn(popup) {
+    popup.style.display = "block";
+  }
+
+  function fadeOut(popup) {
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000);
+  }
 }
 
 //-----------------------------------------------------------------------------
