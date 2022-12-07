@@ -23,7 +23,7 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
   const logger = createLogger();
   const restApiLogClient = createMelindaApiLogClient(melindaApiOptions);
   const logService = createLogService(restApiLogClient);
-  const correlationIdListService = createCorrelationIdListService();
+  const correlationIdListService = createCorrelationIdListService(melindaApiOptions);
 
   return new Router(melindaApiOptions)
     .get('/match-log/:id', getMatchLog)

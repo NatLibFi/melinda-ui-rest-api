@@ -1,3 +1,7 @@
+import fetch from 'node-fetch';
+import {URL} from 'url';
+import {generateAuthorizationHeader} from '@natlibfi/melinda-commons';
+
 export function createLogService(restApiLogClient) {
 
   return {getMatchLog, getMatchValidationLog, getMergeLog};
@@ -21,13 +25,43 @@ export function createLogService(restApiLogClient) {
   }
 }
 
-export function createCorrelationIdListService() {
+export function createCorrelationIdListService({melindaApiUrl, melindaApiUsername, melindaApiPassword}) {
 
   return {getCorrelationIdList};
 
   async function getCorrelationIdList() {
-    const result = await '';
-    return result;
+    const path = 'logs/list';
+    const url = new URL(`${melindaApiUrl}${path}`);
+    const Authorization = generateAuthorizationHeader(melindaApiUsername, melindaApiPassword);
+    const userAgent = 'Melinda commons API client / Javascript';
+    const method = 'get';
+    const contentType = 'application/json';
+    const body = null;
+
+    const options = {
+      method,
+      headers: {
+        'User-Agent': userAgent,
+        'content-type': contentType,
+        Authorization,
+        Accept: 'application/json'
+      },
+      body
+    };
+
+    const result = await fetch(url, options);
+
+    if (result.ok) {
+      return result.json();
+    }
+
+    return {
+      error: {
+        status: result.status,
+        message: result.text()
+      }
+    };
+
   }
 
 }

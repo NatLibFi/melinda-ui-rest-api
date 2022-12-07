@@ -13,7 +13,6 @@ import { transformRequest } from "/common/rest.js";
 import { showRecord } from "/common/marc-record-ui.js";
 import { getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog } from "/common/rest.js";
 import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
-import { getCorrelationIdList } from "../common/rest";
 
 var viewing = {
   record1: {},
@@ -121,10 +120,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 window.doOpenCorrelationIdListModal = function (event = undefined) {
   const modal = document.querySelector("#correlationIdListModal");
   modal.style.display = "flex";
-  const correlationIdList = getCorrelationIdList()
-  // take list and show the correlation ids as buttons in the modal
+  showCorrelationIdList();
 }
-
 
 window.loadLog = (event) => {
   eventHandled(event);
@@ -337,13 +334,30 @@ function createOption(text, value) {
   return option;
 }
 
+// Gets the list of correlation ids from api and then show it in the modal
+function showCorrelationIdList() {
+  getCorrelationIdList().then(list =>
+    list.forEach((correlationId) => { createAndAddCorrelationIdButton(correlationId) }));
+}
+
+// Function that takes correlationId
+// creates a button for it and adds it to the list
+function createAndAddCorrelationIdButton(correlationId) {
+  const newCorrelationIdButton = createCorrelationIdButton(correlationId);
+  addCorrelationIdButtonToList(newCorrelationIdButton);
+}
+
 // Function that creates a correlation id button
+// and returns it
 function createCorrelationIdButton(correlationId) {
   const correlationIdButton = document.createElement('button');
+
   correlationIdButton.innerHTML = correlationId;
   correlationIdButton.addEventListener("click", function () {
-    selectCorrelationIdAndSearch(correlationId)
+    selectCorrelationIdAndSearch(correlationId);
   });
+
+  return correlationIdButton;
 }
 
 // Function that sets the correlation id to input field id,
@@ -355,7 +369,7 @@ function selectCorrelationIdAndSearch(correlationId) {
   modalClose();
 }
 
-// Function that adds correlation id button to the list in the modal
+// Function that adds correlation id button to the list element in the modal
 function addCorrelationIdButtonToList(correlationIdButton) {
   const buttonsList = document.getElementById('correlationIdListButtons');
   buttonsList.append(correlationIdButton);
