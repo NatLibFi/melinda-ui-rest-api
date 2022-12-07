@@ -340,7 +340,18 @@ function createOption(text, value) {
 function createCorrelationIdButton(correlationId) {
   const correlationIdButton = document.createElement('button');
   correlationIdButton.innerHTML = correlationId;
-  // add button function that sets this correlation id to the id field in Viewer toolbar 
+  correlationIdButton.addEventListener("click", function () {
+    selectCorrelationIdAndSearch(correlationId)
+  });
+}
+
+// Function that sets the correlation id to input field id,
+// and starts the search process and closing the modal
+function selectCorrelationIdAndSearch(correlationId) {
+  const id = document.querySelector(`#viewer #id`);
+  id.value = correlationId;
+  doSearchPress();
+  modalClose();
 }
 
 // Function that adds correlation id button to the list in the modal
