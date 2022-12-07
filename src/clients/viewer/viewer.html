@@ -84,8 +84,13 @@
           </div>
         </div>
       </div>
+
+
+      <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
+
         <form class="ToolBar HBox">
+
           <div class="Select VBox">
             <label>Log type</label>
             <select id="logType">
@@ -93,27 +98,45 @@
               <option value="MATCH_LOG">Match</option>
             </select>
           </div>
+
           <div class="Filler VBox Input">
             <label>Id (Correlation id)</label>
             <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
           </div>
+
+          <!-- ---------------------------------------------------------------------- -->
+          <!-- Button for opening a modal containing correlation id list -->
+          <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+            tooltip-text="View id list">view_list</button>
+          <!-- ---------------------------------------------------------------------- -->
+
           <div class="Select VBox">
             <label>Sequence</label>
             <select id="sequence" disabled="true" onchange="return loadLog(event)">
             </select>
           </div>
+
           <input type="hidden" id="logType" value="mergeLog" />
+
           <button class="material-icons tooltip" tooltip-text="Etsi"
             onclick="return doSearchPress(event)">search</button>
+
         </form>
+
         <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
           disabled="true">push_pin</button>
+
         <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
           onclick="return copyLink(event)">share</button>
+
         <button id="delete" class="material-icons tooltip" tooltip-text="Poista" onclick="return remove(event)"
           disabled="true">delete</button>
         <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
+
       </div>
+
+
+      <!-- Record Merge Panel -->
       <div class="record-merge-panel">
 
         <div class="col">
@@ -121,8 +144,10 @@
             <div class="header">
               <p class="title">Sisääntuleva tietue</p>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record1')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record1')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record1')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record1')">expand_less</button>
               </div>
             </div>
             <div class="note">
@@ -132,7 +157,6 @@
             </div>
           </div>
         </div>
-
         <div class="col">
           <div id="record2" class="BoxShadow">
             <div class="header">
@@ -142,8 +166,10 @@
                 <select id="match" onchange="return loadMatch(event)"></select>
               </div>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record2')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record2')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record2')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record2')">expand_less</button>
               </div>
             </div>
             <div class="note">
@@ -159,8 +185,10 @@
             <div class="header">
               <p class="title">Yhdistetty tietue</p>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record3')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record3')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record3')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record3')">expand_less</button>
               </div>
             </div>
             <div class="note">
@@ -172,6 +200,7 @@
         </div>
 
       </div>
+
     </div>
   </div>
 
