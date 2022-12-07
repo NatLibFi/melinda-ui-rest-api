@@ -4,15 +4,15 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
-import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
+import { setNavBar, startProcess, stopProcess } from "/common/ui-utils.js";
+import { showTab, resetForms, reload } from "/common/ui-utils.js";
+import { createMenuBreak, createMenuItem, createMenuSelection } from "/common/ui-utils.js";
 
-import {Account, doLogin, logout} from "/common/auth.js"
-import {transformRequest} from "/common/rest.js";
-import {showRecord} from "/common/marc-record-ui.js";
-import {getMatchLog, getMergeLog, protectLog, removeLog} from "/common/rest.js";
-import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
+import { Account, doLogin, logout } from "/common/auth.js"
+import { transformRequest } from "/common/rest.js";
+import { showRecord } from "/common/marc-record-ui.js";
+import { getMatchLog, getMergeLog, protectLog, removeLog } from "/common/rest.js";
+import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -118,8 +118,12 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 // and start a search with that correlation id.
 // Correlation id list is fetched from api.
 window.doOpenCorrelationIdListModal = function (event = undefined) {
-  //open modal and show correlation id's as list in the modal
+  const modal = document.querySelector("#correlationIdListModal");
+  modal.style.display = "flex";
+
+  // show correlation id's as list in the modal
 }
+
 
 window.loadLog = (event) => {
   eventHandled(event);
@@ -178,7 +182,7 @@ window.loadLog = (event) => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
+      const { record, note } = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, "record2", {}, 'viewer');
     });
@@ -263,6 +267,18 @@ window.remove = function (event = undefined) {
     });
 }
 
+// Closes the correlation id list modal
+window.modalClose = function (event) {
+  const modal = document.querySelector("#correlationIdListModal")
+  modal.style.display = "none"
+  return eventHandled(event);
+}
+
+// Ignore event
+window.ignore = function (event) {
+  return eventHandled(event);
+}
+
 function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
   console.log(JSON.stringify(logs));
@@ -270,7 +286,7 @@ function setDataToIndexDB(logs, sequence) {
 
   if (keys.length === 0) {
     select.add(createOption('0', 0));
-    idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
+    idbSet('0', { incomingRecord: {}, databaseRecord: {}, mergedRecord: {} });
     stopProcess();
     // TODO toast 404 not found
     select.value = 0;

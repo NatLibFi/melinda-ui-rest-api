@@ -106,8 +106,8 @@
 
           <!-- ---------------------------------------------------------------------- -->
           <!-- Button for opening a modal containing correlation id list -->
-          <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-            tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">view_list</button>
+          <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip" tooltip-text="View id list"
+            onclick="return doOpenCorrelationIdListModal(event)">view_list</button>
           <!-- ---------------------------------------------------------------------- -->
 
           <div class="Select VBox">
@@ -203,6 +203,21 @@
 
     </div>
   </div>
+
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Modal for browsing and selecting a correlation id from a list -->
+  <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
+
+    <div class="modal-content BoxShadow" onclick="return ignore(event)">
+
+      <!-- show list of correlation ids here -->
+
+    </div>
+
+  </div>
+
+
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Field edit dialog -->
