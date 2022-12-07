@@ -334,10 +334,21 @@ function createOption(text, value) {
   return option;
 }
 
-// Gets the list of correlation ids from api and then show it in the modal
+// Gets the list of correlation ids from api and then show it in the modal,
+// Hides the placeholder text for list fetching
 function showCorrelationIdList() {
-  getCorrelationIdList().then(list =>
-    list.forEach((correlationId) => { createAndAddCorrelationIdButton(correlationId) }));
+  getCorrelationIdList()
+    .then(list =>
+      list.forEach((correlationId) => { createAndAddCorrelationIdButton(correlationId) })
+    ).then(() =>
+      hidePlaceholderText()
+    );
+}
+
+// Hides the placeholder in modal after fetching the correlation id list
+function hidePlaceholderText() {
+  const placeholderText = document.getElementById('fetchListPlaceholderText');
+  placeholderText.style.display = "none";
 }
 
 // Function that takes correlationId

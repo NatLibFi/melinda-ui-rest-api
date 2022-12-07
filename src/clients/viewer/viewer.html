@@ -211,12 +211,14 @@
 
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
-      <label>Please select a correlation id:</label>
+      <label class="marc-record">Please select a correlation id:</label>
 
       <hr />
 
       <!-- show list of correlation ids here -->
-      <div id="correlationIdListButtons"></div>
+      <div id="correlationIdListButtons" class="marc-record" style="display: flex; flex-direction: column;">
+        <div id="fetchListPlaceholderText">...fetching list, please wait...</div>
+      </div>
 
     </div>
 
