@@ -335,3 +335,16 @@ function createOption(text, value) {
 
   return option;
 }
+
+// Function that creates a correlation id button
+function createCorrelationIdButton(correlationId) {
+  const correlationIdButton = document.createElement('button');
+  correlationIdButton.innerHTML = correlationId;
+  // add button function that sets this correlation id to the id field in Viewer toolbar 
+}
+
+// Function that adds correlation id button to the list in the modal
+function addCorrelationIdButtonToList(correlationIdButton) {
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.append(correlationIdButton);
+}
