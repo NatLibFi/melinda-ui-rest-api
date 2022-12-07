@@ -20,3 +20,14 @@ export function createLogService(restApiLogClient) {
     return {...mergeLogs};
   }
 }
+
+export function createCorrelationIdListService() {
+
+  return {getCorrelationIdList};
+
+  async function getCorrelationIdList() {
+    const result = await '';
+    return result;
+  }
+
+}
