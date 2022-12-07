@@ -28,6 +28,7 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     .get('/match-log/:id', getMatchLog)
     .get('/match-validation-log/:id', getMatchValidationLog)
     .get('/merge-log/:id', getMergeLog)
+    .get('/correlation-id-list', getCorrelationIdList)
     .put('/protect/:id', protectLog)
     .delete('/remove/:id', removeLog)
     .use(handleError);
@@ -89,6 +90,15 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     logger.debug('*******************************************');
     res.json(result);
   }
+
+  async function getCorrelationIdList(req, res, next) {
+    logger.verbose('GET getCorrelationIdList');
+    // result = await viewerService fetch list
+    const result = '';
+    logger.debug(JSON.stringify(result));
+    res.json(result);
+  }
+
 
   function protectLog(req, res, next) {
     const {id: correlationId} = req.params || {};
