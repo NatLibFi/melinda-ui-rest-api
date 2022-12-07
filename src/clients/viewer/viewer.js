@@ -11,8 +11,9 @@ import { createMenuBreak, createMenuItem, createMenuSelection } from "/common/ui
 import { Account, doLogin, logout } from "/common/auth.js"
 import { transformRequest } from "/common/rest.js";
 import { showRecord } from "/common/marc-record-ui.js";
-import { getMatchLog, getMergeLog, protectLog, removeLog } from "/common/rest.js";
+import { getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog } from "/common/rest.js";
 import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
+import { getCorrelationIdList } from "../common/rest";
 
 var viewing = {
   record1: {},
@@ -120,8 +121,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 window.doOpenCorrelationIdListModal = function (event = undefined) {
   const modal = document.querySelector("#correlationIdListModal");
   modal.style.display = "flex";
-
-  // show correlation id's as list in the modal
+  const correlationIdList = getCorrelationIdList()
+  // take list and show the correlation ids as buttons in the modal
 }
 
 

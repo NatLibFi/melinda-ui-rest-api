@@ -4,8 +4,8 @@
 //
 //*****************************************************************************
 
-import {getOntologyOptions} from "../artikkelit/utils.js";
-import {Account} from "../common/auth.js"
+import { getOntologyOptions } from "../artikkelit/utils.js";
+import { Account } from "../common/auth.js"
 
 //-----------------------------------------------------------------------------
 const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
@@ -132,8 +132,8 @@ export function getArtikkeliRecord(data) {
   return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
 }
 
-export function getOntologyWords(ontology, query){
-  const {searchVocab, language} = getOntologyOptions(ontology)
+export function getOntologyWords(ontology, query) {
+  const { searchVocab, language } = getOntologyOptions(ontology)
 
   return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
 }
@@ -153,7 +153,7 @@ async function fetchFromRest(url, method = 'GET', body = undefined) {
     return result.json();
   }
 
-  return {error: {status: result.status, message: result.text()}};
+  return { error: { status: result.status, message: result.text() } };
 }
 
 
@@ -176,6 +176,14 @@ export function getMatchValidationLog(id, sequence) {
 export function getMergeLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
+
+//-----------------------------------------------------------------------------
+
+export function getCorrelationIdList() {
+  return fetchLogs(`${RESTurl}/viewer/correlation-id-list`);
+}
+
+//-----------------------------------------------------------------------------
 
 async function fetchLogs(url) {
   const result = await fetch(url,
