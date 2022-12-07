@@ -113,6 +113,14 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   }
 }
 
+// Function that opens a modal 
+// where user can click a correlation id from a list,
+// and start a search with that correlation id.
+// Correlation id list is fetched from api.
+window.doOpenCorrelationIdListModal = function (event = undefined) {
+  //open modal and show correlation id's as list in the modal
+}
+
 window.loadLog = (event) => {
   eventHandled(event);
   const logType = document.querySelector(`#viewer #logType`).value;
