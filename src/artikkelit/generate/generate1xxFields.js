@@ -13,7 +13,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
     function generate100or110() {
       if (authors[0].firstName === ' ' && authors[0].lastName === ' ') {
-        return []; // hit space key on both means: skip this
+        return []; // hit space key on both means: 'skip this'
       }
 
       return {
@@ -38,7 +38,11 @@ export function generatef100sf110sf700sf710s(authors = []) {
       const firstNameSplitted = author.firstName.split(' ');
       const [firstChar] = firstNameSplitted;
 
-      if (firstChar === 'c' && firstNameSplitted.length > 1) {
+      if (firstChar === 'c' && firstNameSplitted.length > 1) { // title case
+        return '0';
+      }
+
+      if (author.firstName === ' ') { // one name case
         return '0';
       }
 
@@ -48,18 +52,32 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
     function generateSubfieldsForPerson() { // 100 & 700
       const subA = {code: 'a', value: `${author.lastName}, ${author.firstName},`};
-      const subAC = {code: 'a', value: `${author.lastName},`}; // used only with C-subfield (title case)
+      const subAshort = {code: 'a', value: `${author.lastName},`}; // used only with C-subfield (title case)
+      const theTitle = `${author.firstName.slice(2)},`;
+      const subC = {code: 'c', value: theTitle};
       const subE = {code: 'e', value: `${author.relator}.`};
       const mapOrgnNames = author.authorsTempOrganizations.map(elem => `${elem.organizationName}`);
 
-      function doSubC() { // title case, when in field firstname is: c+title
+      function checkIfOnlyOneNameCase() {
+        // checking: is it title-case ( = c+title) or onlyOneName-case ( = empty entered as first name)
+        // 'etunimi'-field in both cases is essential. First entered character there is crucial.
         const firstNameSplitted = author.firstName.split(' ');
         const [firstChar] = firstNameSplitted;
 
-        if (firstChar === 'c' && firstNameSplitted.length > 1) {
-          const theTitle = `${author.firstName.slice(2)},`;
-          const outputC = {code: 'c', value: theTitle};
-          return outputC;
+        if (author.firstName === ' ') { // case: only one name entered
+          return 'oneNameCase';
+        }
+
+        if (firstChar === 'c' && firstNameSplitted.length > 1) { // case: title entered
+          return 'titleCase';
+        }
+
+        return false;
+      }
+
+      function checkRole() {
+        if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(author.relator)) {
+          return true;
         }
 
         return false;
@@ -69,18 +87,35 @@ export function generatef100sf110sf700sf710s(authors = []) {
         const subU = generateOrganizations();
         const subG = generateOrgnCodes();
 
-        if (doSubC()) {
-          return [subAC, doSubC(), subE, subU, subG];
+        if (checkIfOnlyOneNameCase() === 'titleCase') {
+          return [subAshort, subC, subE, subU, subG];
+        }
+
+        if (checkIfOnlyOneNameCase() === 'oneNameCase' && checkRole()) {
+          return [subAshort, subE, subU, subG];
+        }
+
+        if (checkIfOnlyOneNameCase()) {
+          return [subAshort, subC, subE, subU, subG];
         }
 
         return [subA, subE, subU, subG];
       }
 
-      if (doSubC()) {
-        return [subAC, doSubC(), subE];
+      if (checkIfOnlyOneNameCase() === 'titleCase') {
+        return [subAshort, subC, subE];
+      }
+
+      if (checkIfOnlyOneNameCase() === 'oneNameCase' && checkRole()) {
+        return [subAshort, subE];
+      }
+
+      if (checkIfOnlyOneNameCase()) {
+        return [subAshort, subC, subE];
       }
 
       return [subA, subE];
+
     }
 
     function generateSubfieldsForYhteiso() { // 110 & 710
