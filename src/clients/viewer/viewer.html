@@ -211,14 +211,24 @@
 
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
-      <label class="correlation-id">Please select a correlation id:</label>
+      <label class="correlation-id">Please select a correlation id</label>
 
-      </br>
+      <hr />
 
-      <button id="filterCorrelationIdListButton" type="button" class="material-icons tooltip"
-        tooltip-text="Filter by date" onclick="return doOpenDatePicker(event)">date_range</button>
-        
-      <hr/>
+      <div id="filterCorrelationIdList">
+        <p class="correlation-id">You can filter the list by selecting </br> start date and/or end date.</p>
+
+        <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
+          onclick="return doOpenDateStartPicker(event)">today</button>
+        <input id="dateStartInput" type="date">
+
+        <input id="dateEndInput" type="date" class="correlation-id">
+        <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
+          onclick="return doOpenDateEndPicker(event)">event</button>
+
+      </div>
+
+      <hr />
 
       <!-- show list of correlation ids here -->
       <div id="correlationIdListButtons" class="correlation-id" style="display: flex; flex-direction: column">

@@ -124,10 +124,23 @@ window.doOpenCorrelationIdListModal = function (event = undefined) {
 }
 
 // Function that opens the date picker
-// so that the user can select time range
+// so that the user can select starting date
 // for filtering the correlation id list
-window.doOpenDatePicker = function (event = undefined) {
+window.doOpenDateStartPicker = function (event = undefined) {
   // show the datetime picker for user
+  console.log('Picking start date')
+  const dateStartInput = document.getElementById("dateStartInput");
+  dateStartInput.showPicker();
+}
+
+// Function that opens the date picker
+// so that the user can select ending date
+// for filtering the correlation id list
+window.doOpenDateEndPicker = function (event = undefined) {
+  // show the datetime picker for user
+  console.log('Picking end date')
+  const dateEndInput = document.getElementById("dateEndInput");
+  dateEndInput.showPicker();
 }
 
 window.loadLog = (event) => {
@@ -276,6 +289,7 @@ window.remove = function (event = undefined) {
 window.modalClose = function (event) {
   const modal = document.querySelector("#correlationIdListModal")
   modal.style.display = "none"
+  const dateEndInput = document.getElementById("dateEndInput");
   return eventHandled(event);
 }
 
