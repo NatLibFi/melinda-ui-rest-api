@@ -123,6 +123,13 @@ window.doOpenCorrelationIdListModal = function (event = undefined) {
   showCorrelationIdList();
 }
 
+// Function that opens the date picker
+// so that the user can select time range
+// for filtering the correlation id list
+window.doOpenDatePicker = function (event = undefined) {
+  // show the datetime picker for user
+}
+
 window.loadLog = (event) => {
   eventHandled(event);
   const logType = document.querySelector(`#viewer #logType`).value;
