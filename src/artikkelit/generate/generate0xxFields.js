@@ -14,6 +14,10 @@ export function generatef041(articleLanguage, abstractLanguages) {
       return [{code: 'a', value: 'smi'}, {code: 'a', value: articleLanguage}, ...abstractLanguageSubfields];
     }
 
+    if (lang === 'esp') {
+      return [{code: 'a', value: 'spa'}, ...abstractLanguageSubfields];
+    }
+
     return [{code: 'a', value: articleLanguage}, ...abstractLanguageSubfields];
   }
 
@@ -29,7 +33,6 @@ export function generatef041(articleLanguage, abstractLanguages) {
   ];
 
   function generateAbstractLanguageSubfields(uniqAbstractLanguages) {
-
     const uniqAbstractLanguagesMapped = uniqAbstractLanguages.map(language => ({code: 'b', value: language}));
     const arraySmi = uniqAbstractLanguagesMapped.filter((element) => element.value === 'smi');
     const arraySmeSne = uniqAbstractLanguagesMapped.filter((element) => element.value === 'sme' || element.value === 'smn');
@@ -59,7 +62,14 @@ export function generatef041(articleLanguage, abstractLanguages) {
 
     const bSubFieldsChecked = buildNewArray();
 
-    return bSubFieldsChecked;
+    const correctedOutput = bSubFieldsChecked.map(item => {
+      if (item.value === 'esp') {
+        return {...item, value: 'spa'};
+      }
+      return item;
+    });
+
+    return correctedOutput;
 
   }
 }

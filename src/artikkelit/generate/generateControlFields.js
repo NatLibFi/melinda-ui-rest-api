@@ -31,6 +31,10 @@ export function generatef008(year, sourceType, isElectronic, language) {
       return 'smi';
     }
 
+    if (language.iso6392b && language.iso6392b === 'esp') {
+      return 'spa';
+    }
+
     return language.iso6392b;
   }
 
