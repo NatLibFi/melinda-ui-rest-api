@@ -22,105 +22,115 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Nav bar -->
 
-  <div id="navbar"></div>
-
-  <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
-
   <div id="root">
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Loading "screen" -->
-
     <div id="loading">
-      </div>
+    </div>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
     <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username"/>
+        <input id="login-username" name="username" />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password"/>
+        <input id="login-password" type="password" name="password" />
       </div>
       <div class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
         <label for="acceptterms" style="padding-left: 8px;">
           Hyväksyn
           <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
-          tietosuojaselosteen</a>
+            tietosuojaselosteen</a>
           ja evästeiden käytön.
-          <br/><br/>
+          <br /><br />
           Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-          </div>
+      </div>
       <div id="info"></div>
       <div style="display: flex; flex-direction: column; align-items: flex-end;">
         <button onClick="return login(event)">Kirjaudu</button>
-        </div>
-      </form>
+      </div>
+    </form>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Muuntaja tab -->
 
     <div id="muuntaja" hidden>
+
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Nav bar -->
+      <div id="navbar"></div>
+
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Toolbar -->
       <div class="IconBar ToolBar">
-        <button class="tooltip" tooltip-text="Ohjeet"><a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+        <button class="tooltip" tooltip-text="Ohjeet"><a class="material-icons"
+            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
         <button class="material-icons tooltip" tooltip-text="Uusi" onClick="onNew(event)">add</button>
         <button class="material-icons tooltip" tooltip-text="Etsi" onClick="onSearch(event)">search</button>
         <div class="dropdown">
           <button id="account-btn" class="material-icons">account_circle</button>
           <div id="account-menu" class="dropdown-content">
             <div class="menu-header" id="username">Tuntematon</div>
-            <hr/>
+            <hr />
             <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-            </div>
           </div>
+        </div>
       </div>
+      <div class="tools ToolBar col">
+        <div class="ToolBar BoxShadow header HBox">
+            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
+            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
+            <div id="type-options"></div>
+            <div id="profile-options"></div>
+            <button class="material-icons tooltip" tooltip-text="Jaa" onClick="copyLink(event)">share</button>
+        </div>
+        <div class="popup">Linkki kopioitu!</div>
+      </div>
+
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Record-Merge Panel -->
       <div class="record-merge-panel">
         <div id="source" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Lähdetietue</label>
-              <input id="ID"/>
-              </div>
-            <button class="material-icons tooltip" tooltip-text="Hae" onclick="return doTransform(event)">search</button>
+              <input id="ID" />
+            </div>
+            <button class="material-icons tooltip" tooltip-text="Hae"
+              onclick="return doTransform(event)">search</button>
             <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
-            </form>
+          </form>
           <div id="Record" class="marc-record">
           </div>
         </div>
+
         <div id="base" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
               <input id="ID"/>
-              </div>
-              <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
-              <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
-              <div class="dropdown">
-                <button class="material-icons" onclick="return ignore(event);">settings</button>
-                <div id="profile-menu" class="dropdown-content"></div>
-              </div>
-            </form>
+            </div>
+            <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
+            <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
+          </form>
           <div id="Record" class="marc-record">
           </div>
         </div>
+
         <div id="result" class="col BoxShadow">
           <div class="ToolBar HBox header">
             <div class="Filler">TULOSTIETUE</div>
-            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
-            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
-            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -131,28 +141,32 @@
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
       <div id="original" hidden>
-        <span id="field" class="marc-record"></span><br/>
+        <div id="field" class="marc-record"></div><br />
         <div style="display: flex; justify-content: right;">
           <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
         </div>
-        <hr/>
+        <hr />
       </div>
+
       <div class="fieldedit marc-record">
         <div style="display: flex;">
           Tag: <div id="tag"></div>
           Ind1: <div id="ind1"></div>
           Ind2: <div id="ind2"></div>
         </div>
-        <hr/>
+        <hr />
         <div id="fieldlist" width="100%">
         </div>
         <button onclick="return onAddField(event)">Uusi osakenttä</button>
       </div>
-      <hr/>
+
+      <hr />
+
       <div style="display: flex; justify-content: right;">
         <button onclick="return editDlgClose(event)">Peru muutokset</button>
         <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
       </div>
+
     </div>
   </div>
 
@@ -168,4 +182,5 @@
   </div>
 
 </body>
+
 </html>

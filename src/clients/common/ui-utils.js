@@ -151,3 +151,30 @@ export function createMenuBreak() {
   const item = document.createElement("hr");
   return item;
 }
+
+export function createDropdownItem(name, classNames, labelText) {
+  const item = document.createElement("div");
+  item.classList.add(...classNames);
+  item.innerHTML = name;
+  item.appendChild(createSelectLabel(labelText));
+  return item;
+}
+
+export function createSelectLabel(text) {
+  const label = document.createElement("label");
+  label.innerHTML = text;
+  return label;
+}
+
+export function createSelectItem(group) {
+  const select = document.createElement("select");
+  select.setAttribute("name", group);
+  return select;
+}
+
+export function createSelectOption(value, desc) {
+  const option = document.createElement("option");
+  option.setAttribute("value", value);
+  option.innerHTML = desc;
+  return option;
+}

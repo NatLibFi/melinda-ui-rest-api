@@ -37,7 +37,11 @@ export const articleTypesBooks = [
   {
     value: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa",
     text: ""
-  }
+  },
+  {
+    value: "D2 - Artikkeli ammatillisessa kokoomateoksessa",
+    text: ""
+  } 
 ]
 
 // https://wiki.eduuni.fi/display/cscsuorat/7.5+Julkaisutyypit+2021
