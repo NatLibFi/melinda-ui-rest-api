@@ -167,14 +167,16 @@ export function editField(field, original = null) {
   const ind2 = document.querySelector("#fieldEditDlg #ind2");
   ind2.innerHTML = ""
   ind2.appendChild(createInput('ind2', 'inds', field.ind2))
-
+  
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
+  subfields.innerHTML = "";
+
+  // if field contains "value" and not "subfields"
+  if (field.value) {
+    console.log(field.value); // TODO: create text box for editing field.value
   
-  if (/00[1-8]/.test(field.tag)) {
-    subfields.innerHTML = "Jotain uniikkia kentissä 001-008. Mitä halutaan implementoida?"
+    // if field contains "subfields" and not "value"
   } else {
-    subfields.innerHTML = ""
-  
     for (const subfield of field.subfields) {
       createSubfield(subfields, subfield);
     }
