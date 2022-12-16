@@ -169,18 +169,23 @@ export function editField(field, original = null) {
   ind2.appendChild(createInput('ind2', 'inds', field.ind2))
 
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
-  subfields.innerHTML = ""
-
-  for (const subfield of field.subfields) {
-    createSubfield(subfields, subfield);
+  
+  if (/00[1-8]/.test(field.tag)) {
+    subfields.innerHTML = "Jotain uniikkia kentissä 001-008. Mitä halutaan implementoida?"
+  } else {
+    subfields.innerHTML = ""
+  
+    for (const subfield of field.subfields) {
+      createSubfield(subfields, subfield);
+    }
+  
+    //*
+    Sortable.create(subfields, {
+      ghostClass: 'ghost-row',
+      animation: 50,
+    })
+    /**/
   }
-
-  //*
-  Sortable.create(subfields, {
-    ghostClass: 'ghost-row',
-    animation: 50,
-  })
-  /**/
 }
 
 function createSubfield(parent, subfield) {
