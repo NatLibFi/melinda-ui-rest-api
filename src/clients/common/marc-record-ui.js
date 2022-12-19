@@ -173,7 +173,9 @@ export function editField(field, original = null) {
 
   // if field contains "value" and not "subfields"
   if (field.value) {
-    console.log(field.value); // TODO: create text box for editing field.value
+    const value = document.querySelector("#fieldEditDlg #value");
+    value.innerHTML = "";
+    value.appendChild(createInput("value", "value", field.value));
   
     // if field contains "subfields" and not "value"
   } else {
