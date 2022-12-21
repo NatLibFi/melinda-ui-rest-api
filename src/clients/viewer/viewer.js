@@ -360,7 +360,7 @@ function createOption(text, value) {
 function showCorrelationIdList() {
   getCorrelationIdList()
     .then(list =>
-      list.forEach((correlationId) => { createAndAddCorrelationIdButton(correlationId) })
+      list.forEach((logItem) => { createAndAddCorrelationIdButton(logItem.correlationId) })
     ).then(() =>
       hidePlaceholderText()
     );

@@ -30,7 +30,7 @@ export function createCorrelationIdListService({melindaApiUrl, melindaApiUsernam
   return {getCorrelationIdList};
 
   async function getCorrelationIdList() {
-    const path = 'logs/list';
+    const path = 'logs/list?expanded=1';
     const url = new URL(`${melindaApiUrl}${path}`);
     const Authorization = generateAuthorizationHeader(melindaApiUsername, melindaApiPassword);
     const userAgent = 'Melinda commons API client / Javascript';
