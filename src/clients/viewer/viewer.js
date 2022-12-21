@@ -143,6 +143,28 @@ window.doOpenDateEndPicker = function (event = undefined) {
   dateEndInput.showPicker();
 }
 
+// This function is called 
+// if either start or end date input fields are changed
+// and then the modal list view is updated
+window.updateOnDateChange = (event) => {
+  eventHandled(event);
+  console.log('Start date or end date changed!')
+  updateCorrelationIdListView();
+}
+
+// Closes the correlation id list modal
+window.modalClose = function (event) {
+  const modal = document.querySelector("#correlationIdListModal")
+  modal.style.display = "none"
+  const dateEndInput = document.getElementById("dateEndInput");
+  return eventHandled(event);
+}
+
+// Ignore event
+window.ignore = function (event) {
+  return eventHandled(event);
+}
+
 window.loadLog = (event) => {
   eventHandled(event);
   const logType = document.querySelector(`#viewer #logType`).value;
@@ -285,19 +307,6 @@ window.remove = function (event = undefined) {
     });
 }
 
-// Closes the correlation id list modal
-window.modalClose = function (event) {
-  const modal = document.querySelector("#correlationIdListModal")
-  modal.style.display = "none"
-  const dateEndInput = document.getElementById("dateEndInput");
-  return eventHandled(event);
-}
-
-// Ignore event
-window.ignore = function (event) {
-  return eventHandled(event);
-}
-
 function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
   console.log(JSON.stringify(logs));
@@ -355,15 +364,39 @@ function createOption(text, value) {
   return option;
 }
 
-// Gets the list of correlation ids from api and then show it in the modal,
-// Hides the placeholder text for list fetching
+
+//-----------------------------------------------------------------------------
+// Functions for correlation id list modal 
+//-----------------------------------------------------------------------------
+
+var correlationIdList = null;
+
+// Gets the list of correlation ids from api,
+// and then shows the list in the modal,
+// and also hides the placeholder text for list fetching
 function showCorrelationIdList() {
   getCorrelationIdList()
     .then(list =>
-      list.forEach((logItem) => { createAndAddCorrelationIdButton(logItem.correlationId) })
-    ).then(() =>
+      correlationIdList = list)
+    .then(list =>
+      updateCorrelationIdListView()
+    )
+    .then(() =>
       hidePlaceholderText()
-    );
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+// Updates the list of correlation ids
+// using the start date and end date
+function updateCorrelationIdListView() {
+  const dateStartInputValue = document.getElementById("dateStartInput").value;
+  const dateEndInputValue = document.getElementById("dateEndInput").value;
+
+  // filter the correlationIdList with dateStart and dateEnd
+  //filteredList.forEach((logItem) => createAndAddCorrelationIdButton(logItem.correlationId))
 }
 
 // Hides the placeholder in modal after fetching the correlation id list
