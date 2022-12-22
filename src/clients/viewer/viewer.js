@@ -443,7 +443,6 @@ function updateCorrelationIdListView() {
   const filteredList = filterList(dateStartInputValue, dateEndInputValue);
   const sortedList = filteredList.sort(compareLogItems);
 
-
   if (sortedList.length === 0) {
     showPlaceholderText('No correlation ids found.');
     return;
@@ -451,20 +450,21 @@ function updateCorrelationIdListView() {
 
   showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids:')
   sortedList.forEach((logItem) => createAndAddCorrelationIdButton(logItem.correlationId, logItem.logItemType));
-
 }
 
+// Sets the string given as parameter
+// to the placeholder for list info
 function showPlaceholderText(text) {
   const placeholderText = document.getElementById('fetchListPlaceholderText');
-  placeholderText.style.display = '';
   placeholderText.innerHTML = text;
 }
 
-// Function that takes correlationId
-// creates a button for it and adds it to the list
+// Function that takes correlationId and logItemType
+// and creates a button for it and adds it to the list
 function createAndAddCorrelationIdButton(correlationId, logItemType) {
-  const newCorrelationIdButton = createCorrelationIdButton(correlationId, logItemType);
-  addCorrelationIdButtonToList(newCorrelationIdButton);
+  const correlationIdButton = createCorrelationIdButton(correlationId, logItemType);
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.append(correlationIdButton);
 }
 
 // Function that creates a correlation id button
@@ -499,10 +499,4 @@ function selectCorrelationIdAndTypeAndSearch(correlationId, logItemType) {
 
   doSearchPress();
   modalClose();
-}
-
-// Function that adds correlation id button to the list element in the modal
-function addCorrelationIdButtonToList(correlationIdButton) {
-  const buttonsList = document.getElementById('correlationIdListButtons');
-  buttonsList.append(correlationIdButton);
 }
