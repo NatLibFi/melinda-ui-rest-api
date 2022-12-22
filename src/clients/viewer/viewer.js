@@ -474,11 +474,16 @@ function createCorrelationIdButton(correlationId, logItemType) {
   correlationIdButton.innerHTML = correlationId + ' | ' + logItemType;
 
   if (logItemType === 'MERGE_LOG') {
-    correlationIdButton.className = 'merge-log-button'
+    correlationIdButton.className = 'merge-log-button';
   }
 
   if (logItemType === 'MATCH_LOG') {
-    correlationIdButton.className = 'match-log-button'
+    correlationIdButton.className = 'match-log-button';
+  }
+
+  const selectedId = document.querySelector(`#viewer #id`).value;
+  if (correlationId === selectedId) {
+    correlationIdButton.classList.add('selected-id');
   }
 
   correlationIdButton.addEventListener("click", function () {

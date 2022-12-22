@@ -177,7 +177,6 @@ div#correlationIdListModal {}
 .correlation-id {
   font-family: roboto_monoregular, "Roboto Mono", monospace;
   font-size: 14.5px;
-
 }
 
 .correlation-id>* {
@@ -206,4 +205,16 @@ div#correlationIdListModal {}
 
 .match-log-button {
   color: rgb(50, 50, 50)
+}
+
+.merge-log-button:focus {
+  background-color: gray;
+}
+
+.match-log-button:focus {
+  background-color: gray;
+}
+
+ .selected-id{
+  background-color: gray;
 }
