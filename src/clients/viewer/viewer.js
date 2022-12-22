@@ -369,6 +369,7 @@ function createOption(text, value) {
 // Functions for correlation id list modal 
 //-----------------------------------------------------------------------------
 
+// The list is stored here after fetching
 var correlationIdList = null;
 
 // Gets the list of correlation ids from api,
@@ -378,7 +379,7 @@ function showCorrelationIdList() {
   getCorrelationIdList()
     .then(list =>
       correlationIdList = list)
-    .then(list =>
+    .then(() =>
       updateCorrelationIdListView()
     )
     .then(() =>
@@ -389,14 +390,63 @@ function showCorrelationIdList() {
     });
 }
 
-// Updates the list of correlation ids
-// using the start date and end date
+// Filters the list by given start date and end date:
+//    -If no starting or ending date is given (parameters are empty string),
+//        the whole list is shown.
+//    -If only startDate is given in date format and endDate is empty,
+//        list is filtered to show all the ids only from startDate and forward.
+//    -Giving parameter endDate in date format and parameter startDate as empty
+//        filters the list to show all the ids up to the given end date (including the end date).
+function filterList(startDate, endDate) {
+  switch (true) {
+
+    case (startDate !== '' && endDate !== ''):
+      return correlationIdList.filter(logItem =>
+        getDate(logItem) >= startDate && getDate(logItem) <= endDate);
+
+    case (startDate !== '' && endDate === ''):
+      return correlationIdList.filter(logItem =>
+        getDate(logItem) >= startDate);
+
+    case (startDate === '' && endDate !== ''):
+      return correlationIdList.filter(logItem =>
+        getDate(logItem) <= endDate);
+
+    default:
+      return correlationIdList;
+  }
+}
+
+// Gets the log item as parameter
+// and returns a substring ("yyyy-mm-dd") of the 
+// "creationTime" timestamp ("yyyy-mm-ddThh:mm:ss.sssZ")
+function getDate(logItem) {
+  return logItem.creationTime.substring(0, 10);
+}
+
+// Compare function for array sorting.
+//  -Primary sorting: correlation ids alphabetically
+//  -Secondary sorting: sort log types alphabetically
+// The list is first sorted alphabetically by correlation ids, 
+// and if there are two identical correlation ids, 
+// then the id with MERGE_LOG is listed before the same id with MATCH_LOG
+function compareLogItems(logItemA, logItemB) {
+  return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType)
+}
+
+// Updates the list view of correlation ids
+// using the start date and end date.
 function updateCorrelationIdListView() {
   const dateStartInputValue = document.getElementById("dateStartInput").value;
   const dateEndInputValue = document.getElementById("dateEndInput").value;
 
-  // filter the correlationIdList with dateStart and dateEnd
-  //filteredList.forEach((logItem) => createAndAddCorrelationIdButton(logItem.correlationId))
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.replaceChildren();
+
+  const filteredList = filterList(dateStartInputValue, dateEndInputValue);
+  const sortedList = filteredList.sort(compareLogItems);
+
+  sortedList.forEach((logItem) => createAndAddCorrelationIdButton(logItem.correlationId, logItem.logItemType));
 }
 
 // Hides the placeholder in modal after fetching the correlation id list
@@ -407,19 +457,27 @@ function hidePlaceholderText() {
 
 // Function that takes correlationId
 // creates a button for it and adds it to the list
-function createAndAddCorrelationIdButton(correlationId) {
-  const newCorrelationIdButton = createCorrelationIdButton(correlationId);
+function createAndAddCorrelationIdButton(correlationId, logItemType) {
+  const newCorrelationIdButton = createCorrelationIdButton(correlationId, logItemType);
   addCorrelationIdButtonToList(newCorrelationIdButton);
 }
 
 // Function that creates a correlation id button
 // and returns it
-function createCorrelationIdButton(correlationId) {
+function createCorrelationIdButton(correlationId, logItemType) {
   const correlationIdButton = document.createElement('button');
+  correlationIdButton.innerHTML = correlationId + ' | ' + logItemType;
 
-  correlationIdButton.innerHTML = correlationId;
+  if (logItemType === 'MERGE_LOG') {
+    correlationIdButton.style.fontWeight = 'bold'
+  }
+
+  if (logItemType === 'MATCH_LOG') {
+    correlationIdButton.style.color = 'dark gray'
+  }
+
   correlationIdButton.addEventListener("click", function () {
-    selectCorrelationIdAndSearch(correlationId);
+    selectCorrelationIdAndTypeAndSearch(correlationId, logItemType);
   });
 
   return correlationIdButton;
@@ -427,9 +485,13 @@ function createCorrelationIdButton(correlationId) {
 
 // Function that sets the correlation id to input field id,
 // and starts the search process and closing the modal
-function selectCorrelationIdAndSearch(correlationId) {
+function selectCorrelationIdAndTypeAndSearch(correlationId, logItemType) {
   const id = document.querySelector(`#viewer #id`);
   id.value = correlationId;
+
+  const logType = document.querySelector(`#viewer #logType`);
+  logType.value = logItemType;
+
   doSearchPress();
   modalClose();
 }
