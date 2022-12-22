@@ -382,9 +382,6 @@ function showCorrelationIdList() {
     .then(() =>
       updateCorrelationIdListView()
     )
-    .then(() =>
-      hidePlaceholderText()
-    )
     .catch((error) => {
       console.log(error);
     });
@@ -446,13 +443,21 @@ function updateCorrelationIdListView() {
   const filteredList = filterList(dateStartInputValue, dateEndInputValue);
   const sortedList = filteredList.sort(compareLogItems);
 
+
+  if (sortedList.length === 0) {
+    showPlaceholderText('No correlation ids found.');
+    return;
+  }
+
+  showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids:')
   sortedList.forEach((logItem) => createAndAddCorrelationIdButton(logItem.correlationId, logItem.logItemType));
+
 }
 
-// Hides the placeholder in modal after fetching the correlation id list
-function hidePlaceholderText() {
+function showPlaceholderText(text) {
   const placeholderText = document.getElementById('fetchListPlaceholderText');
-  placeholderText.style.display = "none";
+  placeholderText.style.display = '';
+  placeholderText.innerHTML = text;
 }
 
 // Function that takes correlationId
@@ -469,11 +474,11 @@ function createCorrelationIdButton(correlationId, logItemType) {
   correlationIdButton.innerHTML = correlationId + ' | ' + logItemType;
 
   if (logItemType === 'MERGE_LOG') {
-    correlationIdButton.style.fontWeight = 'bold'
+    correlationIdButton.className = 'merge-log-button'
   }
 
   if (logItemType === 'MATCH_LOG') {
-    correlationIdButton.style.color = 'dark gray'
+    correlationIdButton.className = 'match-log-button'
   }
 
   correlationIdButton.addEventListener("click", function () {

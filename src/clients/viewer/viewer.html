@@ -211,29 +211,40 @@
 
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
-      <label class="correlation-id">Please select a correlation id</label>
+      <label class="correlation-id placeholder">Please select a correlation id for viewing log item</label>
 
       <hr />
 
       <div id="filterCorrelationIdList">
-        <p class="correlation-id">You can filter the list by selecting </br> start date and/or end date.</p>
+        <p class="correlation-id">Filter the list by selecting start date and/or end date.</p>
 
-        <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
-          onclick="return doOpenDateStartPicker(event)">today</button>
-        <input id="dateStartInput" type="date" onchange="return updateOnDateChange(event)">
+        <div class="datepicker-container">
 
-        <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnDateChange(event)">
-        <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
-          onclick="return doOpenDateEndPicker(event)">event</button>
+          <div class="datepicker-container">
+            <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
+              onclick="return doOpenDateStartPicker(event)">today</button>
+            <input id="dateStartInput" type="date" onchange="return updateOnDateChange(event)">
+          </div>
+
+          <div class="datepicker-container">
+            <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnDateChange(event)">
+            <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
+              onclick="return doOpenDateEndPicker(event)">event</button>
+          </div>
+
+        </div>
 
       </div>
 
       <hr />
 
+      <br>
+      <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
+      <br>
+
       <!-- show list of correlation ids here -->
-      <div id="correlationIdListButtons" class="correlation-id" style="display: flex; flex-direction: column">
-        <div id="fetchListPlaceholderText">...fetching list, please wait...</div>
-      </div>
+      <div id="correlationIdListButtons" class="correlation-id buttons-list"></div>
+
 
     </div>
 
