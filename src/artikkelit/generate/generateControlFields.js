@@ -23,7 +23,22 @@ export function generatef007(isElectronic = false) {
 }
 
 export function generatef008(year, sourceType, isElectronic, language) {
-  const f008Parts = ['000000s', year, selectMaterialType(sourceType, isElectronic), language, ' c'];
+
+  function checkLanguage() {
+
+    if (language.iso6392b &&
+        (language.iso6392b === 'smi' || language.iso6392b === 'sme' || language.iso6392b === 'smn')) {
+      return 'smi';
+    }
+
+    if (language.iso6392b && language.iso6392b === 'esp') {
+      return 'spa';
+    }
+
+    return language.iso6392b;
+  }
+
+  const f008Parts = ['000000s', year, selectMaterialType(sourceType, isElectronic), checkLanguage(), ' c'];
 
   return [{tag: '008', value: f008Parts.join('')}];
 

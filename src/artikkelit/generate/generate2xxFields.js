@@ -1,16 +1,38 @@
 
-export function generatef245(articleTitle, authors) {
+export function generatef245(articleTitle, authors, artLang) {
 
   if (articleTitle) {
     return [
       {tag: '245',
         ind1: ind1Value(),
-        ind2: '0',
+        ind2: ind2Value(),
         subfields: [{code: 'a', value: `${articleTitle}.`}]}
     ];
   }
 
   return [];
+
+  function ind2Value () {
+
+    if (articleTitle && artLang === 'eng') {
+      const titleSplitted = articleTitle.split(' ');
+      const [firstWord] = titleSplitted;
+
+      if (firstWord === 'A') {
+        return '2';
+      }
+
+      if (firstWord === 'An') {
+        return '3';
+      }
+
+      if (firstWord === 'The') {
+        return '4';
+      }
+
+    }
+    return '0';
+  }
 
   function ind1Value () {
     if (authors.length === 0) {

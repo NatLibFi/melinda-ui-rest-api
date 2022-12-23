@@ -25,6 +25,7 @@ export function createArtikkelitService() {
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
+    const articleCategory = article.type; // for field 591
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
@@ -43,7 +44,7 @@ export function createArtikkelitService() {
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
         ...generatef100sf110sf700sf710s(authors),
-        ...generatef245(articleTitle, authors),
+        ...generatef245(articleTitle, authors, article.language.iso6392b),
         ...generatef246(articleTitleOther),
         ...generatef336(),
         ...generatef337(isElectronic),
@@ -52,7 +53,7 @@ export function createArtikkelitService() {
         ...generatef500(notes), // general notes
         ...generatef520(abstracts), // Abstracts
         ...generatef567(metodologys),
-        ...generatef591(sourceType, sciences),
+        ...generatef591(sourceType, sciences, articleCategory),
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
         ...generatef599(f599a, f599x),

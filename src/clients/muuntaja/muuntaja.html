@@ -90,7 +90,9 @@
             <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
             <div id="type-options"></div>
             <div id="profile-options"></div>
+            <button class="material-icons tooltip" tooltip-text="Jaa" onClick="copyLink(event)">share</button>
         </div>
+        <div class="popup">Linkki kopioitu!</div>
       </div>
 
       <!-- ------------------------------------------------------------------------ -->
@@ -139,7 +141,7 @@
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
       <div id="original" hidden>
-        <span id="field" class="marc-record"></span><br />
+        <div id="field" class="marc-record"></div><br />
         <div style="display: flex; justify-content: right;">
           <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
         </div>

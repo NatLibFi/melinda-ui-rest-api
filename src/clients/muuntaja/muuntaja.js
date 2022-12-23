@@ -35,8 +35,47 @@ window.initialize = function () {
         const username = document.querySelector("#account-menu #username")
         username.innerHTML = Account.get()["Name"];
         showTab('muuntaja');
+        parseUrlParameters();
         doTransform();
       })
+  }
+
+  function parseUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sourceId = urlParams.get("sourceId") || "";
+    const baseId = urlParams.get("baseId") || "";
+    const type = urlParams.get("type") || "p2e";
+    const profile = urlParams.get("profile") || "KVP";
+
+    document.querySelector(".record-merge-panel #source #ID").defaultValue = sourceId;
+    document.querySelector(".record-merge-panel #base #ID").defaultValue = baseId;
+    document.querySelector("#type-options [name='type']").value = type;
+    document.querySelector("#profile-options [name='profile']").value = profile;
+  }
+
+  document.querySelector(".record-merge-panel #source #ID").addEventListener("input", updateUrlParameters);
+  document.querySelector(".record-merge-panel #base #ID").addEventListener("input", updateUrlParameters);
+
+  function updateUrlParameters(e) {
+    const isOnPath = (id) => e.composedPath().some(element => element.id === id);
+    const removeIfEmpty = (id) => {if (e.target.value === "") urlParams.delete(id)}
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (isOnPath("source") && isOnPath("ID")) {
+      urlParams.set("sourceId", e.target.value);
+      removeIfEmpty("sourceId");
+    }
+    
+    if (isOnPath("base") && isOnPath("ID")) {
+      urlParams.set("baseId", e.target.value);
+      removeIfEmpty("baseId");
+    }
+    
+    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${urlParams}`));
+
+    if (window.location.search === "") {
+      window.history.replaceState({}, "", "/muuntaja/")
+    }
   }
 }
 
@@ -142,6 +181,39 @@ window.onSettings = function (e) {
 window.onAccount = function (e) {
   console.log('Account:', e);
   logout();
+}
+
+window.copyLink = function (e) {
+  eventHandled(e);
+
+  const type = document.querySelector("#type-options [name='type']").value;
+  const profile = document.querySelector("#profile-options [name='profile']").value;
+  var leadingChar = "";
+
+  if (window.location.href.includes("?")) {
+    if (window.location.search !== "") {
+      leadingChar = "&";
+    }
+  } else {
+    leadingChar = "?";
+  }
+
+  navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
+  
+  // Fade in and fade out popup text
+  var popup = document.querySelector(".popup");
+  fadeIn(popup);
+  fadeOut(popup);
+
+  function fadeIn(popup) {
+    popup.style.display = "block";
+  }
+
+  function fadeOut(popup) {
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000);
+  }
 }
 
 //-----------------------------------------------------------------------------
