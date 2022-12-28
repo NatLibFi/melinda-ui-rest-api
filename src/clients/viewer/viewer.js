@@ -376,15 +376,14 @@ var correlationIdList = null;
 // and then shows the list in the modal,
 // and also hides the placeholder text for list fetching
 function showCorrelationIdList() {
-  getCorrelationIdList()
+  const expanded = '1';
+
+  getCorrelationIdList(expanded)
     .then(list =>
       correlationIdList = list)
     .then(() =>
-      updateCorrelationIdListView()
-    )
-    .catch((error) => {
-      console.log(error);
-    });
+      updateCorrelationIdListView())
+      
 }
 
 // Filters the list by given start date and end date:

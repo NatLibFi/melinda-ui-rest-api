@@ -1,10 +1,6 @@
-import fetch from 'node-fetch';
-import {URL} from 'url';
-import {generateAuthorizationHeader} from '@natlibfi/melinda-commons';
-
 export function createLogService(restApiLogClient) {
 
-  return {getMatchLog, getMatchValidationLog, getMergeLog};
+  return {getMatchLog, getMatchValidationLog, getMergeLog, getLogsList};
 
   async function getMatchLog(params) {
     const result = await restApiLogClient.getLog({logItemType: 'MATCH_LOG', ...params});
@@ -23,45 +19,10 @@ export function createLogService(restApiLogClient) {
     const mergeLogs = result.filter(log => log.logItemType === 'MERGE_LOG');
     return {...mergeLogs};
   }
-}
 
-export function createCorrelationIdListService({melindaApiUrl, melindaApiUsername, melindaApiPassword}) {
-
-  return {getCorrelationIdList};
-
-  async function getCorrelationIdList() {
-    const path = 'logs/list?expanded=1';
-    const url = new URL(`${melindaApiUrl}${path}`);
-    const Authorization = generateAuthorizationHeader(melindaApiUsername, melindaApiPassword);
-    const userAgent = 'Melinda commons API client / Javascript';
-    const method = 'get';
-    const contentType = 'application/json';
-    const body = null;
-
-    const options = {
-      method,
-      headers: {
-        'User-Agent': userAgent,
-        'content-type': contentType,
-        Authorization,
-        Accept: 'application/json'
-      },
-      body
-    };
-
-    const result = await fetch(url, options);
-
-    if (result.ok) {
-      return result.json();
-    }
-
-    return {
-      error: {
-        status: result.status,
-        message: result.text()
-      }
-    };
-
+  async function getLogsList(params) {
+    const result = await restApiLogClient.getLogs(params);
+    return result;
   }
 
 }

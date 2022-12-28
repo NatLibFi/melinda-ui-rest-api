@@ -104,11 +104,9 @@
             <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
           </div>
 
-          <!-- ---------------------------------------------------------------------- -->
           <!-- Button for opening a modal containing correlation id list -->
           <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip" tooltip-text="View id list"
             onclick="return doOpenCorrelationIdListModal(event)">library_books</button>
-          <!-- ---------------------------------------------------------------------- -->
 
           <div class="Select VBox">
             <label>Sequence</label>
@@ -211,45 +209,39 @@
 
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
+      <!-- shows instructions for list -->
       <label class="correlation-id placeholder">Please select a correlation id for viewing log item</label>
-
       <hr />
 
+      <!-- shows buttons for opening calendar for start and end date pick and place for date input -->
       <div id="filterCorrelationIdList">
         <p class="correlation-id">Filter the list by selecting start date and/or end date.</p>
-
         <div class="datepicker-container">
-
           <div class="datepicker-container">
             <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
               onclick="return doOpenDateStartPicker(event)">today</button>
             <input id="dateStartInput" type="date" onchange="return updateOnDateChange(event)">
           </div>
-
           <div class="datepicker-container">
             <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnDateChange(event)">
             <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
               onclick="return doOpenDateEndPicker(event)">event</button>
           </div>
-
         </div>
-
       </div>
 
       <hr />
-
       <br>
+      <!-- shows info about search results -->
       <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
       <br>
 
-      <!-- show list of correlation ids here -->
+      <!-- shows the list of correlation ids -->
       <div id="correlationIdListButtons" class="correlation-id buttons-list"></div>
-
 
     </div>
 
   </div>
-
 
 
   <!-- ---------------------------------------------------------------------- -->

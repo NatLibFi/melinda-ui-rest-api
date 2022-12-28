@@ -7,23 +7,15 @@
 
 /* eslint-disable no-unused-vars */
 
-import HttpStatus from 'http-status';
-import express, {Router} from 'express';
-import {generateJwtToken} from '@natlibfi/passport-melinda-jwt';
-//import {Error as APIError} from '@natlibfi/melinda-commons';
+import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiLogClient} from '@natlibfi/melinda-rest-api-client';
-import {createLogService, createCorrelationIdListService} from './viewerService';
-//import createClient from '@natlibfi/sru-client';
-//import {MARCXML} from '@natlibfi/marc-record-serializers';
+import {createLogService} from './viewerService';
 
-// https://github.com/NatLibFi/marc-record-serializers
-
-export default function (melindaApiOptions) { // eslint-disable-line no-unused-vars
+export default function (melindaApiOptions) {
   const logger = createLogger();
   const restApiLogClient = createMelindaApiLogClient(melindaApiOptions);
   const logService = createLogService(restApiLogClient);
-  const correlationIdListService = createCorrelationIdListService(melindaApiOptions);
 
   return new Router(melindaApiOptions)
     .get('/match-log/:id', getMatchLog)
@@ -92,13 +84,6 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     res.json(result);
   }
 
-  async function getCorrelationIdList(req, res, next) {
-    logger.verbose('GET getCorrelationIdList');
-    const result = await correlationIdListService.getCorrelationIdList();
-    logger.debug(JSON.stringify(result));
-    res.json(result);
-  }
-
 
   function protectLog(req, res, next) {
     const {id: correlationId} = req.params || {};
@@ -125,4 +110,20 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     logger.debug(`Removing log: ${params.correlationId}`);
     res.status(200);
   }
+
+
+  async function getCorrelationIdList(req, res, next) {
+    logger.verbose('GET getLogsList');
+
+    const {expanded} = req.query || {};
+
+    const params = {
+      expanded,
+      limit: 0
+    };
+
+    const result = await logService.getLogsList(params);
+    res.json(result);
+  }
+
 }

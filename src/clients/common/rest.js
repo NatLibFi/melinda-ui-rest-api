@@ -165,25 +165,17 @@ export function getMatchLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
 
-//-----------------------------------------------------------------------------
-
 export function getMatchValidationLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
-
-//-----------------------------------------------------------------------------
 
 export function getMergeLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
 
-//-----------------------------------------------------------------------------
-
-export function getCorrelationIdList() {
-  return fetchLogs(`${RESTurl}/viewer/correlation-id-list`);
+export function getCorrelationIdList(expanded) {
+  return fetchLogs(`${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`);
 }
-
-//-----------------------------------------------------------------------------
 
 async function fetchLogs(url) {
   const result = await fetch(url,
@@ -227,3 +219,8 @@ export function removeLog(id, logType) {
     }
   )
 }
+
+//-----------------------------------------------------------------------------
+
+
+//*****************************************************************************
