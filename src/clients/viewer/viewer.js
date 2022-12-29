@@ -354,8 +354,14 @@ function showCorrelationIdList() {
   const expanded = '1';
 
   getCorrelationIdList(expanded)
-    .then(list => correlationIdList = list)
-    .then(() => updateCorrelationIdListView())
+    .then(list =>
+      correlationIdList = list)
+    .then(() =>
+      updateCorrelationIdListView())
+    .catch((error) => {
+      showPlaceholderText('Sorry, correlation id list could not be fetched')
+      console.log(error);
+    });
 }
 
 function updateCorrelationIdListView() {
@@ -369,7 +375,7 @@ function updateCorrelationIdListView() {
   const sortedList = filteredList.sort(compareLogItems);
 
   if (sortedList.length === 0) {
-    showPlaceholderText('No correlation ids found.');
+    showPlaceholderText('No correlation ids found, please check your search filters.');
     return;
   }
 
