@@ -113,7 +113,7 @@ export default function (melindaApiOptions) {
 
 
   async function getCorrelationIdList(req, res, next) {
-    logger.verbose('GET getLogsList');
+    logger.verbose('GET getCorrelationIdList');
 
     const {expanded} = req.query || {};
 
@@ -122,7 +122,8 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    const result = await logService.getLogsList(params);
+    const result = await logService.getCorrelationIdList(params);
+    logger.debug('*******************************************');
     res.json(result);
   }
 
