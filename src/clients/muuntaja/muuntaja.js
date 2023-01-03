@@ -185,6 +185,7 @@ window.onAccount = function (e) {
 
 window.copyLink = function (e) {
   eventHandled(e);
+  e.preventDefault();
 
   const type = document.querySelector("#type-options [name='type']").value;
   const profile = document.querySelector("#profile-options [name='profile']").value;
@@ -212,7 +213,7 @@ window.copyLink = function (e) {
   function fadeOut(popup) {
     setTimeout(() => {
       popup.style.display = "none";
-    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000);
+    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000 - 500);
   }
 }
 
