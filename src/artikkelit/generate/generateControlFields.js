@@ -1,10 +1,10 @@
 export function generateLeader(sourceType) {
   if (sourceType === 'journal') {
-    return '00000naba22000005i 4500';
+    return '00000nab a22000005i 4500';
   }
 
   if (sourceType === 'book') {
-    return '00000naaa22000005i 4500';
+    return '00000naa a22000005i 4500';
   }
 
   throw new Error('Invalid source type for leader');
