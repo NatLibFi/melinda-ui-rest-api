@@ -202,17 +202,15 @@ window.copyLink = function (e) {
   
   // Fade in and fade out popup text
   var popup = document.querySelector(".popup");
-  fadeIn(popup);
-  fadeOut(popup);
+  fadePopup();
 
-  function fadeIn(popup) {
-    popup.style.display = "block";
-  }
-
-  function fadeOut(popup) {
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000);
+  function fadePopup() {
+    popup.className = "popup";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        popup.className = "popup fading";
+      });
+    });
   }
 }
 
