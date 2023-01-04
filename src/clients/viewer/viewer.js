@@ -4,15 +4,15 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
-import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
+import { setNavBar, startProcess, stopProcess } from "/common/ui-utils.js";
+import { showTab, resetForms, reload } from "/common/ui-utils.js";
+import { createMenuBreak, createMenuItem, createMenuSelection } from "/common/ui-utils.js";
 
-import {Account, doLogin, logout} from "/common/auth.js"
-import {transformRequest} from "/common/rest.js";
-import {showRecord} from "/common/marc-record-ui.js";
-import {getMatchLog, getMergeLog, protectLog, removeLog} from "/common/rest.js";
-import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
+import { Account, doLogin, logout } from "/common/auth.js"
+import { transformRequest } from "/common/rest.js";
+import { showRecord } from "/common/marc-record-ui.js";
+import { getMatchLog, getMergeLog, protectLog, removeLog } from "/common/rest.js";
+import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -81,16 +81,28 @@ var transformed = {
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
-  const sequence = document.querySelector('#viewer #sequence').value || 0;
   const logType = document.querySelector(`#viewer #logType`).value;
+  const sequence = getSequence();
 
   doFetch(event, id, sequence, logType);
 }
+
+function getSequence() {
+  const sequenceInputField = document.querySelector('#viewer #sequenceInput');
+  if (sequenceInputField.value !== '') {
+    return sequenceInputField.value;
+  }
+
+  const sequenceSelect = document.querySelector('#viewer #sequence');
+  return sequenceSelect.value || 0;
+}
+
 
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event);
   startProcess();
   idbClear();
+  
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
   sequenceSelect.setAttribute('disabled', false);
@@ -111,6 +123,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     col3.style.display = 'none';
     getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
+
+  
 }
 
 window.loadLog = (event) => {
@@ -170,7 +184,7 @@ window.loadLog = (event) => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
+      const { record, note } = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, "record2", {}, 'viewer');
     });
@@ -262,7 +276,7 @@ function setDataToIndexDB(logs, sequence) {
 
   if (keys.length === 0) {
     select.add(createOption('0', 0));
-    idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
+    idbSet('0', { incomingRecord: {}, databaseRecord: {}, mergedRecord: {} });
     stopProcess();
     // TODO toast 404 not found
     select.value = 0;
@@ -281,6 +295,9 @@ function setDataToIndexDB(logs, sequence) {
   if (sequence !== 0 && refactoredKeys.includes(sequence)) {
     select.value = sequence;
   }
+
+  const sequenceInputField = document.getElementById("sequenceInput");
+  sequenceInputField.value = '';
 
   select.dispatchEvent(new Event('change'));
 
