@@ -97,11 +97,19 @@
             <label>Id (Correlation id)</label>
             <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
           </div>
+          
           <div class="Select VBox">
             <label>Sequence</label>
             <select id="sequence" disabled="true" onchange="return loadLog(event)">
             </select>
           </div>
+    
+          <!-- Input field for sequence, maximum length of a sequence is 3 characters (number from 1-999) -->
+          <div class="Filler VBox Input">
+            <label>Sequence input</label>
+            <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3"/>
+          </div>
+
           <input type="hidden" id="logType" value="mergeLog" />
           <button class="material-icons tooltip" tooltip-text="Etsi"
             onclick="return doSearchPress(event)">search</button>
