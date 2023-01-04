@@ -353,6 +353,8 @@ var correlationIdList = null;
 function showCorrelationIdList() {
   const expanded = '1';
 
+  startProcess();
+
   getCorrelationIdList(expanded)
     .then(list =>
       correlationIdList = list)
@@ -381,6 +383,7 @@ function updateCorrelationIdListView() {
 
   showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids:')
   sortedList.forEach((logItem) => createLogItemButton(logItem.correlationId, logItem.logItemType));
+  stopProcess();
 }
 
 function filterList(startDate, endDate) {
