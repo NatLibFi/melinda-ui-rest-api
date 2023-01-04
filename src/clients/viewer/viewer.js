@@ -102,7 +102,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   eventHandled(event);
   startProcess();
   idbClear();
-  
+
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
   sequenceSelect.setAttribute('disabled', false);
@@ -124,7 +124,6 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
 
-  
 }
 
 window.loadLog = (event) => {
@@ -297,6 +296,11 @@ function setDataToIndexDB(logs, sequence) {
   }
 
   const sequenceInputField = document.getElementById("sequenceInput");
+
+  if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
+    window.alert(`No search results for sequence "${sequenceInputField.value}"`);
+  }
+  
   sequenceInputField.value = '';
 
   select.dispatchEvent(new Event('change'));
