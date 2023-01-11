@@ -40,7 +40,7 @@ export function createArtikkelitService() {
       fields: [
         ...generatef005(),
         ...generatef007(isElectronic),
-        ...generatef008(year, sourceType, isElectronic, articleLanguage),
+        ...generatef008(journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
         ...generatef041(articleLanguage.iso6392b, abstractLanguages),
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
