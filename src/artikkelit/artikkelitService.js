@@ -12,7 +12,7 @@ import {generatef856} from './generate/generate8xxFields';
 import {generatef960} from './generate/generate9xxFields';
 import {generatef6xxs} from './generate/generate6xxFields';
 
-import {generateTests} from './generate/compare.js'; // ***
+//import {generateTests} from './generate/index.spec.js'; // ***
 
 export function createArtikkelitService() {
 
@@ -71,7 +71,7 @@ export function createArtikkelitService() {
 
     //console.log('   ***   artikkelitService.js - record stringified', JSON.stringify(record, null, " ")); // eslint-disable-line
     // <- OUTPUT eli muokattu tietue
-    generateTests(); // ***
+    //generateTests(); // ***
 
     return record;
   }
