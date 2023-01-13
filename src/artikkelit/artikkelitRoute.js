@@ -37,6 +37,7 @@ export default function () { // eslint-disable-line no-unused-vars
     try {
       const data = JSON.parse(req.body);
       //logger.debug(data);
+
       const record = artikkelitService.generateRecord(data);
       logger.verbose('publication generated...');
 
