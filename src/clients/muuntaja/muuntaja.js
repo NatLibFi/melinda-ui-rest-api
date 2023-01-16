@@ -362,6 +362,10 @@ function showTransformed(update = undefined) {
     transformed = update;
   }
 
+  if (update.source.status == 404 || update.base.status == 404) {
+    alert("Tietuetta ei löytynyt annetulla hakuehdolla");
+  }
+
   const {source, base, result} = transformed;
 
   // Get field source for decorator

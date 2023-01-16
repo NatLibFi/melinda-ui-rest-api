@@ -26,11 +26,11 @@ export async function createSruOperator({sruUrl, recordSchema}) {
 
   async function getRecordByID(id, additionalQueryParams = false) {
     if (additionalQueryParams) {
-      const record = await search(`rec.id=${id}${handleAdditionalQueryParams(additionalQueryParams)}`, true);
+      const record = await search(`rec.id=${id}${handleAdditionalQueryParams(additionalQueryParams)}`, true).catch((error) => error);
       return record;
     }
 
-    const record = await search(`rec.id=${id}`, true);
+    const record = await search(`rec.id=${id}`, true).catch((error) => error);
     return record;
   }
 
