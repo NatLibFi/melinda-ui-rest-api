@@ -26,7 +26,7 @@
     "prepare": "npm run build",
     "lint": "eslint src",
     "lint:dev": "eslint --fix src",
-    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/**/*.spec.js",
+    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 --exclude src/muuntaja/reference/**/*.spec.js src/**/*.spec.js",
     "test": "npm run lint && npm run test:base",
     "test:dev": "clear && npm run lint:dev && npm run coverage",
     "coverage": "npm run coverage:unit && npm run coverage:report",

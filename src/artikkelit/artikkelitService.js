@@ -21,7 +21,7 @@ export function createArtikkelitService() {
   function generateRecord(data) {
 
     console.log(data); // eslint-disable-line        
-    console.log('   ***   INPUT DATA artikkelitService.js - inputdata stringified', JSON.stringify(data, null, " ")); // eslint-disable-line
+    //console.log('   ***   INPUT DATA artikkelitService.js - inputdata stringified', JSON.stringify(data, null, " ")); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
     const titleFor773t = source.title;
