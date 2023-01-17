@@ -122,9 +122,15 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    const result = await logService.getCorrelationIdList(params);
-    logger.debug('*******************************************');
-    res.json(result);
+    try {
+      const result = await logService.getCorrelationIdList(params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (expection) {
+      // eslint-disable-next-line callback-return
+      next(expection);
+    }
+
   }
 
 }

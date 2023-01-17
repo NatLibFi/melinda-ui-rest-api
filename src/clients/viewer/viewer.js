@@ -383,7 +383,8 @@ function showCorrelationIdList() {
       updateCorrelationIdListView())
     .catch((error) => {
       showPlaceholderText('Sorry, correlation id list could not be fetched')
-      console.log(error);
+      clearList();
+      stopProcess();
     });
 }
 
@@ -408,6 +409,13 @@ function updateCorrelationIdListView() {
   selectSorting.style.display = 'block';
   sortedList.forEach((logItem) => createLogItemButton(logItem));
   stopProcess();
+}
+
+function clearList() {
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.replaceChildren();
+  const selectSorting = document.getElementById("correlationIdListSorting");
+  selectSorting.style.display = 'none';
 }
 
 function filterList(startDate, endDate) {
