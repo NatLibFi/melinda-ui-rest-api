@@ -50,7 +50,9 @@ window.initialize = function () {
     document.querySelector(".record-merge-panel #source #ID").defaultValue = sourceId;
     document.querySelector(".record-merge-panel #base #ID").defaultValue = baseId;
     document.querySelector("#type-options [name='type']").value = type;
+    transformed.options.type = type;
     document.querySelector("#profile-options [name='profile']").value = profile;
+    transformed.options.profile = profile;
   }
 
   document.querySelector(".record-merge-panel #source #ID").addEventListener("input", updateUrlParameters);
@@ -119,6 +121,7 @@ function setProfiles(options) {
 }
 
 function setTransformType(event, value) {
+  console.log("Type:", value)
   transformed.options.type = value;
   delete transformed.base.record;
   doTransform();
@@ -202,17 +205,15 @@ window.copyLink = function (e) {
   
   // Fade in and fade out popup text
   var popup = document.querySelector(".popup");
-  fadeIn(popup);
-  fadeOut(popup);
+  fadePopup();
 
-  function fadeIn(popup) {
-    popup.style.display = "block";
-  }
-
-  function fadeOut(popup) {
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000);
+  function fadePopup() {
+    popup.className = "popup";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        popup.className = "popup fading";
+      });
+    });
   }
 }
 
