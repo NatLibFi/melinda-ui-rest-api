@@ -99,20 +99,19 @@
             </select>
           </div>
 
-              <div class="flex-container">
+          <div class="flex-container">
 
-                <div class="Filler VBox Input">
-                  <label>Id (Correlation id)</label>
-                  <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
-                </div>
+            <div class="Filler VBox Input">
+              <label>Id (Correlation id)</label>
+              <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+            </div>
 
 
-                <!-- Button for opening a modal containing correlation id list -->
-                <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-                  tooltip-text="View id list"
-                  onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
-                  
-              </div>
+            <!-- Button for opening a modal containing correlation id list -->
+            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+              tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
+
+          </div>
 
 
           <div class="Select VBox">
@@ -234,10 +233,10 @@
           <div class="datepicker-container">
             <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
               onclick="return doOpenDateStartPicker(event)">today</button>
-            <input id="dateStartInput" type="date" onchange="return updateOnDateChange(event)">
+            <input id="dateStartInput" type="date" onchange="return updateOnChange(event)">
           </div>
           <div class="datepicker-container">
-            <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnDateChange(event)">
+            <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnChange(event)">
             <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
               onclick="return doOpenDateEndPicker(event)">event</button>
           </div>
@@ -246,8 +245,19 @@
 
       <hr />
       <br>
+
       <!-- shows info about search results -->
       <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
+
+      <br>
+
+      <div class="Select VBox list-sorting">
+        <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+          <option selected value="sortById">Sort by correlation id</option>
+          <option value="sortByTime">Sort by creation time</option>
+        </select>
+      </div>
+
       <br>
 
       <!-- shows the list of correlation ids -->

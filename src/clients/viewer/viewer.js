@@ -142,7 +142,7 @@ window.doOpenDateEndPicker = function (event = undefined) {
   dateEndInput.showPicker();
 }
 
-window.updateOnDateChange = (event) => {
+window.updateOnChange = (event) => {
   eventHandled(event);
   updateCorrelationIdListView();
 }
@@ -331,7 +331,7 @@ function setDataToIndexDB(logs, sequence) {
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
     window.alert(`No search results for sequence "${sequenceInputField.value}"`);
   }
-  
+
   sequenceInputField.value = '';
 
   select.dispatchEvent(new Event('change'));
@@ -395,14 +395,17 @@ function updateCorrelationIdListView() {
   buttonsList.replaceChildren();
 
   const filteredList = filterList(dateStartInputValue, dateEndInputValue);
-  const sortedList = filteredList.sort(compareLogItems);
+
+  const selectSorting = document.getElementById("correlationIdListSorting");
+  const sortedList = sortList(filteredList, selectSorting.value);
 
   if (sortedList.length === 0) {
     showPlaceholderText('No correlation ids found, please check your search filters.');
     return;
   }
 
-  showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids:')
+  showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids')
+  selectSorting.style.display = 'block';
   sortedList.forEach((logItem) => createLogItemButton(logItem));
   stopProcess();
 }
@@ -424,8 +427,23 @@ function getDate(logItem) {
   return logItem.creationTime.substring(0, 10);
 }
 
-function compareLogItems(logItemA, logItemB) {
-  return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType)
+function sortList(list, sortingMethod) {
+  switch (true) {
+    case (sortingMethod === 'sortById'):
+      return list.sort(compareLogItemsByIdAndType);
+    case (sortingMethod === 'sortByTime'):
+      return list.sort(compareLogItemsByTime);
+    default:
+      return list;
+  }
+}
+
+function compareLogItemsByIdAndType(logItemA, logItemB) {
+  return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
+}
+
+function compareLogItemsByTime(logItemA, logItemB) {
+  return logItemA.creationTime.localeCompare(logItemB.creationTime);
 }
 
 function showPlaceholderText(text) {
@@ -439,13 +457,13 @@ function createLogItemButton(logItem) {
   buttonsList.append(logItemButton);
 }
 
-function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
+function createButtonElement({ correlationId, logItemType, creationTime, logCount }) {
   const button = document.createElement('button');
   button.innerHTML = correlationId + ' | ' + logItemType;
 
   const logIteminfoText = `Correlation id: ${correlationId}
   Log type: ${logItemType}
-  Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 19)}
+  Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
   Log count: ${logCount}`;
 
   button.title = logIteminfoText;

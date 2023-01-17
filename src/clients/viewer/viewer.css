@@ -229,6 +229,14 @@ div#correlationIdListModal {}
     background-color: gray;
   }
 
+  .list-sorting {
+    float: right;
+  }
+
+  .sort-dropdown {
+    display:none;
+  }
+
 
   /* ---------------------------------------------------------------------------- */
   /* ---Sequence select---*/
