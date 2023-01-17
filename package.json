@@ -45,7 +45,7 @@
     "@natlibfi/melinda-marc-record-merge-reducers": "1.0.0-alpha.21",
     "@natlibfi/melinda-rest-api-client": "3.0.0-alpha.6",
     "@natlibfi/passport-melinda-aleph": "^2.0.3-alpha.1",
-    "@natlibfi/passport-melinda-jwt": "^1.0.1",
+    "@natlibfi/passport-melinda-jwt": "^1.0.2",
     "@natlibfi/sru-client": "^5.0.3",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
