@@ -403,7 +403,7 @@ function updateCorrelationIdListView() {
   }
 
   showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids:')
-  sortedList.forEach((logItem) => createLogItemButton(logItem.correlationId, logItem.logItemType));
+  sortedList.forEach((logItem) => createLogItemButton(logItem));
   stopProcess();
 }
 
@@ -433,15 +433,22 @@ function showPlaceholderText(text) {
   placeholderText.innerHTML = text;
 }
 
-function createLogItemButton(correlationId, logItemType) {
-  const logItemButton = createButtonElement(correlationId, logItemType);
+function createLogItemButton(logItem) {
+  const logItemButton = createButtonElement(logItem);
   const buttonsList = document.getElementById('correlationIdListButtons');
   buttonsList.append(logItemButton);
 }
 
-function createButtonElement(correlationId, logItemType) {
+function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
   const button = document.createElement('button');
   button.innerHTML = correlationId + ' | ' + logItemType;
+
+  const logIteminfoText = `Correlation id: ${correlationId}
+  Log type: ${logItemType}
+  Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 19)}
+  Log count: ${logCount}`;
+
+  button.title = logIteminfoText;
 
   if (logItemType === 'MERGE_LOG') {
     button.className = 'merge-log-button';
