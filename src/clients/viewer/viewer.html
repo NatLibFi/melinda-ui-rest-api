@@ -99,14 +99,21 @@
             </select>
           </div>
 
-          <div class="Filler VBox Input">
-            <label>Id (Correlation id)</label>
-            <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
-          </div>
+              <div class="flex-container">
 
-          <!-- Button for opening a modal containing correlation id list -->
-          <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip" tooltip-text="View id list"
-            onclick="return doOpenCorrelationIdListModal(event)">library_books</button>
+                <div class="Filler VBox Input">
+                  <label>Id (Correlation id)</label>
+                  <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+                </div>
+
+
+                <!-- Button for opening a modal containing correlation id list -->
+                <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+                  tooltip-text="View id list"
+                  onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
+                  
+              </div>
+
 
           <div class="Select VBox">
             <div class="sequenceContainer">
@@ -121,10 +128,10 @@
               </div>
             </div>
           </div>
-            <input type="hidden" id="logType" value="mergeLog" />
+          <input type="hidden" id="logType" value="mergeLog" />
 
-            <button class="material-icons tooltip" tooltip-text="Etsi"
-              onclick="return doSearchPress(event)">search</button>
+          <button class="material-icons tooltip" tooltip-text="Etsi"
+            onclick="return doSearchPress(event)">search</button>
 
         </form>
 

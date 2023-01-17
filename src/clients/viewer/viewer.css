@@ -182,61 +182,63 @@ div#muuntaja {}
 
 div#correlationIdListModal {}
 
-.correlation-id {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: 14.5px;
-}
+  .correlation-id {
+    font-family: roboto_monoregular, "Roboto Mono", monospace;
+    font-size: 14.5px;
+  }
 
-.correlation-id>* {
-  font: inherit;
-}
+  .correlation-id>* {
+    font: inherit;
+  }
 
-.placeholder {
-  text-align: center;
-  font-weight: bold;
-}
+  .placeholder {
+    text-align: center;
+    font-weight: bold;
+  }
 
-.datepicker-container {
-  display: flex;
-  justify-content: center;
-  flex: 50%;
-}
+  .datepicker-container {
+    display: flex;
+    justify-content: center;
+    flex: 50%;
+  }
 
-.buttons-list {
-  display: flex; 
-  flex-direction: column;
-}
+  .buttons-list {
+    display: flex;
+    flex-direction: column;
+  }
 
-.merge-log-button {
-  font-weight: bold;
-}
+  .merge-log-button {
+    font-weight: bold;
+  }
 
-.match-log-button {
-  color: rgb(50, 50, 50)
-}
+  .match-log-button {
+    color: rgb(50, 50, 50)
+  }
 
-.merge-log-button:focus {
-  background-color: gray;
-}
+  .merge-log-button:hover,
+  .match-log-button:hover {
+    background-color: lightgray
+  }
 
-.match-log-button:focus {
-  background-color: gray;
-}
+  .merge-log-button:focus,
+  .match-log-button:focus {
+    background-color: gray;
+  }
 
-.selected-id{
-  background-color: gray;
-}
+  .selected-id {
+    background-color: gray;
+  }
 
 
-/* ---------------------------------------------------------------------------- */
-/* ---Sequence select---*/
+  /* ---------------------------------------------------------------------------- */
+  /* ---Sequence select---*/
 
-.flex-container {
-  display: flex;
-  flex-wrap: nowrap;
-}
+  .flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+  }
 
-.sequenceContainer label {
-  display: inline-block;
-  width:115px;
-}
+  .sequenceContainer label {
+    display: inline-block;
+    width: 115px;
+  }

@@ -452,7 +452,8 @@ function createButtonElement(correlationId, logItemType) {
   }
 
   const selectedId = document.querySelector(`#viewer #id`).value;
-  if (correlationId === selectedId) {
+  const selectedLogType = document.querySelector(`#viewer #logType`).value;
+  if (correlationId === selectedId && logItemType === selectedLogType) {
     button.classList.add('selected-id');
   }
 
