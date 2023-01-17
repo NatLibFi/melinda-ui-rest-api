@@ -167,20 +167,31 @@ export function editField(field, original = null) {
   const ind2 = document.querySelector("#fieldEditDlg #ind2");
   ind2.innerHTML = ""
   ind2.appendChild(createInput('ind2', 'inds', field.ind2))
-
+  
   const subfields = document.querySelector("#fieldEditDlg #fieldlist");
-  subfields.innerHTML = ""
+  subfields.innerHTML = "";
 
-  for (const subfield of field.subfields) {
-    createSubfield(subfields, subfield);
+  const value = document.querySelector("#fieldEditDlg #value");
+  value.innerHTML = "";
+
+  // if field contains "value" and not "subfields"
+  if (field.value) {
+    value.innerHTML = "Value:"
+    value.appendChild(createInput("value", "value", field.value));
+  
+  // if field contains "subfields" and not "value"
+  } else if (field.subfields) {
+    for (const subfield of field.subfields) {
+      createSubfield(subfields, subfield);
+    }
+  
+    //*
+    Sortable.create(subfields, {
+      ghostClass: 'ghost-row',
+      animation: 50,
+    })
+    /**/
   }
-
-  //*
-  Sortable.create(subfields, {
-    ghostClass: 'ghost-row',
-    animation: 50,
-  })
-  /**/
 }
 
 function createSubfield(parent, subfield) {
@@ -235,8 +246,16 @@ window.editDlgOK = function (event) {
     id: editing.id,
     tag: query("#fieldEditDlg #tag #tag").textContent,
     ind1: query("#fieldEditDlg #ind1 #ind1").textContent,
-    ind2: query("#fieldEditDlg #ind2 #ind2").textContent,
-    subfields: Array.from(query("#fieldEditDlg #fieldlist").childNodes)
+    ind2: query("#fieldEditDlg #ind2 #ind2").textContent
+  }
+
+  // if field contains "value" and not "subfields"
+  if (editing.value) {
+    field.value = query("#fieldEditDlg #value #value").textContent;
+
+  // if field contains "subfields" and not "value"
+  } else if (editing.subfields) {
+    field.subfields = Array.from(query("#fieldEditDlg #fieldlist").childNodes)
       .filter(e => e.classList.contains("subfield"))
       .filter(e => !e.getAttribute("disabled"))
       .map(elem => ({
