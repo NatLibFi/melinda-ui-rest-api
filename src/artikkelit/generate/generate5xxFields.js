@@ -36,11 +36,11 @@ export function generatef567(methodologys) {
   return [];
 }
 
-export function generatef591(articleType, articleSciences) {
-  console.log('   ***   generete5XXFields.js - articleType :',articleType); // eslint-disable-line
-  console.log('   ***   generete5XXFields.js - articleSciences :',articleSciences); // eslint-disable-line
-  //console.log('   ***   generete5XXFields.js - article.type :',article.type); // eslint-disable-line
-  return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: articleType}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
+export function generatef591(articleType, articleSciences, articleCategory) {
+  const codeOfCategory = articleCategory.split(' ', 1);
+  console.log('   ***   generete5XXFields.js - codeOfCategory :', codeOfCategory ); // eslint-disable-line  
+
+  return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: codeOfCategory}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
 
   function selectArticleSciences(articleSciences) {
     return articleSciences.flatMap(science => [{code: 'h', value: science.subject}, {code: 'i', value: science.subCategory}]);
