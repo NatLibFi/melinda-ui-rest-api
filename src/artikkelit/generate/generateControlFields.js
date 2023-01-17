@@ -1,10 +1,10 @@
 export function generateLeader(sourceType) {
   if (sourceType === 'journal') {
-    return '00000naba22000005i 4500';
+    return '00000nab a22000005i 4500';
   }
 
   if (sourceType === 'book') {
-    return '00000naaa22000005i 4500';
+    return '00000naa a22000005i 4500';
   }
 
   throw new Error('Invalid source type for leader');
@@ -22,7 +22,15 @@ export function generatef007(isElectronic = false) {
   return [];
 }
 
-export function generatef008(year, sourceType, isElectronic, language) {
+export function generatef008(publYear, sourceType, isElectronic, language) {
+
+  function checkPublYear(publYear) {
+    if (!publYear.length || publYear.length !== 4) {
+      return '    '; // '^^^^'
+    }
+    return publYear;
+  }
+
 
   function checkLanguage() {
 
@@ -38,25 +46,32 @@ export function generatef008(year, sourceType, isElectronic, language) {
     return language.iso6392b;
   }
 
-  const f008Parts = ['000000s', year, selectMaterialType(sourceType, isElectronic), checkLanguage(), ' c'];
+  const dateNow = new Date();
+  const dateFormatted = dateNow.toISOString().split('T')[0].replace(/-/gu, '').slice(2, 8); // YYMMDD
+  const publYear2 = '    '; // 11-14: 'Julkaisuvuosi 2' = 4x space = '^^^^'
+  const country = 'fi '; //15-17 'Julkaisu-, tuotanto- tai toteuttamismaa' 'fi^'
+  const places18to22 = '|| ||'; // 'Ilmestymistiheys, Säännöllisyys, 20 Määrittelemätön, Jatkuvan julkaisun tyyppi, Alkuperäisen julkaisun ilmiasu', '||^||'
+  // place 23 = selectMaterialType:  'Ilmiasu': Painetut artikkelit: tyhjä / Elektroniset artikkelit: o ("Verkkoaineisto")
+  const places24to35 = '||||||   ||'; // '||||||^^^||'
+  const f008Parts = [dateFormatted, 's', checkPublYear(publYear), publYear2, country, places18to22, selectMaterialType(sourceType, isElectronic), places24to35, checkLanguage(), ' c']; // '^c'
 
   return [{tag: '008', value: f008Parts.join('')}];
 
   function selectMaterialType(sourceType, isElectronic) {
     if (sourceType === 'book') {
       if (isElectronic) {
-        return ' |||| o     ||0 0|';
+        return 'o';
       }
 
-      return ' ||||       ||0 0|';
+      return ' '; // '^'
     }
 
     if (sourceType === 'journal') {
       if (isElectronic) {
-        return ' || ||o|    |   ||';
+        return 'o';
       }
 
-      return ' || || |    |   ||';
+      return ' '; // '^'
     }
   }
 }

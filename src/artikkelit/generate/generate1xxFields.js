@@ -1,11 +1,16 @@
 
 export function generatef100sf110sf700sf710s(authors = []) {
+
   if (authors.length === 0) {
     return [];
   }
 
   const authorFields = authors.map((author, index) => {
+
     if (index === 0) {
+      if (['toimittaja', 'kuvittaja', 'kääntäjä'].includes(author.relator)) {
+        return generate700or710();
+      }
       return generate100or110();
     }
 

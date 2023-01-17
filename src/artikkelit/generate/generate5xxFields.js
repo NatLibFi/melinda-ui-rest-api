@@ -38,8 +38,6 @@ export function generatef567(methodologys) {
 
 export function generatef591(articleType, articleSciences, articleCategory) {
   const codeOfCategory = articleCategory.split(' ', 1);
-  console.log('   ***   generete5XXFields.js - codeOfCategory :', codeOfCategory ); // eslint-disable-line  
-
   return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: codeOfCategory}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
 
   function selectArticleSciences(articleSciences) {
