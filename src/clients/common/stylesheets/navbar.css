@@ -26,6 +26,7 @@
 
 .NavBar .AppName > button {
   display: inline-block;
+  z-index: 2;
   text-transform: uppercase;
   padding-top: 14px;
   padding-bottom: 16px;
@@ -93,6 +94,7 @@ a:any-link {
 
 .IconBar {
   display: flex;
+  z-index: 2;
   position: absolute;
   top: 0;
   right: 0;

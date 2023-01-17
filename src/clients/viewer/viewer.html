@@ -71,8 +71,8 @@
 
     <div id="viewer" hidden>
       <div class="IconBar ToolBar">
-        <button><a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
-            rel="noopener noreferrer">help_outline</a></button>
+        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
+            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
         <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
         <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
         <div class="dropdown">
@@ -109,15 +109,22 @@
             onclick="return doOpenCorrelationIdListModal(event)">library_books</button>
 
           <div class="Select VBox">
-            <label>Sequence</label>
-            <select id="sequence" disabled="true" onchange="return loadLog(event)">
-            </select>
+            <div class="sequenceContainer">
+              <label>Sequence</label>
+              <div class="flex-container">
+                <div class="Select VBox">
+                  <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
+                </div>
+                <div class="Filler VBox Input">
+                  <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3" />
+                </div>
+              </div>
+            </div>
           </div>
+            <input type="hidden" id="logType" value="mergeLog" />
 
-          <input type="hidden" id="logType" value="mergeLog" />
-
-          <button class="material-icons tooltip" tooltip-text="Etsi"
-            onclick="return doSearchPress(event)">search</button>
+            <button class="material-icons tooltip" tooltip-text="Etsi"
+              onclick="return doSearchPress(event)">search</button>
 
         </form>
 

@@ -11,7 +11,8 @@ div#loading {}
 div#tools {}
 
 .Input>label,
-.Select>label {
+.Select>label,
+.sequenceContainer>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-normal);
@@ -41,6 +42,12 @@ div#tools {}
 .tools #sequence {
   width: 6ch;
   text-align: end;
+  margin-left: 1ch;
+}
+
+.tools #sequenceInput {
+  width: 6ch;
+  text-align: start;
   margin-left: 1ch;
 }
 
@@ -171,6 +178,7 @@ div#muuntaja {}
 }
 
 /* ---------------------------------------------------------------------------- */
+/* ---Correlation id list modal---*/
 
 div#correlationIdListModal {}
 
@@ -215,6 +223,20 @@ div#correlationIdListModal {}
   background-color: gray;
 }
 
- .selected-id{
+.selected-id{
   background-color: gray;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* ---Sequence select---*/
+
+.flex-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.sequenceContainer label {
+  display: inline-block;
+  width:115px;
 }

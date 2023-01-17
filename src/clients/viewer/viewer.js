@@ -81,16 +81,28 @@ var transformed = {
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
-  const sequence = document.querySelector('#viewer #sequence').value || 0;
   const logType = document.querySelector(`#viewer #logType`).value;
+  const sequence = getSequence();
 
   doFetch(event, id, sequence, logType);
 }
+
+function getSequence() {
+  const sequenceInputField = document.querySelector('#viewer #sequenceInput');
+  if (sequenceInputField.value !== '') {
+    return sequenceInputField.value;
+  }
+
+  const sequenceSelect = document.querySelector('#viewer #sequence');
+  return sequenceSelect.value || 0;
+}
+
 
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event);
   startProcess();
   idbClear();
+
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
   sequenceSelect.setAttribute('disabled', false);
@@ -111,6 +123,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     col3.style.display = 'none';
     getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
+
 }
 
 window.doOpenCorrelationIdListModal = function (event = undefined) {
@@ -312,6 +325,14 @@ function setDataToIndexDB(logs, sequence) {
   if (sequence !== 0 && refactoredKeys.includes(sequence)) {
     select.value = sequence;
   }
+
+  const sequenceInputField = document.getElementById("sequenceInput");
+
+  if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
+    window.alert(`No search results for sequence "${sequenceInputField.value}"`);
+  }
+  
+  sequenceInputField.value = '';
 
   select.dispatchEvent(new Event('change'));
 
