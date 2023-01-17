@@ -18,7 +18,7 @@ export function createArtikkelitService() {
 
   function generateRecord(data) {
 
-    console.log(data); // eslint-disable-line        
+    console.log(data); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
     const titleFor773t = source.title;
@@ -26,6 +26,7 @@ export function createArtikkelitService() {
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
     const articleCategory = article.type; // for field 591
+    const referenceLinks = article.link; // field 856; at the moment only one link
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
@@ -39,7 +40,7 @@ export function createArtikkelitService() {
       fields: [
         ...generatef005(),
         ...generatef007(isElectronic),
-        ...generatef008(year, sourceType, isElectronic, articleLanguage),
+        ...generatef008(journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
         ...generatef041(articleLanguage.iso6392b, abstractLanguages),
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
@@ -60,7 +61,7 @@ export function createArtikkelitService() {
         ...generatef6xxs(ontologyWords),
         ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),
         ...generatef787(), // review books
-        ...generatef856(), // referenceLinks
+        ...generatef856(referenceLinks, isElectronic),
         ...generatef960()
       ]
     };
