@@ -20,9 +20,11 @@ MarcRecord.setValidationOptions({subfieldValues: false});
 // Add handling those to UI
 
 import p2eProfile from './config/print-to-e';
+import e2pProfile from './config/e-to-print';
 
 const profiles = {
-  'p2e': p2eProfile
+  'p2e': p2eProfile,
+  'e2p': e2pProfile
 };
 
 /*
