@@ -12,7 +12,6 @@ updates:
       timezone: "Europe/Helsinki"
     target-branch: "dependencies"
 
-
   # Minor updates to npm production dependencies daily
   - package-ecosystem: "npm"
     directory: "/"
