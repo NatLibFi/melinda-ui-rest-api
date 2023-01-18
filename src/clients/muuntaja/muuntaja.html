@@ -172,6 +172,20 @@
   </div>
 
   <!-- ---------------------------------------------------------------------- -->
+  <!-- Record not found dialog -->
+  <div id="notFoundDlg" class="modal" onclick="return notFoundDlgClose(event)">
+    <div class="modal-content BoxShadow" style="min-height: 5%;" onclick="return ignore(event)">
+      <!-- <span id="msgHeader" class="marc-record"></span><br/>
+      <hr/> -->
+      <div id="msg" class="marc-record"><span id="recordType"></span>tietuetta ei löytynyt annetulla hakuehdolla</div>
+      <br/>
+      <div style="display: flex; justify-content: right;">
+        <button onclick="return notFoundDlgClose(event)">Sulje</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
   <!-- Search dialog -->
   <dialog id="searchDlg">
     Testi
