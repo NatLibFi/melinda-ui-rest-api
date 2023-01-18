@@ -362,8 +362,13 @@ function showTransformed(update = undefined) {
     transformed = update;
   }
 
-  if (update.source.status == 404 || update.base.status == 404) {
-    alert("Tietuetta ei löytynyt annetulla hakuehdolla");
+  if (update.source.status == 404) {
+    notFoundDlgOpen("Lähde");
+  }
+  
+  if (update.base.status == 404) {
+    notFoundDlgOpen("Pohja");
+    // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
 
   const {source, base, result} = transformed;
@@ -399,4 +404,17 @@ function showTransformed(update = undefined) {
     return fields.reduce((a, field) => ({...a, [field.id]: field}), {})
   }
 
+}
+
+function notFoundDlgOpen(recordType) {
+  const dlg = document.querySelector("#notFoundDlg");
+  dlg.style.display = "flex";
+  const prefix = document.querySelector("#notFoundDlg #recordType");
+  prefix.innerHTML = recordType;
+}
+
+window.notFoundDlgClose = function (event) {
+  const dlg = document.querySelector("#notFoundDlg");
+  dlg.style.display = "none";
+  return eventHandled(event);
 }
