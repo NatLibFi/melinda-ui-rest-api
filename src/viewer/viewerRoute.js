@@ -8,6 +8,7 @@
 /* eslint-disable no-unused-vars */
 
 import {Router} from 'express';
+import httpStatus from 'http-status';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiLogClient} from '@natlibfi/melinda-rest-api-client';
 import {createLogService} from './viewerService';
@@ -24,11 +25,25 @@ export default function (melindaApiOptions) {
     .get('/correlation-id-list', getCorrelationIdList)
     .put('/protect/:id', protectLog)
     .delete('/remove/:id', removeLog)
-    .use(handleError);
+    .use(handleError)
+    .use(viewerErrorHandler);
 
   function handleError(req, res, next) {
     logger.error('Error', req, res);
     next();
+  }
+
+  function viewerErrorHandler(err, req, res, next) {
+    logger.error(`Error: ${err}`);
+    logger.debug(`Error: viewerRoute.js [error status code: ${err.status} | error message: ${err.payload}]`);
+
+    if (err.status) {
+      logger.debug(`Sending the received error status code '${err.status} - ${httpStatus[err.status]}' forward`);
+      return res.sendStatus(err.status);
+    }
+
+    logger.debug(`No status code received in error, sending code '500 - Internal server error' instead`);
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 
   async function getMatchLog(req, res, next) {
