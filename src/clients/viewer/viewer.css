@@ -15,7 +15,7 @@ div#tools {}
 .sequenceContainer>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size:  var(--font-size-label-normal);
+  font-size: var(--font-size-label-normal);
   text-align: center;
 }
 
@@ -177,12 +177,76 @@ div#muuntaja {}
   /*color: grey;*/
 }
 
-.flex-container {
-  display: flex;
-  flex-wrap: nowrap;
-}
+/* ---------------------------------------------------------------------------- */
+/* ---Correlation id list modal---*/
 
-.sequenceContainer label {
-  display: inline-block;
-  width:115px;
-}
+div#correlationIdListModal {}
+
+  .correlation-id {
+    font-family: roboto_monoregular, "Roboto Mono", monospace;
+    font-size: 14.5px;
+  }
+
+  .correlation-id>* {
+    font: inherit;
+  }
+
+  .placeholder {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .datepicker-container {
+    display: flex;
+    justify-content: center;
+    flex: 50%;
+  }
+
+  .buttons-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .merge-log-button {
+    font-weight: bold;
+  }
+
+  .match-log-button {
+    color: rgb(50, 50, 50)
+  }
+
+  .merge-log-button:hover,
+  .match-log-button:hover {
+    background-color: lightgray
+  }
+
+  .merge-log-button:focus,
+  .match-log-button:focus {
+    background-color: gray;
+  }
+
+  .selected-id {
+    background-color: gray;
+  }
+
+  .list-sorting {
+    float: right;
+  }
+
+  .sort-dropdown {
+    display:none;
+  }
+
+
+  /* ---------------------------------------------------------------------------- */
+  /* ---Sequence select---*/
+
+  .flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .sequenceContainer label {
+    display: inline-block;
+    width: 115px;
+  }

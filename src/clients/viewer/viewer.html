@@ -72,7 +72,7 @@
     <div id="viewer" hidden>
       <div class="IconBar ToolBar">
         <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-          href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
         <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
         <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
         <div class="dropdown">
@@ -84,8 +84,13 @@
           </div>
         </div>
       </div>
+
+
+      <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
+
         <form class="ToolBar HBox">
+
           <div class="Select VBox">
             <label>Log type</label>
             <select id="logType">
@@ -93,35 +98,56 @@
               <option value="MATCH_LOG">Match</option>
             </select>
           </div>
-          <div class="Filler VBox Input">
-            <label>Id (Correlation id)</label>
-            <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+
+          <div class="flex-container">
+
+            <div class="Filler VBox Input">
+              <label>Id (Correlation id)</label>
+              <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+            </div>
+
+
+            <!-- Button for opening a modal containing correlation id list -->
+            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+              tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
+
           </div>
 
-          <div class="sequenceContainer">
-            <label>Sequence</label>
-            <div class="flex-container">
-              <div class="Select VBox">
-                <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
-              </div>
-              <div class="Filler VBox Input">
-                <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3" />
+
+          <div class="Select VBox">
+            <div class="sequenceContainer">
+              <label>Sequence</label>
+              <div class="flex-container">
+                <div class="Select VBox">
+                  <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
+                </div>
+                <div class="Filler VBox Input">
+                  <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3" />
+                </div>
               </div>
             </div>
           </div>
-
           <input type="hidden" id="logType" value="mergeLog" />
+
           <button class="material-icons tooltip" tooltip-text="Etsi"
             onclick="return doSearchPress(event)">search</button>
+
         </form>
+
         <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
           disabled="true">push_pin</button>
+
         <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
           onclick="return copyLink(event)">share</button>
+
         <button id="delete" class="material-icons tooltip" tooltip-text="Poista" onclick="return remove(event)"
           disabled="true">delete</button>
         <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
+
       </div>
+
+
+      <!-- Record Merge Panel -->
       <div class="record-merge-panel">
 
         <div class="col">
@@ -142,7 +168,6 @@
             </div>
           </div>
         </div>
-
         <div class="col">
           <div id="record2" class="BoxShadow">
             <div class="header">
@@ -186,8 +211,62 @@
         </div>
 
       </div>
+
     </div>
   </div>
+
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Modal for browsing and selecting a correlation id from a list -->
+  <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
+
+    <div class="modal-content BoxShadow" onclick="return ignore(event)">
+
+      <!-- shows instructions for list -->
+      <label class="correlation-id placeholder">Please select a correlation id for viewing log item</label>
+      <hr />
+
+      <!-- shows buttons for opening calendar for start and end date pick and place for date input -->
+      <div id="filterCorrelationIdList">
+        <p class="correlation-id">Filter the list by selecting start date and/or end date.</p>
+        <div class="datepicker-container">
+          <div class="datepicker-container">
+            <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
+              onclick="return doOpenDateStartPicker(event)">today</button>
+            <input id="dateStartInput" type="date" onchange="return updateOnChange(event)">
+          </div>
+          <div class="datepicker-container">
+            <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnChange(event)">
+            <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
+              onclick="return doOpenDateEndPicker(event)">event</button>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <br>
+
+      <!-- shows info about search results -->
+      <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
+
+      <br>
+
+      <div class="Select VBox list-sorting">
+        <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+          <option selected value="sortById">Sort by correlation id</option>
+          <option value="sortByTime">Sort by creation time</option>
+        </select>
+      </div>
+
+      <br>
+
+      <!-- shows the list of correlation ids -->
+      <div id="correlationIdListButtons" class="correlation-id buttons-list"></div>
+
+    </div>
+
+  </div>
+
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Field edit dialog -->

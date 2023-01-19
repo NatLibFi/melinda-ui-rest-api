@@ -11,7 +11,7 @@ import { createMenuBreak, createMenuItem, createMenuSelection } from "/common/ui
 import { Account, doLogin, logout } from "/common/auth.js"
 import { transformRequest } from "/common/rest.js";
 import { showRecord } from "/common/marc-record-ui.js";
-import { getMatchLog, getMergeLog, protectLog, removeLog } from "/common/rest.js";
+import { getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog } from "/common/rest.js";
 import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
 
 var viewing = {
@@ -124,6 +124,37 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
   }
 
+}
+
+window.doOpenCorrelationIdListModal = function (event = undefined) {
+  const modal = document.querySelector("#correlationIdListModal");
+  modal.style.display = "flex";
+  showCorrelationIdList();
+}
+
+window.doOpenDateStartPicker = function (event = undefined) {
+  const dateStartInput = document.getElementById("dateStartInput");
+  dateStartInput.showPicker();
+}
+
+window.doOpenDateEndPicker = function (event = undefined) {
+  const dateEndInput = document.getElementById("dateEndInput");
+  dateEndInput.showPicker();
+}
+
+window.updateOnChange = (event) => {
+  eventHandled(event);
+  updateCorrelationIdListView();
+}
+
+window.modalClose = function (event) {
+  const modal = document.querySelector("#correlationIdListModal")
+  modal.style.display = "none"
+  return eventHandled(event);
+}
+
+window.ignore = function (event) {
+  return eventHandled(event);
 }
 
 window.loadLog = (event) => {
@@ -300,7 +331,7 @@ function setDataToIndexDB(logs, sequence) {
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
     window.alert(`No search results for sequence "${sequenceInputField.value}"`);
   }
-  
+
   sequenceInputField.value = '';
 
   select.dispatchEvent(new Event('change'));
@@ -331,4 +362,148 @@ function createOption(text, value) {
   option.value = value;
 
   return option;
+}
+
+
+//-----------------------------------------------------------------------------
+// Functions for correlation id list modal 
+//-----------------------------------------------------------------------------
+
+var correlationIdList = null;
+
+function showCorrelationIdList() {
+  const expanded = '1';
+
+  startProcess();
+
+  getCorrelationIdList(expanded)
+    .then(list =>
+      correlationIdList = list)
+    .then(() =>
+      updateCorrelationIdListView())
+    .catch((error) => {
+      showPlaceholderText('Sorry, correlation id list could not be fetched')
+      clearList();
+      stopProcess();
+    });
+}
+
+function updateCorrelationIdListView() {
+  const dateStartInputValue = document.getElementById("dateStartInput").value;
+  const dateEndInputValue = document.getElementById("dateEndInput").value;
+
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.replaceChildren();
+
+  const filteredList = filterList(dateStartInputValue, dateEndInputValue);
+
+  const selectSorting = document.getElementById("correlationIdListSorting");
+  const sortedList = sortList(filteredList, selectSorting.value);
+
+  if (sortedList.length === 0) {
+    showPlaceholderText('No correlation ids found, please check your search filters.');
+    return;
+  }
+
+  showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids')
+  selectSorting.style.display = 'block';
+  sortedList.forEach((logItem) => createLogItemButton(logItem));
+  stopProcess();
+}
+
+function clearList() {
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.replaceChildren();
+  const selectSorting = document.getElementById("correlationIdListSorting");
+  selectSorting.style.display = 'none';
+}
+
+function filterList(startDate, endDate) {
+  switch (true) {
+    case (startDate !== '' && endDate !== ''):
+      return correlationIdList.filter(logItem => getDate(logItem) >= startDate && getDate(logItem) <= endDate);
+    case (startDate !== '' && endDate === ''):
+      return correlationIdList.filter(logItem => getDate(logItem) >= startDate);
+    case (startDate === '' && endDate !== ''):
+      return correlationIdList.filter(logItem => getDate(logItem) <= endDate);
+    default:
+      return correlationIdList;
+  }
+}
+
+function getDate(logItem) {
+  return logItem.creationTime.substring(0, 10);
+}
+
+function sortList(list, sortingMethod) {
+  switch (true) {
+    case (sortingMethod === 'sortById'):
+      return list.sort(compareLogItemsByIdAndType);
+    case (sortingMethod === 'sortByTime'):
+      return list.sort(compareLogItemsByTime);
+    default:
+      return list;
+  }
+}
+
+function compareLogItemsByIdAndType(logItemA, logItemB) {
+  return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
+}
+
+function compareLogItemsByTime(logItemA, logItemB) {
+  return logItemA.creationTime.localeCompare(logItemB.creationTime);
+}
+
+function showPlaceholderText(text) {
+  const placeholderText = document.getElementById('fetchListPlaceholderText');
+  placeholderText.innerHTML = text;
+}
+
+function createLogItemButton(logItem) {
+  const logItemButton = createButtonElement(logItem);
+  const buttonsList = document.getElementById('correlationIdListButtons');
+  buttonsList.append(logItemButton);
+}
+
+function createButtonElement({ correlationId, logItemType, creationTime, logCount }) {
+  const button = document.createElement('button');
+  button.innerHTML = correlationId + ' | ' + logItemType;
+
+  const logIteminfoText = `Correlation id: ${correlationId}
+  Log type: ${logItemType}
+  Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
+  Log count: ${logCount}`;
+
+  button.title = logIteminfoText;
+
+  if (logItemType === 'MERGE_LOG') {
+    button.className = 'merge-log-button';
+  }
+
+  if (logItemType === 'MATCH_LOG') {
+    button.className = 'match-log-button';
+  }
+
+  const selectedId = document.querySelector(`#viewer #id`).value;
+  const selectedLogType = document.querySelector(`#viewer #logType`).value;
+  if (correlationId === selectedId && logItemType === selectedLogType) {
+    button.classList.add('selected-id');
+  }
+
+  button.addEventListener("click", function () {
+    searchWithSelectedIdAndType(correlationId, logItemType);
+  });
+
+  return button;
+}
+
+function searchWithSelectedIdAndType(correlationId, logItemType) {
+  const id = document.querySelector(`#viewer #id`);
+  id.value = correlationId;
+
+  const logType = document.querySelector(`#viewer #logType`);
+  logType.value = logItemType;
+
+  doSearchPress();
+  modalClose();
 }
