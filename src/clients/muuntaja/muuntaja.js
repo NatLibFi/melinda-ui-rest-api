@@ -419,3 +419,51 @@ window.notFoundDlgClose = function (event) {
   dlg.style.display = "none";
   return eventHandled(event);
 }
+
+window.jsonDlgOpen = function (event) {
+  const dlg = document.querySelector("#jsonDlg");
+  dlg.style.display = "flex";
+  const content = document.querySelector("#jsonDlg #jsonContent");
+  content.innerHTML = "";
+  content.appendChild(createJsonInput("recordAsJson", "recordAsJson", JSON.stringify(transformed, null, 1)))
+}
+
+window.jsonDlgClose = function (event) {
+  const dlg = document.querySelector("#jsonDlg");
+  dlg.style.display = "none";
+  return eventHandled(event);
+}
+
+function createJsonInput(id, className, content, editable = true) {
+  const input = document.createElement('pre');
+  input.setAttribute('id', id);
+  input.classList.add(className);
+  if (editable) {
+    input.classList.add('editable')
+  }
+  input.textContent = content;
+  input.contentEditable = editable;
+  return input;
+}
+
+window.selectJson = function (event) {
+  const record = document.querySelector("#recordAsJson");
+  if (document.body.createTextRange) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(record);
+    range.select();
+  } else if (window.getSelection) {
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(record);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+}
+
+window.saveJson = function (event) {
+  const record = document.querySelector("#recordAsJson");
+  transformed = JSON.parse(record.textContent);
+  doTransform();
+  jsonDlgClose(event);
+}
