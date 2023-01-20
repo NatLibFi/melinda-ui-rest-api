@@ -29,78 +29,33 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-//import createDebugLogger from 'debug';
-import {Error as TransformationError} from '@natlibfi/melinda-commons';
+import {createArtikkelitService} from './artikkelitService.js'; // ***
 
-import {generateRecord} from './artikkelitService.js'; // ***
-
-//const debug = createDebugLogger('@natlibfi/melinda-record-import-transformer-onix:transform/index.SPEC');
 
 generateTests({
   callback,
-  path: [__dirname, '..', '..', 'test-fixtures', 'transform'],
-  recurse: false,
+  path: [__dirname, '..', 'test-fixtures', 'transform'],
   useMetadataFile: true,
+  recurse: false,
   fixura: {
-    failWhenNotFound: false
+    reader: READERS.JSON
   }
 });
 
-function callback({
-  getFixture,
-  enabled = true,
-  expectedError = false,
-  expectedErrorStatus = '200'
-}) {
+async function callback({getFixture, enabled = true}) {
   if (enabled === false) {
-    throw new Error('DISABLED');
+    //debug('TEST SKIPPED!');
+    return;
   }
 
-  const inputData = getFixture({components: ['input.json'], reader: READERS.JSON});
-  const expectedRecord = getFixture({components: ['output.json'], reader: READERS.JSON});
+  const importResults = getFixture('input.json');
+  const expectedResults = getFixture('output.json');
 
-  return new Promise((resolve, reject) => {
-    const results = [];
+  const transform = createArtikkelitService();
 
-    generateRecord(inputData) //ex-transform(inputData)
-      .on('error', err => {
-        //debug(err);
-        if (expectedError) { // eslint-disable-line functional/no-conditional-statement
-          try {
-            expect(err).to.be.an('error');
-            if (err instanceof TransformationError) {
-              expect(err.payload).to.match(new RegExp(expectedError, 'u'));
-              expect(err.status).to.match(new RegExp(expectedErrorStatus, 'u'));
-              return resolve();
-            }
+  const handledRecords = await transform.generateRecord(importResults);
 
-            expect(err.message).to.match(new RegExp(expectedError, 'u'));
-            return resolve();
-          } catch (err) {
-            return reject(err);
-          }
-        }
-
-        reject(err);
-      })
-      .on('record', r => results.push(r)) // eslint-disable-line functional/immutable-data
-      .on('end', async () => {
-        try {
-          await Promise.all(results);
-          //debug(results);
-          expect(results).to.have.lengthOf(1);
-          expect(results[0].failed).to.eql(expectedRecord.failed);
-          expect(results[0].message).to.eql(expectedRecord.message);
-          if (!expectedRecord.failed) { // eslint-disable-line functional/no-conditional-statement
-            expect(results[0].record).to.deep.include(expectedRecord.record);
-            resolve();
-          }
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
-      });
-
-  });
+  expect(handledRecords).to.deep.equal(expectedResults);
 
 }
+
