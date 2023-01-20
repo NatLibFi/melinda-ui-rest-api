@@ -25,26 +25,8 @@ export default function (melindaApiOptions) {
     .get('/correlation-id-list', getCorrelationIdList)
     .put('/protect/:id', protectLog)
     .delete('/remove/:id', removeLog)
-    .use(handleError)
-    .use(viewerErrorHandler);
-
-  function handleError(req, res, next) {
-    logger.error('Error', req, res);
-    next();
-  }
-
-  function viewerErrorHandler(err, req, res, next) {
-    logger.error(`Error: ${err}`);
-    logger.debug(`Error: viewerRoute.js [error status code: ${err.status} | error message: ${err.payload}]`);
-
-    if (err.status) {
-      logger.debug(`Sending the received error status code '${err.status} - ${httpStatus[err.status]}' forward`);
-      return res.sendStatus(err.status);
-    }
-
-    logger.debug(`No status code received in error, sending code '500 - Internal server error' instead`);
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-  }
+    .use(handleRouteNotFound)
+    .use(handleError);
 
   async function getMatchLog(req, res, next) {
     logger.verbose('GET getMatchLog');
@@ -58,9 +40,15 @@ export default function (melindaApiOptions) {
     };
 
     logger.debug(JSON.stringify(params));
-    const result = await logService.getMatchLog(params);
-    logger.debug(JSON.stringify(result));
-    res.json(result);
+
+    try {
+      const result = await logService.getMatchLog(params);
+      logger.debug(JSON.stringify(result));
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+
   }
 
   async function getMatchValidationLog(req, res, next) {
@@ -76,9 +64,15 @@ export default function (melindaApiOptions) {
     };
 
     logger.debug(JSON.stringify(params));
-    const result = await logService.getMatchValidationLog(params);
-    logger.debug(JSON.stringify(result));
-    res.json(result);
+
+    try {
+      const result = await logService.getMatchValidationLog(params);
+      logger.debug(JSON.stringify(result));
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+
   }
 
   async function getMergeLog(req, res, next) {
@@ -94,11 +88,15 @@ export default function (melindaApiOptions) {
     };
 
     logger.debug(JSON.stringify(params));
-    const result = await logService.getMergeLog(params);
-    logger.debug('*******************************************');
-    res.json(result);
-  }
 
+    try {
+      const result = await logService.getMergeLog(params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+  }
 
   function protectLog(req, res, next) {
     const {id: correlationId} = req.params || {};
@@ -145,6 +143,26 @@ export default function (melindaApiOptions) {
       return next(error);
     }
 
+  }
+
+  function handleRouteNotFound(req, res, next) {
+    const {path, query, method} = req;
+    logger.error(`Error: it seems that this Viewer route is not found!`);
+    logger.debug(`Request method: ${method} | Path: ${path} | Query strings: ${JSON.stringify(query)}`);
+    res.status(404).send(`Sorry can't find that!`);
+  }
+
+  function handleError(err, req, res, next) {
+    logger.error(`Error: ${err}`);
+    logger.debug(`Error: viewerRoute.js [error status code: ${err.status} | error message: ${err.payload}]`);
+
+    if (err.status) {
+      logger.debug(`Sending the received error status code '${err.status} - ${httpStatus[err.status]}' forward`);
+      return res.sendStatus(err.status);
+    }
+
+    logger.debug(`No status code received in error, sending code '500 - Internal server error' instead`);
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 
 }
