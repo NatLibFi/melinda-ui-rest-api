@@ -33,7 +33,7 @@ export function createArtikkelitService() {
     const year = '2022'; // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
-    const {f599a, f599x} = collecting;
+    const {f599a, f599x} = collecting; // 'collecting' has 'f589a' (!), 'f599a', 'f599x'. Obviously 'f589a' is just misspelled for 'f598a'
 
     const record = {
       leader: generateLeader(sourceType),
@@ -56,7 +56,7 @@ export function createArtikkelitService() {
         ...generatef567(metodologys),
         ...generatef591(sourceType, sciences, articleCategory),
         ...generatef593(journalJufo, year),
-        ...generatef598(), // local notes (lisäkentät)
+        ...generatef598(collecting.f589a),
         ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
         ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),
