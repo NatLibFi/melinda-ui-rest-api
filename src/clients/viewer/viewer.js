@@ -4,15 +4,15 @@
 //
 //*****************************************************************************
 
-import { setNavBar, startProcess, stopProcess } from "/common/ui-utils.js";
-import { showTab, resetForms, reload } from "/common/ui-utils.js";
-import { createMenuBreak, createMenuItem, createMenuSelection } from "/common/ui-utils.js";
+import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
+import {showTab, resetForms, reload} from "/common/ui-utils.js";
+import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
 
-import { Account, doLogin, logout } from "/common/auth.js"
-import { transformRequest } from "/common/rest.js";
-import { showRecord } from "/common/marc-record-ui.js";
-import { getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog } from "/common/rest.js";
-import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
+import {Account, doLogin, logout} from "/common/auth.js"
+import {transformRequest} from "/common/rest.js";
+import {showRecord} from "/common/marc-record-ui.js";
+import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
+import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -164,6 +164,8 @@ window.loadLog = (event) => {
   matchSelectWrap.style.visibility = 'hidden';
   const matchSelect = document.querySelector('.col .header #match');
   matchSelect.innerHTML = '';
+  const protectButton = document.getElementById('protect');
+  const removeButton = document.getElementById('delete');
 
   checkLogProtection();
 
@@ -216,7 +218,7 @@ window.loadLog = (event) => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      const { record, note } = getMergeCandidateInfo(data.matchResult[event.target.value]);
+      const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, "record2", {}, 'viewer');
     });
@@ -236,9 +238,18 @@ window.loadLog = (event) => {
   }
 
   function checkLogProtection() {
-    // check if log is protected
-    // update buttons
+    //get log with sequence:
+    idbGet(event.target.value)
+      .then(log =>
+        //log.protected === true ? (enable protectbutton and removebutton, change button look) : (enable protectbutton, change button look)
+        console.log(log)
+      )
+      .catch(error =>
+        //report error if log could not be fetched or there is other problems
+        console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error)
+      );
   }
+
 }
 
 window.showNote = (event, record) => {
@@ -313,7 +324,7 @@ function setDataToIndexDB(logs, sequence) {
 
   if (keys.length === 0) {
     select.add(createOption('0', 0));
-    idbSet('0', { incomingRecord: {}, databaseRecord: {}, mergedRecord: {} });
+    idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
     stopProcess();
     // TODO toast 404 not found
     select.value = 0;
@@ -369,6 +380,12 @@ function createOption(text, value) {
   option.value = value;
 
   return option;
+}
+
+function setButton() {
+  //change button look and texts
+  //protected: enabled and lock closed
+  //not protected: enabled and lock open
 }
 
 
@@ -472,7 +489,7 @@ function createLogItemButton(logItem) {
   buttonsList.append(logItemButton);
 }
 
-function createButtonElement({ correlationId, logItemType, creationTime, logCount }) {
+function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
   const button = document.createElement('button');
   button.innerHTML = correlationId + ' | ' + logItemType;
 
