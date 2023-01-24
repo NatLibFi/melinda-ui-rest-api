@@ -238,14 +238,12 @@ window.loadLog = (event) => {
   }
 
   function checkLogProtection() {
-    //get log with sequence:
     idbGet(event.target.value)
       .then(log =>
-        //log.protected === true ? (enable protectbutton and removebutton, change button look) : (enable protectbutton, change button look)
-        console.log(log)
+        log.protected === true ? (setButton('protected'), enableElement(removeButton)) : setButton('not protected'),
+        enableElement(protectButton)
       )
       .catch(error =>
-        //report error if log could not be fetched or there is other problems
         console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error)
       );
   }
@@ -287,6 +285,7 @@ window.protect = function (event = undefined) {
 
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || 1;
+  const protectButton = document.getElementById('protect');
 
   if (id === '') {
     console.log('Nothing to protect...');
@@ -294,7 +293,12 @@ window.protect = function (event = undefined) {
   }
 
   protectLog(id, sequence)
-    .then(response => console.log(response));
+    .then(response =>
+      console.log(response)
+    )
+    .catch(error =>
+      console.log(error));
+
 }
 
 window.remove = function (event = undefined) {
@@ -382,12 +386,31 @@ function createOption(text, value) {
   return option;
 }
 
-function setButton() {
-  //change button look and texts
-  //protected: enabled and lock closed
-  //not protected: enabled and lock open
+function setButton(type) {
+  const protectButton = document.getElementById('protect')
+
+  switch (true) {
+    case (type === 'protected'):
+      setButtonProperties('lock', 'This log is currently protected, click to undo protection', 'Undo protect');
+      break;
+    case (type === 'not protected'):
+      setButtonProperties('lock_open', 'Click to protect this log', 'Protect');
+      break;
+    default:
+      protectButton.setAttribute('disabled', 'true');
+  }
+
+  function setButtonProperties(icon, infoText, tooltipText) {
+    protectButton.innerHTML = icon;
+    protectButton.title = infoText;
+    protectButton.setAttribute('tooltip-text', tooltipText);
+  }
 }
 
+//helper function to "undisable" buttons and other elements
+function enableElement(element) {
+  element.removeAttribute('disabled');
+}
 
 //-----------------------------------------------------------------------------
 // Functions for correlation id list modal 
