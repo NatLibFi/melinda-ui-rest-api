@@ -99,6 +99,26 @@ export default function (melindaApiOptions) {
     }
   }
 
+  async function getCorrelationIdList(req, res, next) {
+    logger.verbose('GET getCorrelationIdList');
+
+    const {expanded} = req.query || {};
+
+    const params = {
+      expanded,
+      limit: 0
+    };
+
+    try {
+      const result = await logService.getCorrelationIdList(params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+
+  }
+
   function protectLog(req, res, next) {
     const {id: correlationId} = req.params || {};
     const {sequence: blobSequence} = req.query || {};
@@ -123,26 +143,6 @@ export default function (melindaApiOptions) {
 
     logger.debug(`Removing log: ${params.correlationId}`);
     res.status(200);
-  }
-
-  async function getCorrelationIdList(req, res, next) {
-    logger.verbose('GET getCorrelationIdList');
-
-    const {expanded} = req.query || {};
-
-    const params = {
-      expanded,
-      limit: 0
-    };
-
-    try {
-      const result = await logService.getCorrelationIdList(params);
-      logger.debug('*******************************************');
-      res.json(result);
-    } catch (error) {
-      return next(error);
-    }
-
   }
 
   function handleRouteNotFound(req, res, next) {
