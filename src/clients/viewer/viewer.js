@@ -241,11 +241,9 @@ window.loadLog = (event) => {
     idbGet(event.target.value)
       .then(log =>
         log.protected === true ? (setButton('protected'), enableElement(removeButton)) : setButton('not protected'),
-        enableElement(protectButton)
-      )
+        enableElement(protectButton))
       .catch(error =>
-        console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error)
-      );
+        console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
   }
 
 }
@@ -282,7 +280,6 @@ window.protect = function (event = undefined) {
   eventHandled(event);
   console.log('Protecting...');
 
-
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || 1;
   const protectButton = document.getElementById('protect');
@@ -293,9 +290,8 @@ window.protect = function (event = undefined) {
   }
 
   protectLog(id, sequence)
-    .then(response =>
-      console.log(response)
-    )
+    .then(() =>
+      protectButton.innerHTML === 'lock_open' ? setButton('protected') : setButton('not protected'))
     .catch(error =>
       console.log(error));
 
@@ -338,7 +334,7 @@ function setDataToIndexDB(logs, sequence) {
   const refactorLogs = Object.fromEntries(keys.map(key => [logs[key].blobSequence, logs[key]]));
   const refactoredKeys = Object.keys(refactorLogs);
 
-  select.removeAttribute('disabled');
+  enableElement(select);
   refactoredKeys.forEach(key => {
     idbSet(key, refactorLogs[key]);
     select.add(createOption(key, key));
@@ -407,7 +403,6 @@ function setButton(type) {
   }
 }
 
-//helper function to "undisable" buttons and other elements
 function enableElement(element) {
   element.removeAttribute('disabled');
 }
