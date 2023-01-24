@@ -279,6 +279,7 @@ window.copyLink = function (event) {
 window.protect = function (event = undefined) {
   eventHandled(event);
   console.log('Protecting...');
+  startProcess();
 
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || 1;
@@ -286,6 +287,7 @@ window.protect = function (event = undefined) {
 
   if (id === '') {
     console.log('Nothing to protect...');
+    stopProcess();
     return;
   }
 
@@ -293,8 +295,10 @@ window.protect = function (event = undefined) {
     .then(() =>
       protectButton.innerHTML === 'lock_open' ? setButton('protected') : setButton('not protected'))
     .catch(error =>
-      console.log(error));
-
+      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
+      .finally(() =>
+        stopProcess());
+        
 }
 
 window.remove = function (event = undefined) {
