@@ -30,7 +30,7 @@ window.initialize = function () {
   setNavBar(document.querySelector('#navbar'), "Viewer")
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
-  select.setAttribute('disabled', false)
+  select.disabled = true;
 
   doLogin(authSuccess);
 
@@ -82,21 +82,12 @@ var transformed = {
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
   const logType = document.querySelector(`#viewer #logType`).value;
-  const sequence = getSequence();
+  const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
+  const sequenceSelect = document.querySelector(`#viewer #sequence`);
+  const sequence = sequenceInputField.value || sequenceSelect.value || 0;
 
   doFetch(event, id, sequence, logType);
 }
-
-function getSequence() {
-  const sequenceInputField = document.querySelector('#viewer #sequenceInput');
-  if (sequenceInputField.value !== '') {
-    return sequenceInputField.value;
-  }
-
-  const sequenceSelect = document.querySelector('#viewer #sequence');
-  return sequenceSelect.value || 0;
-}
-
 
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event);
@@ -105,7 +96,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
-  sequenceSelect.setAttribute('disabled', false);
+  sequenceSelect.disabled = true;
   const col3 = document.querySelector('#viewer #record3').parentElement;
   console.log('Fetching...');
 
@@ -164,8 +155,8 @@ window.loadLog = (event) => {
   matchSelectWrap.style.visibility = 'hidden';
   const matchSelect = document.querySelector('.col .header #match');
   matchSelect.innerHTML = '';
-  const protectButton = document.getElementById('protect');
-  const removeButton = document.getElementById('delete');
+  const protectButton = document.querySelector(`#viewer #protect`);
+  const removeButton = document.querySelector(`#viewer #delete`);
 
   checkLogProtection();
 
@@ -283,7 +274,7 @@ window.protect = function (event = undefined) {
 
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || 1;
-  const protectButton = document.getElementById('protect');
+  const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
     console.log('Nothing to protect...');
@@ -296,9 +287,9 @@ window.protect = function (event = undefined) {
       protectButton.innerHTML === 'lock_open' ? setButton('protected') : setButton('not protected'))
     .catch(error =>
       console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
-      .finally(() =>
-        stopProcess());
-        
+    .finally(() =>
+      stopProcess());
+
 }
 
 window.remove = function (event = undefined) {
@@ -387,7 +378,7 @@ function createOption(text, value) {
 }
 
 function setButton(type) {
-  const protectButton = document.getElementById('protect')
+  const protectButton = document.querySelector(`#viewer #protect`);
 
   switch (true) {
     case (type === 'protected'):
@@ -397,7 +388,7 @@ function setButton(type) {
       setButtonProperties('lock_open', 'Click to protect this log', 'Protect');
       break;
     default:
-      protectButton.setAttribute('disabled', 'true');
+      protectButton.disabled = true;
   }
 
   function setButtonProperties(icon, infoText, tooltipText) {
@@ -432,18 +423,16 @@ function showCorrelationIdList() {
       clearList();
       stopProcess();
     });
+
 }
 
 function updateCorrelationIdListView() {
+  clearList();
+  const selectSorting = document.getElementById("correlationIdListSorting");
   const dateStartInputValue = document.getElementById("dateStartInput").value;
   const dateEndInputValue = document.getElementById("dateEndInput").value;
 
-  const buttonsList = document.getElementById('correlationIdListButtons');
-  buttonsList.replaceChildren();
-
   const filteredList = filterList(dateStartInputValue, dateEndInputValue);
-
-  const selectSorting = document.getElementById("correlationIdListSorting");
   const sortedList = sortList(filteredList, selectSorting.value);
 
   if (sortedList.length === 0) {
@@ -475,10 +464,10 @@ function filterList(startDate, endDate) {
     default:
       return correlationIdList;
   }
-}
 
-function getDate(logItem) {
-  return logItem.creationTime.substring(0, 10);
+  function getDate(logItem) {
+    return logItem.creationTime.substring(0, 10);
+  }
 }
 
 function sortList(list, sortingMethod) {
@@ -490,66 +479,69 @@ function sortList(list, sortingMethod) {
     default:
       return list;
   }
-}
 
-function compareLogItemsByIdAndType(logItemA, logItemB) {
-  return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
-}
+  function compareLogItemsByIdAndType(logItemA, logItemB) {
+    return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
+  }
 
-function compareLogItemsByTime(logItemA, logItemB) {
-  return logItemA.creationTime.localeCompare(logItemB.creationTime);
-}
+  function compareLogItemsByTime(logItemA, logItemB) {
+    return logItemA.creationTime.localeCompare(logItemB.creationTime);
+  }
 
-function showPlaceholderText(text) {
-  const placeholderText = document.getElementById('fetchListPlaceholderText');
-  placeholderText.innerHTML = text;
 }
 
 function createLogItemButton(logItem) {
   const logItemButton = createButtonElement(logItem);
   const buttonsList = document.getElementById('correlationIdListButtons');
   buttonsList.append(logItemButton);
+
+  function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
+    const button = document.createElement('button');
+    button.innerHTML = correlationId + ' | ' + logItemType;
+
+    const logIteminfoText =
+      `Correlation id: ${correlationId}
+        Log type: ${logItemType}
+        Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
+        Log count: ${logCount}`;
+
+    button.title = logIteminfoText;
+
+    if (logItemType === 'MERGE_LOG') {
+      button.className = 'merge-log-button';
+    }
+
+    if (logItemType === 'MATCH_LOG') {
+      button.className = 'match-log-button';
+    }
+
+    const selectedId = document.querySelector(`#viewer #id`).value;
+    const selectedLogType = document.querySelector(`#viewer #logType`).value;
+    if (correlationId === selectedId && logItemType === selectedLogType) {
+      button.classList.add('selected-id');
+    }
+
+    button.addEventListener("click", function () {
+      searchWithSelectedIdAndType(correlationId, logItemType);
+    });
+
+    return button;
+  }
+
+  function searchWithSelectedIdAndType(correlationId, logItemType) {
+    const id = document.querySelector(`#viewer #id`);
+    id.value = correlationId;
+
+    const logType = document.querySelector(`#viewer #logType`);
+    logType.value = logItemType;
+
+    doSearchPress();
+    modalClose();
+  }
+
 }
 
-function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
-  const button = document.createElement('button');
-  button.innerHTML = correlationId + ' | ' + logItemType;
-
-  const logIteminfoText = `Correlation id: ${correlationId}
-  Log type: ${logItemType}
-  Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
-  Log count: ${logCount}`;
-
-  button.title = logIteminfoText;
-
-  if (logItemType === 'MERGE_LOG') {
-    button.className = 'merge-log-button';
-  }
-
-  if (logItemType === 'MATCH_LOG') {
-    button.className = 'match-log-button';
-  }
-
-  const selectedId = document.querySelector(`#viewer #id`).value;
-  const selectedLogType = document.querySelector(`#viewer #logType`).value;
-  if (correlationId === selectedId && logItemType === selectedLogType) {
-    button.classList.add('selected-id');
-  }
-
-  button.addEventListener("click", function () {
-    searchWithSelectedIdAndType(correlationId, logItemType);
-  });
-
-  return button;
-}
-
-function searchWithSelectedIdAndType(correlationId, logItemType) {
-  const id = document.querySelector(`#viewer #id`);
-  id.value = correlationId;
-
-  const logType = document.querySelector(`#viewer #logType`);
-  logType.value = logItemType;
-
-  doSearchPress();
-  modalClose();
+function showPlaceholderText(text) {
+  const placeholderText = document.getElementById('fetchListPlaceholderText');
+  placeholderText.innerHTML = text;
 }
