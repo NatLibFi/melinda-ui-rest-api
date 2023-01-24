@@ -189,16 +189,16 @@
   <!-- ---------------------------------------------------------------------- -->
   <!-- JSON dialog -->
   <div id="jsonDlg" class="modal" onclick="return jsonDlgClose(event)">
-    <div class="modal-content BoxShadow" style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden;" onclick="return ignore(event)">
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return saveJson(event)">Tallenna muutokset</button>
-        <button onclick="return selectJson(event)">Valitse koko sisältö</button>
-        <button onclick="return jsonDlgClose(event)">Sulje ikkuna</button>
+    <div class="modal-content BoxShadow" style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;" onclick="return ignore(event)">
+      <div style="position: sticky; top: 0; background-color: white; padding-top: 16px;">
+        <div style="display: flex; justify-content: right;">
+          <button onclick="return saveJson(event)">Tallenna muutokset</button>
+          <button onclick="return selectJson(event)">Valitse koko sisältö</button>
+          <button onclick="return jsonDlgClose(event)">Sulje ikkuna</button>
+        </div>
+        <hr/>
       </div>
-      <!-- <span id="msgHeader" class="marc-record"></span><br/> -->
-      <hr/>
       <div id="jsonContent" class="marc-record"></div>
-      <!-- <hr/> -->
     </div>
   </div>
 

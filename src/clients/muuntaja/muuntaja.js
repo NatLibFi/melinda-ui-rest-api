@@ -465,5 +465,7 @@ window.saveJson = function (event) {
   const record = document.querySelector("#recordAsJson");
   transformed = JSON.parse(record.textContent);
   doTransform();
+  document.querySelector("#type-options [name='type']").value = transformed.options.type;
+  document.querySelector("#profile-options [name='profile']").value = transformed.options.profile;
   jsonDlgClose(event);
 }
