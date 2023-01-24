@@ -165,6 +165,8 @@ window.loadLog = (event) => {
   const matchSelect = document.querySelector('.col .header #match');
   matchSelect.innerHTML = '';
 
+  checkLogProtection();
+
   if (logType === 'MERGE_LOG') {
 
     idbGet(event.target.value).then(data => {
@@ -231,6 +233,11 @@ window.loadLog = (event) => {
       record,
       note: `<li>Melinda-ID: ${id}</li><li>Käypäisyys: ${probability * 100}%</li><li>Yhdistämistapa: ${action}</li><li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li><li>Peruste: ${preference}</li>`
     }
+  }
+
+  function checkLogProtection() {
+    // check if log is protected
+    // update buttons
   }
 }
 
