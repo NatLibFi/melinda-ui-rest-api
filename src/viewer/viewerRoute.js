@@ -26,10 +26,6 @@ export default function (melindaApiOptions) {
     .delete('/remove/:id', removeLog)
     .use(handleError);
 
-  function handleError(req, res, next) {
-    logger.error('Error', req, res);
-    next();
-  }
 
   async function getMatchLog(req, res, next) {
     logger.verbose('GET getMatchLog');
@@ -84,34 +80,6 @@ export default function (melindaApiOptions) {
     res.json(result);
   }
 
-
-  function protectLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {sequence: blobSequence} = req.query || {};
-
-    const params = {
-      ...correlationId,
-      ...blobSequence
-    };
-
-    logger.debug(`Protecting log id: ${params.correlationId}, sequence: ${params.sequence}`);
-    res.status(200);
-  }
-
-  function removeLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {logType: logItemType} = req.query || {};
-
-    const params = {
-      ...correlationId,
-      ...logItemType
-    };
-
-    logger.debug(`Removing log: ${params.correlationId}`);
-    res.status(200);
-  }
-
-
   async function getCorrelationIdList(req, res, next) {
     logger.verbose('GET getCorrelationIdList');
 
@@ -126,11 +94,53 @@ export default function (melindaApiOptions) {
       const result = await logService.getCorrelationIdList(params);
       logger.debug('*******************************************');
       res.json(result);
-    } catch (expection) {
-      // eslint-disable-next-line callback-return
-      next(expection);
+    } catch (e) {
+      return next(e);
     }
 
+  }
+
+  async function protectLog(req, res, next) {
+    const {id: correlationId} = req.params || {};
+    const {sequence: blobSequence} = req.query || {};
+
+    const params = {
+      blobSequence
+    };
+
+    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}, sequence: ${JSON.stringify(params.blobSequence)}`);
+
+    try {
+      //next lines are commented out, just waiting for changes in api/server side
+      // const result = await logService.protectLog(correlationId, params);
+      // logger.debug('*******************************************');
+      // res.json(result);
+
+      //placeholders, just always sending 'OK'
+      const result = await 'placeholder for logService function';
+      logger.debug('*******************************************');
+      res.sendStatus(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  function removeLog(req, res, next) {
+    const {id: correlationId} = req.params || {};
+    const {logType: logItemType} = req.query || {};
+
+    const params = {
+      ...correlationId,
+      ...logItemType
+    };
+
+    logger.debug(`Removing log: ${params.correlationId}`);
+    res.sendStatus(200);
+  }
+
+  function handleError(req, res, next) {
+    logger.error('Error', req, res);
+    next();
   }
 
 }
