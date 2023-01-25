@@ -111,15 +111,9 @@ export default function (melindaApiOptions) {
     logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}, sequence: ${JSON.stringify(params.blobSequence)}`);
 
     try {
-      //next lines are commented out, just waiting for changes in api/server side
-      // const result = await logService.protectLog(correlationId, params);
-      // logger.debug('*******************************************');
-      // res.json(result);
-
-      //placeholders, just always sending 'OK'
-      const result = await 'placeholder for logService function';
+      const result = await logService.protectLog(correlationId, params);
       logger.debug('*******************************************');
-      res.sendStatus(200);
+      res.json(result);
     } catch (e) {
       return next(e);
     }
