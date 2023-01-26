@@ -34,15 +34,16 @@
 .tooltip:hover:after {
   content: attr(tooltip-text);
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  /* right: 0; */
   top: 100%;
+  transform: translateX(-50%);
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
   /* basic styles */
   background: rgb(182, 225, 224);
   color: #000;
-  font-size: 0.3em;
+  font-size: 0.5em;
   font-family: "Roboto", "Roboto-mono", "Roboto-serif";
 }
 
