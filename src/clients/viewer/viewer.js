@@ -30,7 +30,7 @@ window.initialize = function () {
   setNavBar(document.querySelector('#navbar'), "Viewer")
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
-  select.disabled = true;
+  disableElement(select);
 
   doLogin(authSuccess);
 
@@ -96,7 +96,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
-  sequenceSelect.disabled = true;
+  disableElement(sequenceSelect);
   const col3 = document.querySelector('#viewer #record3').parentElement;
   console.log('Fetching...');
 
@@ -156,7 +156,6 @@ window.loadLog = (event) => {
   const matchSelect = document.querySelector('.col .header #match');
   matchSelect.innerHTML = '';
   const protectButton = document.querySelector(`#viewer #protect`);
-  const removeButton = document.querySelector(`#viewer #delete`);
 
   checkLogProtection();
 
@@ -231,7 +230,7 @@ window.loadLog = (event) => {
   function checkLogProtection() {
     idbGet(event.target.value)
       .then(log =>
-        log.protected === true ? (setButton('protected'), enableElement(removeButton)) : setButton('not protected'),
+        log.protected === true ? (setButton('protected')) : (setButton('not protected')),
         enableElement(protectButton))
       .catch(error =>
         console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
@@ -284,7 +283,7 @@ window.protect = function (event = undefined) {
 
   protectLog(id, sequence)
     .then(() =>
-      protectButton.innerHTML === 'lock_open' ? setButton('protected') : setButton('not protected'))
+      protectButton.innerHTML === 'lock_open' ? (setButton('protected')) : (setButton('not protected')))
     .catch(error =>
       console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
     .finally(() =>
@@ -388,7 +387,7 @@ function setButton(type) {
       setButtonProperties('lock_open', 'Click to protect this log', 'Protect');
       break;
     default:
-      protectButton.disabled = true;
+      disableElement(protectButton);
   }
 
   function setButtonProperties(icon, infoText, tooltipText) {
@@ -400,6 +399,10 @@ function setButton(type) {
 
 function enableElement(element) {
   element.removeAttribute('disabled');
+}
+
+function disableElement(element) {
+  element.disabled = true;
 }
 
 //-----------------------------------------------------------------------------
