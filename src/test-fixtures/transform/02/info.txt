@@ -1,0 +1,10 @@
+
+02:
+
+generate0xxFields.js
+---------------------
+
+functions used and tested here:
+041: artikkelin & tiivistelmäm kieli (spa, saame etc)
+080: Lisäkentät a & x
+084: Muu luokitus (084 $a) & Luokituksen lähde (084 $2):

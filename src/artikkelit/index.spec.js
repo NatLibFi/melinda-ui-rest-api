@@ -29,8 +29,7 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {createArtikkelitService} from './artikkelitService.js'; // ***
-
+import {createArtikkelitService} from './artikkelitService.js';
 
 generateTests({
   callback,
@@ -44,17 +43,14 @@ generateTests({
 
 async function callback({getFixture, enabled = true}) {
   if (enabled === false) {
-    //debug('TEST SKIPPED!');
     return;
   }
 
   const importResults = getFixture('input.json');
   const expectedResults = getFixture('output.json');
-
-  const transform = createArtikkelitService();
+  const transform = createArtikkelitService('000101'); //param: useMoment
 
   const handledRecords = await transform.generateRecord(importResults);
-
   expect(handledRecords).to.deep.equal(expectedResults);
 
 }

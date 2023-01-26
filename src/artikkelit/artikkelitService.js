@@ -12,16 +12,12 @@ import {generatef856} from './generate/generate8xxFields';
 import {generatef960} from './generate/generate9xxFields';
 import {generatef6xxs} from './generate/generate6xxFields';
 
-//import {generateTests} from './generate/index.spec.js'; // ***
-
-export function createArtikkelitService() {
+export function createArtikkelitService(useMoment = 'now') {
 
   return {generateRecord};
 
   function generateRecord(data) {
-
-    console.log(data); // eslint-disable-line        
-    //console.log('   ***   INPUT DATA artikkelitService.js - inputdata stringified', JSON.stringify(data, null, " ")); // eslint-disable-line
+    console.log(data); // eslint-disable-line            
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
     const titleFor773t = source.title;
@@ -43,7 +39,7 @@ export function createArtikkelitService() {
       fields: [
         ...generatef005(),
         ...generatef007(isElectronic),
-        ...generatef008(journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
+        ...generatef008(useMoment, journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
         ...generatef041(articleLanguage.iso6392b, abstractLanguages),
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
@@ -68,10 +64,6 @@ export function createArtikkelitService() {
         ...generatef960()
       ]
     };
-
-    //console.log('   ***   artikkelitService.js - record stringified', JSON.stringify(record, null, " ")); // eslint-disable-line
-    // <- OUTPUT eli muokattu tietue
-    //generateTests(); // ***
 
     return record;
   }

@@ -1,0 +1,536 @@
+{
+ "source": {
+  "title": "Basso : urbaani musiikki & kulttuuri",
+  "isElectronic": false,
+  "years": "2006-2012.",
+  "issns": [
+   "1796-3753"
+  ],
+  "isbns": [],
+  "sourceIds": [
+   "(FI-MELINDA)000434823"
+  ],
+  "publishing": "Helsinki : Basso Media, 2006-2012.",
+  "publisherInfo": {
+   "publisherLocation": "Helsinki",
+   "publisher": "Basso Media",
+   "publisherYears": {
+    "start": "2006",
+    "end": "2012"
+   }
+  },
+  "notices": [],
+  "authors": [],
+  "simpleGroups": {
+   "universalDecimalClassificationNumber": [
+    [
+     {
+      "code": "a",
+      "value": "78"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "316.7"
+     }
+    ]
+   ],
+   "otherClassificationNumber": [
+    [
+     {
+      "code": "a",
+      "value": "78.89051"
+     },
+     {
+      "code": "2",
+      "value": "ykl"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "78.8914051"
+     },
+     {
+      "code": "2",
+      "value": "ykl"
+     }
+    ]
+   ],
+   "abstract": {
+    "term": [],
+    "language": []
+   },
+   "localNotes599": []
+  },
+  "simpleElements": {
+   "referenceLink": [],
+   "f655s": [
+    [
+     {
+      "code": "a",
+      "value": "mielipidelehdet"
+     },
+     {
+      "code": "2",
+      "value": "slm/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://urn.fi/URN:NBN:fi:au:slm:s213"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "nuortenlehdet"
+     },
+     {
+      "code": "2",
+      "value": "slm/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://urn.fi/URN:NBN:fi:au:slm:s54"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "opinionstidningar"
+     },
+     {
+      "code": "2",
+      "value": "slm/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://urn.fi/URN:NBN:fi:au:slm:s213"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "ungdomstidningar"
+     },
+     {
+      "code": "2",
+      "value": "slm/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://urn.fi/URN:NBN:fi:au:slm:s54"
+     }
+    ]
+   ],
+   "f653s": [],
+   "f651s": [],
+   "f650s": [
+    [
+     {
+      "code": "a",
+      "value": "populaarikulttuuri"
+     },
+     {
+      "code": "2",
+      "value": "yso/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p6"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "populaarimusiikki"
+     },
+     {
+      "code": "2",
+      "value": "yso/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p3064"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "musiikki"
+     },
+     {
+      "code": "2",
+      "value": "yso/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1808"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "kausijulkaisut"
+     },
+     {
+      "code": "2",
+      "value": "yso/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1188"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "aikakauslehdet"
+     },
+     {
+      "code": "2",
+      "value": "yso/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1255"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "musiikkilehdet"
+     },
+     {
+      "code": "2",
+      "value": "yso/fin"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1254"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "populärkultur"
+     },
+     {
+      "code": "2",
+      "value": "yso/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p6"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "populärmusik"
+     },
+     {
+      "code": "2",
+      "value": "yso/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p3064"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "musik"
+     },
+     {
+      "code": "2",
+      "value": "yso/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1808"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "periodika"
+     },
+     {
+      "code": "2",
+      "value": "yso/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1188"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "tidskrifter"
+     },
+     {
+      "code": "2",
+      "value": "yso/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1255"
+     }
+    ],
+    [
+     {
+      "code": "a",
+      "value": "musiktidskrifter"
+     },
+     {
+      "code": "2",
+      "value": "yso/swe"
+     },
+     {
+      "code": "0",
+      "value": "http://www.yso.fi/onto/yso/p1254"
+     }
+    ]
+   ],
+   "f648s": [],
+   "f610s": [],
+   "f600s": [],
+   "articleLanguage": [
+    "fin"
+   ],
+   "articleReference": [],
+   "articleSciences": [],
+   "titleOther": [],
+   "localNotes598": [],
+   "noteGeneral": [
+    "Alanimeke vaihtelee.",
+    "Alanimeke vaihtelee. - Myöhemmin ilman alanimekettä.",
+    "Alanimeke 2008-: uuden musiikin ja ilmiöiden aikakauslehti."
+   ],
+   "methodology": []
+  },
+  "recordType": "Kausijulkaisu",
+  "sourceType": "nnas"
+ },
+ "journalNumber": {
+  "publishingYear": "",
+  "volume": "",
+  "number": "",
+  "pages": ""
+ },
+ "article": {
+  "title": "",
+  "titleOther": "",
+  "language": {
+   "iso6391": "es",
+   "iso6392b": "esp",
+   "ui": "Espanja"
+  },
+  "link": "",
+  "type": "",
+  "reviewType": "",
+  "sectionOrColumn": ""
+ },
+ "collecting": {
+  "f589a": "",
+  "f599a": "",
+  "f599x": ""
+ },
+ "sciences": [
+  {
+   "key": 1,
+   "department": "1",
+   "departmentName": "Luonnontieteet",
+   "subCategory": "115",
+   "subject": "Avaruustieteet ja tähtitiede"
+  },
+  {
+   "key": 2,
+   "department": "1",
+   "departmentName": "Luonnontieteet",
+   "subCategory": "1171",
+   "subject": "Geotieteet"
+  }
+ ],
+ "metodologys": [
+  {
+   "key": 4,
+   "value": "metodi ei tiedossa"
+  }
+ ],
+ "authors": [
+  {
+   "key": 1,
+   "firstName": "c metropoliitta",
+   "lastName": "Panteleimon",
+   "relator": "kirjoittaja",
+   "authorsTempOrganizations": []
+  },
+  {
+   "key": 2,
+   "firstName": " ",
+   "lastName": "Yksiniminen",
+   "relator": "kääntäjä",
+   "authorsTempOrganizations": []
+  },
+  {
+   "key": 3,
+   "firstName": " ",
+   "lastName": "KuvitusKollektiivi",
+   "relator": "kuvittaja",
+   "authorsTempOrganizations": [
+    {
+     "key": 1,
+     "organizationName": "Kuvataideakatemia",
+     "code": "1740",
+     "note": false
+    }
+   ]
+  },
+  {
+   "key": 4,
+   "firstName": " Reino",
+   "lastName": "Walden",
+   "relator": "toimittaja",
+   "authorsTempOrganizations": []
+  }
+ ],
+ "ontologyWords": [
+  {
+   "key": 1,
+   "identifier": 0,
+   "uri": "http://www.yso.fi/onto/yso/p2555",
+   "type": [
+    "skos:Concept",
+    "http://www.yso.fi/onto/yso-meta/Concept"
+   ],
+   "localname": "p2555",
+   "prefLabel": "talous",
+   "lang": "fi",
+   "vocab": "yso"
+  },
+  {
+   "key": 2,
+   "identifier": 0,
+   "uri": "http://www.yso.fi/onto/yso/p6180061899",
+   "type": [
+    "skos:Concept",
+    "http://www.yso.fi/onto/yso-meta/Century"
+   ],
+   "localname": "p6180061899",
+   "prefLabel": "1800-talet",
+   "lang": "sv",
+   "notation": "1800/1899",
+   "vocab": "yso-aika"
+  },
+  {
+   "key": 4,
+   "identifier": 0,
+   "uri": "http://www.yso.fi/onto/yso/p38430",
+   "type": [
+    "skos:Concept",
+    "http://www.yso.fi/onto/yso-meta/Concept"
+   ],
+   "localname": "p38430",
+   "prefLabel": "tekniikat",
+   "lang": "fi",
+   "hiddenLabel": "tekniikka",
+   "vocab": "yso"
+  }
+ ],
+ "abstracts": [
+  {
+   "key": 1,
+   "language": {
+    "iso6391": "sme",
+    "iso6392b": "sme",
+    "ui": "Pohj.saame"
+   },
+   "abstract": ""
+  },
+  {
+   "key": 2,
+   "language": {
+    "iso6391": "fr",
+    "iso6392b": "fre",
+    "ui": "Ranska"
+   },
+   "abstract": ""
+  },
+  {
+   "key": 3,
+   "language": {
+    "iso6391": "et",
+    "iso6392b": "est",
+    "ui": "Viro"
+   },
+   "abstract": ""
+  },
+  {
+   "key": 4,
+   "language": {
+    "iso6391": "es",
+    "iso6392b": "esp",
+    "ui": "Espanja"
+   },
+   "abstract": ""
+  },
+  {
+   "key": 5,
+   "language": {
+    "iso6391": "smn",
+    "iso6392b": "smn",
+    "ui": "Inarinsaame"
+   },
+   "abstract": ""
+  },
+  {
+   "key": 6,
+   "language": {
+    "iso6391": "smi",
+    "iso6392b": "smi",
+    "ui": "Muu saam."
+   },
+   "abstract": ""
+  }
+ ],
+ "notes": [
+  {
+   "key": 1,
+   "value": "Tämä on Yleinen huomautus"
+  }
+ ],
+ "udks": [
+  {
+   "key": 1,
+   "a080": "021",
+   "x080": "2018"
+  },
+  {
+   "key": 2,
+   "a080": "022",
+   "x080": "2019"
+  },
+  {
+   "key": 3,
+   "a080": "023",
+   "x080": "2020"
+  }
+ ],
+ "otherRatings": [
+  {
+   "key": 1,
+   "a084": "78.541",
+   "two084": "ykl"
+  },
+  {
+   "key": 3,
+   "a084": "Eläimet ",
+   "two084": "ykl"
+  }
+ ]
+}

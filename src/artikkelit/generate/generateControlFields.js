@@ -22,8 +22,8 @@ export function generatef007(isElectronic = false) {
   return [];
 }
 
-export function generatef008(publYear, sourceType, isElectronic, language) {
-
+export function generatef008(useMoment, publYear, sourceType, isElectronic, language) {
+  //console.log('   ***   useMoment/generateControlFields:',useMoment); // eslint-disable-line
   function checkPublYear(publYear) {
     if (!publYear.length || publYear.length !== 4) {
       return '    '; // '^^^^'
@@ -46,14 +46,22 @@ export function generatef008(publYear, sourceType, isElectronic, language) {
     return language.iso6392b;
   }
 
-  const dateNow = new Date();
-  const dateFormatted = dateNow.toISOString().split('T')[0].replace(/-/gu, '').slice(2, 8); // YYMMDD
+  function dateFormatted (useMoment) {
+    if (useMoment === 'now') {
+      const dateNow = new Date();
+      const useDate = dateNow.toISOString().split('T')[0].replace(/-/gu, '').slice(2, 8); // YYMMDD
+      return useDate;
+    }
+
+    return '000101';
+  }
+
   const publYear2 = '    '; // 11-14: 'Julkaisuvuosi 2' = 4x space = '^^^^'
   const country = 'fi '; //15-17 'Julkaisu-, tuotanto- tai toteuttamismaa' 'fi^'
   const places18to22 = '|| ||'; // 'Ilmestymistiheys, Säännöllisyys, 20 Määrittelemätön, Jatkuvan julkaisun tyyppi, Alkuperäisen julkaisun ilmiasu', '||^||'
   // place 23 = selectMaterialType:  'Ilmiasu': Painetut artikkelit: tyhjä / Elektroniset artikkelit: o ("Verkkoaineisto")
   const places24to35 = '||||||   ||'; // '||||||^^^||'
-  const f008Parts = [dateFormatted, 's', checkPublYear(publYear), publYear2, country, places18to22, selectMaterialType(sourceType, isElectronic), places24to35, checkLanguage(), ' c']; // '^c'
+  const f008Parts = [dateFormatted(useMoment), 's', checkPublYear(publYear), publYear2, country, places18to22, selectMaterialType(sourceType, isElectronic), places24to35, checkLanguage(), ' c']; // '^c'
 
   return [{tag: '008', value: f008Parts.join('')}];
 

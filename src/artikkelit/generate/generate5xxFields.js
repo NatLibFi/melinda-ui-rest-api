@@ -62,9 +62,11 @@ export function generatef593(journalJufo, year) {
   return [];
 }
 
-export function generatef598(localNotesf598 = false) {
-  if (localNotesf598) {
-    return [{tag: '598', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: localNotesf598}, {code: '5', value: 'ARTO'}]}];
+export function generatef598(f598) { //  export function generatef598(localNotesf598 = false) {
+  // 'collecting' has 'f589a' (!), 'f599a' & 'f599x'. Obviously 'f589a' is just misspelled for 'f598a'
+
+  if (f598) {
+    return [{tag: '598', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: f598}, {code: '5', value: 'ARTO'}]}];
   }
 
   return [];
