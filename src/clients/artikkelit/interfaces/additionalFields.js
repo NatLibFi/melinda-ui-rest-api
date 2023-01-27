@@ -39,7 +39,7 @@ export function refreshNotesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeNote(event, ${noteData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeNote(event, ${noteData.key})`, 'Poista')
       div.appendChild(createP('Yleinen huomautus', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(noteData.value));
       div.appendChild(removeButton);
@@ -87,7 +87,7 @@ export function refreshUDKsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista')
       div.appendChild(createP('UDK(080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
       div.appendChild(createP('($x)', '&nbsp;', '&nbsp;', ['label-text']));
@@ -137,7 +137,7 @@ export function refreshOtherRatingsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista')
       div.appendChild(createP('Muu luokitus (084 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(otherRatingData.a084));
       div.appendChild(createP('Luokituksen lähde ($2)', '&nbsp;', '&nbsp;', ['label-text']));
