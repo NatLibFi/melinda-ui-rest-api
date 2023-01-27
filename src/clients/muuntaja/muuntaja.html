@@ -91,6 +91,7 @@
             <div id="type-options"></div>
             <div id="profile-options"></div>
             <button class="material-icons tooltip" tooltip-text="Jaa" onClick="copyLink(event)">share</button>
+            <button class="material-icons tooltip" tooltip-text="Tietue" onclick="jsonDlgOpen(event)">edit_note</button>
         </div>
         <div class="popup">Linkki kopioitu!</div>
       </div>
@@ -182,6 +183,22 @@
       <div style="display: flex; justify-content: right;">
         <button onclick="return notFoundDlgClose(event)">Sulje</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- JSON dialog -->
+  <div id="jsonDlg" class="modal" onclick="return jsonDlgClose(event)">
+    <div class="modal-content BoxShadow" style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;" onclick="return ignore(event)">
+      <div style="position: sticky; top: 0; background-color: white; padding-top: 16px;">
+        <div style="display: flex; justify-content: right;">
+          <button onclick="return saveJson(event)">Tallenna muutokset</button>
+          <button onclick="return selectJson(event)">Valitse koko sisältö</button>
+          <button onclick="return jsonDlgClose(event)">Sulje ikkuna</button>
+        </div>
+        <hr/>
+      </div>
+      <div id="jsonContent" class="marc-record"></div>
     </div>
   </div>
 
