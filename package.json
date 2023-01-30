@@ -26,15 +26,17 @@
     "prepare": "npm run build",
     "lint": "eslint src",
     "lint:dev": "eslint --fix src",
-    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 --exclude src/muuntaja/reference/**/*.spec.js src/**/*.spec.js",
     "test": "npm run lint && npm run test:base",
-    "test:dev": "clear && npm run lint:dev && npm run coverage",
+    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/**/*.spec.js",
+    "test:artikkelit": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/artikkelit/generate/*.spec.js",
+    "test:dev": "clear && npm run lint:dev && npm run test:base && npm run coverage",
     "coverage": "npm run coverage:unit && npm run coverage:report",
     "coverage:unit": "nyc --silent npm run test:base",
     "coverage:report": "nyc report --reporter=text",
     "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
-    "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon",
-    "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
+    "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon --watch src --exec 'npm run lint:dev && npm run start:dev'",
+    "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:dev'",
+    "dev:test:artikkelit": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:artikkelit'"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",
@@ -93,16 +95,10 @@
     ]
   },
   "nodemonConfig": {
-    "exec": "npm run lint:dev && npm run start:dev",
-    "watch": [
-      "src/*"
-    ],
     "ignore": [
-      "src/clients/*",
-      "src/muuntaja/reference/*"
-    ],
-    "ext": "js",
-    "delay": 2.5
+      "src/clients",
+      "src/muuntaja/reference"
+    ]
   },
   "nyc": {
     "exclude": [

@@ -1,6 +1,7 @@
 {
   "description": "generatef084; field 084",
-  "disabled": false,
+  "skip": false,
+  "only": false,
   "succesRecords": 2,
   "failedRecords": 0,
   "expectedError": false,
