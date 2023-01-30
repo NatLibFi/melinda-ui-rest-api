@@ -28,7 +28,7 @@ export function createArtikkelitService(useMoment = 'now') {
     const referenceLinks = article.link; // field 856; at the moment only one link
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
-    const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
+    const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);    
     const year = '2022'; // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';

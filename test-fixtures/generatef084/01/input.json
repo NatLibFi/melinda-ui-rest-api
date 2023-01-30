@@ -326,9 +326,9 @@
   "title": "",
   "titleOther": "",
   "language": {
-   "iso6391": "fi",
-   "iso6392b": "fin",
-   "ui": "Suomi"
+   "iso6391": "es",
+   "iso6392b": "esp",
+   "ui": "Espanja"
   },
   "link": "",
   "type": "",
@@ -362,7 +362,43 @@
    "value": "metodi ei tiedossa"
   }
  ],
- "authors": [],
+ "authors": [
+  {
+   "key": 1,
+   "firstName": "c metropoliitta",
+   "lastName": "Panteleimon",
+   "relator": "kirjoittaja",
+   "authorsTempOrganizations": []
+  },
+  {
+   "key": 2,
+   "firstName": " ",
+   "lastName": "Yksiniminen",
+   "relator": "kääntäjä",
+   "authorsTempOrganizations": []
+  },
+  {
+   "key": 3,
+   "firstName": " ",
+   "lastName": "KuvitusKollektiivi",
+   "relator": "kuvittaja",
+   "authorsTempOrganizations": [
+    {
+     "key": 1,
+     "organizationName": "Kuvataideakatemia",
+     "code": "1740",
+     "note": false
+    }
+   ]
+  },
+  {
+   "key": 4,
+   "firstName": " Reino",
+   "lastName": "Walden",
+   "relator": "toimittaja",
+   "authorsTempOrganizations": []
+  }
+ ],
  "ontologyWords": [
   {
    "key": 1,
@@ -442,6 +478,24 @@
     "ui": "Espanja"
    },
    "abstract": ""
+  },
+  {
+   "key": 5,
+   "language": {
+    "iso6391": "smn",
+    "iso6392b": "smn",
+    "ui": "Inarinsaame"
+   },
+   "abstract": ""
+  },
+  {
+   "key": 6,
+   "language": {
+    "iso6391": "smi",
+    "iso6392b": "smi",
+    "ui": "Muu saam."
+   },
+   "abstract": ""
   }
  ],
  "notes": [
@@ -455,6 +509,16 @@
    "key": 1,
    "a080": "021",
    "x080": "2018"
+  },
+  {
+   "key": 2,
+   "a080": "022",
+   "x080": "2019"
+  },
+  {
+   "key": 3,
+   "a080": "023",
+   "x080": "2020"
   }
  ],
  "otherRatings": [
@@ -464,7 +528,7 @@
    "two084": "ykl"
   },
   {
-   "key": 3,
+   "key": 2,
    "a084": "Eläimet ",
    "two084": "ykl"
   }

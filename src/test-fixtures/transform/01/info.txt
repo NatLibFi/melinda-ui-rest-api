@@ -1,2 +1,0 @@
-basic form, not much input entered:
-no author, no 245-field

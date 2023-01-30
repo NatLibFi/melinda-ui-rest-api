@@ -1,0 +1,5 @@
+{
+  "description": "This test expected to fail: 400",
+  "expectToFail": true,
+  "expectedFailStatus": 400
+}

@@ -1,0 +1,8 @@
+{
+  "description": "generatef041; field 041",
+  "disabled": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

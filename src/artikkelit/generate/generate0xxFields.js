@@ -1,7 +1,6 @@
 import {onlyUnique} from './generateUtils';
 
 export function generatef041(articleLanguage, abstractLanguages) {
-
   const abstractLanguageSubfields = generateAbstractLanguageSubfields(abstractLanguages.filter(onlyUnique));
 
   function langChecked(lang) {
