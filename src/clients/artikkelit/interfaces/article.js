@@ -47,7 +47,7 @@ export function refreshSciencesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeScience(event, ${scienceData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeScience(event, ${scienceData.key})`, 'Poista');
       div.appendChild(createP('Tieteenala', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(scienceData.departmentName));
       div.appendChild(createP(scienceData.subject, '&nbsp;-&nbsp;'));
@@ -82,7 +82,7 @@ export function refreshMetodologysList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
       div.appendChild(createP('Metodologia', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(metodologyData.value));
       div.appendChild(removeButton);
