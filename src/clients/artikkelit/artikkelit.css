@@ -243,3 +243,7 @@ fieldset .panel p {
 #muu-luokitus-list {
   width: 100%;
 }
+
+.character-warning {
+  background-color: #F99;
+}
