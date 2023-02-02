@@ -31,7 +31,7 @@ export const searchTypes = [
 // https://wiki.eduuni.fi/display/cscsuorat/7.5+Julkaisutyypit+2021
 export const articleTypesBooks = [
   {
-    value: "A3  - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
+    value: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
     text: ""
   },
   {
@@ -332,7 +332,7 @@ export const sciences = [
     text: ""
   },
   {
-    value: "3 - Lääke- ja terveystieteet - 3111 -Biolääketieteet",
+    value: "3 - Lääke- ja terveystieteet - 3111 - Biolääketieteet",
     text: ""
   },
   {
