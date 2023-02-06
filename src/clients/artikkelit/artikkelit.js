@@ -39,6 +39,7 @@ window.sourceTypeChange = (event) => {
 
   const sourceType = event.target.value;
   if (sourceType === 'journal') {
+    document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
     document.getElementById(`numeron-numero-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
@@ -47,6 +48,7 @@ window.sourceTypeChange = (event) => {
   }
 
   if (sourceType === 'book') {
+    document.getElementById(`numeron-vuosi-wrap`).style.display = 'none';
     document.getElementById(`numeron-vol-wrap`).style.display = 'none';
     document.getElementById(`numeron-numero-wrap`).style.display = 'none';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
