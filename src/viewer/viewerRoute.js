@@ -119,17 +119,23 @@ export default function (melindaApiOptions) {
 
   }
 
-  function protectLog(req, res, next) {
+  async function protectLog(req, res, next) {
     const {id: correlationId} = req.params || {};
     const {sequence: blobSequence} = req.query || {};
 
     const params = {
-      ...correlationId,
-      ...blobSequence
+      blobSequence
     };
 
-    logger.debug(`Protecting log id: ${params.correlationId}, sequence: ${params.sequence}`);
-    res.status(200);
+    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}, sequence: ${JSON.stringify(params.blobSequence)}`);
+
+    try {
+      const result = await logService.protectLog(correlationId, params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   function removeLog(req, res, next) {

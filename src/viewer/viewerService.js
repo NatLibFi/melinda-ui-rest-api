@@ -1,6 +1,6 @@
 export function createLogService(restApiLogClient) {
 
-  return {getMatchLog, getMatchValidationLog, getMergeLog, getCorrelationIdList};
+  return {getMatchLog, getMatchValidationLog, getMergeLog, getCorrelationIdList, protectLog};
 
   async function getMatchLog(params) {
     const result = await restApiLogClient.getLog({logItemType: 'MATCH_LOG', ...params});
@@ -22,6 +22,11 @@ export function createLogService(restApiLogClient) {
 
   async function getCorrelationIdList(params) {
     const result = await restApiLogClient.getLogsList(params);
+    return result;
+  }
+
+  async function protectLog(correlationId, params) {
+    const result = await restApiLogClient.protectLog(correlationId, params);
     return result;
   }
 

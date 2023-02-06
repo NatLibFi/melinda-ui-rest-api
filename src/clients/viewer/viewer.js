@@ -4,15 +4,15 @@
 //
 //*****************************************************************************
 
-import { setNavBar, startProcess, stopProcess } from "/common/ui-utils.js";
-import { showTab, resetForms, reload } from "/common/ui-utils.js";
-import { createMenuBreak, createMenuItem, createMenuSelection } from "/common/ui-utils.js";
+import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
+import {showTab, resetForms, reload} from "/common/ui-utils.js";
+import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
 
-import { Account, doLogin, logout } from "/common/auth.js"
-import { transformRequest } from "/common/rest.js";
-import { showRecord } from "/common/marc-record-ui.js";
-import { getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog } from "/common/rest.js";
-import { idbSet, idbGet, idbClear } from "/viewer/indexDB.js";
+import {Account, doLogin, logout} from "/common/auth.js"
+import {transformRequest} from "/common/rest.js";
+import {showRecord} from "/common/marc-record-ui.js";
+import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
+import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -30,7 +30,7 @@ window.initialize = function () {
   setNavBar(document.querySelector('#navbar'), "Viewer")
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
-  select.setAttribute('disabled', false)
+  disableElement(select);
 
   doLogin(authSuccess);
 
@@ -82,21 +82,12 @@ var transformed = {
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
   const logType = document.querySelector(`#viewer #logType`).value;
-  const sequence = getSequence();
+  const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
+  const sequenceSelect = document.querySelector(`#viewer #sequence`);
+  const sequence = sequenceInputField.value || sequenceSelect.value || 0;
 
   doFetch(event, id, sequence, logType);
 }
-
-function getSequence() {
-  const sequenceInputField = document.querySelector('#viewer #sequenceInput');
-  if (sequenceInputField.value !== '') {
-    return sequenceInputField.value;
-  }
-
-  const sequenceSelect = document.querySelector('#viewer #sequence');
-  return sequenceSelect.value || 0;
-}
-
 
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event);
@@ -105,7 +96,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
-  sequenceSelect.setAttribute('disabled', false);
+  disableElement(sequenceSelect);
   const col3 = document.querySelector('#viewer #record3').parentElement;
   console.log('Fetching...');
 
@@ -164,6 +155,9 @@ window.loadLog = (event) => {
   matchSelectWrap.style.visibility = 'hidden';
   const matchSelect = document.querySelector('.col .header #match');
   matchSelect.innerHTML = '';
+  const protectButton = document.querySelector(`#viewer #protect`);
+
+  checkLogProtection();
 
   if (logType === 'MERGE_LOG') {
 
@@ -214,7 +208,7 @@ window.loadLog = (event) => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
-      const { record, note } = getMergeCandidateInfo(data.matchResult[event.target.value]);
+      const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, "record2", {}, 'viewer');
     });
@@ -232,6 +226,16 @@ window.loadLog = (event) => {
       note: `<li>Melinda-ID: ${id}</li><li>Käypäisyys: ${probability * 100}%</li><li>Yhdistämistapa: ${action}</li><li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li><li>Peruste: ${preference}</li>`
     }
   }
+
+  function checkLogProtection() {
+    idbGet(event.target.value)
+      .then(log =>
+        log.protected === true ? (setButton('protected')) : (setButton('not protected')),
+        enableElement(protectButton))
+      .catch(error =>
+        console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
+  }
+
 }
 
 window.showNote = (event, record) => {
@@ -265,18 +269,26 @@ window.copyLink = function (event) {
 window.protect = function (event = undefined) {
   eventHandled(event);
   console.log('Protecting...');
-
+  startProcess();
 
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || 1;
+  const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
     console.log('Nothing to protect...');
+    stopProcess();
     return;
   }
 
   protectLog(id, sequence)
-    .then(response => console.log(response));
+    .then(() =>
+      protectButton.innerHTML === 'lock_open' ? (setButton('protected')) : (setButton('not protected')))
+    .catch(error =>
+      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
+    .finally(() =>
+      stopProcess());
+
 }
 
 window.remove = function (event = undefined) {
@@ -306,7 +318,7 @@ function setDataToIndexDB(logs, sequence) {
 
   if (keys.length === 0) {
     select.add(createOption('0', 0));
-    idbSet('0', { incomingRecord: {}, databaseRecord: {}, mergedRecord: {} });
+    idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
     stopProcess();
     // TODO toast 404 not found
     select.value = 0;
@@ -316,7 +328,7 @@ function setDataToIndexDB(logs, sequence) {
   const refactorLogs = Object.fromEntries(keys.map(key => [logs[key].blobSequence, logs[key]]));
   const refactoredKeys = Object.keys(refactorLogs);
 
-  select.removeAttribute('disabled');
+  enableElement(select);
   refactoredKeys.forEach(key => {
     idbSet(key, refactorLogs[key]);
     select.add(createOption(key, key));
@@ -364,6 +376,34 @@ function createOption(text, value) {
   return option;
 }
 
+function setButton(type) {
+  const protectButton = document.querySelector(`#viewer #protect`);
+
+  switch (true) {
+    case (type === 'protected'):
+      setButtonProperties('lock', 'This log is currently protected, click to undo protection', 'Undo protect');
+      break;
+    case (type === 'not protected'):
+      setButtonProperties('lock_open', 'Click to protect this log', 'Protect');
+      break;
+    default:
+      disableElement(protectButton);
+  }
+
+  function setButtonProperties(icon, infoText, tooltipText) {
+    protectButton.innerHTML = icon;
+    protectButton.title = infoText;
+    protectButton.setAttribute('tooltip-text', tooltipText);
+  }
+}
+
+function enableElement(element) {
+  element.removeAttribute('disabled');
+}
+
+function disableElement(element) {
+  element.disabled = true;
+}
 
 //-----------------------------------------------------------------------------
 // Functions for correlation id list modal 
@@ -386,18 +426,16 @@ function showCorrelationIdList() {
       clearList();
       stopProcess();
     });
+
 }
 
 function updateCorrelationIdListView() {
+  clearList();
+  const selectSorting = document.getElementById("correlationIdListSorting");
   const dateStartInputValue = document.getElementById("dateStartInput").value;
   const dateEndInputValue = document.getElementById("dateEndInput").value;
 
-  const buttonsList = document.getElementById('correlationIdListButtons');
-  buttonsList.replaceChildren();
-
   const filteredList = filterList(dateStartInputValue, dateEndInputValue);
-
-  const selectSorting = document.getElementById("correlationIdListSorting");
   const sortedList = sortList(filteredList, selectSorting.value);
 
   if (sortedList.length === 0) {
@@ -429,10 +467,10 @@ function filterList(startDate, endDate) {
     default:
       return correlationIdList;
   }
-}
 
-function getDate(logItem) {
-  return logItem.creationTime.substring(0, 10);
+  function getDate(logItem) {
+    return logItem.creationTime.substring(0, 10);
+  }
 }
 
 function sortList(list, sortingMethod) {
@@ -444,66 +482,69 @@ function sortList(list, sortingMethod) {
     default:
       return list;
   }
-}
 
-function compareLogItemsByIdAndType(logItemA, logItemB) {
-  return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
-}
+  function compareLogItemsByIdAndType(logItemA, logItemB) {
+    return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
+  }
 
-function compareLogItemsByTime(logItemA, logItemB) {
-  return logItemA.creationTime.localeCompare(logItemB.creationTime);
-}
+  function compareLogItemsByTime(logItemA, logItemB) {
+    return logItemA.creationTime.localeCompare(logItemB.creationTime);
+  }
 
-function showPlaceholderText(text) {
-  const placeholderText = document.getElementById('fetchListPlaceholderText');
-  placeholderText.innerHTML = text;
 }
 
 function createLogItemButton(logItem) {
   const logItemButton = createButtonElement(logItem);
   const buttonsList = document.getElementById('correlationIdListButtons');
   buttonsList.append(logItemButton);
+
+  function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
+    const button = document.createElement('button');
+    button.innerHTML = correlationId + ' | ' + logItemType;
+
+    const logIteminfoText =
+      `Correlation id: ${correlationId}
+        Log type: ${logItemType}
+        Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
+        Log count: ${logCount}`;
+
+    button.title = logIteminfoText;
+
+    if (logItemType === 'MERGE_LOG') {
+      button.className = 'merge-log-button';
+    }
+
+    if (logItemType === 'MATCH_LOG') {
+      button.className = 'match-log-button';
+    }
+
+    const selectedId = document.querySelector(`#viewer #id`).value;
+    const selectedLogType = document.querySelector(`#viewer #logType`).value;
+    if (correlationId === selectedId && logItemType === selectedLogType) {
+      button.classList.add('selected-id');
+    }
+
+    button.addEventListener("click", function () {
+      searchWithSelectedIdAndType(correlationId, logItemType);
+    });
+
+    return button;
+  }
+
+  function searchWithSelectedIdAndType(correlationId, logItemType) {
+    const id = document.querySelector(`#viewer #id`);
+    id.value = correlationId;
+
+    const logType = document.querySelector(`#viewer #logType`);
+    logType.value = logItemType;
+
+    doSearchPress();
+    modalClose();
+  }
+
 }
 
-function createButtonElement({ correlationId, logItemType, creationTime, logCount }) {
-  const button = document.createElement('button');
-  button.innerHTML = correlationId + ' | ' + logItemType;
-
-  const logIteminfoText = `Correlation id: ${correlationId}
-  Log type: ${logItemType}
-  Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
-  Log count: ${logCount}`;
-
-  button.title = logIteminfoText;
-
-  if (logItemType === 'MERGE_LOG') {
-    button.className = 'merge-log-button';
-  }
-
-  if (logItemType === 'MATCH_LOG') {
-    button.className = 'match-log-button';
-  }
-
-  const selectedId = document.querySelector(`#viewer #id`).value;
-  const selectedLogType = document.querySelector(`#viewer #logType`).value;
-  if (correlationId === selectedId && logItemType === selectedLogType) {
-    button.classList.add('selected-id');
-  }
-
-  button.addEventListener("click", function () {
-    searchWithSelectedIdAndType(correlationId, logItemType);
-  });
-
-  return button;
-}
-
-function searchWithSelectedIdAndType(correlationId, logItemType) {
-  const id = document.querySelector(`#viewer #id`);
-  id.value = correlationId;
-
-  const logType = document.querySelector(`#viewer #logType`);
-  logType.value = logItemType;
-
-  doSearchPress();
-  modalClose();
+function showPlaceholderText(text) {
+  const placeholderText = document.getElementById('fetchListPlaceholderText');
+  placeholderText.innerHTML = text;
 }
