@@ -432,10 +432,10 @@
               <form id="asiasana-haku-yso-form">
                 <div class="Select full-width">
                   <label for="asiasana-ontologia">Tyyppi:</label>
-                  <select id="asiasana-ontologia" name="asiasana-ontologia">
+                  <select id="asiasana-ontologia" name="asiasana-ontologia" onchange="return ontologyTypeChange(event)">
                   </select>
                 </div>
-                <div class="full-width">
+                <div id="haku-osio" class="full-width">
                   <div class="Input full-width">
                     <label for="haku-arvo">Haku:</label>
                     <input type="text" id="haku-arvo-yso" name="haku-arvo" pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$"
@@ -447,10 +447,14 @@
               </form>
               <form id="asiasana-lisaa-form" name="asiasana-lisaa-form">
                 <div class="full-width">
-                  <div class="Select full-width">
+                  <div id="asiasana-lisaa-select" class="Select full-width">
                     <label for="asiasana-haku-tulos-lista">Tulokset:</label>
                     <select id="asiasana-haku-tulos-lista" name="asiasana-haku-tulos-lista">
                     </select>
+                  </div>
+                  <div id="asiasana-lisaa-input" class="Input full-width">
+                    <label for="asiasana-muu" id="asiasana-muu-label"></label>
+                    <input type="text" id="asiasana-muu" name="asiasana-muu">
                   </div>
                   <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
