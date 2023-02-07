@@ -156,7 +156,9 @@ window.loadLog = (event) => {
   const matchSelect = document.querySelector('.col .header #match');
   matchSelect.innerHTML = '';
   const protectButton = document.querySelector(`#viewer #protect`);
+  const removeButton = document.querySelector(`#viewer #delete`);
 
+  disableElement(removeButton);
   checkLogProtection();
 
   if (logType === 'MERGE_LOG') {
@@ -230,12 +232,17 @@ window.loadLog = (event) => {
   function checkLogProtection() {
     idbGet(event.target.value)
       .then(log =>
-        log.protected === true ? (setButton('protected')) : (setButton('not protected')),
+        log.protected === true ? (setProtectButton('protected'), toggleRemoveButtonByLogAge(log.creationTime)) : setProtectButton('not protected'),
         enableElement(protectButton))
       .catch(error =>
         console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
-  }
 
+    function toggleRemoveButtonByLogAge(logCreationTime) {
+      const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7.5 * 24 * 60 * 60 * 1000))
+      isOverWeekOld ? enableElement(removeButton) : disableElement(removeButton)
+    }
+
+  }
 }
 
 window.showNote = (event, record) => {
@@ -283,7 +290,7 @@ window.protect = function (event = undefined) {
 
   protectLog(id, sequence)
     .then(() =>
-      protectButton.innerHTML === 'lock_open' ? (setButton('protected')) : (setButton('not protected')))
+      protectButton.innerHTML === 'lock_open' ? (setProtectButton('protected')) : (setProtectButton('not protected')))
     .catch(error =>
       console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
     .finally(() =>
@@ -376,21 +383,21 @@ function createOption(text, value) {
   return option;
 }
 
-function setButton(type) {
+function setProtectButton(type) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
   switch (true) {
     case (type === 'protected'):
-      setButtonProperties('lock', 'This log is currently protected, click to undo protection', 'Undo protect');
+      setProtectButtonProperties('lock', 'This log is currently protected, click to undo protection', 'Undo protect');
       break;
     case (type === 'not protected'):
-      setButtonProperties('lock_open', 'Click to protect this log', 'Protect');
+      setProtectButtonProperties('lock_open', 'Click to protect this log', 'Protect');
       break;
     default:
       disableElement(protectButton);
   }
 
-  function setButtonProperties(icon, infoText, tooltipText) {
+  function setProtectButtonProperties(icon, infoText, tooltipText) {
     protectButton.innerHTML = icon;
     protectButton.title = infoText;
     protectButton.setAttribute('tooltip-text', tooltipText);
