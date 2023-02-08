@@ -308,14 +308,19 @@ window.remove = function (event = undefined) {
 
   if (id === '') {
     console.log('Nothing to remove...');
-    return stopProcess();
+    stopProcess();
+    return;
   }
 
   removeLog(id, logType)
-    .then(response => {
-      console.log(response);
-      stopProcess();
-    });
+    .then(() =>
+      window.alert(`Removed log with correlation id: \n ${id}`),
+      location.reload())
+    .catch(error =>
+      console.log(`Error while trying to remove log with correlation id ${id}: `, error))
+    .finally(() =>
+      stopProcess());
+
 }
 
 function setDataToIndexDB(logs, sequence) {
