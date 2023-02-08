@@ -304,7 +304,7 @@ window.remove = function (event = undefined) {
   startProcess();
 
   const id = document.querySelector(`#viewer #id`).value || '';
-  const logType = 'MERGE_LOG';
+  const force = true;
 
   if (id === '') {
     console.log('Nothing to remove...');
@@ -312,7 +312,7 @@ window.remove = function (event = undefined) {
     return;
   }
 
-  removeLog(id, logType)
+  removeLog(id, force)
     .then(() =>
       window.alert(`Removed log with correlation id: \n ${id}`),
       location.reload())

@@ -4,8 +4,8 @@
 //
 //*****************************************************************************
 
-import { getOntologyOptions } from "../artikkelit/utils.js";
-import { Account } from "../common/auth.js"
+import {getOntologyOptions} from "../artikkelit/utils.js";
+import {Account} from "../common/auth.js"
 
 //-----------------------------------------------------------------------------
 const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
@@ -133,7 +133,7 @@ export function getArtikkeliRecord(data) {
 }
 
 export function getOntologyWords(ontology, query) {
-  const { searchVocab, language } = getOntologyOptions(ontology)
+  const {searchVocab, language} = getOntologyOptions(ontology)
 
   return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
 }
@@ -153,7 +153,7 @@ async function fetchFromRest(url, method = 'GET', body = undefined) {
     return result.json();
   }
 
-  return { error: { status: result.status, message: result.text() } };
+  return {error: {status: result.status, message: result.text()}};
 }
 
 
@@ -207,9 +207,9 @@ export async function protectLog(id, sequence) {
 
 //-----------------------------------------------------------------------------
 
-export function removeLog(id, logType) {
+export function removeLog(id, force) {
   return fetch(
-    `${RESTurl}/viewer/remove/${id}${sequence ? `?logType=${logType}` : ''}`,
+    `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`,
     {
       method: 'DELETE',
       headers: {
