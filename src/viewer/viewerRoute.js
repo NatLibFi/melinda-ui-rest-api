@@ -138,17 +138,23 @@ export default function (melindaApiOptions) {
     }
   }
 
-  function removeLog(req, res, next) {
+  async function removeLog(req, res, next) {
     const {id: correlationId} = req.params || {};
-    const {logType: logItemType} = req.query || {};
+    const {force} = req.query || {};
 
     const params = {
-      ...correlationId,
-      ...logItemType
+      force
     };
 
-    logger.debug(`Removing log: ${params.correlationId}`);
-    res.status(200);
+    logger.debug(`Removing log: ${JSON.stringify(correlationId)}`);
+
+    try {
+      const result = await logService.removeLog(correlationId, params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   function handleRouteNotFound(req, res, next) {
