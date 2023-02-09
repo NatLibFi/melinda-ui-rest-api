@@ -109,6 +109,8 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
+    logger.debug(`Getting correlation id list with expanded value: ${JSON.stringify(params.expanded)}`);
+
     try {
       const result = await logService.getCorrelationIdList(params);
       logger.debug('*******************************************');
@@ -120,6 +122,8 @@ export default function (melindaApiOptions) {
   }
 
   async function protectLog(req, res, next) {
+    logger.verbose('PUT protectLog');
+
     const correlationId = req.params.id;
     const {sequence} = req.query;
 
@@ -138,6 +142,8 @@ export default function (melindaApiOptions) {
   }
 
   async function removeLog(req, res, next) {
+    logger.verbose('DELETE removeLog');
+
     const correlationId = req.params.id;
     const force = req.query.force || 0;
 
