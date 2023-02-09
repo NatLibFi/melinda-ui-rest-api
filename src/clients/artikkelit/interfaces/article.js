@@ -9,6 +9,8 @@ export function initArticle() {
   document.getElementById("tyhjenna-tieteenalat-form").addEventListener("submit", clearSciences);
   document.getElementById("tyhjenna-metodologiat-form").addEventListener("submit", clearMetodologys);
 
+  document.getElementById("lisaa-linkki").addEventListener("click", addArticleLink);
+
   refreshSciencesList();
   refreshMetodologysList();
 }
@@ -98,6 +100,40 @@ export function refreshMetodologysList() {
       document.getElementById("tyhjenna-metodologiat-form").style.display = 'none';
     }
   });
+}
+
+export function addArticleLink(event) {
+  event.preventDefault();
+  const articleWrap = document.getElementById("artikkelin-linkki-wrap");
+  // console.log(articleWrap)
+  // const linkCount = articleWrap.childElementCount;
+  const upperDiv = document.createElement("div");
+  // upperDiv.setAttribute("id", `lisalinkki-${linkCount}`);
+  upperDiv.classList.add("full-width");
+  const lowerDiv = document.createElement("div");
+  lowerDiv.classList.add("Input");
+  const removeButton = createIconButton("delete", ["no-border", "negative"], `return removeArticleLink(event)`, "Poista");
+  lowerDiv.appendChild(createLabel("artikkelin-linkki"));
+  lowerDiv.appendChild(createInput("artikkelin-linkki"));
+  upperDiv.appendChild(lowerDiv);
+  upperDiv.appendChild(removeButton);
+  articleWrap.appendChild(upperDiv);
+
+  function createLabel(id) {
+    const label = document.createElement("label");
+    label.setAttribute("for", id);
+    label.innerHTML = "Linkki kokotekstiin:";
+    return label;
+  }
+
+  function createInput(name) {
+    const input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", name);
+    input.setAttribute("name", name)
+    input.setAttribute("maxLength", 128);
+    return input;
+  }
 }
 
 export function clearMetodologys(event) {

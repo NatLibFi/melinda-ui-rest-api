@@ -132,6 +132,12 @@ function collectFormData() {
   };
 }
 
+window.removeArticleLink = (event) => {
+  event.preventDefault();
+  console.log(event.target.parentElement)
+  event.target.parentElement.remove();
+}
+
 window.removeScience = (event, key) => {
   event.preventDefault();
   idbDel('artoSciences', key).then(() => refreshSciencesList());
