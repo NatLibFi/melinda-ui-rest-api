@@ -102,7 +102,7 @@ export default function (melindaApiOptions) {
   async function getCorrelationIdList(req, res, next) {
     logger.verbose('GET getCorrelationIdList');
 
-    const {expanded} = req.query || {};
+    const expanded = req.query.expanded || 0;
 
     const params = {
       expanded,
@@ -120,14 +120,13 @@ export default function (melindaApiOptions) {
   }
 
   async function protectLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {sequence: blobSequence} = req.query || {};
+    const correlationId = req.params.id;
+    const {sequence} = req.query;
 
-    const params = {
-      blobSequence
-    };
+    const params = sequence ? {blobSequence: sequence} : {};
 
-    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}, sequence: ${JSON.stringify(params.blobSequence)}`);
+    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}`);
+    logger.debug(sequence ? `Sequence selected for protecting: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, protecting all sequences for this id`);
 
     try {
       const result = await logService.protectLog(correlationId, params);
