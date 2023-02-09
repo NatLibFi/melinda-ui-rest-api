@@ -304,7 +304,7 @@ window.remove = function (event = undefined) {
   startProcess();
 
   const id = document.querySelector(`#viewer #id`).value || '';
-  const force = true;
+  const force = '1';
 
   if (id === '') {
     console.log('Nothing to remove...');
@@ -314,7 +314,8 @@ window.remove = function (event = undefined) {
 
   removeLog(id, force)
     .then(() =>
-      window.alert(`Removed log with correlation id: \n ${id}`),
+      window.alert(`Removed log with correlation id: \n ${id}`))
+    .then(() =>
       location.reload())
     .catch(error =>
       console.log(`Error while trying to remove log with correlation id ${id}: `, error))

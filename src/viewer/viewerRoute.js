@@ -139,14 +139,14 @@ export default function (melindaApiOptions) {
   }
 
   async function removeLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {force} = req.query || {};
+    const correlationId = req.params.id;
+    const force = req.query.force || 0;
 
     const params = {
       force
     };
 
-    logger.debug(`Removing log: ${JSON.stringify(correlationId)}`);
+    logger.debug(`Removing log: ${JSON.stringify(correlationId)}, params: ${JSON.stringify(params)}`);
 
     try {
       const result = await logService.removeLog(correlationId, params);

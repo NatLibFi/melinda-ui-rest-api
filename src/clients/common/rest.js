@@ -207,7 +207,7 @@ export async function protectLog(id, sequence) {
 
 //-----------------------------------------------------------------------------
 
-export function removeLog(id, force) {
+export async function removeLog(id, force) {
   return fetch(
     `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`,
     {
