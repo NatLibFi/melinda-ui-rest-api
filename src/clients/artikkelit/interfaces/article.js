@@ -105,10 +105,7 @@ export function refreshMetodologysList() {
 export function addArticleLink(event) {
   event.preventDefault();
   const articleWrap = document.getElementById("artikkelin-linkki-wrap");
-  // console.log(articleWrap)
-  // const linkCount = articleWrap.childElementCount;
   const upperDiv = document.createElement("div");
-  // upperDiv.setAttribute("id", `lisalinkki-${linkCount}`);
   upperDiv.classList.add("full-width");
   const lowerDiv = document.createElement("div");
   lowerDiv.classList.add("Input");
