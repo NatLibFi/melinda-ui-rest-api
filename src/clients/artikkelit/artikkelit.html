@@ -243,9 +243,23 @@
                 <div class="Input">
                   <label class="bold-text" for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
                   <input type="text" id="artikkelin-tyyppi" class="full-width" name="artikkelin-tyyppi"
-                    list="artikkelin-tyyppi-lista" required>
+                    list="artikkelin-tyyppi-lista" required onchange="return articleTypeChange(event)">
                   <datalist id="artikkelin-tyyppi-lista">
                   </datalist>
+                </div>
+              </div>
+              <div id="arvosteltu-teos-wrap">
+                <div class="full-width">
+                  <div class="Input">
+                    <label class="bold-text" for="">Arvostellun teoksen tiedot:</label>
+                    <input type="text" id="" class="full-width" name=""
+                      list="">
+                    <datalist id="">
+                    </datalist>
+                    <label class="bold-text" for="">ISBN:</label>
+                    <input type="text" id="" class="half-width" name="" disabled>
+                  </div>
+                  <button id="lisaa-arvosteltu-teos" class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
               </div>
               <div class="full-width">
