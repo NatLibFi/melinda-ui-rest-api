@@ -57,6 +57,11 @@ window.sourceTypeChange = (event) => {
   }
 }
 
+window.articleTypeChange = (event) => {
+  // filldatalistoptions? tuskin?
+  console.log(event.target.value);
+}
+
 window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
