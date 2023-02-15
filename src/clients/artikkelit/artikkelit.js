@@ -137,6 +137,11 @@ function collectFormData() {
   };
 }
 
+window.removeRewievedBook = (event) => {
+  event.preventDefault();
+  event.target.parentElement.remove();
+}
+
 window.removeScience = (event, key) => {
   event.preventDefault();
   idbDel('artoSciences', key).then(() => refreshSciencesList());
