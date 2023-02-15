@@ -113,6 +113,8 @@ window.resetAuthor = (event) => {
 
 function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
+  const reviews = [];
+  document.getElementsByName("arvosteltu-teos").forEach(el => reviews.push(el.value));
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
@@ -126,6 +128,7 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: document.getElementById(`artikkelin-linkki`).value,
       type: document.getElementById(`artikkelin-tyyppi`).value,
+      reviews: reviews,
       reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
     },
