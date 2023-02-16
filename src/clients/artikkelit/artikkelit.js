@@ -7,7 +7,7 @@ import {idbGet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
 import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
 import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
-import {fillFormOptions, fillDatalistOptions} from "/artikkelit/interfaces/loadData.js";
+import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/artikkelit/interfaces/loadData.js";
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 import {initPublicationSearch} from "./interfaces/publicationSearch.js";
@@ -36,6 +36,7 @@ window.initialize = function () {
 window.sourceTypeChange = (event) => {
   event.preventDefault();
   fillDatalistOptions();
+  fillArticleTypeOptions();
 
   const sourceType = event.target.value;
   if (sourceType === 'journal') {
@@ -58,8 +59,13 @@ window.sourceTypeChange = (event) => {
 }
 
 window.articleTypeChange = (event) => {
-  // filldatalistoptions? tuskin?
-  console.log(event.target.value);
+  const reviewWrap = document.getElementById("arvosteltu-teos-wrap");
+  const selectedType = event.target.value;
+  if (["B1", "B2", "D1", "E1"].some(str => selectedType.includes(str))) {
+    reviewWrap.style.display = "block";
+  } else {
+    reviewWrap.style.display = "none";
+  }
 }
 
 window.doUpdate = (event) => {

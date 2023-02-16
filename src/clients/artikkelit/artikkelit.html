@@ -240,12 +240,10 @@
                 </div>
               </div>
               <div class="full-width">
-                <div class="Input">
+                <div class="Select full-width">
                   <label class="bold-text" for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
-                  <input type="text" id="artikkelin-tyyppi" class="full-width" name="artikkelin-tyyppi"
-                    list="artikkelin-tyyppi-lista" required onchange="return articleTypeChange(event)"> <!--pattern??-->
-                  <datalist id="artikkelin-tyyppi-lista">
-                  </datalist>
+                  <select id="artikkelin-tyyppi" name="artikkelin-tyyppi" onchange="return articleTypeChange(event)">
+                  </select>
                 </div>
               </div>
               <div id="arvosteltu-teos-wrap">
