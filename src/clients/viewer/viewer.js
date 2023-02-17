@@ -490,8 +490,10 @@ function sortList(list, sortingMethod) {
   switch (true) {
     case (sortingMethod === 'sortById'):
       return list.sort(compareLogItemsByIdAndType);
-    case (sortingMethod === 'sortByTime'):
+    case (sortingMethod === 'sortByTimeOldestFirst'):
       return list.sort(compareLogItemsByTime);
+    case (sortingMethod === 'sortByTimeNewestFirst'):
+      return list.sort(compareLogItemsByTime).reverse();
     default:
       return list;
   }
