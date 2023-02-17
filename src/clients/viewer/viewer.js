@@ -120,7 +120,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 window.doOpenCorrelationIdListModal = function (event = undefined) {
   const modal = document.querySelector("#correlationIdListModal");
   modal.style.display = "flex";
-  showCorrelationIdList();
+  fetchCorrelationIdList();
 }
 
 window.doOpenDateStartPicker = function (event = undefined) {
@@ -135,7 +135,7 @@ window.doOpenDateEndPicker = function (event = undefined) {
 
 window.updateOnChange = (event) => {
   eventHandled(event);
-  updateCorrelationIdListView();
+  updateCorrelationIdListModal();
 }
 
 window.modalClose = function (event) {
@@ -409,33 +409,45 @@ function disableElement(element) {
 // Functions for correlation id list modal 
 //-----------------------------------------------------------------------------
 
-var correlationIdList = null;
-
-function showCorrelationIdList() {
+function fetchCorrelationIdList() {
   const expanded = '1';
 
   startProcess();
+  idbClearList();
 
   getCorrelationIdList(expanded)
-    .then(list =>
-      correlationIdList = list)
-    .then(() =>
-      updateCorrelationIdListView())
+    .then(data =>
+      setCorrelationIdListDataToIndexDB(data))
     .catch((error) => {
-      showPlaceholderText('Sorry, correlation id list could not be fetched')
-      clearList();
+      showPlaceholderText('Sorry, correlation id list could not be fetched');
+      console.log('Error while fetching correlation id list: ', error)
+      clearListView();
       stopProcess();
     });
 
 }
 
-function updateCorrelationIdListView() {
-  clearList();
+function setCorrelationIdListDataToIndexDB(data) {
+  idbSetList('correlationIdList', data);
+  console.log('Correlation id list: ', data);
+  updateOnChange(new Event('change'));
+}
+
+function updateCorrelationIdListModal() {
+  clearListView();
+
+  idbGetList('correlationIdList')
+    .then((data) =>
+      updateListView(data)
+    )
+}
+
+function updateListView(correlationIdList) {
   const selectSorting = document.getElementById("correlationIdListSorting");
   const dateStartInputValue = document.getElementById("dateStartInput").value;
   const dateEndInputValue = document.getElementById("dateEndInput").value;
 
-  const filteredList = filterList(dateStartInputValue, dateEndInputValue);
+  const filteredList = filterList(correlationIdList, dateStartInputValue, dateEndInputValue);
   const sortedList = sortList(filteredList, selectSorting.value);
 
   if (sortedList.length === 0) {
@@ -447,16 +459,17 @@ function updateCorrelationIdListView() {
   selectSorting.style.display = 'block';
   sortedList.forEach((logItem) => createLogItemButton(logItem));
   stopProcess();
+
 }
 
-function clearList() {
+function clearListView() {
   const buttonsList = document.getElementById('correlationIdListButtons');
   buttonsList.replaceChildren();
   const selectSorting = document.getElementById("correlationIdListSorting");
   selectSorting.style.display = 'none';
 }
 
-function filterList(startDate, endDate) {
+function filterList(correlationIdList, startDate, endDate) {
   switch (true) {
     case (startDate !== '' && endDate !== ''):
       return correlationIdList.filter(logItem => getDate(logItem) >= startDate && getDate(logItem) <= endDate);
