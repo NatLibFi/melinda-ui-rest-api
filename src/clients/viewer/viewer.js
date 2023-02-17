@@ -12,7 +12,7 @@ import {Account, doLogin, logout} from "/common/auth.js"
 import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
-import {idbSet, idbGet, idbClear} from "/viewer/indexDB.js";
+import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList} from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -92,7 +92,7 @@ window.doSearchPress = function (event = undefined) {
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event);
   startProcess();
-  idbClear();
+  idbClearLogs();
 
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
@@ -161,7 +161,7 @@ window.loadLog = (event) => {
 
   if (logType === 'MERGE_LOG') {
 
-    idbGet(event.target.value).then(data => {
+    idbGetLogs(event.target.value).then(data => {
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
       setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
@@ -172,7 +172,7 @@ window.loadLog = (event) => {
   }
 
   if (logType === 'MATCH_LOG') {
-    idbGet(event.target.value).then(data => {
+    idbGetLogs(event.target.value).then(data => {
       if (data.matchResult && data.matchResult.length < 1) {
         matchSelect.add(createOption('notFound', '0'));
         matchSelect.value = 'notFound';
@@ -195,7 +195,7 @@ window.loadLog = (event) => {
     showRecord({}, "record3", {}, 'viewer');
 
     if (event.target.value === 'notFound') {
-      return idbGet(sequenceSelect).then(data => {
+      return idbGetLogs(sequenceSelect).then(data => {
         matchSelectWrap.style.visibility = 'hidden';
         setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
         showRecord(data.incomingRecord, "record1", {}, 'viewer');
@@ -204,7 +204,7 @@ window.loadLog = (event) => {
       });
     }
 
-    idbGet(sequenceSelect).then(data => {
+    idbGetLogs(sequenceSelect).then(data => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
@@ -228,7 +228,7 @@ window.loadLog = (event) => {
   }
 
   function checkLogProtection() {
-    idbGet(event.target.value)
+    idbGetLogs(event.target.value)
       .then(log =>
         log.protected === true ? (setButton('protected')) : (setButton('not protected')),
         enableElement(protectButton))
@@ -318,7 +318,7 @@ function setDataToIndexDB(logs, sequence) {
 
   if (keys.length === 0) {
     select.add(createOption('0', 0));
-    idbSet('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
+    idbSetLogs('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
     stopProcess();
     // TODO toast 404 not found
     select.value = 0;
@@ -330,7 +330,7 @@ function setDataToIndexDB(logs, sequence) {
 
   enableElement(select);
   refactoredKeys.forEach(key => {
-    idbSet(key, refactorLogs[key]);
+    idbSetLogs(key, refactorLogs[key]);
     select.add(createOption(key, key));
   });
 
