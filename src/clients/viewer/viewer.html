@@ -223,7 +223,7 @@
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
       <!-- shows instructions for list -->
-      <div>Please select a correlation id for viewing log item</div>
+      <div>Correlation id list - click log to start search</div>
       <hr />
 
       <!-- shows buttons for opening calendar for start and end date pick and place for date input -->
@@ -255,7 +255,16 @@
       <br>
 
       <!-- shows the list of correlation ids -->
-      <div id="correlationIdListButtons" class="correlation-id buttons-list"></div>
+      <div id="correlationIdList"></div>
+
+      <!-- base model for one correlation id list item -->
+      <div id="list-item-base" class="list-item">
+        <div class="list-item-id"></div>
+        <div class="list-item-details-and-icons">
+          <div class="list-item-details"></div>
+          <div class="list-item-icons"></div>
+        </div>
+      </div>
 
     </div>
 

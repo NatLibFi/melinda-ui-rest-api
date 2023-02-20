@@ -211,33 +211,6 @@ div#correlationIdListModal {}
   font-weight: var(--font-weight-content-small);
 }
 
-.buttons-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.merge-log-button {
-  font-weight: bold;
-}
-
-.match-log-button {
-  color: rgb(50, 50, 50)
-}
-
-.merge-log-button:hover,
-.match-log-button:hover {
-  background-color: lightgray
-}
-
-.merge-log-button:focus,
-.match-log-button:focus {
-  background-color: gray;
-}
-
-.selected-id {
-  background-color: gray;
-}
-
 .list-sorting {
   float: right;
 }
@@ -245,7 +218,6 @@ div#correlationIdListModal {}
 .sort-dropdown {
   display: none;
 }
-
 
 /* ---------------------------------------------------------------------------- */
 /* ---Sequence select---*/

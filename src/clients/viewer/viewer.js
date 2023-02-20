@@ -453,15 +453,15 @@ function updateListView(correlationIdList) {
 
   showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids')
   selectSorting.style.display = 'block';
-  sortedList.forEach((logItem) => createLogItemButton(logItem));
+  sortedList.forEach((logItem) => createListItem(logItem));
   stopProcess();
 
 }
 
 function clearListView() {
-  const buttonsList = document.getElementById('correlationIdListButtons');
-  buttonsList.replaceChildren();
-  const selectSorting = document.getElementById("correlationIdListSorting");
+  const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
+  correlationIdList.replaceChildren();
+  const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
   selectSorting.style.display = 'none';
 }
 
@@ -504,55 +504,50 @@ function sortList(list, sortingMethod) {
 
 }
 
-function createLogItemButton(logItem) {
-  const logItemButton = createButtonElement(logItem);
-  const buttonsList = document.getElementById('correlationIdListButtons');
-  buttonsList.append(logItemButton);
+function createListItem(logItem) {
+  const listItemDiv = createListItemDiv(logItem);
+  const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
+  correlationIdList.append(listItemDiv);
 
-  function createButtonElement({correlationId, logItemType, creationTime, logCount}) {
-    const button = document.createElement('button');
-    button.innerHTML = correlationId + ' | ' + logItemType;
+  function createListItemDiv({correlationId, logItemType, creationTime, logCount, cataloger}) {
+    const base = document.getElementById('list-item-base');
+    const listItem = base.cloneNode(true);
 
-    const logIteminfoText =
-      `Correlation id: ${correlationId}
-        Log type: ${logItemType}
-        Creation time: ${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}
-        Log count: ${logCount}`;
+    listItem.id = correlationId;
+    listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
-    button.title = logIteminfoText;
+    const logTypeDiv = createDivWithInnerHtml(`Log type: ${logItemType}`);
+    const creationTimeDiv = createDivWithInnerHtml(`Creation time: ${creationTime}`);
+    const logCountDiv = createDivWithInnerHtml(`Log count: ${logCount}`);
+    const catalogerDiv = createDivWithInnerHtml(`Cataloger: ${cataloger}`);
 
-    if (logItemType === 'MERGE_LOG') {
-      button.className = 'merge-log-button';
-    }
+    listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv, catalogerDiv)
 
-    if (logItemType === 'MATCH_LOG') {
-      button.className = 'match-log-button';
-    }
-
-    const selectedId = document.querySelector(`#viewer #id`).value;
-    const selectedLogType = document.querySelector(`#viewer #logType`).value;
-    if (correlationId === selectedId && logItemType === selectedLogType) {
-      button.classList.add('selected-id');
-    }
-
-    button.addEventListener("click", function () {
+    listItem.addEventListener("click", function () {
       searchWithSelectedIdAndType(correlationId, logItemType);
     });
 
-    return button;
+    return listItem;
+
+    function createDivWithInnerHtml(text) {
+      const divElement = document.createElement('div');
+      divElement.innerHTML = text;
+      return divElement;
+    }
+
+    function searchWithSelectedIdAndType(correlationId, logItemType) {
+      const id = document.querySelector(`#viewer #id`);
+      id.value = correlationId;
+
+      const logType = document.querySelector(`#viewer #logType`);
+      logType.value = logItemType;
+
+      doSearchPress();
+      modalClose();
+    }
+
+
   }
-
-  function searchWithSelectedIdAndType(correlationId, logItemType) {
-    const id = document.querySelector(`#viewer #id`);
-    id.value = correlationId;
-
-    const logType = document.querySelector(`#viewer #logType`);
-    logType.value = logItemType;
-
-    doSearchPress();
-    modalClose();
-  }
-
 }
 
 function showPlaceholderText(text) {
