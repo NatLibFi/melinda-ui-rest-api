@@ -223,32 +223,25 @@
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
       <!-- shows instructions for list -->
-      <label class="correlation-id placeholder">Please select a correlation id for viewing log item</label>
+      <div>Please select a correlation id for viewing log item</div>
       <hr />
 
       <!-- shows buttons for opening calendar for start and end date pick and place for date input -->
       <div id="filterCorrelationIdList">
-        <p class="correlation-id">Filter the list by selecting start date and/or end date.</p>
         <div class="datepicker-container">
-          <div class="datepicker-container">
-            <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
-              onclick="return doOpenDateStartPicker(event)">today</button>
-            <input id="dateStartInput" type="date" onchange="return updateOnChange(event)">
-          </div>
-          <div class="datepicker-container">
-            <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnChange(event)">
-            <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
-              onclick="return doOpenDateEndPicker(event)">event</button>
-          </div>
+          <label>Show correlation ids from</label>
+          <input id="dateStartInput" type="date" class="datepicker-input" onchange="return updateOnChange(event)">
+        </div>
+        <div class="datepicker-container">
+          <label>to</label>
+          <input id="dateEndInput" type="date" class="datepicker-input" onchange="return updateOnChange(event)">
         </div>
       </div>
 
       <hr />
-      <br>
 
       <!-- shows info about search results -->
       <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
-
       <br>
 
       <div class="Select VBox list-sorting">

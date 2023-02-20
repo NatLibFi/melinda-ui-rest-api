@@ -118,19 +118,15 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 }
 
 window.doOpenCorrelationIdListModal = function (event = undefined) {
-  const modal = document.querySelector("#correlationIdListModal");
-  modal.style.display = "flex";
+  const modal = document.querySelector(`#correlationIdListModal`);
+  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
+  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+
+  modal.style.display = 'flex';
+  dateStartInput.addEventListener('click', function (event) {event.stopPropagation();}, false);
+  dateEndInput.addEventListener('click', function (event) {event.stopPropagation();}, false);
+
   fetchCorrelationIdList();
-}
-
-window.doOpenDateStartPicker = function (event = undefined) {
-  const dateStartInput = document.getElementById("dateStartInput");
-  dateStartInput.showPicker();
-}
-
-window.doOpenDateEndPicker = function (event = undefined) {
-  const dateEndInput = document.getElementById("dateEndInput");
-  dateEndInput.showPicker();
 }
 
 window.updateOnChange = (event) => {
