@@ -178,6 +178,21 @@ div#muuntaja {}
 }
 
 /* ---------------------------------------------------------------------------- */
+/* ---Sequence select---*/
+
+.flex-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.sequenceContainer label {
+  display: inline-block;
+  width: 115px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
 /* ---Correlation id list modal---*/
 
 div#correlationIdListModal {}
@@ -219,15 +234,92 @@ div#correlationIdListModal {}
   display: none;
 }
 
-/* ---------------------------------------------------------------------------- */
-/* ---Sequence select---*/
 
-.flex-container {
+/* ---------------------------------------------------------------------------- */
+/* Correlation id list items div*/
+.list-items {
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  padding: 0.5em;
 }
 
-.sequenceContainer label {
-  display: inline-block;
-  width: 115px;
+/* A list item: correlation id, supporting text and trailing icon */
+.list-item {
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+  border-bottom: solid 1px lightgrey;
+}
+
+/* The first list item has also border on top */
+.list-item:first-child {
+  border-top: solid 1px lightgrey;
+}
+
+/* A list item has effect on mouse hovering */
+.list-item:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
+/* A list item has effect on clicking */
+.list-item:active {
+  background-color: darkgrey;
+}
+
+/* A list item has headline: correlation id */
+.list-item-id {
+  white-space: nowrap;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 250px;
+  align-items: center;
+  padding: 0.5em;
+  margin-right: 0.5em;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+}
+
+/* A list item has supporting text + trailing icons */
+.list-item-details-and-icons {
+  white-space: nowrap;
+  flex-grow: 1;
+  flex-shrink: 3;
+}
+
+/* If user's screen width is under 700px */
+/* a list item will show only correlation ids in the list */
+/* and list item details and icons are hidden */
+@media all and (max-width: 700px) {
+  .list-item-details-and-icons {
+    display: none;
+  }
+}
+
+/* A list item's supporting text has log type, creation time and log count */
+.list-item-details {
+  white-space: nowrap;
+  flex-grow: 1;
+  flex-shrink: 2;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.5em;
+  color: darkslategrey;
+  font-size: var(--font-size-content-small);
+}
+
+/* A list item has trailing icons such as info icons */
+.list-item-icons {
+  white-space: nowrap;
+  flex-grow: 1;
+  flex-shrink: 2;
+  /* assume there might be two icons on some rows, save space: */
+  min-width: 50px;
+  /* adding some space between previous item and icon:  */
+  margin-left: 1em;
+  margin-right: 1em;
+  /* align icon vertically: center inside box: */
+  align-items: center;
+  /* align icon horizontally: move to the end of box: */
+  justify-content: flex-end;
+
 }
