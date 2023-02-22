@@ -451,7 +451,7 @@ function updateListView(correlationIdList) {
     return;
   }
 
-  showPlaceholderText('Found ' + sortedList.length + '/' + correlationIdList.length + ' correlation ids')
+  showPlaceholderText(`Found <span style="font-weight: bold">&nbsp;${sortedList.length}&nbsp;</span> /${correlationIdList.length} correlation ids`)
   selectSorting.style.display = 'block';
   sortedList.forEach((logItem) => createListItem(logItem));
   stopProcess();

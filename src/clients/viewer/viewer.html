@@ -238,21 +238,21 @@
         </div>
       </div>
 
-      <hr />
+      <!-- div for search results info and sorting options -->
+      <div class="list-search-results-and-sorting">
 
-      <!-- shows info about search results -->
-      <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
-      <br>
+        <!-- shows info about search results -->
+        <div id="fetchListPlaceholderText" class="placeholder">...fetching list, please wait...</div>
 
-      <div class="Select VBox list-sorting">
-        <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
-          <option selected value="sortByTimeOldestFirst">Sort by creation time: oldest first</option>
-          <option value="sortByTimeNewestFirst">Sort by creation time: newest first</option>
-          <option value="sortById">Sort by correlation id (0->9 a->f)</option>
-        </select>
+        <!-- shows the dropdown for sorting -->
+        <div class="Select VBox list-sorting">
+          <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+            <option selected value="sortByTimeOldestFirst">Sort by creation time: oldest first</option>
+            <option value="sortByTimeNewestFirst">Sort by creation time: newest first</option>
+            <option value="sortById">Sort by correlation id (0->9 a->f)</option>
+          </select>
+        </div>
       </div>
-
-      <br>
 
       <!-- shows the list of correlation ids -->
       <div id="correlationIdList" class="list-items"></div>

@@ -197,20 +197,6 @@ div#muuntaja {}
 
 div#correlationIdListModal {}
 
-.correlation-id {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: 14.5px;
-}
-
-.correlation-id>* {
-  font: inherit;
-}
-
-.placeholder {
-  text-align: center;
-  font-weight: bold;
-}
-
 .datepicker-container {
   display: inline-flex;
   justify-content: center;
@@ -226,12 +212,39 @@ div#correlationIdListModal {}
   font-weight: var(--font-weight-content-small);
 }
 
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* Correlation id search results and sorting in modal*/
+.list-search-results-and-sorting {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0.5em;
+}
+
+.placeholder {
+  display: flex;
+  flex-grow: 2;
+  flex-wrap: wrap;
+  overflow: hidden;
+  align-items: flex-end;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  font-size: var(--font-size-content-normal);
+}
+
 .list-sorting {
-  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
 }
 
 .sort-dropdown {
   display: none;
+  font-size: var(--font-size-content-small) !important;
 }
 
 /* ---------------------------------------------------------------------------- */
