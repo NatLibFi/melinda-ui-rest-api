@@ -204,11 +204,14 @@ div#correlationIdListModal {}
 }
 
 /* Text content in correlation id modal is small */
+/* Modal starts vertically from top */
 #correlationIdListModal>.modal-content {
   margin-top: 0px;
   font-size: var(--font-size-content-small);
+  padding-top: 8px;
 }
 
+/* Buttons in correlation id list modal are small */
 #correlationIdListModal>.modal-content button {}
 
 /* Buttons in correlation id list modal show effect when hovered */
@@ -228,7 +231,6 @@ div#correlationIdListModal {}
 }
 
 
-
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 /* Correlation id modal title and top buttons*/
@@ -241,9 +243,10 @@ div#correlationIdListModal {}
 
 /* Modal top div has place for modal title and info text*/
 .modal-title-and-info {
-  display:flex;
+  display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-top: 8px;
 }
 
 .modal-title {
@@ -339,15 +342,28 @@ div#correlationIdListModal {}
   margin: 0.5em;
 }
 
-.placeholder {
+.search-results-placeholder {
   display: flex;
   flex-grow: 2;
   flex-wrap: wrap;
   overflow: hidden;
   align-items: flex-end;
-  padding-top: 0.5em;
   padding-left: 0.5em;
   font-size: var(--font-size-content-normal);
+  align-items: center;
+}
+
+.clear-filters {
+  display: flex;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.clear-button {
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .list-sorting {
@@ -428,7 +444,7 @@ div#correlationIdListModal {}
 /* and info texts, list item details and icons are hidden */
 @media all and (max-width: 700px) {
   .list-item-id {
-    font-size: var(--font-size-content-normal);
+    font-size: var(--font-size-content-small);
   }
 
   .list-item-details-and-icons,

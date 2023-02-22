@@ -237,7 +237,7 @@
 
       </div>
 
-      <div class="list-filtering-inputs">
+      <div id="filteringInputs" class="list-filtering-inputs">
 
         <!-- shows inputs for star date and end end date date pickers  -->
         <div class="date-filter-container">
@@ -255,7 +255,7 @@
         <div class="correlation-id-filter-container">
           Correlation id:
           <input id="correlationIdInput" type="text" class="correlation-id-input"
-            title="Filter list with correlation id" placeholder="0a1b-23cd45ef..."
+            title="Filter list with correlation id search string" placeholder="0a1b-23cd45ef..."
             oninput="return updateOnChange(event)">
         </div>
 
@@ -266,7 +266,11 @@
       <div class="list-search-results-and-sorting">
 
         <!-- shows info about search results -->
-        <div id="fetchListPlaceholderText" class="placeholder">...fetching list, please wait...</div>
+        <div id="fetchListPlaceholderText" class="search-results-placeholder">...fetching list, please wait...</div>
+
+        <div id="clearFilters" class="clear-filters">
+            <button id="clearFiltersButton" class="clear-button" title="Clear all filters and reset correlation id list" onclick="return clearFilters(event)">Clear filters</button>
+        </div>
 
         <!-- shows the dropdown for sorting -->
         <div class="Select VBox list-sorting">

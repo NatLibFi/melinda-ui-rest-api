@@ -145,6 +145,19 @@ window.ignore = function (event) {
   return eventHandled(event);
 }
 
+window.clearFilters = function (event = undefined) {
+  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
+  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+  const correlationIdInput = document.getElementById(`correlationIdInput`);
+
+  dateStartInput.value = '';
+  dateEndInput.value = '';
+  correlationIdInput.value = '';
+
+  console.log('All clear!')
+  updateOnChange(event);
+}
+
 window.goToTop = function (event = undefined) {
   eventHandled(event);
   const modal = document.querySelector(`#correlationIdListModal`);
@@ -454,6 +467,7 @@ function updateCorrelationIdListModal() {
 
 function updateListView(correlationIdList) {
   const selectSorting = document.getElementById(`correlationIdListSorting`);
+  const clearFiltersDiv = document.querySelector(`#correlationIdListModal #clearFilters`);
   const dateStartInputValue = document.getElementById(`dateStartInput`).value;
   const dateEndInputValue = document.getElementById(`dateEndInput`).value;
   const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
@@ -475,16 +489,34 @@ function updateListView(correlationIdList) {
 
   showPlaceholderText(`Found <span style="font-weight: bold">&nbsp;${sortedList.length}&nbsp;</span> /${correlationIdList.length} correlation ids`)
   selectSorting.style.display = 'block';
+  clearFiltersDiv.style.display = 'flex';
   sortedList.forEach((logItem) => createListItem(logItem));
   stopProcess();
 }
 
 function clearListView() {
   const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
-  correlationIdList.replaceChildren();
   const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
+  const clearFiltersDiv = document.querySelector(`#correlationIdListModal #clearFilters`);
+  const dateStartInput = document.getElementById(`dateStartInput`);
+  const dateEndInput = document.getElementById(`dateEndInput`);
+
+  correlationIdList.replaceChildren();
   selectSorting.style.display = 'none';
+  clearFiltersDiv.style.display = 'none';
+
+  if (dateStartInput.value === '') {
+    dateStartInput.setAttribute('type', 'text')
+    dateStartInput.placeholder = 'Start Date'
+  }
+
+  if (dateEndInput.value === '') {
+    dateEndInput.setAttribute('type', 'text')
+    dateEndInput.placeholder = 'End date'
+  }
 }
+
+
 
 function filterListWithSearchString(correlationIdList, searchString) {
   return correlationIdList.filter(logItem => logItem.correlationId.includes(searchString));
