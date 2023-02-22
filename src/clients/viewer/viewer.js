@@ -439,9 +439,9 @@ function updateCorrelationIdListModal() {
 }
 
 function updateListView(correlationIdList) {
-  const selectSorting = document.getElementById("correlationIdListSorting");
-  const dateStartInputValue = document.getElementById("dateStartInput").value;
-  const dateEndInputValue = document.getElementById("dateEndInput").value;
+  const selectSorting = document.getElementById(`correlationIdListSorting`);
+  const dateStartInputValue = document.getElementById(`dateStartInput`).value;
+  const dateEndInputValue = document.getElementById(`dateEndInput`).value;
 
   const filteredList = filterList(correlationIdList, dateStartInputValue, dateEndInputValue);
   const sortedList = sortList(filteredList, selectSorting.value);
@@ -509,21 +509,20 @@ function createListItem(logItem) {
   const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
   correlationIdList.append(listItemDiv);
 
-  function createListItemDiv({correlationId, logItemType, creationTime, logCount, cataloger}) {
+  function createListItemDiv({correlationId, logItemType, creationTime, logCount}) {
     const base = document.getElementById('list-item-base');
     const listItem = base.cloneNode(true);
 
     listItem.id = correlationId;
     listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
-    const logTypeDiv = createDivWithInnerHtml(`Log type: ${logItemType}`);
-    const creationTimeDiv = createDivWithInnerHtml(`Creation time: ${creationTime}`);
-    const logCountDiv = createDivWithInnerHtml(`Log count: ${logCount}`);
-    const catalogerDiv = createDivWithInnerHtml(`Cataloger: ${cataloger}`);
+    const logTypeDiv = createDivWithInnerHtml(`Log type: <span style="font-weight: bold">${logItemType}</span>`);
+    const creationTimeDiv = createDivWithInnerHtml(`Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`);
+    const logCountDiv = createDivWithInnerHtml(`Log count: <span style="font-weight: bold">${logCount}</span>`);
 
-    listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv, catalogerDiv)
+    listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv)
 
-    listItem.addEventListener("click", function () {
+    listItem.addEventListener('click', function () {
       searchWithSelectedIdAndType(correlationId, logItemType);
     });
 
