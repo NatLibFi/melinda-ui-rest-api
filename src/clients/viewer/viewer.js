@@ -456,20 +456,27 @@ function updateListView(correlationIdList) {
   const selectSorting = document.getElementById(`correlationIdListSorting`);
   const dateStartInputValue = document.getElementById(`dateStartInput`).value;
   const dateEndInputValue = document.getElementById(`dateEndInput`).value;
+  const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
+  const lastSearchedCorrelationId = document.getElementById(`id`).value;
+  const lastSearchedInfoTextDiv = document.getElementById(`lastSearchedInfoText`);
 
-  const filteredList = filterList(correlationIdList, dateStartInputValue, dateEndInputValue);
-  const sortedList = sortList(filteredList, selectSorting.value);
+  const filteredListByDates = filterListWithDates(correlationIdList, dateStartInputValue, dateEndInputValue);
+  const filteredListBySearchString = filterListWithSearchString(filteredListByDates, correlationIdInputValue)
+  const sortedList = sortList(filteredListBySearchString, selectSorting.value);
 
   if (sortedList.length === 0) {
     showPlaceholderText('No correlation ids found, please check your search filters.');
     return;
   }
 
+  if (lastSearchedCorrelationId !== '') {
+    lastSearchedInfoTextDiv.innerHTML = (`Last searched correlation id: ${lastSearchedCorrelationId}`)
+  };
+
   showPlaceholderText(`Found <span style="font-weight: bold">&nbsp;${sortedList.length}&nbsp;</span> /${correlationIdList.length} correlation ids`)
   selectSorting.style.display = 'block';
   sortedList.forEach((logItem) => createListItem(logItem));
   stopProcess();
-
 }
 
 function clearListView() {
@@ -479,7 +486,11 @@ function clearListView() {
   selectSorting.style.display = 'none';
 }
 
-function filterList(correlationIdList, startDate, endDate) {
+function filterListWithSearchString(correlationIdList, searchString) {
+  return correlationIdList.filter(logItem => logItem.correlationId.includes(searchString));
+}
+
+function filterListWithDates(correlationIdList, startDate, endDate) {
   switch (true) {
     case (startDate !== '' && endDate !== ''):
       return correlationIdList.filter(logItem => getDate(logItem) >= startDate && getDate(logItem) <= endDate);

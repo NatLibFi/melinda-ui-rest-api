@@ -197,6 +197,18 @@ div#muuntaja {}
 
 div#correlationIdListModal {}
 
+
+/* Modal content does not move sideways when scroll bar becomes visible or hidden */
+#correlationIdListModal {
+  overflow-y: scroll
+}
+
+/* Text content in correlation id modal is small */
+#correlationIdListModal>.modal-content {
+  margin-top: 0px;
+  font-size: var(--font-size-content-small);
+}
+
 #correlationIdListModal>.modal-content button {}
 
 /* Buttons in correlation id list modal show effect when hovered */
@@ -210,20 +222,12 @@ div#correlationIdListModal {}
   background-color: darkgray;
 }
 
-.datepicker-container {
-  display: inline-flex;
-  justify-content: center;
-  flex: 50%;
+/* Placeholder texts and input texts are small in correlation id modal */
+#correlationIdListModal>.modal-content input {
+  font-size: var(--font-size-content-small);
 }
 
-.datepicker-input {
-  text-align: center;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-  font-size: var(--font-size-content-small);
-  max-height: 13px;
-  font-weight: var(--font-weight-content-small);
-}
+
 
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
@@ -235,12 +239,22 @@ div#correlationIdListModal {}
   padding-bottom: 0.5em;
 }
 
-/* Modal top div has place for modal title */
+/* Modal top div has place for modal title and info text*/
+.modal-title-and-info {
+  display:flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .modal-title {
   display: flex;
-  flex-grow: 1;
   align-items: center;
   font-size: var(--font-size-content-normal);
+}
+
+.modal-info-text {
+  display: flex;
+  color: grey
 }
 
 /* Modal top div has place for buttons */
@@ -261,6 +275,60 @@ div#correlationIdListModal {}
   background-color: black;
   color: white;
 }
+
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal filtering*/
+
+/* Correlation id list modal has filtering with inputs */
+.list-filtering-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5em;
+}
+
+/* Modal has two datepickers */
+.date-filter-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0 0.5em 0.5em 0.5em;
+  padding-top: 0;
+
+}
+
+/* Container for one date picker input */
+.datepicker-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.datepicker-input {
+  max-width: 100px;
+  text-align: center;
+  margin-right: 0.5em;
+  padding-right: 0.5em;
+}
+
+
+/* Modal has correlation id filter */
+.correlation-id-filter-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  overflow: hidden;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.correlation-id-input {
+  min-width: 275px;
+  padding-left: 0.5em;
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+}
+
 
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
@@ -344,6 +412,7 @@ div#correlationIdListModal {}
   padding: 0.5em;
   margin-right: 0.5em;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-size: var(--font-size-content-normal);
 }
 
 /* A list item has supporting text + trailing icons */
@@ -356,14 +425,15 @@ div#correlationIdListModal {}
 
 /* If user's screen width is under 700px */
 /* a list item will show only smaller font correlation ids in the list */
-/* and list item details and icons are hidden */
+/* and info texts, list item details and icons are hidden */
 @media all and (max-width: 700px) {
   .list-item-id {
     font-size: var(--font-size-content-normal);
   }
 
   .list-item-details-and-icons,
-  .close-button {
+  .close-button,
+  .modal-info-text {
     display: none !important;
   }
 }

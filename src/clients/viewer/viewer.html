@@ -220,31 +220,47 @@
   <!-- Modal for browsing and selecting a correlation id from a list -->
   <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
-    <div id="correlationIdListModalContent" class="modal-content BoxShadow" title="Close modal without changes" onclick="return ignore(event)">
+    <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
 
       <!-- shows instructional title for list and close button -->
       <div class="modal-top-div">
 
-        <div class="modal-title">Correlation id list - click id to start search</div>
+        <div class="modal-title-and-info">
+          <div class="modal-title">Correlation id list - click id to start search</div>
+          <div id="lastSearchedInfoText" class="modal-info-text"></div>
+        </div>
 
         <div class="modal-top-div-buttons">
-          <button id="closeModalButton" class="material-icons close-button" onclick="return modalClose(event)">close</button>
+          <button id="closeModalButton" class="material-icons close-button" title="Close modal without changes"
+            onclick="return modalClose(event)">close</button>
         </div>
 
       </div>
 
+      <div class="list-filtering-inputs">
 
-      <!-- shows buttons for opening calendar for start and end date pick and place for date input -->
-      <div id="filterCorrelationIdList">
-        <div class="datepicker-container">
-          <label>Show correlation ids from</label>
-          <input id="dateStartInput" type="date" class="datepicker-input" onchange="return updateOnChange(event)">
+        <!-- shows inputs for star date and end end date date pickers  -->
+        <div class="date-filter-container">
+          Creation time:
+          <div class="datepicker-container">
+            <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+              placeholder="Start date" title="Filter list with creation time start date"
+              onchange="return updateOnChange(event)">
+            <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+              placeholder="End date" title="Filter list with creation time end date"
+              onchange="return updateOnChange(event)">
+          </div>
         </div>
-        <div class="datepicker-container">
-          <label>to</label>
-          <input id="dateEndInput" type="date" class="datepicker-input" onchange="return updateOnChange(event)">
+
+        <div class="correlation-id-filter-container">
+          Correlation id:
+          <input id="correlationIdInput" type="text" class="correlation-id-input"
+            title="Filter list with correlation id" placeholder="0a1b-23cd45ef..."
+            oninput="return updateOnChange(event)">
         </div>
+
       </div>
+
 
       <!-- div for search results info and sorting options -->
       <div class="list-search-results-and-sorting">
@@ -281,7 +297,8 @@
       </div>
 
       <div class="modal-bottom-div">
-        <button id="scrollToTopButton" class="scroll-top-button" title="Sroll back to the top of the list" onclick="return goToTop(event)">Back to top</button>
+        <button id="scrollToTopButton" class="scroll-top-button" title="Sroll back to the top of the list"
+          onclick="return goToTop(event)">Back to top</button>
       </div>
 
     </div>
