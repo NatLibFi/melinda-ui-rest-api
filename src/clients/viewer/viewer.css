@@ -234,7 +234,7 @@ div#correlationIdListModal {}
   display: none;
 }
 
-
+/* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 /* Correlation id list items div*/
 .list-items {
@@ -242,6 +242,9 @@ div#correlationIdListModal {}
   flex-direction: column;
   padding: 0.5em;
 }
+
+/* ---------------------------------------------------------------------------- */
+/* One list item*/
 
 /* A list item: correlation id, supporting text and trailing icon */
 .list-item {
@@ -269,6 +272,7 @@ div#correlationIdListModal {}
 
 /* A list item has headline: correlation id */
 .list-item-id {
+  display: flex;
   white-space: nowrap;
   flex-grow: 1;
   flex-shrink: 1;
@@ -281,22 +285,28 @@ div#correlationIdListModal {}
 
 /* A list item has supporting text + trailing icons */
 .list-item-details-and-icons {
+  display: flex;
   white-space: nowrap;
   flex-grow: 1;
   flex-shrink: 3;
 }
 
 /* If user's screen width is under 700px */
-/* a list item will show only correlation ids in the list */
+/* a list item will show only smaller font correlation ids in the list */
 /* and list item details and icons are hidden */
 @media all and (max-width: 700px) {
   .list-item-details-and-icons {
     display: none;
   }
+
+  .list-item-id {
+    font-size: var(--font-size-content-normal);
+  }
 }
 
 /* A list item's supporting text has log type, creation time and log count */
 .list-item-details {
+  display: flex;
   white-space: nowrap;
   flex-grow: 1;
   flex-shrink: 2;
@@ -309,6 +319,7 @@ div#correlationIdListModal {}
 
 /* A list item has trailing icons such as info icons */
 .list-item-icons {
+  display: flex;
   white-space: nowrap;
   flex-grow: 1;
   flex-shrink: 2;
@@ -321,5 +332,20 @@ div#correlationIdListModal {}
   align-items: center;
   /* align icon horizontally: move to the end of box: */
   justify-content: flex-end;
+}
 
+/* ---------------------------------------------------------------------------- */
+/* A list item has search icon for hint */
+/* it shows as effect when list item is hovered and clicked */
+.list-item-icons-search {
+  display: none !important;
+}
+
+.list-item:hover .list-item-icons-search {
+  display: flex !important;
+}
+
+.list-item:active .list-item-icons-search {
+  display: flex !important;
+  transform: scale(1.50);
 }
