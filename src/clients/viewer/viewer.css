@@ -197,12 +197,12 @@ div#muuntaja {}
 
 div#correlationIdListModal {}
 
-#correlationIdListModal>.modal-content button {
-}
+#correlationIdListModal>.modal-content button {}
 
 /* Buttons in correlation id list modal show effect when hovered */
 #correlationIdListModal>.modal-content button:hover {
   background-color: lightgray;
+  color: black;
 }
 
 /* Buttons in correlation id list modal show effect when clicked */
@@ -258,6 +258,8 @@ div#correlationIdListModal {}
   border-radius: 50%;
   padding: 0;
   font-size: 12px !important;
+  background-color: black;
+  color: white;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -360,7 +362,8 @@ div#correlationIdListModal {}
     font-size: var(--font-size-content-normal);
   }
 
-  .list-item-details-and-icons, .close-button {
+  .list-item-details-and-icons,
+  .close-button {
     display: none !important;
   }
 }
@@ -374,7 +377,7 @@ div#correlationIdListModal {}
   flex-direction: column;
   justify-content: flex-start;
   padding: 0.5em;
-  color: darkslategrey;
+  color: grey;
   font-size: var(--font-size-content-small);
 }
 
@@ -409,4 +412,26 @@ div#correlationIdListModal {}
 .list-item:active .list-item-icons-search {
   display: flex !important;
   transform: scale(1.50);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal footer and bottom buttons*/
+/* ---------------------------------------------------------------------------- */
+
+/* Correlation id modal has bottom div */
+.modal-bottom-div {
+  display: flex;
+  justify-content: center;
+}
+
+/* Modal has scroll to top button at the list end*/
+.scroll-top-button {
+  display: none;
+  position: fixed;
+  bottom: 8px;
+  width: fit-content;
+  background-color: black;
+  color: white;
 }

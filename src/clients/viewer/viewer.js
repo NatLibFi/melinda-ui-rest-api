@@ -121,10 +121,17 @@ window.doOpenCorrelationIdListModal = function (event = undefined) {
   const modal = document.querySelector(`#correlationIdListModal`);
   const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
   const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+  const scrollToTopButton = document.querySelector(`#correlationIdListModal #scrollToTopButton`);
 
   modal.style.display = 'flex';
-  dateStartInput.addEventListener('click', function (event) {event.stopPropagation();}, false);
-  dateEndInput.addEventListener('click', function (event) {event.stopPropagation();}, false);
+
+  dateStartInput.addEventListener('click', event => {event.stopPropagation();}, false);
+  dateEndInput.addEventListener('click', event => {event.stopPropagation();}, false);
+
+  modal.addEventListener('scroll', event => {
+    eventHandled(event);
+    scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
+  });
 
   fetchCorrelationIdList();
 }
@@ -134,15 +141,22 @@ window.updateOnChange = (event) => {
   updateCorrelationIdListModal();
 }
 
+window.ignore = function (event) {
+  return eventHandled(event);
+}
+
+window.goToTop = function (event = undefined) {
+  eventHandled(event);
+  const modal = document.querySelector(`#correlationIdListModal`);
+  modal.scrollTo({top: 0, behavior: 'smooth'})
+}
+
 window.modalClose = function (event) {
   const modal = document.querySelector("#correlationIdListModal")
   modal.style.display = "none"
   return eventHandled(event);
 }
 
-window.ignore = function (event) {
-  return eventHandled(event);
-}
 
 window.loadLog = (event) => {
   eventHandled(event);
@@ -522,7 +536,7 @@ function createListItem(logItem) {
 
     listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv)
 
-    listItem.addEventListener('click', function () {
+    listItem.addEventListener('click', () => {
       searchWithSelectedIdAndType(correlationId, logItemType);
     });
 

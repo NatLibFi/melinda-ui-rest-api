@@ -220,7 +220,7 @@
   <!-- Modal for browsing and selecting a correlation id from a list -->
   <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
-    <div class="modal-content BoxShadow" onclick="return ignore(event)">
+    <div id="correlationIdListModalContent" class="modal-content BoxShadow" title="Close modal without changes" onclick="return ignore(event)">
 
       <!-- shows instructional title for list and close button -->
       <div class="modal-top-div">
@@ -278,6 +278,10 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="modal-bottom-div">
+        <button id="scrollToTopButton" class="scroll-top-button" title="Sroll back to the top of the list" onclick="return goToTop(event)">Back to top</button>
       </div>
 
     </div>
