@@ -222,9 +222,17 @@
 
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
-      <!-- shows instructions for list -->
-      <div>Correlation id list - click log to start search</div>
-      <hr />
+      <!-- shows instructional title for list and close button -->
+      <div class="modal-top-div">
+
+        <div class="modal-title">Correlation id list - click id to start search</div>
+
+        <div class="modal-top-div-buttons">
+          <button id="closeModalButton" class="material-icons close-button" onclick="return modalClose(event)">close</button>
+        </div>
+
+      </div>
+
 
       <!-- shows buttons for opening calendar for start and end date pick and place for date input -->
       <div id="filterCorrelationIdList">

@@ -197,6 +197,19 @@ div#muuntaja {}
 
 div#correlationIdListModal {}
 
+#correlationIdListModal>.modal-content button {
+}
+
+/* Buttons in correlation id list modal show effect when hovered */
+#correlationIdListModal>.modal-content button:hover {
+  background-color: lightgray;
+}
+
+/* Buttons in correlation id list modal show effect when clicked */
+#correlationIdListModal>.modal-content button:active {
+  background-color: darkgray;
+}
+
 .datepicker-container {
   display: inline-flex;
   justify-content: center;
@@ -210,6 +223,41 @@ div#correlationIdListModal {}
   font-size: var(--font-size-content-small);
   max-height: 13px;
   font-weight: var(--font-weight-content-small);
+}
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal title and top buttons*/
+
+/* Correlation id modal has top div */
+.modal-top-div {
+  display: flex;
+  padding-bottom: 0.5em;
+}
+
+/* Modal top div has place for modal title */
+.modal-title {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  font-size: var(--font-size-content-normal);
+}
+
+/* Modal top div has place for buttons */
+.modal-top-div-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.close-button {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 12px !important;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -308,12 +356,12 @@ div#correlationIdListModal {}
 /* a list item will show only smaller font correlation ids in the list */
 /* and list item details and icons are hidden */
 @media all and (max-width: 700px) {
-  .list-item-details-and-icons {
-    display: none;
-  }
-
   .list-item-id {
     font-size: var(--font-size-content-normal);
+  }
+
+  .list-item-details-and-icons, .close-button {
+    display: none !important;
   }
 }
 
