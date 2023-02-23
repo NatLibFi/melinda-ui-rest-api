@@ -209,6 +209,9 @@ div#correlationIdListModal {}
   margin-top: 0px;
   font-size: var(--font-size-content-small);
   padding-top: 8px;
+  resize: horizontal;
+  overflow: auto;
+  max-width: 60%;
 }
 
 /* Buttons in correlation id list modal are small */
@@ -400,7 +403,7 @@ div#correlationIdListModal {}
 
 .search-results-placeholder {
   display: flex;
-  flex-grow: 2;
+  flex-grow: 1;
   flex-wrap: wrap;
   overflow: hidden;
   align-items: flex-end;
@@ -509,6 +512,10 @@ div#correlationIdListModal {}
   .close-button {
     display: none !important;
   }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
+  }
 }
 
 /* If user's screen width is under 630px */
@@ -526,6 +533,10 @@ div#correlationIdListModal {}
   .list-filtering-buttons {
     display: none !important;
   }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
+  }
 }
 
 /* If user's screen width is under 500px */
@@ -542,6 +553,10 @@ div#correlationIdListModal {}
   .list-filtering-inputs,
   .list-filtering-buttons {
     display: none !important;
+  }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
   }
 }
 
