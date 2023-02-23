@@ -9,8 +9,6 @@ export function initArticle() {
   document.getElementById("tyhjenna-tieteenalat-form").addEventListener("submit", clearSciences);
   document.getElementById("tyhjenna-metodologiat-form").addEventListener("submit", clearMetodologys);
 
-  document.getElementById("lisaa-arvosteltu-teos").addEventListener("click", addReviewedBook);
-
   refreshSciencesList();
   refreshMetodologysList();
 }
