@@ -246,20 +246,6 @@
                   </select>
                 </div>
               </div>
-              <div id="arvosteltu-teos-wrap">
-                <div class="full-width">
-                  <div class="Input">
-                    <label class="bold-text" for="arvosteltu-teos">Arvosteltu teos:</label>
-                    <input type="text" id="arvosteltu-teos" class="full-width" name="arvosteltu-teos"
-                      list="">
-                    <datalist id="">
-                    </datalist>
-                    <label class="bold-text" for="arvosteltu-teos-isbn">ISBN:</label>
-                    <input type="text" id="arvosteltu-teos-isbn" class="half-width" name="arvosteltu-teos-isbn" disabled>
-                  </div>
-                  <button id="lisaa-arvosteltu-teos" class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
-                </div>
-              </div>
               <div class="full-width">
                 <div class="Input">
                   <label class="bold-text" for="artikkelin-otsikko">Otsikko:</label>
@@ -297,6 +283,51 @@
                     </datalist>
                   </div>
                 </div>
+              </div>
+            </fieldset>
+            <fieldset id="arvostellun-teoksen-tiedot">
+              <legend>Arvostellun teoksen tiedot</legend>
+              <form id="arvosteltu-teos-hae-form">
+                <div class="full-width">
+                  <div class="Input full-width">
+                    <label class="bold-text" for="arvosteltu-teos">Haku:</label>
+                    <input type="text" id="arvosteltu-teos" name="arvosteltu-teos"
+                        pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$" maxlength="30">
+                  </div>
+                  <button type="submit" class="material-icons tooltip no-border icon positive"
+                    tooltip-text="Hae">search</button>
+                </div>
+              </form>
+              <form id="arvosteltu-teos-lisaa-form">
+                <div class="full-width">
+                  <div class="Select full-width">
+                    <label class="bold-text" for="arvosteltu-teos-tulos-lista">Tulokset:</label>
+                    <select id="arvosteltu-teos-tulos-lista">
+                    </select>
+                  </div>
+                </div>
+              </form>
+              <div class="full-width justify-content-end">
+                <div class="Button">
+                  <button class="negative" onclick="return resetReview(event)">Tyhjennä arvostelu</button>
+                </div>
+                <div class="Button">
+                  <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvostelu</button>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset id="arvostellut-teokset">
+              <legend>Lisätyt arvostelut</legend>
+              <div class="full-width">
+                <div id="arvostelut-list">
+                </div>
+              </div>
+              <div class="full-width justify-content-end">
+                <form id="tyhjenna-arvostelut-form">
+                  <div class="Button">
+                    <button type="submit" class="negative">Tyhjennä lisätyt arvostelut</button>
+                  </div>
+                </form>
               </div>
             </fieldset>
             <fieldset>

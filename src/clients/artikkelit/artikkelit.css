@@ -240,7 +240,8 @@ fieldset .panel p {
 #asiasana-list,
 #huomautukset-list,
 #udk-list,
-#muu-luokitus-list {
+#muu-luokitus-list,
+#arvostelut-list {
   width: 100%;
 }
 

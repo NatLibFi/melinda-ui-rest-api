@@ -11,6 +11,7 @@ import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/art
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 import {initPublicationSearch} from "./interfaces/publicationSearch.js";
+import {initReviews, resetReview, refreshReviewsList} from "./interfaces/reviewSearch.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -26,6 +27,7 @@ window.initialize = function () {
     fillFormOptions();
     initPublicationSearch();
     initArticle();
+    initReviews();
     initAuthors();
     initAbstracts();
     initOntologyWords();
@@ -59,12 +61,15 @@ window.sourceTypeChange = (event) => {
 }
 
 window.articleTypeChange = (event) => {
-  const reviewWrap = document.getElementById("arvosteltu-teos-wrap");
+  const reviewFieldset = document.getElementById("arvostellun-teoksen-tiedot");
+  const addedReviews = document.getElementById("arvostellut-teokset");
   const selectedType = event.target.value;
   if (["B1", "B2", "D1", "E1"].some(str => selectedType.includes(str))) {
-    reviewWrap.style.display = "block";
+    reviewFieldset.style.display = "flex";
+    addedReviews.style.display = "flex";
   } else {
-    reviewWrap.style.display = "none";
+    reviewFieldset.style.display = "none";
+    addedReviews.style.display = "none";
   }
 }
 
@@ -117,8 +122,13 @@ window.resetAuthor = (event) => {
   resetAuthor(event);
 }
 
+window.resetReview = (event) => {
+  resetReview(event);
+}
+
 function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
+  // TODO: arvosteluiden tallennus
   const reviews = [];
   document.getElementsByName("arvosteltu-teos").forEach(el => reviews.push(el.value));
   return {
@@ -146,9 +156,9 @@ function collectFormData() {
   };
 }
 
-window.removeRewievedBook = (event) => {
+window.removeReviewedBook = (event, key) => {
   event.preventDefault();
-  event.target.parentElement.remove();
+  idbDel("artoReviews", key).then(() => refreshReviewsList());
 }
 
 window.removeScience = (event, key) => {
