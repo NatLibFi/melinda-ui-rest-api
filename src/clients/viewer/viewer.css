@@ -505,6 +505,7 @@ div#correlationIdListModal {}
 
   .list-item-details-and-icons,
   .modal-info-text,
+  #listDetailsToggleContainer,
   .close-button {
     display: none !important;
   }

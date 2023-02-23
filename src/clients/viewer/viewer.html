@@ -220,16 +220,19 @@
   <!-- Modal for browsing and selecting a correlation id from a list -->
   <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
+    <!-- The modal box outline and content  -->
     <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
 
       <!-- shows instructional title for list and close button -->
       <div class="modal-top-div">
 
+        <!-- the title for modal, and some additional info text -->
         <div class="modal-title-and-info">
           <div class="modal-title">Correlation id list - click id to start search</div>
           <div id="lastSearchedInfoText" class="modal-info-text"></div>
         </div>
 
+        <!-- button for closing modal, works the same way as clicking outside modal  -->
         <div class="modal-top-div-buttons">
           <button id="closeModalButton" class="material-icons close-button" title="Close modal without changes"
             onclick="return modalClose(event)">close</button>
@@ -237,10 +240,11 @@
 
       </div>
 
- 
+      <!-- All buttons for filtering correlation id list  -->
       <div class="list-filtering-buttons">
- 
-        <div class="filter-button-container">
+
+        <!-- multiselect button toggles showing logs by logType or hiding them from the list -->
+        <div id="logTypeToggleContainer" class="filter-button-container">
           <div class="segmented-multiselect-button-container">
             <button id="mergeLogsSelect" class="segmented-multiselect-button filtering-button-selected"
               onclick="return toggleShowMergeLogs(event)" value="true">Merge logs</button>
@@ -249,12 +253,18 @@
           </div>
         </div>
 
+        <!-- button toggles showing extra details for correlation id list items or hiding them  -->
+        <div id="listDetailsToggleContainer" class="filter-button-container">
+          <button id="toggleListDetails" class="filtering-button-selected" onclick="return toggleListDetails(event)"
+            value="true">List details</button>
+        </div>
+
       </div>
 
-
+      <!-- All inputs for filtering correlation id list  -->
       <div id="filteringInputs" class="list-filtering-inputs">
 
-        <!-- shows inputs for star date and end end date date pickers  -->
+        <!-- inputs for star date and end end date date pickers  -->
         <div class="date-filter-container">
           Creation time:
           <div class="datepicker-container">
@@ -267,6 +277,7 @@
           </div>
         </div>
 
+        <!-- input for searching with correlation id string -->
         <div class="correlation-id-filter-container">
           Correlation id:
           <input id="correlationIdInput" type="text" class="correlation-id-input"
@@ -283,6 +294,7 @@
         <!-- shows info about search results -->
         <div id="fetchListPlaceholderText" class="search-results-placeholder">...fetching list, please wait...</div>
 
+        <!-- button for resetting search and clearing all filters -->
         <div id="clearFilters" class="clear-filters">
           <button id="clearFiltersButton" class="clear-button" title="Clear all filters and reset correlation id list"
             onclick="return clearFilters(event)">Clear filters</button>
@@ -301,6 +313,7 @@
       <!-- shows the list of correlation ids -->
       <div id="correlationIdList" class="list-items"></div>
 
+      <!-- this helper html is always hidden with display: none-->
       <div style="display: none">
         <!-- base model for one correlation id list item -->
         <div id="list-item-base" class="list-item">
@@ -316,6 +329,7 @@
         </div>
       </div>
 
+      <!-- button for scrolling back to the top of modal and screen -->
       <div class="modal-bottom-div">
         <button id="scrollToTopButton" class="scroll-top-button" title="Sroll back to the top of the list"
           onclick="return goToTop(event)">Back to top</button>

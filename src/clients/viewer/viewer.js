@@ -149,8 +149,8 @@ window.toggleShowMergeLogs = function (event = undefined) {
   eventHandled(event);
   const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
   mergeLogsSelect.value = (mergeLogsSelect.value === 'true' ? false : true);
-  updateOnChange(new Event('change'));
   mergeLogsSelect.value === 'true' ? mergeLogsSelect.classList.add('filtering-button-selected') : mergeLogsSelect.classList.remove('filtering-button-selected');
+  updateOnChange(new Event('change'));
 }
 
 window.toggleShowMatchLogs = function (event = undefined) {
@@ -158,6 +158,14 @@ window.toggleShowMatchLogs = function (event = undefined) {
   const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
   matchLogsSelect.value = (matchLogsSelect.value === 'true' ? false : true);
   matchLogsSelect.value === 'true' ? matchLogsSelect.classList.add('filtering-button-selected') : matchLogsSelect.classList.remove('filtering-button-selected');
+  updateOnChange(new Event('change'));
+}
+
+window.toggleListDetails = function (event = undefined) {
+  eventHandled(event);
+  const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
+  listDetailsSelect.value = (listDetailsSelect.value === 'true' ? false : true);
+  listDetailsSelect.value === 'true' ? listDetailsSelect.classList.add('filtering-button-selected') : listDetailsSelect.classList.remove('filtering-button-selected');
   updateOnChange(new Event('change'));
 }
 
@@ -483,14 +491,15 @@ function updateCorrelationIdListModal() {
 
 function updateListView(correlationIdList) {
   const selectSorting = document.getElementById(`correlationIdListSorting`);
-  const clearFiltersDiv = document.querySelector(`#correlationIdListModal #clearFilters`);
+
   const dateStartInputValue = document.getElementById(`dateStartInput`).value;
   const dateEndInputValue = document.getElementById(`dateEndInput`).value;
   const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
   const lastSearchedCorrelationId = document.getElementById(`id`).value;
   const lastSearchedInfoTextDiv = document.getElementById(`lastSearchedInfoText`);
-  const showMergeLogsValue =  document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
+  const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
   const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).value;
+  const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).value;
 
   const filteredListByLogTypes = filterListByLogTypes(correlationIdList, showMergeLogsValue, showMatchLogsValue)
   const filteredListByDates = filterListWithDates(filteredListByLogTypes, dateStartInputValue, dateEndInputValue);
@@ -508,8 +517,15 @@ function updateListView(correlationIdList) {
 
   showPlaceholderText(`Found <span style="font-weight: bold">&nbsp;${sortedList.length}&nbsp;</span> /${correlationIdList.length} correlation ids`)
   selectSorting.style.display = 'block';
+
+  const clearFiltersDiv = document.querySelector(`#correlationIdListModal #clearFilters`);
   clearFiltersDiv.style.display = 'flex';
+
   sortedList.forEach((logItem) => createListItem(logItem));
+
+  const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
+  listDetailsDivs.forEach(div => showListDetailsValue === 'true' ? div.style.display = 'flex' : div.style.display = 'none');
+
   stopProcess();
 }
 
