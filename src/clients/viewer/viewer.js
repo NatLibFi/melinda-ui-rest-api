@@ -145,6 +145,22 @@ window.ignore = function (event) {
   return eventHandled(event);
 }
 
+window.toggleShowMergeLogs = function (event = undefined) {
+  eventHandled(event);
+  const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
+  mergeLogsSelect.value = (mergeLogsSelect.value === 'true' ? false : true);
+  updateOnChange(new Event('change'));
+  mergeLogsSelect.value === 'true' ? mergeLogsSelect.classList.add('filtering-button-selected') : mergeLogsSelect.classList.remove('filtering-button-selected');
+}
+
+window.toggleShowMatchLogs = function (event = undefined) {
+  eventHandled(event);
+  const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
+  matchLogsSelect.value = (matchLogsSelect.value === 'true' ? false : true);
+  matchLogsSelect.value === 'true' ? matchLogsSelect.classList.add('filtering-button-selected') : matchLogsSelect.classList.remove('filtering-button-selected');
+  updateOnChange(new Event('change'));
+}
+
 window.clearFilters = function (event = undefined) {
   const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
   const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
@@ -473,8 +489,11 @@ function updateListView(correlationIdList) {
   const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
   const lastSearchedCorrelationId = document.getElementById(`id`).value;
   const lastSearchedInfoTextDiv = document.getElementById(`lastSearchedInfoText`);
+  const showMergeLogsValue =  document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
+  const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).value;
 
-  const filteredListByDates = filterListWithDates(correlationIdList, dateStartInputValue, dateEndInputValue);
+  const filteredListByLogTypes = filterListByLogTypes(correlationIdList, showMergeLogsValue, showMatchLogsValue)
+  const filteredListByDates = filterListWithDates(filteredListByLogTypes, dateStartInputValue, dateEndInputValue);
   const filteredListBySearchString = filterListWithSearchString(filteredListByDates, correlationIdInputValue)
   const sortedList = sortList(filteredListBySearchString, selectSorting.value);
 
@@ -516,7 +535,18 @@ function clearListView() {
   }
 }
 
-
+function filterListByLogTypes(correlationIdList, showMergeLogs, showMatchLogs) {
+  switch (true) {
+    case (showMergeLogs === 'true' && showMatchLogs === 'false'):
+      return correlationIdList.filter(logItem => logItem.logItemType !== 'MATCH_LOG');
+    case (showMergeLogs === 'false' && showMatchLogs === 'true'):
+      return correlationIdList.filter(logItem => logItem.logItemType !== 'MERGE_LOG');
+    case (showMergeLogs === 'false' && showMergeLogs === 'false'):
+      return correlationIdList.filter(logItem => logItem.logItemType !== 'MERGE_LOG' && logItem.logItemType !== 'MATCH_LOG');
+    default:
+      return correlationIdList;
+  }
+}
 
 function filterListWithSearchString(correlationIdList, searchString) {
   return correlationIdList.filter(logItem => logItem.correlationId.includes(searchString));

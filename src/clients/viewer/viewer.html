@@ -237,6 +237,21 @@
 
       </div>
 
+ 
+      <div class="list-filtering-buttons">
+ 
+        <div class="filter-button-container">
+          <div class="segmented-multiselect-button-container">
+            <button id="mergeLogsSelect" class="segmented-multiselect-button filtering-button-selected"
+              onclick="return toggleShowMergeLogs(event)" value="true">Merge logs</button>
+            <button id="matchLogsSelect" class="segmented-multiselect-button filtering-button-selected"
+              onclick="return toggleShowMatchLogs(event)" value="true">Match logs</button>
+          </div>
+        </div>
+
+      </div>
+
+
       <div id="filteringInputs" class="list-filtering-inputs">
 
         <!-- shows inputs for star date and end end date date pickers  -->
@@ -269,7 +284,8 @@
         <div id="fetchListPlaceholderText" class="search-results-placeholder">...fetching list, please wait...</div>
 
         <div id="clearFilters" class="clear-filters">
-            <button id="clearFiltersButton" class="clear-button" title="Clear all filters and reset correlation id list" onclick="return clearFilters(event)">Clear filters</button>
+          <button id="clearFiltersButton" class="clear-button" title="Clear all filters and reset correlation id list"
+            onclick="return clearFilters(event)">Clear filters</button>
         </div>
 
         <!-- shows the dropdown for sorting -->
