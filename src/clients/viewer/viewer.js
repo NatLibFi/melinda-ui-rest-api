@@ -169,6 +169,14 @@ window.toggleListDetails = function (event = undefined) {
   updateOnChange(new Event('change'));
 }
 
+window.toggleOldLogs = function (event = undefined) {
+  eventHandled(event);
+  const oldLogsSelect = document.querySelector(`#correlationIdListModal #toggleOldLogs`);
+  oldLogsSelect.value = (oldLogsSelect.value === 'true' ? false : true);
+  oldLogsSelect.value === 'true' ? oldLogsSelect.classList.add('filtering-button-selected') : oldLogsSelect.classList.remove('filtering-button-selected');
+  updateOnChange(new Event('change'));
+}
+
 window.clearFilters = function (event = undefined) {
   const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
   const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
@@ -491,7 +499,6 @@ function updateCorrelationIdListModal() {
 
 function updateListView(correlationIdList) {
   const selectSorting = document.getElementById(`correlationIdListSorting`);
-
   const dateStartInputValue = document.getElementById(`dateStartInput`).value;
   const dateEndInputValue = document.getElementById(`dateEndInput`).value;
   const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
@@ -500,10 +507,12 @@ function updateListView(correlationIdList) {
   const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
   const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).value;
   const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).value;
+  const showOldLogsValue = document.querySelector(`#correlationIdListModal #toggleOldLogs`).value;
 
-  const filteredListByLogTypes = filterListByLogTypes(correlationIdList, showMergeLogsValue, showMatchLogsValue)
+  const filteredListByLogTypes = filterListByLogTypes(correlationIdList, showMergeLogsValue, showMatchLogsValue);
   const filteredListByDates = filterListWithDates(filteredListByLogTypes, dateStartInputValue, dateEndInputValue);
-  const filteredListBySearchString = filterListWithSearchString(filteredListByDates, correlationIdInputValue)
+  const filteredListByAge = filterListWithLogAge(filteredListByDates, showOldLogsValue, 7.5);
+  const filteredListBySearchString = filterListWithSearchString(filteredListByAge, correlationIdInputValue);
   const sortedList = sortList(filteredListBySearchString, selectSorting.value);
 
   if (sortedList.length === 0) {
@@ -549,6 +558,10 @@ function clearListView() {
     dateEndInput.setAttribute('type', 'text')
     dateEndInput.placeholder = 'End date'
   }
+}
+
+function filterListWithLogAge(correlationIdList, showOldLogsValue, ageInDays) {
+  return showOldLogsValue === 'true' ? correlationIdList.filter(logItem => Date.parse(logItem.creationTime) < (Date.now() - (ageInDays * 24 * 60 * 60 * 1000))) : correlationIdList;
 }
 
 function filterListByLogTypes(correlationIdList, showMergeLogs, showMatchLogs) {
@@ -623,11 +636,21 @@ function createListItem(logItem) {
     const creationTimeDiv = createDivWithInnerHtml(`Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`);
     const logCountDiv = createDivWithInnerHtml(`Log count: <span style="font-weight: bold">${logCount}</span>`);
 
-    listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv)
+    listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv);
 
     listItem.addEventListener('click', () => {
       searchWithSelectedIdAndType(correlationId, logItemType);
     });
+
+    const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7.5 * 24 * 60 * 60 * 1000)
+
+    if (overWeekOld) {
+      const infoIcon = document.createElement('span');
+      infoIcon.classList.add('material-icons');
+      infoIcon.innerHTML = "info";
+      infoIcon.title = ('This correlation id is over week old');
+      listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
+    }
 
     return listItem;
 

@@ -580,7 +580,7 @@ div#correlationIdListModal {}
   flex-grow: 1;
   flex-shrink: 2;
   /* assume there might be two icons on some rows, save space: */
-  min-width: 50px;
+  min-width: 75px;
   /* adding some space between previous item and icon:  */
   margin-left: 1em;
   margin-right: 1em;
@@ -590,9 +590,14 @@ div#correlationIdListModal {}
   justify-content: flex-end;
 }
 
+
+.list-item-icons span:not(.list-item-icons-search) {
+  padding: 0.5em;
+}
+
 /* ---------------------------------------------------------------------------- */
 /* A list item has search icon for hint */
-/* it shows as effect when list item is hovered and clicked */
+/* it shows as effect and animation when list item is hovered and clicked */
 .list-item-icons-search {
   display: none !important;
 }
@@ -603,7 +608,33 @@ div#correlationIdListModal {}
 
 .list-item:active .list-item-icons-search {
   display: flex !important;
-  transform: scale(1.50);
+  color: white;
+  animation-name: grow-and-rotate-90-degrees;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes grow-and-rotate-90-degrees {
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: rotate(90deg) scale(1.5);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: rotate(-90deg) scale(0.5);
+  }
 }
 
 

@@ -253,6 +253,11 @@
           </div>
         </div>
 
+        <!-- button toggles showing only correlation ids with logs over week old -->
+        <div id="weekOldToggleContainer" class="filter-button-container">
+          <button id="toggleOldLogs" onclick="return toggleOldLogs(event)" value="false">Over week old</button>
+        </div>
+
         <!-- button toggles showing extra details for correlation id list items or hiding them  -->
         <div id="listDetailsToggleContainer" class="filter-button-container">
           <button id="toggleListDetails" class="filtering-button-selected" onclick="return toggleListDetails(event)"
