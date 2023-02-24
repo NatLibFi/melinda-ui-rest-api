@@ -149,7 +149,9 @@ window.toggleShowMergeLogs = function (event = undefined) {
   eventHandled(event);
   const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
   mergeLogsSelect.value = (mergeLogsSelect.value === 'true' ? false : true);
-  mergeLogsSelect.value === 'true' ? mergeLogsSelect.classList.add('filtering-button-selected') : mergeLogsSelect.classList.remove('filtering-button-selected');
+  mergeLogsSelect.value === 'true'
+    ? (mergeLogsSelect.classList.add('filter-button-selected'), mergeLogsSelect.title = "Hide MERGE_LOGs from list view")
+    : (mergeLogsSelect.classList.remove('filter-button-selected'), mergeLogsSelect.title = "Show MERGE_LOGs in list view");
   updateOnChange(new Event('change'));
 }
 
@@ -157,7 +159,9 @@ window.toggleShowMatchLogs = function (event = undefined) {
   eventHandled(event);
   const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
   matchLogsSelect.value = (matchLogsSelect.value === 'true' ? false : true);
-  matchLogsSelect.value === 'true' ? matchLogsSelect.classList.add('filtering-button-selected') : matchLogsSelect.classList.remove('filtering-button-selected');
+  matchLogsSelect.value === 'true'
+    ? (matchLogsSelect.classList.add('filter-button-selected'), matchLogsSelect.title = "Hide MATCH_LOGs from list view")
+    : (matchLogsSelect.classList.remove('filter-button-selected'), matchLogsSelect.title = "Show MATCH_LOGs in list view");
   updateOnChange(new Event('change'));
 }
 
@@ -165,7 +169,9 @@ window.toggleListDetails = function (event = undefined) {
   eventHandled(event);
   const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
   listDetailsSelect.value = (listDetailsSelect.value === 'true' ? false : true);
-  listDetailsSelect.value === 'true' ? listDetailsSelect.classList.add('filtering-button-selected') : listDetailsSelect.classList.remove('filtering-button-selected');
+  listDetailsSelect.value === 'true'
+    ? (listDetailsSelect.classList.add('filter-button-selected'), listDetailsSelect.title = 'Hide detailed list view')
+    : (listDetailsSelect.classList.remove('filter-button-selected'), listDetailsSelect.title = 'Show detailed list view');
   updateOnChange(new Event('change'));
 }
 
@@ -173,7 +179,9 @@ window.toggleOldLogs = function (event = undefined) {
   eventHandled(event);
   const oldLogsSelect = document.querySelector(`#correlationIdListModal #toggleOldLogs`);
   oldLogsSelect.value = (oldLogsSelect.value === 'true' ? false : true);
-  oldLogsSelect.value === 'true' ? oldLogsSelect.classList.add('filtering-button-selected') : oldLogsSelect.classList.remove('filtering-button-selected');
+  oldLogsSelect.value === 'true'
+    ? (oldLogsSelect.classList.add('filter-button-selected'), oldLogsSelect.title = 'Remove this filter')
+    : (oldLogsSelect.classList.remove('filter-button-selected'), oldLogsSelect.title = 'Add filter that shows only correlation ids with creation time over 7.5 days ago')
   updateOnChange(new Event('change'));
 }
 
@@ -192,6 +200,10 @@ window.clearFilters = function (event = undefined) {
   const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
   unselectFilteringButtons(oldLogsSelect);
   selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+  oldLogsSelect.title = 'Add filter that shows only correlation ids with creation time over 7.5 days ago';
+  matchLogsSelect.title = 'Hide MATCH_LOGs from list view'
+  mergeLogsSelect.title = 'Hide MERGE_LOGs from list view';
+  listDetailsSelect.title = 'Hide detailed list view';
 
   console.log('All clear!')
   updateOnChange(event);
@@ -199,13 +211,13 @@ window.clearFilters = function (event = undefined) {
 
 // Helper function to unselect buttons (set the value and style of unselected button)
 function unselectFilteringButtons(...buttons) {
-  buttons.forEach(button => (button.value = 'false', button.classList.remove('filtering-button-selected')));
+  buttons.forEach(button => (button.value = 'false', button.classList.remove('filter-button-selected')));
 }
 
 // Helper function to select buttons (set the value and style of selected button)
 function selectFilteringButtons(...buttons) {
-  buttons.forEach(button => (button.value = 'true', button.classList.add('filtering-button-selected')));
-} 
+  buttons.forEach(button => (button.value = 'true', button.classList.add('filter-button-selected')));
+}
 
 window.goToTop = function (event = undefined) {
   eventHandled(event);
@@ -532,17 +544,18 @@ function updateListView(correlationIdList) {
   const filteredListBySearchString = filterListWithSearchString(filteredListByAge, correlationIdInputValue);
   const sortedList = sortList(filteredListBySearchString, selectSorting.value);
 
-  if (sortedList.length === 0) {
-    showPlaceholderText('No correlation ids found, please check your search filters.');
-    return;
-  }
-
   if (lastSearchedCorrelationId !== '') {
     lastSearchedInfoTextDiv.innerHTML = (`Last searched correlation id: ${lastSearchedCorrelationId}`)
   };
 
-  showPlaceholderText(`Found <span style="font-weight: bold">&nbsp;${sortedList.length}&nbsp;</span> /${correlationIdList.length} correlation ids`)
-  selectSorting.style.display = 'block';
+  showSearchResults(sortedList.length, correlationIdList.length)
+
+  if (sortedList.length === 0) {
+    stopProcess();
+    return;
+  }
+
+  selectSorting.style.visibility = 'visible';
 
   sortedList.forEach((logItem) => createListItem(logItem));
 
@@ -552,6 +565,11 @@ function updateListView(correlationIdList) {
   stopProcess();
 }
 
+function showSearchResults(found, total) {
+  const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
+  showPlaceholderText(`Found ${styledResult}/${total} correlation ids`)
+}
+
 function clearListView() {
   const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
   const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
@@ -559,7 +577,7 @@ function clearListView() {
   const dateEndInput = document.getElementById(`dateEndInput`);
 
   correlationIdList.replaceChildren();
-  selectSorting.style.display = 'none';
+  selectSorting.style.visibility = 'hidden';
 
   if (dateStartInput.value === '') {
     dateStartInput.setAttribute('type', 'text')
@@ -644,9 +662,13 @@ function createListItem(logItem) {
     listItem.id = correlationId;
     listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
-    const logTypeDiv = createDivWithInnerHtml(`Log type: <span style="font-weight: bold">${logItemType}</span>`);
-    const creationTimeDiv = createDivWithInnerHtml(`Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`);
-    const logCountDiv = createDivWithInnerHtml(`Log count: <span style="font-weight: bold">${logCount}</span>`);
+    const logTypeText = `Log type: <span style="font-weight: bold">${logItemType}</span>`;
+    const creationTimeText = `Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
+    const logCountText = `Log count: <span style="font-weight: bold">${logCount}</span>`;
+
+    const logTypeDiv = createDivWithInnerHtml(logTypeText);
+    const creationTimeDiv = createDivWithInnerHtml(creationTimeText);
+    const logCountDiv = createDivWithInnerHtml(logCountText);
 
     listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv);
 
@@ -659,8 +681,8 @@ function createListItem(logItem) {
     if (overWeekOld) {
       const infoIcon = document.createElement('span');
       infoIcon.classList.add('material-icons');
-      infoIcon.innerHTML = "info";
-      infoIcon.title = ('This correlation id is over week old');
+      infoIcon.innerHTML = "lock_clock";
+      infoIcon.title = ('This correlation id is over week old, so it might be protected');
       listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
     }
 

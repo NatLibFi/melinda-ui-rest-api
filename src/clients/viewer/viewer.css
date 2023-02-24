@@ -204,14 +204,17 @@ div#correlationIdListModal {}
 }
 
 /* Text content in correlation id modal is small */
-/* Modal starts vertically from top */
+/* Modal starts vertically almost from top */
+/* width is guided to be more wide */
 #correlationIdListModal>.modal-content {
-  margin-top: 0px;
+  margin-top: 20px;
   font-size: var(--font-size-content-small);
   padding-top: 8px;
   resize: horizontal;
   overflow: auto;
   max-width: 60%;
+  min-width: 39%;
+  min-height: 90%;
 }
 
 /* Buttons in correlation id list modal are small */
@@ -231,6 +234,10 @@ div#correlationIdListModal {}
 /* Placeholder texts and input texts are small in correlation id modal */
 #correlationIdListModal>.modal-content input {
   font-size: var(--font-size-content-small);
+}
+
+#correlationIdListModal>.modal {
+  background-color: green
 }
 
 
@@ -305,38 +312,62 @@ div#correlationIdListModal {}
   flex-wrap: wrap;
   overflow: hidden;
   padding-left: 0.5em;
-  color: darkgrey;
+  color: grey;
+
 }
 
 /* Selected filter button has effect */
-.filtering-button-selected {
-  font-weight: bold;
+.filter-button-selected {
   background-color: darkgrey;
   color: black
 }
 
+.filter-button-content {
+  display: flex;
+  justify-content: center;
+}
 
-/* Modal has multiselect buttons for filtering */
-.segmented-multiselect-button-container {
+.filter-button-icon {
+  font-size: 13px !important;
+  height: 16px !important;
+  padding-right: 5px;
+}
+
+.filter-button-container button:not(.filter-button-selected) span.filter-button-icon {
+  display: none;
+}
+
+.filter-button-text {}
+
+.filter-button-container button:not(.filter-button-selected) span.filter-button-text {
+  display: flex;
+  flex-grow: 1;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+
+/* Modal has single-select and multi-select buttons for filtering */
+.segmented-button-container {
   display: inline-flex;
 }
 
-.segmented-multiselect-button {}
+.segmented-button {}
 
-.segmented-multiselect-button:nth-child(n):not(:first-child, :last-child) {
+.segmented-button:nth-child(n):not(:first-child, :last-child) {
   border-radius: 0px 0px 0px 0px;
   margin-left: 0px;
   margin-right: 0px;
   border-right: none;
 }
 
-.segmented-multiselect-button:first-child {
+.segmented-button:first-child {
   border-radius: 1em 0em 0em 1em;
   margin-right: 0px;
   border-right: none;
 }
 
-.segmented-multiselect-button:last-child {
+.segmented-button:last-child {
   border-radius: 0em 1em 1em 0em;
   margin-left: 0px;
 }
@@ -399,6 +430,7 @@ div#correlationIdListModal {}
   display: flex;
   flex-wrap: wrap;
   margin: 0.5em;
+  /*   width: 640px; */
 }
 
 .search-results-placeholder {
@@ -410,6 +442,12 @@ div#correlationIdListModal {}
   padding-left: 0.5em;
   font-size: var(--font-size-content-normal);
   align-items: center;
+}
+
+.styled-result {
+  font-weight: bold;
+  width: 35px;
+  text-align: right;
 }
 
 .clear-filters {
@@ -436,7 +474,7 @@ div#correlationIdListModal {}
 }
 
 .sort-dropdown {
-  display: none;
+  visibility: hidden;
   font-size: var(--font-size-content-small) !important;
 }
 

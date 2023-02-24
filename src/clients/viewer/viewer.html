@@ -228,7 +228,7 @@
 
         <!-- the title for modal, and some additional info text -->
         <div class="modal-title-and-info">
-          <div class="modal-title">Correlation id list - click id to start search</div>
+          <div class="modal-title">Correlation id list - click a row to start search</div>
           <div id="lastSearchedInfoText" class="modal-info-text"></div>
         </div>
 
@@ -243,25 +243,49 @@
       <!-- All buttons for filtering correlation id list  -->
       <div class="list-filtering-buttons">
 
-        <!-- multiselect button toggles showing logs by logType or hiding them from the list -->
+        <!-- Segmented multi-select button toggles showing logs by logType or hiding them from the list -->
         <div id="logTypeToggleContainer" class="filter-button-container">
-          <div class="segmented-multiselect-button-container">
-            <button id="mergeLogsSelect" class="segmented-multiselect-button filtering-button-selected"
-              onclick="return toggleShowMergeLogs(event)" value="true">Merge logs</button>
-            <button id="matchLogsSelect" class="segmented-multiselect-button filtering-button-selected"
-              onclick="return toggleShowMatchLogs(event)" value="true">Match logs</button>
+
+          <div class="segmented-button-container">
+            <button id="mergeLogsSelect" class="segmented-button filter-button-selected"
+              title="Hide MERGE_LOGs from list view" onclick="return toggleShowMergeLogs(event)" value="true">
+              <div class="filter-button-content">
+                <span class="material-icons filter-button-icon">check</span>
+                <span class="filter-button-text">Merge logs</span>
+              </div>
+            </button>
+            <button id="matchLogsSelect" class="segmented-button filter-button-selected"
+              title="Hide MATCH_LOGs from list view" onclick="return toggleShowMatchLogs(event)" value="true">
+              <div class="filter-button-content">
+                <span class="material-icons filter-button-icon">check</span>
+                <span class="filter-button-text">Match logs</span>
+              </div>
+            </button>
           </div>
+
         </div>
 
         <!-- button toggles showing only correlation ids with logs over week old -->
         <div id="weekOldToggleContainer" class="filter-button-container">
-          <button id="toggleOldLogs" onclick="return toggleOldLogs(event)" value="false">Over week old</button>
+          <button id="toggleOldLogs"
+            title="Add filter that shows only correlation ids with creation time over 7.5 days ago"
+            onclick="return toggleOldLogs(event)" value="false">
+            <div class="filter-button-content">
+              <span class="material-icons filter-button-icon">check</span>
+              <span class="filter-button-text">Over 7.5 days old</span>
+            </div>
+          </button>
         </div>
 
         <!-- button toggles showing extra details for correlation id list items or hiding them  -->
         <div id="listDetailsToggleContainer" class="filter-button-container">
-          <button id="toggleListDetails" class="filtering-button-selected" onclick="return toggleListDetails(event)"
-            value="true">List details</button>
+          <button id="toggleListDetails" class="filter-button-selected" title="Hide detailed list view"
+            onclick="return toggleListDetails(event)" value="true">
+            <div class="filter-button-content">
+              <span class="material-icons filter-button-icon">check</span>
+              <span class="filter-button-text">Detailed list</span>
+            </div>
+          </button>
         </div>
 
       </div>
@@ -286,7 +310,7 @@
         <div class="correlation-id-filter-container">
           Correlation id:
           <input id="correlationIdInput" type="text" class="correlation-id-input"
-            title="Filter list with correlation id search string" placeholder="0a1b-23cd45ef..."
+            title="Filter list with correlation id search string" placeholder="...0a1b-23cd45ef..."
             oninput="return updateOnChange(event)">
         </div>
 
@@ -308,8 +332,8 @@
         <!-- shows the dropdown for sorting -->
         <div class="Select VBox list-sorting">
           <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
-            <option selected value="sortByTimeOldestFirst">Sort by creation time: oldest first</option>
-            <option value="sortByTimeNewestFirst">Sort by creation time: newest first</option>
+            <option selected value="sortByTimeNewestFirst">Sort by creation time: newest first</option>
+            <option value="sortByTimeOldestFirst">Sort by creation time: oldest first</option>
             <option value="sortById">Sort by correlation id (0->9 a->f)</option>
           </select>
         </div>
