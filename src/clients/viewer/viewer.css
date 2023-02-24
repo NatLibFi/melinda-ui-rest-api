@@ -194,6 +194,9 @@ div#muuntaja {}
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 /* ---Correlation id list modal---*/
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
 
 div#correlationIdListModal {}
 
@@ -202,6 +205,8 @@ div#correlationIdListModal {}
 #correlationIdListModal {
   overflow-y: scroll
 }
+
+#correlationIdListModal>.modal {}
 
 /* Text content in correlation id modal is small */
 /* Modal starts vertically almost from top */
@@ -218,7 +223,10 @@ div#correlationIdListModal {}
 }
 
 /* Buttons in correlation id list modal are small */
-#correlationIdListModal>.modal-content button {}
+#correlationIdListModal>.modal-content button.modal-function-button {
+  background-color: black;
+  color: white;
+}
 
 /* Buttons in correlation id list modal show effect when hovered */
 #correlationIdListModal>.modal-content button:hover {
@@ -236,14 +244,9 @@ div#correlationIdListModal {}
   font-size: var(--font-size-content-small);
 }
 
-#correlationIdListModal>.modal {
-  background-color: green
-}
-
-
-/* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 /* Correlation id modal title and top buttons*/
+/* ---------------------------------------------------------------------------- */
 
 /* Correlation id modal has top div */
 .modal-top-div {
@@ -285,15 +288,11 @@ div#correlationIdListModal {}
   border-radius: 50%;
   padding: 0;
   font-size: 12px !important;
-  background-color: black;
-  color: white;
 }
 
-
 /* ---------------------------------------------------------------------------- */
+/* Correlation id modal has filtering options with select buttons and inputs */
 /* ---------------------------------------------------------------------------- */
-/* Correlation id modal has filtering options with select buttons and inputs*/
-
 
 /* ---------------------------------------------------------------------------- */
 /* Correlation id list modal has filtering with select buttons */
@@ -312,16 +311,15 @@ div#correlationIdListModal {}
   flex-wrap: wrap;
   overflow: hidden;
   padding-left: 0.5em;
-  color: grey;
-
 }
 
-/* Selected filter button has effect */
+/* Selected filter button has style effect */
 .filter-button-selected {
   background-color: darkgrey;
   color: black
 }
 
+/* Filter buttons has content container with icon and text */
 .filter-button-content {
   display: flex;
   justify-content: center;
@@ -333,6 +331,7 @@ div#correlationIdListModal {}
   padding-right: 5px;
 }
 
+/* When the filter button is not selected, the check-icon is hidden */
 .filter-button-container button:not(.filter-button-selected) span.filter-button-icon {
   display: none;
 }
@@ -346,23 +345,26 @@ div#correlationIdListModal {}
   padding-right: 9px;
 }
 
-
 /* Modal has single-select and multi-select buttons for filtering */
+/* Segmented button container is the container for all the buttons that are displayed as on segmented button */
 .segmented-button-container {
   display: inline-flex;
 }
 
+/* Segmented button class is used with element button */
+/* First and last button are rendered with round button edges */
 .segmented-button {}
 
-.segmented-button:nth-child(n):not(:first-child, :last-child) {
-  border-radius: 0px 0px 0px 0px;
-  margin-left: 0px;
+
+.segmented-button:first-child {
+  border-radius: 1em 0em 0em 1em;
   margin-right: 0px;
   border-right: none;
 }
 
-.segmented-button:first-child {
-  border-radius: 1em 0em 0em 1em;
+.segmented-button:nth-child(n):not(:first-child, :last-child) {
+  border-radius: 0px 0px 0px 0px;
+  margin-left: 0px;
   margin-right: 0px;
   border-right: none;
 }
@@ -415,6 +417,7 @@ div#correlationIdListModal {}
   margin-right: 0.5em;
 }
 
+/* Using special correlation id font for inputs also */
 .correlation-id-input {
   min-width: 275px;
   max-width: 350px;
@@ -422,23 +425,23 @@ div#correlationIdListModal {}
   font-family: roboto_monoregular, "Roboto Mono", monospace;
 }
 
-
-/* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 /* Correlation id search results and sorting in modal*/
+/* ---------------------------------------------------------------------------- */
+
+
 .list-search-results-and-sorting {
   display: flex;
   flex-wrap: wrap;
   margin: 0.5em;
-  /*   width: 640px; */
 }
 
+/* Container for search results */
 .search-results-placeholder {
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
   overflow: hidden;
-  align-items: flex-end;
   padding-left: 0.5em;
   font-size: var(--font-size-content-normal);
   align-items: center;
@@ -450,6 +453,7 @@ div#correlationIdListModal {}
   text-align: right;
 }
 
+/* Container for clear filter button */
 .clear-filters {
   display: flex;
   overflow: hidden;
@@ -458,7 +462,6 @@ div#correlationIdListModal {}
 
 .clear-button {
   display: flex;
-  height: 20px;
   justify-content: center;
   align-items: center;
 }
@@ -479,8 +482,10 @@ div#correlationIdListModal {}
 }
 
 /* ---------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------- */
 /* Correlation id list items div*/
+/* ---------------------------------------------------------------------------- */
+
+/* The container for the correlation id list */
 .list-items {
   display: flex;
   flex-direction: column;
@@ -490,7 +495,7 @@ div#correlationIdListModal {}
 /* ---------------------------------------------------------------------------- */
 /* One list item*/
 
-/* A list item: correlation id, supporting text and trailing icon */
+/* A list item: correlation id, supporting text and trailing icons */
 .list-item {
   display: flex;
   overflow: hidden;
@@ -503,13 +508,13 @@ div#correlationIdListModal {}
   border-top: solid 1px lightgrey;
 }
 
-/* A list item has effect on mouse hovering */
+/* A list item has style effect on mouse hovering */
 .list-item:hover {
   background-color: lightgrey;
   cursor: pointer;
 }
 
-/* A list item has effect on clicking */
+/* A list item has style effect on clicking */
 .list-item:active {
   background-color: darkgrey;
 }
@@ -536,68 +541,6 @@ div#correlationIdListModal {}
   flex-shrink: 3;
 }
 
-/* If user's screen width is under 750px */
-/* only smaller font correlation ids are shown in the list */
-/* also, info texts, list item details and icons, and close button are hidden */
-@media (max-width: 750px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
-
-  .list-item-details-and-icons,
-  .modal-info-text,
-  #listDetailsToggleContainer,
-  .close-button {
-    display: none !important;
-  }
-
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
-}
-
-/* If user's screen width is under 630px */
-/* only smaller font correlation ids are shown in the list */
-/* also, info texts, list item details and icons, close button and filtering buttons are hidden */
-@media (max-width: 630px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
-
-  .list-item-details-and-icons,
-  .modal-info-text,
-  .close-button,
-  .list-filtering-inputs,
-  .list-filtering-buttons {
-    display: none !important;
-  }
-
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
-}
-
-/* If user's screen width is under 500px */
-/* a list item will show only smaller font correlation ids in the list */
-/* also, info texts, list item details and icons, and filtering buttons are hidden */
-@media all and (max-width: 500px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
-
-  .list-item-details-and-icons,
-  .close-button,
-  .modal-info-text,
-  .list-filtering-inputs,
-  .list-filtering-buttons {
-    display: none !important;
-  }
-
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
-}
-
 /* A list item's supporting text has log type, creation time and log count */
 .list-item-details {
   display: flex;
@@ -617,42 +560,48 @@ div#correlationIdListModal {}
   white-space: nowrap;
   flex-grow: 1;
   flex-shrink: 2;
-  /* assume there might be two icons on some rows, save space: */
   min-width: 75px;
-  /* adding some space between previous item and icon:  */
   margin-left: 1em;
   margin-right: 1em;
-  /* align icon vertically: center inside box: */
   align-items: center;
-  /* align icon horizontally: move to the end of box: */
   justify-content: flex-end;
 }
 
+.list-item-icons span {
+  padding-left: 0.5em;
+}
 
 .list-item-icons span:not(.list-item-icons-search) {
-  padding: 0.5em;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* ---------------------------------------------------------------------------- */
 /* A list item has search icon for hint */
-/* it shows as effect and animation when list item is hovered and clicked */
+
+/* search icon is not displayed by default*/
 .list-item-icons-search {
   display: none !important;
 }
 
+/* search icon is displayed when it's row is hovered */
 .list-item:hover .list-item-icons-search {
   display: flex !important;
 }
 
+/* search icon shows animation when it's row is clicked (and search is started) */
 .list-item:active .list-item-icons-search {
   display: flex !important;
   color: white;
-  animation-name: grow-and-rotate-90-degrees;
+  animation-name: resize-and-rotate;
   animation-duration: 1s;
   animation-fill-mode: both;
 }
 
-@keyframes grow-and-rotate-90-degrees {
+/* the animation for search icon */
+/* the search icon first rotates to right and grows bigger */
+/* then it rotates to left and grows smaller */
+@keyframes resize-and-rotate {
 
   0%,
   100% {
@@ -675,11 +624,10 @@ div#correlationIdListModal {}
   }
 }
 
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal footer and bottom buttons */
+/* ---------------------------------------------------------------------------- */
 
-/* ---------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------- */
-/* Correlation id modal footer and bottom buttons*/
-/* ---------------------------------------------------------------------------- */
 
 /* Correlation id modal has bottom div */
 .modal-bottom-div {
@@ -687,12 +635,91 @@ div#correlationIdListModal {}
   justify-content: center;
 }
 
-/* Modal has scroll to top button at the list end*/
+/* Modal has scroll-to-top button that has fixed position */
 .scroll-top-button {
   display: none;
   position: fixed;
   bottom: 8px;
   width: fit-content;
-  background-color: black;
-  color: white;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal error message */
+/* ---------------------------------------------------------------------------- */
+
+/* Error message has icon and text */
+.error-message-placeholder {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding: 1em;
+}
+
+.error-message-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message-text {
+  display: flex;
+  padding: 0.5em;
+  font-size: var(--font-size-content-normal);
+  font-weight: bold;
+  align-items: center;
+}
+
+/* Use class disabled-div when correlation id modal has error message */
+.disabled-div {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal adjusting to the screen width */
+/* ---------------------------------------------------------------------------- */
+
+/* If user's screen width is under 750px: */
+/*  - correlation ids are shown in smaller font in the list */
+/*  - list item details are hidden automatically */
+/*  - list info texts are hidden automatically */
+@media (max-width: 750px) {
+  .list-item-id {
+    font-size: var(--font-size-content-small);
+  }
+
+  .list-item-details,
+  .modal-info-text,
+  #listDetailsToggleContainer {
+    display: none !important;
+  }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
+  }
+}
+
+/* If user's screen width is under 670px: */
+/*  - correlation ids are shown in smaller font in the list */
+/*  - list item details are hidden automatically */
+/*  - list item icons are hidden automatically */
+/*  - list info texts are hidden automatically */
+/*  - list filtering buttons are hidden automatically*/
+/*  - modal close button is hidden automatically*/
+@media (max-width: 670px) {
+  .list-item-id {
+    font-size: var(--font-size-content-small);
+  }
+
+  .list-item-details-and-icons,
+  .modal-info-text,
+  .close-button,
+  .list-filtering-inputs,
+  .list-filtering-buttons {
+    display: none !important;
+  }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
+  }
 }

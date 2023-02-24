@@ -117,121 +117,6 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
 }
 
-window.doOpenCorrelationIdListModal = function (event = undefined) {
-  const modal = document.querySelector(`#correlationIdListModal`);
-  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
-  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
-  const scrollToTopButton = document.querySelector(`#correlationIdListModal #scrollToTopButton`);
-
-  modal.style.display = 'flex';
-
-  dateStartInput.addEventListener('click', event => {event.stopPropagation();}, false);
-  dateEndInput.addEventListener('click', event => {event.stopPropagation();}, false);
-
-  modal.addEventListener('scroll', event => {
-    eventHandled(event);
-    scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
-  });
-
-  fetchCorrelationIdList();
-}
-
-window.updateOnChange = (event) => {
-  eventHandled(event);
-  updateCorrelationIdListModal();
-}
-
-window.ignore = function (event) {
-  return eventHandled(event);
-}
-
-window.toggleShowMergeLogs = function (event = undefined) {
-  eventHandled(event);
-  const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
-  mergeLogsSelect.value = (mergeLogsSelect.value === 'true' ? false : true);
-  mergeLogsSelect.value === 'true'
-    ? (mergeLogsSelect.classList.add('filter-button-selected'), mergeLogsSelect.title = "Hide MERGE_LOGs from list view")
-    : (mergeLogsSelect.classList.remove('filter-button-selected'), mergeLogsSelect.title = "Show MERGE_LOGs in list view");
-  updateOnChange(new Event('change'));
-}
-
-window.toggleShowMatchLogs = function (event = undefined) {
-  eventHandled(event);
-  const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
-  matchLogsSelect.value = (matchLogsSelect.value === 'true' ? false : true);
-  matchLogsSelect.value === 'true'
-    ? (matchLogsSelect.classList.add('filter-button-selected'), matchLogsSelect.title = "Hide MATCH_LOGs from list view")
-    : (matchLogsSelect.classList.remove('filter-button-selected'), matchLogsSelect.title = "Show MATCH_LOGs in list view");
-  updateOnChange(new Event('change'));
-}
-
-window.toggleListDetails = function (event = undefined) {
-  eventHandled(event);
-  const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
-  listDetailsSelect.value = (listDetailsSelect.value === 'true' ? false : true);
-  listDetailsSelect.value === 'true'
-    ? (listDetailsSelect.classList.add('filter-button-selected'), listDetailsSelect.title = 'Hide detailed list view')
-    : (listDetailsSelect.classList.remove('filter-button-selected'), listDetailsSelect.title = 'Show detailed list view');
-  updateOnChange(new Event('change'));
-}
-
-window.toggleOldLogs = function (event = undefined) {
-  eventHandled(event);
-  const oldLogsSelect = document.querySelector(`#correlationIdListModal #toggleOldLogs`);
-  oldLogsSelect.value = (oldLogsSelect.value === 'true' ? false : true);
-  oldLogsSelect.value === 'true'
-    ? (oldLogsSelect.classList.add('filter-button-selected'), oldLogsSelect.title = 'Remove this filter')
-    : (oldLogsSelect.classList.remove('filter-button-selected'), oldLogsSelect.title = 'Add filter that shows only correlation ids with creation time over 7.5 days ago')
-  updateOnChange(new Event('change'));
-}
-
-window.clearFilters = function (event = undefined) {
-  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
-  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
-  const correlationIdInput = document.getElementById(`correlationIdInput`);
-
-  dateStartInput.value = '';
-  dateEndInput.value = '';
-  correlationIdInput.value = '';
-
-  const oldLogsSelect = document.querySelector(`#correlationIdListModal #toggleOldLogs`);
-  const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
-  const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
-  const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
-  unselectFilteringButtons(oldLogsSelect);
-  selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
-  oldLogsSelect.title = 'Add filter that shows only correlation ids with creation time over 7.5 days ago';
-  matchLogsSelect.title = 'Hide MATCH_LOGs from list view'
-  mergeLogsSelect.title = 'Hide MERGE_LOGs from list view';
-  listDetailsSelect.title = 'Hide detailed list view';
-
-  console.log('All clear!')
-  updateOnChange(event);
-}
-
-// Helper function to unselect buttons (set the value and style of unselected button)
-function unselectFilteringButtons(...buttons) {
-  buttons.forEach(button => (button.value = 'false', button.classList.remove('filter-button-selected')));
-}
-
-// Helper function to select buttons (set the value and style of selected button)
-function selectFilteringButtons(...buttons) {
-  buttons.forEach(button => (button.value = 'true', button.classList.add('filter-button-selected')));
-}
-
-window.goToTop = function (event = undefined) {
-  eventHandled(event);
-  const modal = document.querySelector(`#correlationIdListModal`);
-  modal.scrollTo({top: 0, behavior: 'smooth'})
-}
-
-window.modalClose = function (event) {
-  const modal = document.querySelector("#correlationIdListModal")
-  modal.style.display = "none"
-  return eventHandled(event);
-}
-
-
 window.loadLog = (event) => {
   eventHandled(event);
   const logType = document.querySelector(`#viewer #logType`).value;
@@ -493,6 +378,191 @@ function disableElement(element) {
 // Functions for correlation id list modal 
 //-----------------------------------------------------------------------------
 
+
+window.doOpenCorrelationIdListModal = function (event = undefined) {
+  const modal = document.querySelector(`#correlationIdListModal`);
+  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
+  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+  const scrollToTopButton = document.querySelector(`#correlationIdListModal #scrollToTopButton`);
+
+  modal.style.display = 'flex';
+
+  dateStartInput.addEventListener('click', event => {
+    event.stopPropagation();
+    unselectDateButtons();
+  }, false);
+
+  dateEndInput.addEventListener('click', event => {
+    event.stopPropagation();
+    unselectDateButtons();
+  }, false);
+
+  modal.addEventListener('scroll', event => {
+    eventHandled(event);
+    scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
+  });
+
+  fetchCorrelationIdList();
+}
+
+window.updateOnChange = (event) => {
+  eventHandled(event);
+  updateCorrelationIdListModal();
+}
+
+window.ignore = function (event) {
+  return eventHandled(event);
+}
+
+window.goToTop = function (event = undefined) {
+  eventHandled(event);
+  const modal = document.querySelector(`#correlationIdListModal`);
+  modal.scrollTo({top: 0, behavior: 'smooth'})
+}
+
+window.modalClose = function (event) {
+  const modal = document.querySelector("#correlationIdListModal")
+  modal.style.display = "none"
+  return eventHandled(event);
+}
+
+window.toggleShowMergeLogs = function (event = undefined) {
+  eventHandled(event);
+  const toggleMergeLogsButton = document.getElementById('mergeLogsSelect');
+  toggleFilterButton(toggleMergeLogsButton, 'Hide MERGE_LOGs from list view', 'Show MERGE_LOGs in list view');
+  updateOnChange(new Event('change'));
+}
+
+window.toggleShowMatchLogs = function (event = undefined) {
+  eventHandled(event);
+  const toggleMatchLogsButton = document.getElementById('matchLogsSelect');
+  toggleFilterButton(toggleMatchLogsButton, 'Hide MATCH_LOGs from list view', 'Show MATCH_LOGs in list view');
+  updateOnChange(new Event('change'));
+}
+
+window.toggleListDetails = function (event = undefined) {
+  eventHandled(event);
+  const toggleListDetailsButton = document.getElementById('toggleListDetails');
+  toggleFilterButton(toggleListDetailsButton, 'Hide detailed list view', 'Show detailed list view');
+  updateOnChange(new Event('change'));
+}
+
+window.toggleShowLogsByCreationDate = function (clickedDateButton) {
+  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
+  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+  const todayButton = document.getElementById('creationTimeToday');
+  const weekAgoButton = document.getElementById('creationTimeWeekAgo');
+
+  const dateFormatter = Intl.DateTimeFormat('sv-SE');
+  const oneDayInMs = 1 * 24 * 60 * 60 * 1000
+  const dateToday = dateFormatter.format(new Date());
+  const dateOverSevenDaysAgo = dateFormatter.format(new Date() - (7 * oneDayInMs));
+
+  if (clickedDateButton === 'today') {
+    toggleTodayButton();
+
+    todayButton.value === 'true'
+      ? (dateStartInput.value = dateToday, dateEndInput.value = dateToday)
+      : (dateStartInput.value = '', dateEndInput.value = '')
+
+    if (todayButton.value === 'true' && weekAgoButton.value === 'true') {
+      toggleWeekAgoButton();
+    }
+  }
+
+  if (clickedDateButton === 'weekAgo') {
+    toggleWeekAgoButton();
+
+    weekAgoButton.value === 'true'
+      ? (dateEndInput.value = dateOverSevenDaysAgo, dateStartInput.value = '')
+      : (dateEndInput.value = '', dateEndInput.value = '')
+
+    if (weekAgoButton.value === 'true' && todayButton.value === 'true') {
+      toggleTodayButton();
+    }
+  }
+
+  updateOnChange(new Event('change'));
+
+  function toggleTodayButton() {
+    toggleFilterButton(todayButton, 'Remove this filter and reset creation time inputs', 'Show only correlation ids with logs created today')
+  }
+
+  function toggleWeekAgoButton() {
+    toggleFilterButton(weekAgoButton, 'Remove this filter and reset creation time inputs', 'Show only correlation ids with logs created over week ago')
+  }
+
+}
+
+window.clearFilters = function ({event = undefined, clearLogFilters = 'true', clearDateFilters = 'true', clearInputFilters = 'true'}) {
+  eventHandled(event);
+  resetDateFilteringButtons();
+
+  if (clearLogFilters === 'false' && clearDateFilters === 'true' && clearInputFilters === 'false') {
+    return;
+  }
+
+  resetFilteringInputs();
+  resetLogFilteringButtons();
+  console.log('All filters cleared!');
+  updateOnChange(event);
+
+  function resetLogFilteringButtons() {
+    const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
+    const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
+    const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
+
+    selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+
+    matchLogsSelect.title = 'Hide MATCH_LOGs from list view'
+    mergeLogsSelect.title = 'Hide MERGE_LOGs from list view';
+    listDetailsSelect.title = 'Hide detailed list view';
+  }
+
+  function resetDateFilteringButtons() {
+    const todayButton = document.getElementById('creationTimeToday');
+    const weekAgoButton = document.getElementById('creationTimeWeekAgo');
+
+    unselectFilteringButtons(todayButton, weekAgoButton);
+
+    todayButton.title = 'Show only correlation ids with logs created today';
+    weekAgoButton.title = 'Show only correlation ids with logs created over week ago';
+  }
+
+  function resetFilteringInputs() {
+    const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
+    const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+    const correlationIdInput = document.getElementById(`correlationIdInput`);
+
+    dateStartInput.value = '';
+    dateEndInput.value = '';
+    correlationIdInput.value = '';
+  }
+
+  function unselectFilteringButtons(...buttons) {
+    buttons.forEach(button => (button.value = 'false', button.classList.remove('filter-button-selected')));
+  }
+
+  function selectFilteringButtons(...buttons) {
+    buttons.forEach(button => (button.value = 'true', button.classList.add('filter-button-selected')));
+  }
+}
+
+function unselectDateButtons() {
+  const todayButton = document.getElementById('creationTimeToday');
+  const weekAgoButton = document.getElementById('creationTimeWeekAgo');
+
+  if (todayButton.classList.contains('filter-button-selected') || weekAgoButton.classList.contains('filter-button-selected')) {
+    clearFilters({clearLogFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
+  }
+}
+
+function toggleFilterButton(filterButton, titleA, titleB) {
+  filterButton.value = (filterButton.value === 'true' ? false : true);
+  filterButton.classList.toggle('filter-button-selected');
+  filterButton.title = (filterButton.title === titleA ? titleB : titleA)
+}
+
 function fetchCorrelationIdList() {
   const expanded = '1';
 
@@ -503,12 +573,42 @@ function fetchCorrelationIdList() {
     .then(data =>
       setCorrelationIdListDataToIndexDB(data))
     .catch((error) => {
-      showPlaceholderText('Sorry, correlation id list could not be fetched');
+      showErrorMessageAndStyleInModal('Sorry, correlation id list could not be fetched');
       console.log('Error while fetching correlation id list: ', error)
-      clearListView();
       stopProcess();
     });
 
+  function showErrorMessageAndStyleInModal(text) {
+    clearListView();
+    showErrorMessage();
+    setModalErrorStyle();
+
+    function showErrorMessage(text) {
+      const errorMessagePlaceholder = document.getElementById('errorFetchingListPlaceholder');
+      const errorMessage = document.querySelector(`#errorFetchingListPlaceholder .error-message-text`);
+      errorMessagePlaceholder.style.display = 'flex';
+      errorMessage.innerHTML = text;
+    }
+
+    function setModalErrorStyle() {
+      const filteringButtonsDiv = document.getElementById('filteringButtons');
+      const filteringInputsDiv = document.getElementById('filteringInputs');
+      const searchResultsAndSortingDiv = document.getElementById('searchResultsAndSorting');
+      const correlationIdListDiv = document.getElementById('correlationIdList');
+      const modalBottomDiv = document.getElementById('modalBottomDiv');
+
+      setDivsDisplayNone(searchResultsAndSortingDiv, correlationIdListDiv, modalBottomDiv);
+      setDivsDisabled(filteringButtonsDiv, filteringInputsDiv);
+
+      function setDivsDisplayNone(...elements) {
+        elements.forEach(element => element.style.display = 'none');
+      }
+
+      function setDivsDisabled(...elements) {
+        elements.forEach(element => element.classList.add('disabled-div'));
+      }
+    }
+  }
 }
 
 function setCorrelationIdListDataToIndexDB(data) {
@@ -527,47 +627,185 @@ function updateCorrelationIdListModal() {
 }
 
 function updateListView(correlationIdList) {
-  const selectSorting = document.getElementById(`correlationIdListSorting`);
-  const dateStartInputValue = document.getElementById(`dateStartInput`).value;
-  const dateEndInputValue = document.getElementById(`dateEndInput`).value;
-  const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
-  const lastSearchedCorrelationId = document.getElementById(`id`).value;
-  const lastSearchedInfoTextDiv = document.getElementById(`lastSearchedInfoText`);
-  const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
-  const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).value;
-  const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).value;
-  const showOldLogsValue = document.querySelector(`#correlationIdListModal #toggleOldLogs`).value;
+  const updatedList = filterAndSortCorrelationIdList();
+  showlastSearchedCorrelationId();
+  showSearchResultsInfo(updatedList.length, correlationIdList.length)
 
-  const filteredListByLogTypes = filterListByLogTypes(correlationIdList, showMergeLogsValue, showMatchLogsValue);
-  const filteredListByDates = filterListWithDates(filteredListByLogTypes, dateStartInputValue, dateEndInputValue);
-  const filteredListByAge = filterListWithLogAge(filteredListByDates, showOldLogsValue, 7.5);
-  const filteredListBySearchString = filterListWithSearchString(filteredListByAge, correlationIdInputValue);
-  const sortedList = sortList(filteredListBySearchString, selectSorting.value);
-
-  if (lastSearchedCorrelationId !== '') {
-    lastSearchedInfoTextDiv.innerHTML = (`Last searched correlation id: ${lastSearchedCorrelationId}`)
-  };
-
-  showSearchResults(sortedList.length, correlationIdList.length)
-
-  if (sortedList.length === 0) {
+  if (updatedList.length === 0) {
     stopProcess();
     return;
   }
 
-  selectSorting.style.visibility = 'visible';
-
-  sortedList.forEach((logItem) => createListItem(logItem));
-
-  const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
-  listDetailsDivs.forEach(div => showListDetailsValue === 'true' ? div.style.display = 'flex' : div.style.display = 'none');
-
+  showListSortingOptions();
+  updatedList.forEach((logItem) => createListItem(logItem));
+  showListDetails();
   stopProcess();
-}
 
-function showSearchResults(found, total) {
-  const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
-  showPlaceholderText(`Found ${styledResult}/${total} correlation ids`)
+  function filterAndSortCorrelationIdList(filterByLogTypes = true, filterByDates = true, filterBySearchString = true, sortBySelected = true) {
+    const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
+    const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).value;
+    const dateStartInputValue = document.getElementById(`dateStartInput`).value;
+    const dateEndInputValue = document.getElementById(`dateEndInput`).value;
+    const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
+    const selectSortingValue = document.getElementById(`correlationIdListSorting`).value;
+
+    let updatedList = correlationIdList;
+
+    switch (true) {
+      case (filterByLogTypes === true):
+        updatedList = filterListWithLogTypes(updatedList, showMergeLogsValue, showMatchLogsValue);
+      case (filterByDates === true):
+        updatedList = filterListWithDates(updatedList, dateStartInputValue, dateEndInputValue);
+      case (filterBySearchString === true):
+        updatedList = filterListWithSearchString(updatedList, correlationIdInputValue);
+      case (sortBySelected === true):
+        updatedList = sortList(updatedList, selectSortingValue);
+      default:
+        return updatedList;
+    }
+
+    function filterListWithLogTypes(list, showMergeLogs, showMatchLogs) {
+      switch (true) {
+        case (showMergeLogs === 'true' && showMatchLogs === 'false'):
+          return list.filter(logItem => logItem.logItemType !== 'MATCH_LOG');
+        case (showMergeLogs === 'false' && showMatchLogs === 'true'):
+          return list.filter(logItem => logItem.logItemType !== 'MERGE_LOG');
+        case (showMergeLogs === 'false' && showMergeLogs === 'false'):
+          return list.filter(logItem => logItem.logItemType !== 'MERGE_LOG' && logItem.logItemType !== 'MATCH_LOG');
+        default:
+          return list;
+      }
+    }
+
+    function filterListWithDates(list, startDate, endDate) {
+      switch (true) {
+        case (startDate !== '' && endDate !== ''):
+          return list.filter(logItem => getDate(logItem) >= startDate && getDate(logItem) <= endDate);
+        case (startDate !== '' && endDate === ''):
+          return list.filter(logItem => getDate(logItem) >= startDate);
+        case (startDate === '' && endDate !== ''):
+          return list.filter(logItem => getDate(logItem) <= endDate);
+        default:
+          return list;
+      }
+
+      function getDate(logItem) {
+        return logItem.creationTime.substring(0, 10);
+      }
+    }
+
+    function filterListWithSearchString(list, searchString) {
+      return list.filter(logItem => logItem.correlationId.includes(searchString));
+    }
+
+    function sortList(list, sortingMethod) {
+      switch (true) {
+        case (sortingMethod === 'sortById'):
+          return list.sort(compareLogItemsByIdAndType);
+        case (sortingMethod === 'sortByTimeOldestFirst'):
+          return list.sort(compareLogItemsByTime);
+        case (sortingMethod === 'sortByTimeNewestFirst'):
+          return list.sort(compareLogItemsByTime).reverse();
+        default:
+          return list;
+      }
+
+      function compareLogItemsByIdAndType(logItemA, logItemB) {
+        return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
+      }
+
+      function compareLogItemsByTime(logItemA, logItemB) {
+        return logItemA.creationTime.localeCompare(logItemB.creationTime);
+      }
+
+    }
+
+  }
+
+  function showlastSearchedCorrelationId() {
+    const lastSearchedCorrelationId = document.getElementById(`id`).value;
+    const lastSearchedInfoTextDiv = document.getElementById(`lastSearchedInfoText`);
+
+    if (lastSearchedCorrelationId !== '') {
+      lastSearchedInfoTextDiv.innerHTML = (`Last searched correlation id: ${lastSearchedCorrelationId}`)
+    };
+  }
+
+  function showSearchResultsInfo(found, total) {
+    const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
+    showPlaceholderText(`Found ${styledResult}/${total} correlation ids`)
+  }
+
+  function showListSortingOptions() {
+    const selectSorting = document.getElementById(`correlationIdListSorting`);
+    selectSorting.style.visibility = 'visible';
+  }
+
+  function createListItem(logItem) {
+    const listItemDiv = createListItemDiv(logItem);
+    const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
+    correlationIdList.append(listItemDiv);
+
+    function createListItemDiv({correlationId, logItemType, creationTime, logCount}) {
+      const template = document.getElementById('listItemTemplate');
+      const listItemFragment = template.content.cloneNode(true);
+      const listItem = listItemFragment.getElementById('listItem');
+
+      listItem.id = correlationId;
+      listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
+
+      const logTypeText = `Log type: <span style="font-weight: bold">${logItemType}</span>`;
+      const creationTimeText = `Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
+      const logCountText = `Log count: <span style="font-weight: bold">${logCount}</span>`;
+
+      const logTypeDiv = createDivWithInnerHtml(logTypeText);
+      const creationTimeDiv = createDivWithInnerHtml(creationTimeText);
+      const logCountDiv = createDivWithInnerHtml(logCountText);
+
+      listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv);
+
+      listItem.addEventListener('click', () => {
+        searchWithSelectedIdAndType(correlationId, logItemType);
+      });
+
+      const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7.5 * 24 * 60 * 60 * 1000)
+
+      if (overWeekOld) {
+        const infoIcon = document.createElement('span');
+        infoIcon.classList.add('material-icons');
+        infoIcon.innerHTML = "lock_clock";
+        infoIcon.title = ('This correlation id is over week old, so it might be protected');
+        listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
+      }
+
+      return listItem;
+
+      function createDivWithInnerHtml(text) {
+        const divElement = document.createElement('div');
+        divElement.innerHTML = text;
+        return divElement;
+      }
+
+      function searchWithSelectedIdAndType(correlationId, logItemType) {
+        const id = document.querySelector(`#viewer #id`);
+        id.value = correlationId;
+
+        const logType = document.querySelector(`#viewer #logType`);
+        logType.value = logItemType;
+
+        doSearchPress();
+        modalClose();
+      }
+
+
+    }
+  }
+
+  function showListDetails() {
+    const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
+    const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).value;
+    listDetailsDivs.forEach((div) => (showListDetailsValue === 'true' ? div.style.display = 'flex' : div.style.display = 'none'));
+  }
 }
 
 function clearListView() {
@@ -590,126 +828,8 @@ function clearListView() {
   }
 }
 
-function filterListWithLogAge(correlationIdList, showOldLogsValue, ageInDays) {
-  return showOldLogsValue === 'true' ? correlationIdList.filter(logItem => Date.parse(logItem.creationTime) < (Date.now() - (ageInDays * 24 * 60 * 60 * 1000))) : correlationIdList;
-}
-
-function filterListByLogTypes(correlationIdList, showMergeLogs, showMatchLogs) {
-  switch (true) {
-    case (showMergeLogs === 'true' && showMatchLogs === 'false'):
-      return correlationIdList.filter(logItem => logItem.logItemType !== 'MATCH_LOG');
-    case (showMergeLogs === 'false' && showMatchLogs === 'true'):
-      return correlationIdList.filter(logItem => logItem.logItemType !== 'MERGE_LOG');
-    case (showMergeLogs === 'false' && showMergeLogs === 'false'):
-      return correlationIdList.filter(logItem => logItem.logItemType !== 'MERGE_LOG' && logItem.logItemType !== 'MATCH_LOG');
-    default:
-      return correlationIdList;
-  }
-}
-
-function filterListWithSearchString(correlationIdList, searchString) {
-  return correlationIdList.filter(logItem => logItem.correlationId.includes(searchString));
-}
-
-function filterListWithDates(correlationIdList, startDate, endDate) {
-  switch (true) {
-    case (startDate !== '' && endDate !== ''):
-      return correlationIdList.filter(logItem => getDate(logItem) >= startDate && getDate(logItem) <= endDate);
-    case (startDate !== '' && endDate === ''):
-      return correlationIdList.filter(logItem => getDate(logItem) >= startDate);
-    case (startDate === '' && endDate !== ''):
-      return correlationIdList.filter(logItem => getDate(logItem) <= endDate);
-    default:
-      return correlationIdList;
-  }
-
-  function getDate(logItem) {
-    return logItem.creationTime.substring(0, 10);
-  }
-}
-
-function sortList(list, sortingMethod) {
-  switch (true) {
-    case (sortingMethod === 'sortById'):
-      return list.sort(compareLogItemsByIdAndType);
-    case (sortingMethod === 'sortByTimeOldestFirst'):
-      return list.sort(compareLogItemsByTime);
-    case (sortingMethod === 'sortByTimeNewestFirst'):
-      return list.sort(compareLogItemsByTime).reverse();
-    default:
-      return list;
-  }
-
-  function compareLogItemsByIdAndType(logItemA, logItemB) {
-    return logItemA.correlationId.localeCompare(logItemB.correlationId) || logItemB.logItemType.localeCompare(logItemA.logItemType);
-  }
-
-  function compareLogItemsByTime(logItemA, logItemB) {
-    return logItemA.creationTime.localeCompare(logItemB.creationTime);
-  }
-
-}
-
-function createListItem(logItem) {
-  const listItemDiv = createListItemDiv(logItem);
-  const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
-  correlationIdList.append(listItemDiv);
-
-  function createListItemDiv({correlationId, logItemType, creationTime, logCount}) {
-    const base = document.getElementById('list-item-base');
-    const listItem = base.cloneNode(true);
-
-    listItem.id = correlationId;
-    listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
-
-    const logTypeText = `Log type: <span style="font-weight: bold">${logItemType}</span>`;
-    const creationTimeText = `Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
-    const logCountText = `Log count: <span style="font-weight: bold">${logCount}</span>`;
-
-    const logTypeDiv = createDivWithInnerHtml(logTypeText);
-    const creationTimeDiv = createDivWithInnerHtml(creationTimeText);
-    const logCountDiv = createDivWithInnerHtml(logCountText);
-
-    listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv);
-
-    listItem.addEventListener('click', () => {
-      searchWithSelectedIdAndType(correlationId, logItemType);
-    });
-
-    const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7.5 * 24 * 60 * 60 * 1000)
-
-    if (overWeekOld) {
-      const infoIcon = document.createElement('span');
-      infoIcon.classList.add('material-icons');
-      infoIcon.innerHTML = "lock_clock";
-      infoIcon.title = ('This correlation id is over week old, so it might be protected');
-      listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
-    }
-
-    return listItem;
-
-    function createDivWithInnerHtml(text) {
-      const divElement = document.createElement('div');
-      divElement.innerHTML = text;
-      return divElement;
-    }
-
-    function searchWithSelectedIdAndType(correlationId, logItemType) {
-      const id = document.querySelector(`#viewer #id`);
-      id.value = correlationId;
-
-      const logType = document.querySelector(`#viewer #logType`);
-      logType.value = logItemType;
-
-      doSearchPress();
-      modalClose();
-    }
-
-
-  }
-}
-
 function showPlaceholderText(text) {
   const placeholderText = document.getElementById('fetchListPlaceholderText');
   placeholderText.innerHTML = text;
 }
+

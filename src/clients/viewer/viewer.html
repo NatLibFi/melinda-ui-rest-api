@@ -223,7 +223,7 @@
     <!-- The modal box outline and content  -->
     <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
 
-      <!-- shows instructional title for list and close button -->
+      <!-- Shows instructional title for list, info text and close button -->
       <div class="modal-top-div">
 
         <!-- the title for modal, and some additional info text -->
@@ -234,18 +234,18 @@
 
         <!-- button for closing modal, works the same way as clicking outside modal  -->
         <div class="modal-top-div-buttons">
-          <button id="closeModalButton" class="material-icons close-button" title="Close modal without changes"
-            onclick="return modalClose(event)">close</button>
+          <button id="closeModalButton" class="material-icons close-button modal-function-button"
+            title="Close modal without changes" onclick="return modalClose(event)">close</button>
         </div>
 
       </div>
 
       <!-- All buttons for filtering correlation id list  -->
-      <div class="list-filtering-buttons">
+      <div id="filteringButtons" class="list-filtering-buttons">
 
-        <!-- Segmented multi-select button toggles showing logs by logType or hiding them from the list -->
+        <!-- button toggles showing logs by log type or hiding them from the list -->
+        <!-- segmented button used as multi-select button -->
         <div id="logTypeToggleContainer" class="filter-button-container">
-
           <div class="segmented-button-container">
             <button id="mergeLogsSelect" class="segmented-button filter-button-selected"
               title="Hide MERGE_LOGs from list view" onclick="return toggleShowMergeLogs(event)" value="true">
@@ -262,19 +262,29 @@
               </div>
             </button>
           </div>
-
         </div>
 
-        <!-- button toggles showing only correlation ids with logs over week old -->
-        <div id="weekOldToggleContainer" class="filter-button-container">
-          <button id="toggleOldLogs"
-            title="Add filter that shows only correlation ids with creation time over 7.5 days ago"
-            onclick="return toggleOldLogs(event)" value="false">
-            <div class="filter-button-content">
-              <span class="material-icons filter-button-icon">check</span>
-              <span class="filter-button-text">Over 7.5 days old</span>
-            </div>
-          </button>
+        <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
+        <!-- segmented button used as single-select button -->
+        <div id="logCreationDateToggleContainer" class="filter-button-container">
+          <div class="segmented-button-container">
+            <button id="creationTimeToday" class="segmented-button"
+              title="Show only correlation ids with logs created today"
+              onclick="return toggleShowLogsByCreationDate(`today`)" value="false">
+              <div class="filter-button-content">
+                <span class="material-icons filter-button-icon">check</span>
+                <span class="filter-button-text">Today</span>
+              </div>
+            </button>
+            <button id="creationTimeWeekAgo" class="segmented-button"
+              title="Show only correlation ids with logs created over week ago"
+              onclick="return toggleShowLogsByCreationDate(`weekAgo`)" value="false">
+              <div class="filter-button-content">
+                <span class="material-icons filter-button-icon">check</span>
+                <span class="filter-button-text">Over week ago</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         <!-- button toggles showing extra details for correlation id list items or hiding them  -->
@@ -316,17 +326,17 @@
 
       </div>
 
-
-      <!-- div for search results info and sorting options -->
-      <div class="list-search-results-and-sorting">
+      <!-- Div for search results info and sorting options -->
+      <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
 
         <!-- shows info about search results -->
         <div id="fetchListPlaceholderText" class="search-results-placeholder">...fetching list, please wait...</div>
 
         <!-- button for resetting search and clearing all filters -->
         <div id="clearFilters" class="clear-filters">
-          <button id="clearFiltersButton" class="clear-button" title="Clear all filters and reset correlation id list"
-            onclick="return clearFilters(event)">Clear filters</button>
+          <button id="clearFiltersButton" class="clear-button modal-function-button"
+            title="Clear all filters and reset correlation id list" onclick="return clearFilters({event})">Clear
+            filters</button>
         </div>
 
         <!-- shows the dropdown for sorting -->
@@ -339,29 +349,39 @@
         </div>
       </div>
 
-      <!-- shows the list of correlation ids -->
+      <!-- Shows the list of correlation ids -->
       <div id="correlationIdList" class="list-items"></div>
 
-      <!-- this helper html is always hidden with display: none-->
-      <div style="display: none">
-        <!-- base model for one correlation id list item -->
-        <div id="list-item-base" class="list-item">
+      <!-- This is helper html for list items  -->
+      <!-- template's contents are not rendered on page -->
+      <template id="listItemTemplate">
+
+        <!-- base for one correlation id list item -->
+        <!-- one list item has id and details+icons -->
+        <div id="listItem" class="list-item">
           <div class="list-item-id"></div>
           <div class="list-item-details-and-icons">
             <div class="list-item-details"></div>
             <div class="list-item-icons">
-              <span class="material-icons list-item-icons-search" title="Start search with this correlation id">
-                search
-              </span>
+              <span class="material-icons list-item-icons-search"
+                title="Start search with this correlation id">search</span>
             </div>
           </div>
         </div>
+
+      </template>
+
+      <!-- Bottom div floating on top of modal contents ->
+      <!- button for scrolling back to the top of modal and screen -->
+      <div id="modalBottomDiv" class="modal-bottom-div">
+        <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
+          title="Sroll back to the top of the list" onclick="return goToTop(event)">Back to top</button>
       </div>
 
-      <!-- button for scrolling back to the top of modal and screen -->
-      <div class="modal-bottom-div">
-        <button id="scrollToTopButton" class="scroll-top-button" title="Sroll back to the top of the list"
-          onclick="return goToTop(event)">Back to top</button>
+      <!-- Shows error message -->
+      <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
+        <span class="material-icons error-message-icon">error_outline</span>
+        <span class="error-message-text"></span>
       </div>
 
     </div>
