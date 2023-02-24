@@ -186,9 +186,26 @@ window.clearFilters = function (event = undefined) {
   dateEndInput.value = '';
   correlationIdInput.value = '';
 
+  const oldLogsSelect = document.querySelector(`#correlationIdListModal #toggleOldLogs`);
+  const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
+  const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
+  const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
+  unselectFilteringButtons(oldLogsSelect);
+  selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+
   console.log('All clear!')
   updateOnChange(event);
 }
+
+// Helper function to unselect buttons (set the value and style of unselected button)
+function unselectFilteringButtons(...buttons) {
+  buttons.forEach(button => (button.value = 'false', button.classList.remove('filtering-button-selected')));
+}
+
+// Helper function to select buttons (set the value and style of selected button)
+function selectFilteringButtons(...buttons) {
+  buttons.forEach(button => (button.value = 'true', button.classList.add('filtering-button-selected')));
+} 
 
 window.goToTop = function (event = undefined) {
   eventHandled(event);
@@ -527,9 +544,6 @@ function updateListView(correlationIdList) {
   showPlaceholderText(`Found <span style="font-weight: bold">&nbsp;${sortedList.length}&nbsp;</span> /${correlationIdList.length} correlation ids`)
   selectSorting.style.display = 'block';
 
-  const clearFiltersDiv = document.querySelector(`#correlationIdListModal #clearFilters`);
-  clearFiltersDiv.style.display = 'flex';
-
   sortedList.forEach((logItem) => createListItem(logItem));
 
   const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
@@ -541,13 +555,11 @@ function updateListView(correlationIdList) {
 function clearListView() {
   const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
   const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
-  const clearFiltersDiv = document.querySelector(`#correlationIdListModal #clearFilters`);
   const dateStartInput = document.getElementById(`dateStartInput`);
   const dateEndInput = document.getElementById(`dateEndInput`);
 
   correlationIdList.replaceChildren();
   selectSorting.style.display = 'none';
-  clearFiltersDiv.style.display = 'none';
 
   if (dateStartInput.value === '') {
     dateStartInput.setAttribute('type', 'text')
