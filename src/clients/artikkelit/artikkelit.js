@@ -108,6 +108,8 @@ window.resetAuthor = (event) => {
 
 function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
+  const links = [];
+  document.getElementsByName("artikkelin-linkki").forEach(el => links.push(el.value));
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
@@ -119,7 +121,7 @@ function collectFormData() {
       title: document.getElementById(`artikkelin-otsikko`).value,
       titleOther: document.getElementById(`artikkelin-muu-nimeke`).value,
       language: {iso6391, iso6392b, ui},
-      link: document.getElementById(`artikkelin-linkki`).value,
+      link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
       reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
@@ -130,6 +132,11 @@ function collectFormData() {
       f599x: document.getElementById(`poimintatiedot-poimintakoodi599x`).value
     }
   };
+}
+
+window.removeArticleLink = (event) => {
+  event.preventDefault();
+  event.target.parentElement.remove();
 }
 
 window.removeScience = (event, key) => {
