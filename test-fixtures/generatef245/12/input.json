@@ -1,0 +1,20 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Friedrich",
+     "lastName": "Schiller",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+   "article": {
+    "title": "Onko Marsissa elämää?",
+    "titleOther": "",
+    "language": {
+     "iso6391": "en",
+     "iso6392b": "eng",
+     "ui": "Englanti"
+    }
+  }
+}

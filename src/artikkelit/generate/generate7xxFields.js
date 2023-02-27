@@ -1,4 +1,5 @@
 export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t) {
+  
   return [
     {
       tag: '773', ind1: '0', ind2: ' ', subfields: [...selectSubfields()]
@@ -30,10 +31,14 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
       ];
     }
 
-    return [
-      {code: 'z', value: `${isbn}. -`},
-      {code: 'g', value: pages}
-    ];
+    if (isbn && pages) {
+      return [
+        {code: 'z', value: `${isbn}. -`},
+        {code: 'g', value: pages}
+      ];
+    }      
+    
+    return [];
 
     function getSubfieldG() {
       const value = `${volume} (${publishingYear}) : ${number}, sivut ${pages}`;

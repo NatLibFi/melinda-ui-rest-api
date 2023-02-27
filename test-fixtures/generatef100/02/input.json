@@ -1,0 +1,14 @@
+{
+  "authors" :
+  [
+    {
+    "key":1,
+    "firstName":"August",
+    "lastName":"Walden",
+    "relator":"kirjoittaja",
+    "authorsTempOrganizations":
+    [{"key":1,"organizationName":"Sibelius-Akatemia","code":"1742","note":false},
+      {"key":2,"organizationName":"Oulun yliopisto","code":"1904","note":false}]
+    }
+  ] 
+}

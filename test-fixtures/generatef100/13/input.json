@@ -1,0 +1,18 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "c metropoliitta",
+     "lastName": "Ambrosius",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 2,
+     "firstName": "c metropoliitta",
+     "lastName": "Panteleimon",
+     "relator": "toimittaja",
+     "authorsTempOrganizations": []
+    }
+   ]
+}

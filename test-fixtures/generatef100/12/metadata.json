@@ -1,0 +1,7 @@
+{
+  "description": "generatef100 - case arvonimi.",
+  "skip": false,
+  "only": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

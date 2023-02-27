@@ -1,0 +1,40 @@
+[
+    {
+     "tag": "100",
+     "ind1": "0",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Ambrosius,"
+      },
+      {
+       "code": "c",
+       "value": "metropoliitta,"
+      },
+      {
+       "code": "e",
+       "value": "kirjoittaja."
+      }
+     ]
+    },
+    {
+     "tag": "700",
+     "ind1": "0",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Panteleimon,"
+      },
+      {
+       "code": "c",
+       "value": "metropoliitta,"
+      },
+      {
+       "code": "e",
+       "value": "toimittaja."
+      }
+     ]
+    }
+   ]

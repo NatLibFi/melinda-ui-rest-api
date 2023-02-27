@@ -1,0 +1,27 @@
+{
+    "sourceType":[
+    ],
+    "sciences": [
+        {
+         "key": 1,
+         "department": "1",
+         "departmentName": "Luonnontieteet",
+         "subCategory": "111",
+         "subject": "Matematiikka"
+        }
+       ],
+       "article": {
+        "title": "",
+        "titleOther": "",
+        "language": {
+         "iso6391": "fi",
+         "iso6392b": "fin",
+         "ui": "Suomi"
+        },
+        "link": "",
+        "type": "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
+        "reviewType": "",
+        "sectionOrColumn": ""
+       }
+}
+

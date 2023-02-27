@@ -1,0 +1,34 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Jonathan",
+     "lastName": "Swift",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": [
+      {
+       "key": 1,
+       "organizationName": "Kajaanin ammattikorkeakoulu",
+       "code": "2473",
+       "note": false
+      }
+     ]
+    },
+    {
+     "key": 2,
+     "firstName": "Clark",
+     "lastName": "Kent",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+   "article": {
+    "title": "A Story",
+    "titleOther": "",
+    "language": {
+     "iso6391": "fi",
+     "iso6392b": "fin",
+     "ui": "Suomi"
+    }  
+  }
+}

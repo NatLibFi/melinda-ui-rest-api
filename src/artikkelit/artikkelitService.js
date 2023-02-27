@@ -29,7 +29,8 @@ export function createArtikkelitService(useMoment = 'now') {
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
-    const year = '2022'; // journal year form value / book year form value / current year form value
+    const today = new Date(); 
+    const year = today.getFullYear(); // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
     const {f599a, f599x} = collecting;
@@ -68,18 +69,19 @@ export function createArtikkelitService(useMoment = 'now') {
     return record;
   }
 
-  function parseIncomingData(data) {
-    const [issn] = data.issns || [''];
-    const melindaId = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
-
-    return {
-      issn,
-      melindaId
-    };
-  }
 }
 
-function getSourceType(input) {
+export function parseIncomingData(data) {
+  const [issn] = data.issns || [''];
+  const melindaId = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
+
+  return {
+    issn,
+    melindaId
+  };
+}
+
+export function getSourceType(input) {
   const found = input.sourceType;
   const get3rd = found.substr(2, 1);
   const get4th = found.substr(3, 1);

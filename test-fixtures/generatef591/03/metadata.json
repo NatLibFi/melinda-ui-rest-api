@@ -1,0 +1,9 @@
+{
+  "description": "generatef591 - field 591, sciences, articleCategory: input empty / C",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

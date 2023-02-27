@@ -1,0 +1,180 @@
+{
+    "source": {
+     "title": "Suomi-Finland-USA : Suomalais-amerikkalaisen yhdistyksen julkaisu",
+     "isElectronic": false,
+     "years": "1946-1985.",
+     "issns": [
+      "0781-447X"
+     ],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)003347849"
+     ],
+     "publishing": "Helsinki : Suomalais-amerikkalainen yhdistys, 1946-1985.",
+     "publisherInfo": {
+      "publisherLocation": "Helsinki",
+      "publisher": "Suomalais-amerikkalainen yhdistys",
+      "publisherYears": {
+       "start": "1946",
+       "end": "1985"
+      }
+     },
+     "notices": [],
+     "authors": [],
+     "simpleGroups": {
+      "universalDecimalClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "327"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "327"
+        }
+       ]
+      ],
+      "otherClassificationNumber": [],
+      "abstract": {
+       "term": [],
+       "language": []
+      },
+      "localNotes599": []
+     },
+     "simpleElements": {
+      "referenceLink": [],
+      "f655s": [],
+      "f653s": [],
+      "f651s": [],
+      "f650s": [
+       [
+        {
+         "code": "a",
+         "value": "kausijulkaisut"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1188"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "aikakauslehdet"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1255"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "periodika"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1188"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "tidskrifter"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1255"
+        }
+       ]
+      ],
+      "f648s": [],
+      "f610s": [],
+      "f600s": [],
+      "articleLanguage": [
+       "fin",
+       "swe",
+       "eng"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [],
+      "methodology": []
+     },
+     "recordType": "Kausijulkaisu",
+     "sourceType": "nnas"
+    },
+    "journalNumber": {
+     "publishingYear": "1981",
+     "volume": "1",
+     "number": "19",
+     "pages": "10 - 89"
+    },
+    "article": {
+     "title": "USA in Modern World",
+     "titleOther": "",
+     "language": {
+      "iso6391": "fi",
+      "iso6392b": "fin",
+      "ui": "Suomi"
+     },
+     "link": "",
+     "type": "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    },
+    "collecting": {
+     "f589a": "",
+     "f599a": "",
+     "f599x": ""
+    },
+    "sciences": [],
+    "metodologys": [],
+    "authors": [
+     {
+      "key": 1,
+      "firstName": "Miller",
+      "lastName": "John",
+      "relator": "kirjoittaja",
+      "authorsTempOrganizations": [
+       {
+        "key": 1,
+        "organizationName": "",
+        "code": false,
+        "note": false
+       },
+       {
+        "key": 2,
+        "organizationName": "",
+        "code": false,
+        "note": false
+       }
+      ]
+     }
+    ],
+    "ontologyWords": [],
+    "abstracts": [],
+    "notes": [],
+    "udks": [],
+    "otherRatings": []
+   }

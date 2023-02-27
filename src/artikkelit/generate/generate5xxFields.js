@@ -54,7 +54,7 @@ export function generatef593(journalJufo, year) {
   //    <subfield code="5">ARTO</subfield>
   //  </datafield>
   //</xsl:if>
-
+  console.log('   ***  generatef593 /  year = ', year); // eslint-disable-line
   if (journalJufo && parseInt(year, 10) >= 2011) {
     return [{tag: '593', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: journalJufo}, {code: '5', value: 'ARTO'}]}];
   }
