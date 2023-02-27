@@ -57,6 +57,25 @@ window.sourceTypeChange = (event) => {
   }
 }
 
+window.ontologyTypeChange = (event) => {
+  event.preventDefault();
+
+  const sourceType = event.target.value;
+  if (/other/.test(sourceType)) {
+    document.getElementById("haku-osio").style.display = "none";
+    document.getElementById("asiasana-lisaa-select").style.display = "none";
+    document.getElementById("asiasana-lisaa-input").style.display = "flex";
+    const opts = event.target.options;
+    document.getElementById("asiasana-muu-label").innerHTML = opts[opts.selectedIndex].text + ":";
+  } else {
+    document.getElementById("haku-osio").style.display = "flex";
+    document.getElementById("asiasana-lisaa-select").style.display = "flex";
+    document.getElementById("asiasana-lisaa-input").style.display = "none";
+    document.getElementById("asiasana-muu-label").innerHTML = "";
+    document.getElementById("asiasana-muu").value = "";
+  }
+}
+
 window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
