@@ -96,7 +96,7 @@ function collectCommonData(record) {
         publisher: publisher.replace(titleTrimCharacters, '').trim(),
         publisherYears: {
           start: start.replace(titleTrimCharacters, '').trim(),
-          end: end.replace(titleTrimCharacters, '').trim()
+          end: end?.replace(titleTrimCharacters, '').trim()
         }
       }
     };

@@ -11,7 +11,7 @@ import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/art
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 import {initPublicationSearch} from "./interfaces/publicationSearch.js";
-import {initReviews, resetReview, refreshReviewsList} from "./interfaces/reviewSearch.js";
+import {initReviewSearch, resetReview, refreshReviewsList} from "./interfaces/reviewSearch.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -27,7 +27,7 @@ window.initialize = function () {
     fillFormOptions();
     initPublicationSearch();
     initArticle();
-    initReviews();
+    initReviewSearch();
     initAuthors();
     initAbstracts();
     initOntologyWords();
