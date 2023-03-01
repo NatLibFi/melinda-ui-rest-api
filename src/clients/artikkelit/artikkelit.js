@@ -48,6 +48,9 @@ window.sourceTypeChange = (event) => {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'block';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
+    document.getElementById("lehden-vuodet-min-label").innerHTML = "Julkaisuvuodet:";
+    document.getElementById("lehden-vuodet-valiviiva").style.display = "block";
+    document.getElementById("lehden-vuodet-max").style.display = "block";
   }
 
   if (sourceType === 'book') {
@@ -57,6 +60,10 @@ window.sourceTypeChange = (event) => {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
+    document.getElementById("lehden-vuodet-min-label").innerHTML = "Julkaisuvuosi:"
+    document.getElementById("lehden-vuodet-valiviiva").style.display = "none";
+    document.getElementById("lehden-vuodet-max").style.display = "none";
+
   }
 }
 
