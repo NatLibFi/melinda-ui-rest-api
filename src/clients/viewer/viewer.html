@@ -8,11 +8,9 @@
 <head>
   <link rel="shortcut icon" href="/common/images/favicon.png" />
   <link rel="stylesheet" href="viewer.css" />
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script type="module" src="viewer.js"></script>
 </head>
 
@@ -21,34 +19,31 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Nav bar -->
 
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Navbar -->
   <div id="navbar"></div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
-
   <div id="root">
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Loading "screen" -->
-
     <div id="loading">
     </div>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
     <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus />
+        <input id="login-username" name="username" autofocus autocomplete="username" />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password" />
+        <input id="login-password" type="password" name="password" autocomplete="current-password" />
       </div>
       <div class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
@@ -66,15 +61,17 @@
       </div>
     </form>
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Muuntaja tab -->
 
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Viewer tab -->
     <div id="viewer" hidden>
+
+      <!-- Viewer Iconbar -->
       <div class="IconBar ToolBar">
+
         <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
             href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-        <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
-        <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
+
         <div class="dropdown">
           <button id="account-btn" class="material-icons">account_circle</button>
           <div id="account-menu" class="dropdown-content">
@@ -83,9 +80,10 @@
             <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
           </div>
         </div>
+
       </div>
 
-
+      
       <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
 
@@ -100,19 +98,13 @@
           </div>
 
           <div class="flex-container">
-
             <div class="Filler VBox Input">
               <label>Id (Correlation id)</label>
               <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
-
-
-            <!-- Button for opening a modal containing correlation id list -->
             <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
               tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
-
           </div>
-
 
           <div class="Select VBox">
             <div class="sequenceContainer">
@@ -127,22 +119,22 @@
               </div>
             </div>
           </div>
-          <input type="hidden" id="logType" value="mergeLog" />
 
-          <button class="material-icons tooltip" tooltip-text="Etsi"
+          <button class="material-icons tooltip" tooltip-text="Search"
             onclick="return doSearchPress(event)">search</button>
 
         </form>
 
-        <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
+        <button id="protect" class="material-icons tooltip" tooltip-text="Protect" onclick="return protect(event)"
           disabled="true">lock_open</button>
 
-        <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
+        <button id="share" class="material-icons tooltip" tooltip-text="Share"
           onclick="return copyLink(event)">share</button>
 
-        <button id="delete" class="material-icons tooltip" tooltip-text="Poista" onclick="return remove(event)"
+        <button id="delete" class="material-icons tooltip" tooltip-text="Delete" onclick="return remove(event)"
           disabled="true">delete</button>
-        <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
+
+        <button id="settings" class="material-icons tooltip" tooltip-text="Settings" disabled="true">settings</button>
 
       </div>
 
@@ -152,6 +144,7 @@
 
         <div class="col">
           <div id="record1" class="BoxShadow">
+
             <div class="header">
               <p class="title">Sisääntuleva tietue</p>
               <div class="show-hide-buttons-wrap">
@@ -161,15 +154,20 @@
                   onclick="return hideNote(event, 'record1')">expand_less</button>
               </div>
             </div>
+
             <div class="note">
               <ul class="additional"></ul>
             </div>
+
             <div id="Record" class="marc-record">
             </div>
+
           </div>
         </div>
+
         <div class="col">
           <div id="record2" class="BoxShadow">
+
             <div class="header">
               <p class="title">Melinda-tietue</p>
               <div class="VBox Select">
@@ -183,16 +181,20 @@
                   onclick="return hideNote(event, 'record2')">expand_less</button>
               </div>
             </div>
+
             <div class="note">
               <ul class="additional"></ul>
             </div>
+
             <div id="Record" class="marc-record">
             </div>
+
           </div>
         </div>
 
         <div class="col">
           <div id="record3" class="BoxShadow">
+
             <div class="header">
               <p class="title">Yhdistetty tietue</p>
               <div class="show-hide-buttons-wrap">
@@ -202,19 +204,20 @@
                   onclick="return hideNote(event, 'record3')">expand_less</button>
               </div>
             </div>
+
             <div class="note">
               <ul class="additional"></ul>
             </div>
+
             <div id="Record" class="marc-record">
             </div>
+
           </div>
         </div>
 
       </div>
-
     </div>
   </div>
-
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Modal for browsing and selecting a correlation id from a list -->
@@ -384,36 +387,6 @@
         <span class="error-message-text"></span>
       </div>
 
-    </div>
-
-  </div>
-
-
-  <!-- ---------------------------------------------------------------------- -->
-  <!-- Field edit dialog -->
-  <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
-    <div class="modal-content BoxShadow" onclick="return ignore(event)">
-      <span id="field" class="marc-record"></span><br />
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
-      </div>
-      <hr />
-      <div class="fieldedit marc-record">
-        <div style="display: flex;">
-          Tag: <div id="tag"></div>
-          Ind1: <div id="ind1"></div>
-          Ind2: <div id="ind2"></div>
-        </div>
-        <hr />
-        <div id="fieldlist" width="100%">
-        </div>
-        <button onclick="return onAddField(event)">Uusi osakenttä</button>
-      </div>
-      <hr />
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return editDlgClose(event)">Peru muutokset</button>
-        <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
-      </div>
     </div>
   </div>
 

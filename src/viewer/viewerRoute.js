@@ -102,12 +102,14 @@ export default function (melindaApiOptions) {
   async function getCorrelationIdList(req, res, next) {
     logger.verbose('GET getCorrelationIdList');
 
-    const {expanded} = req.query || {};
+    const expanded = req.query.expanded || 0;
 
     const params = {
       expanded,
       limit: 0
     };
+
+    logger.debug(`Getting correlation id list with expanded value: ${JSON.stringify(params.expanded)}`);
 
     try {
       const result = await logService.getCorrelationIdList(params);
@@ -120,14 +122,15 @@ export default function (melindaApiOptions) {
   }
 
   async function protectLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {sequence: blobSequence} = req.query || {};
+    logger.verbose('PUT protectLog');
 
-    const params = {
-      blobSequence
-    };
+    const correlationId = req.params.id;
+    const {sequence} = req.query;
 
-    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}, sequence: ${JSON.stringify(params.blobSequence)}`);
+    const params = sequence ? {blobSequence: sequence} : {};
+
+    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}`);
+    logger.debug(sequence ? `Sequence selected for protecting: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, protecting all sequences for this id`);
 
     try {
       const result = await logService.protectLog(correlationId, params);
@@ -138,17 +141,25 @@ export default function (melindaApiOptions) {
     }
   }
 
-  function removeLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {logType: logItemType} = req.query || {};
+  async function removeLog(req, res, next) {
+    logger.verbose('DELETE removeLog');
+
+    const correlationId = req.params.id;
+    const force = req.query.force || 0;
 
     const params = {
-      ...correlationId,
-      ...logItemType
+      force
     };
 
-    logger.debug(`Removing log: ${params.correlationId}`);
-    res.status(200);
+    logger.debug(`Removing log: ${JSON.stringify(correlationId)}, params: ${JSON.stringify(params)}`);
+
+    try {
+      const result = await logService.removeLog(correlationId, params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   function handleRouteNotFound(req, res, next) {

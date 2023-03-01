@@ -54,12 +54,26 @@ export function addOntologyWord(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
+  const ontologyWordOther = formJson["asiasana-muu"];
   console.log(ontologyWord);
+  console.log(ontologyWordOther)
 
   if (ontologyWord) {
     // idbIndex save
     idbAddValueToLastIndex('artoOntologyWords', ontologyWord).then(() => {
       // refresh ontology word list
+      refreshOntologyWordList();
+    })
+  }
+  if (ontologyWordOther) {
+    const opts = document.getElementById("asiasana-ontologia");
+    const data = {
+      prefLabel: ontologyWordOther,
+      vocab: opts.value
+    }
+
+    idbAddValueToLastIndex("artoOntologyWords", data).then(() => {
+      document.getElementById("asiasana-muu").value = "";
       refreshOntologyWordList();
     })
   }
@@ -80,7 +94,9 @@ export function refreshOntologyWordList() {
       pRelator.classList.add('capitalize');
       div.appendChild(pRelator);
       div.appendChild(generateVocabInfo(wordData));
-      div.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;', '', ['long-text']));
+      if (!/other/.test(wordData.vocab)) {
+        div.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;', '', ['long-text']));
+      }
       div.appendChild(removeButton);
       form.appendChild(div);
       ontologyWordList.appendChild(form);
@@ -98,6 +114,9 @@ export function refreshOntologyWordList() {
   function generateVocabInfo(word) {
     if (['yso', 'yso-paikat', 'yso-aika'].includes(word.vocab)) {
       return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
+    }
+    if (/other/.test(word.vocab)) {
+      return createP(`${word.vocab}`, "&nbsp;-&nbsp;");
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }

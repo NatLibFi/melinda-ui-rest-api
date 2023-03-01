@@ -57,6 +57,25 @@ window.sourceTypeChange = (event) => {
   }
 }
 
+window.ontologyTypeChange = (event) => {
+  event.preventDefault();
+
+  const sourceType = event.target.value;
+  if (/other/.test(sourceType)) {
+    document.getElementById("haku-osio").style.display = "none";
+    document.getElementById("asiasana-lisaa-select").style.display = "none";
+    document.getElementById("asiasana-lisaa-input").style.display = "flex";
+    const opts = event.target.options;
+    document.getElementById("asiasana-muu-label").innerHTML = opts[opts.selectedIndex].text + ":";
+  } else {
+    document.getElementById("haku-osio").style.display = "flex";
+    document.getElementById("asiasana-lisaa-select").style.display = "flex";
+    document.getElementById("asiasana-lisaa-input").style.display = "none";
+    document.getElementById("asiasana-muu-label").innerHTML = "";
+    document.getElementById("asiasana-muu").value = "";
+  }
+}
+
 window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
@@ -108,6 +127,8 @@ window.resetAuthor = (event) => {
 
 function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
+  const links = [];
+  document.getElementsByName("artikkelin-linkki").forEach(el => links.push(el.value));
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
@@ -119,7 +140,7 @@ function collectFormData() {
       title: document.getElementById(`artikkelin-otsikko`).value,
       titleOther: document.getElementById(`artikkelin-muu-nimeke`).value,
       language: {iso6391, iso6392b, ui},
-      link: document.getElementById(`artikkelin-linkki`).value,
+      link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
       reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
@@ -130,6 +151,11 @@ function collectFormData() {
       f599x: document.getElementById(`poimintatiedot-poimintakoodi599x`).value
     }
   };
+}
+
+window.removeArticleLink = (event) => {
+  event.preventDefault();
+  event.target.parentElement.remove();
 }
 
 window.removeScience = (event, key) => {
