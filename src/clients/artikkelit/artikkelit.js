@@ -3,7 +3,7 @@ import {doLogin} from "/common/auth.js"
 import {showTab} from "/common/ui-utils.js";
 import {getArtikkeliRecord} from "../common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {idbGet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
+import {idbGet, idbDel, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
 import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
 import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
@@ -11,7 +11,7 @@ import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/art
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 import {initPublicationSearch} from "./interfaces/publicationSearch.js";
-import {initReviewSearch, resetReview, refreshReviewsList} from "./interfaces/reviewSearch.js";
+import {initReviewSearch, resetReview, refreshReviewsList, clearReviews} from "./interfaces/reviewSearch.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -103,12 +103,14 @@ window.doUpdate = (event) => {
     otherRatings
   ]) => {
     const formData = collectFormData();
+    const reviews = collectReviews();
     getArtikkeliRecord({
       source,
       ...formData,
       sciences,
       metodologys,
       authors,
+      ...reviews,
       ontologyWords,
       abstracts,
       notes,
@@ -128,9 +130,6 @@ window.resetReview = (event) => {
 
 function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
-  // TODO: arvosteluiden tallennus
-  const reviews = [];
-  document.getElementsByName("arvosteltu-teos").forEach(el => reviews.push(el.value));
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
@@ -144,7 +143,6 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: document.getElementById(`artikkelin-linkki`).value,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      reviews: reviews,
       reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
     },
@@ -154,6 +152,16 @@ function collectFormData() {
       f599x: document.getElementById(`poimintatiedot-poimintakoodi599x`).value
     }
   };
+}
+
+function collectReviews() {
+  const articleType = document.getElementById("artikkelin-tyyppi").value;
+  const includeReviews = ["B1", "B2", "D1", "E1"].some(str => articleType.includes(str));
+  if (!includeReviews) {
+    // clearReviews();
+    idbClear("artoReviews").then(() => refreshReviewsList());
+  }
+  return idbGetStoredValues("artoReviews");
 }
 
 window.removeReviewedBook = (event, key) => {
