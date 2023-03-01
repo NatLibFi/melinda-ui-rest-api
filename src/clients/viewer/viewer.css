@@ -679,6 +679,22 @@ div#correlationIdListModal {}
 /* Correlation id modal adjusting to the screen width */
 /* ---------------------------------------------------------------------------- */
 
+/* If user's screen width is over 2250px: */
+/*  - min width for modal content is smaller, there is already enough space */
+@media (min-width: 2250px) {
+  #correlationIdListModal>.modal-content {
+    min-width: 35%;
+  }
+}
+
+/* If user's screen width is over 3000px: */
+/*  - min width for modal content is even smaller, there is already enough space */
+@media (min-width: 2750px) {
+  #correlationIdListModal>.modal-content {
+    min-width: 25%;
+  }
+}
+
 /* If user's screen width is under 750px: */
 /*  - correlation ids are shown in smaller font in the list */
 /*  - list item details are hidden automatically */
