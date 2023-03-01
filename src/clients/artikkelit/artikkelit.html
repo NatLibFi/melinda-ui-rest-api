@@ -258,10 +258,13 @@
                   <input type="text" id="artikkelin-muu-nimeke" name="artikkelin-muu-nimeke" maxLength="128">
                 </div>
               </div>
-              <div class="full-width">
-                <div class="Input">
-                  <label for="artikkelin-linkki">Linkki kokotekstiin:</label>
-                  <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
+              <div id="artikkelin-linkki-wrap">
+                <div class="full-width">
+                  <div class="Input">
+                    <label for="artikkelin-linkki">Linkki kokotekstiin:</label>
+                    <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
+                  </div>
+                  <button id="lisaa-linkki" class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
               </div>
               <div id="artikkelin-osasto-toistuva-wrap">
@@ -516,14 +519,14 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend>Lisää asia- ja/tai avainsanat</legend>
+              <legend>Lisää asia-/avainsana</legend>
               <form id="asiasana-haku-yso-form">
                 <div class="Select full-width">
                   <label for="asiasana-ontologia">Tyyppi:</label>
-                  <select id="asiasana-ontologia" name="asiasana-ontologia">
+                  <select id="asiasana-ontologia" name="asiasana-ontologia" onchange="return ontologyTypeChange(event)">
                   </select>
                 </div>
-                <div class="full-width">
+                <div id="haku-osio" class="full-width">
                   <div class="Input full-width">
                     <label for="haku-arvo">Haku:</label>
                     <input type="text" id="haku-arvo-yso" name="haku-arvo" pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$"
@@ -535,17 +538,22 @@
               </form>
               <form id="asiasana-lisaa-form" name="asiasana-lisaa-form">
                 <div class="full-width">
-                  <div class="Select full-width">
+                  <div id="asiasana-lisaa-select" class="Select full-width">
                     <label for="asiasana-haku-tulos-lista">Tulokset:</label>
                     <select id="asiasana-haku-tulos-lista" name="asiasana-haku-tulos-lista">
                     </select>
+                  </div>
+                  <div id="asiasana-lisaa-input" class="Input full-width">
+                    <label for="asiasana-muu" id="asiasana-muu-label"></label>
+                    <input type="text" id="asiasana-muu" name="asiasana-muu" pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$"
+                    maxlength="32">
                   </div>
                   <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
               </form>
             </fieldset>
             <fieldset>
-              <legend>Lisätyt asia- ja/tai avainsanat</legend>
+              <legend>Lisätyt asia-/avainsanat</legend>
               <div class="full-width">
                 <div id="asiasana-list">
                 </div>
@@ -652,7 +660,7 @@
           <div id="record1" class="BoxShadow">
             <form class="ToolBar HBox header">
               <p>Tietue esikatselu</p>
-              <button class="material-icons tooltip" tooltip-text="päivitä"
+              <button class="material-icons tooltip" tooltip-text="Päivitä"
                 onclick="return doUpdate(event)">sync</button>
             </form>
             <div id="Record" class="marc-record">
