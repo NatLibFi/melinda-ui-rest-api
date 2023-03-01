@@ -636,9 +636,10 @@ function updateListView(correlationIdList) {
     return;
   }
 
-  showListSortingOptions();
   updatedList.forEach((logItem) => createListItem(logItem));
+  showListSortingOptions();
   showListDetails();
+  highlightSearchStringMatches();
   stopProcess();
 
   function filterAndSortCorrelationIdList(filterByLogTypes = true, filterByDates = true, filterBySearchString = true, sortBySelected = true) {
@@ -805,6 +806,23 @@ function updateListView(correlationIdList) {
     const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
     const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).value;
     listDetailsDivs.forEach((div) => (showListDetailsValue === 'true' ? div.style.display = 'flex' : div.style.display = 'none'));
+  }
+
+  function highlightSearchStringMatches() {
+    const searchString = document.getElementById(`correlationIdInput`).value;
+
+    if (searchString !== '') {
+      stylePatternMatches(searchString);
+    }
+
+    function stylePatternMatches() {
+      const listItemIdDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-id`);
+
+      const styledString = `<span style="background-color:lightgrey">${searchString}</span>`;
+      const re = new RegExp(`${searchString}`, 'g');
+
+      listItemIdDivs.forEach(listItemId => listItemId.innerHTML = listItemId.innerHTML.replace(re, styledString));
+    }
   }
 }
 
