@@ -1,4 +1,4 @@
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList} from "/artikkelit/interfaces/constants.js";
+import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList, sectionOrColumnList} from "/artikkelit/interfaces/constants.js";
 import {setOptions} from "/common/ui-utils.js"
 
 export function fillFormOptions() {
@@ -64,5 +64,8 @@ export function fillDatalistOptions() {
       setOptions(datalist, reviewTypesList);
     }
 
+    if (datalist.id.indexOf('-osasto-toistuva-lista') !== -1) {
+      setOptions(datalist, sectionOrColumnList);
+    }
   }
 }
