@@ -415,6 +415,7 @@ window.doOpenCorrelationIdListModal = function (event = undefined) {
     scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
   });
 
+  clearListView();
   fetchCorrelationIdList();
 }
 
@@ -430,7 +431,7 @@ window.ignore = function (event) {
 window.goToTop = function (event = undefined) {
   eventHandled(event);
   const modal = document.querySelector(`#correlationIdListModal`);
-  modal.scrollTo({top: 0, behavior: 'smooth'})
+  modal.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 window.modalClose = function (event) {
@@ -652,7 +653,7 @@ function updateListView(correlationIdList) {
   updatedList.forEach((logItem) => createListItem(logItem));
   showListSortingOptions();
   showListDetails();
-  highlightSearchStringMatches();
+  highlightMatches();
   stopProcess();
 
   function filterAndSortCorrelationIdList(filterByLogTypes = true, filterByDates = true, filterBySearchString = true, sortBySelected = true) {
@@ -738,11 +739,19 @@ function updateListView(correlationIdList) {
 
   function showlastSearchedCorrelationId() {
     const lastSearchedCorrelationId = document.getElementById(`id`).value;
-    const lastSearchedInfoTextDiv = document.getElementById(`lastSearchedInfoText`);
+    const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
+    const lastSearchedListItem = document.getElementById(lastSearchedCorrelationId);
 
-    if (lastSearchedCorrelationId !== '') {
-      lastSearchedInfoTextDiv.innerHTML = (`Last searched correlation id: ${lastSearchedCorrelationId}`)
-    };
+    if (lastSearchedCorrelationId === '') {
+      return;
+    }
+
+    if (!lastSearchedListItem) {
+      infoTextDiv.innerHTML = (`Previous search: <span class="correlation-id-font"> ${lastSearchedCorrelationId}</span`);
+      infoTextDiv.title = '';
+      return;
+    }
+
   }
 
   function showSearchResultsInfo(found, total) {
@@ -765,7 +774,8 @@ function updateListView(correlationIdList) {
       const listItemFragment = template.content.cloneNode(true);
       const listItem = listItemFragment.getElementById('listItem');
 
-      listItem.id = correlationId;
+      // logItem's correlationId is not unique, so the id for listItem containts two logItem attributes
+      listItem.id = correlationId + ':' + logItemType;
       listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
       const logTypeText = `Log type: <span style="font-weight: bold">${logItemType}</span>`;
@@ -821,32 +831,84 @@ function updateListView(correlationIdList) {
     listDetailsDivs.forEach((div) => (showListDetailsValue === 'true' ? div.style.display = 'flex' : div.style.display = 'none'));
   }
 
-  function highlightSearchStringMatches() {
-    const searchString = document.getElementById(`correlationIdInput`).value;
+  function highlightMatches() {
+    highlightSearchStringMatches();
+    highlightLastSearchedListItem();
 
-    if (searchString !== '') {
-      stylePatternMatches(searchString);
+    function highlightSearchStringMatches() {
+      const searchString = document.getElementById(`correlationIdInput`).value;
+
+      if (searchString !== '') {
+        stylePatternMatches(searchString);
+      }
+
+      function stylePatternMatches() {
+        const listItemIdDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-id`);
+
+        const styledString = `<span style="background-color:lightgrey">${searchString}</span>`;
+        const re = new RegExp(`${searchString}`, 'g');
+
+        listItemIdDivs.forEach(listItemId => listItemId.innerHTML = listItemId.innerHTML.replace(re, styledString));
+      }
     }
 
-    function stylePatternMatches() {
-      const listItemIdDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-id`);
+    function highlightLastSearchedListItem() {
+      const lastSearchedCorrelationId = document.getElementById(`id`).value;
+      const lastSearchedLogType = document.getElementById(`logType`).value;
+      const id = lastSearchedCorrelationId + ':' + lastSearchedLogType;
+      const lastSearchedListItem = document.getElementById(id);
 
-      const styledString = `<span style="background-color:lightgrey">${searchString}</span>`;
-      const re = new RegExp(`${searchString}`, 'g');
+      if (lastSearchedCorrelationId === '' || !lastSearchedListItem) {
+        return;
+      }
 
-      listItemIdDivs.forEach(listItemId => listItemId.innerHTML = listItemId.innerHTML.replace(re, styledString));
+      lastSearchedListItem.classList.add('last-searched')
+
+      addSelectedIcon();
+      updateSearchIcon();
+      addLinkToListItem();
+
+      function addSelectedIcon() {
+        const selectedIcon = document.createElement('span');
+        selectedIcon.classList.add('material-icons', 'selected-list-item-check-icon');
+        selectedIcon.innerHTML = "check";
+        lastSearchedListItem.querySelector(`.list-item-icons`).append(selectedIcon);
+      }
+
+      function updateSearchIcon() {
+        const searchIcon = document.querySelector(`.last-searched .list-item-icons-search`);
+        searchIcon.innerHTML = 'find_replace';
+        searchIcon.title = "Search again with this correlation id";
+      }
+
+      function addLinkToListItem() {
+        const infoTextDiv = document.getElementById('lastSearchedInfoText');
+        const infoTextSpan = document.querySelector(`#lastSearchedInfoText span`);
+
+        infoTextDiv.classList.add('link-active');
+        infoTextSpan.title = 'Click to jump to this correlation id in the list'
+
+        infoTextSpan.addEventListener('click', () => {
+          lastSearchedListItem.scrollIntoView({behavior: 'smooth', block: 'center'});
+        });
+
+      }
     }
   }
+
 }
 
 function clearListView() {
   const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
   const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
+  const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
+
   const dateStartInput = document.getElementById(`dateStartInput`);
   const dateEndInput = document.getElementById(`dateEndInput`);
 
   correlationIdList.replaceChildren();
   selectSorting.style.visibility = 'hidden';
+  infoTextDiv.classList.remove('link-active');
 
   if (dateStartInput.value === '') {
     dateStartInput.setAttribute('type', 'text')
@@ -863,4 +925,3 @@ function showPlaceholderText(text) {
   const placeholderText = document.getElementById('fetchListPlaceholderText');
   placeholderText.innerHTML = text;
 }
-

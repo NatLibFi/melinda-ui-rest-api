@@ -39,6 +39,11 @@ div#tools {}
   font-size: var(--font-size-icon-normal);
 }
 
+/* Adding some color to make the search button pop in toolbar */
+.ToolBar button.search-button {
+  background-color: rgb(182, 225, 224);
+}
+
 .tools #sequence {
   width: 6ch;
   text-align: end;
@@ -192,9 +197,7 @@ div#muuntaja {}
 
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------------- */
 /* ---Correlation id list modal---*/
-/* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 
@@ -230,13 +233,13 @@ div#correlationIdListModal {}
 
 /* Buttons in correlation id list modal show effect when hovered */
 #correlationIdListModal>.modal-content button:hover {
-  background-color: lightgray;
+  background-color: lightgrey;
   color: black;
 }
 
 /* Buttons in correlation id list modal show effect when clicked */
 #correlationIdListModal>.modal-content button:active {
-  background-color: darkgray;
+  background-color: darkgrey;
 }
 
 /* Placeholder texts and input texts are small in correlation id modal */
@@ -270,7 +273,28 @@ div#correlationIdListModal {}
 
 .modal-info-text {
   display: flex;
-  color: grey
+  color: black;
+  min-height: 14px;
+  padding-top: 0.5em;
+}
+
+/* Span part in info text is grey by default */
+.modal-info-text span {
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  padding-left: 0.5em;
+  color: grey;
+}
+
+/* Span part in info text is black and underlined when link is active */
+.modal-info-text.link-active span {
+  color: black;
+  text-decoration: underline;
+}
+
+/* Span part in info text shows style on hover */
+.modal-info-text.link-active span:hover {
+  cursor: pointer;
+  color: grey;
 }
 
 /* Modal top div has place for buttons */
@@ -406,7 +430,6 @@ div#correlationIdListModal {}
   padding-right: 0.5em;
 }
 
-
 /* Modal has correlation id filter */
 .correlation-id-filter-container {
   display: flex;
@@ -466,6 +489,7 @@ div#correlationIdListModal {}
   align-items: center;
 }
 
+/* Dropdown for sorting list */
 .list-sorting {
   display: flex;
   flex-wrap: wrap;
@@ -510,13 +534,19 @@ div#correlationIdListModal {}
 
 /* A list item has style effect on mouse hovering */
 .list-item:hover {
-  background-color: lightgrey;
+  background-color: lightgrey !important;
   cursor: pointer;
 }
 
 /* A list item has style effect on clicking */
 .list-item:active {
+  background-color: darkgrey !important;
+}
+
+/* Highlighting the last searched list item */
+.list-item.last-searched {
   background-color: darkgrey;
+  border-bottom: 5px solid grey;
 }
 
 /* A list item has headline: correlation id */
@@ -587,6 +617,11 @@ div#correlationIdListModal {}
 /* search icon is displayed when it's row is hovered */
 .list-item:hover .list-item-icons-search {
   display: flex !important;
+}
+
+/* the check icon of previously searched list item is hidden when hovering */
+.list-item:hover .list-item-icons span.selected-list-item-check-icon {
+  display: none;
 }
 
 /* search icon shows animation when it's row is clicked (and search is started) */

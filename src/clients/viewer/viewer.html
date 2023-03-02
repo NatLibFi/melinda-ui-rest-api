@@ -83,7 +83,7 @@
 
       </div>
 
-      
+
       <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
 
@@ -98,12 +98,12 @@
           </div>
 
           <div class="flex-container">
+            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+              tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
             <div class="Filler VBox Input">
               <label>Id (Correlation id)</label>
               <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
-            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-              tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
           </div>
 
           <div class="Select VBox">
@@ -120,7 +120,7 @@
             </div>
           </div>
 
-          <button class="material-icons tooltip" tooltip-text="Search"
+          <button class="material-icons tooltip search-button" tooltip-text="Search"
             onclick="return doSearchPress(event)">search</button>
 
         </form>
@@ -231,7 +231,7 @@
 
         <!-- the title for modal, and some additional info text -->
         <div class="modal-title-and-info">
-          <div class="modal-title">Correlation id list - click a row to start search</div>
+          <div class="modal-title">Correlation id list - select a row to start a new search</div>
           <div id="lastSearchedInfoText" class="modal-info-text"></div>
         </div>
 
