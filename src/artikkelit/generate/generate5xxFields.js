@@ -12,6 +12,24 @@ export function generatef500(notes = false) {
   return [];
 }
 
+export function generatef506(isElectronic) {
+  if (isElectronic) {
+    return [
+      {
+        tag: '506',
+        ind1: '0',
+        ind2: ' ',
+        subfields: [
+          {code: 'a', value: 'Aineisto on vapaasti saatavissa.'},
+          {code: 'f', value: 'Unrestricted online access'},
+          {code: '2', value: 'star'}
+        ]
+      }
+    ];
+  }
+  return [];
+}
+
 export function generatef520(abstracts) {
 
   if (abstracts) {
@@ -36,7 +54,7 @@ export function generatef567(methodologys) {
   return [];
 }
 
-export function generatef591(articleType, articleSciences, articleCategory) {
+export function generatef591(articleSciences, articleCategory) {
   const codeOfCategory = articleCategory.split(' ', 1);
   return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: codeOfCategory}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
 
