@@ -36,9 +36,26 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     ];
 
     function getSubfieldG() {
-      const value = `${volume} (${publishingYear}) : ${number}, sivut ${pages}`;
+      const value = `${volume} (${publishingYear})${printNumber(number)}${printPages(pages)}`;
+
       return [{code: 'g', value}];
+
+      function printNumber(number) {
+        if (number) {
+          return `: ${number}`;
+        }
+        return '';
+      }
+
+      function printPages(pages) {
+        if (pages) {
+          return `, sivut ${pages}`;
+        }
+        return '';
+      }
+
     }
+
   }
 
   function selectSubfield(value, code = false) {
