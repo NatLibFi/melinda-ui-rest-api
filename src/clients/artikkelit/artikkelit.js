@@ -1,6 +1,5 @@
-import {setNavBar} from "/common/ui-utils.js";
-import {doLogin} from "/common/auth.js"
-import {showTab} from "/common/ui-utils.js";
+import {setNavBar, showTab} from "/common/ui-utils.js";
+import {Account, doLogin, logout} from "/common/auth.js"
 import {getArtikkeliRecord} from "../common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 import {idbGet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
@@ -20,8 +19,8 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    // const username = document.querySelector("#account-menu #username")
-    // username.innerHTML = Account.get()["Name"];
+    const username = document.querySelector("#account-menu #username")
+    username.innerHTML = Account.get()["Name"];
     showTab('artikkelit-lisaa');
     fillFormOptions();
     initPublicationSearch();
@@ -201,4 +200,9 @@ window.removeUDK = (event, key) => {
 window.removeotherRating = (event, key) => {
   event.preventDefault();
   idbDel('artoOtherRatings', key).then(() => refreshOtherRatingsList());
+}
+
+window.onAccount = function (e) {
+  console.log('Account:', e);
+  logout();
 }
