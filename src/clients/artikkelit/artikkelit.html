@@ -97,7 +97,7 @@
               <fieldset>
                 <legend>Kuvailun kohde</legend>
                 <div class="Select full-width">
-                  <select id="kuvailtava-kohde" name="kuvailtava-kohde" onchange="return sourceTypeChange(event)">
+                  <select id="kuvailtava-kohde" name="kuvailtava-kohde">
                   </select>
                 </div>
               </fieldset>
@@ -440,7 +440,7 @@
               <form id="asiasana-haku-yso-form">
                 <div class="Select full-width">
                   <label for="asiasana-ontologia">Tyyppi:</label>
-                  <select id="asiasana-ontologia" name="asiasana-ontologia" onchange="return ontologyTypeChange(event)">
+                  <select id="asiasana-ontologia" name="asiasana-ontologia">
                   </select>
                 </div>
                 <div id="haku-osio" class="full-width">
@@ -570,6 +570,11 @@
                 </form>
               </div>
             </fieldset>
+            <div class="full-width justify-content-end">
+              <div class="Button">
+                <button class="negative" onclick="clearAllFields()">Tyhjennä lomake</button>
+              </div>
+            </div>
           </div>
         </div>
 

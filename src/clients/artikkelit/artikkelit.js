@@ -9,7 +9,7 @@ import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces
 import {fillFormOptions, fillDatalistOptions} from "/artikkelit/interfaces/loadData.js";
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
-import {initPublicationSearch} from "./interfaces/publicationSearch.js";
+import {initPublicationSearch, resetSearchResultSelect} from "./interfaces/publicationSearch.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -22,6 +22,7 @@ window.initialize = function () {
     const username = document.querySelector("#account-menu #username")
     username.innerHTML = Account.get()["Name"];
     showTab('artikkelit-lisaa');
+    initTypeChanges();
     fillFormOptions();
     initPublicationSearch();
     initArticle();
@@ -32,7 +33,12 @@ window.initialize = function () {
   }
 }
 
-window.sourceTypeChange = (event) => {
+function initTypeChanges() {
+  document.getElementById("kuvailtava-kohde").addEventListener("change", sourceTypeChange);
+  document.getElementById("asiasana-ontologia").addEventListener("change", ontologyTypeChange);
+}
+
+function sourceTypeChange(event) {
   event.preventDefault();
   fillDatalistOptions();
 
@@ -56,7 +62,7 @@ window.sourceTypeChange = (event) => {
   }
 }
 
-window.ontologyTypeChange = (event) => {
+function ontologyTypeChange(event) {
   event.preventDefault();
 
   const sourceType = event.target.value;
@@ -158,6 +164,38 @@ function idbClearAllTables() {
   }
 }
 
+function refreshAllLists() {
+  refreshAbstractList();
+  refreshAuthorOrganizationList();
+  refreshAuthorsList();
+  refreshMetodologysList();
+  refreshNotesList();
+  refreshOntologyWordList();
+  refreshOtherRatingsList();
+  refreshSciencesList();
+  refreshUDKsList();
+  // refreshReviewsList(); <-- Tämä tulee lisätä kunhan arvostelun tallennus ja nämä muutokset on mergetty nextiin
+}
+
+function resetInputFields() {
+  for (const inputField of document.getElementsByTagName("input")) {
+    inputField.value = "";
+  }
+}
+
+function resetTextareaFields() {
+  for (const textarea of document.getElementsByTagName("textarea")) {
+    textarea.value = "";
+  }
+}
+
+function resetSelectFields() {
+  for (const selectField of document.getElementsByTagName("select")) {
+    selectField.selectedIndex = 0;
+    selectField.dispatchEvent(new Event("change"));
+  }
+}
+
 window.removeArticleLink = (event) => {
   event.preventDefault();
   event.target.parentElement.remove();
@@ -212,4 +250,13 @@ window.onAccount = function (e) {
   console.log('Account:', e);
   idbClearAllTables();
   logout();
+}
+
+window.clearAllFields = function () {
+  idbClearAllTables();
+  refreshAllLists();
+  resetSearchResultSelect();
+  resetInputFields();
+  resetTextareaFields();
+  resetSelectFields();
 }
