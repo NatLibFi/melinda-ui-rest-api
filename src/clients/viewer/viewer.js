@@ -443,21 +443,21 @@ window.modalClose = function (event) {
 window.toggleShowMergeLogs = function (event = undefined) {
   eventHandled(event);
   const toggleMergeLogsButton = document.getElementById('mergeLogsSelect');
-  toggleFilterButton(toggleMergeLogsButton, 'Hide MERGE_LOGs from list view', 'Show MERGE_LOGs in list view');
+  toggleFilterButton(toggleMergeLogsButton);
   updateOnChange(new Event('change'));
 }
 
 window.toggleShowMatchLogs = function (event = undefined) {
   eventHandled(event);
   const toggleMatchLogsButton = document.getElementById('matchLogsSelect');
-  toggleFilterButton(toggleMatchLogsButton, 'Hide MATCH_LOGs from list view', 'Show MATCH_LOGs in list view');
+  toggleFilterButton(toggleMatchLogsButton);
   updateOnChange(new Event('change'));
 }
 
 window.toggleListDetails = function (event = undefined) {
   eventHandled(event);
   const toggleListDetailsButton = document.getElementById('toggleListDetails');
-  toggleFilterButton(toggleListDetailsButton, 'Hide detailed list view', 'Show detailed list view');
+  toggleFilterButton(toggleListDetailsButton);
   updateOnChange(new Event('change'));
 }
 
@@ -473,38 +473,30 @@ window.toggleShowLogsByCreationDate = function (clickedDateButton) {
   const dateOverSevenDaysAgo = dateFormatter.format(new Date() - (7 * oneDayInMs));
 
   if (clickedDateButton === 'today') {
-    toggleTodayButton();
+    toggleFilterButton(todayButton);
 
-    todayButton.value === 'true'
+    todayButton.dataset.value === 'true'
       ? (dateStartInput.value = dateToday, dateEndInput.value = dateToday)
       : (dateStartInput.value = '', dateEndInput.value = '')
 
-    if (todayButton.value === 'true' && weekAgoButton.value === 'true') {
-      toggleWeekAgoButton();
+    if (todayButton.dataset.value === 'true' && weekAgoButton.dataset.value === 'true') {
+      toggleFilterButton(weekAgoButton);
     }
   }
 
   if (clickedDateButton === 'weekAgo') {
-    toggleWeekAgoButton();
+    toggleFilterButton(weekAgoButton);
 
-    weekAgoButton.value === 'true'
+    weekAgoButton.dataset.value === 'true'
       ? (dateEndInput.value = dateOverSevenDaysAgo, dateStartInput.value = '')
       : (dateEndInput.value = '', dateEndInput.value = '')
 
-    if (weekAgoButton.value === 'true' && todayButton.value === 'true') {
-      toggleTodayButton();
+    if (weekAgoButton.dataset.value === 'true' && todayButton.dataset.value === 'true') {
+      toggleFilterButton(todayButton);
     }
   }
 
   updateOnChange(new Event('change'));
-
-  function toggleTodayButton() {
-    toggleFilterButton(todayButton, 'Remove this filter and reset creation time inputs', 'Show only correlation ids with logs created today')
-  }
-
-  function toggleWeekAgoButton() {
-    toggleFilterButton(weekAgoButton, 'Remove this filter and reset creation time inputs', 'Show only correlation ids with logs created over week ago')
-  }
 
 }
 
@@ -521,26 +513,13 @@ window.clearFilters = function ({event = undefined, clearLogFilters = 'true', cl
   console.log('All filters cleared!');
   updateOnChange(event);
 
-  function resetLogFilteringButtons() {
-    const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
-    const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
-    const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
-
-    selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
-
-    matchLogsSelect.title = 'Hide MATCH_LOGs from list view'
-    mergeLogsSelect.title = 'Hide MERGE_LOGs from list view';
-    listDetailsSelect.title = 'Hide detailed list view';
-  }
 
   function resetDateFilteringButtons() {
     const todayButton = document.getElementById('creationTimeToday');
     const weekAgoButton = document.getElementById('creationTimeWeekAgo');
-
     unselectFilteringButtons(todayButton, weekAgoButton);
+    setDefaultTitles(todayButton, weekAgoButton);
 
-    todayButton.title = 'Show only correlation ids with logs created today';
-    weekAgoButton.title = 'Show only correlation ids with logs created over week ago';
   }
 
   function resetFilteringInputs() {
@@ -553,12 +532,26 @@ window.clearFilters = function ({event = undefined, clearLogFilters = 'true', cl
     correlationIdInput.value = '';
   }
 
+  function resetLogFilteringButtons() {
+    const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
+    const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
+    const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
+
+
+    selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+    setDefaultTitles(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+  }
+
   function unselectFilteringButtons(...buttons) {
-    buttons.forEach(button => (button.value = 'false', button.classList.remove('filter-button-selected')));
+    buttons.forEach(button => (button.dataset.value = 'false', button.classList.remove('filter-button-selected')));
   }
 
   function selectFilteringButtons(...buttons) {
-    buttons.forEach(button => (button.value = 'true', button.classList.add('filter-button-selected')));
+    buttons.forEach(button => (button.dataset.value = 'true', button.classList.add('filter-button-selected')));
+  }
+
+  function setDefaultTitles(...buttons) {
+    buttons.forEach(button => (console.log(button), button.title = button.dataset.titleA));
   }
 }
 
@@ -571,10 +564,46 @@ function unselectDateButtons() {
   }
 }
 
-function toggleFilterButton(filterButton, titleA, titleB) {
-  filterButton.value = (filterButton.value === 'true' ? false : true);
+function toggleFilterButton(filterButton) {
+  const filterButtonValue = filterButton.dataset.value;
+  const titleA = filterButton.dataset.titleA;
+  const titleB = filterButton.dataset.titleB;
+
+  filterButton.dataset.value = (filterButtonValue === 'true' ? false : true);
   filterButton.classList.toggle('filter-button-selected');
   filterButton.title = (filterButton.title === titleA ? titleB : titleA)
+}
+
+function clearListView() {
+  const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
+  const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
+  const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
+
+  const dateStartInput = document.getElementById(`dateStartInput`);
+  const dateEndInput = document.getElementById(`dateEndInput`);
+
+  const filterButtons = document.querySelectorAll('.filter-button');
+
+  correlationIdList.replaceChildren();
+  selectSorting.style.visibility = 'hidden';
+  infoTextDiv.classList.remove('link-active');
+
+  if (dateStartInput.value === '') {
+    dateStartInput.setAttribute('type', 'text')
+    dateStartInput.placeholder = 'Start Date'
+  }
+
+  if (dateEndInput.value === '') {
+    dateEndInput.setAttribute('type', 'text')
+    dateEndInput.placeholder = 'End date'
+  }
+
+  filterButtons.forEach((button) => {
+    if (button.title === '') {
+      button.title = button.dataset.titleA;
+    }
+  });
+
 }
 
 function fetchCorrelationIdList() {
@@ -657,8 +686,8 @@ function updateListView(correlationIdList) {
   stopProcess();
 
   function filterAndSortCorrelationIdList(filterByLogTypes = true, filterByDates = true, filterBySearchString = true, sortBySelected = true) {
-    const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).value;
-    const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).value;
+    const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).dataset.value;
+    const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).dataset.value;
     const dateStartInputValue = document.getElementById(`dateStartInput`).value;
     const dateEndInputValue = document.getElementById(`dateEndInput`).value;
     const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
@@ -827,7 +856,7 @@ function updateListView(correlationIdList) {
 
   function showListDetails() {
     const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
-    const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).value;
+    const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).dataset.value;
     listDetailsDivs.forEach((div) => (showListDetailsValue === 'true' ? div.style.display = 'flex' : div.style.display = 'none'));
   }
 
@@ -896,29 +925,6 @@ function updateListView(correlationIdList) {
     }
   }
 
-}
-
-function clearListView() {
-  const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
-  const selectSorting = document.querySelector(`#correlationIdListModal #correlationIdListSorting`);
-  const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
-
-  const dateStartInput = document.getElementById(`dateStartInput`);
-  const dateEndInput = document.getElementById(`dateEndInput`);
-
-  correlationIdList.replaceChildren();
-  selectSorting.style.visibility = 'hidden';
-  infoTextDiv.classList.remove('link-active');
-
-  if (dateStartInput.value === '') {
-    dateStartInput.setAttribute('type', 'text')
-    dateStartInput.placeholder = 'Start Date'
-  }
-
-  if (dateEndInput.value === '') {
-    dateEndInput.setAttribute('type', 'text')
-    dateEndInput.placeholder = 'End date'
-  }
 }
 
 function showPlaceholderText(text) {

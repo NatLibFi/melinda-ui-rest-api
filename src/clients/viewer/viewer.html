@@ -248,15 +248,17 @@
             <!-- segmented button used as multi-select button -->
             <div id="logTypeToggleContainer" class="filter-button-container">
               <div class="segmented-button-container">
-                <button id="mergeLogsSelect" class="segmented-button filter-button-selected"
-                  title="Hide MERGE_LOGs from list view" onclick="return toggleShowMergeLogs(event)" value="true">
+                <button id="mergeLogsSelect" class="filter-button segmented-button filter-button-selected"
+                  data-title-a="Hide MERGE_LOGs from list view" data-title-b="Show MERGE_LOGs in list view"
+                  onclick="return toggleShowMergeLogs(event)" data-value="true">
                   <div class="filter-button-content">
                     <span class="material-icons filter-button-icon">check</span>
                     <span class="filter-button-text">Merge logs</span>
                   </div>
                 </button>
-                <button id="matchLogsSelect" class="segmented-button filter-button-selected"
-                  title="Hide MATCH_LOGs from list view" onclick="return toggleShowMatchLogs(event)" value="true">
+                <button id="matchLogsSelect" class="filter-button segmented-button filter-button-selected"
+                  data-title-a="Hide MATCH_LOGs from list view" data-title-b="Show MATCH_LOGs from list view"
+                  onclick="return toggleShowMatchLogs(event)" data-value="true">
                   <div class="filter-button-content">
                     <span class="material-icons filter-button-icon">check</span>
                     <span class="filter-button-text">Match logs</span>
@@ -269,17 +271,19 @@
             <!-- segmented button used as single-select button -->
             <div id="logCreationDateToggleContainer" class="filter-button-container">
               <div class="segmented-button-container">
-                <button id="creationTimeToday" class="segmented-button"
-                  title="Show only correlation ids with logs created today"
-                  onclick="return toggleShowLogsByCreationDate(`today`)" value="false">
+                <button id="creationTimeToday" class="filter-button segmented-button"
+                  data-title-a="Show only correlation ids with logs created today"
+                  data-title-b="Remove this filter and reset creation time inputs"
+                  onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
                   <div class="filter-button-content">
                     <span class="material-icons filter-button-icon">check</span>
                     <span class="filter-button-text">Today</span>
                   </div>
                 </button>
-                <button id="creationTimeWeekAgo" class="segmented-button"
-                  title="Show only correlation ids with logs created over week ago"
-                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" value="false">
+                <button id="creationTimeWeekAgo" class="filter-button segmented-button"
+                  data-title-a="Show only correlation ids with logs created over week ago"
+                  data-title-b="Remove this filter and reset creation time inputs"
+                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
                   <div class="filter-button-content">
                     <span class="material-icons filter-button-icon">check</span>
                     <span class="filter-button-text">Over week ago</span>
@@ -290,8 +294,9 @@
 
             <!-- button toggles showing extra details for correlation id list items or hiding them  -->
             <div id="listDetailsToggleContainer" class="filter-button-container">
-              <button id="toggleListDetails" class="filter-button-selected" title="Hide detailed list view"
-                onclick="return toggleListDetails(event)" value="true">
+              <button id="toggleListDetails" class="filter-button filter-button-selected"
+                data-title-a="Hide detailed list view" data-title-b="Show detailed list view"
+                onclick="return toggleListDetails(event)" data-value="true">
                 <div class="filter-button-content">
                   <span class="material-icons filter-button-icon">check</span>
                   <span class="filter-button-text">Detailed list</span>
