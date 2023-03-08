@@ -283,7 +283,7 @@ window.remove = function (event = undefined) {
 
   removeLog(id, force)
     .then(() =>
-      window.alert(`Removed log with correlation id: \n ${id}`))
+      window.alert(`Poistettiin ID: \n ${id}`))
     .then(() =>
       location.reload())
     .catch(error =>
@@ -551,7 +551,7 @@ window.clearFilters = function ({event = undefined, clearLogFilters = 'true', cl
   }
 
   function setDefaultTitles(...buttons) {
-    buttons.forEach(button => (console.log(button), button.title = button.dataset.titleA));
+    buttons.forEach(button => button.title = button.dataset.titleA);
   }
 }
 
@@ -604,6 +604,7 @@ function clearListView() {
     }
   });
 
+  setOrClearErrorMessageAndStyle({clear: 'true'});
 }
 
 function fetchCorrelationIdList() {
@@ -616,47 +617,56 @@ function fetchCorrelationIdList() {
     .then(data =>
       setCorrelationIdListDataToIndexDB(data))
     .catch((error) => {
-      showErrorMessageAndStyleInModal('Valitettavasti listaa ei pystytty juuri nyt hakemaan');
+      setOrClearErrorMessageAndStyle({set: 'true', text: 'Valitettavasti listaa ei pystytty juuri nyt hakemaan'});
       console.log('Error while fetching correlation id list: ', error)
       stopProcess();
     });
+}
 
-  function showErrorMessageAndStyleInModal(text) {
-    clearListView();
-    showErrorMessage();
-    setModalErrorStyle();
+function setOrClearErrorMessageAndStyle({clear = 'false', set = 'false', text = 'Sorry, something bad happened'}) {
+  const errorMessagePlaceholder = document.getElementById('errorFetchingListPlaceholder');
+  const errorMessage = document.querySelector(`#errorFetchingListPlaceholder .error-message-text`);
+  const filteringButtonsDiv = document.getElementById('filteringButtons');
+  const filteringInputsDiv = document.getElementById('filteringInputs');
+  const searchResultsAndSortingDiv = document.getElementById('searchResultsAndSorting');
+  const correlationIdListDiv = document.getElementById('correlationIdList');
+  const modalBottomDiv = document.getElementById('modalBottomDiv');
 
-    function showErrorMessage(text) {
-      const errorMessagePlaceholder = document.getElementById('errorFetchingListPlaceholder');
-      const errorMessage = document.querySelector(`#errorFetchingListPlaceholder .error-message-text`);
-      errorMessagePlaceholder.style.display = 'flex';
-      errorMessage.innerHTML = text;
-    }
-
-    function setModalErrorStyle() {
-      const filteringButtonsDiv = document.getElementById('filteringButtons');
-      const filteringInputsDiv = document.getElementById('filteringInputs');
-      const searchResultsAndSortingDiv = document.getElementById('searchResultsAndSorting');
-      const correlationIdListDiv = document.getElementById('correlationIdList');
-      const modalBottomDiv = document.getElementById('modalBottomDiv');
-
-      setDivsDisplayNone(searchResultsAndSortingDiv, correlationIdListDiv, modalBottomDiv);
-      setDivsDisabled(filteringButtonsDiv, filteringInputsDiv);
-
-      function setDivsDisplayNone(...elements) {
-        elements.forEach(element => element.style.display = 'none');
-      }
-
-      function setDivsDisabled(...elements) {
-        elements.forEach(element => element.classList.add('disabled-div'));
-      }
-    }
+  if (set === 'true') {
+    errorMessagePlaceholder.style.display = 'flex';
+    errorMessage.innerHTML = text;
+    setDivsDisplayNone(searchResultsAndSortingDiv, correlationIdListDiv, modalBottomDiv);
+    setDivsDisabled(filteringButtonsDiv, filteringInputsDiv);
   }
+
+  if (clear === 'true') {
+    errorMessagePlaceholder.style.display = 'none';
+    errorMessage.innerHTML = '';
+    setDivsDisplayFlex(searchResultsAndSortingDiv, correlationIdListDiv, modalBottomDiv);
+    setDivsEnabled(filteringButtonsDiv, filteringInputsDiv);
+  }
+
+  function setDivsDisplayNone(...elements) {
+    elements.forEach(element => element.style.display = 'none');
+  }
+
+  function setDivsDisabled(...elements) {
+    elements.forEach(element => element.classList.add('disabled-div'));
+  }
+
+  function setDivsDisplayFlex(...elements) {
+    elements.forEach(element => element.style.display = 'flex');
+  }
+
+  function setDivsEnabled(...elements) {
+    elements.forEach(element => element.classList.remove('disabled-div'));
+  }
+
 }
 
 function setCorrelationIdListDataToIndexDB(data) {
   idbSetList('correlationIdList', data);
-  console.log('Correlation id list: ', data);
+  console.log('Correlation id list: ', data)
   updateOnChange(new Event('change'));
 }
 
