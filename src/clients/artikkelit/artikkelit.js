@@ -2,7 +2,7 @@ import {setNavBar, showTab} from "/common/ui-utils.js";
 import {Account, doLogin, logout} from "/common/auth.js"
 import {getArtikkeliRecord} from "../common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {idbGet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
+import {idbGet, idbDel, idbGetStoredValues, idbClear, getTableNames} from "/artikkelit/indexDB.js"
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
 import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
 import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
@@ -152,6 +152,12 @@ function collectFormData() {
   };
 }
 
+function idbClearAllTables() {
+  for (const tableName of getTableNames()) {
+    idbClear(tableName);
+  }
+}
+
 window.removeArticleLink = (event) => {
   event.preventDefault();
   event.target.parentElement.remove();
@@ -204,5 +210,6 @@ window.removeotherRating = (event, key) => {
 
 window.onAccount = function (e) {
   console.log('Account:', e);
+  idbClearAllTables();
   logout();
 }
