@@ -216,178 +216,180 @@
         </div>
 
       </div>
-    </div>
-  </div>
 
-  <!-- ---------------------------------------------------------------------- -->
-  <!-- Modal for browsing and selecting a correlation id from a list -->
-  <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Modal for browsing and selecting a correlation id from a list -->
+      <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
-    <!-- The modal box outline and content  -->
-    <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
+        <!-- The modal box outline and content  -->
+        <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
 
-      <!-- Shows instructional title for list, info text and close button -->
-      <div class="modal-top-div">
+          <!-- Shows instructional title for list, info text and close button -->
+          <div class="modal-top-div">
 
-        <!-- the title for modal, and some additional info text -->
-        <div class="modal-title-and-info">
-          <div class="modal-title">Correlation id list - select a row to start a new search</div>
-          <div id="lastSearchedInfoText" class="modal-info-text"></div>
-        </div>
-
-        <!-- button for closing modal, works the same way as clicking outside modal  -->
-        <div class="modal-top-div-buttons">
-          <button id="closeModalButton" class="material-icons close-button modal-function-button"
-            title="Close modal without changes" onclick="return modalClose(event)">close</button>
-        </div>
-
-      </div>
-
-      <!-- All buttons for filtering correlation id list  -->
-      <div id="filteringButtons" class="list-filtering-buttons">
-
-        <!-- button toggles showing logs by log type or hiding them from the list -->
-        <!-- segmented button used as multi-select button -->
-        <div id="logTypeToggleContainer" class="filter-button-container">
-          <div class="segmented-button-container">
-            <button id="mergeLogsSelect" class="segmented-button filter-button-selected"
-              title="Hide MERGE_LOGs from list view" onclick="return toggleShowMergeLogs(event)" value="true">
-              <div class="filter-button-content">
-                <span class="material-icons filter-button-icon">check</span>
-                <span class="filter-button-text">Merge logs</span>
-              </div>
-            </button>
-            <button id="matchLogsSelect" class="segmented-button filter-button-selected"
-              title="Hide MATCH_LOGs from list view" onclick="return toggleShowMatchLogs(event)" value="true">
-              <div class="filter-button-content">
-                <span class="material-icons filter-button-icon">check</span>
-                <span class="filter-button-text">Match logs</span>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
-        <!-- segmented button used as single-select button -->
-        <div id="logCreationDateToggleContainer" class="filter-button-container">
-          <div class="segmented-button-container">
-            <button id="creationTimeToday" class="segmented-button"
-              title="Show only correlation ids with logs created today"
-              onclick="return toggleShowLogsByCreationDate(`today`)" value="false">
-              <div class="filter-button-content">
-                <span class="material-icons filter-button-icon">check</span>
-                <span class="filter-button-text">Today</span>
-              </div>
-            </button>
-            <button id="creationTimeWeekAgo" class="segmented-button"
-              title="Show only correlation ids with logs created over week ago"
-              onclick="return toggleShowLogsByCreationDate(`weekAgo`)" value="false">
-              <div class="filter-button-content">
-                <span class="material-icons filter-button-icon">check</span>
-                <span class="filter-button-text">Over week ago</span>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- button toggles showing extra details for correlation id list items or hiding them  -->
-        <div id="listDetailsToggleContainer" class="filter-button-container">
-          <button id="toggleListDetails" class="filter-button-selected" title="Hide detailed list view"
-            onclick="return toggleListDetails(event)" value="true">
-            <div class="filter-button-content">
-              <span class="material-icons filter-button-icon">check</span>
-              <span class="filter-button-text">Detailed list</span>
+            <!-- the title for modal, and some additional info text -->
+            <div class="modal-title-and-info">
+              <div class="modal-title">Correlation id list - select a row to start a new search</div>
+              <div id="lastSearchedInfoText" class="modal-info-text"></div>
             </div>
-          </button>
-        </div>
 
-      </div>
+            <!-- button for closing modal, works the same way as clicking outside modal  -->
+            <div class="modal-top-div-buttons">
+              <button id="closeModalButton" class="material-icons close-button modal-function-button"
+                title="Close modal without changes" onclick="return modalClose(event)">close</button>
+            </div>
 
-      <!-- All inputs for filtering correlation id list  -->
-      <div id="filteringInputs" class="list-filtering-inputs">
-
-        <!-- inputs for star date and end end date date pickers  -->
-        <div class="date-filter-container">
-          Creation time:
-          <div class="datepicker-container">
-            <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
-              placeholder="Start date" title="Filter list with creation time start date"
-              onchange="return updateOnChange(event)">
-            <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
-              placeholder="End date" title="Filter list with creation time end date"
-              onchange="return updateOnChange(event)">
           </div>
-        </div>
 
-        <!-- input for searching with correlation id string -->
-        <div class="correlation-id-filter-container">
-          Correlation id:
-          <input id="correlationIdInput" type="text" class="correlation-id-input"
-            title="Filter list with correlation id search string" placeholder="...0a1b-23cd45ef..."
-            oninput="return updateOnChange(event)">
-        </div>
+          <!-- All buttons for filtering correlation id list  -->
+          <div id="filteringButtons" class="list-filtering-buttons">
 
-      </div>
+            <!-- button toggles showing logs by log type or hiding them from the list -->
+            <!-- segmented button used as multi-select button -->
+            <div id="logTypeToggleContainer" class="filter-button-container">
+              <div class="segmented-button-container">
+                <button id="mergeLogsSelect" class="segmented-button filter-button-selected"
+                  title="Hide MERGE_LOGs from list view" onclick="return toggleShowMergeLogs(event)" value="true">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">Merge logs</span>
+                  </div>
+                </button>
+                <button id="matchLogsSelect" class="segmented-button filter-button-selected"
+                  title="Hide MATCH_LOGs from list view" onclick="return toggleShowMatchLogs(event)" value="true">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">Match logs</span>
+                  </div>
+                </button>
+              </div>
+            </div>
 
-      <!-- Div for search results info and sorting options -->
-      <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
+            <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
+            <!-- segmented button used as single-select button -->
+            <div id="logCreationDateToggleContainer" class="filter-button-container">
+              <div class="segmented-button-container">
+                <button id="creationTimeToday" class="segmented-button"
+                  title="Show only correlation ids with logs created today"
+                  onclick="return toggleShowLogsByCreationDate(`today`)" value="false">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">Today</span>
+                  </div>
+                </button>
+                <button id="creationTimeWeekAgo" class="segmented-button"
+                  title="Show only correlation ids with logs created over week ago"
+                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" value="false">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">Over week ago</span>
+                  </div>
+                </button>
+              </div>
+            </div>
 
-        <!-- shows info about search results -->
-        <div id="fetchListPlaceholderText" class="search-results-placeholder">...fetching list, please wait...</div>
+            <!-- button toggles showing extra details for correlation id list items or hiding them  -->
+            <div id="listDetailsToggleContainer" class="filter-button-container">
+              <button id="toggleListDetails" class="filter-button-selected" title="Hide detailed list view"
+                onclick="return toggleListDetails(event)" value="true">
+                <div class="filter-button-content">
+                  <span class="material-icons filter-button-icon">check</span>
+                  <span class="filter-button-text">Detailed list</span>
+                </div>
+              </button>
+            </div>
 
-        <!-- button for resetting search and clearing all filters -->
-        <div id="clearFilters" class="clear-filters">
-          <button id="clearFiltersButton" class="clear-button modal-function-button"
-            title="Clear all filters and reset correlation id list" onclick="return clearFilters({event})">Clear
-            filters</button>
-        </div>
+          </div>
 
-        <!-- shows the dropdown for sorting -->
-        <div class="Select VBox list-sorting">
-          <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
-            <option selected value="sortByTimeNewestFirst">Sort by creation time: newest first</option>
-            <option value="sortByTimeOldestFirst">Sort by creation time: oldest first</option>
-            <option value="sortById">Sort by correlation id (0->9 a->f)</option>
-          </select>
-        </div>
-      </div>
+          <!-- All inputs for filtering correlation id list  -->
+          <div id="filteringInputs" class="list-filtering-inputs">
 
-      <!-- Shows the list of correlation ids -->
-      <div id="correlationIdList" class="list-items"></div>
+            <!-- inputs for star date and end end date date pickers  -->
+            <div class="date-filter-container">
+              Creation time:
+              <div class="datepicker-container">
+                <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                  placeholder="Start date" title="Filter list with creation time start date"
+                  onchange="return updateOnChange(event)">
+                <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                  placeholder="End date" title="Filter list with creation time end date"
+                  onchange="return updateOnChange(event)">
+              </div>
+            </div>
 
-      <!-- This is helper html for list items  -->
-      <!-- template's contents are not rendered on page -->
-      <template id="listItemTemplate">
+            <!-- input for searching with correlation id string -->
+            <div class="correlation-id-filter-container">
+              Correlation id:
+              <input id="correlationIdInput" type="text" class="correlation-id-input"
+                title="Filter list with correlation id search string" placeholder="...0a1b-23cd45ef..."
+                oninput="return updateOnChange(event)">
+            </div>
 
-        <!-- base for one correlation id list item -->
-        <!-- one list item has id and details+icons -->
-        <div id="listItem" class="list-item">
-          <div class="list-item-id"></div>
-          <div class="list-item-details-and-icons">
-            <div class="list-item-details"></div>
-            <div class="list-item-icons">
-              <span class="material-icons list-item-icons-search"
-                title="Start search with this correlation id">search</span>
+          </div>
+
+          <!-- Div for search results info and sorting options -->
+          <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
+
+            <!-- shows info about search results -->
+            <div id="fetchListPlaceholderText" class="search-results-placeholder">...fetching list, please wait...</div>
+
+            <!-- button for resetting search and clearing all filters -->
+            <div id="clearFilters" class="clear-filters">
+              <button id="clearFiltersButton" class="clear-button modal-function-button"
+                title="Clear all filters and reset correlation id list" onclick="return clearFilters({event})">Clear
+                filters</button>
+            </div>
+
+            <!-- shows the dropdown for sorting -->
+            <div class="Select VBox list-sorting">
+              <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+                <option selected value="sortByTimeNewestFirst">Sort by creation time: newest first</option>
+                <option value="sortByTimeOldestFirst">Sort by creation time: oldest first</option>
+                <option value="sortById">Sort by correlation id (0->9 a->f)</option>
+              </select>
             </div>
           </div>
-        </div>
 
-      </template>
+          <!-- Shows the list of correlation ids -->
+          <div id="correlationIdList" class="list-items"></div>
 
-      <!-- Bottom div floating on top of modal contents ->
+          <!-- This is helper html for list items  -->
+          <!-- template's contents are not rendered on page -->
+          <template id="listItemTemplate">
+
+            <!-- base for one correlation id list item -->
+            <!-- one list item has id and details+icons -->
+            <div id="listItem" class="list-item">
+              <div class="list-item-id"></div>
+              <div class="list-item-details-and-icons">
+                <div class="list-item-details"></div>
+                <div class="list-item-icons">
+                  <span class="material-icons list-item-icons-search"
+                    title="Start search with this correlation id">search</span>
+                </div>
+              </div>
+            </div>
+
+          </template>
+
+          <!-- Bottom div floating on top of modal contents ->
       <!- button for scrolling back to the top of modal and screen -->
-      <div id="modalBottomDiv" class="modal-bottom-div">
-        <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
-          title="Sroll back to the top of the list" onclick="return goToTop(event)">Back to top</button>
-      </div>
+          <div id="modalBottomDiv" class="modal-bottom-div">
+            <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
+              title="Sroll back to the top of the list" onclick="return goToTop(event)">Back to top</button>
+          </div>
 
-      <!-- Shows error message -->
-      <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
-        <span class="material-icons error-message-icon">error_outline</span>
-        <span class="error-message-text"></span>
+          <!-- Shows error message -->
+          <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
+            <span class="material-icons error-message-icon">error_outline</span>
+            <span class="error-message-text"></span>
+          </div>
+
+        </div>
       </div>
 
     </div>
+
   </div>
 
   <!-- ---------------------------------------------------------------------- -->
