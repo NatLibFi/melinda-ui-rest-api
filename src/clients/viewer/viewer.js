@@ -363,10 +363,10 @@ function setProtectButton(type) {
 
   switch (true) {
     case (type === 'protected'):
-      setProtectButtonProperties('lock', 'This log is currently protected, click to undo protection', 'Undo protect');
+      setProtectButtonProperties('lock', 'Poista turvaus tästä sekvenssistä', 'Poista turvaus');
       break;
     case (type === 'not protected'):
-      setProtectButtonProperties('lock_open', 'Click to protect this log', 'Protect');
+      setProtectButtonProperties('lock_open', 'Turvaa tämä sekvenssi', 'Turvaa');
       break;
     default:
       disableElement(protectButton);
@@ -590,12 +590,12 @@ function clearListView() {
 
   if (dateStartInput.value === '') {
     dateStartInput.setAttribute('type', 'text')
-    dateStartInput.placeholder = 'Start Date'
+    dateStartInput.placeholder = 'Alkupvm'
   }
 
   if (dateEndInput.value === '') {
     dateEndInput.setAttribute('type', 'text')
-    dateEndInput.placeholder = 'End date'
+    dateEndInput.placeholder = 'Loppupvm'
   }
 
   filterButtons.forEach((button) => {
@@ -616,7 +616,7 @@ function fetchCorrelationIdList() {
     .then(data =>
       setCorrelationIdListDataToIndexDB(data))
     .catch((error) => {
-      showErrorMessageAndStyleInModal('Sorry, correlation id list could not be fetched');
+      showErrorMessageAndStyleInModal('Valitettavasti listaa ei pystytty juuri nyt hakemaan');
       console.log('Error while fetching correlation id list: ', error)
       stopProcess();
     });
@@ -776,7 +776,7 @@ function updateListView(correlationIdList) {
     }
 
     if (!lastSearchedListItem) {
-      infoTextDiv.innerHTML = (`Previous search: <span class="correlation-id-font"> ${lastSearchedCorrelationId}</span`);
+      infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font"> ${lastSearchedCorrelationId}</span`);
       infoTextDiv.title = '';
       return;
     }
@@ -785,7 +785,7 @@ function updateListView(correlationIdList) {
 
   function showSearchResultsInfo(found, total) {
     const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
-    showPlaceholderText(`Found ${styledResult}/${total} correlation ids`)
+    showPlaceholderText(`Löytyi ${styledResult}/${total} ID:tä`)
   }
 
   function showListSortingOptions() {
@@ -807,9 +807,9 @@ function updateListView(correlationIdList) {
       listItem.id = correlationId + ':' + logItemType;
       listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
-      const logTypeText = `Log type: <span style="font-weight: bold">${logItemType}</span>`;
-      const creationTimeText = `Creation time: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
-      const logCountText = `Log count: <span style="font-weight: bold">${logCount}</span>`;
+      const logTypeText = `Lokityyppi: <span style="font-weight: bold">${logItemType}</span>`;
+      const creationTimeText = `Luontiaika: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
+      const logCountText = `Lokilukumäärä: <span style="font-weight: bold">${logCount}</span>`;
 
       const logTypeDiv = createDivWithInnerHtml(logTypeText);
       const creationTimeDiv = createDivWithInnerHtml(creationTimeText);
@@ -827,7 +827,7 @@ function updateListView(correlationIdList) {
         const infoIcon = document.createElement('span');
         infoIcon.classList.add('material-icons');
         infoIcon.innerHTML = "lock_clock";
-        infoIcon.title = ('This correlation id is over week old, so it might be protected');
+        infoIcon.title = ('Tämä ID on yli viikon vanha, joten se saattaa olla turvattu');
         listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
       }
 
@@ -907,7 +907,7 @@ function updateListView(correlationIdList) {
       function updateSearchIcon() {
         const searchIcon = document.querySelector(`.last-searched .list-item-icons-search`);
         searchIcon.innerHTML = 'find_replace';
-        searchIcon.title = "Search again with this correlation id";
+        searchIcon.title = "Hae uudelleen tällä ID:llä";
       }
 
       function addLinkToListItem() {
@@ -915,7 +915,7 @@ function updateListView(correlationIdList) {
         const infoTextSpan = document.querySelector(`#lastSearchedInfoText span`);
 
         infoTextDiv.classList.add('link-active');
-        infoTextSpan.title = 'Click to jump to this correlation id in the list'
+        infoTextSpan.title = 'Siirry listanäkymässä tämän ID:n kohdalle'
 
         infoTextSpan.addEventListener('click', () => {
           lastSearchedListItem.scrollIntoView({behavior: 'smooth', block: 'center'});
