@@ -44,7 +44,7 @@ async function getSnackbarHtml() {
 // and adds the snackbar element to the element as first element
 //
 function createSnackbar(snackbarContent, html) {
-  const snackbar = getNewSnackbar(html);
+  const snackbarElement = getNewSnackbar(html);
 
   const snackbarType = checkSnackbarType(snackbarContent)
   switch (true) {
@@ -59,13 +59,16 @@ function createSnackbar(snackbarContent, html) {
       return;
   }
 
-  addSnackbar(snackbar);
+  addSnackbar();
+  displaySnackbar();
+
 
   function getNewSnackbar(html) {
     const snackbarDocument = getSnackbarDocument();
     const snackbarTemplate = snackbarDocument.getElementById('snackbarTemplate');
     const snackbarFragment = snackbarTemplate.content.cloneNode(true);
-    return snackbarFragment.getElementById('snackbar');
+    const snackbarElement = snackbarFragment.getElementById('snackbar');
+    return snackbarElement;
 
     function getSnackbarDocument() {
       const parser = new DOMParser();
@@ -101,24 +104,63 @@ function createSnackbar(snackbarContent, html) {
       showCloseButtonOnSnackbar();
     }
 
+    function showCloseButtonOnSnackbar() {
+      snackbarElement.querySelector(`.snackbar-icon`).style.display = 'flex';
+
+      snackbarElement.querySelector(`button`).addEventListener('click', () => {
+        snackbarElement.style.visibility = 'hidden';
+      });
+    }
+
   }
 
   function addTextToSnackbar(text) {
-    snackbar.querySelector(`.snackbar-supporting-text`).innerHTML = text;
+    snackbarElement.querySelector(`.snackbar-supporting-text`).innerHTML = text;
   }
 
-  function showCloseButtonOnSnackbar() {
-    snackbar.querySelector(`.snackbar-icon`).style.display = 'flex';
-
-    snackbar.querySelector(`button`).addEventListener('click', () => {
-      snackbar.style.display = 'none';
-    });
-  }
-
-  function addSnackbar(snackbar) {
-    console.log('Prepending this snackbar to your document: ', snackbar)
+  function addSnackbar() {
+    console.log(`Prepending this snackbar element to your document's div 'snackbars': `, snackbarElement)
     const snackbarsContainer = document.getElementById('snackbars');
-    snackbarsContainer.prepend(snackbar);
+    snackbarsContainer.prepend(snackbarElement);
+  }
+
+  function displaySnackbar() {
+    const snackbar = document.querySelector('#snackbar')
+
+    listenToSnackbarAnimationStart();
+    listenToSnackbarAnimationEnd();
+
+    snackbar.classList.add('show-and-hide');
+
+    function listenToSnackbarAnimationStart() {
+      snackbar.onanimationstart = (event) => {
+        if (event.animationName === 'fadein') {
+          console.log('Now showing snackbar to user!')
+        }
+      }
+    }
+
+    function listenToSnackbarAnimationEnd() {
+      snackbar.onanimationend = (event) => {
+        if (event.animationName === 'fadeout') {
+          snackbar.style.visibility = 'hidden'
+          console.log('Snackbar now hidden')
+          removeOldSnackbars();
+        }
+      };
+
+      function removeOldSnackbars() {
+        const snackbarsContainer = document.getElementById('snackbars');
+        const latestSnackbar = snackbarsContainer.firstElementChild;
+
+        if (latestSnackbar.style.visibility === 'hidden') {
+          snackbarsContainer.replaceChildren();
+          console.log('All old snackbars cleared!');
+        }
+      }
+
+    }
+
   }
 
 }
