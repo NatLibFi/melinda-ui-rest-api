@@ -49,11 +49,25 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
       function printPages(pages) {
         if (pages) {
+
+          if (!Number.isNaN(Number(pages))) {
+            return `, sivu ${pages}`;
+          }
+
+          if (Number.isNaN(Number(pages))) { // special case (newspapers): when input type is 'A7'
+            const first = pages.trim().split(/[0-9]/u);
+            const rest = pages.trim().split(/[a-zA-Z]/u);
+            const testA = (/[a-zA-Z]/u).test(first[0]);
+            const testB = (/[0-9]/u).test(rest[1]);
+
+            if (testA && testB) {
+              return `, sivu ${pages}`;
+            }
+          }
           return `, sivut ${pages}`;
         }
         return '';
       }
-
     }
 
   }
