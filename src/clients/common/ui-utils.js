@@ -5,8 +5,9 @@
 //*****************************************************************************
 
 import { setNavBar, startProcess, stopProcess } from "./navbar.js";
+import {showSnackbar} from "./snackbar/snackbar.js";
 
-export {setNavBar, startProcess, stopProcess}
+export {setNavBar, startProcess, stopProcess, showSnackbar}
 
 //-----------------------------------------------------------------------------
 
