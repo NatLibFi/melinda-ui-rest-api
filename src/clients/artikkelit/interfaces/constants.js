@@ -946,30 +946,30 @@ export const organizations = [
 export const reviewTypesList = [
   {
     value: "elokuva-arvostelu",
-    text: ""
+    text: "Elokuva-arvostelu"
   },
   {
     value: "kirja-arvostelu",
-    text: ""
+    text: "Kirja-arvostelu"
   },
   {
     value: "musiikkiarvostelu",
-    text: ""
+    text: "Musiikkiarvostelu"
   } ,
   {
     value: "sirkusarvostelu",
-    text: ""
+    text: "Sirkusarvostelu"
   },
   {
     value: "taidearvostelu",
-    text: ""
+    text: "Taidearvostelu"
   },
   {
     value: "tanssiarvostelu",
-    text: ""
+    text: "Tanssiarvostelu"
   },
   {
     value: "teatteriarvostelu",
-    text: ""
+    text: "Teatteriarvostelu"
   }
 ]

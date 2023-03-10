@@ -75,8 +75,14 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
   return button;
 }
 
-export function setOptions(element, jsonArray, disabled = false) {
+export function setOptions(element, jsonArray, disabled = false, textValue = false) {
   element.innerHTML = '';
+  if (textValue) {
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.innerHTML = textValue;
+    element.append(defaultOpt);
+  }
   jsonArray.forEach((obj, index) => {
     const opt = document.createElement('option');
     opt.value = obj.value;
