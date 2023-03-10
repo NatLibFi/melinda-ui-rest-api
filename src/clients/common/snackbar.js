@@ -11,18 +11,24 @@
 // - call function with a string to create default snackbar or with a object parameter to create custom snackbar
 //
 // A: Default snackbar
-//    * contains just the message as string
+//    * contains just the message as string. If long message, you can use <br> to create line breaks.
 //    => showSnackbar(string)
 //    => example: showSnackbar('This is my message')
 //      
 // B: Custom snackbar
 //    * currently the options for custom snackbar are
 //       - text (as string) => the message for user
+//       - actionButton (as <button> element) => if the user can do some extra action
 //       - closeButton (as boolean) => if the button for closing snackbar should be visible or not
-//    => showSnackbar({text: string, closeButton: boolean}) 
-//    => example: showSnackbar({text: 'This is my message, closeButton: 'true'})
-
-
+//    => showSnackbar({text: string, actionButton: <button>, closeButton: boolean}) 
+//    => example: showSnackbar({text: 'This is my message', actionButton: myActionButton, closeButton: 'true'})
+//        - note for actionButton: 
+//            1. create a button element in app 
+//                  => example: const myActionButton = document.createElement('button')
+//            2. add button text as innerHtml
+//                  => example: myActionButton.innerHtml = 'do some action'
+//            3. add listener for 'click' events to include the chosen action for snacbar 
+//                  => example: myActionButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
 
 
 export function showSnackbar(snackbarContent) {
@@ -84,6 +90,12 @@ function createSnackbar(snackbarContent, html) {
       return;
   }
 
+  const supportingText = snackbarElement.querySelector(`.snackbar-supporting-text`).innerHTML;
+  if (supportingText === 'undefined' || supportingText === '') {
+    console.log('Snackbar is missing supporting text and is not displayed!')
+    return;
+  }
+
   addSnackbar();
   displaySnackbar();
   clearSnackbars();
@@ -110,12 +122,10 @@ function createSnackbar(snackbarContent, html) {
   function checkSnackbarType() {
 
     if (typeof snackbarContent === 'string' || snackbarContent instanceof String) {
-      //console.log('Snackbar is an string', snackbarContent)
       return 'string';
     }
 
     if (typeof snackbarContent === 'object' && Object.keys(snackbarContent).length !== 0 && Object.getPrototypeOf(snackbarContent) === Object.prototype) {
-      //console.log('Snackbar is an object', snackbarContent)
       return 'object';
     }
   }
@@ -125,22 +135,29 @@ function createSnackbar(snackbarContent, html) {
   }
 
   function createCustomSnackbar(snackbarObject) {
-    const {text, closeButton} = snackbarObject;
+    const {text, actionButton, closeButton} = snackbarObject;
 
     addTextToSnackbar(text);
+    addActionButton();
+    addCloseButton();
 
-    if (closeButton === 'true') {
-      showCloseButtonOnSnackbar();
+    function addActionButton() {
+      if (actionButton !== undefined && actionButton.nodeName === 'BUTTON') {
+        snackbarElement.querySelector(`.snackbar-action`).style.display = 'flex'
+        snackbarElement.querySelector(`.snackbar-action`).append(actionButton);
+      }
     }
 
-    function showCloseButtonOnSnackbar() {
-      snackbarElement.querySelector(`.snackbar-icon`).style.display = 'flex';
+    function addCloseButton() {
+      if (closeButton === 'true') {
+        snackbarElement.querySelector(`.snackbar-icon`).style.display = 'flex';
 
-      snackbarElement.querySelector(`button`).addEventListener('click', () => {
-        snackbarElement.style.visibility = 'hidden';
-      });
+        snackbarElement.querySelector(`.snackbar-icon button`).addEventListener('click', (event) => {
+          eventHandled(event);
+          snackbarElement.style.visibility = 'hidden';
+        });
+      }
     }
-
   }
 
   function addTextToSnackbar(text) {
@@ -148,7 +165,6 @@ function createSnackbar(snackbarContent, html) {
   }
 
   function addSnackbar() {
-    //console.log(`Prepending this snackbar element to your document's div 'snackbars': `, snackbarElement)
     const snackbarsContainer = document.getElementById('snackbars');
     snackbarsContainer.prepend(snackbarElement);
   }
@@ -173,7 +189,6 @@ function createSnackbar(snackbarContent, html) {
       snackbar.onanimationend = (event) => {
         if (event.animationName === 'fadeout') {
           snackbar.style.visibility = 'hidden';
-          console.log('Snackbar now hidden');
         }
       }
     }
