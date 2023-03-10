@@ -6,7 +6,7 @@ import {generatef245, generatef246} from './generate/generate2xxFields';
 import {generatef100sf110sf700sf710s} from './generate/generate1xxFields';
 import {generatef336, generatef337, generatef380} from './generate/generate3xxFields';
 import {generatef490} from './generate/generate4xxFields';
-import {generatef500, generatef520, generatef567, generatef591, generatef593, generatef598, generatef599} from './generate/generate5xxFields';
+import {generatef500, generatef506, generatef520, generatef567, generatef591, generatef593, generatef598, generatef599} from './generate/generate5xxFields';
 import {generatef773, generatef787} from './generate/generate7xxFields';
 import {generatef856} from './generate/generate8xxFields';
 import {generatef960} from './generate/generate9xxFields';
@@ -30,7 +30,8 @@ export function createArtikkelitService() {
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
-    const year = '2022'; // journal year form value / book year form value / current year form value
+    const today = new Date();
+    const year = today.getFullYear(); // journal year form value / book year form value /
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
     const {f599a, f599x} = collecting; // 'collecting' has 'f589a' (!), 'f599a', 'f599x'. Obviously 'f589a' is just misspelled for 'f598a'
@@ -52,9 +53,10 @@ export function createArtikkelitService() {
         ...generatef380(article.reviewType),
         ...generatef490(article.sectionOrColumn),
         ...generatef500(notes), // general notes
+        ...generatef506(isElectronic), // isElectronic
         ...generatef520(abstracts), // Abstracts
         ...generatef567(metodologys),
-        ...generatef591(sourceType, sciences, articleCategory),
+        ...generatef591(sciences, articleCategory),
         ...generatef593(journalJufo, year),
         ...generatef598(collecting.f589a),
         ...generatef599(f599a, f599x),
@@ -69,18 +71,19 @@ export function createArtikkelitService() {
     return record;
   }
 
-  function parseIncomingData(data) {
-    const [issn] = data.issns || [''];
-    const melindaId = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
-
-    return {
-      issn,
-      melindaId
-    };
-  }
 }
 
-function getSourceType(input) {
+export function parseIncomingData(data) {
+  const [issn] = data.issns || [''];
+  const melindaId = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
+
+  return {
+    issn,
+    melindaId
+  };
+}
+
+export function getSourceType(input) {
   const found = input.sourceType;
   const get3rd = found.substr(2, 1);
   const get4th = found.substr(3, 1);
