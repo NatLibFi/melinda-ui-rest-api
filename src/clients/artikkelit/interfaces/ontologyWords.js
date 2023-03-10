@@ -61,7 +61,7 @@ export function addOntologyWord(event) {
   if (ontologyWord) {
     // idbIndex save
     idbAddValueToLastIndex('artoOntologyWords', ontologyWord).then(() => {
-      // refresh ontology word list
+      resetOntologySelect();
       refreshOntologyWordList();
     })
   }
