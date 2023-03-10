@@ -153,7 +153,7 @@
                 </form>
                 <div id="julkaisu-haku-tulos-lista-wrap" class="Select full-width">
                   <label class="bold-text" for="julkaisu-haku-tulos-lista">Tulokset:</label>
-                  <select id="julkaisu-haku-tulos-lista" class="full-width" required>
+                  <select id="julkaisu-haku-tulos-lista" class="full-width" required title="">
                   </select>
                 </div>
               </fieldset>
@@ -209,7 +209,7 @@
                 <div id="numeron-vuosi-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-vuosi">Vuosi:</label>
-                    <input type="text" id="numeron-vuosi" name="numeron-vuosi" size="6" required>
+                    <input type="text" id="numeron-vuosi" name="numeron-vuosi" size="6" required title="">
                   </div>
                 </div>
                 <div id="numeron-vol-wrap" class="full-width">
@@ -222,20 +222,20 @@
                   <div class="Input">
                     <label class="bold-text" for="numeron-numero">Numero:</label>
                     <input type="text" id="numeron-numero" name="numeron-numero" maxlength="32"
-                    pattern="^[\p{N}\p{L}\-\/.,\s]+$">
+                    pattern="^[\p{N}\p{L}\-\/.,\s]+$" required title="">
                   </div>
                 </div>
                 <div id="numeron-sivut-wrap">
                   <div class="Input">
                     <label class="bold-text" for="numeron-sivut">Sivut:</label>
-                    <input type="text" id="numeron-sivut" name="numeron-sivut">
+                    <input type="text" id="numeron-sivut" name="numeron-sivut" required title="">
                   </div>
                 </div>
               </div>
               <div class="full-width">
                 <div class="Select full-width">
                   <label class="bold-text" for="artikkelin-kieli">Kieli:</label>
-                  <select id="artikkelin-kieli" name="artikkelin-kieli" maxLength="128" required>
+                  <select id="artikkelin-kieli" name="artikkelin-kieli" maxLength="128" required title="">
                   </select>
                 </div>
               </div>
@@ -249,7 +249,7 @@
               <div class="full-width">
                 <div class="Input">
                   <label class="bold-text" for="artikkelin-otsikko">Otsikko:</label>
-                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128" required>
+                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128" required title="">
                 </div>
               </div>
               <div class="full-width">
@@ -272,7 +272,9 @@
                   <div class="Input">
                     <label for="artikkelin-osasto-toistuva">Osasto tai toistuva palsta:</label>
                     <input type="text" id="artikkelin-osasto-toistuva" name="artikkelin-osasto-toistuva"
-                      maxLength="128">
+                      maxLength="128" list="artikkelin-osasto-toistuva-lista">
+                    <datalist id="artikkelin-osasto-toistuva-lista">
+                    </datalist>
                   </div>
                 </div>
               </div>

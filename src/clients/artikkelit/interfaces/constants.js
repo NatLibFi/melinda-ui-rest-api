@@ -217,11 +217,11 @@ export const languages = [
   },
   {
     value: "sme;sme;Pohj.saame",
-    text: "Pohj.saame"
+    text: "Pohjoissaame"
   },
   {
     value: "smi;smi;Muu saam.",
-    text: "Muu saam."
+    text: "Muu saame"
   },
   {
     value: "krl;krl;Karjala",
@@ -971,5 +971,24 @@ export const reviewTypesList = [
   {
     value: "teatteriarvostelu",
     text: "Teatteriarvostelu"
+  }
+]
+
+export const sectionOrColumnList = [
+  {
+    value: "Artikkelit",
+    text: ""
+  },
+  {
+    value: "Kirjallisuus",
+    text: ""
+  },
+  {
+    value: "Muut",
+    text: ""
+  },
+  {
+    value: "Vertaisarvioidut artikkelit",
+    text: ""
   }
 ]
