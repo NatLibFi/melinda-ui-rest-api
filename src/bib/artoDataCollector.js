@@ -84,22 +84,57 @@ function collectCommonData(record) {
 
   function collectPublisherData(record) {
     // 260 - JULKAISUTIEDOT (T) Teoksen julkaisutiedot: kustannus-, paino-, jakelu-, julkistamis-, tai tuotantotiedot.
-    const [f260Data] = getSubfieldValues(record, /260/u, ['a', 'b', 'c']);
-    const [publisherLocation] = f260Data.filter(sub => sub.code === 'a').map(sub => sub.value);
-    const [publisher] = f260Data.filter(sub => sub.code === 'b').map(sub => sub.value);
-    const [publisherYearsNotParsed] = f260Data.filter(sub => sub.code === 'c').map(sub => sub.value);
-    const [start, end] = publisherYearsNotParsed ? publisherYearsNotParsed.split('-') : ['', ''];
-    return {
-      publishing: `${publisherLocation} ${publisher} ${publisherYearsNotParsed}`,
-      publisherInfo: {
-        publisherLocation: publisherLocation.replace(titleTrimCharacters, '').trim(),
-        publisher: publisher.replace(titleTrimCharacters, '').trim(),
-        publisherYears: {
-          start: start.replace(titleTrimCharacters, '').trim(),
-          end: end.replace(titleTrimCharacters, '').trim()
+    try {
+      const [f260Data] = getSubfieldValues(record, /260/u, ['a', 'b', 'c']);
+      const [publisherLocation] = f260Data.filter(sub => sub.code === 'a').map(sub => sub.value);
+      const [publisher] = f260Data.filter(sub => sub.code === 'b').map(sub => sub.value);
+      const [publisherYearsNotParsed] = f260Data.filter(sub => sub.code === 'c').map(sub => sub.value);
+      const [start, end] = publisherYearsNotParsed ? publisherYearsNotParsed.split('-') : ['', ''];
+      return {
+        publishing: `${publisherLocation} ${publisher} ${publisherYearsNotParsed}`,
+        publisherInfo: {
+          publisherLocation: publisherLocation.replace(titleTrimCharacters, '').trim(),
+          publisher: publisher.replace(titleTrimCharacters, '').trim(),
+          publisherYears: {
+            start: start.replace(titleTrimCharacters, '').trim(),
+            end: end?.replace(titleTrimCharacters, '').trim()
+          }
         }
+      };
+    } catch {
+      // 264 - HUOMAUTUS TUOTANTO-, KUSTANNUS-, JAKELU-, VALMISTUS- JA TEKIJÄNOIKEUSTIEDOISTA (T)
+      // Merkintö liittyy kustannus-, paino-, jakelu-, julkistamis- tai tuotantotietoihin.
+      try {
+        const [f264Data] = getSubfieldValues(record, /264/u, ['a', 'b', 'c']);
+        const [publisherLocation] = f264Data.filter(sub => sub.code === 'a').map(sub => sub.value);
+        const [publisher] = f264Data.filter(sub => sub.code === 'b').map(sub => sub.value);
+        const [publisherYearsNotParsed] = f264Data.filter(sub => sub.code === 'c').map(sub => sub.value);
+        const [start, end] = publisherYearsNotParsed ? publisherYearsNotParsed.split('-') : ['', ''];
+        return {
+          publishing: `${publisherLocation} ${publisher} ${publisherYearsNotParsed}`,
+          publisherInfo: {
+            publisherLocation: publisherLocation.replace(titleTrimCharacters, '').trim(),
+            publisher: publisher.replace(titleTrimCharacters, '').trim(),
+            publisherYears: {
+              start: start.replace(titleTrimCharacters, '').trim(),
+              end: end?.replace(titleTrimCharacters, '').trim()
+            }
+          }
+        };
+      } catch (error) {
+        return {
+          publishing: '',
+          publisherInfo: {
+            publisherLocation: '',
+            publisher: '',
+            publisherYears: {
+              start: '',
+              end: ''
+            }
+          }
+        };
       }
-    };
+    }
   }
 }
 

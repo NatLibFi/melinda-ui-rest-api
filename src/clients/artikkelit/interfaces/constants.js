@@ -32,15 +32,15 @@ export const searchTypes = [
 export const articleTypesBooks = [
   {
     value: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
-    text: ""
+    text: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa"
   },
   {
     value: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa",
-    text: ""
+    text: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa"
   },
   {
     value: "D2 - Artikkeli ammatillisessa kokoomateoksessa",
-    text: ""
+    text: "D2 - Artikkeli ammatillisessa kokoomateoksessa"
   } 
 ]
 
@@ -48,23 +48,23 @@ export const articleTypesBooks = [
 export const articleTypesJournal = [
   {
     value: "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä"
   },
   {
     value: "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä"
   },
   {
     value: "B1 - Kirjoitus tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "B1 - Kirjoitus tieteellisessä aikakauslehdessä"
   },
   {
     value: "D1 - Artikkeli ammattilehdessä",
-    text: ""
+    text: "D1 - Artikkeli ammattilehdessä"
   },
   {
     value: "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
-    text: ""
+    text: "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli"
   }
 ]
 

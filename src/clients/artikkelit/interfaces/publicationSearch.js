@@ -45,7 +45,7 @@ export function searchResultChange(event) {
       }
 
       if (searchType === 'book') {
-        document.getElementById(`lehden-isbn`).innerHTML = data.isbns;
+        document.getElementById(`lehden-tunniste`).innerHTML = data.isbns;
       }
 
       document.getElementById(`lehden-julkaisu-tyyppi`).innerHTML = data.recordType;
@@ -63,7 +63,8 @@ export function resetSearchResultSelect(searching) {
   document.getElementById(`lehden-nimi`).innerHTML = '';
   document.getElementById(`lehden-melindaId`).innerHTML = '';
   document.getElementById(`lehden-tunniste`).innerHTML = '';
-  document.getElementById(`lehden-tunniste`).innerHTML = '';
+  document.getElementById(`lehden-julkaisija`).innerHTML = '';
+  document.getElementById(`lehden-paikka`).innerHTML = '';
   document.getElementById(`lehden-julkaisu-tyyppi`).innerHTML = '';
   document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = '';
   document.getElementById(`lehden-vuodet-min`).innerHTML = '';

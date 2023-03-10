@@ -185,9 +185,9 @@
                     <p id="lehden-melindaId" name="lehden-melindaId" class="content-text"> </p>
                   </div>
                   <div class="full-width">
-                    <label for="lehden-vuodet-min" class="label-text">Julkaisuvuodet:</label>
+                    <label for="lehden-vuodet-min" id="lehden-vuodet-min-label" class="label-text"></label>
                     <p id="lehden-vuodet-min" name="lehden-vuodet-min" class="content-text"> </p>
-                    <p class="content-text">-</p>
+                    <p class="content-text" id="lehden-vuodet-valiviiva">-</p>
                     <p id="lehden-vuodet-max" name="lehden-vuodet-max" class="content-text"> </p>
                   </div>
                 </div>
@@ -240,12 +240,10 @@
                 </div>
               </div>
               <div class="full-width">
-                <div class="Input">
+                <div class="Select full-width">
                   <label class="bold-text" for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
-                  <input type="text" id="artikkelin-tyyppi" class="full-width" name="artikkelin-tyyppi"
-                    list="artikkelin-tyyppi-lista" required title="">
-                  <datalist id="artikkelin-tyyppi-lista">
-                  </datalist>
+                  <select id="artikkelin-tyyppi" name="artikkelin-tyyppi" onchange="return articleTypeChange(event)">
+                  </select>
                 </div>
               </div>
               <div class="full-width">
@@ -288,6 +286,91 @@
                     </select>
                   </div>
                 </div>
+              </div>
+            </fieldset>
+            <fieldset id="arvostellun-teoksen-tiedot">
+              <legend>Arvostellun teoksen tiedot</legend>
+              <form id="arvosteltu-teos-hae-form">
+                <div class="full-width">
+                  <div class="Input full-width">
+                    <label class="bold-text" for="arvosteltu-teos">Haku:</label>
+                    <input type="text" id="arvosteltu-teos" name="arvosteltu-teos"
+                        pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$" maxlength="30">
+                  </div>
+                  <button type="submit" class="material-icons tooltip no-border icon positive"
+                    tooltip-text="Hae">search</button>
+                </div>
+              </form>
+              <form id="arvosteltu-teos-lisaa-form">
+                <div class="full-width">
+                  <div class="Select full-width">
+                    <label class="bold-text" for="arvosteltu-teos-tulos-lista">Tulokset:</label>
+                    <select id="arvosteltu-teos-tulos-lista">
+                    </select>
+                  </div>
+                </div>
+              </form>
+              <div class="full-width justify-content-end">
+                <div class="Button">
+                  <button class="negative" onclick="return resetReview(event)">Tyhjennä arvostelu</button>
+                </div>
+                <div class="Button">
+                  <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvostelu</button>
+                </div>
+              </div>
+              <div class="full-width">
+                <div class="full-width">
+                  <label for="teoksen-nimi" class="label-text">Nimi:</label>
+                  <p id="teoksen-nimi" name="teoksen-nimi" class="content-text"> </p>
+                </div>
+                <div class="full-width">
+                  <label for="teoksen-julkaisu-tyyppi" class="label-text">Julkaisutyyppi:</label>
+                  <p id="teoksen-julkaisu-tyyppi" name="teoksen-julkaisu-tyyppi" class="content-text"> </p>
+                </div>
+              </div>
+              <div class="full-width">
+                <div class="full-width">
+                  <label for="teoksen-julkaisija" class="label-text">Julkaisija:</label>
+                  <p id="teoksen-julkaisija" name="teoksen-julkaisija" class="content-text"> </p>
+                </div>
+                <div class="full-width">
+                  <label for="teoksen-elektroninen-julkaisu" class="label-text">Elektroninen julkaisu:</label>
+                  <p id="teoksen-elektroninen-julkaisu" name="teoksen-elektroninen-julkaisu" class="content-text"></p>
+                </div>
+              </div>
+              <div class="full-width">
+                <div class="full-width">
+                  <label for="teoksen-melindaId" class="label-text">Melinda-ID:</label>
+                  <p id="teoksen-melindaId" name="teoksen-melindaId" class="content-text"> </p>
+                </div>
+                <div class="full-width">
+                  <label for="teoksen-vuosi" class="label-text">Julkaisuvuosi:</label>
+                  <p id="teoksen-vuosi" name="teoksen-vuosi" class="content-text"> </p>
+                </div>
+              </div>
+              <div class="full-width">
+                <div class="full-width">
+                  <label for="teoksen-tunniste" class="label-text">ISBN:</label>
+                  <p id="teoksen-tunniste" name="teoksen-tunniste" class="content-text"> </p>
+                </div>
+                <div class="full-width">
+                  <label for="teoksen-paikka" class="label-text">Julkaisupaikka:</label>
+                  <p id="teoksen-paikka" name="teoksen-paikka" class="content-text"> </p>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset id="arvostellut-teokset">
+              <legend>Lisätyt arvostelut</legend>
+              <div class="full-width">
+                <div id="arvostelut-list">
+                </div>
+              </div>
+              <div class="full-width justify-content-end">
+                <form id="tyhjenna-arvostelut-form">
+                  <div class="Button">
+                    <button type="submit" class="negative">Tyhjennä lisätyt arvostelut</button>
+                  </div>
+                </form>
               </div>
             </fieldset>
             <fieldset>

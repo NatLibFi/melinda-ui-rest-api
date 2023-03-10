@@ -6,9 +6,10 @@ import {idbGet, idbDel, idbGetStoredValues, idbClear, getTableNames} from "/arti
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
 import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
 import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
-import {fillFormOptions, fillDatalistOptions} from "/artikkelit/interfaces/loadData.js";
+import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/artikkelit/interfaces/loadData.js";
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
+import {initReviewSearch, resetReview, refreshReviewsList, clearReviews} from "./interfaces/reviewSearch.js";
 import {initPublicationSearch, resetSearchResultSelect} from "./interfaces/publicationSearch.js";
 //import { } from "./interfaces/";
 
@@ -26,6 +27,7 @@ window.initialize = function () {
     fillFormOptions();
     initPublicationSearch();
     initArticle();
+    initReviewSearch();
     initAuthors();
     initAbstracts();
     initOntologyWords();
@@ -41,6 +43,7 @@ function initTypeChanges() {
 function sourceTypeChange(event) {
   event.preventDefault();
   fillDatalistOptions();
+  fillArticleTypeOptions();
 
   const sourceType = event.target.value;
   if (sourceType === 'journal') {
@@ -50,6 +53,9 @@ function sourceTypeChange(event) {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'block';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
+    document.getElementById("lehden-vuodet-min-label").innerHTML = "Julkaisuvuodet:";
+    document.getElementById("lehden-vuodet-valiviiva").style.display = "block";
+    document.getElementById("lehden-vuodet-max").style.display = "block";
   }
 
   if (sourceType === 'book') {
@@ -61,6 +67,23 @@ function sourceTypeChange(event) {
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById("artikkelin-osasto-toistuva").value = "";
     document.getElementById("artikkelin-arvostelu-tyyppi").value = "";
+    document.getElementById("lehden-vuodet-min-label").innerHTML = "Julkaisuvuosi:"
+    document.getElementById("lehden-vuodet-valiviiva").style.display = "none";
+    document.getElementById("lehden-vuodet-max").style.display = "none";
+
+  }
+}
+
+window.articleTypeChange = (event) => {
+  const reviewFieldset = document.getElementById("arvostellun-teoksen-tiedot");
+  const addedReviews = document.getElementById("arvostellut-teokset");
+  const selectedType = event.target.value;
+  if (["B1", "B2", "D1", "E1"].some(str => selectedType.includes(str))) {
+    reviewFieldset.style.display = "flex";
+    addedReviews.style.display = "flex";
+  } else {
+    reviewFieldset.style.display = "none";
+    addedReviews.style.display = "none";
   }
 }
 
@@ -113,12 +136,14 @@ window.doUpdate = (event) => {
     otherRatings
   ]) => {
     const formData = collectFormData();
+    const reviews = collectReviews();
     getArtikkeliRecord({
       source,
       ...formData,
       sciences,
       metodologys,
       authors,
+      ...reviews,
       ontologyWords,
       abstracts,
       notes,
@@ -130,6 +155,10 @@ window.doUpdate = (event) => {
 
 window.resetAuthor = (event) => {
   resetAuthor(event);
+}
+
+window.resetReview = (event) => {
+  resetReview(event);
 }
 
 function collectFormData() {
@@ -160,6 +189,15 @@ function collectFormData() {
   };
 }
 
+function collectReviews() {
+  const articleType = document.getElementById("artikkelin-tyyppi").value;
+  const includeReviews = ["B1", "B2", "D1", "E1"].some(str => articleType.includes(str));
+  if (!includeReviews) {
+    idbClear("artoReviews").then(() => refreshReviewsList());
+  }
+  return idbGetStoredValues("artoReviews");
+}
+
 function idbClearAllTables() {
   for (const tableName of getTableNames()) {
     idbClear(tableName);
@@ -176,7 +214,7 @@ function refreshAllLists() {
   refreshOtherRatingsList();
   refreshSciencesList();
   refreshUDKsList();
-  // refreshReviewsList(); <-- Tämä tulee lisätä kunhan arvostelun tallennus ja nämä muutokset on mergetty nextiin
+  refreshReviewsList(); mergetty nextiin
 }
 
 function resetInputFields() {
@@ -197,6 +235,10 @@ function resetSelectFields() {
     selectField.dispatchEvent(new Event("change"));
   }
 }
+
+window.removeReviewedBook = (event, key) => {
+  event.preventDefault();
+  idbDel("artoReviews", key).then(() => refreshReviewsList());
 
 window.removeArticleLink = (event) => {
   event.preventDefault();
