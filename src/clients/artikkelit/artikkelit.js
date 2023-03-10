@@ -214,7 +214,7 @@ function refreshAllLists() {
   refreshOtherRatingsList();
   refreshSciencesList();
   refreshUDKsList();
-  refreshReviewsList(); mergetty nextiin
+  refreshReviewsList();
 }
 
 function resetInputFields() {
@@ -239,6 +239,7 @@ function resetSelectFields() {
 window.removeReviewedBook = (event, key) => {
   event.preventDefault();
   idbDel("artoReviews", key).then(() => refreshReviewsList());
+}
 
 window.removeArticleLink = (event) => {
   event.preventDefault();
