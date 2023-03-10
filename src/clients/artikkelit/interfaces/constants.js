@@ -217,11 +217,11 @@ export const languages = [
   },
   {
     value: "sme;sme;Pohj.saame",
-    text: "Pohj.saame"
+    text: "Pohjoissaame"
   },
   {
     value: "smi;smi;Muu saam.",
-    text: "Muu saam."
+    text: "Muu saame"
   },
   {
     value: "krl;krl;Karjala",
