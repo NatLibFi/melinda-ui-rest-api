@@ -240,10 +240,21 @@ fieldset .panel p {
 #asiasana-list,
 #huomautukset-list,
 #udk-list,
-#muu-luokitus-list {
+#muu-luokitus-list,
+#arvostelut-list {
   width: 100%;
 }
 
 .character-warning {
   background-color: #F99;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

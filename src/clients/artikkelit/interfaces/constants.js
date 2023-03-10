@@ -32,15 +32,15 @@ export const searchTypes = [
 export const articleTypesBooks = [
   {
     value: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
-    text: ""
+    text: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa"
   },
   {
     value: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa",
-    text: ""
+    text: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa"
   },
   {
     value: "D2 - Artikkeli ammatillisessa kokoomateoksessa",
-    text: ""
+    text: "D2 - Artikkeli ammatillisessa kokoomateoksessa"
   } 
 ]
 
@@ -48,23 +48,23 @@ export const articleTypesBooks = [
 export const articleTypesJournal = [
   {
     value: "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä"
   },
   {
     value: "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä"
   },
   {
     value: "B1 - Kirjoitus tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "B1 - Kirjoitus tieteellisessä aikakauslehdessä"
   },
   {
     value: "D1 - Artikkeli ammattilehdessä",
-    text: ""
+    text: "D1 - Artikkeli ammattilehdessä"
   },
   {
     value: "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
-    text: ""
+    text: "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli"
   }
 ]
 
@@ -217,11 +217,11 @@ export const languages = [
   },
   {
     value: "sme;sme;Pohj.saame",
-    text: "Pohj.saame"
+    text: "Pohjoissaame"
   },
   {
     value: "smi;smi;Muu saam.",
-    text: "Muu saam."
+    text: "Muu saame"
   },
   {
     value: "krl;krl;Karjala",
@@ -946,30 +946,49 @@ export const organizations = [
 export const reviewTypesList = [
   {
     value: "elokuva-arvostelu",
-    text: ""
+    text: "Elokuva-arvostelu"
   },
   {
     value: "kirja-arvostelu",
-    text: ""
+    text: "Kirja-arvostelu"
   },
   {
     value: "musiikkiarvostelu",
-    text: ""
+    text: "Musiikkiarvostelu"
   } ,
   {
     value: "sirkusarvostelu",
-    text: ""
+    text: "Sirkusarvostelu"
   },
   {
     value: "taidearvostelu",
-    text: ""
+    text: "Taidearvostelu"
   },
   {
     value: "tanssiarvostelu",
-    text: ""
+    text: "Tanssiarvostelu"
   },
   {
     value: "teatteriarvostelu",
+    text: "Teatteriarvostelu"
+  }
+]
+
+export const sectionOrColumnList = [
+  {
+    value: "Artikkelit",
+    text: ""
+  },
+  {
+    value: "Kirjallisuus",
+    text: ""
+  },
+  {
+    value: "Muut",
+    text: ""
+  },
+  {
+    value: "Vertaisarvioidut artikkelit",
     text: ""
   }
 ]
