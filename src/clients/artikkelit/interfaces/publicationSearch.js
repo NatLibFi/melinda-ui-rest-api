@@ -57,7 +57,7 @@ export function searchResultChange(event) {
   }
 }
 
-function resetSearchResultSelect(searching) {
+export function resetSearchResultSelect(searching) {
   const select = document.getElementById('julkaisu-haku-tulos-lista');
   select.innerHTML = '';
   document.getElementById(`lehden-nimi`).innerHTML = '';

@@ -97,7 +97,7 @@
               <fieldset>
                 <legend>Kuvailun kohde</legend>
                 <div class="Select full-width">
-                  <select id="kuvailtava-kohde" name="kuvailtava-kohde" onchange="return sourceTypeChange(event)">
+                  <select id="kuvailtava-kohde" name="kuvailtava-kohde">
                   </select>
                 </div>
               </fieldset>
@@ -215,20 +215,20 @@
                 <div id="numeron-vol-wrap" class="full-width">
                   <div class="Input">
                     <label for="numeron-vol">Vol.:</label>
-                    <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="5">
+                    <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="5" onwheel="this.blur()">
                   </div>
                 </div>
                 <div id="numeron-numero-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-numero">Numero:</label>
                     <input type="text" id="numeron-numero" name="numeron-numero" maxlength="32"
-                    pattern="^[\p{N}\p{L}\-\/.,\s]+$" required>
+                    pattern="^[\p{N}\p{L}\-\/.,\s]+$">
                   </div>
                 </div>
                 <div id="numeron-sivut-wrap">
                   <div class="Input">
                     <label class="bold-text" for="numeron-sivut">Sivut:</label>
-                    <input type="text" id="numeron-sivut" name="numeron-sivut" required>
+                    <input type="text" id="numeron-sivut" name="numeron-sivut">
                   </div>
                 </div>
               </div>
@@ -282,12 +282,10 @@
               </div>
               <div id="artikkelin-arvostelu-tyyppi-wrap">
                 <div class="full-width">
-                  <div class="Input">
+                  <div class="Select full-width">
                     <label for="artikkelin-arvostelu-tyyppi">Arvostelun tyyppi:</label>
-                    <input type="text" id="artikkelin-arvostelu-tyyppi" name="artikkelin-arvostelu-tyyppi"
-                    list="artikkelin-luokitus-lista" required>
-                    <datalist id="artikkelin-luokitus-lista">
-                    </datalist>
+                    <select id="artikkelin-arvostelu-tyyppi" name="artikkelin-arvostelu-tyyppi">
+                    </select>
                   </div>
                 </div>
               </div>
@@ -442,7 +440,7 @@
               <form id="asiasana-haku-yso-form">
                 <div class="Select full-width">
                   <label for="asiasana-ontologia">Tyyppi:</label>
-                  <select id="asiasana-ontologia" name="asiasana-ontologia" onchange="return ontologyTypeChange(event)">
+                  <select id="asiasana-ontologia" name="asiasana-ontologia">
                   </select>
                 </div>
                 <div id="haku-osio" class="full-width">
@@ -572,6 +570,11 @@
                 </form>
               </div>
             </fieldset>
+            <div class="full-width justify-content-end">
+              <div class="Button">
+                <button class="negative" onclick="clearAllFields()">Tyhjennä lomake</button>
+              </div>
+            </div>
           </div>
         </div>
 

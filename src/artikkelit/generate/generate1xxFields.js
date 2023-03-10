@@ -145,9 +145,12 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
 
     function generateOrgnCodes() {
-      const code = author.authorsTempOrganizations.map(elem => `${elem.code}`);
-      const editCodes = code.toString().replaceAll(',', ' ');
-      return {code: 'g', value: `(orgn)${editCodes}`};
+      if (author.authorsTempOrganizations) {
+        const code = author.authorsTempOrganizations.map(elem => `${elem.code}`);
+        const editCodes = code.toString().replaceAll(',', ' ');
+        return {code: 'g', value: `(orgn)${editCodes}`};
+      }
+      return {};
     }
 
   });

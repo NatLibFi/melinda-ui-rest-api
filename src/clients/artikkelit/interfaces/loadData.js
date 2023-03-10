@@ -31,6 +31,10 @@ export async function fillSelectOptions() {
     if (select.name.indexOf('-ontologia') !== -1) {
       setOptions(select, ontologyTypes);
     }
+
+    if (select.name.indexOf('-arvostelu-tyyppi') !== -1) {
+      setOptions(select, reviewTypesList, false, "Ei arvostelutyyppiä");
+    }
   }
 }
 
@@ -60,9 +64,9 @@ export function fillDatalistOptions() {
       setOptions(datalist, organizations);
     }
 
-    if (datalist.id.indexOf('-luokitus-lista') !== -1) {
-      setOptions(datalist, reviewTypesList);
-    }
+    // if (datalist.id.indexOf('-luokitus-lista') !== -1) {
+    //   setOptions(datalist, reviewTypesList);
+    // }
 
     if (datalist.id.indexOf('-osasto-toistuva-lista') !== -1) {
       setOptions(datalist, sectionOrColumnList);
