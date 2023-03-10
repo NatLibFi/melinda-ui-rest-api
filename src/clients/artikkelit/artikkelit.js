@@ -59,6 +59,7 @@ function sourceTypeChange(event) {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
+    document.getElementById("artikkelin-arvostelu-tyyppi").value = "";
   }
 }
 
