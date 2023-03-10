@@ -1,16 +1,15 @@
-import {setNavBar} from "/common/ui-utils.js";
-import {doLogin} from "/common/auth.js"
-import {showTab} from "/common/ui-utils.js";
+import {setNavBar, showTab} from "/common/ui-utils.js";
+import {Account, doLogin, logout} from "/common/auth.js"
 import {getArtikkeliRecord} from "../common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
-import {idbGet, idbDel, idbGetStoredValues} from "/artikkelit/indexDB.js"
+import {idbGet, idbDel, idbGetStoredValues, idbClear, getTableNames} from "/artikkelit/indexDB.js"
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
 import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
 import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
 import {fillFormOptions, fillDatalistOptions} from "/artikkelit/interfaces/loadData.js";
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
-import {initPublicationSearch} from "./interfaces/publicationSearch.js";
+import {initPublicationSearch, resetSearchResultSelect} from "./interfaces/publicationSearch.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -20,9 +19,10 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    // const username = document.querySelector("#account-menu #username")
-    // username.innerHTML = Account.get()["Name"];
+    const username = document.querySelector("#account-menu #username")
+    username.innerHTML = Account.get()["Name"];
     showTab('artikkelit-lisaa');
+    initTypeChanges();
     fillFormOptions();
     initPublicationSearch();
     initArticle();
@@ -33,7 +33,12 @@ window.initialize = function () {
   }
 }
 
-window.sourceTypeChange = (event) => {
+function initTypeChanges() {
+  document.getElementById("kuvailtava-kohde").addEventListener("change", sourceTypeChange);
+  document.getElementById("asiasana-ontologia").addEventListener("change", ontologyTypeChange);
+}
+
+function sourceTypeChange(event) {
   event.preventDefault();
   fillDatalistOptions();
 
@@ -54,10 +59,11 @@ window.sourceTypeChange = (event) => {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
+    document.getElementById("artikkelin-arvostelu-tyyppi").value = "";
   }
 }
 
-window.ontologyTypeChange = (event) => {
+function ontologyTypeChange(event) {
   event.preventDefault();
 
   const sourceType = event.target.value;
@@ -153,6 +159,44 @@ function collectFormData() {
   };
 }
 
+function idbClearAllTables() {
+  for (const tableName of getTableNames()) {
+    idbClear(tableName);
+  }
+}
+
+function refreshAllLists() {
+  refreshAbstractList();
+  refreshAuthorOrganizationList();
+  refreshAuthorsList();
+  refreshMetodologysList();
+  refreshNotesList();
+  refreshOntologyWordList();
+  refreshOtherRatingsList();
+  refreshSciencesList();
+  refreshUDKsList();
+  // refreshReviewsList(); <-- Tämä tulee lisätä kunhan arvostelun tallennus ja nämä muutokset on mergetty nextiin
+}
+
+function resetInputFields() {
+  for (const inputField of document.getElementsByTagName("input")) {
+    inputField.value = "";
+  }
+}
+
+function resetTextareaFields() {
+  for (const textarea of document.getElementsByTagName("textarea")) {
+    textarea.value = "";
+  }
+}
+
+function resetSelectFields() {
+  for (const selectField of document.getElementsByTagName("select")) {
+    selectField.selectedIndex = 0;
+    selectField.dispatchEvent(new Event("change"));
+  }
+}
+
 window.removeArticleLink = (event) => {
   event.preventDefault();
   event.target.parentElement.remove();
@@ -201,4 +245,19 @@ window.removeUDK = (event, key) => {
 window.removeotherRating = (event, key) => {
   event.preventDefault();
   idbDel('artoOtherRatings', key).then(() => refreshOtherRatingsList());
+}
+
+window.onAccount = function (e) {
+  console.log('Account:', e);
+  idbClearAllTables();
+  logout();
+}
+
+window.clearAllFields = function () {
+  idbClearAllTables();
+  refreshAllLists();
+  resetSearchResultSelect();
+  resetInputFields();
+  resetTextareaFields();
+  resetSelectFields();
 }

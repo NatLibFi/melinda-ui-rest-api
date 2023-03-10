@@ -14,7 +14,6 @@
   <script type="module" src="viewer.js"></script>
 </head>
 
-
 <!-- -------------------------------------------------------------------------- -->
 <!-- Body -->
 <!-- -------------------------------------------------------------------------- -->
@@ -40,11 +39,11 @@
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus autocomplete="username"/>
+        <input id="login-username" name="username" autofocus autocomplete="username" />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password" autocomplete="current-password"/>
+        <input id="login-password" type="password" name="password" autocomplete="current-password" />
       </div>
       <div class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
@@ -91,7 +90,7 @@
         <form class="ToolBar HBox">
 
           <div class="Select VBox">
-            <label>Log type</label>
+            <label>Lokityyppi</label>
             <select id="logType">
               <option value="MERGE_LOG">Merge</option>
               <option value="MATCH_LOG">Match</option>
@@ -99,17 +98,17 @@
           </div>
 
           <div class="flex-container">
+            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+              tooltip-text="Etsi ID listasta" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
             <div class="Filler VBox Input">
-              <label>Id (Correlation id)</label>
+              <label>ID (correlation id)</label>
               <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
-            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-              tooltip-text="View id list" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
           </div>
 
           <div class="Select VBox">
             <div class="sequenceContainer">
-              <label>Sequence</label>
+              <label>Sekvenssi</label>
               <div class="flex-container">
                 <div class="Select VBox">
                   <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
@@ -121,21 +120,21 @@
             </div>
           </div>
 
-          <button class="material-icons tooltip" tooltip-text="Search"
+          <button class="material-icons tooltip search-button" tooltip-text="Hae"
             onclick="return doSearchPress(event)">search</button>
 
         </form>
 
-        <button id="protect" class="material-icons tooltip" tooltip-text="Protect" onclick="return protect(event)"
+        <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
           disabled="true">lock_open</button>
 
-        <button id="share" class="material-icons tooltip" tooltip-text="Share"
+        <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
           onclick="return copyLink(event)">share</button>
 
-        <button id="delete" class="material-icons tooltip" tooltip-text="Delete" onclick="return remove(event)"
+        <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID" onclick="return remove(event)"
           disabled="true">delete</button>
 
-        <button id="settings" class="material-icons tooltip" tooltip-text="Settings" disabled="true">settings</button>
+        <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
 
       </div>
 
@@ -218,57 +217,184 @@
 
       </div>
 
-
+      <!-- ---------------------------------------------------------------------- -->
       <!-- Modal for browsing and selecting a correlation id from a list -->
       <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
-        <div class="modal-content BoxShadow" onclick="return ignore(event)">
 
-          <!-- (shows instructions for list) -->
-          <label class="correlation-id placeholder">Please select a correlation id for viewing log item</label>
+        <!-- The modal box outline and content  -->
+        <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
 
-          <hr />
+          <!-- Shows instructional title for list, info text and close button -->
+          <div class="modal-top-div">
 
-          <!-- (shows buttons for opening calendar for start and end date pick and place for date input) -->
-          <div id="filterCorrelationIdList">
-            <p class="correlation-id">Filter the list by selecting start date and/or end date.</p>
-            <div class="datepicker-container">
-              <div class="datepicker-container">
-                <button id="dateStartButton" type="button" class="material-icons tooltip" tooltip-text="Pick start date"
-                  onclick="return doOpenDateStartPicker(event)">today</button>
-                <input id="dateStartInput" type="date" onchange="return updateOnChange(event)">
+            <!-- the title for modal, and some additional info text -->
+            <div class="modal-title-and-info">
+              <div class="modal-title">Valitse ID listasta ja aloita haku</div>
+              <div id="lastSearchedInfoText" class="modal-info-text"></div>
+            </div>
+
+            <!-- button for closing modal, works the same way as clicking outside modal  -->
+            <div class="modal-top-div-buttons">
+              <button id="closeModalButton" class="material-icons close-button modal-function-button"
+                title="Sulje lista ilman hakua" onclick="return modalClose(event)">close</button>
+            </div>
+
+          </div>
+
+          <!-- All buttons for filtering correlation id list  -->
+          <div id="filteringButtons" class="list-filtering-buttons">
+
+            <!-- button toggles showing logs by log type or hiding them from the list -->
+            <!-- segmented button used as multi-select button -->
+            <div id="logTypeToggleContainer" class="filter-button-container">
+              <div class="segmented-button-container">
+                <button id="mergeLogsSelect" class="filter-button segmented-button filter-button-selected"
+                  data-title-a="Piilota MERGE_LOG-lokityypit listanäkymästä" data-title-b="Näytä MERGE_LOG-lokityypit listanäkymässä"
+                  onclick="return toggleShowMergeLogs(event)" data-value="true">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">MERGE</span>
+                  </div>
+                </button>
+                <button id="matchLogsSelect" class="filter-button segmented-button filter-button-selected"
+                  data-title-a="Piilota MATCH_LOG-lokityypit listanäkymästä" data-title-b="Näytä MATCH_LOG-lokityypit listanäkymässä"
+                  onclick="return toggleShowMatchLogs(event)" data-value="true">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">MATCH</span>
+                  </div>
+                </button>
               </div>
-              <div class="datepicker-container">
-                <input id="dateEndInput" type="date" class="correlation-id" onchange="return updateOnChange(event)">
-                <button id="dateEndButton" type="button" class="material-icons tooltip" tooltip-text="Pick end date"
-                  onclick="return doOpenDateEndPicker(event)">event</button>
+            </div>
+
+            <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
+            <!-- segmented button used as single-select button -->
+            <div id="logCreationDateToggleContainer" class="filter-button-container">
+              <div class="segmented-button-container">
+                <button id="creationTimeToday" class="filter-button segmented-button"
+                  data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
+                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                  onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">Tänään</span>
+                  </div>
+                </button>
+                <button id="creationTimeWeekAgo" class="filter-button segmented-button"
+                  data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
+                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
+                  <div class="filter-button-content">
+                    <span class="material-icons filter-button-icon">check</span>
+                    <span class="filter-button-text">Yli viikko sitten</span>
+                  </div>
+                </button>
               </div>
+            </div>
+
+            <!-- button toggles showing extra details for correlation id list items or hiding them  -->
+            <div id="listDetailsToggleContainer" class="filter-button-container">
+              <button id="toggleListDetails" class="filter-button filter-button-selected"
+                data-title-a="Piilota tarkat tiedot listanäkymästä" data-title-b="Näytä tarkat tiedot listanäkymässä"
+                onclick="return toggleListDetails(event)" data-value="true">
+                <div class="filter-button-content">
+                  <span class="material-icons filter-button-icon">check</span>
+                  <span class="filter-button-text">Tarkat tiedot</span>
+                </div>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- All inputs for filtering correlation id list  -->
+          <div id="filteringInputs" class="list-filtering-inputs">
+
+            <!-- inputs for star date and end end date date pickers  -->
+            <div class="date-filter-container">
+              Päivämäärähaku:
+              <div class="datepicker-container">
+                <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                  placeholder="Start date" title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                  onchange="return updateOnChange(event)">
+                <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                  placeholder="End date" title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                  onchange="return updateOnChange(event)">
+              </div>
+            </div>
+
+            <!-- input for searching with correlation id string -->
+            <div class="correlation-id-filter-container">
+              Tekstihaku:
+              <input id="correlationIdInput" type="text" class="correlation-id-input"
+                title="Näytä listanäkymässä vain ID:t, jotka sopivat hakutermiisi" placeholder="...0a1b-23cd45ef..."
+                oninput="return updateOnChange(event)">
+            </div>
+
+          </div>
+
+          <!-- Div for search results info and sorting options -->
+          <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
+
+            <!-- shows info about search results -->
+            <div id="fetchListPlaceholderText" class="search-results-placeholder">...haetaan listaa, hetkinen...</div>
+
+            <!-- button for resetting search and clearing all filters -->
+            <div id="clearFilters" class="clear-filters">
+              <button id="clearFiltersButton" class="clear-button modal-function-button"
+                title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters({event})">Nollaa
+                suodattimet</button>
+            </div>
+
+            <!-- shows the dropdown for sorting -->
+            <div class="Select VBox list-sorting">
+              <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+                <option selected value="sortByTimeNewestFirst">Näytä uusimmat ID:t ensin</option>
+                <option value="sortByTimeOldestFirst">Näytä vanhimmat ID:t ensin</option>
+                <option value="sortById">Järjestä ID:n mukaan (0->9 a->f)</option>
+              </select>
             </div>
           </div>
 
-          <hr />
-          <br>
+          <!-- Shows the list of correlation ids -->
+          <div id="correlationIdList" class="list-items"></div>
 
-          <!-- (shows info about search results) -->
-          <div id="fetchListPlaceholderText" class="correlation-id placeholder">...fetching list, please wait...</div>
+          <!-- This is helper html for list items  -->
+          <!-- template's contents are not rendered on page -->
+          <template id="listItemTemplate">
 
-          <br>
+            <!-- base for one correlation id list item -->
+            <!-- one list item has id and details+icons -->
+            <div id="listItem" class="list-item">
+              <div class="list-item-id"></div>
+              <div class="list-item-details-and-icons">
+                <div class="list-item-details"></div>
+                <div class="list-item-icons">
+                  <span class="material-icons list-item-icons-search"
+                    title="Tee haku tällä ID:llä">search</span>
+                </div>
+              </div>
+            </div>
 
-          <div class="Select VBox list-sorting">
-            <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
-              <option selected value="sortById">Sort by correlation id</option>
-              <option value="sortByTime">Sort by creation time</option>
-            </select>
+          </template>
+
+          <!-- Bottom div floating on top of modal contents ->
+      <!- button for scrolling back to the top of modal and screen -->
+          <div id="modalBottomDiv" class="modal-bottom-div">
+            <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
+              title="Siirry takaisin listan alkuun" onclick="return goToTop(event)">Takaisin ylös</button>
           </div>
 
-          <br>
-
-          <!-- (shows the list of correlation ids) -->
-          <div id="correlationIdListButtons" class="correlation-id buttons-list"></div>
+          <!-- Shows error message -->
+          <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
+            <span class="material-icons error-message-icon">error_outline</span>
+            <span class="error-message-text"></span>
+          </div>
 
         </div>
       </div>
 
     </div>
+
   </div>
 
   <!-- ---------------------------------------------------------------------- -->
@@ -276,7 +402,6 @@
   <dialog id="searchDlg">
     Testi
   </dialog>
-
 
   <!-- ---------------------------------------------------------------------- -->
   <!-- Tab for server side notes -->
