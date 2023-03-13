@@ -326,6 +326,48 @@ button>a:visited {
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Dialog */
+/* ---------------------------------------------------------------------------- */
+
+/* Dialog has backdrop that is displayed behind a <dialog> */
+.dialog::backdrop {
+
+}
+
+/* the <dialog> modal */
+.dialog-container {
+
+}
+
+/* dialog has headline, the purpose of dialog */
+.dialog-headline {
+}
+
+/* dialog has supporting text, for example instructions */
+.dialog-supporting-text {
+
+}
+
+/* dialog has div for actions */
+.dialog-actions {
+
+}
+
+.dialog-actions button {
+
+}
+
+.dialog-cancel-button {
+
+}
+
+.dialog-confitm-button {
+
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
 /* Loading bar */
 /* ---------------------------------------------------------------------------- */
 
