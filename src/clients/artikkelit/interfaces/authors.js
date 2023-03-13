@@ -26,6 +26,7 @@ export function addAuthor(event) {
     }
 
     idbAddValueToLastIndex('artoAuthors', data).then(() => {
+      resetAuthor(event);
       refreshAuthorsList();
     });
   });
