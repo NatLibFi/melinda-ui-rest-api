@@ -1,0 +1,106 @@
+/* ---------------------------------------------------------------------------- */
+/* ---Snackbar component CSS---*/
+
+/* Container for snackbars */
+/* Several snackbars are stacked*/
+.snackbars {
+  position: fixed;
+  bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  align-items: center;
+  width: 100%
+}
+
+/* Container for one snackbar */
+/* Snackbar contains: */
+/*    - supporting text */
+/*    - action */
+/*    - icon */
+/* Snackbar has some transparency (opacity) */
+.snackbar-container {
+  display: none;
+  align-items: center;
+  background-color: rgba(40, 40, 40, 0.95);
+  color: white;
+  min-height: 48px;
+  border-radius: 0.5em;
+  overflow: auto;
+  margin: 0.5em;
+}
+
+/* Snackbar supporting text is the message in snackbar */
+.snackbar-supporting-text {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  letter-spacing: 1px;
+}
+
+/* Snackbar action is container for an action button  */
+.snackbar-action {
+  display: none;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.snackbar-action button {
+  padding-left: 12px;
+  padding-right: 12px;
+  border: none;
+  color: rgb(182, 225, 224);
+}
+
+/* Snackbar icon is container for a close button */
+.snackbar-icon {
+  display: none;
+  font-size: 24px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.snackbar-icon button {
+  border: none;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.snackbar-action button:hover,
+.snackbar-icon button:hover {
+  background-color: rgb(182, 225, 224);
+  color: black
+}
+
+.snackbar-icon button:focus,
+.snackbar-action button:focus {
+  background-color: white;
+  color: black
+}
+
+
+/* Snackbar is shown with animations */
+.snackbar-container.show-and-hide {
+  display: inline-flex;
+  animation: fadein 1s, fadeout 1s 5s forwards;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

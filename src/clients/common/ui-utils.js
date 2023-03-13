@@ -4,14 +4,15 @@
 //
 //*****************************************************************************
 
-import { setNavBar, startProcess, stopProcess } from "./navbar.js";
+import {setNavBar, startProcess, stopProcess} from "./navbar.js";
+import {showSnackbar} from "./snackbar.js";
 
-export {setNavBar, startProcess, stopProcess}
+export {setNavBar, startProcess, stopProcess, showSnackbar}
 
 //-----------------------------------------------------------------------------
 
 window.eventHandled = function (e) {
-  if(e) {
+  if (e) {
     e.stopPropagation();
     e.preventDefault();
   }
