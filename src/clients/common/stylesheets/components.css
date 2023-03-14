@@ -433,6 +433,11 @@ button.dialog-cancel-button:hover {
   background-color: lightgrey;
 }
 
+/* Dialog buttons show accent background-color on hover */
+.dialog-actions button:active {
+  background-color: grey;
+  color: white
+}
 
 /* ---------------------------------------------------------------------------- */
 /* Loading bar */
