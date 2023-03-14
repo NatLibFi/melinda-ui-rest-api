@@ -1,6 +1,6 @@
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "/artikkelit/sessionStorageManager.js"
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, setOptions} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, setOptions, showSnackbar} from "/common/ui-utils.js";
 import {getOntologyWords} from "/common/rest.js";
 
 
@@ -56,16 +56,14 @@ export function addOntologyWord(event) {
   const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
   const ontologyWordOther = formJson["asiasana-muu"];
   console.log(ontologyWord);
-  console.log(ontologyWordOther)
-
+  console.log(ontologyWordOther);
   if (ontologyWord) {
     // idbIndex save
     idbAddValueToLastIndex('artoOntologyWords', ontologyWord).then(() => {
       resetOntologySelect();
       refreshOntologyWordList();
     })
-  }
-  if (ontologyWordOther) {
+  } else if (ontologyWordOther) {
     const opts = document.getElementById("asiasana-ontologia");
     const data = {
       prefLabel: ontologyWordOther,
@@ -76,6 +74,9 @@ export function addOntologyWord(event) {
       document.getElementById("asiasana-muu").value = "";
       refreshOntologyWordList();
     })
+  } else {
+    showSnackbar({text: "Asia-/avainsana ei voi olla tyhjä", closeButton: "true"});
+    return;
   }
 }
 

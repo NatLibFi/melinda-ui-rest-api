@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 
 export function initAbstracts() {
   console.log('initializing abstracts...');
@@ -22,6 +22,11 @@ export function addAbstract(event) {
   const data = {
     language: {iso6391, iso6392b, ui},
     abstract: formJson['tiivistelma-abstrakti']
+  }
+
+  if (data.abstract === "") {
+    showSnackbar({text: "Tiivistelmä ei voi olla tyhjä", closeButton: "true"});
+    return;
   }
 
   idbAddValueToLastIndex('artoAbstracts', data).then(() => {
@@ -71,11 +76,11 @@ export function characterCounter(event) {
   document.getElementById("tiivistelma-merkkiraja").innerHTML = `${currentLength}/${maxLength}`;
   const warning = document.getElementById("tiivistelma-merkkirajan-ylitys");
   if (currentLength > maxLength) {
-    const overLimitText = event.target.value.slice(maxLength)
+    const overLimitText = event.target.value.slice(maxLength);
     warning.innerHTML = `<strong>HUOM!</strong> Tiivistelmän merkkiraja on ylittynyt.<br><br>
                           Voit jatkaa kirjoittamista ja lisätä tiivistelmän, mutta rajan ylittävä osuus katkaistaan ennen tallennusta Melindaan.<br><br>
-                          Rajan ylittävä osuus: ${overLimitText}`
-    warning.style.padding = "4px 14px"
+                          Rajan ylittävä osuus: ${overLimitText}`;
+    warning.style.padding = "4px 14px";
   } else {
     warning.innerHTML = "";
     warning.style.padding = "";

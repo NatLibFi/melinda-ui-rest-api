@@ -1,5 +1,5 @@
 import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 
 export function initAuthors() {
   console.log('initializing authors...');
@@ -23,6 +23,11 @@ export function addAuthor(event) {
       lastName: formJson['tekija-sukunimi'],
       relator: formJson['tekija-rooli'],
       authorsTempOrganizations
+    }
+
+    if (data.firstName === "" || data.lastName === "") {
+      showSnackbar({text: "Tekijän nimi ei voi olla tyhjä", closeButton: "true"});
+      return;
     }
 
     idbAddValueToLastIndex('artoAuthors', data).then(() => {
@@ -99,6 +104,12 @@ export function addOrganizationForAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const organizationInputValue = formJson['tekija-organisaatio']
+
+  if (organizationInputValue === "") {
+    showSnackbar({text: "Organisaatio ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
+
   const [organizationNameAndShortTerm = false, code = false, note = false] = organizationInputValue.split(' - ');
   const [organizationName, organizationShortTerm] = organizationNameAndShortTerm.split(' (').map(value => value.replace(')', ''));
 

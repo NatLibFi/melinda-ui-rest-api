@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 
 export function initAdditionalFields() {
   console.log('initializing additional fields...');
@@ -22,6 +22,11 @@ export function addNote(event) {
 
   const data = {
     value: formJson['lisakentat-yleinen-huomautus']
+  }
+
+  if (data.value === "") {
+    showSnackbar({text: "Yleinen huomautus ei voi olla tyhjä", closeButton: "true"});
+    return;
   }
 
   idbAddValueToLastIndex('artoNotes', data).then(() => {
@@ -69,6 +74,11 @@ export function addUDK(event) {
   const data = {
     a080: formJson['lisakentat-UDK080a'],
     x080: formJson['lisakentat-UDK080x']
+  }
+
+  if (data.a080 === "") {
+    showSnackbar({text: "UDK (080 $a) -arvo ei voi olla tyhjä", closeButton: "true"});
+    return;
   }
 
   idbAddValueToLastIndex('artoUDKs', data).then(() => {
@@ -119,6 +129,11 @@ export function addOtherRating(event) {
   const data = {
     a084: formJson['lisakentat-muu-luokitus-084a'],
     two084: formJson['lisakentat-luokituksen-lahde-0842']
+  }
+
+  if (data.a084 === "" || data.two084 === "") {
+    showSnackbar({text: "Muun luokituksen tiedot eivät voi olla tyhjiä", closeButton: "true"});
+    return;
   }
 
   idbAddValueToLastIndex('artoOtherRatings', data).then(() => {
