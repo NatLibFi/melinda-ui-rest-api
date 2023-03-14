@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 
 export function initArticle() {
   console.log('initializing article...')
@@ -19,7 +19,14 @@ function addScience(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   console.log('science');
-  const [department, departmentName, subCategory, subject] = formJson['lisa-tiedot-tieteenala'].split(" - ");
+  const science = formJson['lisa-tiedot-tieteenala'];
+  
+  if (science === "") {
+    showSnackbar({text: "Tieteenala ei voi olla tyhjä", closeButton: "true"});
+    return;
+  
+  }
+  const [department, departmentName, subCategory, subject] = science.split(" - ");
 
   idbAddValueToLastIndex('artoSciences', {department, departmentName, subCategory, subject}).then(() => {
     document.getElementById("lisa-tiedot-tieteenala").value = '';
@@ -32,6 +39,11 @@ function addMetodology(event) {
   const formJson = formToJson(event);
   console.log('metodology');
   const metodology = formJson['lisa-tiedot-metodologia'];
+
+  if (metodology === "") {
+    showSnackbar({text: "Metodologia ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
 
   idbAddValueToLastIndex('artoMetodologys', {value: metodology}).then(() => {
     document.getElementById("lisa-tiedot-metodologia").value = '';

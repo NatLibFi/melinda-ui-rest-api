@@ -104,6 +104,12 @@ export function addOrganizationForAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const organizationInputValue = formJson['tekija-organisaatio']
+
+  if (organizationInputValue === "") {
+    showSnackbar({text: "Organisaatio ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
+
   const [organizationNameAndShortTerm = false, code = false, note = false] = organizationInputValue.split(' - ');
   const [organizationName, organizationShortTerm] = organizationNameAndShortTerm.split(' (').map(value => value.replace(')', ''));
 
