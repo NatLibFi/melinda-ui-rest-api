@@ -326,6 +326,120 @@ button>a:visited {
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Dialog */
+/* ---------------------------------------------------------------------------- */
+
+/* Dialog elements have rounded corners and no borders */
+dialog {
+  border: none;
+  border-radius: 1em;
+}
+
+/* Overriding the default "display: block" for dialogs */
+dialog[open] {
+  display: flex;
+}
+
+/* Dialog has backdrop that is displayed behind dialog modal */
+/* Backdrop has transparency and darker color */
+dialog::backdrop {
+  background: rgba(50, 50, 50, 0.5);
+}
+
+/* The mouse cursor is set default (arrow) in dialog */
+dialog:hover {
+  cursor: default
+}
+
+/* Modal is the container for the dialog contents: */
+/*   - icon */
+/*   - headline */
+/*   - supprting text */
+/*   - action buttons */
+dialog:modal {
+  display: flex;
+  flex-direction: column;
+  color: black;
+}
+
+/* Dialog can have icon: informative picture on top */
+/* Icon is centered */
+.dialog-icon {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5em;
+}
+
+/* Dialog has a headline: the purpose of dialog */
+/* Headline is centered */
+.dialog-headline {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5em;
+  font-size: var(--font-size-headline-small);
+}
+
+/* Dialog has supporting text: for example instructions */
+/* Supporting text color is less prominent*/
+.dialog-supporting-text {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  color: rgb(66, 66, 66);
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-size: var(--font-size-content-normal);
+}
+
+/* If hr element is used in supporting text, */
+/* sets the horizontal line on it's own row */
+.dialog-supporting-text hr {
+  flex: 0 0 100%
+}
+
+/* Dialog has place for actions */
+/* Actions are positioned on the right */
+.dialog-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0.5em;
+}
+
+/* Dialog actions are buttons */
+/* Buttons have no border, and have accent color */
+.dialog-actions button {
+  margin-left: 3em;
+  border: none;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  color: rgb(40, 165, 165);
+  font-size: var(--font-size-label-large);
+  font-weight: var(--font-weight-label-large);
+}
+
+/* Dialog buttons show accent background-color on hover */
+.dialog-actions button:hover {
+  color: black;
+  background-color: rgb(182, 225, 224);
+}
+
+/* Special style for dialog cancel button on hover */
+button.dialog-cancel-button:hover {
+  background-color: lightgrey;
+}
+
+/* Dialog buttons show accent background-color on hover */
+.dialog-actions button:active {
+  background-color: grey;
+  color: white
+}
+
+/* ---------------------------------------------------------------------------- */
 /* Loading bar */
 /* ---------------------------------------------------------------------------- */
 
