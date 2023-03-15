@@ -11,6 +11,7 @@ import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikke
 import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 import {initReviewSearch, resetReview, refreshReviewsList, clearReviews} from "./interfaces/reviewSearch.js";
 import {initPublicationSearch, resetSearchResultSelect} from "./interfaces/publicationSearch.js";
+import {journalTemplate, bookTemplate} from "./interfaces/constants.js";
 //import { } from "./interfaces/";
 
 window.initialize = function () {
@@ -90,8 +91,8 @@ window.articleTypeChange = (event) => {
 function ontologyTypeChange(event) {
   event.preventDefault();
 
-  const sourceType = event.target.value;
-  if (/other/.test(sourceType)) {
+  const ontologyType = event.target.value;
+  if (/other/.test(ontologyType)) {
     document.getElementById("haku-osio").style.display = "none";
     document.getElementById("asiasana-lisaa-select").style.display = "none";
     document.getElementById("asiasana-lisaa-input").style.display = "flex";
@@ -110,12 +111,7 @@ window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
-  if (tietueIndex === '') {
-    return false;
-  }
-
-  Promise.all([
-    idbGet('artoSources', parseInt(tietueIndex)),
+  const promises = [
     idbGetStoredValues('artoSciences'),
     idbGetStoredValues('artoMetodologys'),
     idbGetStoredValues('artoAuthors'),
@@ -124,7 +120,21 @@ window.doUpdate = (event) => {
     idbGetStoredValues('artoNotes'),
     idbGetStoredValues('artoUDKs'),
     idbGetStoredValues('artoOtherRatings')
-  ]).then(([
+  ]
+
+  if (tietueIndex === '') {
+    const sourceType = document.getElementById('kuvailtava-kohde').value;
+    if (sourceType == 'journal') {
+      promises.unshift(journalTemplate);
+    }
+    if (sourceType == 'book') {
+      promises.unshift(bookTemplate);
+    }
+  } else {
+    promises.unshift(idbGet('artoSources', parseInt(tietueIndex)));
+  }
+
+  Promise.all(promises).then(([
     source,
     sciences,
     metodologys,
