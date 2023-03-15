@@ -328,47 +328,6 @@ div#correlationIdListModal {}
   min-width: 0;
 }
 
-/* Filter buttons have containers */
-.filter-button-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  overflow: hidden;
-  padding-left: 0.5em;
-}
-
-/* Selected filter button has style effect */
-.filter-button-selected {
-  background-color: darkgrey;
-  color: black
-}
-
-/* Filter buttons has content container with icon and text */
-.filter-button-content {
-  display: flex;
-  justify-content: center;
-}
-
-.filter-button-icon {
-  font-size: 13px !important;
-  height: 16px !important;
-  padding-right: 5px;
-}
-
-/* When the filter button is not selected, the check-icon is hidden */
-.filter-button-container button:not(.filter-button-selected) span.filter-button-icon {
-  display: none;
-}
-
-.filter-button-text {}
-
-.filter-button-container button:not(.filter-button-selected) span.filter-button-text {
-  display: flex;
-  flex-grow: 1;
-  padding-left: 9px;
-  padding-right: 9px;
-}
-
 /* Modal has single-select and multi-select buttons for filtering */
 /* Segmented button container is the container for all the buttons that are displayed as on segmented button */
 .segmented-button-container {
