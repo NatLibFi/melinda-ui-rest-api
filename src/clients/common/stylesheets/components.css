@@ -440,6 +440,43 @@ button.dialog-cancel-button:hover {
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Segmented buttons */
+/* ---------------------------------------------------------------------------- */
+
+/* Segmented buttons can be single-select or multi-select buttons. */
+/* Use segmented buttons for for example filtering view. */
+
+/* Segmented button container is the container for all the buttons that are displayed as one segmented button */
+/* It is recommended not add more than 5 buttons inside the container */
+.segmented-button-container {
+  display: inline-flex;
+}
+
+/* Segmented button class is used with element button */
+/* First and last button are rendered with round button edges */
+.segmented-button {}
+
+
+.segmented-button:first-child {
+  border-radius: 1em 0em 0em 1em;
+  margin-right: 0px;
+  border-right: none;
+}
+
+.segmented-button:nth-child(n):not(:first-child, :last-child) {
+  border-radius: 0px 0px 0px 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-right: none;
+}
+
+.segmented-button:last-child {
+  border-radius: 0em 1em 1em 0em;
+  margin-left: 0px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
 /* Loading bar */
 /* ---------------------------------------------------------------------------- */
 
