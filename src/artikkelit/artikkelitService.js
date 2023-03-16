@@ -88,11 +88,11 @@ export function getSourceType(input) {
   const get3rd = found.substr(2, 1);
   const get4th = found.substr(3, 1);
 
-  if (get4th.includes('s', 'i')) {
+  if (['s', 'i'].some(el => get4th.includes(el))) {
     return 'journal';
   }
 
-  if (get4th.includes('c', 'm')) {
+  if (['c', 'm'].some(el => get4th.includes(el))) {
     return 'book';
   }
 
@@ -100,7 +100,7 @@ export function getSourceType(input) {
     return 'text';
   }
 
-  if (get3rd.includes('g', 'i', 'm')) {
+  if (['g', 'i', 'm'].some(el => get3rd.includes(el))) {
     return 'electronic';
   }
 

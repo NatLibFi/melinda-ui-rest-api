@@ -442,9 +442,8 @@ button.dialog-cancel-button:hover {
 /* ---------------------------------------------------------------------------- */
 /* Segmented buttons */
 /* ---------------------------------------------------------------------------- */
-
 /* Segmented buttons can be single-select or multi-select buttons. */
-/* Use segmented buttons for for example filtering view. */
+/* Use segmented buttons for for example for filtering */
 
 /* Segmented button container is the container for all the buttons that are displayed as one segmented button */
 /* It is recommended not add more than 5 buttons inside the container */
@@ -452,10 +451,9 @@ button.dialog-cancel-button:hover {
   display: inline-flex;
 }
 
-/* Segmented button class is used with element button */
+/* Segmented button class is used with element <button> */
 /* First and last button are rendered with round button edges */
 .segmented-button {}
-
 
 .segmented-button:first-child {
   border-radius: 1em 0em 0em 1em;
@@ -475,6 +473,59 @@ button.dialog-cancel-button:hover {
   margin-left: 0px;
 }
 
+/* ---------------------------------------------------------------------------- */
+/* Select buttons */
+/* ---------------------------------------------------------------------------- */
+/* Select buttons have two "states", selected or unselected */
+/* There is a style for a button that is selected and another for when it's not selected */
+
+/* Select button is wrapped with a container div */
+.select-button-container {
+  display: inline-flex;
+}
+
+/* Helper class for html readibility, used for marking a button as select button */
+/* Select button in unselected state has default button style*/
+.select-button {}
+
+/* Select button inner container for content */
+/* Contents for select button are icon and text */
+.select-button-content {
+  display: flex;
+  justify-content: center;
+}
+
+/* Select button has icon */
+/* Use with material-icons class, check icon and a <span> element: */
+.select-button-icon {
+  font-size: 13px !important;
+  height: 16px !important;
+  padding-right: 5px;
+}
+
+/* Select button has text, the label of button */
+.select-button-text {
+}
+
+/* Select button has selected style when it is selected */
+.select-button-selected {
+  background-color: darkgrey;
+  color: black
+}
+
+/* When the select button is unselected, the icon is hidden */
+.select-button-container button:not(.select-button-selected) span.select-button-icon {
+  display: none;
+}
+
+/* When the select button is unselected, the space for icon is saved */
+/* This means that the selected and unselected select button have the same width */
+.select-button-container button:not(.select-button-selected) span.select-button-text {
+  display: flex;
+  flex-grow: 1;
+  padding-left: 9px;
+  padding-right: 9px;
+}
 
 /* ---------------------------------------------------------------------------- */
 /* Loading bar */

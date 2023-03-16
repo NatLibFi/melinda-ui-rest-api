@@ -246,22 +246,22 @@
 
             <!-- button toggles showing logs by log type or hiding them from the list -->
             <!-- segmented button used as multi-select button -->
-            <div id="logTypeToggleContainer" class="filter-button-container">
+            <div id="logTypeToggleContainer" class="select-button-container">
               <div class="segmented-button-container">
-                <button id="mergeLogsSelect" class="filter-button segmented-button filter-button-selected"
+                <button id="mergeLogsSelect" class="select-button segmented-button select-button-selected"
                   data-title-a="Piilota MERGE_LOG-lokityypit listanäkymästä" data-title-b="Näytä MERGE_LOG-lokityypit listanäkymässä"
                   onclick="return toggleShowMergeLogs(event)" data-value="true">
-                  <div class="filter-button-content">
-                    <span class="material-icons filter-button-icon">check</span>
-                    <span class="filter-button-text">MERGE</span>
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">MERGE</span>
                   </div>
                 </button>
-                <button id="matchLogsSelect" class="filter-button segmented-button filter-button-selected"
+                <button id="matchLogsSelect" class="select-button segmented-button select-button-selected"
                   data-title-a="Piilota MATCH_LOG-lokityypit listanäkymästä" data-title-b="Näytä MATCH_LOG-lokityypit listanäkymässä"
                   onclick="return toggleShowMatchLogs(event)" data-value="true">
-                  <div class="filter-button-content">
-                    <span class="material-icons filter-button-icon">check</span>
-                    <span class="filter-button-text">MATCH</span>
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">MATCH</span>
                   </div>
                 </button>
               </div>
@@ -269,37 +269,37 @@
 
             <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
             <!-- segmented button used as single-select button -->
-            <div id="logCreationDateToggleContainer" class="filter-button-container">
+            <div id="logCreationDateToggleContainer" class="select-button-container">
               <div class="segmented-button-container">
-                <button id="creationTimeToday" class="filter-button segmented-button"
+                <button id="creationTimeToday" class="select-button segmented-button"
                   data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
                   data-title-b="Nollaa kaikki päivämääräsuodattimet"
                   onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
-                  <div class="filter-button-content">
-                    <span class="material-icons filter-button-icon">check</span>
-                    <span class="filter-button-text">Tänään</span>
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Tänään</span>
                   </div>
                 </button>
-                <button id="creationTimeWeekAgo" class="filter-button segmented-button"
+                <button id="creationTimeWeekAgo" class="select-button segmented-button"
                   data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
                   data-title-b="Nollaa kaikki päivämääräsuodattimet"
                   onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
-                  <div class="filter-button-content">
-                    <span class="material-icons filter-button-icon">check</span>
-                    <span class="filter-button-text">Yli viikko sitten</span>
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Yli viikko sitten</span>
                   </div>
                 </button>
               </div>
             </div>
 
             <!-- button toggles showing extra details for correlation id list items or hiding them  -->
-            <div id="listDetailsToggleContainer" class="filter-button-container">
-              <button id="toggleListDetails" class="filter-button filter-button-selected"
+            <div id="listDetailsToggleContainer" class="select-button-container">
+              <button id="toggleListDetails" class="select-button select-button-selected"
                 data-title-a="Piilota tarkat tiedot listanäkymästä" data-title-b="Näytä tarkat tiedot listanäkymässä"
                 onclick="return toggleListDetails(event)" data-value="true">
-                <div class="filter-button-content">
-                  <span class="material-icons filter-button-icon">check</span>
-                  <span class="filter-button-text">Tarkat tiedot</span>
+                <div class="select-button-content">
+                  <span class="material-icons select-button-icon">check</span>
+                  <span class="select-button-text">Tarkat tiedot</span>
                 </div>
               </button>
             </div>
