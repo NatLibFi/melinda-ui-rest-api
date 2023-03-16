@@ -12,6 +12,7 @@ const tableNames = [
   'artoMetodologys',
   'artoUDKs',
   'artoNotes',
+  'artoOtherTitles',
   'artoOtherRatings',
   'artoReviews',
   'artoTempReviews'
