@@ -543,11 +543,11 @@ window.clearFilters = function ({event = undefined, clearLogFilters = 'true', cl
   }
 
   function unselectFilteringButtons(...buttons) {
-    buttons.forEach(button => (button.dataset.value = 'false', button.classList.remove('filter-button-selected')));
+    buttons.forEach(button => (button.dataset.value = 'false', button.classList.remove('select-button-selected')));
   }
 
   function selectFilteringButtons(...buttons) {
-    buttons.forEach(button => (button.dataset.value = 'true', button.classList.add('filter-button-selected')));
+    buttons.forEach(button => (button.dataset.value = 'true', button.classList.add('select-button-selected')));
   }
 
   function setDefaultTitles(...buttons) {
@@ -559,7 +559,7 @@ function unselectDateButtons() {
   const todayButton = document.getElementById('creationTimeToday');
   const weekAgoButton = document.getElementById('creationTimeWeekAgo');
 
-  if (todayButton.classList.contains('filter-button-selected') || weekAgoButton.classList.contains('filter-button-selected')) {
+  if (todayButton.classList.contains('select-button-selected') || weekAgoButton.classList.contains('select-button-selected')) {
     clearFilters({clearLogFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
   }
 }
@@ -570,7 +570,7 @@ function toggleFilterButton(filterButton) {
   const titleB = filterButton.dataset.titleB;
 
   filterButton.dataset.value = (filterButtonValue === 'true' ? false : true);
-  filterButton.classList.toggle('filter-button-selected');
+  filterButton.classList.toggle('select-button-selected');
   filterButton.title = (filterButton.title === titleA ? titleB : titleA)
 }
 
@@ -582,7 +582,7 @@ function clearListView() {
   const dateStartInput = document.getElementById(`dateStartInput`);
   const dateEndInput = document.getElementById(`dateEndInput`);
 
-  const filterButtons = document.querySelectorAll('.filter-button');
+  const filterButtons = document.querySelectorAll('.select-button');
 
   correlationIdList.replaceChildren();
   selectSorting.style.visibility = 'hidden';
