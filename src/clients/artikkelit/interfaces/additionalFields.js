@@ -4,14 +4,17 @@ import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-ut
 export function initAdditionalFields() {
   console.log('initializing additional fields...');
   document.getElementById("yleinen-huomautus-lisaa-form").addEventListener("submit", addNote);
+  document.getElementById("artikkelin-muu-nimeke-lisaa-form").addEventListener("submit", addOtherTitle);
   document.getElementById("UDK-lisaa-form").addEventListener("submit", addUDK);
   document.getElementById("muu-luokitus-lisaa-form").addEventListener("submit", addOtherRating);
 
   document.getElementById("tyhjenna-yleiset-huomautukset-form").addEventListener("submit", clearNotes);
+  document.getElementById("tyhjenna-muut-nimekkeet-form").addEventListener("submit", clearOtherTitles);
   document.getElementById("tyhjenna-udk-kentat-form").addEventListener("submit", clearUDKs);
   document.getElementById("tyhjenna-muut-luokitukset-form").addEventListener("submit", clearOtherRatings);
 
   refreshNotesList();
+  refreshOtherTitlesList();
   refreshUDKsList();
   refreshOtherRatingsList();
 }
@@ -67,6 +70,57 @@ export function clearNotes(event) {
   idbClear('artoNotes').then(() => refreshNotesList());
 }
 
+export function addOtherTitle(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+
+  const data = {
+    value: formJson['artikkelin-muu-nimeke']
+  }
+
+  if (data.value === "") {
+    showSnackbar({text: "Muu nimeke ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
+
+  idbAddValueToLastIndex('artoOtherTitles', data).then(() => {
+    document.getElementById('artikkelin-muu-nimeke').value = "";
+    refreshOtherTitlesList();
+  });
+}
+
+export function refreshOtherTitlesList() {
+  const otherTitlesList = document.getElementById('muut-nimekkeet-list');
+  otherTitlesList.innerHTML = '';
+
+  idbGetStoredValues('artoOtherTitles').then(otherTitles => {
+    otherTitles.forEach(otherTitleData => {
+      const form = document.createElement('form');
+      const div = document.createElement('div');
+      div.classList.add('full-width');
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista')
+      div.appendChild(createP('Muu nimeke', '', '&nbsp;-&nbsp;', ['label-text']));
+      div.appendChild(createP(otherTitleData.value));
+      div.appendChild(removeButton);
+      form.appendChild(div);
+      otherTitlesList.appendChild(form)
+    });
+
+    if (otherTitles.length > 1) {
+      document.getElementById("tyhjenna-muut-nimekkeet-form").style.display = 'block';
+    }
+
+    if (otherTitles.length < 2) {
+      document.getElementById("tyhjenna-muut-nimekkeet-form").style.display = 'none';
+    }
+  });
+}
+
+export function clearOtherTitles(event) {
+  event.preventDefault();
+  idbClear('artoOtherTitles').then(() => refreshOtherTitlesList());
+}
+
 export function addUDK(event) {
   event.preventDefault();
   const formJson = formToJson(event);
@@ -98,9 +152,9 @@ export function refreshUDKsList() {
       const div = document.createElement('div');
       div.classList.add('full-width');
       const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista')
-      div.appendChild(createP('UDK(080 $a)', '', '&nbsp;', ['label-text']));
+      div.appendChild(createP('UDK (080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
-      div.appendChild(createP('($x)', '&nbsp;', '&nbsp;', ['label-text']));
+      div.appendChild(createP('UDK (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.x080));
       div.appendChild(removeButton);
       form.appendChild(div);
