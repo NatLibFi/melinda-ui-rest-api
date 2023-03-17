@@ -1,6 +1,6 @@
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "/artikkelit/sessionStorageManager.js"
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, setOptions} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, setOptions, showSnackbar} from "/common/ui-utils.js";
 import {getOntologyWords} from "/common/rest.js";
 
 
@@ -54,14 +54,29 @@ export function addOntologyWord(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
+  const ontologyWordOther = formJson["asiasana-muu"];
   console.log(ontologyWord);
-
+  console.log(ontologyWordOther);
   if (ontologyWord) {
     // idbIndex save
     idbAddValueToLastIndex('artoOntologyWords', ontologyWord).then(() => {
-      // refresh ontology word list
+      resetOntologySelect();
       refreshOntologyWordList();
     })
+  } else if (ontologyWordOther) {
+    const opts = document.getElementById("asiasana-ontologia");
+    const data = {
+      prefLabel: ontologyWordOther,
+      vocab: opts.value
+    }
+
+    idbAddValueToLastIndex("artoOntologyWords", data).then(() => {
+      document.getElementById("asiasana-muu").value = "";
+      refreshOntologyWordList();
+    })
+  } else {
+    showSnackbar({text: "Asia-/avainsana ei voi olla tyhjä", closeButton: "true"});
+    return;
   }
 }
 
@@ -74,13 +89,15 @@ export function refreshOntologyWordList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
       div.appendChild(createP('Asia- tai avainsana', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(wordData.prefLabel);
       pRelator.classList.add('capitalize');
       div.appendChild(pRelator);
       div.appendChild(generateVocabInfo(wordData));
-      div.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;', '', ['long-text']));
+      if (!/other/.test(wordData.vocab)) {
+        div.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;', '', ['long-text']));
+      }
       div.appendChild(removeButton);
       form.appendChild(div);
       ontologyWordList.appendChild(form);
@@ -98,6 +115,9 @@ export function refreshOntologyWordList() {
   function generateVocabInfo(word) {
     if (['yso', 'yso-paikat', 'yso-aika'].includes(word.vocab)) {
       return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
+    }
+    if (/other/.test(word.vocab)) {
+      return createP(`${word.vocab}`, "&nbsp;-&nbsp;");
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }

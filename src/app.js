@@ -92,16 +92,16 @@ export default async function ({
       if (err) {
         logger.error(err);
         if (err instanceof ApiError) {
-          logger.debug('Responding expected:', err);
+          logger.debug(`Responding expected: ${err.status} ${err.payload}`);
           return res.status(err.status).send(err.payload);
         }
 
         if (req.aborted) {
-          logger.debug('Responding timeout:', err);
+          logger.debug(`Responding timeout: ${err.status} ${err.payload}`);
           return res.status(httpStatus.REQUEST_TIMEOUT).send(httpStatus['504_MESSAGE']);
         }
 
-        logger.debug('Responding unexpected:', err);
+        logger.debug(`Responding unexpected: ${err.status} ${err.payload}`);
         return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
       }
 

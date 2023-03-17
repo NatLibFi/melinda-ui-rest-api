@@ -8,11 +8,9 @@
 <head>
   <link rel="shortcut icon" href="/common/images/favicon.png" />
   <link rel="stylesheet" href="viewer.css" />
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script type="module" src="viewer.js"></script>
 </head>
 
@@ -21,34 +19,31 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Nav bar -->
 
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Navbar -->
   <div id="navbar"></div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
-
   <div id="root">
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Loading "screen" -->
-
     <div id="loading">
     </div>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
     <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" />
+        <input id="login-username" name="username" autofocus autocomplete="username" />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password" />
+        <input id="login-password" type="password" name="password" autocomplete="current-password" />
       </div>
       <div class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
@@ -66,15 +61,17 @@
       </div>
     </form>
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Muuntaja tab -->
 
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Viewer tab -->
     <div id="viewer" hidden>
+
+      <!-- Viewer Iconbar -->
       <div class="IconBar ToolBar">
-        <button><a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
-            rel="noopener noreferrer">help_outline</a></button>
-        <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
-        <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
+
+        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
+            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+
         <div class="dropdown">
           <button id="account-btn" class="material-icons">account_circle</button>
           <div id="account-menu" class="dropdown-content">
@@ -83,58 +80,94 @@
             <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
           </div>
         </div>
+
       </div>
+
+
+      <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
+
         <form class="ToolBar HBox">
+
           <div class="Select VBox">
-            <label>Log type</label>
+            <label>Lokityyppi</label>
             <select id="logType">
               <option value="MERGE_LOG">Merge</option>
               <option value="MATCH_LOG">Match</option>
             </select>
           </div>
-          <div class="Filler VBox Input">
-            <label>Id (Correlation id)</label>
-            <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+
+          <div class="flex-container">
+            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+              tooltip-text="Etsi ID listasta" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
+            <div class="Filler VBox Input">
+              <label>ID (correlation id)</label>
+              <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+            </div>
           </div>
+
           <div class="Select VBox">
-            <label>Sequence</label>
-            <select id="sequence" disabled="true" onchange="return loadLog(event)">
-            </select>
+            <div class="sequenceContainer">
+              <label>Sekvenssi</label>
+              <div class="flex-container">
+                <div class="Select VBox">
+                  <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
+                </div>
+                <div class="Filler VBox Input">
+                  <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3" />
+                </div>
+              </div>
+            </div>
           </div>
-          <input type="hidden" id="logType" value="mergeLog" />
-          <button class="material-icons tooltip" tooltip-text="Etsi"
+
+          <button class="material-icons tooltip search-button" tooltip-text="Hae"
             onclick="return doSearchPress(event)">search</button>
+
         </form>
+
         <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
-          disabled="true">push_pin</button>
+          disabled="true">lock_open</button>
+
         <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
           onclick="return copyLink(event)">share</button>
-        <button id="delete" class="material-icons tooltip" tooltip-text="Poista" onclick="return remove(event)"
+
+        <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID" onclick="return remove(event)"
           disabled="true">delete</button>
+
         <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
+
       </div>
+
+
+      <!-- Record Merge Panel -->
       <div class="record-merge-panel">
 
         <div class="col">
           <div id="record1" class="BoxShadow">
+
             <div class="header">
               <p class="title">Sisääntuleva tietue</p>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record1')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record1')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record1')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record1')">expand_less</button>
               </div>
             </div>
+
             <div class="note">
               <ul class="additional"></ul>
             </div>
+
             <div id="Record" class="marc-record">
             </div>
+
           </div>
         </div>
 
         <div class="col">
           <div id="record2" class="BoxShadow">
+
             <div class="header">
               <p class="title">Melinda-tietue</p>
               <div class="VBox Select">
@@ -142,65 +175,226 @@
                 <select id="match" onchange="return loadMatch(event)"></select>
               </div>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record2')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record2')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record2')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record2')">expand_less</button>
               </div>
             </div>
+
             <div class="note">
               <ul class="additional"></ul>
             </div>
+
             <div id="Record" class="marc-record">
             </div>
+
           </div>
         </div>
 
         <div class="col">
           <div id="record3" class="BoxShadow">
+
             <div class="header">
               <p class="title">Yhdistetty tietue</p>
               <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä" onclick="return showNote(event, 'record3')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota" onclick="return hideNote(event, 'record3')">expand_less</button>
+                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                  onclick="return showNote(event, 'record3')">expand_more</button>
+                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  onclick="return hideNote(event, 'record3')">expand_less</button>
               </div>
             </div>
+
             <div class="note">
               <ul class="additional"></ul>
             </div>
+
             <div id="Record" class="marc-record">
             </div>
+
           </div>
         </div>
 
       </div>
-    </div>
-  </div>
 
-  <!-- ---------------------------------------------------------------------- -->
-  <!-- Field edit dialog -->
-  <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
-    <div class="modal-content BoxShadow" onclick="return ignore(event)">
-      <span id="field" class="marc-record"></span><br />
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
-      </div>
-      <hr />
-      <div class="fieldedit marc-record">
-        <div style="display: flex;">
-          Tag: <div id="tag"></div>
-          Ind1: <div id="ind1"></div>
-          Ind2: <div id="ind2"></div>
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Modal for browsing and selecting a correlation id from a list -->
+      <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
+
+        <!-- The modal box outline and content  -->
+        <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
+
+          <!-- Shows instructional title for list, info text and close button -->
+          <div class="modal-top-div">
+
+            <!-- the title for modal, and some additional info text -->
+            <div class="modal-title-and-info">
+              <div class="modal-title">Valitse ID listasta ja aloita haku</div>
+              <div id="lastSearchedInfoText" class="modal-info-text"></div>
+            </div>
+
+            <!-- button for closing modal, works the same way as clicking outside modal  -->
+            <div class="modal-top-div-buttons">
+              <button id="closeModalButton" class="material-icons close-button modal-function-button"
+                title="Sulje lista ilman hakua" onclick="return modalClose(event)">close</button>
+            </div>
+
+          </div>
+
+          <!-- All buttons for filtering correlation id list  -->
+          <div id="filteringButtons" class="list-filtering-buttons">
+
+            <!-- button toggles showing logs by log type or hiding them from the list -->
+            <!-- segmented button used as multi-select button -->
+            <div id="logTypeToggleContainer" class="select-button-container">
+              <div class="segmented-button-container">
+                <button id="mergeLogsSelect" class="select-button segmented-button select-button-selected"
+                  data-title-a="Piilota MERGE_LOG-lokityypit listanäkymästä" data-title-b="Näytä MERGE_LOG-lokityypit listanäkymässä"
+                  onclick="return toggleShowMergeLogs(event)" data-value="true">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">MERGE</span>
+                  </div>
+                </button>
+                <button id="matchLogsSelect" class="select-button segmented-button select-button-selected"
+                  data-title-a="Piilota MATCH_LOG-lokityypit listanäkymästä" data-title-b="Näytä MATCH_LOG-lokityypit listanäkymässä"
+                  onclick="return toggleShowMatchLogs(event)" data-value="true">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">MATCH</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
+            <!-- segmented button used as single-select button -->
+            <div id="logCreationDateToggleContainer" class="select-button-container">
+              <div class="segmented-button-container">
+                <button id="creationTimeToday" class="select-button segmented-button"
+                  data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
+                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                  onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Tänään</span>
+                  </div>
+                </button>
+                <button id="creationTimeWeekAgo" class="select-button segmented-button"
+                  data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
+                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Yli viikko sitten</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- button toggles showing extra details for correlation id list items or hiding them  -->
+            <div id="listDetailsToggleContainer" class="select-button-container">
+              <button id="toggleListDetails" class="select-button select-button-selected"
+                data-title-a="Piilota tarkat tiedot listanäkymästä" data-title-b="Näytä tarkat tiedot listanäkymässä"
+                onclick="return toggleListDetails(event)" data-value="true">
+                <div class="select-button-content">
+                  <span class="material-icons select-button-icon">check</span>
+                  <span class="select-button-text">Tarkat tiedot</span>
+                </div>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- All inputs for filtering correlation id list  -->
+          <div id="filteringInputs" class="list-filtering-inputs">
+
+            <!-- inputs for star date and end end date date pickers  -->
+            <div class="date-filter-container">
+              Päivämäärähaku:
+              <div class="datepicker-container">
+                <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                  placeholder="Start date" title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                  onchange="return updateOnChange(event)">
+                <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                  placeholder="End date" title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                  onchange="return updateOnChange(event)">
+              </div>
+            </div>
+
+            <!-- input for searching with correlation id string -->
+            <div class="correlation-id-filter-container">
+              Tekstihaku:
+              <input id="correlationIdInput" type="text" class="correlation-id-input"
+                title="Näytä listanäkymässä vain ID:t, jotka sopivat hakutermiisi" placeholder="...0a1b-23cd45ef..."
+                oninput="return updateOnChange(event)">
+            </div>
+
+          </div>
+
+          <!-- Div for search results info and sorting options -->
+          <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
+
+            <!-- shows info about search results -->
+            <div id="fetchListPlaceholderText" class="search-results-placeholder">...haetaan listaa, hetkinen...</div>
+
+            <!-- button for resetting search and clearing all filters -->
+            <div id="clearFilters" class="clear-filters">
+              <button id="clearFiltersButton" class="clear-button modal-function-button"
+                title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters({event})">Nollaa
+                suodattimet</button>
+            </div>
+
+            <!-- shows the dropdown for sorting -->
+            <div class="Select VBox list-sorting">
+              <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+                <option selected value="sortByTimeNewestFirst">Näytä uusimmat ID:t ensin</option>
+                <option value="sortByTimeOldestFirst">Näytä vanhimmat ID:t ensin</option>
+                <option value="sortById">Järjestä ID:n mukaan (0->9 a->f)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Shows the list of correlation ids -->
+          <div id="correlationIdList" class="list-items"></div>
+
+          <!-- This is helper html for list items  -->
+          <!-- template's contents are not rendered on page -->
+          <template id="listItemTemplate">
+
+            <!-- base for one correlation id list item -->
+            <!-- one list item has id and details+icons -->
+            <div id="listItem" class="list-item">
+              <div class="list-item-id"></div>
+              <div class="list-item-details-and-icons">
+                <div class="list-item-details"></div>
+                <div class="list-item-icons">
+                  <span class="material-icons list-item-icons-search"
+                    title="Tee haku tällä ID:llä">search</span>
+                </div>
+              </div>
+            </div>
+
+          </template>
+
+          <!-- Bottom div floating on top of modal contents ->
+      <!- button for scrolling back to the top of modal and screen -->
+          <div id="modalBottomDiv" class="modal-bottom-div">
+            <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
+              title="Siirry takaisin listan alkuun" onclick="return goToTop(event)">Takaisin ylös</button>
+          </div>
+
+          <!-- Shows error message -->
+          <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
+            <span class="material-icons error-message-icon">error_outline</span>
+            <span class="error-message-text"></span>
+          </div>
+
         </div>
-        <hr />
-        <div id="fieldlist" width="100%">
-        </div>
-        <button onclick="return onAddField(event)">Uusi osakenttä</button>
       </div>
-      <hr />
-      <div style="display: flex; justify-content: right;">
-        <button onclick="return editDlgClose(event)">Peru muutokset</button>
-        <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
-      </div>
+
     </div>
+
   </div>
 
   <!-- ---------------------------------------------------------------------- -->

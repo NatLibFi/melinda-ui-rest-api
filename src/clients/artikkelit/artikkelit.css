@@ -22,6 +22,20 @@ div#tools {}
 
 div#muuntaja {}
 
+/* ---------------------------------------------------------------------------- */
+/* Tooltips, overwritten specifically for Arto */
+/* ---------------------------------------------------------------------------- */
+
+.tooltip:hover:after {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 0px 4px 4px 0px;
+  font-size: 0.6em;
+}
+
+/* ---------------------------------------------------------------------------- */
+
 @media screen and (min-width: 1100px) {
   #artikkelit-lisaa .record-merge-panel {
     display: flex;
@@ -226,6 +240,21 @@ fieldset .panel p {
 #asiasana-list,
 #huomautukset-list,
 #udk-list,
-#muu-luokitus-list {
+#muu-luokitus-list,
+#arvostelut-list {
   width: 100%;
+}
+
+.character-warning {
+  background-color: #F99;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

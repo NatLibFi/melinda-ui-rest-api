@@ -7,19 +7,14 @@
 
 /* eslint-disable no-unused-vars */
 
-import HttpStatus from 'http-status';
-import express, {Router} from 'express';
-import {generateJwtToken} from '@natlibfi/passport-melinda-jwt';
-//import {Error as APIError} from '@natlibfi/melinda-commons';
+import {Router} from 'express';
+import httpStatus from 'http-status';
+import {Error as HttpError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiLogClient} from '@natlibfi/melinda-rest-api-client';
 import {createLogService} from './viewerService';
-//import createClient from '@natlibfi/sru-client';
-//import {MARCXML} from '@natlibfi/marc-record-serializers';
 
-// https://github.com/NatLibFi/marc-record-serializers
-
-export default function (melindaApiOptions) { // eslint-disable-line no-unused-vars
+export default function (melindaApiOptions) {
   const logger = createLogger();
   const restApiLogClient = createMelindaApiLogClient(melindaApiOptions);
   const logService = createLogService(restApiLogClient);
@@ -28,14 +23,11 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     .get('/match-log/:id', getMatchLog)
     .get('/match-validation-log/:id', getMatchValidationLog)
     .get('/merge-log/:id', getMergeLog)
+    .get('/correlation-id-list', getCorrelationIdList)
     .put('/protect/:id', protectLog)
     .delete('/remove/:id', removeLog)
+    .use(handleRouteNotFound)
     .use(handleError);
-
-  function handleError(req, res, next) {
-    logger.error('Error', req, res);
-    next();
-  }
 
   async function getMatchLog(req, res, next) {
     logger.verbose('GET getMatchLog');
@@ -49,9 +41,15 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     };
 
     logger.debug(JSON.stringify(params));
-    const result = await logService.getMatchLog(params);
-    logger.debug(JSON.stringify(result));
-    res.json(result);
+
+    try {
+      const result = await logService.getMatchLog(params);
+      logger.debug(JSON.stringify(result));
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+
   }
 
   async function getMatchValidationLog(req, res, next) {
@@ -67,9 +65,15 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     };
 
     logger.debug(JSON.stringify(params));
-    const result = await logService.getMatchValidationLog(params);
-    logger.debug(JSON.stringify(result));
-    res.json(result);
+
+    try {
+      const result = await logService.getMatchValidationLog(params);
+      logger.debug(JSON.stringify(result));
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+
   }
 
   async function getMergeLog(req, res, next) {
@@ -85,34 +89,102 @@ export default function (melindaApiOptions) { // eslint-disable-line no-unused-v
     };
 
     logger.debug(JSON.stringify(params));
-    const result = await logService.getMergeLog(params);
-    logger.debug('*******************************************');
-    res.json(result);
+
+    try {
+      const result = await logService.getMergeLog(params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
   }
 
-  function protectLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {sequence: blobSequence} = req.query || {};
+  async function getCorrelationIdList(req, res, next) {
+    logger.verbose('GET getCorrelationIdList');
+
+    const expanded = req.query.expanded || 0;
 
     const params = {
-      ...correlationId,
-      ...blobSequence
+      expanded,
+      limit: 0
     };
 
-    logger.debug(`Protecting log id: ${params.correlationId}, sequence: ${params.sequence}`);
-    res.status(200);
+    logger.debug(`Getting correlation id list with expanded value: ${JSON.stringify(params.expanded)}`);
+
+    try {
+      const result = await logService.getCorrelationIdList(params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (error) {
+      return next(error);
+    }
+
   }
 
-  function removeLog(req, res, next) {
-    const {id: correlationId} = req.params || {};
-    const {logType: logItemType} = req.query || {};
+  async function protectLog(req, res, next) {
+    logger.verbose('PUT protectLog');
+
+    const correlationId = req.params.id;
+    const {sequence} = req.query;
+
+    const params = sequence ? {blobSequence: sequence} : {};
+
+    logger.debug(`Protecting log id: ${JSON.stringify(correlationId)}`);
+    logger.debug(sequence ? `Sequence selected for protecting: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, protecting all sequences for this id`);
+
+    try {
+      const result = await logService.protectLog(correlationId, params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  async function removeLog(req, res, next) {
+    logger.verbose('DELETE removeLog');
+
+    const correlationId = req.params.id;
+    const force = req.query.force || 0;
 
     const params = {
-      ...correlationId,
-      ...logItemType
+      force
     };
 
-    logger.debug(`Removing log: ${params.correlationId}`);
-    res.status(200);
+    logger.debug(`Removing log: ${JSON.stringify(correlationId)}, params: ${JSON.stringify(params)}`);
+
+    try {
+      const result = await logService.removeLog(correlationId, params);
+      logger.debug('*******************************************');
+      res.json(result);
+    } catch (e) {
+      return next(e);
+    }
   }
+
+  function handleRouteNotFound(req, res, next) {
+    const {path, query, method} = req;
+    logger.error(`Error: it seems that this Viewer route is not found!`);
+    logger.debug(`Request method: ${method} | Path: ${path} | Query strings: ${JSON.stringify(query)}`);
+    res.sendStatus(404);
+  }
+
+  function handleError(err, req, res, next) {
+    logger.error(`Error: ${err}`);
+    logger.debug(`Error: viewerRoute.js [error status code: ${err.status} | error message: ${err.payload}]`);
+
+    if (err instanceof HttpError) {
+      logger.debug(`Sending the received httpError '${err.status} - ${httpStatus[err.status]}' with message '${err.payload}' forward`);
+      return res.status(err.status).send(err.payload);
+    }
+
+    if (err.status) {
+      logger.debug(`Sending the received error status code '${err.status} - ${httpStatus[err.status]}' forward`);
+      return res.sendStatus(err.status);
+    }
+
+    logger.debug(`No status code received in error, sending code '500 - Internal server error' instead`);
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  }
+
 }

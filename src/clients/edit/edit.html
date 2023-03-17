@@ -44,7 +44,7 @@
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username"/>
+        <input id="login-username" name="username" autofocus/>
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
@@ -71,7 +71,8 @@
 
     <div id="muuntaja" hidden>
       <div class="IconBar ToolBar">
-        <button><a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
+          href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
         <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
         <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
         <div class="dropdown">

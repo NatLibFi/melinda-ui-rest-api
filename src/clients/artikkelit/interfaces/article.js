@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 
 export function initArticle() {
   console.log('initializing article...')
@@ -9,6 +9,8 @@ export function initArticle() {
   document.getElementById("tyhjenna-tieteenalat-form").addEventListener("submit", clearSciences);
   document.getElementById("tyhjenna-metodologiat-form").addEventListener("submit", clearMetodologys);
 
+  document.getElementById("lisaa-linkki").addEventListener("click", addArticleLink);
+
   refreshSciencesList();
   refreshMetodologysList();
 }
@@ -17,7 +19,14 @@ function addScience(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   console.log('science');
-  const [department, departmentName, subCategory, subject] = formJson['lisa-tiedot-tieteenala'].split(" - ");
+  const science = formJson['lisa-tiedot-tieteenala'];
+  
+  if (science === "") {
+    showSnackbar({text: "Tieteenala ei voi olla tyhjä", closeButton: "true"});
+    return;
+  
+  }
+  const [department, departmentName, subCategory, subject] = science.split(" - ");
 
   idbAddValueToLastIndex('artoSciences', {department, departmentName, subCategory, subject}).then(() => {
     document.getElementById("lisa-tiedot-tieteenala").value = '';
@@ -30,6 +39,11 @@ function addMetodology(event) {
   const formJson = formToJson(event);
   console.log('metodology');
   const metodology = formJson['lisa-tiedot-metodologia'];
+
+  if (metodology === "") {
+    showSnackbar({text: "Metodologia ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
 
   idbAddValueToLastIndex('artoMetodologys', {value: metodology}).then(() => {
     document.getElementById("lisa-tiedot-metodologia").value = '';
@@ -47,7 +61,7 @@ export function refreshSciencesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeScience(event, ${scienceData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeScience(event, ${scienceData.key})`, 'Poista');
       div.appendChild(createP('Tieteenala', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(scienceData.departmentName));
       div.appendChild(createP(scienceData.subject, '&nbsp;-&nbsp;'));
@@ -82,7 +96,7 @@ export function refreshMetodologysList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
       div.appendChild(createP('Metodologia', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(metodologyData.value));
       div.appendChild(removeButton);
@@ -98,6 +112,37 @@ export function refreshMetodologysList() {
       document.getElementById("tyhjenna-metodologiat-form").style.display = 'none';
     }
   });
+}
+
+export function addArticleLink(event) {
+  event.preventDefault();
+  const articleWrap = document.getElementById("artikkelin-linkki-wrap");
+  const upperDiv = document.createElement("div");
+  upperDiv.classList.add("full-width");
+  const lowerDiv = document.createElement("div");
+  lowerDiv.classList.add("Input");
+  const removeButton = createIconButton("delete", ["no-border", "negative"], `return removeArticleLink(event)`, "Poista");
+  lowerDiv.appendChild(createLabel("artikkelin-linkki"));
+  lowerDiv.appendChild(createInput("artikkelin-linkki"));
+  upperDiv.appendChild(lowerDiv);
+  upperDiv.appendChild(removeButton);
+  articleWrap.appendChild(upperDiv);
+
+  function createLabel(id) {
+    const label = document.createElement("label");
+    label.setAttribute("for", id);
+    label.innerHTML = "Linkki kokotekstiin:";
+    return label;
+  }
+
+  function createInput(name) {
+    const input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", name);
+    input.setAttribute("name", name)
+    input.setAttribute("maxLength", 128);
+    return input;
+  }
 }
 
 export function clearMetodologys(event) {

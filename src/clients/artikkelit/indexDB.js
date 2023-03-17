@@ -12,7 +12,10 @@ const tableNames = [
   'artoMetodologys',
   'artoUDKs',
   'artoNotes',
-  'artoOtherRatings'
+  'artoOtherTitles',
+  'artoOtherRatings',
+  'artoReviews',
+  'artoTempReviews'
 ];
 
 const dbPromise = openDB('melinda-arto', 1, {

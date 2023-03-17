@@ -1,9 +1,10 @@
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList} from "/artikkelit/interfaces/constants.js";
+import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList, sectionOrColumnList} from "/artikkelit/interfaces/constants.js";
 import {setOptions} from "/common/ui-utils.js"
 
 export function fillFormOptions() {
   fillSelectOptions();
   fillDatalistOptions();
+  fillArticleTypeOptions();
 }
 
 export async function fillSelectOptions() {
@@ -31,27 +32,18 @@ export async function fillSelectOptions() {
     if (select.name.indexOf('-ontologia') !== -1) {
       setOptions(select, ontologyTypes);
     }
+
+    if (select.name.indexOf('-arvostelu-tyyppi') !== -1) {
+      setOptions(select, reviewTypesList, false, "Ei arvostelutyyppiä");
+    }
   }
 }
 
 export function fillDatalistOptions() {
   const datalists = document.getElementsByTagName('datalist');
   //console.log(datalists);
-  const sourceType = document.querySelector('#kuvailtava-kohde').value;
-  //console.log(sourceType);
   for (var index = 0; index < datalists.length; index += 1) {
     const datalist = datalists[index];
-
-    if (datalist.id.indexOf('-tyyppi-lista') !== -1) {
-      if (sourceType === 'book') {
-        setOptions(datalist, articleTypesBooks);
-      }
-
-      if (sourceType === 'journal') {
-        setOptions(datalist, articleTypesJournal);
-      }
-    }
-
     if (datalist.id.indexOf('-tieteenala-lista') !== -1) {
       setOptions(datalist, sciences);
     }
@@ -59,10 +51,21 @@ export function fillDatalistOptions() {
     if (datalist.id.indexOf('-organisaatio-lista') !== -1) {
       setOptions(datalist, organizations);
     }
-
-    if (datalist.id.indexOf('-luokitus-lista') !== -1) {
-      setOptions(datalist, reviewTypesList);
+    
+    if (datalist.id.indexOf('-osasto-toistuva-lista') !== -1) {
+      setOptions(datalist, sectionOrColumnList);
     }
+  }
+}
 
+export function fillArticleTypeOptions() {
+  const sourceType = document.querySelector("#kuvailtava-kohde").value;
+  const articleType = document.querySelector("#artikkelin-tyyppi");
+  if (sourceType === 'book') {
+    setOptions(articleType, articleTypesBooks);
+  }
+
+  if (sourceType === 'journal') {
+    setOptions(articleType, articleTypesJournal);
   }
 }

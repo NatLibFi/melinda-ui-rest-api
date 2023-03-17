@@ -132,7 +132,7 @@ export function getArtikkeliRecord(data) {
   return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
 }
 
-export function getOntologyWords(ontology, query){
+export function getOntologyWords(ontology, query) {
   const {searchVocab, language} = getOntologyOptions(ontology)
 
   return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
@@ -165,16 +165,16 @@ export function getMatchLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
 
-//-----------------------------------------------------------------------------
-
 export function getMatchValidationLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
 }
 
-//-----------------------------------------------------------------------------
-
 export function getMergeLog(id, sequence) {
   return fetchLogs(`${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+}
+
+export function getCorrelationIdList(expanded) {
+  return fetchLogs(`${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`);
 }
 
 async function fetchLogs(url) {
@@ -207,9 +207,9 @@ export async function protectLog(id, sequence) {
 
 //-----------------------------------------------------------------------------
 
-export function removeLog(id, logType) {
+export async function removeLog(id, force) {
   return fetch(
-    `${RESTurl}/viewer/remove/${id}${sequence ? `?logType=${logType}` : ''}`,
+    `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`,
     {
       method: 'DELETE',
       headers: {
@@ -219,3 +219,8 @@ export function removeLog(id, logType) {
     }
   )
 }
+
+//-----------------------------------------------------------------------------
+
+
+//*****************************************************************************

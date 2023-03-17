@@ -31,16 +31,16 @@ export const searchTypes = [
 // https://wiki.eduuni.fi/display/cscsuorat/7.5+Julkaisutyypit+2021
 export const articleTypesBooks = [
   {
-    value: "A3  - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
-    text: ""
+    value: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
+    text: "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa"
   },
   {
     value: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa",
-    text: ""
+    text: "B2 - (Vertaisarvioimaton) tieteellisen kirjan tai muun kokoomateoksen osa"
   },
   {
     value: "D2 - Artikkeli ammatillisessa kokoomateoksessa",
-    text: ""
+    text: "D2 - Artikkeli ammatillisessa kokoomateoksessa"
   } 
 ]
 
@@ -48,23 +48,23 @@ export const articleTypesBooks = [
 export const articleTypesJournal = [
   {
     value: "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä"
   },
   {
     value: "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "A2 - Vertaisarvioitu katsausartikkeli tieteellisessä aikakauslehdessä"
   },
   {
     value: "B1 - Kirjoitus tieteellisessä aikakauslehdessä",
-    text: ""
+    text: "B1 - Kirjoitus tieteellisessä aikakauslehdessä"
   },
   {
     value: "D1 - Artikkeli ammattilehdessä",
-    text: ""
+    text: "D1 - Artikkeli ammattilehdessä"
   },
   {
     value: "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
-    text: ""
+    text: "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli"
   }
 ]
 
@@ -217,11 +217,11 @@ export const languages = [
   },
   {
     value: "sme;sme;Pohj.saame",
-    text: "Pohj.saame"
+    text: "Pohjoissaame"
   },
   {
     value: "smi;smi;Muu saam.",
-    text: "Muu saam."
+    text: "Muu saame"
   },
   {
     value: "krl;krl;Karjala",
@@ -332,7 +332,7 @@ export const sciences = [
     text: ""
   },
   {
-    value: "3 - Lääke- ja terveystieteet - 3111 -Biolääketieteet",
+    value: "3 - Lääke- ja terveystieteet - 3111 - Biolääketieteet",
     text: ""
   },
   {
@@ -946,30 +946,174 @@ export const organizations = [
 export const reviewTypesList = [
   {
     value: "elokuva-arvostelu",
-    text: ""
+    text: "Elokuva-arvostelu"
   },
   {
     value: "kirja-arvostelu",
-    text: ""
+    text: "Kirja-arvostelu"
   },
   {
     value: "musiikkiarvostelu",
-    text: ""
+    text: "Musiikkiarvostelu"
   } ,
   {
     value: "sirkusarvostelu",
-    text: ""
+    text: "Sirkusarvostelu"
   },
   {
     value: "taidearvostelu",
-    text: ""
+    text: "Taidearvostelu"
   },
   {
     value: "tanssiarvostelu",
-    text: ""
+    text: "Tanssiarvostelu"
   },
   {
     value: "teatteriarvostelu",
+    text: "Teatteriarvostelu"
+  }
+]
+
+export const sectionOrColumnList = [
+  {
+    value: "Artikkelit",
+    text: ""
+  },
+  {
+    value: "Kirjallisuus",
+    text: ""
+  },
+  {
+    value: "Muut",
+    text: ""
+  },
+  {
+    value: "Vertaisarvioidut artikkelit",
     text: ""
   }
 ]
+
+export const journalTemplate = {
+  authors: [
+    {
+      asteriId: "000001234",
+      lastName: "Malliyhteisö",
+      organisations: [],
+      relator: "yhteisö"
+    }
+  ],
+  isElectronic: false,
+  isbns: [],
+  issns: [
+    "0123-4567"
+  ],
+  notices: [],
+  publisherInfo: {
+    publisher: "Mallijulkaisija",
+    publisherLocation: "Helsinki",
+    publisherYears: {
+      start: "2022",
+      end: "2023"
+    }
+  },
+  publishing: "Helsinki : Mallijulkaisija, 2022-2023.",
+  recordType: "Kausijulkaisu",
+  simpleElements: {
+    articleLanguage: [
+      "mul"
+    ],
+    articleReference: [],
+    articleSciences: [],
+    f600s: [],
+    f610s: [],
+    f648s: [],
+    f650s: [],
+    f651s: [],
+    f653s: [],
+    f655s: [],
+    localNotes598: [],
+    methodology: [],
+    noteGeneral: [],
+    referenceLink: [],
+    titleOther: [
+      "Testijulkaisu",
+      "Test publikation"
+    ]
+  },
+  simpleGroups: {
+    abstract: {
+      language: [],
+      term: []
+    },
+    localNotes599: [],
+    otherClassificationNumber: [],
+    universalDecimalClassificationNumber: []
+  },
+  sourceIds: [
+    "(FI-MELINDA)001234567"
+  ],
+  sourceType: "nnas",
+  title: "Mallijulkaisu",
+  years: "2022-2023."
+}
+
+export const bookTemplate = {
+  authors: [
+    {
+      asteriId: "000004321",
+      firstName: "Malli",
+      lastName: "Mallailija",
+      organisations: [],
+      relator: "kirjoittaja"
+    }
+  ],
+  isElectronic: false,
+  isbns: [
+    "123-45-6789-0"
+  ],
+  issns: [],
+  notices: [],
+  publisherInfo: {
+    publisher: "Helsingin Mallijulkaisijat ry",
+    publisherLocation: "Helsinki",
+    publisherYears: {
+      start: "2023"
+    }
+  },
+  publishing: "Helsinki : Helsingin Mallijulkaisijat ry, 2023",
+  recordType: "Monografia",
+  simpleElements: {
+    articleLanguage: [
+      "fin"
+    ],
+    articleReference: [],
+    articleSciences: [],
+    f600s: [],
+    f610s: [],
+    f648s: [],
+    f650s: [],
+    f651s: [],
+    f653s: [],
+    f655s: [],
+    localNotes598: [],
+    methodology: [],
+    noteGeneral: [],
+    referenceLink: [],
+    titleOther: []
+  },
+  simpleGroups: {
+    abstract: {
+      language: [],
+      term: []
+    },
+    localNotes599: [],
+    otherClassificationNumber: [],
+    universalDecimalClassificationNumber: []
+  },
+  sourceIds: [
+    "(FI-MELINDA)007654321"
+  ],
+  sourceType: "nnam",
+  title: "Kirjamalli",
+  years: "2023"
+}

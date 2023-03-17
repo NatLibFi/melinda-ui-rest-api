@@ -14,7 +14,7 @@ generateTests({
 });
 
 async function testF336({getFixture, expectToFail = false}) {
-  try {
+  try {    
     const expectedResults = getFixture('output.json');
     const result = await generatef336(); //  constant value, no input needed
 

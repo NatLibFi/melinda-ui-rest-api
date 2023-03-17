@@ -50,7 +50,9 @@ window.initialize = function () {
     document.querySelector(".record-merge-panel #source #ID").defaultValue = sourceId;
     document.querySelector(".record-merge-panel #base #ID").defaultValue = baseId;
     document.querySelector("#type-options [name='type']").value = type;
+    transformed.options.type = type;
     document.querySelector("#profile-options [name='profile']").value = profile;
+    transformed.options.profile = profile;
   }
 
   document.querySelector(".record-merge-panel #source #ID").addEventListener("input", updateUrlParameters);
@@ -119,6 +121,7 @@ function setProfiles(options) {
 }
 
 function setTransformType(event, value) {
+  console.log("Type:", value)
   transformed.options.type = value;
   delete transformed.base.record;
   doTransform();
@@ -202,17 +205,15 @@ window.copyLink = function (e) {
   
   // Fade in and fade out popup text
   var popup = document.querySelector(".popup");
-  fadeIn(popup);
-  fadeOut(popup);
+  fadePopup();
 
-  function fadeIn(popup) {
-    popup.style.display = "block";
-  }
-
-  function fadeOut(popup) {
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, parseFloat(getComputedStyle(popup).animationDuration) * 1000);
+  function fadePopup() {
+    popup.className = "popup";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        popup.className = "popup fading";
+      });
+    });
   }
 }
 
@@ -362,6 +363,15 @@ function showTransformed(update = undefined) {
     transformed = update;
   }
 
+  if (update.source.status == 404) {
+    notFoundDlgOpen("Lähde");
+  }
+  
+  if (update.base.status == 404) {
+    notFoundDlgOpen("Pohja");
+    // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
+  }
+
   const {source, base, result} = transformed;
 
   // Get field source for decorator
@@ -395,4 +405,67 @@ function showTransformed(update = undefined) {
     return fields.reduce((a, field) => ({...a, [field.id]: field}), {})
   }
 
+}
+
+function notFoundDlgOpen(recordType) {
+  const dlg = document.querySelector("#notFoundDlg");
+  dlg.style.display = "flex";
+  const prefix = document.querySelector("#notFoundDlg #recordType");
+  prefix.innerHTML = recordType;
+}
+
+window.notFoundDlgClose = function (event) {
+  const dlg = document.querySelector("#notFoundDlg");
+  dlg.style.display = "none";
+  return eventHandled(event);
+}
+
+window.jsonDlgOpen = function (event) {
+  const dlg = document.querySelector("#jsonDlg");
+  dlg.style.display = "flex";
+  const content = document.querySelector("#jsonDlg #jsonContent");
+  content.innerHTML = "";
+  content.appendChild(createJsonInput("recordAsJson", "recordAsJson", JSON.stringify(transformed, null, 1)))
+}
+
+window.jsonDlgClose = function (event) {
+  const dlg = document.querySelector("#jsonDlg");
+  dlg.style.display = "none";
+  return eventHandled(event);
+}
+
+function createJsonInput(id, className, content, editable = true) {
+  const input = document.createElement('pre');
+  input.setAttribute('id', id);
+  input.classList.add(className);
+  if (editable) {
+    input.classList.add('editable')
+  }
+  input.textContent = content;
+  input.contentEditable = editable;
+  return input;
+}
+
+window.selectJson = function (event) {
+  const record = document.querySelector("#recordAsJson");
+  if (document.body.createTextRange) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(record);
+    range.select();
+  } else if (window.getSelection) {
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(record);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+}
+
+window.saveJson = function (event) {
+  const record = document.querySelector("#recordAsJson");
+  transformed = JSON.parse(record.textContent);
+  doTransform();
+  document.querySelector("#type-options [name='type']").value = transformed.options.type;
+  document.querySelector("#profile-options [name='profile']").value = transformed.options.profile;
+  jsonDlgClose(event);
 }

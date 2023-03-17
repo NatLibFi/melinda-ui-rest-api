@@ -1,5 +1,5 @@
 import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 
 export function initAuthors() {
   console.log('initializing authors...');
@@ -25,7 +25,13 @@ export function addAuthor(event) {
       authorsTempOrganizations
     }
 
+    if (data.firstName === "" || data.lastName === "") {
+      showSnackbar({text: "Tekijän nimi ei voi olla tyhjä", closeButton: "true"});
+      return;
+    }
+
     idbAddValueToLastIndex('artoAuthors', data).then(() => {
+      resetAuthor(event);
       refreshAuthorsList();
     });
   });
@@ -52,7 +58,7 @@ export function refreshAuthorsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista')
       div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
@@ -98,6 +104,12 @@ export function addOrganizationForAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const organizationInputValue = formJson['tekija-organisaatio']
+
+  if (organizationInputValue === "") {
+    showSnackbar({text: "Organisaatio ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
+
   const [organizationNameAndShortTerm = false, code = false, note = false] = organizationInputValue.split(' - ');
   const [organizationName, organizationShortTerm] = organizationNameAndShortTerm.split(' (').map(value => value.replace(')', ''));
 
@@ -116,7 +128,7 @@ export function refreshAuthorOrganizationList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('close', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista')
       div.appendChild(createP('Organisaatio', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(tempOrgData.organizationName));
 
