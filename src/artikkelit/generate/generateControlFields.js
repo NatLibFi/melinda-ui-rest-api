@@ -23,14 +23,13 @@ export function generatef007(isElectronic = false) {
 }
 
 export function generatef008(useMoment, publYear, sourceType, isElectronic, language) {
-  
+
   function checkPublYear(publYear) {
     if (!publYear.length || publYear.length !== 4) {
       return '    '; // '^^^^'
     }
     return publYear;
   }
-
 
   function checkLanguage() {
 

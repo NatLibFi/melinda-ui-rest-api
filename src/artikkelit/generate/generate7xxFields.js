@@ -1,5 +1,4 @@
 export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t) {
-  
   return [
     {
       tag: '773', ind1: '0', ind2: ' ', subfields: [...selectSubfields()]
@@ -27,23 +26,66 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
         ...selectSubfield(isbn, 'z'),
         ...selectSubfield(issn, 'x'),
         {code: 'k', value: melindaId},
-        {code: 'g', value: pages}
+        {code: 'g', value: pages ? pages : ' '}
       ];
     }
 
-    if (isbn && pages) {
-      return [
-        {code: 'z', value: `${isbn}. -`},
-        {code: 'g', value: pages}
-      ];
-    }      
-    
-    return [];
+    return [
+      {code: 'z', value: `${isbn}. -`},
+      {code: 'g', value: pages ? pages : ' '}
+    ];
 
     function getSubfieldG() {
-      const value = `${volume} (${publishingYear}) : ${number}, sivut ${pages}`;
+
+      const value = `${printVolume(volume)} (${printPublishingYear(publishingYear)})${printNumber(number)}${printPages(pages)}`;
+
       return [{code: 'g', value}];
+
+      function printVolume(volume) {
+        if (volume) {
+          return volume;
+        }
+        return '';
+      }
+
+      function printPublishingYear(publishingYear) {
+        if (publishingYear) {
+          return publishingYear;
+        }
+        return '';
+      }
+
+
+      function printNumber(number) {
+        if (number) {
+          return `: ${number}`;
+        }
+        return '';
+      }
+
+      function printPages(pages) {
+        if (pages) {
+
+          if (!Number.isNaN(Number(pages))) {
+            return `, sivu ${pages}`;
+          }
+
+          if (Number.isNaN(Number(pages))) { // special case (newspapers): when input type is 'A7'
+            const first = pages.trim().split(/[0-9]/u);
+            const rest = pages.trim().split(/[a-zA-Z]/u);
+            const testA = (/[a-zA-Z]/u).test(first[0]);
+            const testB = (/[0-9]/u).test(rest[1]);
+
+            if (testA && testB) {
+              return `, sivu ${pages}`;
+            }
+          }
+          return `, sivut ${pages}`;
+        }
+        return '';
+      }
     }
+
   }
 
   function selectSubfield(value, code = false) {

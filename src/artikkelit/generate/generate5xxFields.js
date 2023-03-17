@@ -12,6 +12,25 @@ export function generatef500(notes = false) {
   return [];
 }
 
+export function generatef506(referenceLinks, isElectronic) {
+
+  if (isElectronic && referenceLinks && referenceLinks[0].length > 0) {
+    return [
+      {
+        tag: '506',
+        ind1: '0',
+        ind2: ' ',
+        subfields: [
+          {code: 'a', value: 'Aineisto on vapaasti saatavissa.'},
+          {code: 'f', value: 'Unrestricted online access'},
+          {code: '2', value: 'star'}
+        ]
+      }
+    ];
+  }
+  return [];
+}
+
 export function generatef520(abstracts) {
 
   if (abstracts) {
@@ -36,7 +55,12 @@ export function generatef567(methodologys) {
   return [];
 }
 
-export function generatef591(articleType, articleSciences, articleCategory) {
+export function generatef591(articleSciences, articleCategory) { // = sciences, article.type
+
+  if (!articleSciences || !articleCategory) {
+    return [];
+  }
+
   const codeOfCategory = articleCategory.split(' ', 1);
   return [{tag: '591', ind1: ' ', ind2: ' ', subfields: [{code: 'd', value: codeOfCategory}, ...selectArticleSciences(articleSciences), {code: '5', value: 'ARTO'}]}];
 
@@ -54,7 +78,7 @@ export function generatef593(journalJufo, year) {
   //    <subfield code="5">ARTO</subfield>
   //  </datafield>
   //</xsl:if>
-  console.log('   ***  generatef593 /  year = ', year); // eslint-disable-line
+
   if (journalJufo && parseInt(year, 10) >= 2011) {
     return [{tag: '593', ind1: ' ', ind2: ' ', subfields: [{code: 'a', value: journalJufo}, {code: '5', value: 'ARTO'}]}];
   }

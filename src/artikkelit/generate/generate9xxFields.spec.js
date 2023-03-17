@@ -17,7 +17,7 @@ async function testF960({getFixture, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
-    const result = await generatef960();   
+    const result = await generatef960(input);
 
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);

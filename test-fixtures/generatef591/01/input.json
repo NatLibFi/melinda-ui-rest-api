@@ -1,16 +1,5 @@
 {
-    "sourceType":[
-    ],
-    "sciences": [
-        {
-         "key": 1,
-         "department": "1",
-         "departmentName": "Luonnontieteet",
-         "subCategory": "111",
-         "subject": "Matematiikka"
-        }
-       ],
-       "article": {
+    "article": {
         "title": "",
         "titleOther": "",
         "language": {
@@ -22,6 +11,15 @@
         "type": "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
         "reviewType": "",
         "sectionOrColumn": ""
-       }
+       },    
+    "sciences": [
+        {
+         "key": 1,
+         "department": "1",
+         "departmentName": "Luonnontieteet",
+         "subCategory": "111",
+         "subject": "Matematiikka"
+        }
+       ]
 }
 

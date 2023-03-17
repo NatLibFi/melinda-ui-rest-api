@@ -23,7 +23,6 @@ async function testF773({getFixture, expectToFail = false}) {
     const {issn, melindaId} = parseIncomingData(input.source);
     const isbn = '951-isbn';
     const {publishingYear, volume, number, pages} = input.journalNumber;
-
     const result = await generatef773(getSourceType(input.source), {publishingYear, volume, number, pages}, melindaId, input.source.publishing, isbn, issn, input.source.sourceType, input.source.title);
 
     expect(result).to.deep.equal(expectedResults);

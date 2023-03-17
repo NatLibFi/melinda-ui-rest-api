@@ -15,10 +15,8 @@ generateTests({
 
 async function testF336({getFixture, expectToFail = false}) {
   try {
-    //const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
-
-    const result = await generatef336(); // articleTitle; constant value no input needed
+    const result = await generatef336(); //  constant value, no input needed
 
     expect(result).to.deep.equal(expectedResults);
 
@@ -47,7 +45,7 @@ async function testF380({getFixture, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
     const result = await generatef380(input.article.reviewType);
-   
+
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 

@@ -1,7 +1,7 @@
 
 export function generatef100sf110sf700sf710s(authors = []) {
 
-  if (authors.length === 0) {
+  if (!authors || authors.length === 0) {
     return [];
   }
 

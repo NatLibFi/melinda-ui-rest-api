@@ -18,7 +18,7 @@ async function testF245({getFixture, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
     const result = await generatef245(input.article.title, input.authors, input.article.language.iso6392b);
- 
+
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 

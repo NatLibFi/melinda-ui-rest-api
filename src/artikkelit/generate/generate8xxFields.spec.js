@@ -30,5 +30,4 @@ async function testF856({getFixture, expectToFail = false}) {
     expect(expectToFail, 'This is expected to fail').to.equal(true);
   }
 
-
 }

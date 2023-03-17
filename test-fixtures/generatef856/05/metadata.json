@@ -1,5 +1,5 @@
 {
-  "description": "generatef856 - field 856, isElectronic: true / this test expected to fail: 400",
+  "description": "generatef856 - field 856, isElectronic: true / no link",
   "skip": false,
   "only": false,
   "succesRecords": 2,

@@ -6,7 +6,7 @@ import {generatef245, generatef246} from './generate/generate2xxFields';
 import {generatef100sf110sf700sf710s} from './generate/generate1xxFields';
 import {generatef336, generatef337, generatef380} from './generate/generate3xxFields';
 import {generatef490} from './generate/generate4xxFields';
-import {generatef500, generatef520, generatef567, generatef591, generatef593, generatef598, generatef599} from './generate/generate5xxFields';
+import {generatef500, generatef506, generatef520, generatef567, generatef591, generatef593, generatef598, generatef599} from './generate/generate5xxFields';
 import {generatef773, generatef787} from './generate/generate7xxFields';
 import {generatef856} from './generate/generate8xxFields';
 import {generatef960} from './generate/generate9xxFields';
@@ -24,12 +24,11 @@ export function createArtikkelitService(useMoment = 'now') {
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const articleCategory = article.type; // for field 591
     const referenceLinks = article.link; // field 856; at the moment only one link
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
-    const today = new Date(); 
+    const today = new Date();
     const year = today.getFullYear(); // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
@@ -52,9 +51,10 @@ export function createArtikkelitService(useMoment = 'now') {
         ...generatef380(article.reviewType),
         ...generatef490(article.sectionOrColumn),
         ...generatef500(notes), // general notes
+        ...generatef506(referenceLinks, isElectronic),
         ...generatef520(abstracts), // Abstracts
         ...generatef567(metodologys),
-        ...generatef591(sourceType, sciences, articleCategory),
+        ...generatef591(sciences, article.type),
         ...generatef593(journalJufo, year),
         ...generatef598(), // local notes (lisäkentät)
         ...generatef599(f599a, f599x),

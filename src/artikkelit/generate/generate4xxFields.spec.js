@@ -17,7 +17,7 @@ async function testF490({getFixture, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
-    const result = await generatef490(input.article.sectionOrColumn);    
+    const result = await generatef490(input.article.sectionOrColumn);
 
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);

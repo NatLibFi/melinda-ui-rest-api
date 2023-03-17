@@ -17,18 +17,18 @@
          "subject": "Tilastotiede"
         }
        ],
-       "article": {
-        "title": "",
-        "titleOther": "",
-        "language": {
-         "iso6391": "fi",
-         "iso6392b": "fin",
-         "ui": "Suomi"
-        },
-        "link": "",
-        "type": "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
-        "reviewType": "",
-        "sectionOrColumn": ""
-       }
+    "article": {
+    "title": "",
+    "titleOther": "",
+    "language": {
+        "iso6391": "fi",
+        "iso6392b": "fin",
+        "ui": "Suomi"
+    },
+    "link": "",
+    "type": "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
+    "reviewType": "",
+    "sectionOrColumn": ""
+    }
 }
 
