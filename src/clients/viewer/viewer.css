@@ -12,7 +12,7 @@ div#tools {}
 
 .Input>label,
 .Select>label,
-.sequenceContainer>label {
+.sequence-container>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-normal);
@@ -44,7 +44,13 @@ div#tools {}
   background-color: rgb(182, 225, 224);
 }
 
+.tools .id-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 .tools #sequence {
+  display: none;
   width: 6ch;
   text-align: end;
   margin-left: 1ch;
@@ -52,8 +58,12 @@ div#tools {}
 
 .tools #sequenceInput {
   width: 6ch;
-  text-align: start;
+  text-align: end;
   margin-left: 1ch;
+}
+
+.tools .sequence-container {
+  margin-right: 8px;
 }
 
 .tools #logType {
@@ -71,9 +81,17 @@ div#tools {}
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   width: 100vw;
   height: 40px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.tools button {
+  height: 38px;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 .uuidInput {
@@ -82,7 +100,7 @@ div#tools {}
 
 /* ---------------------------------------------------------------------------- */
 
-div#muuntaja {}
+div#viewer {}
 
 @media screen and (min-width: 1100px) {
   #viewer .record-merge-panel {
@@ -183,17 +201,27 @@ div#muuntaja {}
 }
 
 /* ---------------------------------------------------------------------------- */
-/* ---Sequence select---*/
+/* ---Correlation id font helper---*/
 
-.flex-container {
-  display: flex;
-  flex-wrap: nowrap;
+/* For span elements */
+span.correlation-id-font {
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  cursor: text;
 }
 
-.sequenceContainer label {
-  display: inline-block;
-  width: 115px;
+/* ---------------------------------------------------------------------------- */
+/* ---Highlighting elements---*/
+
+.highlight {
+  animation: highlight 5s ease-out 0s 1;
 }
+
+@keyframes highlight {
+  50% {
+    background-color: rgb(182, 225, 224);
+  }
+}
+
 
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
@@ -442,7 +470,7 @@ div#correlationIdListModal {}
   flex-grow: 1;
 }
 
-.clear-button {
+.clear-filter-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -732,10 +760,4 @@ div#correlationIdListModal {}
   #correlationIdListModal>.modal-content {
     resize: none;
   }
-}
-
-/* For span elements */
-span.correlation-id-font {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  cursor: text;
 }

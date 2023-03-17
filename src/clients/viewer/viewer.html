@@ -61,7 +61,6 @@
       </div>
     </form>
 
-
     <!-- ---------------------------------------------------------------------- -->
     <!-- Viewer tab -->
     <div id="viewer" hidden>
@@ -83,7 +82,6 @@
 
       </div>
 
-
       <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
 
@@ -94,13 +92,13 @@
             <select id="logType">
               <option value="MERGE_LOG">Merge</option>
               <option value="MATCH_LOG">Match</option>
+              <option value="EMPTY_LOG" hidden></option>
             </select>
           </div>
 
-          <div class="flex-container">
+          <div class="id-container">
             <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-              tooltip-text="Etsi ID listasta"
-              onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
+              tooltip-text="Etsi ID listasta" onclick="return openCorrelationIdListModal(event)">manage_search</button>
             <div class="Filler VBox Input">
               <label>ID (correlation id)</label>
               <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
@@ -108,15 +106,13 @@
           </div>
 
           <div class="Select VBox">
-            <div class="sequenceContainer">
+            <div class="sequence-container">
               <label>Sekvenssi</label>
-              <div class="flex-container">
-                <div class="Select VBox">
-                  <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
-                </div>
-                <div class="Filler VBox Input">
-                  <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3" />
-                </div>
+              <div class="Select VBox">
+                <select id="sequence" onchange="return loadLog(event)"></select>
+              </div>
+              <div class="Filler VBox Input">
+                <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
               </div>
             </div>
           </div>
@@ -129,30 +125,39 @@
         <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
           disabled="true">lock_open</button>
 
-        <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
-          onclick="return copyLink(event)">share</button>
+        <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
+          onclick="return openRemoveDialog(event)" disabled="true">delete</button>
 
-        <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID" onclick="return openRemoveDialog(event)"
-          disabled="true">delete</button>
+        <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
+          onclick="return copyLink(event)">share</button>
 
         <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
 
+        <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
+          onclick="return clearLogView(event)" disabled="true">backspace</button>
+
       </div>
 
-      <!-- The dialog will block all other actions until the user acknowledges the dialog -->
+      <!-- Dialog popup used when log is removed -->
       <dialog id="dialogForRemove">
-
         <form method="dialog">
 
-          <div class="dialog-icon material-icons">delete_outline</div>
+          <div class="dialog-icon material-icons">
+            delete_outline
+          </div>
 
-          <div class="dialog-headline">Haluatko varmasti poistaa ID:n?</div>
+          <div class="dialog-headline">
+            Haluatko varmasti poistaa ID:n?
+          </div>
 
-          <div id="removeIdInfoText" class="dialog-supporting-text"></div>
+          <div class="dialog-supporting-text">
+            Seuraava ID poistetaan pysyvästi: <span id="idToBeRemoved" class="correlation-id-font"></span>
+          </div>
 
           <div class="dialog-actions">
             <button class="dialog-cancel-button" id="cancelButton" onclick="return cancelRemove(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmButton" onclick="return confirmRemove(event)">Vahvista poisto</button>
+            <button class="dialog-confirm-button" id="confirmButton" onclick="return confirmRemove(event)">Vahvista
+              poisto</button>
           </div>
 
         </form>
@@ -236,7 +241,6 @@
 
       </div>
 
-      <!-- ---------------------------------------------------------------------- -->
       <!-- Modal for browsing and selecting a correlation id from a list -->
       <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
@@ -363,7 +367,7 @@
 
             <!-- button for resetting search and clearing all filters -->
             <div id="clearFilters" class="clear-filters">
-              <button id="clearFiltersButton" class="clear-button modal-function-button"
+              <button id="clearFiltersButton" class="clear-filter-button modal-function-button"
                 title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters({event})">Nollaa
                 suodattimet</button>
             </div>
