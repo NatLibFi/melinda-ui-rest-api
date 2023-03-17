@@ -440,8 +440,44 @@ button.dialog-cancel-button:hover {
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Segmented buttons */
+/* ---------------------------------------------------------------------------- */
+/* Segmented buttons can be single-select or multi-select buttons. */
+/* Use segmented buttons for for example for filtering */
+
+/* Segmented button container is the container for all the buttons that are displayed as one segmented button */
+/* It is recommended not add more than 5 buttons inside the container */
+.segmented-button-container {
+  display: inline-flex;
+}
+
+/* Segmented button class is used with element <button> */
+/* First and last button are rendered with round button edges */
+.segmented-button {}
+
+.segmented-button:first-child {
+  border-radius: 1em 0em 0em 1em;
+  margin-right: 0px;
+  border-right: none;
+}
+
+.segmented-button:nth-child(n):not(:first-child, :last-child) {
+  border-radius: 0px 0px 0px 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-right: none;
+}
+
+.segmented-button:last-child {
+  border-radius: 0em 1em 1em 0em;
+  margin-left: 0px;
+}
+
+/* ---------------------------------------------------------------------------- */
 /* Select buttons */
 /* ---------------------------------------------------------------------------- */
+/* Select buttons have two "states", selected or unselected */
+/* There is a style for a button that is selected and another for when it's not selected */
 
 /* Select button is wrapped with a container div */
 .select-button-container {
@@ -449,11 +485,11 @@ button.dialog-cancel-button:hover {
 }
 
 /* Helper class for html readibility, used for marking a button as select button */
-/* Select button in unselected state does not have any special style */
+/* Select button in unselected state has default button style*/
 .select-button {}
 
 /* Select button inner container for content */
-/* Contents are icon and text */
+/* Contents for select button are icon and text */
 .select-button-content {
   display: flex;
   justify-content: center;
@@ -461,7 +497,6 @@ button.dialog-cancel-button:hover {
 
 /* Select button has icon */
 /* Use with material-icons class, check icon and a <span> element: */
-/* <span class="material-icons select-button-icon">check</span> */
 .select-button-icon {
   font-size: 13px !important;
   height: 16px !important;
