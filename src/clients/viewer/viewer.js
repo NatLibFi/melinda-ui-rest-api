@@ -4,12 +4,8 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
-import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
-
+import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from "/common/ui-utils.js";
 import {Account, doLogin, logout} from "/common/auth.js"
-import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
 import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList} from "/viewer/indexDB.js";
@@ -101,18 +97,33 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   console.log('Fetching...');
 
   if (id === '') {
-    console.log('Nothing to fetching...');
+    showSnackbar('Lisää ID haun aloittamista varten')
+    console.log('Nothing to fetch...');
     return stopProcess();
   }
 
   if (logType === 'MERGE_LOG') {
     col3.style.display = 'block';
-    getMergeLog(id).then(logs => setDataToIndexDB(logs, sequence));
+    getMergeLog(id)
+      .then(logs =>
+        setDataToIndexDB(logs, sequence))
+      .catch(error => {
+        showSnackbar(`ID:tä '${id}' lokityypillä 'MERGE' ei valitettavasti pystytty hakemaan!`);
+        console.log('Error fetching merge log: ', error);
+        return stopProcess();
+      })
   }
 
   if (logType === 'MATCH_LOG') {
     col3.style.display = 'none';
-    getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
+    getMatchLog(id)
+      .then(logs =>
+        setDataToIndexDB(logs, sequence))
+      .catch(error => {
+        showSnackbar(`ID:tä '${id}' lokityypillä 'MATCH' ei valitettavasti pystytty hakemaan!`);
+        console.log('Error fetching match log: ', error);
+        return stopProcess();
+      })
   }
 
 }
@@ -207,7 +218,7 @@ window.loadLog = (event) => {
         console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
 
     function toggleRemoveButtonByLogAge(logCreationTime) {
-      const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7.5 * 24 * 60 * 60 * 1000))
+      const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7 * 24 * 60 * 60 * 1000))
       isOverWeekOld ? enableElement(removeButton) : disableElement(removeButton)
     }
 
@@ -234,12 +245,26 @@ window.copyLink = function (event) {
   const logType = document.querySelector(`#viewer #logType`).value || '';
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || '';
-  if (id === '' || sequence === '') {
-    navigator.clipboard.writeText(window.location);
-    return;
+
+  let link = window.location;
+
+  if (id !== '' && sequence !== '') {
+    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`
   }
 
-  navigator.clipboard.writeText(`${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`);
+  const button = createTestLinkButton(link);
+
+  showSnackbar({text: `Linkki kopioitu!`, actionButton: button, closeButton: 'true'});
+  navigator.clipboard.writeText(link);
+
+  function createTestLinkButton(link) {
+    const testLinkButton = document.createElement('button');
+    testLinkButton.innerHTML = 'Testaa linkkiä';
+    testLinkButton.addEventListener('click', () => {
+      window.open(link);
+    });
+    return testLinkButton;
+  }
 }
 
 window.protect = function (event = undefined) {
@@ -252,42 +277,71 @@ window.protect = function (event = undefined) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
+    showSnackbar('ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!');
     console.log('Nothing to protect...');
     stopProcess();
     return;
   }
 
   protectLog(id, sequence)
-    .then(() =>
-      protectButton.innerHTML === 'lock_open' ? (setProtectButton('protected')) : (setProtectButton('not protected')))
-    .catch(error =>
-      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Response status ok:false')
+      }
+      protectButton.innerHTML === 'lock_open'
+        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu ID:n <span class="correlation-id-font">${id}</span> sekvenssi ${sequence}`}))
+        : (setProtectButton('not protected'), showSnackbar(`Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`))
+    })
+    .catch(error => {
+      showSnackbar('Valitettavasti tämän ID:n turvausta ei pystytty muuttamaan!');
+      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence} `, error);
+    })
     .finally(() =>
       stopProcess());
 
 }
 
-window.remove = function (event = undefined) {
+window.openRemoveDialog = function (event = undefined) {
   eventHandled(event);
-  console.log('Removing...');
-  startProcess();
-
   const id = document.querySelector(`#viewer #id`).value || '';
-  const force = '1';
+  const dialog = document.getElementById('dialogForRemove');
+  const dialogTextDiv = document.getElementById('removeIdInfoText');
 
   if (id === '') {
+    showSnackbar('ID:tä ei poistettu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen poistamista!');
     console.log('Nothing to remove...');
     stopProcess();
     return;
   }
 
+  dialogTextDiv.innerHTML = `Seuraava ID poistetaan pysyvästi: <span class="correlation-id-font">&nbsp;${id}</span>`;
+  dialog.showModal();
+}
+
+window.cancelRemove = function (event) {
+  console.log('Nothing removed');
+  showSnackbar('Toiminto peruttu!');
+}
+
+window.confirmRemove = function (event = undefined) {
+  console.log('Removing...');
+  startProcess();
+  remove(event);
+}
+
+function remove(event = undefined) {
+  const force = '1';
+  const id = document.querySelector(`#viewer #id`).value || '';
+
   removeLog(id, force)
-    .then(() =>
-      window.alert(`Poistettiin ID: \n ${id}`))
-    .then(() =>
-      location.reload())
-    .catch(error =>
-      console.log(`Error while trying to remove log with correlation id ${id}: `, error))
+    .then(() => {
+      console.log(`Log ${id} removed`);
+      //TODO empty fields, notify user
+    })
+    .catch(error => {
+      showSnackbar('Valitettavasti tätä ID:tä ei pystytty poistamaan!');
+      console.log(`Error while trying to remove log with correlation id ${id}: `, error)
+    })
     .finally(() =>
       stopProcess());
 
@@ -302,7 +356,7 @@ function setDataToIndexDB(logs, sequence) {
     select.add(createOption('0', 0));
     idbSetLogs('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
     stopProcess();
-    // TODO toast 404 not found
+    showSnackbar('Sorry, no matches found');
     select.value = 0;
     return select.dispatchEvent(new Event('change'));;
   }
@@ -618,7 +672,7 @@ function fetchCorrelationIdList() {
       setCorrelationIdListDataToIndexDB(data))
     .catch((error) => {
       setOrClearErrorMessageAndStyle({set: 'true', text: 'Valitettavasti listaa ei pystytty juuri nyt hakemaan'});
-      console.log('Error while fetching correlation id list: ', error)
+      console.log('Error while fetching correlation id list: ', error);
       stopProcess();
     });
 }
@@ -831,7 +885,7 @@ function updateListView(correlationIdList) {
         searchWithSelectedIdAndType(correlationId, logItemType);
       });
 
-      const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7.5 * 24 * 60 * 60 * 1000)
+      const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7 * 24 * 60 * 60 * 1000)
 
       if (overWeekOld) {
         const infoIcon = document.createElement('span');

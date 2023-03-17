@@ -733,3 +733,9 @@ div#correlationIdListModal {}
     resize: none;
   }
 }
+
+/* For span elements */
+span.correlation-id-font {
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  cursor: text;
+}
