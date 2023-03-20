@@ -1,0 +1,21 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Friedrich",
+     "lastName": "Schiller",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+  
+   "article": {
+    "title": "An Die Freude",
+    "titleOther": "",
+    "language": {
+     "iso6391": "de",
+     "iso6392b": "ger",
+     "ui": "Saksa"
+    }
+}
+}

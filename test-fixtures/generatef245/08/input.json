@@ -1,0 +1,21 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Friedrich",
+     "lastName": "Schiller",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+  
+   "article": {
+    "title": "The Pilgrims",
+    "titleOther": "",
+    "language": {
+     "iso6391": "sv",
+     "iso6392b": "swe",
+     "ui": "Ruotsi"
+    }
+  }
+}

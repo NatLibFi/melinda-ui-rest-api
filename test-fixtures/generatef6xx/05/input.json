@@ -1,0 +1,18 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/soto/p1535",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/soto-meta/Concept"
+         ],
+         "localname": "p1535",
+         "prefLabel": "hyökkäys",
+         "lang": "fi",
+         "vocab": "soto"
+        }
+       ]
+}
+

@@ -12,12 +12,11 @@ import {generatef856} from './generate/generate8xxFields';
 import {generatef960} from './generate/generate9xxFields';
 import {generatef6xxs} from './generate/generate6xxFields';
 
-export function createArtikkelitService() {
+export function createArtikkelitService(useMoment = 'now') {
 
   return {generateRecord};
 
   function generateRecord(data) {
-
     console.log(data); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
@@ -25,23 +24,22 @@ export function createArtikkelitService() {
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const articleCategory = article.type; // for field 591
     const referenceLinks = article.link; // field 856; at the moment only one link
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
     const today = new Date();
-    const year = today.getFullYear(); // journal year form value / book year form value /
+    const year = today.getFullYear(); // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
-    const {f599a, f599x} = collecting; // 'collecting' has 'f589a' (!), 'f599a', 'f599x'. Obviously 'f589a' is just misspelled for 'f598a'
+    const {f599a, f599x} = collecting;
 
     const record = {
       leader: generateLeader(sourceType),
       fields: [
         ...generatef005(),
         ...generatef007(isElectronic),
-        ...generatef008(journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
+        ...generatef008(useMoment, journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
         ...generatef041(articleLanguage.iso6392b, abstractLanguages),
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
@@ -53,12 +51,12 @@ export function createArtikkelitService() {
         ...generatef380(article.reviewType),
         ...generatef490(article.sectionOrColumn),
         ...generatef500(notes), // general notes
-        ...generatef506(isElectronic), // isElectronic
+        ...generatef506(referenceLinks, isElectronic),
         ...generatef520(abstracts), // Abstracts
         ...generatef567(metodologys),
-        ...generatef591(sciences, articleCategory),
+        ...generatef591(sciences, article.type),
         ...generatef593(journalJufo, year),
-        ...generatef598(collecting.f589a),
+        ...generatef598(), // local notes (lisäkentät)
         ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
         ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),
@@ -88,11 +86,11 @@ export function getSourceType(input) {
   const get3rd = found.substr(2, 1);
   const get4th = found.substr(3, 1);
 
-  if (['s', 'i'].some(el => get4th.includes(el))) {
+  if (get4th.includes('s', 'i')) {
     return 'journal';
   }
 
-  if (['c', 'm'].some(el => get4th.includes(el))) {
+  if (get4th.includes('c', 'm')) {
     return 'book';
   }
 
@@ -100,7 +98,7 @@ export function getSourceType(input) {
     return 'text';
   }
 
-  if (['g', 'i', 'm'].some(el => get3rd.includes(el))) {
+  if (get3rd.includes('g', 'i', 'm')) {
     return 'electronic';
   }
 

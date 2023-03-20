@@ -1,0 +1,7 @@
+{
+  "description": "generatef100 - This test expected to fail: 422.",
+  "skip": false,
+  "only": false,
+  "expectToFail": true,
+  "expectedErrorStatus": "422"
+}

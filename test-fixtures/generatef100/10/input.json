@@ -1,0 +1,18 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": " ",
+     "lastName": "Outsider",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 2,
+     "firstName": " ",
+     "lastName": "Outsider",
+     "relator": "kuvittaja",
+     "authorsTempOrganizations": []
+    }
+   ]
+}

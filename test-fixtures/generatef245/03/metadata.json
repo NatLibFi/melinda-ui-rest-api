@@ -1,0 +1,8 @@
+{
+  "description": "generatef245 - checked ind 1 & ending dot; more than one author.",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

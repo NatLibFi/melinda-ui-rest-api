@@ -26,19 +26,35 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
         ...selectSubfield(isbn, 'z'),
         ...selectSubfield(issn, 'x'),
         {code: 'k', value: melindaId},
-        {code: 'g', value: pages}
+        {code: 'g', value: pages ? pages : ' '}
       ];
     }
 
     return [
       {code: 'z', value: `${isbn}. -`},
-      {code: 'g', value: pages}
+      {code: 'g', value: pages ? pages : ' '}
     ];
 
     function getSubfieldG() {
-      const value = `${volume} (${publishingYear})${printNumber(number)}${printPages(pages)}`;
+
+      const value = `${printVolume(volume)} (${printPublishingYear(publishingYear)})${printNumber(number)}${printPages(pages)}`;
 
       return [{code: 'g', value}];
+
+      function printVolume(volume) {
+        if (volume) {
+          return volume;
+        }
+        return '';
+      }
+
+      function printPublishingYear(publishingYear) {
+        if (publishingYear) {
+          return publishingYear;
+        }
+        return '';
+      }
+
 
       function printNumber(number) {
         if (number) {

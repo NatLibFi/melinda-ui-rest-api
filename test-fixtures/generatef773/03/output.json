@@ -1,0 +1,45 @@
+[
+  {
+   "tag": "773",
+   "ind1": "0",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "7",
+     "value": "nnac"
+    },
+    {
+     "code": "w",
+     "value": [
+      "(FI-MELINDA)000434823"
+     ]
+    },
+    {
+     "code": "t",
+     "value": "Basso : urbaani musiikki & kulttuuri"
+    },
+    {
+     "code": "d",
+     "value": "Helsinki : Basso Media, 2006-2012."
+    },
+    {
+     "code": "z",
+     "value": "951-isbn"
+    },
+    {
+     "code": "x",
+     "value": "1796-3753"
+    },
+    {
+     "code": "k",
+     "value": [
+      "(FI-MELINDA)000434823"
+     ]
+    },
+    {
+     "code": "g",
+     "value": "100 - 120"
+    }
+   ]
+  }
+ ]

@@ -1,0 +1,21 @@
+[
+  {
+   "tag": "650",
+   "ind1": " ",
+   "ind2": "7",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "hyökkäys"
+    },
+    {
+     "code": "2",
+     "value": "soto"
+    },
+    {
+     "code": "0",
+     "value": "http://www.yso.fi/onto/soto/p1535"
+    }
+   ]
+  }
+ ]

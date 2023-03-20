@@ -1,0 +1,19 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/mao/p2816",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/mao-meta/Concept",
+          "http://www.yso.fi/onto/tao-meta/Concept"
+         ],
+         "prefLabel": "kivikausi",
+         "lang": "fi",
+         "vocab": "maotao",
+         "exvocab": "???"
+        }
+       ]
+}
+
