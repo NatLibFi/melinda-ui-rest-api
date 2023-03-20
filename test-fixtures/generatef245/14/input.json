@@ -1,0 +1,20 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Dan",
+     "lastName": "Truffles",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+   "article": {
+    "title": "And then, well ...",
+    "titleOther": "",
+    "language": {
+     "iso6391": "en",
+     "iso6392b": "eng",
+     "ui": "Englanti"
+    }
+  }
+}

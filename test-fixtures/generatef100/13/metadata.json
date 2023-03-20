@@ -1,0 +1,8 @@
+{
+  "description": "generatef100 - case arvonimi used twice.",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

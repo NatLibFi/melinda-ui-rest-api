@@ -1,4 +1,9 @@
 export function generatef6xxs(terms) {
+
+  if (!terms) {
+    return [];
+  }
+
   const f600s = terms.filter(({vocab}) => vocab === 'otherPerson');
   const f610s = terms.filter(({vocab}) => vocab === 'otherCommunity');
   const f648s = terms.filter(({vocab}) => ['yso-aika', 'otherCommunity'].includes(vocab));

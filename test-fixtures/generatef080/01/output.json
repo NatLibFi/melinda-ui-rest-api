@@ -1,0 +1,47 @@
+[
+   {
+    "tag": "080",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "021"
+     },
+     {
+      "code": "x",
+      "value": "2018"
+     }
+    ]
+   },
+   {
+    "tag": "080",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "022"
+     },
+     {
+      "code": "x",
+      "value": "2019"
+     }
+    ]
+   },
+   {
+    "tag": "080",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "023"
+     },
+     {
+      "code": "x",
+      "value": "2020"
+     }
+    ]
+   }
+  ]

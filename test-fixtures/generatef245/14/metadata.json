@@ -1,0 +1,8 @@
+{
+  "description": "generatef245 - article: input ending with three dots.",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

@@ -1,0 +1,9 @@
+{
+  "description": "generatef500 - field 500, notes / B",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

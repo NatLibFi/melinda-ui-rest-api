@@ -1,0 +1,9 @@
+{
+  "description": "generatef520 - field 520, no input in element abstracts / C",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

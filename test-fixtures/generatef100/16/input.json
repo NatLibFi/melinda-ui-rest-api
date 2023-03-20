@@ -1,0 +1,18 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Lauri",
+     "lastName": "Kenttä",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": [
+      {
+       "key": 1,
+       "organizationName": "Teatterikorkeakoulu",
+       "code": "1717",
+       "note": false
+      }
+     ]
+    }
+   ]
+}

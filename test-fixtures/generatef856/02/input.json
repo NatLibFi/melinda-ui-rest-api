@@ -1,0 +1,372 @@
+{
+    "source": {
+     "title": "Basso : urbaani musiikki & kulttuuri",
+     "isElectronic": true,
+     "years": "2006-2012.",
+     "issns": [
+      "1796-3753"
+     ],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)000434823"
+     ],
+     "publishing": "Helsinki : Basso Media, 2006-2012.",
+     "publisherInfo": {
+      "publisherLocation": "Helsinki",
+      "publisher": "Basso Media",
+      "publisherYears": {
+       "start": "2006",
+       "end": "2012"
+      }
+     },
+     "notices": [],
+     "authors": [],
+     "simpleGroups": {
+      "universalDecimalClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "78"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "316.7"
+        }
+       ]
+      ],
+      "otherClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "78.89051"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "78.8914051"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ]
+      ],
+      "abstract": {
+       "term": [],
+       "language": []
+      },
+      "localNotes599": []
+     },
+     "simpleElements": {
+      "referenceLink": [],
+      "f655s": [
+       [
+        {
+         "code": "a",
+         "value": "mielipidelehdet"
+        },
+        {
+         "code": "2",
+         "value": "slm/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s213"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "nuortenlehdet"
+        },
+        {
+         "code": "2",
+         "value": "slm/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s54"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "opinionstidningar"
+        },
+        {
+         "code": "2",
+         "value": "slm/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s213"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "ungdomstidningar"
+        },
+        {
+         "code": "2",
+         "value": "slm/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s54"
+        }
+       ]
+      ],
+      "f653s": [],
+      "f651s": [],
+      "f650s": [
+       [
+        {
+         "code": "a",
+         "value": "populaarikulttuuri"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p6"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "populaarimusiikki"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p3064"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "musiikki"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1808"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kausijulkaisut"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1188"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "aikakauslehdet"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1255"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "musiikkilehdet"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1254"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "populärkultur"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p6"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "populärmusik"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p3064"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "musik"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1808"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "periodika"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1188"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "tidskrifter"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1255"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "musiktidskrifter"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1254"
+        }
+       ]
+      ],
+      "f648s": [],
+      "f610s": [],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [
+       "Alanimeke vaihtelee.",
+       "Alanimeke vaihtelee. - Myöhemmin ilman alanimekettä.",
+       "Alanimeke 2008-: uuden musiikin ja ilmiöiden aikakauslehti."
+      ],
+      "methodology": []
+     },
+     "recordType": "Kausijulkaisu",
+     "sourceType": "nnas"
+    },
+    "journalNumber": {
+     "publishingYear": "2001",
+     "volume": "",
+     "number": "",
+     "pages": "100 - 120"
+    },
+    "article": {
+     "title": "Subbarit soimaan!",
+     "titleOther": "",
+     "language": {
+      "iso6391": "fi",
+      "iso6392b": "fin",
+      "ui": "Suomi"
+     },
+     "link": "www.funkymusiclovers.fi",
+     "type": "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    },
+    "collecting": {
+     "f589a": "",
+     "f599a": "",
+     "f599x": ""
+    },
+    "sciences": [],
+    "metodologys": [],
+    "authors": [
+     {
+      "key": 1,
+      "firstName": "William",
+      "lastName": "Collins",
+      "relator": "kirjoittaja",
+      "authorsTempOrganizations": [
+       {
+        "key": 1,
+        "organizationName": "",
+        "code": false,
+        "note": false
+       },
+       {
+        "key": 2,
+        "organizationName": "",
+        "code": false,
+        "note": false
+       }
+      ]
+     }
+    ],
+    "ontologyWords": [],
+    "abstracts": [],
+    "notes": [],
+    "udks": [],
+    "otherRatings": []
+   }

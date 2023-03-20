@@ -1,0 +1,34 @@
+{
+    "sourceType":[
+    ],
+    "sciences": [
+        {
+         "key": 1,
+         "department": "1",
+         "departmentName": "Luonnontieteet",
+         "subCategory": "111",
+         "subject": "Matematiikka"
+        },
+        {
+         "key": 2,
+         "department": "1",
+         "departmentName": "Luonnontieteet",
+         "subCategory": "112",
+         "subject": "Tilastotiede"
+        }
+       ],
+    "article": {
+    "title": "",
+    "titleOther": "",
+    "language": {
+        "iso6391": "fi",
+        "iso6392b": "fin",
+        "ui": "Suomi"
+    },
+    "link": "",
+    "type": "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
+    "reviewType": "",
+    "sectionOrColumn": ""
+    }
+}
+

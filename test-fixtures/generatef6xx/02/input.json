@@ -1,0 +1,44 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p2555",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/yso-meta/Concept"
+         ],
+         "localname": "p2555",
+         "prefLabel": "talous",
+         "lang": "fi",
+         "vocab": "yso"
+        },
+        {
+         "key": 2,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p1310",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/yso-meta/Concept"
+         ],
+         "localname": "p1310",
+         "prefLabel": "energia",
+         "lang": "fi",
+         "vocab": "yso"
+        },
+        {
+         "key": 3,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p5799",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/yso-meta/Concept"
+         ],
+         "localname": "p5799",
+         "prefLabel": "öljy",
+         "lang": "fi",
+         "vocab": "yso"
+        }
+       ]
+}
+

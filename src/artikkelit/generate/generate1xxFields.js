@@ -1,7 +1,7 @@
 
 export function generatef100sf110sf700sf710s(authors = []) {
 
-  if (authors.length === 0) {
+  if (!authors || authors.length === 0) {
     return [];
   }
 
@@ -145,12 +145,9 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
 
     function generateOrgnCodes() {
-      if (author.authorsTempOrganizations) {
-        const code = author.authorsTempOrganizations.map(elem => `${elem.code}`);
-        const editCodes = code.toString().replaceAll(',', ' ');
-        return {code: 'g', value: `(orgn)${editCodes}`};
-      }
-      return {};
+      const code = author.authorsTempOrganizations.map(elem => `${elem.code}`);
+      const editCodes = code.toString().replaceAll(',', ' ');
+      return {code: 'g', value: `(orgn)${editCodes}`};
     }
 
   });

@@ -1,0 +1,25 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Charles",
+     "lastName": "Baudelaire",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 2,
+     "firstName": "Hans",
+     "lastName": "Gadd",
+     "relator": "kuvittaja",
+       "authorsTempOrganizations": [
+      {
+       "key": 1,
+       "organizationName": "Kuvataideakatemia",
+       "code": "1740",
+       "note": false
+      }
+     ]
+    }
+   ]
+}

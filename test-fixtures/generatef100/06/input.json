@@ -1,0 +1,25 @@
+{
+  "authors": [
+    {
+      "key": 1,
+      "firstName": "Charles",
+      "lastName": "Baudelaire",
+      "relator": "kirjoittaja",
+      "authorsTempOrganizations": []
+    },
+    {
+      "key": 2,
+      "firstName": "Anselm",
+      "lastName": "Hollo",
+      "relator": "kääntäjä",
+      "authorsTempOrganizations": []
+    },
+    {
+      "key": 3,
+      "firstName": " ",
+      "lastName": "Osuuskunta-kuvittajat",
+      "relator": "yhteisö",
+      "authorsTempOrganizations": []
+    }
+  ]
+}
