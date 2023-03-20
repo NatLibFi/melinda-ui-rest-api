@@ -8,7 +8,7 @@ import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstrac
 import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/artikkelit/interfaces/loadData.js";
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
-import {initAdditionalFields, refreshNotesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
+import {initAdditionalFields, refreshNotesList, refreshOtherTitlesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
 import {initReviewSearch, resetReview, refreshReviewsList, clearReviews} from "./interfaces/reviewSearch.js";
 import {initPublicationSearch, resetSearchResultSelect} from "./interfaces/publicationSearch.js";
 import {journalTemplate, bookTemplate} from "./interfaces/constants.js";
@@ -220,6 +220,7 @@ function refreshAllLists() {
   refreshAuthorsList();
   refreshMetodologysList();
   refreshNotesList();
+  refreshOtherTitlesList();
   refreshOntologyWordList();
   refreshOtherRatingsList();
   refreshSciencesList();
@@ -289,6 +290,11 @@ window.removeOntologyWord = (event, key) => {
 window.removeNote = (event, key) => {
   event.preventDefault();
   idbDel('artoNotes', key).then(() => refreshNotesList());
+}
+
+window.removeOtherTitle = (event, key) => {
+  event.preventDefault();
+  idbDel('artoOtherTitles', key).then(() => refreshOtherTitlesList());
 }
 
 window.removeUDK = (event, key) => {

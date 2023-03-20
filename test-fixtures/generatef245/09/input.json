@@ -1,0 +1,20 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Ray",
+     "lastName": "Dyffey",
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ], 
+   "article": {
+    "title": "the Band",
+    "titleOther": "",
+    "language": {
+     "iso6391": "en",
+     "iso6392b": "eng",
+     "ui": "Englanti"
+    }
+  }
+}

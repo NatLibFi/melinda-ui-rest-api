@@ -1,0 +1,9 @@
+{
+  "description": "generatef080 - field 080, UDK classification",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

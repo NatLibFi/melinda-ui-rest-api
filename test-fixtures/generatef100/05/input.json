@@ -1,0 +1,18 @@
+{
+  "authors": [
+    {
+      "key": 2,
+      "firstName": "Edgar Allan",
+      "lastName": "Poe",
+      "relator": "kirjoittaja",
+      "authorsTempOrganizations": []
+    },
+    {
+      "key": 3,
+      "firstName": "Gustave",
+      "lastName": "Dore",
+      "relator": "kuvittaja",
+      "authorsTempOrganizations": []
+    }
+  ]
+}

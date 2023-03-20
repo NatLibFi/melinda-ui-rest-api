@@ -1,6 +1,10 @@
 
 export function generatef245(articleTitle, authors, artLang) {
 
+  if (!articleTitle) {
+    return [];
+  }
+
   if (articleTitle) {
     return [
       {tag: '245',

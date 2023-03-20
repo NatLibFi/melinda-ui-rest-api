@@ -1,0 +1,9 @@
+{
+  "description": "generatef773 - field 773, emokohteen nimeke",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

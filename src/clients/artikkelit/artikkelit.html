@@ -214,7 +214,7 @@
                 </div>
                 <div id="numeron-vol-wrap" class="full-width">
                   <div class="Input">
-                    <label for="numeron-vol">Vol.:</label>
+                    <label class="bold-text" for="numeron-vol">Vol.:</label>
                     <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="5" onwheel="this.blur()">
                   </div>
                 </div>
@@ -233,10 +233,25 @@
                 </div>
               </div>
               <div class="full-width">
+                <div class="Input">
+                  <label class="bold-text" for="artikkelin-otsikko">Otsikko:</label>
+                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128" required title="">
+                </div>
+              </div>
+              <div class="full-width">
                 <div class="Select full-width">
                   <label class="bold-text" for="artikkelin-kieli">Kieli:</label>
                   <select id="artikkelin-kieli" name="artikkelin-kieli" maxLength="128" required title="">
                   </select>
+                </div>
+              </div>
+              <div id="artikkelin-linkki-wrap">
+                <div class="full-width">
+                  <div class="Input">
+                    <label class="bold-text" for="artikkelin-linkki">Linkki kokotekstiin:</label>
+                    <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
+                  </div>
+                  <button id="lisaa-linkki" class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
               </div>
               <div class="full-width">
@@ -246,31 +261,10 @@
                   </select>
                 </div>
               </div>
-              <div class="full-width">
-                <div class="Input">
-                  <label class="bold-text" for="artikkelin-otsikko">Otsikko:</label>
-                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128" required title="">
-                </div>
-              </div>
-              <div class="full-width">
-                <div class="Input">
-                  <label for="artikkelin-muu-nimeke">Muu nimeke:</label>
-                  <input type="text" id="artikkelin-muu-nimeke" name="artikkelin-muu-nimeke" maxLength="128">
-                </div>
-              </div>
-              <div id="artikkelin-linkki-wrap">
-                <div class="full-width">
-                  <div class="Input">
-                    <label for="artikkelin-linkki">Linkki kokotekstiin:</label>
-                    <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
-                  </div>
-                  <button id="lisaa-linkki" class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
-                </div>
-              </div>
               <div id="artikkelin-osasto-toistuva-wrap">
                 <div class="full-width">
                   <div class="Input">
-                    <label for="artikkelin-osasto-toistuva">Osasto tai toistuva palsta:</label>
+                    <label class="bold-text" for="artikkelin-osasto-toistuva">Osasto tai toistuva palsta:</label>
                     <input type="text" id="artikkelin-osasto-toistuva" name="artikkelin-osasto-toistuva"
                       maxLength="128" list="artikkelin-osasto-toistuva-lista">
                     <datalist id="artikkelin-osasto-toistuva-lista">
@@ -281,7 +275,7 @@
               <div id="artikkelin-arvostelu-tyyppi-wrap">
                 <div class="full-width">
                   <div class="Select full-width">
-                    <label for="artikkelin-arvostelu-tyyppi">Arvostelun tyyppi:</label>
+                    <label class="bold-text" for="artikkelin-arvostelu-tyyppi">Arvostelun tyyppi:</label>
                     <select id="artikkelin-arvostelu-tyyppi" name="artikkelin-arvostelu-tyyppi">
                     </select>
                   </div>
@@ -598,6 +592,15 @@
                   <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
               </form>
+              <form id="artikkelin-muu-nimeke-lisaa-form">
+                <div class="full-width">
+                  <div class="Input">
+                    <label for="artikkelin-muu-nimeke">Muu nimeke:</label>
+                    <input type="text" id="artikkelin-muu-nimeke" name="artikkelin-muu-nimeke" maxLength="128">
+                  </div>
+                  <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
+                </div>
+              </form>
               <form id="UDK-lisaa-form">
                 <div class="full-width">
                   <div class="Input">
@@ -631,6 +634,8 @@
               <legend>Lisätyt lisäkentät</legend>
               <div id="huomautukset-list">
               </div>
+              <div id="muut-nimekkeet-list">
+              </div>
               <div id="udk-list">
               </div>
               <div id="muu-luokitus-list">
@@ -639,6 +644,11 @@
                 <form id="tyhjenna-yleiset-huomautukset-form">
                   <div class="Button">
                     <button type="submit" class="negative">Tyhjennä yleiset huomautukset</button>
+                  </div>
+                </form>
+                <form id="tyhjenna-muut-nimekkeet-form">
+                  <div class="Button">
+                    <button type="submit" class="negative">Tyhjennä muut nimekkeet</button>
                   </div>
                 </form>
                 <form id="tyhjenna-udk-kentat-form">

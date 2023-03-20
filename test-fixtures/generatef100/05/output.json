@@ -1,0 +1,32 @@
+[
+    {
+     "tag": "100",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Poe, Edgar Allan,"
+      },
+      {
+       "code": "e",
+       "value": "kirjoittaja."
+      }
+     ]
+    },
+    {
+     "tag": "700",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Dore, Gustave,"
+      },
+      {
+       "code": "e",
+       "value": "kuvittaja."
+      }
+     ]
+    }
+]

@@ -1,0 +1,605 @@
+{
+    "source": {
+     "title": "Kuntalehti",
+     "isElectronic": false,
+     "years": "1993-",
+     "issns": [
+      "1236-0066"
+     ],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)000097482"
+     ],
+     "publishing": "Helsinki : Suomen kuntaliitto, 1993-",
+     "publisherInfo": {
+      "publisherLocation": "Helsinki",
+      "publisher": "Suomen kuntaliitto",
+      "publisherYears": {
+       "start": "1993",
+       "end": ""
+      }
+     },
+     "notices": [],
+     "authors": [
+      {
+       "lastName": "Suomen kuntaliitto",
+       "relator": "yhteisö",
+       "organisations": [],
+       "asteriId": "000028448"
+      }
+     ],
+     "simpleGroups": {
+      "universalDecimalClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "352"
+        },
+        {
+         "code": "x",
+         "value": "(05)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "352"
+        }
+       ]
+      ],
+      "otherClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "33.4"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "35"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "35.405"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Yl5"
+        },
+        {
+         "code": "2",
+         "value": "finagri"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "35.4051"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ]
+      ],
+      "abstract": {
+       "term": [],
+       "language": []
+      },
+      "localNotes599": []
+     },
+     "simpleElements": {
+      "referenceLink": [
+       "http://www.kuntalehti.fi/"
+      ],
+      "f655s": [
+       [
+        {
+         "code": "a",
+         "value": "kausijulkaisut"
+        },
+        {
+         "code": "2",
+         "value": "slm/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s1332"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "tiedotuslehdet"
+        },
+        {
+         "code": "2",
+         "value": "slm/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s1057"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "aikakauslehdet"
+        },
+        {
+         "code": "2",
+         "value": "slm/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s298"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "periodika"
+        },
+        {
+         "code": "2",
+         "value": "slm/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s1332"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "informationsblad"
+        },
+        {
+         "code": "2",
+         "value": "slm/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s1057"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "tidskrifter"
+        },
+        {
+         "code": "2",
+         "value": "slm/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://urn.fi/URN:NBN:fi:au:slm:s298"
+        }
+       ]
+      ],
+      "f653s": [
+       "kausijulkaisut: KAS: aikakauslehdet",
+       "Kommuner",
+       "tidskrift",
+       "Finland",
+       "Sosiaaliala",
+       "hallinto",
+       "kunnallishallinto",
+       "kunnat"
+      ],
+      "f651s": [],
+      "f650s": [
+       [
+        {
+         "code": "a",
+         "value": "kunnallishallinto"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7518"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kunnat"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p10083"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kausijulkaisut"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1188"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "yhteiskunta"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p9778"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "hallinto"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p4328"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "aikakauslehdet"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1255"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kunnallispolitiikka"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7519"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kunnallistalous"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7521"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "julkinen hallinto"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p775"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "julkinen sektori"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7104"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "aluepolitiikka"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1468"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kommunalförvaltning"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7518"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kommuner"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p10083"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "periodika"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1188"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "samhället"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p9778"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "förvaltning"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p4328"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "tidskrifter"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1255"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kommunalpolitik"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7519"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kommunal ekonomi"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7521"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "offentlig förvaltning"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p775"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "offentliga sektorn"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p7104"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "regionalpolitik"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1468"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "yhteiskunta"
+        },
+        {
+         "code": "2",
+         "value": "agrifors"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "hallinto"
+        },
+        {
+         "code": "2",
+         "value": "agrifors"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "kausijulkaisut"
+        },
+        {
+         "code": "2",
+         "value": "agrifors"
+        }
+       ]
+      ],
+      "f648s": [],
+      "f610s": [],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [
+       "Kunta-lehti",
+       "Kunta"
+      ],
+      "localNotes598": [
+       "Urbis2009"
+      ],
+      "noteGeneral": [
+       "Lehden erikoisnumerona ilmestyy kaksi kertaa vuodessa: Local & regional Finland.",
+       "Eepos emotietue"
+      ],
+      "methodology": []
+     },
+     "recordType": "Kausijulkaisu",
+     "sourceType": "nnas"
+    },
+    "journalNumber": {
+     "publishingYear": "2022",
+     "volume": "",
+     "number": "",
+     "pages": "10"
+    },
+    "article": {
+     "title": "Artikkeli kokoomateoksessa",
+     "titleOther": "",
+     "language": {
+      "iso6391": "fi",
+      "iso6392b": "fin",
+      "ui": "Suomi"
+     },
+     "link": "",
+     "type": "",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    },
+    "collecting": {
+     "f589a": "",
+     "f599a": "",
+     "f599x": ""
+    },
+    "sciences": [],
+    "metodologys": [],
+    "authors": [],
+    "ontologyWords": [],
+    "abstracts": [],
+    "notes": [],
+    "udks": [],
+    "otherRatings": []
+   }

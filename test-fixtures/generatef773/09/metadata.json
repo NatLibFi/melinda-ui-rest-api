@@ -1,0 +1,10 @@
+{
+  "description": "generatef773 - field 773, this test expected to fail: 400",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "expectToFail": true,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

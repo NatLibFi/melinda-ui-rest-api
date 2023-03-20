@@ -1,0 +1,31 @@
+{
+"ontologyWords": [
+    {
+     "key": 1,
+     "identifier": 0,
+     "uri": "http://www.yso.fi/onto/yso/p6193061939",
+     "type": [
+      "skos:Concept",
+      "http://www.yso.fi/onto/yso-meta/Decade"
+     ],
+     "localname": "p6193061939",
+     "prefLabel": "1930-luku",
+     "lang": "fi",
+     "notation": "1930/1939",
+     "vocab": "yso-aika"
+    },
+    {
+     "key": 2,
+     "identifier": 0,
+     "uri": "http://www.yso.fi/onto/yso/p2555",
+     "type": [
+      "skos:Concept",
+      "http://www.yso.fi/onto/yso-meta/Concept"
+     ],
+     "localname": "p2555",
+     "prefLabel": "talous",
+     "lang": "fi",
+     "vocab": "yso"
+    }
+   ]
+}
