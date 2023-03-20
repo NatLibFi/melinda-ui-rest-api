@@ -379,11 +379,11 @@ window.protect = function (event = undefined) {
         throw new Error('Response status ok:false')
       }
       protectButton.innerHTML === 'lock_open'
-        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu ID:n <span class="correlation-id-font">${id}</span> sekvenssi ${sequence}`}))
-        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`, closeButton: 'true'}))
+        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu ID:n sekvenssi ${sequence}`}))
+        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n sekvenssistä ${sequence}`, closeButton: 'true'}))
     })
     .catch(error => {
-      showSnackbar({text: 'Valitettavasti tämän ID:n turvausta ei pystytty muuttamaan!', closeButton: 'true'});
+      showSnackbar({text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!', closeButton: 'true'});
       console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence} `, error);
     })
     .finally(() =>
@@ -456,11 +456,13 @@ function setDataToIndexDB(logs, sequence) {
   const keys = Object.keys(logs);
 
   if (keys.length === 0) {
+    const protectButton = document.querySelector(`#viewer #protect`);
     select.add(createOption('0', 0));
     idbSetLogs('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
-    stopProcess();
-    showSnackbar({text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta', closeButton: 'true'});
     select.value = 0;
+    disableElement(protectButton);
+    showSnackbar({text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta', closeButton: 'true'});
+    stopProcess();
     return select.dispatchEvent(new Event('change'));;
   }
 
@@ -480,7 +482,7 @@ function setDataToIndexDB(logs, sequence) {
   const sequenceInputField = document.getElementById("sequenceInput");
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
-    showSnackbar({text: `Ei hakutuloksia sekvenssille ${sequenceInputField.value}, näytetään sekvenssi ${select.value}`, closeButton: 'true'});
+    showSnackbar({text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`, closeButton: 'true'});
     highlightElement(select);
   }
 
