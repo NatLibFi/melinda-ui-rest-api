@@ -39,21 +39,30 @@ div#tools {}
   font-size: var(--font-size-icon-normal);
 }
 
-.tools>.dropdown,
-.tools>.dropdown>button {
-  height: 40px;
-  font-size: 32px;
-}
-
 .tools {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100vw;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.tools .highlight-border {
+  border: 2px solid rgb(182, 225, 224);
+  border-radius: 1em;
+  padding-left: 1.5em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-right: 0.5em;
+}
+
+.tools>.dropdown,
+.tools>.dropdown>button {
   height: 40px;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  font-size: 32px;
 }
 
 .tools button {
@@ -123,6 +132,8 @@ div#tools {}
 /* Adding some color to make the search button pop in toolbar */
 .ToolBar button.search-button {
   background-color: rgb(182, 225, 224);
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 /* ---------------------------------------------------------------------------- */
