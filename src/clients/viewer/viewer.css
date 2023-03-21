@@ -39,49 +39,6 @@ div#tools {}
   font-size: var(--font-size-icon-normal);
 }
 
-/* Adding some color to make the search button pop in toolbar */
-.ToolBar button.search-button {
-  background-color: rgb(182, 225, 224);
-}
-
-.tools .id-container {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.tools .id-container input {
-  flex-grow: 0;
-}
-
-/* Sequence container */
-
-.tools .sequence-container {
-  margin-right: 1em;
-  margin-left: 1em;
-}
-
-.sequence-container label {
-  display: flex;
-  justify-content: center;
-  margin: 0px;
-}
-
-.sequence-container #sequence {
-  display: none;
-  width: 6ch;
-  text-align: end;
-}
-
-.sequence-container #sequenceInput {
-  width: 6ch;
-  text-align: end;
-}
-
-.tools #logType {
-  text-align: end;
-  margin-right: 1ch;
-}
-
 .tools>.dropdown,
 .tools>.dropdown>button {
   height: 40px;
@@ -107,6 +64,65 @@ div#tools {}
 
 .uuidInput {
   width: 37ch;
+}
+
+.tools #logType {
+  text-align: end;
+  margin-right: 1ch;
+  height: 24px;
+}
+
+.tools .id-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.id-container .id-input {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Sequence container */
+
+.tools .sequence-container {
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+}
+
+.sequence-container label {
+  display: flex;
+  justify-content: center;
+  margin: 0px;
+}
+
+.sequence-container .sequence-select {
+  justify-content: flex-end;
+}
+
+.sequence-container #sequence {
+  display: none;
+  width: 6ch;
+  text-align: end;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.sequence-container #sequenceInput {
+  width: 6ch;
+  text-align: end;
+  margin-left: 1px;
+  margin-right: 3px;
+}
+
+.sequence-container .navigate-button {
+  padding: 0px !important;
+  margin: 0px !important;
+  max-height: 24px;
+}
+
+/* Adding some color to make the search button pop in toolbar */
+.ToolBar button.search-button {
+  background-color: rgb(182, 225, 224);
 }
 
 /* ---------------------------------------------------------------------------- */

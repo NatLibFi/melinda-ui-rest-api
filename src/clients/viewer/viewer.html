@@ -99,26 +99,34 @@
           <div class="id-container">
             <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
               tooltip-text="Etsi ID listasta" onclick="return openCorrelationIdListModal(event)">manage_search</button>
+
             <div class="Filler VBox Input">
               <label>ID (correlation id)</label>
-              <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+              <input class="inputField uuidInput id-input" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
+
           </div>
 
           <div class="Select VBox sequence-container">
 
             <label>Sekvenssi</label>
 
-            <div class="HBox">
+            <div class="HBox Filler">
 
-              <div class="Select VBox">
+              <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
+                disabled="true">navigate_before</button>
+
+              <div class="Select VBox Filler sequence-select">
                 <select id="sequence" onchange="return loadLog(event)"></select>
               </div>
 
               <div class="Filler VBox Input">
                 <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
               </div>
-              
+
+              <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
+                disabled="true">navigate_next</button>
+
             </div>
 
           </div>
