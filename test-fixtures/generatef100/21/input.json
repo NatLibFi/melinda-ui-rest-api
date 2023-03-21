@@ -1,0 +1,50 @@
+{
+    "authors" :
+    [
+        {
+            "key": 1,
+            "firstName": "Jakke",
+            "lastName": "Jäyhä",
+            "relator": "kirjoittaja",
+            "authorsTempOrganizations": [
+             {
+              "key": 1,
+              "organizationName": "Aalto yliopisto",
+              "code": "10076",
+              "note": false
+             }
+            ]
+           },
+           {
+            "key": 2,
+            "firstName": "Etumini_II",
+            "lastName": "Sukunimi_II",
+            "relator": "kirjoittaja",
+            "authorsTempOrganizations": [
+             {
+              "key": 1,
+              "organizationName": "Tampereen yliopisto",
+              "code": "10122",
+              "organizationShortTerm": "uusi",
+              "note": false
+             }
+            ]
+           },
+           {
+            "key": 3,
+            "firstName": "Etumini_III",
+            "lastName": "Sukunimi_III",
+            "relator": "kirjoittaja",
+            "authorsTempOrganizations": [
+             {
+              "key": 1,
+              "organizationName": "Tampereen yliopisto",
+              "code": "01905",
+              "organizationShortTerm": "vanha ",
+              "note": false
+             }
+            ]
+           }
+          
+       ]
+  }

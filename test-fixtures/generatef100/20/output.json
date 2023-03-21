@@ -1,0 +1,25 @@
+[
+    {
+     "tag": "100",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Jäyhä, Jakke,"
+      },
+      {
+       "code": "e",
+       "value": "kirjoittaja."
+      },
+      {
+       "code": "u",
+       "value": "Aalto yliopisto"
+      },
+      {
+       "code": "g",
+       "value": "(orgn)10076"
+      }
+     ]
+    }
+   ]
