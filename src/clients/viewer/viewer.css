@@ -71,6 +71,10 @@ div#tools {}
   margin-right: 1px;
 }
 
+.tools button:active {
+  background-color: darkgrey !important;
+}
+
 .uuidInput {
   width: 37ch;
 }
@@ -96,6 +100,7 @@ div#tools {}
 .tools .sequence-container {
   margin-right: 0.5em;
   margin-left: 0.5em;
+  min-width: 105px;
 }
 
 .sequence-container label {
@@ -130,10 +135,14 @@ div#tools {}
 }
 
 /* Adding some color to make the search button pop in toolbar */
-.ToolBar button.search-button {
+.tools button.search-button {
   background-color: rgb(182, 225, 224);
   margin-left: 0.5em;
   margin-right: 0.5em;
+}
+
+.tools button.search-button:active {
+  color: rgb(182, 225, 224);
 }
 
 /* ---------------------------------------------------------------------------- */

@@ -183,11 +183,14 @@ window.loadLog = (event) => {
   eventHandled(event);
 
   const logType = document.querySelector(`#viewer #logType`).value;
-  const protectButton = document.querySelector(`#viewer #protect`);
-  const removeButton = document.querySelector(`#viewer #delete`);
-  const clearButton = document.querySelector(`#viewer #clearLogs`);
   const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
   const sequenceSelect = document.querySelector(`#viewer #sequence`);
+
+  const previousButton = document.querySelector(`#viewer #previousSequence`);
+  const nextButton = document.querySelector(`#viewer #nextSequence`);
+  const clearButton = document.querySelector(`#viewer #clearLogs`);
+  const protectButton = document.querySelector(`#viewer #protect`);
+  const removeButton = document.querySelector(`#viewer #delete`);
 
   const matchSelectWrap = document.querySelector('.col .header .Select');
   matchSelectWrap.style.visibility = 'hidden';
@@ -211,9 +214,11 @@ window.loadLog = (event) => {
     sequenceInputField.style.display = 'block';
     sequenceSelect.style.display = 'none';
 
+    disableElement(previousButton);
+    disableElement(nextButton);
+    disableElement(clearButton)
     disableElement(protectButton);
     disableElement(removeButton);
-    disableElement(clearButton)
 
     setRecordTopInfo('record1', `Sisääntuleva tietue`);
     showRecord({}, "record1", {}, 'viewer');
@@ -224,11 +229,9 @@ window.loadLog = (event) => {
     return;
   }
 
-  checkLogProtection();
-  disableElement(removeButton);
   enableElement(clearButton);
-  sequenceInputField.style.display = 'none';
-  sequenceSelect.style.display = 'block';
+  checkLogProtection();
+  updateSequenceView();
 
   if (logType === 'MERGE_LOG') {
 
@@ -299,6 +302,8 @@ window.loadLog = (event) => {
   }
 
   function checkLogProtection() {
+    disableElement(removeButton);
+
     idbGetLogs(event.target.value)
       .then(log =>
         log.protected === true ? (setProtectButton('protected'), toggleRemoveButtonByLogAge(log.creationTime)) : setProtectButton('not protected'),
@@ -309,6 +314,24 @@ window.loadLog = (event) => {
     function toggleRemoveButtonByLogAge(logCreationTime) {
       const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7 * oneDayInMs))
       isOverWeekOld ? enableElement(removeButton) : disableElement(removeButton)
+    }
+
+  }
+
+  function updateSequenceView() {
+    sequenceInputField.style.display = 'none';
+    sequenceSelect.style.display = 'block';
+
+    if (sequenceSelect.selectedIndex !== 0) {
+      enableElement(previousButton);
+    } else {
+      disableElement(previousButton);
+    }
+
+    if (sequenceSelect.selectedIndex < sequenceSelect.length - 1) {
+      enableElement(nextButton);
+    } else {
+      disableElement(nextButton)
     }
 
   }
