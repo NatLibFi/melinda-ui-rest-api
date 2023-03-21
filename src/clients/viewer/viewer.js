@@ -4,12 +4,8 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from "/common/ui-utils.js";
-import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "/common/ui-utils.js";
-
+import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from "/common/ui-utils.js";
 import {Account, doLogin, logout} from "/common/auth.js"
-import {transformRequest} from "/common/rest.js";
 import {showRecord} from "/common/marc-record-ui.js";
 import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
 import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList} from "/viewer/indexDB.js";
@@ -39,6 +35,7 @@ window.initialize = function () {
     username.innerHTML = Account.get()["Name"];
     showTab('viewer');
     parseUrlParameters();
+    addModalEventListeners();
   }
 
   function parseUrlParameters() {
@@ -60,6 +57,28 @@ window.initialize = function () {
 
     window.history.pushState('', 'viewer', `/viewer/`);
   }
+
+  function addModalEventListeners() {
+    const modal = document.querySelector(`#correlationIdListModal`);
+    const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
+    const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
+    const scrollToTopButton = document.querySelector(`#correlationIdListModal #scrollToTopButton`);
+
+    dateStartInput.addEventListener('click', event => {
+      event.stopPropagation();
+      unselectDateButtons();
+    }, false);
+
+    dateEndInput.addEventListener('click', event => {
+      event.stopPropagation();
+      unselectDateButtons();
+    }, false);
+
+    modal.addEventListener('scroll', event => {
+      eventHandled(event);
+      scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
+    });
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -72,6 +91,8 @@ window.onAccount = function (e) {
 //-----------------------------------------------------------------------------
 // Do button actions
 //-----------------------------------------------------------------------------
+
+const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
 
 var transformed = {
   record1: {},
@@ -98,37 +119,116 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   sequenceSelect.innerHTML = '';
   disableElement(sequenceSelect);
   const col3 = document.querySelector('#viewer #record3').parentElement;
+  const idInputField = document.querySelector(`#viewer #id`);
   console.log('Fetching...');
 
   if (id === '') {
-    console.log('Nothing to fetching...');
+    showSnackbar({text: 'Lisää ID haun aloittamista varten', closeButton: 'true'});
+    highlightElement(idInputField);
+    console.log('Nothing to fetch...');
     return stopProcess();
   }
 
   if (logType === 'MERGE_LOG') {
     col3.style.display = 'block';
-    getMergeLog(id).then(logs => setDataToIndexDB(logs, sequence));
+    getMergeLog(id)
+      .then(logs =>
+        setDataToIndexDB(logs, sequence))
+      .catch(error => {
+        showLogError();
+        console.log('Error fetching merge log: ', error);
+        return stopProcess();
+      })
   }
 
   if (logType === 'MATCH_LOG') {
     col3.style.display = 'none';
-    getMatchLog(id).then(logs => setDataToIndexDB(logs, sequence));
+    getMatchLog(id)
+      .then(logs =>
+        setDataToIndexDB(logs, sequence))
+      .catch(error => {
+        showLogError();
+        console.log('Error fetching match log: ', error);
+        return stopProcess();
+      })
+  }
+
+  function showLogError() {
+    const clearButton = document.querySelector(`#viewer #clearLogs`);
+    const protectButton = document.querySelector(`#viewer #protect`);
+    const removeButton = document.querySelector(`#viewer #delete`);
+
+    const button = createClearViewButton();
+    showSnackbar({text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, actionButton: button, closeButton: 'true'});
+    highlightElement(idInputField);
+    enableElement(clearButton);
+    disableElement(protectButton);
+    disableElement(removeButton);
+
+    function createClearViewButton() {
+      const button = document.createElement('button');
+      button.innerHTML = 'Tyhjää haku';
+
+      button.addEventListener('click', () => {
+        clearLogView();
+      });
+
+      return button;
+    }
   }
 
 }
 
 window.loadLog = (event) => {
   eventHandled(event);
+
   const logType = document.querySelector(`#viewer #logType`).value;
-  const matchSelectWrap = document.querySelector('.col .header .Select');
-  matchSelectWrap.style.visibility = 'hidden';
-  const matchSelect = document.querySelector('.col .header #match');
-  matchSelect.innerHTML = '';
   const protectButton = document.querySelector(`#viewer #protect`);
   const removeButton = document.querySelector(`#viewer #delete`);
+  const clearButton = document.querySelector(`#viewer #clearLogs`);
+  const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
+  const sequenceSelect = document.querySelector(`#viewer #sequence`);
 
-  disableElement(removeButton);
+  const matchSelectWrap = document.querySelector('.col .header .Select');
+  matchSelectWrap.style.visibility = 'hidden';
+
+  const matchSelect = document.querySelector('.col .header #match');
+  matchSelect.innerHTML = '';
+
+  if (logType === 'EMPTY_LOG') {
+    console.log('Clearing record view');
+
+    const idInputField = document.querySelector(`#viewer #id`);
+    const logTypeSelect = document.querySelector(`#viewer #logType`);
+    const col3 = document.querySelector('#viewer #record3').parentElement;
+
+    idInputField.value = '';
+    logTypeSelect.value = 'MERGE_LOG';
+    sequenceInputField.value = '';
+    sequenceSelect.value = '';
+
+    col3.style.display = 'block';
+    sequenceInputField.style.display = 'block';
+    sequenceSelect.style.display = 'none';
+
+    disableElement(protectButton);
+    disableElement(removeButton);
+    disableElement(clearButton)
+
+    setRecordTopInfo('record1', `Sisääntuleva tietue`);
+    showRecord({}, "record1", {}, 'viewer');
+    setRecordTopInfo('record2', `Melinda-tietue`);
+    showRecord({}, "record2", {}, 'viewer');
+    setRecordTopInfo('record3', 'Yhdistetty tietue');
+    showRecord({}, "record3", {}, 'viewer');
+    return;
+  }
+
   checkLogProtection();
+  disableElement(removeButton);
+  enableElement(clearButton);
+  sequenceInputField.style.display = 'none';
+  sequenceSelect.style.display = 'block';
 
   if (logType === 'MERGE_LOG') {
 
@@ -207,7 +307,7 @@ window.loadLog = (event) => {
         console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
 
     function toggleRemoveButtonByLogAge(logCreationTime) {
-      const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7.5 * 24 * 60 * 60 * 1000))
+      const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7 * oneDayInMs))
       isOverWeekOld ? enableElement(removeButton) : disableElement(removeButton)
     }
 
@@ -234,12 +334,27 @@ window.copyLink = function (event) {
   const logType = document.querySelector(`#viewer #logType`).value || '';
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || '';
-  if (id === '' || sequence === '') {
-    navigator.clipboard.writeText(window.location);
-    return;
+
+  let link = window.location;
+
+  if (id !== '' && sequence !== '') {
+    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`
   }
 
-  navigator.clipboard.writeText(`${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`);
+  const button = createTestLinkButton(link);
+
+  showSnackbar({text: `Linkki kopioitu!`, actionButton: button, closeButton: 'true'});
+  navigator.clipboard.writeText(link);
+
+  function createTestLinkButton(link) {
+    const testLinkButton = document.createElement('button');
+    testLinkButton.innerHTML = 'Testaa linkkiä';
+    testLinkButton.title = link;
+    testLinkButton.addEventListener('click', () => {
+      window.open(link);
+    });
+    return testLinkButton;
+  }
 }
 
 window.protect = function (event = undefined) {
@@ -252,45 +367,87 @@ window.protect = function (event = undefined) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
+    showSnackbar({text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!', actionButton: 'true'});
     console.log('Nothing to protect...');
     stopProcess();
     return;
   }
 
   protectLog(id, sequence)
-    .then(() =>
-      protectButton.innerHTML === 'lock_open' ? (setProtectButton('protected')) : (setProtectButton('not protected')))
-    .catch(error =>
-      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence}: `, error))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Response status ok:false')
+      }
+      protectButton.innerHTML === 'lock_open'
+        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu ID:n sekvenssi ${sequence}`}))
+        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n sekvenssistä ${sequence}`, closeButton: 'true'}))
+    })
+    .catch(error => {
+      showSnackbar({text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!', closeButton: 'true'});
+      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence} `, error);
+    })
     .finally(() =>
       stopProcess());
 
 }
 
-window.remove = function (event = undefined) {
+window.openRemoveDialog = function (event = undefined) {
   eventHandled(event);
-  console.log('Removing...');
-  startProcess();
-
   const id = document.querySelector(`#viewer #id`).value || '';
-  const force = '1';
+  const dialog = document.getElementById('dialogForRemove');
+  const dialogIdText = document.getElementById('idToBeRemoved');
 
   if (id === '') {
+    showSnackbar({text: 'ID:tä ei poistettu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen poistamista!', closeButton: 'true'});
     console.log('Nothing to remove...');
     stopProcess();
     return;
   }
 
+  dialogIdText.innerHTML = ` ${id} `;
+  dialog.showModal();
+}
+
+window.cancelRemove = function (event) {
+  console.log('Nothing removed');
+  showSnackbar({text: 'Toiminto peruttu!', closeButton: 'true'});
+}
+
+window.confirmRemove = function (event = undefined) {
+  console.log('Removing...');
+  startProcess();
+  remove(event);
+}
+
+window.clearLogView = function (event = undefined) {
+  eventHandled(event);
+  const logType = document.querySelector(`#viewer #logType`);
+  const sequenceSelect = document.querySelector(`#viewer #sequence`);
+
+  logType.value = 'EMPTY_LOG';
+
+  idbClearLogs();
+  idbClearList();
+
+  return sequenceSelect.dispatchEvent(new Event('change'));;
+}
+
+function remove(event = undefined) {
+  const force = '1';
+  const id = document.querySelector(`#viewer #id`).value || '';
+
   removeLog(id, force)
-    .then(() =>
-      window.alert(`Poistettiin ID: \n ${id}`))
-    .then(() =>
-      location.reload())
-    .catch(error =>
-      console.log(`Error while trying to remove log with correlation id ${id}: `, error))
+    .then(() => {
+      clearLogView();
+      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
+      console.log(`Log ${id} removed`)
+    })
+    .catch(error => {
+      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
+      console.log(`Error while trying to remove log with correlation id ${id}: `, error)
+    })
     .finally(() =>
       stopProcess());
-
 }
 
 function setDataToIndexDB(logs, sequence) {
@@ -299,11 +456,13 @@ function setDataToIndexDB(logs, sequence) {
   const keys = Object.keys(logs);
 
   if (keys.length === 0) {
+    const protectButton = document.querySelector(`#viewer #protect`);
     select.add(createOption('0', 0));
     idbSetLogs('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
-    stopProcess();
-    // TODO toast 404 not found
     select.value = 0;
+    disableElement(protectButton);
+    showSnackbar({text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta', closeButton: 'true'});
+    stopProcess();
     return select.dispatchEvent(new Event('change'));;
   }
 
@@ -323,7 +482,8 @@ function setDataToIndexDB(logs, sequence) {
   const sequenceInputField = document.getElementById("sequenceInput");
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
-    window.alert(`No search results for sequence "${sequenceInputField.value}"`);
+    showSnackbar({text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`, closeButton: 'true'});
+    highlightElement(select);
   }
 
   sequenceInputField.value = '';
@@ -387,34 +547,23 @@ function disableElement(element) {
   element.disabled = true;
 }
 
+function highlightElement(element) {
+  element.classList.add('highlight');
+
+  setTimeout(() => {
+    element.classList.remove('highlight');
+  }, 5000);
+}
+
+
 //-----------------------------------------------------------------------------
 // Functions for correlation id list modal 
 //-----------------------------------------------------------------------------
 
-
-window.doOpenCorrelationIdListModal = function (event = undefined) {
+window.openCorrelationIdListModal = function (event = undefined) {
   const modal = document.querySelector(`#correlationIdListModal`);
-  const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
-  const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
-  const scrollToTopButton = document.querySelector(`#correlationIdListModal #scrollToTopButton`);
 
   modal.style.display = 'flex';
-
-  dateStartInput.addEventListener('click', event => {
-    event.stopPropagation();
-    unselectDateButtons();
-  }, false);
-
-  dateEndInput.addEventListener('click', event => {
-    event.stopPropagation();
-    unselectDateButtons();
-  }, false);
-
-  modal.addEventListener('scroll', event => {
-    eventHandled(event);
-    scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
-  });
-
   clearListView();
   fetchCorrelationIdList();
 }
@@ -468,7 +617,6 @@ window.toggleShowLogsByCreationDate = function (clickedDateButton) {
   const weekAgoButton = document.getElementById('creationTimeWeekAgo');
 
   const dateFormatter = Intl.DateTimeFormat('sv-SE');
-  const oneDayInMs = 1 * 24 * 60 * 60 * 1000
   const dateToday = dateFormatter.format(new Date());
   const dateOverSevenDaysAgo = dateFormatter.format(new Date() - (7 * oneDayInMs));
 
@@ -618,7 +766,7 @@ function fetchCorrelationIdList() {
       setCorrelationIdListDataToIndexDB(data))
     .catch((error) => {
       setOrClearErrorMessageAndStyle({set: 'true', text: 'Valitettavasti listaa ei pystytty juuri nyt hakemaan'});
-      console.log('Error while fetching correlation id list: ', error)
+      console.log('Error while fetching correlation id list: ', error);
       stopProcess();
     });
 }
@@ -795,7 +943,7 @@ function updateListView(correlationIdList) {
 
   function showSearchResultsInfo(found, total) {
     const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
-    showPlaceholderText(`Löytyi ${styledResult}/${total} ID:tä`)
+    showPlaceholderText(`Näytetään ${styledResult}/${total} ID:tä`)
   }
 
   function showListSortingOptions() {
@@ -831,13 +979,13 @@ function updateListView(correlationIdList) {
         searchWithSelectedIdAndType(correlationId, logItemType);
       });
 
-      const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7.5 * 24 * 60 * 60 * 1000)
+      const overWeekOld = Date.parse(logItem.creationTime) < Date.now() - (7 * oneDayInMs)
 
       if (overWeekOld) {
         const infoIcon = document.createElement('span');
         infoIcon.classList.add('material-icons');
         infoIcon.innerHTML = "lock_clock";
-        infoIcon.title = ('Tämä ID on yli viikon vanha, joten se saattaa olla turvattu');
+        infoIcon.title = ('Tämä ID on yli 7 vrk vanha, joten se saattaa olla turvattu');
         listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
       }
 
@@ -929,6 +1077,7 @@ function updateListView(correlationIdList) {
 
         infoTextSpan.addEventListener('click', () => {
           lastSearchedListItem.scrollIntoView({behavior: 'smooth', block: 'center'});
+          highlightElement(lastSearchedListItem);
         });
 
       }
