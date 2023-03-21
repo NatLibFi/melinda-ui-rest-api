@@ -314,6 +314,28 @@ window.loadLog = (event) => {
   }
 }
 
+window.selectPrevious = function (event) {
+  eventHandled(event)
+  const select = document.querySelector(`#viewer #sequence`);
+  setNewSelect(select.selectedIndex - 1);
+}
+
+window.selectNext = function (event) {
+  eventHandled(event)
+  const select = document.querySelector(`#viewer #sequence`);
+  setNewSelect(select.selectedIndex + 1);
+}
+
+function setNewSelect(newIndex) {
+  const select = document.querySelector(`#viewer #sequence`);
+
+  select.selectedIndex = newIndex;
+
+  const newEvent = new Event('change');
+  newEvent.data = select
+  select.dispatchEvent(newEvent);
+}
+
 window.showNote = (event, record) => {
   eventHandled(event);
   document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';

@@ -115,7 +115,7 @@
             <div class="HBox Filler">
 
               <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
-                disabled="true">navigate_before</button>
+                onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
 
               <div class="Select VBox Filler sequence-select">
                 <select id="sequence" onchange="return loadLog(event)"></select>
@@ -126,7 +126,7 @@
               </div>
 
               <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
-                disabled="true">navigate_next</button>
+                onclick="return selectNext(event)" disabled="true">navigate_next</button>
 
             </div>
 
