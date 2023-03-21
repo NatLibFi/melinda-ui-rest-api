@@ -49,21 +49,32 @@ div#tools {}
   flex-wrap: nowrap;
 }
 
-.tools #sequence {
+.tools .id-container input {
+  flex-grow: 0;
+}
+
+/* Sequence container */
+
+.tools .sequence-container {
+  margin-right: 1em;
+  margin-left: 1em;
+}
+
+.sequence-container label {
+  display: flex;
+  justify-content: center;
+  margin: 0px;
+}
+
+.sequence-container #sequence {
   display: none;
   width: 6ch;
   text-align: end;
-  margin-left: 1ch;
 }
 
-.tools #sequenceInput {
+.sequence-container #sequenceInput {
   width: 6ch;
   text-align: end;
-  margin-left: 1ch;
-}
-
-.tools .sequence-container {
-  margin-right: 8px;
 }
 
 .tools #logType {

@@ -105,16 +105,22 @@
             </div>
           </div>
 
-          <div class="Select VBox">
-            <div class="sequence-container">
-              <label>Sekvenssi</label>
+          <div class="Select VBox sequence-container">
+
+            <label>Sekvenssi</label>
+
+            <div class="HBox">
+
               <div class="Select VBox">
                 <select id="sequence" onchange="return loadLog(event)"></select>
               </div>
+
               <div class="Filler VBox Input">
                 <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
               </div>
+              
             </div>
+
           </div>
 
           <button class="material-icons tooltip search-button" tooltip-text="Hae"
@@ -419,6 +425,7 @@
         </div>
       </div>
 
+      <!-- For displaying info messages and errors to user -->
       <div id="snackbars" class="snackbars"></div>
 
     </div>
