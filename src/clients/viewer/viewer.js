@@ -49,13 +49,11 @@ window.initialize = function () {
       document.querySelector(`#viewer #id`).defaultValue = id;
     }
 
+    document.querySelector(`#viewer #sequenceInput`).value = sequence;
     document.querySelector(`#viewer #logType`).value = logType;
-    const select = document.querySelector(`#viewer #sequence`);
-    const seqOption = createOption(sequence, sequence);
-    select.add(seqOption);
-    select.value = sequence;
 
     window.history.pushState('', 'viewer', `/viewer/`);
+    doSearchPress();
   }
 
   function addModalEventListeners() {
@@ -349,16 +347,6 @@ window.selectNext = function (event) {
   setNewSelect(select.selectedIndex + 1);
 }
 
-function setNewSelect(newIndex) {
-  const select = document.querySelector(`#viewer #sequence`);
-
-  select.selectedIndex = newIndex;
-
-  const newEvent = new Event('change');
-  newEvent.data = select
-  select.dispatchEvent(newEvent);
-}
-
 window.showNote = (event, record) => {
   eventHandled(event);
   document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
@@ -477,24 +465,6 @@ window.clearLogView = function (event = undefined) {
   return sequenceSelect.dispatchEvent(new Event('change'));;
 }
 
-function remove(event = undefined) {
-  const force = '1';
-  const id = document.querySelector(`#viewer #id`).value || '';
-
-  removeLog(id, force)
-    .then(() => {
-      clearLogView();
-      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
-      console.log(`Log ${id} removed`)
-    })
-    .catch(error => {
-      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
-      console.log(`Error while trying to remove log with correlation id ${id}: `, error)
-    })
-    .finally(() =>
-      stopProcess());
-}
-
 function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
   console.log(JSON.stringify(logs));
@@ -555,12 +525,32 @@ function setRecordTopInfo(record, title, additional = false) {
   }
 }
 
-function createOption(text, value) {
-  const option = document.createElement("option");
-  option.text = text;
-  option.value = value;
+function setNewSelect(newIndex) {
+  const select = document.querySelector(`#viewer #sequence`);
 
-  return option;
+  select.selectedIndex = newIndex;
+
+  const newEvent = new Event('change');
+  newEvent.data = select
+  select.dispatchEvent(newEvent);
+}
+
+function remove(event = undefined) {
+  const force = '1';
+  const id = document.querySelector(`#viewer #id`).value || '';
+
+  removeLog(id, force)
+    .then(() => {
+      clearLogView();
+      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
+      console.log(`Log ${id} removed`)
+    })
+    .catch(error => {
+      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
+      console.log(`Error while trying to remove log with correlation id ${id}: `, error)
+    })
+    .finally(() =>
+      stopProcess());
 }
 
 function setProtectButton(type) {
