@@ -215,20 +215,20 @@
                 <div id="numeron-vol-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-vol">Vol.:</label>
-                    <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="5" onwheel="this.blur()">
+                    <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="6" onwheel="this.blur()">
                   </div>
                 </div>
                 <div id="numeron-numero-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-numero">Numero:</label>
-                    <input type="text" id="numeron-numero" name="numeron-numero" maxlength="32"
+                    <input type="text" id="numeron-numero" name="numeron-numero" maxlength="32" size="6"
                     pattern="^[\p{N}\p{L}\-\/.,\s]+$">
                   </div>
                 </div>
-                <div id="numeron-sivut-wrap">
+                <div id="numeron-sivut-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-sivut">Sivut:</label>
-                    <input type="text" id="numeron-sivut" name="numeron-sivut">
+                    <input type="text" id="numeron-sivut" name="numeron-sivut" size="6">
                   </div>
                 </div>
               </div>
@@ -604,12 +604,16 @@
               <form id="UDK-lisaa-form">
                 <div class="full-width">
                   <div class="Input">
-                    <label for="lisakentat-UDK080a">UDK (080 $a):</label>
-                    <input type="text" id="lisakentat-UDK080a" name="lisakentat-UDK080a" maxLength="128">
+                    <label for="lisakentat-UDK080a">UDK-luokitus (080 $a):</label>
+                    <input type="text" id="lisakentat-UDK080a" name="lisakentat-UDK080a" maxLength="20" size="2">
                   </div>
                   <div class="Input">
-                    <label for="lisakentat-UDK080x">UDK (080 $x):</label>
-                    <input type="text" id="lisakentat-UDK080x" name="lisakentat-UDK080x" maxLength="128">
+                    <label for="lisakentat-UDK080x">Lisäluokka (080 $x):</label>
+                    <input type="text" id="lisakentat-UDK080x" name="lisakentat-UDK080x" maxLength="10" size="2">
+                  </div>
+                  <div class="Input">
+                    <label for="lisakentat-UDK0802">Luokituksen lähde (080 $2):</label>
+                    <input type="text" id="lisakentat-UDK0802" name="lisakentat-UDK0802" maxlength="20" size="2">
                   </div>
                   <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>

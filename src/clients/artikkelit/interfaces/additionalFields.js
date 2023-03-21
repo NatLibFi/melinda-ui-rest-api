@@ -127,17 +127,19 @@ export function addUDK(event) {
 
   const data = {
     a080: formJson['lisakentat-UDK080a'],
-    x080: formJson['lisakentat-UDK080x']
+    x080: formJson['lisakentat-UDK080x'],
+    two080: formJson['lisakentat-UDK0802']
   }
 
   if (data.a080 === "") {
-    showSnackbar({text: "UDK (080 $a) -arvo ei voi olla tyhjä", closeButton: "true"});
+    showSnackbar({text: "UDK-luokitus (080 $a) -arvo ei voi olla tyhjä", closeButton: "true"});
     return;
   }
 
   idbAddValueToLastIndex('artoUDKs', data).then(() => {
     document.getElementById('lisakentat-UDK080a').value = "";
     document.getElementById('lisakentat-UDK080x').value = "";
+    document.getElementById('lisakentat-UDK0802').value = "";
     refreshUDKsList();
   });
 }
@@ -152,10 +154,12 @@ export function refreshUDKsList() {
       const div = document.createElement('div');
       div.classList.add('full-width');
       const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista')
-      div.appendChild(createP('UDK (080 $a)', '', '&nbsp;', ['label-text']));
+      div.appendChild(createP('UDK-luokitus (080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
-      div.appendChild(createP('UDK (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
+      div.appendChild(createP('Lisäluokka (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.x080));
+      div.appendChild(createP('Luokituksen lähde (080 $2', '&nbsp;', '&nbsp;', ['label-text']));
+      div.appendChild(createP(udkData.two080));
       div.appendChild(removeButton);
       form.appendChild(div);
       udksList.appendChild(form)
