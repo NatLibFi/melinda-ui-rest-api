@@ -53,10 +53,7 @@ window.initialize = function () {
     document.querySelector(`#viewer #logType`).value = logType;
 
     window.history.pushState('', 'viewer', `/viewer/`);
-
-    if (id !== '') {
-      doSearchPress();
-    }
+    doSearchPress();
   }
 
   function addModalEventListeners() {
@@ -526,14 +523,6 @@ function setRecordTopInfo(record, title, additional = false) {
     document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
     document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
   }
-}
-
-function createOption(text, value) {
-  const option = document.createElement("option");
-  option.text = text;
-  option.value = value;
-
-  return option;
 }
 
 function setNewSelect(newIndex) {
