@@ -18,12 +18,15 @@ async function testF100etc({getFixture, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
     const result = await generatef100sf110sf700sf710s(input.authors);
+
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
-} catch (error) {
-if (!expectToFail) {
-  throw error;
-}
-expect(expectToFail, 'This is expected to fail').to.equal(true);
-}
+
+  } catch (error) {
+    if (!expectToFail) {
+      throw error;
+    }
+
+    expect(expectToFail, 'This is expected to fail').to.equal(true);
+  }
 }
