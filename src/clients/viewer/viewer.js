@@ -49,13 +49,15 @@ window.initialize = function () {
       document.querySelector(`#viewer #id`).defaultValue = id;
     }
 
+    document.querySelector(`#viewer #sequenceInput`).value = sequence;
     document.querySelector(`#viewer #logType`).value = logType;
-    const select = document.querySelector(`#viewer #sequence`);
-    const seqOption = createOption(sequence, sequence);
-    select.add(seqOption);
-    select.value = sequence;
 
     window.history.pushState('', 'viewer', `/viewer/`);
+
+    if (id !== '') {
+      doSearchPress();
+      showSnackbar({text: 'Haetaan linkin tietuetta...', closeButton: 'true'});
+    }
   }
 
   function addModalEventListeners() {
@@ -183,11 +185,14 @@ window.loadLog = (event) => {
   eventHandled(event);
 
   const logType = document.querySelector(`#viewer #logType`).value;
-  const protectButton = document.querySelector(`#viewer #protect`);
-  const removeButton = document.querySelector(`#viewer #delete`);
-  const clearButton = document.querySelector(`#viewer #clearLogs`);
   const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
   const sequenceSelect = document.querySelector(`#viewer #sequence`);
+
+  const previousButton = document.querySelector(`#viewer #previousSequence`);
+  const nextButton = document.querySelector(`#viewer #nextSequence`);
+  const clearButton = document.querySelector(`#viewer #clearLogs`);
+  const protectButton = document.querySelector(`#viewer #protect`);
+  const removeButton = document.querySelector(`#viewer #delete`);
 
   const matchSelectWrap = document.querySelector('.col .header .Select');
   matchSelectWrap.style.visibility = 'hidden';
@@ -211,9 +216,11 @@ window.loadLog = (event) => {
     sequenceInputField.style.display = 'block';
     sequenceSelect.style.display = 'none';
 
+    disableElement(previousButton);
+    disableElement(nextButton);
+    disableElement(clearButton)
     disableElement(protectButton);
     disableElement(removeButton);
-    disableElement(clearButton)
 
     setRecordTopInfo('record1', `Sisääntuleva tietue`);
     showRecord({}, "record1", {}, 'viewer');
@@ -224,11 +231,9 @@ window.loadLog = (event) => {
     return;
   }
 
-  checkLogProtection();
-  disableElement(removeButton);
   enableElement(clearButton);
-  sequenceInputField.style.display = 'none';
-  sequenceSelect.style.display = 'block';
+  checkLogProtection();
+  updateSequenceView();
 
   if (logType === 'MERGE_LOG') {
 
@@ -299,6 +304,8 @@ window.loadLog = (event) => {
   }
 
   function checkLogProtection() {
+    disableElement(removeButton);
+
     idbGetLogs(event.target.value)
       .then(log =>
         log.protected === true ? (setProtectButton('protected'), toggleRemoveButtonByLogAge(log.creationTime)) : setProtectButton('not protected'),
@@ -309,6 +316,24 @@ window.loadLog = (event) => {
     function toggleRemoveButtonByLogAge(logCreationTime) {
       const isOverWeekOld = Date.parse(logCreationTime) < (Date.now() - (7 * oneDayInMs))
       isOverWeekOld ? enableElement(removeButton) : disableElement(removeButton)
+    }
+
+  }
+
+  function updateSequenceView() {
+    sequenceInputField.style.display = 'none';
+    sequenceSelect.style.display = 'block';
+
+    if (sequenceSelect.selectedIndex !== 0) {
+      enableElement(previousButton);
+    } else {
+      disableElement(previousButton);
+    }
+
+    if (sequenceSelect.selectedIndex < sequenceSelect.length - 1) {
+      enableElement(nextButton);
+    } else {
+      disableElement(nextButton)
     }
 
   }
@@ -326,6 +351,18 @@ window.hideNote = (event, record) => {
   document.querySelector(`#viewer #${record} #showNote`).style.display = 'block';
   document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
   document.querySelector(`#viewer #${record} .note`).style.display = 'none';
+}
+
+window.selectPrevious = function (event) {
+  eventHandled(event)
+  const select = document.querySelector(`#viewer #sequence`);
+  setNewSelect(select.selectedIndex - 1);
+}
+
+window.selectNext = function (event) {
+  eventHandled(event)
+  const select = document.querySelector(`#viewer #sequence`);
+  setNewSelect(select.selectedIndex + 1);
 }
 
 window.copyLink = function (event) {
@@ -379,8 +416,8 @@ window.protect = function (event = undefined) {
         throw new Error('Response status ok:false')
       }
       protectButton.innerHTML === 'lock_open'
-        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu ID:n sekvenssi ${sequence}`}))
-        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n sekvenssistä ${sequence}`, closeButton: 'true'}))
+        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu sekvenssi ${sequence} ID:lle <span class="correlation-id-font">${id}</span>`}))
+        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`, closeButton: 'true'}))
     })
     .catch(error => {
       showSnackbar({text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!', closeButton: 'true'});
@@ -388,7 +425,6 @@ window.protect = function (event = undefined) {
     })
     .finally(() =>
       stopProcess());
-
 }
 
 window.openRemoveDialog = function (event = undefined) {
@@ -408,7 +444,7 @@ window.openRemoveDialog = function (event = undefined) {
   dialog.showModal();
 }
 
-window.cancelRemove = function (event) {
+window.cancelRemove = function (event = undefined) {
   console.log('Nothing removed');
   showSnackbar({text: 'Toiminto peruttu!', closeButton: 'true'});
 }
@@ -416,7 +452,10 @@ window.cancelRemove = function (event) {
 window.confirmRemove = function (event = undefined) {
   console.log('Removing...');
   startProcess();
-  remove(event);
+
+  const id = document.querySelector(`#viewer #id`).value || '';
+
+  remove(id);
 }
 
 window.clearLogView = function (event = undefined) {
@@ -430,24 +469,6 @@ window.clearLogView = function (event = undefined) {
   idbClearList();
 
   return sequenceSelect.dispatchEvent(new Event('change'));;
-}
-
-function remove(event = undefined) {
-  const force = '1';
-  const id = document.querySelector(`#viewer #id`).value || '';
-
-  removeLog(id, force)
-    .then(() => {
-      clearLogView();
-      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
-      console.log(`Log ${id} removed`)
-    })
-    .catch(error => {
-      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
-      console.log(`Error while trying to remove log with correlation id ${id}: `, error)
-    })
-    .finally(() =>
-      stopProcess());
 }
 
 function setDataToIndexDB(logs, sequence) {
@@ -510,14 +531,6 @@ function setRecordTopInfo(record, title, additional = false) {
   }
 }
 
-function createOption(text, value) {
-  const option = document.createElement("option");
-  option.text = text;
-  option.value = value;
-
-  return option;
-}
-
 function setProtectButton(type) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
@@ -537,6 +550,41 @@ function setProtectButton(type) {
     protectButton.title = infoText;
     protectButton.setAttribute('tooltip-text', tooltipText);
   }
+}
+
+function remove(id) {
+  const force = '1';
+
+  removeLog(id, force)
+    .then(() => {
+      clearLogView();
+      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
+      console.log(`Log ${id} removed`)
+    })
+    .catch(error => {
+      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
+      console.log(`Error while trying to remove log with correlation id ${id}: `, error)
+    })
+    .finally(() =>
+      stopProcess());
+}
+
+function setNewSelect(newIndex) {
+  const select = document.querySelector(`#viewer #sequence`);
+
+  select.selectedIndex = newIndex;
+
+  const newEvent = new Event('change');
+  newEvent.data = select
+  select.dispatchEvent(newEvent);
+}
+
+function createOption(text, value) {
+  const option = document.createElement("option");
+  option.text = text;
+  option.value = value;
+
+  return option;
 }
 
 function enableElement(element) {
