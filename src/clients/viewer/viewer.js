@@ -956,7 +956,7 @@ function updateListView(correlationIdList) {
     const correlationIdList = document.querySelector(`#correlationIdListModal #correlationIdList`);
     correlationIdList.append(listItemDiv);
 
-    function createListItemDiv({correlationId, logItemType, creationTime, logCount}) {
+    function createListItemDiv({correlationId, logItemType, cataloger, creationTime, logCount}) {
       const template = document.getElementById('listItemTemplate');
       const listItemFragment = template.content.cloneNode(true);
       const listItem = listItemFragment.getElementById('listItem');
@@ -966,14 +966,16 @@ function updateListView(correlationIdList) {
       listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
       const logTypeText = `Lokityyppi: <span style="font-weight: bold">${logItemType}</span>`;
+      const catalogerText = `Luetteloija: <span style="font-weight: bold">${cataloger}</span>`;
       const creationTimeText = `Luontiaika: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
       const logCountText = `Lokilukumäärä: <span style="font-weight: bold">${logCount}</span>`;
 
       const logTypeDiv = createDivWithInnerHtml(logTypeText);
+      const catalogerDiv = createDivWithInnerHtml(catalogerText);
       const creationTimeDiv = createDivWithInnerHtml(creationTimeText);
       const logCountDiv = createDivWithInnerHtml(logCountText);
 
-      listItem.querySelector(`.list-item-details`).append(logTypeDiv, creationTimeDiv, logCountDiv);
+      listItem.querySelector(`.list-item-details`).append(logTypeDiv, catalogerDiv, creationTimeDiv, logCountDiv);
 
       listItem.addEventListener('click', () => {
         searchWithSelectedIdAndType(correlationId, logItemType);
