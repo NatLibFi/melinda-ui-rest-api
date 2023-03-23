@@ -879,6 +879,7 @@ function updateListView(correlationIdList) {
   const updatedList = filterAndSortCorrelationIdList();
   showlastSearchedCorrelationId();
   showSearchResultsInfo(updatedList.length, correlationIdList.length)
+  updateCatalogerToggleButtons();
 
   if (updatedList.length === 0) {
     stopProcess();
@@ -994,9 +995,15 @@ function updateListView(correlationIdList) {
     showPlaceholderText(`Näytetään ${styledResult}/${total} ID:tä`)
   }
 
-  function showListSortingOptions() {
-    const selectSorting = document.getElementById(`correlationIdListSorting`);
-    selectSorting.style.visibility = 'visible';
+  function updateCatalogerToggleButtons() {
+    const catalogerSet = new Set(updatedList.map((listItem) => listItem.cataloger));
+    console.log('catalogerSet: ', catalogerSet);
+
+    // create a select button for every cataloger
+    // every button should be togglable and filter the correlation id list
+    // create a multiselect segmented button with all the select buttons
+    // handle case: if too many catalogers, segmented button cannot be used
+
   }
 
   function createListItem(logItem) {
@@ -1060,6 +1067,11 @@ function updateListView(correlationIdList) {
 
 
     }
+  }
+
+  function showListSortingOptions() {
+    const selectSorting = document.getElementById(`correlationIdListSorting`);
+    selectSorting.style.visibility = 'visible';
   }
 
   function showListDetails() {
