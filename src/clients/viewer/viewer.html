@@ -61,7 +61,6 @@
       </div>
     </form>
 
-
     <!-- ---------------------------------------------------------------------- -->
     <!-- Viewer tab -->
     <div id="viewer" hidden>
@@ -83,61 +82,106 @@
 
       </div>
 
-
       <!-- Viewer Toolbar -->
       <div class="tools ToolBar">
 
-        <form class="ToolBar HBox">
+        <!-- Tools for searching and selecting a correlation id and sequence -->
+        <form class="ToolBar HBox highlight-border">
 
           <div class="Select VBox">
             <label>Lokityyppi</label>
             <select id="logType">
               <option value="MERGE_LOG">Merge</option>
               <option value="MATCH_LOG">Match</option>
+              <option value="EMPTY_LOG" hidden></option>
             </select>
           </div>
 
-          <div class="flex-container">
+          <div class="id-container">
             <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-              tooltip-text="Etsi ID listasta" onclick="return doOpenCorrelationIdListModal(event)">manage_search</button>
+              tooltip-text="Etsi ID listasta" onclick="return openCorrelationIdListModal(event)">manage_search</button>
+
             <div class="Filler VBox Input">
               <label>ID (correlation id)</label>
-              <input class="inputField uuidInput" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+              <input class="inputField uuidInput id-input" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
+
           </div>
 
-          <div class="Select VBox">
-            <div class="sequenceContainer">
-              <label>Sekvenssi</label>
-              <div class="flex-container">
-                <div class="Select VBox">
-                  <select id="sequence" disabled="true" onchange="return loadLog(event)"></select>
-                </div>
-                <div class="Filler VBox Input">
-                  <input class="inputField" id="sequenceInput" placeholder="000" maxlength="3" />
-                </div>
+          <div class="Select VBox sequence-container">
+
+            <label>Sekvenssi</label>
+
+            <div class="HBox Filler">
+
+              <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
+                onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
+
+              <div class="Select VBox Filler sequence-select">
+                <select id="sequence" onchange="return loadLog(event)"></select>
               </div>
+
+              <div class="Filler VBox Input">
+                <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
+              </div>
+
+              <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
+                onclick="return selectNext(event)" disabled="true">navigate_next</button>
+
             </div>
+
           </div>
 
           <button class="material-icons tooltip search-button" tooltip-text="Hae"
             onclick="return doSearchPress(event)">search</button>
 
+          <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
+            onclick="return clearLogView(event)" disabled="true">backspace</button>
+
         </form>
 
-        <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
-          disabled="true">lock_open</button>
+        <!-- Tools for handling selected correlation id and/or sequence -->
+        <div class="HBox">
+          <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
+            disabled="true">lock_open</button>
 
-        <button id="share" class="material-icons tooltip" tooltip-text="Jaa"
-          onclick="return copyLink(event)">share</button>
+          <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
+            onclick="return openRemoveDialog(event)" disabled="true">delete</button>
 
-        <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID" onclick="return remove(event)"
-          disabled="true">delete</button>
+          <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
+            onclick="return copyLink(event)">share</button>
 
-        <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset" disabled="true">settings</button>
+          <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
+            disabled="true">settings</button>
+        </div>
 
       </div>
 
+      <!-- Dialog popup used when log is removed -->
+      <dialog id="dialogForRemove">
+        <form method="dialog">
+
+          <div class="dialog-icon material-icons">
+            delete_outline
+          </div>
+
+          <div class="dialog-headline">
+            Haluatko varmasti poistaa ID:n?
+          </div>
+
+          <div class="dialog-supporting-text">
+            <p>Seuraava ID poistetaan pysyvästi:</p>
+            <p><span id="idToBeRemoved" class="correlation-id-font"></span></p>
+          </div>
+
+          <div class="dialog-actions">
+            <button class="dialog-cancel-button" id="cancelButton" onclick="return cancelRemove(event)">Peruuta</button>
+            <button class="dialog-confirm-button" id="confirmButton" onclick="return confirmRemove(event)">Vahvista
+              poisto</button>
+          </div>
+
+        </form>
+      </dialog>
 
       <!-- Record Merge Panel -->
       <div class="record-merge-panel">
@@ -217,7 +261,6 @@
 
       </div>
 
-      <!-- ---------------------------------------------------------------------- -->
       <!-- Modal for browsing and selecting a correlation id from a list -->
       <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
@@ -249,16 +292,18 @@
             <div id="logTypeToggleContainer" class="select-button-container">
               <div class="segmented-button-container">
                 <button id="mergeLogsSelect" class="select-button segmented-button select-button-selected"
-                  data-title-a="Piilota MERGE_LOG-lokityypit listanäkymästä" data-title-b="Näytä MERGE_LOG-lokityypit listanäkymässä"
-                  onclick="return toggleShowMergeLogs(event)" data-value="true">
+                  data-title-a="Piilota MERGE_LOG-lokityypit listanäkymästä"
+                  data-title-b="Näytä MERGE_LOG-lokityypit listanäkymässä" onclick="return toggleShowMergeLogs(event)"
+                  data-value="true">
                   <div class="select-button-content">
                     <span class="material-icons select-button-icon">check</span>
                     <span class="select-button-text">MERGE</span>
                   </div>
                 </button>
                 <button id="matchLogsSelect" class="select-button segmented-button select-button-selected"
-                  data-title-a="Piilota MATCH_LOG-lokityypit listanäkymästä" data-title-b="Näytä MATCH_LOG-lokityypit listanäkymässä"
-                  onclick="return toggleShowMatchLogs(event)" data-value="true">
+                  data-title-a="Piilota MATCH_LOG-lokityypit listanäkymästä"
+                  data-title-b="Näytä MATCH_LOG-lokityypit listanäkymässä" onclick="return toggleShowMatchLogs(event)"
+                  data-value="true">
                   <div class="select-button-content">
                     <span class="material-icons select-button-icon">check</span>
                     <span class="select-button-text">MATCH</span>
@@ -314,10 +359,12 @@
               Päivämäärähaku:
               <div class="datepicker-container">
                 <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
-                  placeholder="Start date" title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                  placeholder="Start date"
+                  title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
                   onchange="return updateOnChange(event)">
                 <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
-                  placeholder="End date" title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                  placeholder="End date"
+                  title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
                   onchange="return updateOnChange(event)">
               </div>
             </div>
@@ -336,11 +383,11 @@
           <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
 
             <!-- shows info about search results -->
-            <div id="fetchListPlaceholderText" class="search-results-placeholder">...haetaan listaa, hetkinen...</div>
+            <div id="fetchListPlaceholderText" class="search-results-placeholder">Haetaan listaa, hetkinen...</div>
 
             <!-- button for resetting search and clearing all filters -->
             <div id="clearFilters" class="clear-filters">
-              <button id="clearFiltersButton" class="clear-button modal-function-button"
+              <button id="clearFiltersButton" class="clear-filter-button modal-function-button"
                 title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters({event})">Nollaa
                 suodattimet</button>
             </div>
@@ -369,8 +416,7 @@
               <div class="list-item-details-and-icons">
                 <div class="list-item-details"></div>
                 <div class="list-item-icons">
-                  <span class="material-icons list-item-icons-search"
-                    title="Tee haku tällä ID:llä">search</span>
+                  <span class="material-icons list-item-icons-search" title="Tee haku tällä ID:llä">search</span>
                 </div>
               </div>
             </div>
@@ -392,6 +438,9 @@
 
         </div>
       </div>
+
+      <!-- For displaying info messages and errors to user -->
+      <div id="snackbars" class="snackbars"></div>
 
     </div>
 
