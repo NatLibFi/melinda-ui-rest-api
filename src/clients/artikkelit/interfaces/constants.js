@@ -105,8 +105,8 @@ export const ontologyTypes = [
     text: "YSO-aika"
   },
   {
-    value: "yhteiso",
-    text: "Suomalaiset yhteisönimet"
+    value: "kanto",
+    text: "KANTO - Kansalliset toimijatiedot"
   },
   {
     value: "slm",
