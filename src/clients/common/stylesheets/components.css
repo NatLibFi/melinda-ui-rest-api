@@ -449,6 +449,8 @@ button.dialog-cancel-button:hover {
 /* It is recommended not add more than 5 buttons inside the container */
 .segmented-button-container {
   display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Segmented button class is used with element <button> */
@@ -482,6 +484,8 @@ button.dialog-cancel-button:hover {
 /* Select button is wrapped with a container div */
 .select-button-container {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Helper class for html readibility, used for marking a button as select button */

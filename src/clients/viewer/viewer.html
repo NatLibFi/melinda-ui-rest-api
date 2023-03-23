@@ -349,7 +349,25 @@
               </button>
             </div>
 
+            <div id="catalogerToggleContainer" class="segmented-button-container select-button-container"></div>
+
           </div>
+
+          <!-- This is helper html for filtering buttons  -->
+          <!-- template's contents are not rendered on page -->
+          <template id="buttonTemplate">
+
+            <!-- base for one select button-->
+            <!-- select button has a container that holds the button element  -->
+            <button id="segmentedSelectButton" class="select-button segmented-button select-button-selected"
+              data-title-a="" data-title-b="" data-value="true">
+              <div class="select-button-content">
+                <span class="material-icons select-button-icon">check</span>
+                <span class="select-button-text"></span>
+              </div>
+            </button>
+
+          </template>
 
           <!-- All inputs for filtering correlation id list  -->
           <div id="filteringInputs" class="list-filtering-inputs">

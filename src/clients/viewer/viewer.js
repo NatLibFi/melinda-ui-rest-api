@@ -779,8 +779,10 @@ function clearListView() {
   const dateEndInput = document.getElementById(`dateEndInput`);
 
   const filterButtons = document.querySelectorAll('.select-button');
+  const catalogerButtons = document.getElementById('catalogerToggleContainer');
 
   correlationIdList.replaceChildren();
+  catalogerButtons.replaceChildren();
   selectSorting.style.visibility = 'hidden';
   infoTextDiv.classList.remove('link-active');
 
@@ -999,10 +1001,51 @@ function updateListView(correlationIdList) {
     const catalogerSet = new Set(updatedList.map((listItem) => listItem.cataloger));
     console.log('catalogerSet: ', catalogerSet);
 
-    // create a select button for every cataloger
-    // every button should be togglable and filter the correlation id list
-    // create a multiselect segmented button with all the select buttons
+    catalogerSet.forEach(cataloger => createCatalogerButton(cataloger));
+
     // handle case: if too many catalogers, segmented button cannot be used
+
+    function createCatalogerButton(cataloger) {
+      const button = createButton(cataloger);
+
+      const container = document.getElementById('catalogerToggleContainer');
+      container.append(button);
+
+      const filteringButtons = document.querySelector(`#correlationIdListModal #filteringButtons`);
+      filteringButtons.append(container);
+
+      function createButton(cataloger) {
+        const template = document.getElementById('buttonTemplate');
+        const buttonFragment = template.content.cloneNode(true);
+        const button = buttonFragment.getElementById('segmentedSelectButton');
+
+        button.id = cataloger;
+        button.querySelector(`.select-button-text`).innerHTML = cataloger;
+        button.dataset.titleA = `Piilota ${cataloger}-luetteloijat listanäkymästä`;
+        button.dataset.titleB = `Näytä ${cataloger}-luetteloijat listanäkymässä`;
+
+        if (cataloger === null) {
+          button.id = 'NO_CATALOGER'
+          button.querySelector(`.select-button-text`).innerHTML = 'Ei luetteloijaa';
+          button.dataset.titleA = `Piilota luetteloijattomat listanäkymästä`;
+          button.dataset.titleB = `Näytä luetteloijattomat listanäkymässä`;
+        }
+
+        button.title = button.dataset.titleA;
+
+        button.addEventListener('click', () => {
+          toggleShowLogsByCataloger(cataloger);
+        });
+
+        return button;
+
+        function toggleShowLogsByCataloger(cataloger) {
+          console.log('Cataloger is ', cataloger);
+          //TO DO FILTERING
+          updateOnChange(new Event('change'));
+        }
+      }
+    }
 
   }
 
