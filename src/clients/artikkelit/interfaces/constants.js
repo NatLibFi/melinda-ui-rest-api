@@ -137,8 +137,8 @@ export const ontologyTypes = [
     text: "Kassu - Kasvien suomenkieliset nimet"
   },
   {
-    value: "soto",
-    text: "SOTO - Sotatieteen ontologia"
+    value: "koko",
+    text: "KOKO-ontologia"
   },
   {
     value: "finmesh",
