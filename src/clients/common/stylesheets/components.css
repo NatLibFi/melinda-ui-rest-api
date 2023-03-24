@@ -509,6 +509,7 @@ button.dialog-cancel-button:hover {
 
 /* Select button has text, the label of button */
 .select-button-text {
+  white-space: nowrap;
 }
 
 /* Select button has selected style when it is selected */
