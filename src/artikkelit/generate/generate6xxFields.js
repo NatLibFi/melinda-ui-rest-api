@@ -1,9 +1,9 @@
 export function generatef6xxs(terms) {
-  
-  if (!terms) {    
+
+  if (!terms) {
     return [];
   }
-  
+
   const f600s = terms.filter(({vocab}) => vocab === 'otherPerson');
   const f610s = terms.filter(({vocab}) => vocab === 'otherCommunity');
   const f648s = terms.filter(({vocab}) => ['yso-aika', 'otherCommunity'].includes(vocab));
@@ -15,19 +15,19 @@ export function generatef6xxs(terms) {
   const f653s = terms.filter(({vocab}) => vocab === 'other');
   const f655s = terms.filter(({vocab}) => ['slm', 'otherCategory'].includes(vocab));
   const sortedF655s = sortFields(f655s, ['slm', 'otherCategory'], ['fi', 'sv']);
-  const f648_otherTime = terms.filter(({vocab}) => ['otherTime'].includes(vocab));     
+  const f648_other = terms.filter(({vocab}) => ['otherTime'].includes(vocab));
 
   const sortedTerms = [
     ...f600s,
     ...f610s,
     ...sortedF648s,
-    ...f648_otherTime, 
+    ...f648_other,
     ...sortedF650s,
     ...sortedF651s,
     ...f653s,
     ...sortedF655s
   ];
-  
+
   return sortedTerms.flatMap(({vocab, prefLabel, lang, uri, subdivision = false}) => {
     if (['otherPerson'].includes(vocab)) {
       return generatef600(prefLabel);
@@ -45,7 +45,7 @@ export function generatef6xxs(terms) {
       return generatef650(vocab, prefLabel, lang, uri, subdivision);
     }
 
-    if (['yso-paikat'].includes(vocab)) {      
+    if (['yso-paikat'].includes(vocab)) {
       return generatef651(vocab, prefLabel, lang, uri, subdivision);
     }
 
@@ -69,19 +69,19 @@ function generatef610(prefLabel) {
   return [{tag: '610', ind1: '2', ind2: '4', subfields: [{code: 'a', value: prefLabel}]}];
 }
 
-function generatef648(vocab, prefLabel, lang, uri) {  
-  if (vocab == "otherTime"){    
+function generatef648(vocab, prefLabel, lang, uri) {
+  if (vocab === 'otherTime') {
     return [
       {
         tag: '648', ind1: ' ', ind2: '4', // 2. ind -> 4
         subfields: [
-          {code: 'a', value: prefLabel}, // no subfield 2          
+          {code: 'a', value: prefLabel}, // no subfield 2
           ...generateSubfield0()
         ]
       }
-    ]    
+    ];
   }
-  
+
   return [
     {
       tag: '648', ind1: ' ', ind2: '7',
@@ -117,7 +117,7 @@ function generatef650(vocab, prefLabel, lang, uri, subdivision = false) {
   ];
 }
 
-function generatef651(vocab, prefLabel, lang, uri, subdivision = false) {  
+function generatef651(vocab, prefLabel, lang, uri, subdivision = false) {
   return [
     {
       tag: '651', ind1: ' ', ind2: '7',
