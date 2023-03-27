@@ -899,6 +899,83 @@ function updateListView(correlationIdList) {
   highlightMatches();
   stopProcess();
 
+  function updateCatalogerToggleButtons() {
+    const currentCatalogerList = [...document.querySelectorAll(`#catalogerToggleContainer [id]`)].map((element) => element.id);
+    const updatedCatalogerList = Array.from(new Set(correlationIdList.map((listItem) => listItem.cataloger)));
+
+    // if null is present, change it to NO_CATALOGER
+    if (updatedCatalogerList.includes(null)) [
+      updatedCatalogerList.splice(updatedCatalogerList.indexOf(null), 1, 'NO_CATALOGER')
+    ]
+
+    const newCatalogers = updatedCatalogerList.filter(cataloger => !currentCatalogerList.includes(cataloger));
+    const oldCatalogers = currentCatalogerList.filter(cataloger => !updatedCatalogerList.includes(cataloger));
+
+    // move NO_CATALOGER to be the last list item
+    newCatalogers.sort(cataloger => cataloger === 'NO_CATALOGER' ? 1 : -1)
+
+    addCatalogers(newCatalogers);
+    removeCatalogers(oldCatalogers);
+
+    // handle case: if too many catalogers, segmented button cannot be used
+
+    function removeCatalogers(catalogers) {
+      catalogers.forEach(cataloger => {
+        const element = document.getElementById(cataloger);
+        element.parentNode.removeChild(element);
+      })
+
+    }
+
+    function addCatalogers(catalogers) {
+      catalogers.forEach(cataloger => {
+        createCatalogerButton(cataloger);
+      })
+
+      function createCatalogerButton(cataloger) {
+        const button = createButton(cataloger);
+
+        const container = document.getElementById('catalogerToggleContainer');
+        container.append(button);
+
+        function createButton(cataloger) {
+          const template = document.getElementById('buttonTemplate');
+          const buttonFragment = template.content.cloneNode(true);
+          const button = buttonFragment.getElementById('segmentedSelectButton');
+
+          button.id = cataloger;
+          button.querySelector(`.select-button-text`).innerHTML = cataloger;
+          button.dataset.titleA = `Piilota ${cataloger}-luetteloijat listanäkymästä`;
+          button.dataset.titleB = `Näytä ${cataloger}-luetteloijat listanäkymässä`;
+
+          if (cataloger === 'NO_CATALOGER') {
+            button.id = 'NO_CATALOGER'
+            button.querySelector(`.select-button-text`).innerHTML = 'Ei luetteloijaa';
+            button.dataset.titleA = `Piilota luetteloijattomat listanäkymästä`;
+            button.dataset.titleB = `Näytä luetteloijattomat listanäkymässä`;
+          }
+
+          button.title = button.dataset.titleA;
+
+          button.addEventListener('click', () => {
+            toggleShowLogsByCataloger(cataloger);
+          });
+
+          return button;
+
+          function toggleShowLogsByCataloger(cataloger) {
+            console.log('Toggling cataloger: ', cataloger);
+            const toggleCatalogerButton = document.querySelector(`#correlationIdListModal #${cataloger}`);
+            console.log('button is ', toggleCatalogerButton)
+            toggleFilterButton(toggleCatalogerButton);
+            updateOnChange(new Event('change'));
+          }
+        }
+      }
+    }
+
+  }
+
   function filterAndSortCorrelationIdList(filterByLogTypes = 'true', filterByCatalogers = 'true', filterByDates = 'true', filterBySearchString = 'true', sortBySelected = 'true') {
     const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).dataset.value;
     const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).dataset.value;
@@ -1023,79 +1100,6 @@ function updateListView(correlationIdList) {
   function showSearchResultsInfo(found, total) {
     const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
     showPlaceholderText(`Näytetään ${styledResult}/${total} ID:tä`)
-  }
-
-  function updateCatalogerToggleButtons() {
-    const currentCatalogerList = [...document.querySelectorAll(`#catalogerToggleContainer [id]`)].map((element) => element.id);
-    const updatedCatalogerList = Array.from(new Set(correlationIdList.map((listItem) => listItem.cataloger)));
-
-
-    if (updatedCatalogerList.includes(null)) [
-      updatedCatalogerList.splice(updatedCatalogerList.indexOf(null), 1, 'NO_CATALOGER')
-    ]
-
-    const newCatalogers = updatedCatalogerList.filter(cataloger => !currentCatalogerList.includes(cataloger));
-    const oldCatalogers = currentCatalogerList.filter(cataloger => !updatedCatalogerList.includes(cataloger));
-
-    addCatalogers(newCatalogers);
-    removeCatalogers(oldCatalogers);
-
-    // handle case: if too many catalogers, segmented button cannot be used
-
-    function removeCatalogers(catalogers) {
-      catalogers.forEach(cataloger => {
-        const element = document.getElementById(cataloger);
-        element.parentNode.removeChild(element);
-      })
-
-    }
-
-    function addCatalogers(catalogers) {
-      catalogers.forEach(cataloger => {
-        createCatalogerButton(cataloger);
-      })
-
-      function createCatalogerButton(cataloger) {
-        const button = createButton(cataloger);
-
-        const container = document.getElementById('catalogerToggleContainer');
-        container.append(button);
-
-        function createButton(cataloger) {
-          const template = document.getElementById('buttonTemplate');
-          const buttonFragment = template.content.cloneNode(true);
-          const button = buttonFragment.getElementById('segmentedSelectButton');
-
-          button.id = cataloger;
-          button.querySelector(`.select-button-text`).innerHTML = cataloger;
-          button.dataset.titleA = `Piilota ${cataloger}-luetteloijat listanäkymästä`;
-          button.dataset.titleB = `Näytä ${cataloger}-luetteloijat listanäkymässä`;
-
-          if (cataloger === 'NO_CATALOGER') {
-            button.id = 'NO_CATALOGER'
-            button.querySelector(`.select-button-text`).innerHTML = 'Ei luetteloijaa';
-            button.dataset.titleA = `Piilota luetteloijattomat listanäkymästä`;
-            button.dataset.titleB = `Näytä luetteloijattomat listanäkymässä`;
-          }
-
-          button.title = button.dataset.titleA;
-
-          button.addEventListener('click', () => {
-            toggleShowLogsByCataloger(cataloger);
-          });
-
-          return button;
-
-          function toggleShowLogsByCataloger(cataloger) {
-            console.log('Toggling cataloger: ', cataloger);
-            const toggleCatalogerButton = document.querySelector(`#correlationIdListModal #${cataloger}`);
-            toggleFilterButton(toggleCatalogerButton);
-            updateOnChange(new Event('change'));
-          }
-        }
-      }
-    }
-
   }
 
   function createListItem(logItem) {
