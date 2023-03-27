@@ -18,7 +18,7 @@ async function testF6xx({getFixture, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
     const result = await generatef6xxs(input.ontologyWords);
-
+   
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 

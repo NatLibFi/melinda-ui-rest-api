@@ -1,0 +1,9 @@
+{
+  "description": "generatef6xxx - field 648 when Muu Aikamääre: 1982-1985",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

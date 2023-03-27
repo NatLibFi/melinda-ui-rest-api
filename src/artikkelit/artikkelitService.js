@@ -17,7 +17,7 @@ export function createArtikkelitService(useMoment = 'now') {
   return {generateRecord};
 
   function generateRecord(data) {
-    console.log(data); // eslint-disable-line
+    console.log(data); // eslint-disable-line    
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
     const titleFor773t = source.title;

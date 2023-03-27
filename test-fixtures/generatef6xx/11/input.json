@@ -1,0 +1,36 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p6197061979",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/yso-meta/Decade"
+         ],
+         "localname": "p6197061979",
+         "prefLabel": "1970-talet",
+         "lang": "sv",
+         "notation": "1970/1979",
+         "vocab": "yso-aika"
+        },
+        {
+         "key": 2,
+         "prefLabel": "1977",
+         "vocab": "otherTime"
+        },
+        {
+         "key": 3,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p2555",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/yso-meta/Concept"
+         ],
+         "localname": "p2555",
+         "prefLabel": "ekonomi",
+         "lang": "sv",
+         "vocab": "yso"
+        }
+       ]
+}
