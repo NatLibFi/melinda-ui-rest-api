@@ -8,8 +8,8 @@ export function generatef6xxs(terms) {
   const f610s = terms.filter(({vocab}) => vocab === 'otherCommunity');
   const f648s = terms.filter(({vocab}) => ['yso-aika', 'otherCommunity'].includes(vocab));
   const sortedF648s = sortFields(f648s, ['yso-aika', 'otherCommunity'], ['fi', 'sv']);
-  const f650s = terms.filter(({vocab}) => ['yso', 'kassu', 'soto', 'afo', 'finmesh', 'maotao'].includes(vocab));
-  const sortedF650s = sortFields(f650s, ['yso', 'kassu', 'soto', 'afo', 'finmesh', 'maotao'], ['fi', 'sv']);
+  const f650s = terms.filter(({vocab}) => ['yso', 'kassu', 'koko', 'afo', 'finmesh', 'maotao'].includes(vocab));
+  const sortedF650s = sortFields(f650s, ['yso', 'kassu', 'koko', 'afo', 'finmesh', 'maotao'], ['fi', 'sv']);
   const f651s = terms.filter(({vocab}) => ['yso-paikat'].includes(vocab));
   const sortedF651s = sortFields(f651s, ['yso-paikat'], ['fi', 'sv']);
   const f653s = terms.filter(({vocab}) => vocab === 'other');

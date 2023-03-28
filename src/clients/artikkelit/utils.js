@@ -14,8 +14,8 @@ export function getOntologyOptions(ontology) {
     kassu: 'kassu',
     afo: 'afo',
     maotao: 'maotao',
-    soto: 'soto',
-    yhteiso: 'cn',
+    koko: 'koko',
+    kanto: 'finaf',
     finmesh: 'mesh'
   }
 

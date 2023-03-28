@@ -105,8 +105,8 @@ export const ontologyTypes = [
     text: "YSO-aika"
   },
   {
-    value: "yhteiso",
-    text: "Suomalaiset yhteisönimet"
+    value: "kanto",
+    text: "KANTO - Kansalliset toimijatiedot"
   },
   {
     value: "slm",
@@ -137,8 +137,8 @@ export const ontologyTypes = [
     text: "Kassu - Kasvien suomenkieliset nimet"
   },
   {
-    value: "soto",
-    text: "SOTO - Sotatieteen ontologia"
+    value: "koko",
+    text: "KOKO-ontologia"
   },
   {
     value: "finmesh",

@@ -19,7 +19,8 @@ export function searchOntologyWords(event) {
   event.preventDefault();
   resetOntologySelect(true);
   const formJson = formToJson(event);
-  getOntologyWords(formJson['asiasana-ontologia'], formJson['haku-arvo']).then(data => setOntologyWords(data.results));
+  getOntologyWords(formJson['asiasana-ontologia'], formJson['haku-arvo'] + "*").then(data => setOntologyWords(data.results));
+  // Added an asterisk (*) after formJson['haku-arvo'] in order to find more matches/options with the search feature
 }
 
 export function setOntologyWords(words) {
