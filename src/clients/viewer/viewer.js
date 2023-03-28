@@ -892,139 +892,72 @@ function updateListView(correlationIdList) {
   stopProcess();
 
   function updateToggleButtons() {
-    updateLogTypeButtons();
-    updateCatalogerButtons();
+    updateFilterButtons('logTypeToggleContainer', 'logItemType');
+    updateFilterButtons('catalogerToggleContainer', 'cataloger');
 
-    function updateLogTypeButtons() {
-      const currentLogTypeList = [...document.querySelectorAll(`#logTypeToggleContainer [id]`)].map((element) => element.id);
-      const updatedLogTypeList = Array.from(new Set(correlationIdList.map((listItem) => listItem.logItemType)));
+    function updateFilterButtons(containerId, filterProperty) {
+      const currentList = [...document.querySelectorAll(`#${containerId} [id]`)].map((element) => element.id);
+      const updatedList = Array.from(new Set(correlationIdList.map((listItem) => listItem[`${filterProperty}`])));
 
-      const newLogTypes = updatedLogTypeList.filter(logType => !currentLogTypeList.includes(logType));
-      const oldLogTypes = currentLogTypeList.filter(logType => !updatedLogTypeList.includes(logType));
-
-      addLogTypes(newLogTypes);
-      removeLogTypes(oldLogTypes);
-
-      function addLogTypes(logTypes) {
-        logTypes.forEach(logType => {
-          createLogTypeButton(logType);
-        })
-
-        function createLogTypeButton(logType) {
-          const button = createButton(logType);
-
-          const container = document.getElementById('logTypeToggleContainer');
-          container.append(button);
-
-          function createButton(logType) {
-            const template = document.getElementById('buttonTemplate');
-            const buttonFragment = template.content.cloneNode(true);
-            const button = buttonFragment.getElementById('segmentedSelectButton');
-
-            button.id = logType;
-            button.querySelector(`.select-button-text`).innerHTML = logType;
-            button.dataset.titleA = `Piilota ${logType}-lokityypit listanäkymästä`;
-            button.dataset.titleB = `Näytä  ${logType}-lokityypitlistanäkymässä`;
-
-            button.title = button.dataset.titleA;
-
-            button.addEventListener('click', () => {
-              toggleShowLogsByLogType(logType);
-            });
-
-            return button;
-
-            function toggleShowLogsByLogType(logType) {
-              console.log('Toggling logType: ', logType);
-              const toggleLogTypeButton = document.querySelector(`#correlationIdListModal #${logType}`);
-              toggleFilterButton(toggleLogTypeButton);
-              updateOnChange(new Event('change'));
-            }
-          }
-        }
-      }
-
-      function removeLogTypes(logTypes) {
-        logTypes.forEach(logType => {
-          const element = document.getElementById(logType);
-          element.parentNode.removeChild(element);
-        })
-      }
-
-    }
-
-    function updateCatalogerButtons() {
-      const currentCatalogerList = [...document.querySelectorAll(`#catalogerToggleContainer [id]`)].map((element) => element.id);
-      const updatedCatalogerList = Array.from(new Set(correlationIdList.map((listItem) => listItem.cataloger)));
-
-      // if null is present, change it to NO_CATALOGER
-      if (updatedCatalogerList.includes(null)) [
-        updatedCatalogerList.splice(updatedCatalogerList.indexOf(null), 1, 'NO_CATALOGER')
+      // if null is present, change it to 'NULL'
+      if (updatedList.includes(null)) [
+        updatedList.splice(updatedList.indexOf(null), 1, 'NULL')
       ]
 
-      const newCatalogers = updatedCatalogerList.filter(cataloger => !currentCatalogerList.includes(cataloger));
-      const oldCatalogers = currentCatalogerList.filter(cataloger => !updatedCatalogerList.includes(cataloger));
+      const newItems = updatedList.filter(item => !currentList.includes(item));
+      const oldItems = currentList.filter(item => !updatedList.includes(item));
 
-      // move NO_CATALOGER to be the last list item
-      newCatalogers.sort(cataloger => cataloger === 'NO_CATALOGER' ? 1 : -1)
+      // move 'NULL' to be the last list item
+      newItems.sort(item => item === 'NULL' ? 1 : -1)
 
-      addCatalogers(newCatalogers);
-      removeCatalogers(oldCatalogers);
+      // TODO => handle case: if too many items, segmented button cannot be used
+      addNew(newItems);
+      removeOld(oldItems);
 
-      // handle case: if too many catalogers, segmented button cannot be used
-
-      function removeCatalogers(catalogers) {
-        catalogers.forEach(cataloger => {
-          const element = document.getElementById(cataloger);
-          element.parentNode.removeChild(element);
-        })
-      }
-
-      function addCatalogers(catalogers) {
-        catalogers.forEach(cataloger => {
-          createCatalogerButton(cataloger);
+      function addNew(newItems) {
+        newItems.forEach(item => {
+          createNewButton(item);
         })
 
-        function createCatalogerButton(cataloger) {
-          const button = createButton(cataloger);
+        function createNewButton(item) {
+          const button = createButton(item);
 
-          const container = document.getElementById('catalogerToggleContainer');
+          const container = document.getElementById(containerId);
           container.append(button);
 
-          function createButton(cataloger) {
+          function createButton(item) {
             const template = document.getElementById('buttonTemplate');
             const buttonFragment = template.content.cloneNode(true);
             const button = buttonFragment.getElementById('segmentedSelectButton');
 
-            button.id = cataloger;
-            button.querySelector(`.select-button-text`).innerHTML = cataloger;
-            button.dataset.titleA = `Piilota ${cataloger}-luetteloijat listanäkymästä`;
-            button.dataset.titleB = `Näytä ${cataloger}-luetteloijat listanäkymässä`;
-
-            if (cataloger === 'NO_CATALOGER') {
-              button.id = 'NO_CATALOGER'
-              button.querySelector(`.select-button-text`).innerHTML = 'Ei luetteloijaa';
-              button.dataset.titleA = `Piilota luetteloijattomat listanäkymästä`;
-              button.dataset.titleB = `Näytä luetteloijattomat listanäkymässä`;
-            }
+            button.id = item;
+            button.querySelector(`.select-button-text`).innerHTML = item;
+            button.dataset.titleA = `Piilota ${item} listanäkymästä`;
+            button.dataset.titleB = `Näytä  ${item} listanäkymässä`;
 
             button.title = button.dataset.titleA;
 
             button.addEventListener('click', () => {
-              toggleShowLogsByCataloger(cataloger);
+              toggleShowLogsByFilter(item);
             });
 
             return button;
 
-            function toggleShowLogsByCataloger(cataloger) {
-              console.log('Toggling cataloger: ', cataloger);
-              const toggleCatalogerButton = document.querySelector(`#correlationIdListModal #${cataloger}`);
-              console.log('button is ', toggleCatalogerButton)
-              toggleFilterButton(toggleCatalogerButton);
+            function toggleShowLogsByFilter(item) {
+              console.log('Toggling: ', item);
+              const toggleItemButton = document.querySelector(`#correlationIdListModal #${item}`);
+              toggleFilterButton(toggleItemButton);
               updateOnChange(new Event('change'));
             }
           }
         }
+      }
+
+      function removeOld(oldItems) {
+        oldItems.forEach(item => {
+          const element = document.getElementById(item);
+          element.parentNode.removeChild(element);
+        })
       }
 
     }
@@ -1066,6 +999,13 @@ function updateListView(correlationIdList) {
 
       console.log('Showing list items with logTypes: ', selectedLogTypes);
 
+      // handle if logItemType is null
+      list.map(logItem => {
+        if (logItem.logItemType === null) {
+          logItem.logItemType = 'NULL'
+        }
+      });
+
       return list.filter(logItem => selectedLogTypes.includes(logItem.logItemType));
     }
 
@@ -1080,9 +1020,10 @@ function updateListView(correlationIdList) {
 
       console.log('Showing list items with catalogers: ', selectedCatalogers);
 
+      // handle if cataloger is null
       list.map(logItem => {
         if (logItem.cataloger === null) {
-          logItem.cataloger = 'NO_CATALOGER'
+          logItem.cataloger = 'NULL'
         }
       });
 
