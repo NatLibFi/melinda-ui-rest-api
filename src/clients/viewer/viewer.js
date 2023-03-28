@@ -944,7 +944,6 @@ function updateListView(correlationIdList) {
             return button;
 
             function toggleShowLogsByFilter(item) {
-              console.log('Toggling: ', item);
               const toggleItemButton = document.querySelector(`#correlationIdListModal #${item}`);
               toggleFilterButton(toggleItemButton);
               updateOnChange(new Event('change'));
@@ -997,8 +996,6 @@ function updateListView(correlationIdList) {
         }
       });
 
-      console.log('Showing list items with logTypes: ', selectedLogTypes);
-
       // handle if logItemType is null
       list.map(logItem => {
         if (logItem.logItemType === null) {
@@ -1017,8 +1014,6 @@ function updateListView(correlationIdList) {
           selectedCatalogers.push(button.id);
         }
       });
-
-      console.log('Showing list items with catalogers: ', selectedCatalogers);
 
       // handle if cataloger is null
       list.map(logItem => {
