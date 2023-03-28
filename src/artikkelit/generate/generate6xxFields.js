@@ -15,13 +15,13 @@ export function generatef6xxs(terms) {
   const f653s = terms.filter(({vocab}) => vocab === 'other');
   const f655s = terms.filter(({vocab}) => ['slm', 'otherCategory'].includes(vocab));
   const sortedF655s = sortFields(f655s, ['slm', 'otherCategory'], ['fi', 'sv']);
-  const f648_other = terms.filter(({vocab}) => ['otherTime'].includes(vocab));
+  const f648other = terms.filter(({vocab}) => ['otherTime'].includes(vocab));
 
   const sortedTerms = [
     ...f600s,
     ...f610s,
     ...sortedF648s,
-    ...f648_other,
+    ...f648other,
     ...sortedF650s,
     ...sortedF651s,
     ...f653s,
