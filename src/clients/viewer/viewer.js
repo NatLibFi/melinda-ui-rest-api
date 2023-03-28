@@ -637,20 +637,6 @@ window.modalClose = function (event) {
   return eventHandled(event);
 }
 
-window.toggleShowMergeLogs = function (event = undefined) {
-  eventHandled(event);
-  const toggleMergeLogsButton = document.getElementById('mergeLogsSelect');
-  toggleFilterButton(toggleMergeLogsButton);
-  updateOnChange(new Event('change'));
-}
-
-window.toggleShowMatchLogs = function (event = undefined) {
-  eventHandled(event);
-  const toggleMatchLogsButton = document.getElementById('matchLogsSelect');
-  toggleFilterButton(toggleMatchLogsButton);
-  updateOnChange(new Event('change'));
-}
-
 window.toggleListDetails = function (event = undefined) {
   eventHandled(event);
   const toggleListDetailsButton = document.getElementById('toggleListDetails');
@@ -696,17 +682,18 @@ window.toggleShowLogsByCreationDate = function (clickedDateButton) {
 
 }
 
-window.clearFilters = function ({event = undefined, clearLogFilters = 'true', clearDateFilters = 'true', clearCatalogerFilters = 'true', clearInputFilters = 'true'}) {
+window.clearFilters = function ({event = undefined, clearDetailsFilter = 'true', clearLogTypeFilters = 'true', clearDateFilters = 'true', clearCatalogerFilters = 'true', clearInputFilters = 'true'}) {
   eventHandled(event);
   resetDateFilteringButtons();
 
-  if (clearLogFilters === 'false' && clearCatalogerFilters === 'false' && clearDateFilters === 'true' && clearInputFilters === 'false') {
+  if (clearDetailsFilter === 'false' && clearLogTypeFilters === 'false' && clearCatalogerFilters === 'false' && clearDateFilters === 'true' && clearInputFilters === 'false') {
     return;
   }
 
   resetFilteringInputs();
-  resetLogFilteringButtons();
+  resetLogTypeFilteringButtons();
   resetCatalogerFilteringButtons();
+  resetDetailsButton();
   console.log('All filters cleared!');
   updateOnChange(event);
 
@@ -729,13 +716,18 @@ window.clearFilters = function ({event = undefined, clearLogFilters = 'true', cl
     correlationIdInput.value = '';
   }
 
-  function resetLogFilteringButtons() {
-    const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
-    const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
+  function resetLogTypeFilteringButtons() {
+    const logTypeButtons = document.getElementById('logTypeToggleContainer').children
+
+    selectFilteringButtons(...logTypeButtons);
+    setDefaultTitles(...logTypeButtons);
+  }
+
+  function resetDetailsButton() {
     const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
 
-    selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
-    setDefaultTitles(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+    selectFilteringButtons(listDetailsSelect);
+    setDefaultTitles(listDetailsSelect);
   }
 
   function resetCatalogerFilteringButtons() {
@@ -763,7 +755,7 @@ function unselectDateButtons() {
   const weekAgoButton = document.getElementById('creationTimeWeekAgo');
 
   if (todayButton.classList.contains('select-button-selected') || weekAgoButton.classList.contains('select-button-selected')) {
-    clearFilters({clearLogFilters: 'false', clearCatalogerFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
+    clearFilters({clearDetailsFilter: 'false', clearLogTypeFilters: 'false', clearCatalogerFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
   }
 }
 
@@ -883,7 +875,7 @@ function updateCorrelationIdListModal() {
 }
 
 function updateListView(correlationIdList) {
-  updateCatalogerToggleButtons();
+  updateToggleButtons();
   const updatedList = filterAndSortCorrelationIdList();
   showlastSearchedCorrelationId();
   showSearchResultsInfo(updatedList.length, correlationIdList.length)
@@ -899,97 +891,158 @@ function updateListView(correlationIdList) {
   highlightMatches();
   stopProcess();
 
-  function updateCatalogerToggleButtons() {
-    const currentCatalogerList = [...document.querySelectorAll(`#catalogerToggleContainer [id]`)].map((element) => element.id);
-    const updatedCatalogerList = Array.from(new Set(correlationIdList.map((listItem) => listItem.cataloger)));
+  function updateToggleButtons() {
+    updateLogTypeButtons();
+    updateCatalogerButtons();
 
-    // if null is present, change it to NO_CATALOGER
-    if (updatedCatalogerList.includes(null)) [
-      updatedCatalogerList.splice(updatedCatalogerList.indexOf(null), 1, 'NO_CATALOGER')
-    ]
+    function updateLogTypeButtons() {
+      const currentLogTypeList = [...document.querySelectorAll(`#logTypeToggleContainer [id]`)].map((element) => element.id);
+      const updatedLogTypeList = Array.from(new Set(correlationIdList.map((listItem) => listItem.logItemType)));
 
-    const newCatalogers = updatedCatalogerList.filter(cataloger => !currentCatalogerList.includes(cataloger));
-    const oldCatalogers = currentCatalogerList.filter(cataloger => !updatedCatalogerList.includes(cataloger));
+      const newLogTypes = updatedLogTypeList.filter(logType => !currentLogTypeList.includes(logType));
+      const oldLogTypes = currentLogTypeList.filter(logType => !updatedLogTypeList.includes(logType));
 
-    // move NO_CATALOGER to be the last list item
-    newCatalogers.sort(cataloger => cataloger === 'NO_CATALOGER' ? 1 : -1)
+      addLogTypes(newLogTypes);
+      removeLogTypes(oldLogTypes);
 
-    addCatalogers(newCatalogers);
-    removeCatalogers(oldCatalogers);
+      function addLogTypes(logTypes) {
+        logTypes.forEach(logType => {
+          createLogTypeButton(logType);
+        })
 
-    // handle case: if too many catalogers, segmented button cannot be used
+        function createLogTypeButton(logType) {
+          const button = createButton(logType);
 
-    function removeCatalogers(catalogers) {
-      catalogers.forEach(cataloger => {
-        const element = document.getElementById(cataloger);
-        element.parentNode.removeChild(element);
-      })
+          const container = document.getElementById('logTypeToggleContainer');
+          container.append(button);
 
-    }
+          function createButton(logType) {
+            const template = document.getElementById('buttonTemplate');
+            const buttonFragment = template.content.cloneNode(true);
+            const button = buttonFragment.getElementById('segmentedSelectButton');
 
-    function addCatalogers(catalogers) {
-      catalogers.forEach(cataloger => {
-        createCatalogerButton(cataloger);
-      })
+            button.id = logType;
+            button.querySelector(`.select-button-text`).innerHTML = logType;
+            button.dataset.titleA = `Piilota ${logType}-lokityypit listanäkymästä`;
+            button.dataset.titleB = `Näytä  ${logType}-lokityypitlistanäkymässä`;
 
-      function createCatalogerButton(cataloger) {
-        const button = createButton(cataloger);
+            button.title = button.dataset.titleA;
 
-        const container = document.getElementById('catalogerToggleContainer');
-        container.append(button);
+            button.addEventListener('click', () => {
+              toggleShowLogsByLogType(logType);
+            });
 
-        function createButton(cataloger) {
-          const template = document.getElementById('buttonTemplate');
-          const buttonFragment = template.content.cloneNode(true);
-          const button = buttonFragment.getElementById('segmentedSelectButton');
+            return button;
 
-          button.id = cataloger;
-          button.querySelector(`.select-button-text`).innerHTML = cataloger;
-          button.dataset.titleA = `Piilota ${cataloger}-luetteloijat listanäkymästä`;
-          button.dataset.titleB = `Näytä ${cataloger}-luetteloijat listanäkymässä`;
-
-          if (cataloger === 'NO_CATALOGER') {
-            button.id = 'NO_CATALOGER'
-            button.querySelector(`.select-button-text`).innerHTML = 'Ei luetteloijaa';
-            button.dataset.titleA = `Piilota luetteloijattomat listanäkymästä`;
-            button.dataset.titleB = `Näytä luetteloijattomat listanäkymässä`;
-          }
-
-          button.title = button.dataset.titleA;
-
-          button.addEventListener('click', () => {
-            toggleShowLogsByCataloger(cataloger);
-          });
-
-          return button;
-
-          function toggleShowLogsByCataloger(cataloger) {
-            console.log('Toggling cataloger: ', cataloger);
-            const toggleCatalogerButton = document.querySelector(`#correlationIdListModal #${cataloger}`);
-            console.log('button is ', toggleCatalogerButton)
-            toggleFilterButton(toggleCatalogerButton);
-            updateOnChange(new Event('change'));
+            function toggleShowLogsByLogType(logType) {
+              console.log('Toggling logType: ', logType);
+              const toggleLogTypeButton = document.querySelector(`#correlationIdListModal #${logType}`);
+              toggleFilterButton(toggleLogTypeButton);
+              updateOnChange(new Event('change'));
+            }
           }
         }
       }
+
+      function removeLogTypes(logTypes) {
+        logTypes.forEach(logType => {
+          const element = document.getElementById(logType);
+          element.parentNode.removeChild(element);
+        })
+      }
+
     }
 
+    function updateCatalogerButtons() {
+      const currentCatalogerList = [...document.querySelectorAll(`#catalogerToggleContainer [id]`)].map((element) => element.id);
+      const updatedCatalogerList = Array.from(new Set(correlationIdList.map((listItem) => listItem.cataloger)));
+
+      // if null is present, change it to NO_CATALOGER
+      if (updatedCatalogerList.includes(null)) [
+        updatedCatalogerList.splice(updatedCatalogerList.indexOf(null), 1, 'NO_CATALOGER')
+      ]
+
+      const newCatalogers = updatedCatalogerList.filter(cataloger => !currentCatalogerList.includes(cataloger));
+      const oldCatalogers = currentCatalogerList.filter(cataloger => !updatedCatalogerList.includes(cataloger));
+
+      // move NO_CATALOGER to be the last list item
+      newCatalogers.sort(cataloger => cataloger === 'NO_CATALOGER' ? 1 : -1)
+
+      addCatalogers(newCatalogers);
+      removeCatalogers(oldCatalogers);
+
+      // handle case: if too many catalogers, segmented button cannot be used
+
+      function removeCatalogers(catalogers) {
+        catalogers.forEach(cataloger => {
+          const element = document.getElementById(cataloger);
+          element.parentNode.removeChild(element);
+        })
+      }
+
+      function addCatalogers(catalogers) {
+        catalogers.forEach(cataloger => {
+          createCatalogerButton(cataloger);
+        })
+
+        function createCatalogerButton(cataloger) {
+          const button = createButton(cataloger);
+
+          const container = document.getElementById('catalogerToggleContainer');
+          container.append(button);
+
+          function createButton(cataloger) {
+            const template = document.getElementById('buttonTemplate');
+            const buttonFragment = template.content.cloneNode(true);
+            const button = buttonFragment.getElementById('segmentedSelectButton');
+
+            button.id = cataloger;
+            button.querySelector(`.select-button-text`).innerHTML = cataloger;
+            button.dataset.titleA = `Piilota ${cataloger}-luetteloijat listanäkymästä`;
+            button.dataset.titleB = `Näytä ${cataloger}-luetteloijat listanäkymässä`;
+
+            if (cataloger === 'NO_CATALOGER') {
+              button.id = 'NO_CATALOGER'
+              button.querySelector(`.select-button-text`).innerHTML = 'Ei luetteloijaa';
+              button.dataset.titleA = `Piilota luetteloijattomat listanäkymästä`;
+              button.dataset.titleB = `Näytä luetteloijattomat listanäkymässä`;
+            }
+
+            button.title = button.dataset.titleA;
+
+            button.addEventListener('click', () => {
+              toggleShowLogsByCataloger(cataloger);
+            });
+
+            return button;
+
+            function toggleShowLogsByCataloger(cataloger) {
+              console.log('Toggling cataloger: ', cataloger);
+              const toggleCatalogerButton = document.querySelector(`#correlationIdListModal #${cataloger}`);
+              console.log('button is ', toggleCatalogerButton)
+              toggleFilterButton(toggleCatalogerButton);
+              updateOnChange(new Event('change'));
+            }
+          }
+        }
+      }
+
+    }
   }
 
-  function filterAndSortCorrelationIdList(filterByLogTypes = 'true', filterByCatalogers = 'true', filterByDates = 'true', filterBySearchString = 'true', sortBySelected = 'true') {
-    const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).dataset.value;
-    const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).dataset.value;
+  function filterAndSortCorrelationIdList(filterByLogTypes = 'true', filterByCatalogers = 'true', filterByDates = 'true', filterBySearchString = 'true', sortBySelected = 'true',) {
+    const logTypeButtons = document.querySelectorAll(`#logTypeToggleContainer [id]`);
+    const catalogerButtons = document.querySelectorAll(`#catalogerToggleContainer [id]`);
     const dateStartInputValue = document.getElementById(`dateStartInput`).value;
     const dateEndInputValue = document.getElementById(`dateEndInput`).value;
     const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
     const selectSortingValue = document.getElementById(`correlationIdListSorting`).value;
-    const catalogerButtons = document.querySelectorAll(`#catalogerToggleContainer [id]`);
 
     let updatedList = correlationIdList;
 
     switch (true) {
       case (filterByLogTypes === 'true'):
-        updatedList = filterListWithLogTypes(updatedList, showMergeLogsValue, showMatchLogsValue);
+        updatedList = filterListWithLogTypes(updatedList, logTypeButtons);
       case (filterByCatalogers === 'true'):
         updatedList = filterListWithCatalogers(updatedList, catalogerButtons);
       case (filterByDates === 'true'):
@@ -1002,17 +1055,18 @@ function updateListView(correlationIdList) {
         return updatedList;
     }
 
-    function filterListWithLogTypes(list, showMergeLogs, showMatchLogs) {
-      switch (true) {
-        case (showMergeLogs === 'true' && showMatchLogs === 'false'):
-          return list.filter(logItem => logItem.logItemType !== 'MATCH_LOG');
-        case (showMergeLogs === 'false' && showMatchLogs === 'true'):
-          return list.filter(logItem => logItem.logItemType !== 'MERGE_LOG');
-        case (showMergeLogs === 'false' && showMergeLogs === 'false'):
-          return list.filter(logItem => logItem.logItemType !== 'MERGE_LOG' && logItem.logItemType !== 'MATCH_LOG');
-        default:
-          return list;
-      }
+    function filterListWithLogTypes(list, logTypeButtons) {
+      let selectedLogTypes = [];
+
+      logTypeButtons.forEach(button => {
+        if (button.dataset.value === 'true') {
+          selectedLogTypes.push(button.id);
+        }
+      });
+
+      console.log('Showing list items with logTypes: ', selectedLogTypes);
+
+      return list.filter(logItem => selectedLogTypes.includes(logItem.logItemType));
     }
 
     function filterListWithCatalogers(list, catalogerButtons) {
@@ -1032,7 +1086,7 @@ function updateListView(correlationIdList) {
         }
       });
 
-      return list.filter(logItem => selectedCatalogers.includes(logItem.cataloger))
+      return list.filter(logItem => selectedCatalogers.includes(logItem.cataloger));
     }
 
     function filterListWithDates(list, startDate, endDate) {
@@ -1077,7 +1131,6 @@ function updateListView(correlationIdList) {
       }
 
     }
-
   }
 
   function showlastSearchedCorrelationId() {
@@ -1241,7 +1294,6 @@ function updateListView(correlationIdList) {
       }
     }
   }
-
 }
 
 function showPlaceholderText(text) {
