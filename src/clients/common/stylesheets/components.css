@@ -395,9 +395,9 @@ dialog:modal {
   font-size: var(--font-size-content-normal);
 }
 
-/* If hr element is used in supporting text, */
+/* If hr or p element is used in supporting text, */
 /* sets the horizontal line on it's own row */
-.dialog-supporting-text hr {
+.dialog-supporting-text hr, p:not(.full-width p) {
   flex: 0 0 100%
 }
 

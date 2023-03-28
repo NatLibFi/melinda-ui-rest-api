@@ -105,8 +105,8 @@ export const ontologyTypes = [
     text: "YSO-aika"
   },
   {
-    value: "yhteiso",
-    text: "Suomalaiset yhteisönimet"
+    value: "kanto",
+    text: "KANTO - Kansalliset toimijatiedot"
   },
   {
     value: "slm",
@@ -137,8 +137,8 @@ export const ontologyTypes = [
     text: "Kassu - Kasvien suomenkieliset nimet"
   },
   {
-    value: "soto",
-    text: "SOTO - Sotatieteen ontologia"
+    value: "koko",
+    text: "KOKO-ontologia"
   },
   {
     value: "finmesh",
@@ -499,243 +499,67 @@ export const sciences = [
 
 // https://wiki.eduuni.fi/display/cscsuorat/7.6+Tutkimuslaitosten+ja+yliopistollisten+sairaaloiden+organisaatiotunnukset+2022
 // https://wiki.eduuni.fi/display/cscsuorat/7.1+Korkeakoulujen+oppilaitosnumerot+2022
+// updated 21.3.2023
 export const organizations = [
-  {
-    value: "Aalto yliopisto - 10076",
-    text: ""
-  },
-  {
-    value: "Centria-ammattikorkeakoulu - 02536",
-    text: ""
-  },
-  {
-    value: "Diakonia-ammattikorkeakoulu - 02623",
-    text: ""
-  },
-  {
-    value: "Geologian tutkimuskeskus - 5040011",
-    text: ""
-  },
-  {
-    value: "Haaga-Helia ammattikorkeakoulu - 10056",
-    text: ""
-  },
-  {
-    value: "Helsingin seudun yliopistollisen keskussairaalan erityisvastuualue - 15675350",
-    text: ""
-  },
-  {
-    value: "Helsingin yliopisto - 01901",
-    text: ""
-  },
-  {
-    value: "Humanistinen ammattikorkeakoulu - 02631",
-    text: ""
-  },
-  {
-    value: "Hämeen ammattikorkeakoulu - 02467",
-    text: ""
-  },
-  {
-    value: "Ilmatieteen laitos - 4940015",
-    text: ""
-  },
-  {
-    value: "Itä-Suomen yliopisto - 10088",
-    text: ""
-  },
-  {
-    value: "Jyväskylän ammattikorkeakoulu - 02504",
-    text: ""
-  },
-  {
-    value: "Jyväskylän yliopisto - 01906",
-    text: ""
-  },
-  {
-    value: "Kaakkois-Suomen ammattikorkeakoulu - 10118",
-    text: ""
-  },
-  {
-    value: "Kajaanin ammattikorkeakoulu - 02473",
-    text: ""
-  },
-  {
-    value: "Karelia-ammattikorkeakoulu - 02469",
-    text: ""
-  },
-  {
-    value: "Kuopion yliopistollisen sairaalan erityisvastuualue - 01714953",
-    text: ""
-  },
-  {
-    value: "LAB-ammattikorkeakoulu - 10126",
-    text: ""
-  },
-  {
-    value: "Lahden ammattikorkeakoulu - 02470",
-    text: ""
-  },
-  {
-    value: "Lapin ammattikorkeakoulu - 10108",
-    text: ""
-  },
-  {
-    value: "Lapin yliopisto - 01918",
-    text: ""
-  },
-  {
-    value: "Lappeenrannan-Lahden teknillinen yliopisto LUT - 01914",
-    text: ""
-  },
-  {
-    value: "Laurea-ammattikorkeakoulu - 02629",
-    text: ""
-  },
-  {
-    value: "Luonnonvarakeskus - 4100010",
-    text: ""
-  },
-  {
-    value: "Lääkealan turvallisuus- ja kehittämiskeskus - 558005",
-    text: ""
-  },
-  {
-    value: "Maanmittauslaitos - 4020217",
-    text: ""
-  },
-  {
-    value: "Metropolia ammattikorkeakoulu - 10065",
-    text: ""
-  },
-  {
-    value: "Oulun ammattikorkeakoulu - 02471",
-    text: ""
-  },
-  {
-    value: "Oulun yliopisto - 01904",
-    text: ""
-  },
-  {
-    value: "Oulun yliopistollisen sairaalan erityisvastuualue - 06794809",
-    text: ""
-  },
-  {
-    value: "Poliisiammattikorkeakoulu - 02557",
-    text: ""
-  },
-  {
-    value: "Ruokavirasto - 430001",
-    text: ""
-  },
-  {
-    value: "Saimaan ammattikorkeakoulu - 02609",
-    text: ""
-  },
-  {
-    value: "Satakunnan ammattikorkeakoulu - 02507",
-    text: ""
-  },
-  {
-    value: "Savonia-ammattikorkeakoulu - 02537",
-    text: ""
-  },
-  {
-    value: "Seinäjoen ammattikorkeakoulu - 02472",
-    text: ""
-  },
-  {
-    value: "Suomen Pankki - 02022481",
-    text: ""
-  },
-  {
-    value: "Suomen ympäristökeskus - 7020017",
-    text: ""
-  },
-  {
-    value: "Svenska handelshögskolan - 01910",
-    text: ""
-  },
-  {
-    value: "Säteilyturvakeskus - 5550012",
-    text: ""
-  },
-  {
-    value: "Taideyliopisto - 10103",
-    text: ""
-  },
-  {
-    value: "Tampereen ammattikorkeakoulu - 02630",
-    text: ""
-  },
-  {
-    value: "Tampereen tekn. yliopisto - 01915",
-    text: ""
-  },
-  {
-    value: "Tampereen yliopisto (uusi) - 10122",
-    text: ""
-  },
-  {
-    value: "Tampereen yliopisto (vanha) - 01905",
-    text: ""
-  },
-  {
-    value: "Tampereen yliopistollisen sairaalan erityisvastuualue - 08265978",
-    text: ""
-  },
-  {
-    value: "Teknologian tutkimuskeskus VTT Oy - 26473754",
-    text: ""
-  },
-  {
-    value: "Terveyden ja hyvinvoinnin laitos - 5610017",
-    text: ""
-  },
-  {
-    value: "Turun ammattikorkeakoulu - 02509",
-    text: ""
-  },
-  {
-    value: "Turun yliopisto - 10089",
-    text: ""
-  },
-  {
-    value: "Turun yliopistollisen keskussairaalan erityisvastuualue - 08282559",
-    text: ""
-  },
-  {
-    value: "Työterveyslaitos - 02202669",
-    text: ""
-  },
-  {
-    value: "Ulkopoliittinen instituutti - 1120017",
-    text: ""
-  },
-  {
-    value: "Vaasan ammattikorkeakoulu - 02627",
-    text: ""
-  },
-  {
-    value: "Vaasan yliopisto - 01913",
-    text: ""
-  },
-  {
-    value: "Valtion taloudellinen tutkimuskeskus - 3060016",
-    text: ""
-  },
-  {
-    value: "Yrkeshögskolan Arcada - 02535",
-    text: ""
-  },
-  {
-    value: "Yrkeshögskolan Novia - 10066",
-    text: ""
-  },
-  {
-    value: "Åbo Akademi - 01903",
-    text: ""
-  },
+  {value: "Aalto yliopisto - 10076", text:""},
+  {value: "Centria-ammattikorkeakoulu - 02536", text:""},
+  {value: "Diakonia-ammattikorkeakoulu - 02623", text:""},
+  {value: "Geologian tutkimuskeskus - 5040011", text:""},
+  {value: "Haaga-Helia ammattikorkeakoulu - 10056", text:""},
+  {value: "Helsingin seudun yliopistollisen keskussairaalan erityisvastuualue - 15675350", text:""},
+  {value: "Helsingin yliopisto - 01901", text:""},
+  {value: "Humanistinen ammattikorkeakoulu - 02631", text:""},
+  {value: "Hämeen ammattikorkeakoulu - 02467", text:""},
+  {value: "Ilmatieteen laitos - 4940015", text:""},
+  {value: "Itä-Suomen yliopisto - 10088", text:""},
+  {value: "Jyväskylän ammattikorkeakoulu - 02504", text:""},
+  {value: "Jyväskylän yliopisto - 01906", text:""},
+  {value: "Kaakkois-Suomen ammattikorkeakoulu - 10118", text:""},
+  {value: "Kajaanin ammattikorkeakoulu - 02473", text:""},
+  {value: "Karelia-ammattikorkeakoulu - 02469", text:""},
+  {value: "Kuopion yliopistollisen sairaalan erityisvastuualue - 01714953", text:""},
+  {value: "LAB-ammattikorkeakoulu - 10126", text:""},
+  {value: "Lahden ammattikorkeakoulu - 02470", text:""},
+  {value: "Lapin ammattikorkeakoulu - 10108", text:""},
+  {value: "Lapin yliopisto  - 01918", text:""},
+  {value: "Lappeenrannan-Lahden teknillinen yliopisto LUT - 01914", text:""},
+  {value: "Laurea-ammattikorkeakoulu - 02629", text:""},
+  {value: "Luonnonvarakeskus - 4100010", text:""},
+  {value: "Lääkealan turvallisuus- ja kehittämiskeskus - 558005", text:""},
+  {value: "Maanmittauslaitos - 4020217", text:""},
+  {value: "Metropolia ammattikorkeakoulu - 10065", text:""},
+  {value: "Oulun ammattikorkeakoulu - 02471", text:""},
+  {value: "Oulun yliopisto - 01904", text:""},
+  {value: "Oulun yliopistollisen sairaalan erityisvastuualue - 06794809", text:""},
+  {value: "Poliisiammattikorkeakoulu - 02557", text:""},
+  {value: "Ruokavirasto - 430001", text:""},
+  {value: "Saimaan ammattikorkeakoulu - 02609", text:""},
+  {value: "Satakunnan ammattikorkeakoulu - 02507", text:""},
+  {value: "Savonia-ammattikorkeakoulu - 02537", text:""},
+  {value: "Seinäjoen ammattikorkeakoulu - 02472", text:""},
+  {value: "Suomen Pankki - 02022481", text:""},
+  {value: "Suomen ympäristökeskus - 7020017", text:""},
+  {value: "Svenska handelshögskolan - 01910", text:""},
+  {value: "Säteilyturvakeskus - 5550012", text:""},
+  {value: "Taideyliopisto - 10103", text:""},
+  {value: "Tampereen ammattikorkeakoulu - 02630", text:""},
+  {value: "Tampereen tekn. yliopisto - 01915", text:""},
+  {value: "Tampereen yliopisto (uusi) - 10122", text:""},
+  {value: "Tampereen yliopisto (vanha) - 01905", text:""},
+  {value: "Tampereen yliopistollisen sairaalan erityisvastuualue - 08265978", text:""},
+  {value: "Teknologian tutkimuskeskus VTT Oy - 26473754", text:""},
+  {value: "Terveyden ja hyvinvoinnin laitos - 5610017", text:""},
+  {value: "Turun ammattikorkeakoulu - 02509", text:""},
+  {value: "Turun yliopisto - 10089", text:""},
+  {value: "Turun yliopistollisen keskussairaalan erityisvastuualue - 08282559", text:""},
+  {value: "Työterveyslaitos - 02202669", text:""},
+  {value: "Ulkopoliittinen instituutti - 1120017", text:""},
+  {value: "Vaasan ammattikorkeakoulu - 02627", text:""},
+  {value: "Vaasan yliopisto - 01913", text:""},
+  {value: "Valtion taloudellinen tutkimuskeskus - 3060016", text:""},
+  {value: "Yrkeshögskolan Arcada - 02535", text:""},
+  {value: "Yrkeshögskolan Novia - 10066", text:""},
+  {value: "Åbo Akademi - 01903", text:""}  
 ]
 
 // Old organization list
