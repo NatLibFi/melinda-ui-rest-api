@@ -15,11 +15,13 @@ export function generatef6xxs(terms) {
   const f653s = terms.filter(({vocab}) => vocab === 'other');
   const f655s = terms.filter(({vocab}) => ['slm', 'otherCategory'].includes(vocab));
   const sortedF655s = sortFields(f655s, ['slm', 'otherCategory'], ['fi', 'sv']);
+  const f648other = terms.filter(({vocab}) => ['otherTime'].includes(vocab));
 
   const sortedTerms = [
     ...f600s,
     ...f610s,
     ...sortedF648s,
+    ...f648other,
     ...sortedF650s,
     ...sortedF651s,
     ...f653s,
@@ -68,6 +70,18 @@ function generatef610(prefLabel) {
 }
 
 function generatef648(vocab, prefLabel, lang, uri) {
+  if (vocab === 'otherTime') {
+    return [
+      {
+        tag: '648', ind1: ' ', ind2: '4', // 2. ind -> 4
+        subfields: [
+          {code: 'a', value: prefLabel}, // no subfield 2
+          ...generateSubfield0()
+        ]
+      }
+    ];
+  }
+
   return [
     {
       tag: '648', ind1: ' ', ind2: '7',

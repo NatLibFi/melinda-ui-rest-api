@@ -1,0 +1,9 @@
+{
+  "description": "generatef6xxx - field 648 when Muu Aikamääre lang swe and various",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}
