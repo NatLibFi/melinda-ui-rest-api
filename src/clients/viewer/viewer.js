@@ -1084,7 +1084,7 @@ function updateListView(correlationIdList) {
     }
 
     if (!lastSearchedListItem) {
-      infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font"> ${lastSearchedCorrelationId}</span`);
+      infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font">${lastSearchedCorrelationId}</span`);
       infoTextDiv.title = '';
       return;
     }
@@ -1192,12 +1192,12 @@ function updateListView(correlationIdList) {
     }
 
     function highlightLastSearchedListItem() {
-      const lastSearchedCorrelationId = document.getElementById(`id`).value;
+      const lastSearchedCorrelationId = document.querySelector(`#lastSearchedInfoText span`)?.innerHTML;
       const lastSearchedLogType = document.getElementById(`logType`).value;
       const id = lastSearchedCorrelationId + ':' + lastSearchedLogType;
       const lastSearchedListItem = document.getElementById(id);
 
-      if (lastSearchedCorrelationId === '' || !lastSearchedListItem) {
+      if (!lastSearchedListItem) {
         return;
       }
 
