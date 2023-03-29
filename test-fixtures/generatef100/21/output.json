@@ -1,0 +1,71 @@
+[
+    {
+     "tag": "100",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Jäyhä, Jakke,"
+      },
+      {
+       "code": "e",
+       "value": "kirjoittaja."
+      },
+      {
+       "code": "u",
+       "value": "Aalto yliopisto"
+      },
+      {
+       "code": "g",
+       "value": "(orgn)10076"
+      }
+     ]
+    },
+    {
+     "tag": "700",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Sukunimi_II, Etumini_II,"
+      },
+      {
+       "code": "e",
+       "value": "kirjoittaja."
+      },
+      {
+       "code": "u",
+       "value": "Tampereen yliopisto"
+      },
+      {
+       "code": "g",
+       "value": "(orgn)10122"
+      }
+     ]
+    },
+    {
+     "tag": "700",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Sukunimi_III, Etumini_III,"
+      },
+      {
+       "code": "e",
+       "value": "kirjoittaja."
+      },
+      {
+       "code": "u",
+       "value": "Tampereen yliopisto"
+      },
+      {
+       "code": "g",
+       "value": "(orgn)01905"
+      }
+     ]
+    }
+   ]

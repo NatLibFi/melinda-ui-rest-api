@@ -1,0 +1,7 @@
+{
+"description": "generatef100 - case updated list, one named organisation.",
+"skip": false,
+"only": false,
+"expectedError": false,
+"expectedErrorStatus": "200"
+}

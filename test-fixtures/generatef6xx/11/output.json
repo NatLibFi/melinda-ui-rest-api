@@ -1,0 +1,51 @@
+[
+    {
+     "tag": "648",
+     "ind1": " ",
+     "ind2": "7",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "1970-talet"
+      },
+      {
+       "code": "2",
+       "value": "yso/swe"
+      },
+      {
+       "code": "0",
+       "value": "http://www.yso.fi/onto/yso/p6197061979"
+      }
+     ]
+    },
+    {
+     "tag": "648",
+     "ind1": " ",
+     "ind2": "4",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "1977"
+      }
+     ]
+    },
+    {
+     "tag": "650",
+     "ind1": " ",
+     "ind2": "7",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "ekonomi"
+      },
+      {
+       "code": "2",
+       "value": "yso/swe"
+      },
+      {
+       "code": "0",
+       "value": "http://www.yso.fi/onto/yso/p2555"
+      }
+     ]
+    }
+]
