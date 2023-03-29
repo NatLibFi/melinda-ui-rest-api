@@ -57,4 +57,12 @@ export async function idbClearList() {
 
 export function doIndexedDbCheck() {
   console.log('Checking idb storage...')
+
+  const request = indexedDB.open("melinda-logs", 1);
+
+  request.onerror = (event) => {
+    console.error(`Browser or browser mode does not support IndexedDB`);
+    console.log(`Note for Firefox and Edge users: Viewer can not be used in private browsing mode`)
+  };
+
 }
