@@ -131,6 +131,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     return stopProcess();
   }
 
+  updateInfoTextWithSearchedId();
+
   if (logType === 'MERGE_LOG') {
     col3.style.display = 'block';
     getMergeLog(id)
@@ -153,6 +155,12 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
         console.log('Error fetching match log: ', error);
         return stopProcess();
       })
+  }
+
+  function updateInfoTextWithSearchedId() {
+    const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
+    infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font">${id}</span`);
+    infoTextDiv.title = '';
   }
 
   function showLogError() {
@@ -877,7 +885,6 @@ function updateCorrelationIdListModal() {
 function updateListView(correlationIdList) {
   updateToggleButtons();
   const updatedList = filterAndSortCorrelationIdList();
-  showlastSearchedCorrelationId();
   showSearchResultsInfo(updatedList.length, correlationIdList.length)
 
   if (updatedList.length === 0) {
@@ -1067,23 +1074,6 @@ function updateListView(correlationIdList) {
       }
 
     }
-  }
-
-  function showlastSearchedCorrelationId() {
-    const lastSearchedCorrelationId = document.getElementById(`id`).value;
-    const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
-    const lastSearchedListItem = document.getElementById(lastSearchedCorrelationId);
-
-    if (lastSearchedCorrelationId === '') {
-      return;
-    }
-
-    if (!lastSearchedListItem) {
-      infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font">${lastSearchedCorrelationId}</span`);
-      infoTextDiv.title = '';
-      return;
-    }
-
   }
 
   function showSearchResultsInfo(found, total) {
