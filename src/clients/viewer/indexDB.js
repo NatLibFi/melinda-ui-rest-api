@@ -49,3 +49,12 @@ export async function idbSetList(key, val) {
 export async function idbClearList() {
   return (await dbPromise).clear('list');
 };
+
+
+//-----------------------------------------------------------------------------
+// function to check the status of user's indexed db storage
+//-----------------------------------------------------------------------------
+
+export function doIndexedDbCheck() {
+  console.log('Checking idb storage...')
+}
