@@ -2,7 +2,10 @@
 
 import {openDB} from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
 
-const dbPromise = openDB('melinda-logs', 1, {
+const dbName = 'melinda-logs';
+const dbVersion = 1;
+
+const dbPromise = openDB(dbName, dbVersion, {
   upgrade(db) {
     db.createObjectStore('logs');
     db.createObjectStore('list');
@@ -58,11 +61,22 @@ export async function idbClearList() {
 export function doIndexedDbCheck() {
   console.log('Checking idb storage...')
 
-  const request = indexedDB.open("melinda-logs", 1);
+  let db = null;
+  const request = indexedDB.open(dbName, dbVersion);
 
   request.onerror = (event) => {
-    console.error(`Browser or browser mode does not support IndexedDB`);
+    console.error(`Error in opening indexedDB '${dbName}' version '${dbVersion}':`, event.target.error);
     console.log(`Note for Firefox and Edge users: Viewer can not be used in private browsing mode`)
   };
+
+  request.onsuccess = (event) => {
+    db = event.target.result;
+    const version = db.version;
+    const storeNames = [...db.objectStoreNames];
+
+    console.log('IndexedDB version: ', version);
+    console.log('IndexedDB stores: ',storeNames);
+
+  }
 
 }
