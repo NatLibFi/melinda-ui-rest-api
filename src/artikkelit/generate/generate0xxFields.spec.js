@@ -39,7 +39,6 @@ async function testF080({getFixture}) {
   expect(result).to.deep.equal(expectedResults);
 }
 
-
 generateTests({
   callback: testF084,
   path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef084'],
