@@ -100,24 +100,24 @@ export function generatef080(udks) {
 
   return udkResult;
 
-      function buildSubfields(element){
-        if (element.a080 && !element.x080 && !element.two080){
-          return [{code: 'a', value: element.a080}];
-        }
-
-        if (element.a080 && element.x080 && !element.two080){
-          return [{code: 'a', value: element.a080}, {code: 'x', value: element.x080}];
-        }
-
-        if (element.a080 && !element.x080 && element.two080){
-          return [{code: 'a', value: element.a080}, {code: '2', value: element.two080}];
-        }
-
-        if (element.a080 && element.x080 && element.two080){
-          return [{code: 'a', value: element.a080}, {code: 'x', value: element.x080}, {code: '2', value: element.two080}];
-        }
-
+    function buildSubfields(element) {
+      if (element.a080 && !element.x080 && !element.two080) {
+        return [{code: 'a', value: element.a080}];
       }
+
+      if (element.a080 && element.x080 && !element.two080) {
+        return [{code: 'a', value: element.a080}, {code: 'x', value: element.x080}];
+      }
+
+      if (element.a080 && !element.x080 && element.two080) {
+        return [{code: 'a', value: element.a080}, {code: '2', value: element.two080}];
+      }
+
+      if (element.a080 && element.x080 && element.two080) {
+        return [{code: 'a', value: element.a080}, {code: 'x', value: element.x080}, {code: '2', value: element.two080}];
+      }
+
+    }
 }
 
 export function generatef084(otherRatings = false) {
