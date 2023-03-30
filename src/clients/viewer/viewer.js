@@ -8,7 +8,7 @@ import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from "/comm
 import {Account, doLogin, logout} from "/common/auth.js"
 import {showRecord} from "/common/marc-record-ui.js";
 import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
-import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList} from "/viewer/indexDB.js";
+import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList, doIndexedDbCheck} from "/viewer/indexDB.js";
 
 var viewing = {
   record1: {},
@@ -23,6 +23,8 @@ var viewing = {
 window.initialize = function () {
   console.log('Initializing');
 
+
+  
   setNavBar(document.querySelector('#navbar'), "Viewer")
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
@@ -35,6 +37,7 @@ window.initialize = function () {
     username.innerHTML = Account.get()["Name"];
     showTab('viewer');
     parseUrlParameters();
+    doIndexedDbCheck();
     addModalEventListeners();
   }
 
