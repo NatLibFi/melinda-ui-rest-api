@@ -287,57 +287,42 @@
           <!-- All buttons for filtering correlation id list  -->
           <div id="filteringButtons" class="list-filtering-buttons">
 
+            <!-- button toggles showing specific catalogers or hiding them from the list -->
+            <!-- segmented button used as multi-select button -->
+            <div id="catalogerToggleContainer" class="segmented-button-container select-button-container"></div>
+
             <!-- button toggles showing logs by log type or hiding them from the list -->
             <!-- segmented button used as multi-select button -->
-            <div id="logTypeToggleContainer" class="select-button-container">
-              <div class="segmented-button-container">
-                <button id="mergeLogsSelect" class="select-button segmented-button select-button-selected"
-                  data-title-a="Piilota MERGE_LOG-lokityypit listanäkymästä"
-                  data-title-b="Näytä MERGE_LOG-lokityypit listanäkymässä" onclick="return toggleShowMergeLogs(event)"
-                  data-value="true">
-                  <div class="select-button-content">
-                    <span class="material-icons select-button-icon">check</span>
-                    <span class="select-button-text">MERGE</span>
-                  </div>
-                </button>
-                <button id="matchLogsSelect" class="select-button segmented-button select-button-selected"
-                  data-title-a="Piilota MATCH_LOG-lokityypit listanäkymästä"
-                  data-title-b="Näytä MATCH_LOG-lokityypit listanäkymässä" onclick="return toggleShowMatchLogs(event)"
-                  data-value="true">
-                  <div class="select-button-content">
-                    <span class="material-icons select-button-icon">check</span>
-                    <span class="select-button-text">MATCH</span>
-                  </div>
-                </button>
-              </div>
-            </div>
+            <div id="logTypeToggleContainer" class="segmented-button-container select-button-container"></div>
 
             <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
             <!-- segmented button used as single-select button -->
-            <div id="logCreationDateToggleContainer" class="select-button-container">
-              <div class="segmented-button-container">
-                <button id="creationTimeToday" class="select-button segmented-button"
-                  data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
-                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
-                  onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
-                  <div class="select-button-content">
-                    <span class="material-icons select-button-icon">check</span>
-                    <span class="select-button-text">Tänään</span>
-                  </div>
-                </button>
-                <button id="creationTimeWeekAgo" class="select-button segmented-button"
-                  data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
-                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
-                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
-                  <div class="select-button-content">
-                    <span class="material-icons select-button-icon">check</span>
-                    <span class="select-button-text">Yli viikko sitten</span>
-                  </div>
-                </button>
-              </div>
+            <div id="logCreationDateToggleContainer" class="segmented-button-container select-button-container">
+
+              <button id="creationTimeToday" class="select-button segmented-button"
+                data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
+                data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
+                <div class="select-button-content">
+                  <span class="material-icons select-button-icon">check</span>
+                  <span class="select-button-text">Tänään</span>
+                </div>
+              </button>
+
+              <button id="creationTimeWeekAgo" class="select-button segmented-button"
+                data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
+                data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
+                <div class="select-button-content">
+                  <span class="material-icons select-button-icon">check</span>
+                  <span class="select-button-text">Yli viikko sitten</span>
+                </div>
+              </button>
+
             </div>
 
             <!-- button toggles showing extra details for correlation id list items or hiding them  -->
+            <!-- single-select button -->
             <div id="listDetailsToggleContainer" class="select-button-container">
               <button id="toggleListDetails" class="select-button select-button-selected"
                 data-title-a="Piilota tarkat tiedot listanäkymästä" data-title-b="Näytä tarkat tiedot listanäkymässä"
@@ -348,6 +333,22 @@
                 </div>
               </button>
             </div>
+
+            <!-- This is helper html for filtering buttons  -->
+            <!-- template's contents are not rendered on page -->
+            <template id="buttonTemplate">
+
+              <!-- base for one select button-->
+              <!-- select button has a container that holds the button element  -->
+              <button id="segmentedSelectButton" class="select-button segmented-button select-button-selected"
+                data-title-a="" data-title-b="" data-value="true">
+                <div class="select-button-content">
+                  <span class="material-icons select-button-icon">check</span>
+                  <span class="select-button-text"></span>
+                </div>
+              </button>
+
+            </template>
 
           </div>
 

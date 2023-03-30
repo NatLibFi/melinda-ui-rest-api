@@ -206,7 +206,6 @@ function createSnackbar(snackbarContent, html) {
     function removeAllSnackbarElements() {
       const snackbarsContainer = document.getElementById('snackbars');
       snackbarsContainer.replaceChildren();
-      console.log('All snackbars cleared!');
     }
 
   }

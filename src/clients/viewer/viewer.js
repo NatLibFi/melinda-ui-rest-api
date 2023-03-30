@@ -131,6 +131,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     return stopProcess();
   }
 
+  updateInfoTextWithSearchedId();
+
   if (logType === 'MERGE_LOG') {
     col3.style.display = 'block';
     getMergeLog(id)
@@ -153,6 +155,12 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
         console.log('Error fetching match log: ', error);
         return stopProcess();
       })
+  }
+
+  function updateInfoTextWithSearchedId() {
+    const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
+    infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font">${id}</span`);
+    infoTextDiv.title = '';
   }
 
   function showLogError() {
@@ -637,20 +645,6 @@ window.modalClose = function (event) {
   return eventHandled(event);
 }
 
-window.toggleShowMergeLogs = function (event = undefined) {
-  eventHandled(event);
-  const toggleMergeLogsButton = document.getElementById('mergeLogsSelect');
-  toggleFilterButton(toggleMergeLogsButton);
-  updateOnChange(new Event('change'));
-}
-
-window.toggleShowMatchLogs = function (event = undefined) {
-  eventHandled(event);
-  const toggleMatchLogsButton = document.getElementById('matchLogsSelect');
-  toggleFilterButton(toggleMatchLogsButton);
-  updateOnChange(new Event('change'));
-}
-
 window.toggleListDetails = function (event = undefined) {
   eventHandled(event);
   const toggleListDetailsButton = document.getElementById('toggleListDetails');
@@ -696,16 +690,18 @@ window.toggleShowLogsByCreationDate = function (clickedDateButton) {
 
 }
 
-window.clearFilters = function ({event = undefined, clearLogFilters = 'true', clearDateFilters = 'true', clearInputFilters = 'true'}) {
+window.clearFilters = function ({event = undefined, clearDetailsFilter = 'true', clearLogTypeFilters = 'true', clearDateFilters = 'true', clearCatalogerFilters = 'true', clearInputFilters = 'true'}) {
   eventHandled(event);
   resetDateFilteringButtons();
 
-  if (clearLogFilters === 'false' && clearDateFilters === 'true' && clearInputFilters === 'false') {
+  if (clearDetailsFilter === 'false' && clearLogTypeFilters === 'false' && clearCatalogerFilters === 'false' && clearDateFilters === 'true' && clearInputFilters === 'false') {
     return;
   }
 
   resetFilteringInputs();
-  resetLogFilteringButtons();
+  resetLogTypeFilteringButtons();
+  resetCatalogerFilteringButtons();
+  resetDetailsButton();
   console.log('All filters cleared!');
   updateOnChange(event);
 
@@ -728,14 +724,25 @@ window.clearFilters = function ({event = undefined, clearLogFilters = 'true', cl
     correlationIdInput.value = '';
   }
 
-  function resetLogFilteringButtons() {
-    const matchLogsSelect = document.querySelector(`#correlationIdListModal #matchLogsSelect`)
-    const mergeLogsSelect = document.querySelector(`#correlationIdListModal #mergeLogsSelect`)
+  function resetLogTypeFilteringButtons() {
+    const logTypeButtons = document.getElementById('logTypeToggleContainer').children
+
+    selectFilteringButtons(...logTypeButtons);
+    setDefaultTitles(...logTypeButtons);
+  }
+
+  function resetDetailsButton() {
     const listDetailsSelect = document.querySelector(`#correlationIdListModal #toggleListDetails`);
 
+    selectFilteringButtons(listDetailsSelect);
+    setDefaultTitles(listDetailsSelect);
+  }
 
-    selectFilteringButtons(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
-    setDefaultTitles(matchLogsSelect, mergeLogsSelect, listDetailsSelect);
+  function resetCatalogerFilteringButtons() {
+    const catalogerButtons = document.getElementById('catalogerToggleContainer').children
+
+    selectFilteringButtons(...catalogerButtons);
+    setDefaultTitles(...catalogerButtons);
   }
 
   function unselectFilteringButtons(...buttons) {
@@ -756,7 +763,7 @@ function unselectDateButtons() {
   const weekAgoButton = document.getElementById('creationTimeWeekAgo');
 
   if (todayButton.classList.contains('select-button-selected') || weekAgoButton.classList.contains('select-button-selected')) {
-    clearFilters({clearLogFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
+    clearFilters({clearDetailsFilter: 'false', clearLogTypeFilters: 'false', clearCatalogerFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
   }
 }
 
@@ -876,8 +883,8 @@ function updateCorrelationIdListModal() {
 }
 
 function updateListView(correlationIdList) {
+  updateToggleButtons();
   const updatedList = filterAndSortCorrelationIdList();
-  showlastSearchedCorrelationId();
   showSearchResultsInfo(updatedList.length, correlationIdList.length)
 
   if (updatedList.length === 0) {
@@ -891,9 +898,80 @@ function updateListView(correlationIdList) {
   highlightMatches();
   stopProcess();
 
-  function filterAndSortCorrelationIdList(filterByLogTypes = true, filterByDates = true, filterBySearchString = true, sortBySelected = true) {
-    const showMergeLogsValue = document.querySelector(`#correlationIdListModal #mergeLogsSelect`).dataset.value;
-    const showMatchLogsValue = document.querySelector(`#correlationIdListModal #matchLogsSelect`).dataset.value;
+  function updateToggleButtons() {
+    updateFilterButtons('logTypeToggleContainer', 'logItemType');
+    updateFilterButtons('catalogerToggleContainer', 'cataloger');
+
+    function updateFilterButtons(containerId, filterProperty) {
+      const currentList = [...document.querySelectorAll(`#${containerId} [id]`)].map((element) => element.id);
+      const updatedList = Array.from(new Set(correlationIdList.map((listItem) => listItem[`${filterProperty}`])));
+
+      // if null is present, change it to 'NULL'
+      if (updatedList.includes(null)) [
+        updatedList.splice(updatedList.indexOf(null), 1, 'NULL')
+      ]
+
+      const newItems = updatedList.filter(item => !currentList.includes(item));
+      const oldItems = currentList.filter(item => !updatedList.includes(item));
+
+      // move 'NULL' to be the last list item
+      newItems.sort(item => item === 'NULL' ? 1 : -1)
+
+      // TODO => handle case: if too many items, segmented button cannot be used
+      addNew(newItems);
+      removeOld(oldItems);
+
+      function addNew(newItems) {
+        newItems.forEach(item => {
+          createNewButton(item);
+        })
+
+        function createNewButton(item) {
+          const button = createButton(item);
+
+          const container = document.getElementById(containerId);
+          container.append(button);
+
+          function createButton(item) {
+            const template = document.getElementById('buttonTemplate');
+            const buttonFragment = template.content.cloneNode(true);
+            const button = buttonFragment.getElementById('segmentedSelectButton');
+
+            button.id = item;
+            button.querySelector(`.select-button-text`).innerHTML = item;
+            button.dataset.titleA = `Piilota ${item} listanäkymästä`;
+            button.dataset.titleB = `Näytä  ${item} listanäkymässä`;
+
+            button.title = button.dataset.titleA;
+
+            button.addEventListener('click', () => {
+              toggleShowLogsByFilter(item);
+            });
+
+            return button;
+
+            function toggleShowLogsByFilter(item) {
+              const toggleItemButton = document.querySelector(`#correlationIdListModal #${item}`);
+              toggleFilterButton(toggleItemButton);
+              updateOnChange(new Event('change'));
+            }
+          }
+        }
+      }
+
+      function removeOld(oldItems) {
+        oldItems.forEach(item => {
+          const element = document.getElementById(item);
+          element.parentNode.removeChild(element);
+        })
+      }
+
+    }
+  }
+
+  function filterAndSortCorrelationIdList(filterByLogTypes = 'true', filterByCatalogers = 'true', filterByDates = 'true', filterBySearchString = 'true', sortBySelected = 'true',) {
+    const logTypeButtons = document.querySelectorAll(`#logTypeToggleContainer [id]`);
+    const catalogerButtons = document.querySelectorAll(`#catalogerToggleContainer [id]`);
     const dateStartInputValue = document.getElementById(`dateStartInput`).value;
     const dateEndInputValue = document.getElementById(`dateEndInput`).value;
     const correlationIdInputValue = document.getElementById(`correlationIdInput`).value;
@@ -902,29 +980,56 @@ function updateListView(correlationIdList) {
     let updatedList = correlationIdList;
 
     switch (true) {
-      case (filterByLogTypes === true):
-        updatedList = filterListWithLogTypes(updatedList, showMergeLogsValue, showMatchLogsValue);
-      case (filterByDates === true):
+      case (filterByLogTypes === 'true'):
+        updatedList = filterListWithLogTypes(updatedList, logTypeButtons);
+      case (filterByCatalogers === 'true'):
+        updatedList = filterListWithCatalogers(updatedList, catalogerButtons);
+      case (filterByDates === 'true'):
         updatedList = filterListWithDates(updatedList, dateStartInputValue, dateEndInputValue);
-      case (filterBySearchString === true):
+      case (filterBySearchString === 'true'):
         updatedList = filterListWithSearchString(updatedList, correlationIdInputValue);
-      case (sortBySelected === true):
+      case (sortBySelected === 'true'):
         updatedList = sortList(updatedList, selectSortingValue);
       default:
         return updatedList;
     }
 
-    function filterListWithLogTypes(list, showMergeLogs, showMatchLogs) {
-      switch (true) {
-        case (showMergeLogs === 'true' && showMatchLogs === 'false'):
-          return list.filter(logItem => logItem.logItemType !== 'MATCH_LOG');
-        case (showMergeLogs === 'false' && showMatchLogs === 'true'):
-          return list.filter(logItem => logItem.logItemType !== 'MERGE_LOG');
-        case (showMergeLogs === 'false' && showMergeLogs === 'false'):
-          return list.filter(logItem => logItem.logItemType !== 'MERGE_LOG' && logItem.logItemType !== 'MATCH_LOG');
-        default:
-          return list;
-      }
+    function filterListWithLogTypes(list, logTypeButtons) {
+      let selectedLogTypes = [];
+
+      logTypeButtons.forEach(button => {
+        if (button.dataset.value === 'true') {
+          selectedLogTypes.push(button.id);
+        }
+      });
+
+      // handle if logItemType is null
+      list.map(logItem => {
+        if (logItem.logItemType === null) {
+          logItem.logItemType = 'NULL'
+        }
+      });
+
+      return list.filter(logItem => selectedLogTypes.includes(logItem.logItemType));
+    }
+
+    function filterListWithCatalogers(list, catalogerButtons) {
+      let selectedCatalogers = [];
+
+      catalogerButtons.forEach(button => {
+        if (button.dataset.value === 'true') {
+          selectedCatalogers.push(button.id);
+        }
+      });
+
+      // handle if cataloger is null
+      list.map(logItem => {
+        if (logItem.cataloger === null) {
+          logItem.cataloger = 'NULL'
+        }
+      });
+
+      return list.filter(logItem => selectedCatalogers.includes(logItem.cataloger));
     }
 
     function filterListWithDates(list, startDate, endDate) {
@@ -969,34 +1074,11 @@ function updateListView(correlationIdList) {
       }
 
     }
-
-  }
-
-  function showlastSearchedCorrelationId() {
-    const lastSearchedCorrelationId = document.getElementById(`id`).value;
-    const infoTextDiv = document.getElementById(`lastSearchedInfoText`);
-    const lastSearchedListItem = document.getElementById(lastSearchedCorrelationId);
-
-    if (lastSearchedCorrelationId === '') {
-      return;
-    }
-
-    if (!lastSearchedListItem) {
-      infoTextDiv.innerHTML = (`Edellinen haku: <span class="correlation-id-font"> ${lastSearchedCorrelationId}</span`);
-      infoTextDiv.title = '';
-      return;
-    }
-
   }
 
   function showSearchResultsInfo(found, total) {
     const styledResult = `<span class="styled-result">&nbsp;${found}&nbsp;</span>`
     showPlaceholderText(`Näytetään ${styledResult}/${total} ID:tä`)
-  }
-
-  function showListSortingOptions() {
-    const selectSorting = document.getElementById(`correlationIdListSorting`);
-    selectSorting.style.visibility = 'visible';
   }
 
   function createListItem(logItem) {
@@ -1062,6 +1144,11 @@ function updateListView(correlationIdList) {
     }
   }
 
+  function showListSortingOptions() {
+    const selectSorting = document.getElementById(`correlationIdListSorting`);
+    selectSorting.style.visibility = 'visible';
+  }
+
   function showListDetails() {
     const listDetailsDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-details`);
     const showListDetailsValue = document.querySelector(`#correlationIdListModal #toggleListDetails`).dataset.value;
@@ -1090,12 +1177,12 @@ function updateListView(correlationIdList) {
     }
 
     function highlightLastSearchedListItem() {
-      const lastSearchedCorrelationId = document.getElementById(`id`).value;
+      const lastSearchedCorrelationId = document.querySelector(`#lastSearchedInfoText span`)?.innerHTML;
       const lastSearchedLogType = document.getElementById(`logType`).value;
       const id = lastSearchedCorrelationId + ':' + lastSearchedLogType;
       const lastSearchedListItem = document.getElementById(id);
 
-      if (lastSearchedCorrelationId === '' || !lastSearchedListItem) {
+      if (!lastSearchedListItem) {
         return;
       }
 
@@ -1133,7 +1220,6 @@ function updateListView(correlationIdList) {
       }
     }
   }
-
 }
 
 function showPlaceholderText(text) {
