@@ -74,6 +74,7 @@
 
 .marc-record .subfield {
   margin-right: 4px;
+  overflow-wrap: anywhere;
 }
 
 .marc-record .subfield .code {
