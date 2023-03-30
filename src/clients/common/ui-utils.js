@@ -90,6 +90,9 @@ export function setOptions(element, jsonArray, disabled = false, textValue = fal
     opt.innerHTML = obj.text;
     opt.selected = disabled;
     opt.disabled = disabled;
+    if (obj.code) {
+      opt.dataset.code = obj.code;
+    }
     element.append(opt);
     if (element.nodeName === 'select' && index === 0) {
       element.selectedIndex = 0;

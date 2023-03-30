@@ -501,7 +501,7 @@ export const sciences = [
 // https://wiki.eduuni.fi/display/cscsuorat/7.1+Korkeakoulujen+oppilaitosnumerot+2022
 // updated 21.3.2023
 export const organizations = [
-  {value: "Aalto yliopisto - 10076", text:""},
+  {value: "Aalto yliopisto - 10076", text:"", code: 10076},
   {value: "Centria-ammattikorkeakoulu - 02536", text:""},
   {value: "Diakonia-ammattikorkeakoulu - 02623", text:""},
   {value: "Geologian tutkimuskeskus - 5040011", text:""},
