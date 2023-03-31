@@ -110,12 +110,10 @@ export function addOrganizationForAuthor(event) {
     return;
   }
 
-  // See if this can be simplified or optimized (e.g. by utilizing event etc)
-  const code = document.querySelector("#tekija-organisaatio-lista [value='" + organizationInputValue + "']").dataset.code;
+  // See if this can be simplified or optimized (e.g. by utilizing event.target etc)
+  const code = document.querySelector('#tekija-organisaatio-lista [value="' + organizationInputValue + '"]').dataset.code;
 
-  const [organizationNameAndParenthesis = false, note = false] = organizationInputValue.split(' - ');
-  // const [organizationName, organizationShortTerm] = organizationNameAndShortTerm.split(' (').map(value => value.replace(')', ''));
-  const organizationName = organizationNameAndParenthesis.replace(' (uusi)', '').replace(' (vanha)', '');
+  const [organizationName = false, note = false] = organizationInputValue.replace(' (uusi)', '').replace(' (vanha)', '').split(' - ');
 
   idbAddValueToLastIndex('artoAuthorTempOrg', {organizationName, code, note}).then(() => {
     document.getElementById('tekija-organisaatio').value = '';
