@@ -84,7 +84,6 @@ export function generatef080(udks) {
     return [];
   }
 
-  // may have these subfields: a & x & 2
   const udkResult = udks.map(buildRows);
 
   function buildRows(element) {
