@@ -84,7 +84,6 @@ export function generatef080(udks) {
     return [];
   }
 
-  // may have these subfields: a & x
   const udkResult = udks.map(buildRows);
 
   function buildRows(element) {
@@ -93,15 +92,31 @@ export function generatef080(udks) {
         tag: '080',
         ind1: ' ',
         ind2: ' ',
-        subfields: [
-          {code: 'a', value: element.a080},
-          {code: 'x', value: element.x080}
-        ]
+        subfields: buildSubfields(element)
       };
     }
   }
 
   return udkResult;
+
+  function buildSubfields(element) {
+    if (element.a080 && !element.x080 && !element.two080) {
+      return [{code: 'a', value: element.a080}];
+    }
+
+    if (element.a080 && element.x080 && !element.two080) {
+      return [{code: 'a', value: element.a080}, {code: 'x', value: element.x080}];
+    }
+
+    if (element.a080 && !element.x080 && element.two080) {
+      return [{code: 'a', value: element.a080}, {code: '2', value: element.two080}];
+    }
+
+    if (element.a080 && element.x080 && element.two080) {
+      return [{code: 'a', value: element.a080}, {code: 'x', value: element.x080}, {code: '2', value: element.two080}];
+    }
+
+  }
 }
 
 export function generatef084(otherRatings = false) {
