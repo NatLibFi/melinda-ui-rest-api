@@ -1,7 +1,7 @@
-import { READERS } from '@natlibfi/fixura';
-import { expect } from 'chai';
+import {READERS} from '@natlibfi/fixura';
+import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import { generatef6xxs } from './generate6xxFields.js';
+import {generatef6xxs} from './generate6xxFields.js';
 
 generateTests({
   callback: testF6xx,
@@ -13,7 +13,7 @@ generateTests({
   }
 });
 
-async function testF6xx({ getFixture, expectToFail = false }) {
+async function testF6xx({getFixture, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
