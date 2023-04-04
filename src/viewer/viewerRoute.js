@@ -8,11 +8,11 @@
 /* eslint-disable no-unused-vars */
 
 import {Router} from 'express';
-import httpStatus from 'http-status';
-import {Error as HttpError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiLogClient} from '@natlibfi/melinda-rest-api-client';
 import {createLogService} from './viewerService';
+import {handleRouteNotFound} from '../routeUtils/handleRouteNotFound';
+import {handleError} from '../routeUtils/handleError';
 
 export default function (melindaApiOptions) {
   const logger = createLogger();
@@ -160,31 +160,6 @@ export default function (melindaApiOptions) {
     } catch (e) {
       return next(e);
     }
-  }
-
-  function handleRouteNotFound(req, res, next) {
-    const {path, query, method} = req;
-    logger.error(`Error: it seems that this Viewer route is not found!`);
-    logger.debug(`Request method: ${method} | Path: ${path} | Query strings: ${JSON.stringify(query)}`);
-    res.sendStatus(404);
-  }
-
-  function handleError(err, req, res, next) {
-    logger.error(`Error: ${err}`);
-    logger.debug(`Error: viewerRoute.js [error status code: ${err.status} | error message: ${err.payload}]`);
-
-    if (err instanceof HttpError) {
-      logger.debug(`Sending the received httpError '${err.status} - ${httpStatus[err.status]}' with message '${err.payload}' forward`);
-      return res.status(err.status).send(err.payload);
-    }
-
-    if (err.status) {
-      logger.debug(`Sending the received error status code '${err.status} - ${httpStatus[err.status]}' forward`);
-      return res.sendStatus(err.status);
-    }
-
-    logger.debug(`No status code received in error, sending code '500 - Internal server error' instead`);
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 
 }
