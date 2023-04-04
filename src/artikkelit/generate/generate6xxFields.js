@@ -31,31 +31,31 @@ export function generatef6xxs(terms) {
   return sortedTerms.flatMap(({vocab, prefLabel, lang, uri, subdivision = false}) => {
     if (['otherPerson'].includes(vocab)) {
       return generatef600(prefLabel);
-  }
+    }
 
     if (['otherCommunity'].includes(vocab)) {
       return generatef610(prefLabel);
-  }
+    }
 
     if (['otherTime', 'yso-aika'].includes(vocab)) {
       return generatef648(vocab, prefLabel, lang, uri);
-  }
+    }
 
     if (['yso', 'kassu', 'soto', 'afo', 'finmesh', 'maotao'].includes(vocab)) {
       return generatef650(vocab, prefLabel, lang, uri, subdivision);
-  }
+    }
 
     if (['yso-paikat'].includes(vocab)) {
       return generatef651(vocab, prefLabel, lang, uri, subdivision);
-  }
+    }
 
     if (['other'].includes(vocab)) {
       return generatef653(prefLabel);
-  }
+    }
 
     if (['slm', 'otherCategory'].includes(vocab)) {
       return generatef655(vocab, prefLabel, lang, uri, subdivision);
-  }
+    }
 
     throw new Error(`Invalid vocab! ${vocab}`);
   });
@@ -100,7 +100,7 @@ function generatef648(vocab, prefLabel, lang, uri) {
     }
 
     return [];
-}
+  }
 
 }
 
