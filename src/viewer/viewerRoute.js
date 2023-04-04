@@ -18,6 +18,7 @@ export default function (melindaApiOptions) {
   const logger = createLogger();
   const restApiLogClient = createMelindaApiLogClient(melindaApiOptions);
   const logService = createLogService(restApiLogClient);
+  const appName = 'Viewer';
 
   return new Router(melindaApiOptions)
     .get('/match-log/:id', getMatchLog)
@@ -26,8 +27,8 @@ export default function (melindaApiOptions) {
     .get('/correlation-id-list', getCorrelationIdList)
     .put('/protect/:id', protectLog)
     .delete('/remove/:id', removeLog)
-    .use(handleRouteNotFound)
-    .use(handleError);
+    .use(handleRouteNotFound(appName))
+    .use(handleError(appName));
 
   async function getMatchLog(req, res, next) {
     logger.verbose('GET getMatchLog');
