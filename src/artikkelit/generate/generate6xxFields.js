@@ -2,7 +2,7 @@ export function generatef6xxs(terms) {
 
   if (!terms) {
     return [];
-}
+  }
 
   const f600s = terms.filter(({vocab}) => vocab === 'otherPerson');
   const f610s = terms.filter(({vocab}) => vocab === 'otherCommunity');
@@ -31,34 +31,34 @@ export function generatef6xxs(terms) {
   return sortedTerms.flatMap(({vocab, prefLabel, lang, uri, subdivision = false}) => {
     if (['otherPerson'].includes(vocab)) {
       return generatef600(prefLabel);
-}
+  }
 
     if (['otherCommunity'].includes(vocab)) {
       return generatef610(prefLabel);
-}
+  }
 
     if (['otherTime', 'yso-aika'].includes(vocab)) {
       return generatef648(vocab, prefLabel, lang, uri);
-}
+  }
 
     if (['yso', 'kassu', 'soto', 'afo', 'finmesh', 'maotao'].includes(vocab)) {
       return generatef650(vocab, prefLabel, lang, uri, subdivision);
-}
+  }
 
     if (['yso-paikat'].includes(vocab)) {
       return generatef651(vocab, prefLabel, lang, uri, subdivision);
-}
+  }
 
     if (['other'].includes(vocab)) {
       return generatef653(prefLabel);
-}
+  }
 
     if (['slm', 'otherCategory'].includes(vocab)) {
       return generatef655(vocab, prefLabel, lang, uri, subdivision);
-}
+  }
 
     throw new Error(`Invalid vocab! ${vocab}`);
-});
+  });
 }
 
 function generatef600(prefLabel) {
@@ -79,9 +79,9 @@ function generatef648(vocab, prefLabel, lang, uri) {
           {code: 'a', value: prefLabel}, // no subfield 2
           ...generateSubfield0()
         ]
-}
+      }
     ];
-}
+  }
 
   return [
     {
@@ -91,13 +91,13 @@ function generatef648(vocab, prefLabel, lang, uri) {
         {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         ...generateSubfield0()
       ]
-}
+    }
   ];
 
   function generateSubfield0() {
     if (vocab === 'yso-aika') {
       return [{code: '0', value: uri}];
-}
+    }
 
     return [];
 }
@@ -114,7 +114,7 @@ function generatef650(vocab, prefLabel, lang, uri, subdivision = false) {
         {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         {code: '0', value: uri}
       ]
-}
+    }
   ];
 }
 
@@ -128,7 +128,7 @@ function generatef651(vocab, prefLabel, lang, uri, subdivision = false) {
         {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         {code: '0', value: uri}
       ]
-}
+    }
   ];
 }
 
@@ -139,7 +139,7 @@ function generatef653(prefLabel) {
 function generatef655(vocab, prefLabel, lang, uri, subdivision = false) {
   if (vocab === 'otherCategory') {
     return [{tag: '655', ind1: ' ', ind2: '4', subfields: [{code: 'a', value: prefLabel}]}];
-}
+  }
 
   return [
     {
@@ -150,14 +150,14 @@ function generatef655(vocab, prefLabel, lang, uri, subdivision = false) {
         {code: '2', value: generateSubfield2Value(vocab, convertLangs(lang))},
         {code: '0', value: uri}
       ]
-}
+    }
   ];
 }
 
 function selectSubfield(subdivision, code = false) {
   if (subdivision) {
     return [{code, value: subdivision}];
-}
+  }
 
   return [];
 }
@@ -165,35 +165,35 @@ function selectSubfield(subdivision, code = false) {
 function generateSubfield2Value(vocab, lang) {
   if (vocab === 'yso' || vocab === 'yso-paikat' || vocab === 'yso-aika') {
     return `yso/${lang}`;
-}
+  }
 
   if (vocab === 'kassu') {
     return 'kassu';
-}
+  }
 
   if (vocab === 'soto') {
     return 'soto';
-}
+  }
 
   if (vocab === 'afo') {
     return 'afo';
-}
+  }
 
   if (vocab === 'finmesh') {
     return 'finmesh';
-}
+  }
 
   if (vocab === 'maotao') {
     return 'maotao';
-}
+  }
 
   if (vocab === 'otherTime') {
     return 'ysa';
-}
+  }
 
   if (vocab === 'slm' || vocab === 'fgf') {
     return `slm/${lang}`;
-}
+  }
 
   throw new Error(`Invalid vocab info!`);
 }
@@ -202,7 +202,7 @@ function sortFields(ontologyWordDatas, vocabOrder = [], langOrder = false) {
   const ontologyWordDataOrderedByVocab = vocabOrder.map(vocab => ontologyWordDatas.filter(ontologyWordData => ontologyWordData.vocab === vocab));
   if (langOrder) {
     return ontologyWordDataOrderedByVocab.flatMap(ontologyVocabList => langOrder.flatMap(lang => ontologyVocabList.filter(ontologyWordData => ontologyWordData.lang === lang)));
-}
+  }
 
   return ontologyWordDataOrderedByVocab.flatMap(ontologyVocabList => ontologyVocabList);
 }
@@ -210,11 +210,11 @@ function sortFields(ontologyWordDatas, vocabOrder = [], langOrder = false) {
 function convertLangs(langCode) {
   if (langCode === 'fi') {
     return 'fin';
-}
+  }
 
   if (langCode === 'sv') {
     return 'swe';
-}
+  }
 
   return langCode;
 }
