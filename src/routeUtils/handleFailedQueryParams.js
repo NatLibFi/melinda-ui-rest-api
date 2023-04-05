@@ -1,3 +1,4 @@
+import httpStatus from 'http-status';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 const logger = createLogger();
@@ -9,16 +10,17 @@ export function handleFailedQueryParams(appName) {
   return function (req, res, next) {
     const queryParams = req.query;
 
-    logger.debug(`Checking query parameters in ${appName} route!`);
-    logger.debug(`Params: ${JSON.stringify(queryParams)}`);
+    logger.debug(`Checking query params in ${appName} route!`);
+    logger.debug(`All query parameters: ${JSON.stringify(queryParams)}`);
 
-    const failedParams = [];
+    const failedParams = ['test failed parameter'];
 
     if (failedParams.length === 0) {
       logger.debug('Query parameters OK!');
       return next();
     }
 
-    return next();
+    logger.error(`Failed query parameters: ${failedParams}`);
+    res.sendStatus(httpStatus.BAD_REQUEST);
   };
 }

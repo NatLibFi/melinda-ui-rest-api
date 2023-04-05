@@ -4,7 +4,7 @@ import {Error} from '@natlibfi/melinda-commons';
 
 const logger = createLogger();
 
-// Middleware for catching errors occuring in route handlers
+// Middleware for catching errors occuring in route handlers and in other middlewares
 // - logs error and debug info for developer
 // - if error is of custom class Error, sends that error status code and error message forward in response
 // - if error has status code, code is send forward in response
