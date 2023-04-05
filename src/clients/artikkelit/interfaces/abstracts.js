@@ -29,10 +29,17 @@ export function addAbstract(event) {
     return;
   }
 
-  idbAddValueToLastIndex('artoAbstracts', data).then(() => {
-    document.getElementById("tiivistelma-lisaa-form").reset();
-    refreshAbstractList();
-  });
+  idbGetStoredValues("artoAbstracts").then(abstracts => {
+    if (abstracts.some(abs => abs.abstract === data.abstract)) {
+      showSnackbar({text: "Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa", closeButton: "true"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoAbstracts', data).then(() => {
+      document.getElementById("tiivistelma-lisaa-form").reset();
+      refreshAbstractList();
+    });
+  })
 }
 
 export function refreshAbstractList() {
