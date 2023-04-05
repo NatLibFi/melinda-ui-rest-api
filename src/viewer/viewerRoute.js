@@ -11,6 +11,7 @@ import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiLogClient} from '@natlibfi/melinda-rest-api-client';
 import {createLogService} from './viewerService';
+import {handleFailedQueryParams} from '../routeUtils/handleFailedQueryParams';
 import {handleRouteNotFound} from '../routeUtils/handleRouteNotFound';
 import {handleError} from '../routeUtils/handleError';
 
@@ -21,6 +22,7 @@ export default function (melindaApiOptions) {
   const appName = 'Viewer';
 
   return new Router(melindaApiOptions)
+    .use(handleFailedQueryParams(appName))
     .get('/match-log/:id', getMatchLog)
     .get('/match-validation-log/:id', getMatchValidationLog)
     .get('/merge-log/:id', getMergeLog)
