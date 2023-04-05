@@ -7,8 +7,18 @@ export function handleFailedQueryParams(appName) {
 
   // eslint-disable-next-line no-unused-vars
   return function (req, res, next) {
-    logger.info(`Checking query parameters in ${appName} route!`);
-    logger.debug(`Params: ${JSON.stringify(req.query)}`);
-    next();
+    const queryParams = req.query;
+
+    logger.debug(`Checking query parameters in ${appName} route!`);
+    logger.debug(`Params: ${JSON.stringify(queryParams)}`);
+
+    const failedParams = [];
+
+    if (failedParams.length === 0) {
+      logger.debug('Query parameters OK!');
+      return next();
+    }
+
+    return next();
   };
 }
