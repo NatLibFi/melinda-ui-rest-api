@@ -32,10 +32,17 @@ export function addNote(event) {
     return;
   }
 
-  idbAddValueToLastIndex('artoNotes', data).then(() => {
-    document.getElementById('lisakentat-yleinen-huomautus').value = "";
-    refreshNotesList();
-  });
+  idbGetStoredValues("artoNotes").then(notes => {
+    if (notes.some(note => note.value === data.value)) {
+      showSnackbar({text: "Artikkelille on jo lisätty tämä yleinen huomautus", closeButton: "true"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoNotes', data).then(() => {
+      document.getElementById('lisakentat-yleinen-huomautus').value = "";
+      refreshNotesList();
+    });
+  })
 }
 
 export function refreshNotesList() {
@@ -83,10 +90,17 @@ export function addOtherTitle(event) {
     return;
   }
 
-  idbAddValueToLastIndex('artoOtherTitles', data).then(() => {
-    document.getElementById('artikkelin-muu-nimeke').value = "";
-    refreshOtherTitlesList();
-  });
+  idbGetStoredValues("artoOtherTitles").then(otherTitles => {
+    if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
+      showSnackbar({text: "Artikkelille on jo lisätty tämä muu nimeke", closeButton: "true"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoOtherTitles', data).then(() => {
+      document.getElementById('artikkelin-muu-nimeke').value = "";
+      refreshOtherTitlesList();
+    });
+  })
 }
 
 export function refreshOtherTitlesList() {
@@ -136,12 +150,19 @@ export function addUDK(event) {
     return;
   }
 
-  idbAddValueToLastIndex('artoUDKs', data).then(() => {
-    document.getElementById('lisakentat-UDK080a').value = "";
-    document.getElementById('lisakentat-UDK080x').value = "";
-    document.getElementById('lisakentat-UDK0802').value = "";
-    refreshUDKsList();
-  });
+  idbGetStoredValues("artoUDKs").then(udks => {
+    if (udks.some(udk => udk.a080 === data.a080)) {
+      showSnackbar({text: "Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)", closeButton: "ture"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoUDKs', data).then(() => {
+      document.getElementById('lisakentat-UDK080a').value = "";
+      document.getElementById('lisakentat-UDK080x').value = "";
+      document.getElementById('lisakentat-UDK0802').value = "";
+      refreshUDKsList();
+    });
+  })
 }
 
 export function refreshUDKsList() {
@@ -194,10 +215,17 @@ export function addOtherRating(event) {
     return;
   }
 
-  idbAddValueToLastIndex('artoOtherRatings', data).then(() => {
-    document.getElementById('lisakentat-muu-luokitus-084a').value = "";
-    document.getElementById('lisakentat-luokituksen-lahde-0842').value = "";
-    refreshOtherRatingsList();
+  idbGetStoredValues("artoOtherRatings").then(otherRatings => {
+    if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
+      showSnackbar({text: "Artikkelille on jo lisätty tämä muu luokitus (084 $a)"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoOtherRatings', data).then(() => {
+      document.getElementById('lisakentat-muu-luokitus-084a').value = "";
+      document.getElementById('lisakentat-luokituksen-lahde-0842').value = "";
+      refreshOtherRatingsList();
+    });
   });
 }
 
