@@ -11,9 +11,10 @@ import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiLogClient} from '@natlibfi/melinda-rest-api-client';
 import {createLogService} from './viewerService';
-import {handleFailedQueryParams} from '../routeUtils/handleFailedQueryParams';
-import {handleRouteNotFound} from '../routeUtils/handleRouteNotFound';
-import {handleError} from '../routeUtils/handleError';
+import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
+import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
+import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
+import {handleError} from '../requestUtils/handleError';
 
 export default function (melindaApiOptions) {
   const logger = createLogger();
@@ -23,12 +24,12 @@ export default function (melindaApiOptions) {
 
   return new Router(melindaApiOptions)
     .use(handleFailedQueryParams(appName))
-    .get('/match-log/:id', getMatchLog)
-    .get('/match-validation-log/:id', getMatchValidationLog)
-    .get('/merge-log/:id', getMergeLog)
-    .get('/correlation-id-list', getCorrelationIdList)
-    .put('/protect/:id', protectLog)
-    .delete('/remove/:id', removeLog)
+    .get('/match-log/:id', handleFailedRouteParams(appName), getMatchLog)
+    .get('/match-validation-log/:id', handleFailedRouteParams(appName), getMatchValidationLog)
+    .get('/merge-log/:id', handleFailedRouteParams(appName), getMergeLog)
+    .get('/correlation-id-list', handleFailedRouteParams(appName), getCorrelationIdList)
+    .put('/protect/:id', handleFailedRouteParams(appName), protectLog)
+    .delete('/remove/:id', handleFailedRouteParams(appName), removeLog)
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
@@ -47,7 +48,6 @@ export default function (melindaApiOptions) {
 
     try {
       const result = await logService.getMatchLog(params);
-      logger.debug(JSON.stringify(result));
       res.json(result);
     } catch (error) {
       return next(error);
@@ -71,7 +71,6 @@ export default function (melindaApiOptions) {
 
     try {
       const result = await logService.getMatchValidationLog(params);
-      logger.debug(JSON.stringify(result));
       res.json(result);
     } catch (error) {
       return next(error);
