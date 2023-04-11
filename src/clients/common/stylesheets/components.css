@@ -48,6 +48,46 @@
 }
 
 /* ---------------------------------------------------------------------------- */
+/* Tools-related common rules */
+/* ---------------------------------------------------------------------------- */
+
+.tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.tools .highlight-border {
+  border: 2px solid rgb(182, 225, 224);
+  border-radius: 1em;
+  padding-left: 1.5em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-right: 0.5em;
+}
+
+.tools>.dropdown,
+.tools>.dropdown>button {
+  height: 40px;
+  font-size: 32px;
+}
+
+.tools button {
+  height: 38px;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.tools button:active {
+  background-color: darkgrey !important;
+}
+
+/* ---------------------------------------------------------------------------- */
 /* Buttons inside toolbars, some with icons */
 /* ---------------------------------------------------------------------------- */
 
