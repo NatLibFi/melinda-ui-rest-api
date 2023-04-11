@@ -482,6 +482,16 @@ window.clearLogView = function (event = undefined) {
   return sequenceSelect.dispatchEvent(new Event('change'));;
 }
 
+window.downloadFile = function (event) {
+  console.log("This function should download a file");
+  // Download logic goes here
+}
+
+window.uploadFile = function (event) {
+  console.log("This function should upload a file");
+  // Upload logic goes here
+}
+
 function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
   console.log(JSON.stringify(logs));
