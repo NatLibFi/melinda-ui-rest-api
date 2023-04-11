@@ -1,0 +1,10 @@
+{
+    "ontologyWords": [ 
+        { 
+        "key": 1, 
+        "prefLabel": "Jokin yhteisö", 
+        "vocab": "otherCommunity" 
+        } 
+    ]
+}
+
