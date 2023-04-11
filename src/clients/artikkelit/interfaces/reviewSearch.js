@@ -1,5 +1,5 @@
 import {idbGet, idbClear, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from "/artikkelit/indexDB.js";
-import {formToJson, setOptions, createIconButton, createP} from "/common/ui-utils.js";
+import {formToJson, setOptions, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
 import {getPublicationByTitle} from "/common/rest.js";
 
 export function initReviewSearch() {
@@ -34,13 +34,26 @@ export function searchResultChange(event) {
 export function addReview(event) {
   event.preventDefault();
   const reviewIndex = document.getElementById("arvosteltu-teos-tulos-lista").value;
+
+  if (reviewIndex === "") {
+    showSnackbar({text: "Arvostelu ei voi olla tyhjä", closeButton: "true"});
+    return;
+  }
+
   idbGet("artoTempReviews", parseInt(reviewIndex)).then(tempReview => {
     console.log(tempReview);
 
-    idbAddValueToLastIndex("artoReviews", tempReview).then(() => {
-      refreshReviewsList();
+    idbGetStoredValues("artoReviews").then(reviews => {
+      if (reviews.some(review => review.title === tempReview.title || review.sourceIds === tempReview.sourceIds)) {
+        showSnackbar({text: "Artikkelille on jo lisätty tämä arvostelu", closeButton: "true"});
+        return;
+      }
+
+      idbAddValueToLastIndex("artoReviews", tempReview).then(() => {
+        refreshReviewsList();
+      });
+    });
     })
-  })
 }
 
 export function refreshReviewsList() {

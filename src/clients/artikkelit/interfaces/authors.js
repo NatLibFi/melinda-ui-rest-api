@@ -115,9 +115,16 @@ export function addOrganizationForAuthor(event) {
 
   const [organizationName = false, note = false] = organizationInputValue.replace(' (uusi)', '').replace(' (vanha)', '').split(' - ');
 
-  idbAddValueToLastIndex('artoAuthorTempOrg', {organizationName, code, note}).then(() => {
-    document.getElementById('tekija-organisaatio').value = '';
-    refreshAuthorOrganizationList()
+  idbGetStoredValues("artoAuthorTempOrg").then(organizations => {
+    if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
+      showSnackbar({text: "Tekijälle on jo lisätty tämä organisaatio", closeButton: "true"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoAuthorTempOrg', {organizationName, code, note}).then(() => {
+      document.getElementById('tekija-organisaatio').value = '';
+      refreshAuthorOrganizationList()
+    });
   });
 };
 

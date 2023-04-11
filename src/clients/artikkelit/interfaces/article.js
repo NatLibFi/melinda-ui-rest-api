@@ -28,10 +28,17 @@ function addScience(event) {
   }
   const [department, departmentName, subCategory, subject] = science.split(" - ");
 
-  idbAddValueToLastIndex('artoSciences', {department, departmentName, subCategory, subject}).then(() => {
-    document.getElementById("lisa-tiedot-tieteenala").value = '';
-    refreshSciencesList();
-  });
+  idbGetStoredValues("artoSciences").then(sciences => {
+    if (sciences.some(sci => sci.subject === subject || sci.subCategory === subCategory)) {
+      showSnackbar({text: "Artikkelille on jo lisätty tämä tieteenala", closeButton: "true"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoSciences', {department, departmentName, subCategory, subject}).then(() => {
+      document.getElementById("lisa-tiedot-tieteenala").value = '';
+      refreshSciencesList();
+    });
+  })
 }
 
 function addMetodology(event) {
@@ -45,10 +52,17 @@ function addMetodology(event) {
     return;
   }
 
-  idbAddValueToLastIndex('artoMetodologys', {value: metodology}).then(() => {
-    document.getElementById("lisa-tiedot-metodologia").value = '';
-    refreshMetodologysList();
-  });
+  idbGetStoredValues("artoMetodologys").then(metodologies => {
+    if (metodologies.some(met => met.value === metodology)) {
+      showSnackbar({text: "Artikkelille on jo lisätty tämä metodologia", closeButton: "true"});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoMetodologys', {value: metodology}).then(() => {
+      document.getElementById("lisa-tiedot-metodologia").value = '';
+      refreshMetodologysList();
+    });
+  })
 }
 
 export function refreshSciencesList() {
