@@ -4,11 +4,9 @@
 //
 //*****************************************************************************
 
-import {setNavBar} from "/common/ui-utils.js";
-import {startProcess, stopProcess} from "/common/ui-utils.js";
-import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createDropdownItem,
-        createSelectItem,
+import {setNavBar, startProcess, stopProcess,
+        showTab, resetForms, reload, showSnackbar,
+        createDropdownItem, createSelectItem,
         createSelectOption} from "/common/ui-utils.js";
 
 import {Account, doLogin, logout} from "/common/auth.js"
@@ -203,18 +201,7 @@ window.copyLink = function (e) {
 
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
   
-  // Fade in and fade out popup text
-  var popup = document.querySelector(".popup");
-  fadePopup();
-
-  function fadePopup() {
-    popup.className = "popup";
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        popup.className = "popup fading";
-      });
-    });
-  }
+  showSnackbar({text: "Linkki kopioitu!", closeButton: "true"});
 }
 
 //-----------------------------------------------------------------------------
