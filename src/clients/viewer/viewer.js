@@ -490,6 +490,20 @@ window.downloadFile = function (event) {
 window.uploadFile = function (event) {
   console.log("This function should upload a file");
   // Upload logic goes here
+  const dialog = document.getElementById("dialogForUpload");
+  dialog.showModal();
+}
+
+window.cancelUpload = function (event) {
+  console.log("Upload cancelled");
+  // Cancel logic goes here
+  showSnackbar({text: "Tiedoston lähetys peruttu", closeButton: "true"});
+}
+
+window.confirmUpload = function (event) {
+  console.log("Upload confirmed");
+  // Confirm logic goes here
+  showSnackbar({text: "Tiedosto lähetetty", closeButton: "true"})
 }
 
 function setDataToIndexDB(logs, sequence) {
