@@ -12,6 +12,9 @@ import merger from '@natlibfi/marc-record-merge';
 import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from '../record/recordService';
 import {getUnitTestRecords} from './test/getrecords';
 import {createBibService} from '../bib/bibService';
+import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
+
+const appName = 'Muuntaja';
 
 MarcRecord.setValidationOptions({subfieldValues: false});
 
@@ -53,6 +56,7 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
   //logger.debug('Creating muuntaja route');
 
   return new Router()
+    .use(handleFailedQueryParams(appName))
     .use(express.json())
     .get('/profiles', getProfiles)
     .post('/transform', doTransform)

@@ -13,10 +13,13 @@ import {generateJwtToken} from '@natlibfi/passport-melinda-jwt';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createArtikkelitService} from './artikkelitService';
+import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import bodyParser from 'body-parser';
 
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
+
+const appName = 'Artikkelit';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -25,6 +28,7 @@ export default function () { // eslint-disable-line no-unused-vars
   const artikkelitService = createArtikkelitService();
 
   return new Router()
+    .use(handleFailedQueryParams(appName))
     .post('/', bodyParser.text({limit: '5MB', type: '*/*'}), generateMarc)
     .use(handleError);
 
