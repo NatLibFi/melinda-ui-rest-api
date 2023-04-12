@@ -5,6 +5,9 @@ import {Error} from '@natlibfi/melinda-commons';
 const logger = createLogger();
 
 // Middleware for checking query string parameters
+// - logs debug info for developer
+// - checks app specific query parameters
+// - if some query parameters fail, next is called with http status '400 - Bad request'
 export function handleFailedQueryParams(appName) {
 
   return function (req, res, next) {
@@ -55,6 +58,15 @@ export function handleFailedQueryParams(appName) {
   }
 
 
+  // Checks Viewer app specific query parameters
+  //  - possible Viewer query parameters are sequence, force and expanded
+  //  - not all parameters are present in every request
+  //  - returns array of objects
+  //       - objects have two properties: name and value
+  //       - name is string (the query parameter name)
+  //       - value is boolean (if the check is passed or not)
+  //  - if query parameter is found in request (is defined), it is tested, and value is set true of false
+  //  - otherwise check is automatically passed and value is set true
   function checkViewerQueryParams(queryParams) {
     if (appName !== 'Viewer') {
       return [];

@@ -15,6 +15,9 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createArtikkelitService} from './artikkelitService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import bodyParser from 'body-parser';
+import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
+import {handleError} from '../requestUtils/handleError';
+
 
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
@@ -30,12 +33,8 @@ export default function () { // eslint-disable-line no-unused-vars
   return new Router()
     .use(handleFailedQueryParams(appName))
     .post('/', bodyParser.text({limit: '5MB', type: '*/*'}), generateMarc)
-    .use(handleError);
-
-  function handleError(req, res, next) {
-    logger.error('Error', req, res);
-    next();
-  }
+    .use(handleRouteNotFound(appName))
+    .use(handleError(appName));
 
   function generateMarc(req, res, next) {
     try {
