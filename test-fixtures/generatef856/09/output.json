@@ -1,0 +1,32 @@
+[
+    {
+     "tag": "856",
+     "ind1": "4",
+     "ind2": "0",
+     "subfields": [
+      {
+       "code": "u",
+       "value": "First link"
+      },
+      {
+       "code": "y",
+       "value": "Linkki verkkoaineistoon"
+      }
+     ]
+    },
+    {
+     "tag": "856",
+     "ind1": "4",
+     "ind2": "0",
+     "subfields": [
+      {
+       "code": "u",
+       "value": "Second Link"
+      },
+      {
+       "code": "y",
+       "value": "Linkki verkkoaineistoon"
+      }
+     ]
+    }
+   ]

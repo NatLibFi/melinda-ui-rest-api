@@ -3,6 +3,9 @@
      "isElectronic": true
     },
     "article": {
-        "link": [""]
+        "link": [
+            "First link",
+            "Second Link"
+        ]
     }
 }

@@ -3,6 +3,9 @@
      "isElectronic": false
     },
     "article": {
-        "link": ["www.funkymusiclovers.fi"]
+        "link": [
+            "First link",
+            "Second Link"
+        ]
     }
 }
