@@ -15,6 +15,9 @@ import createRecordRoute from './record/recordRoute';
 import createMuuntajaRoute from './muuntaja/muuntajaRoute';
 import createViewerRoute from './viewer/viewerRoute';
 import createOntologyRoute from './ontologies/ontologyRoute';
+
+import {handlePageNotFound} from './requestUtils/handlePageNotFound';
+
 //import fs from 'fs';
 import path from 'path';
 
@@ -82,6 +85,8 @@ export default async function ({
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
+
+    app.all('*', handlePageNotFound());
 
     app.use(handleError);
 
