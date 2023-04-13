@@ -24,7 +24,7 @@ export function createArtikkelitService(useMoment = 'now') {
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const referenceLinks = article.link; // field 856    
+    const referenceLinks = article.link; // field 856
     const sourceType = getSourceType(source);
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);

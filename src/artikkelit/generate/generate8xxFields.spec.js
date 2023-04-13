@@ -16,10 +16,10 @@ generateTests({
 async function testF856({getFixture, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
-    const expectedResults = getFixture('output.json');    
+    const expectedResults = getFixture('output.json');
     const result = await generatef856(input.article.link, input.source.isElectronic);
-    
-    expect(result).to.deep.equal(expectedResults);    
+
+    expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
   } catch (error) {
