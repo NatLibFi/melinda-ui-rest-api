@@ -13,7 +13,7 @@ export function generatef856(referenceLinks, isElectronic) {
       tag: '856',
       ind1: '4',
       ind2: ind2value(isElectronic),
-      subfields: [{code: 'u', value: link }, {code: 'y', value: 'Linkki verkkoaineistoon'}]
+      subfields: [{code: 'u', value: link}, {code: 'y', value: 'Linkki verkkoaineistoon'}]
     }));
   }
 
