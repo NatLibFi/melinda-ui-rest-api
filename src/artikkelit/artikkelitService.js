@@ -16,7 +16,7 @@ export function createArtikkelitService(useMoment = 'now') {
 
   return {generateRecord};
 
-  function generateRecord(data) {
+  function generateRecord(data) {    
     console.log(data); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
@@ -56,7 +56,7 @@ export function createArtikkelitService(useMoment = 'now') {
         ...generatef567(metodologys),
         ...generatef591(sciences, article.type),
         ...generatef593(journalJufo, year),
-        ...generatef598(), // local notes (lisäkentät)
+        ...generatef598(collecting.f589a),
         ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
         ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),

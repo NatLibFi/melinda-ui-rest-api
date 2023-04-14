@@ -1,0 +1,9 @@
+{
+  "description": "generatef598 - field 598, no input",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}
