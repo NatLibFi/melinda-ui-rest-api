@@ -1,17 +1,17 @@
 import {createLogger} from '@natlibfi/melinda-backend-commons';
+import path from 'path';
 
 const logger = createLogger();
 
 // Middleware for catching pages that do not exist
+// - logs debug info for developer
+// - sends http error '404 - Not found' with custom "Sorry, page not found" -page in response
 export function handlePageNotFound() {
-
-  const pageNotFoundHtml = '<h3>Valitettavasti etsimääsi sivua ei löytynyt!</h3> <p><a href="/">Siirry etusivulle sisällysluetteloon</a> tai <a href="javascript: window.history.back()">palaa edelliselle sivulle</a>.</p';
 
   // eslint-disable-next-line no-unused-vars
   return function (req, res, next) {
-    const {path, query, method} = req;
     logger.error(`Error: it seems that this page is not found!`);
-    logger.debug(`Request method: ${method} | Path: ${path} | Query parameters: ${JSON.stringify(query)}`);
-    res.status(404).send(pageNotFoundHtml);
+    logger.debug(`Request method: ${req.method} | Path: ${req.path} | Query parameters: ${JSON.stringify(req.query)}`);
+    res.status(404).sendFile(path.join(__dirname, '../clients/common/templates', 'pageNotFound.html'));
   };
 }

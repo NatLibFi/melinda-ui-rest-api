@@ -1,0 +1,24 @@
+@import "/common/stylesheets/common.css";
+
+#pageNotFoundInfo {
+  padding-left: 3em;
+}
+
+#pageNotFoundInfo h3 {
+  display: flex;
+  align-items: center;
+  font-family: 'Montserrat-Regular', Arial, sans-serif;
+}
+
+#pageNotFoundInfo a {
+  padding-left: 0.5em;
+}
+
+#pageNotFoundInfo p {
+  height: 30px;
+}
+
+#sadFaceIcon {
+  font-size: 30px;
+  padding: 0.5em;
+}
