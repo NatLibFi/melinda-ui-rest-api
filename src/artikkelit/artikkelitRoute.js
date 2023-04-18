@@ -14,6 +14,7 @@ import {generateJwtToken} from '@natlibfi/passport-melinda-jwt';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createArtikkelitService} from './artikkelitService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
+import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import bodyParser from 'body-parser';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
@@ -32,7 +33,7 @@ export default function () { // eslint-disable-line no-unused-vars
 
   return new Router()
     .use(handleFailedQueryParams(appName))
-    .post('/', bodyParser.text({limit: '5MB', type: '*/*'}), generateMarc)
+    .post('/', handleFailedRouteParams(appName), bodyParser.text({limit: '5MB', type: '*/*'}), generateMarc)
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 

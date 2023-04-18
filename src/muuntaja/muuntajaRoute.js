@@ -13,6 +13,7 @@ import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from '
 import {getUnitTestRecords} from './test/getrecords';
 import {createBibService} from '../bib/bibService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
+import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
@@ -60,8 +61,8 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
   return new Router()
     .use(handleFailedQueryParams(appName))
     .use(express.json())
-    .get('/profiles', getProfiles)
-    .post('/transform', doTransform)
+    .get('/profiles', handleFailedRouteParams(appName), getProfiles)
+    .post('/transform', handleFailedRouteParams(appName), doTransform)
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
