@@ -1,4 +1,4 @@
-import {setNavBar, showSnackbar} from './ui-utils.js';
+import {setNavBar, showSnackbar, showTab} from './ui-utils.js';
 import {Account, doLogin, logout} from "./auth.js"
 
 window.initialize = function () {
@@ -6,13 +6,13 @@ window.initialize = function () {
 
   doLogin(authSuccess);
 
-  showSnackbar({text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!', closeButton: 'true'});
-
   function authSuccess(user) {
+    showTab('pageNotFound');
+    showSnackbar({text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!', closeButton: 'true'});
     const username = document.querySelector("#account-menu #username");
     username.innerHTML = Account.get()["Name"];
   }
-};
+}
 
 window.onAccount = function (e) {
   console.log('Account:', e);

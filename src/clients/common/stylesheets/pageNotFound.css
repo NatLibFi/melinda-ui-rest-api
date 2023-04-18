@@ -1,5 +1,21 @@
 @import "/common/stylesheets/common.css";
 
+
+.Input>label {
+  color: rgb(48, 93, 109);
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-normal);
+  text-align: center;
+}
+
+.Input>input {
+  border: 0;
+  border-bottom: 1pt solid grey;
+  outline: none;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-normal);
+}
+
 #pageNotFoundInfo {
   padding-left: 3em;
 }
@@ -12,6 +28,10 @@
 
 #pageNotFoundInfo a {
   padding-left: 0.5em;
+}
+
+#pageNotFoundInfo a:hover {
+  text-decoration: underline;
 }
 
 #pageNotFoundInfo p {

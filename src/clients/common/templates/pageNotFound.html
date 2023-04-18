@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 
+<!-- -------------------------------------------------------------------------- -->
+<!-- Head -->
+<!-- -------------------------------------------------------------------------- -->
+
 <head>
   <link rel="shortcut icon" href="../common/images/favicon.png" />
   <link rel="stylesheet" href="../common/stylesheets/pageNotFound.css" />
@@ -10,52 +14,103 @@
   <script type="module" src="../common/pageNotFound.js"></script>
 </head>
 
+<!-- -------------------------------------------------------------------------- -->
+<!-- Body -->
+<!-- -------------------------------------------------------------------------- -->
+
 <body onload="initialize()">
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Navbar with app navigation dropdown-->
   <div id="navbar"></div>
 
+
   <!-- ------------------------------------------------------------------------ -->
-  <!-- Tool buttons in Navbar -->
-  <div class="IconBar ToolBar">
+  <!-- Application "tabs" -->
+  <div id="root">
 
-    <button class="material-icons tooltip" tooltip-text="Edellinen sivu" onClick="return goBack(event)">undo</button>
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Loading "screen" -->
+    <div id="loading">
+    </div>
 
-    <button class="material-icons tooltip" tooltip-text="Kotisivu" onClick="return goHome(event)">home</button>
-
-    <button class="tooltip material-icons" tooltip-text="Ohjeet">
-      <a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
-        rel="noopener noreferrer">help_outline</a>
-    </button>
-
-    <div class="dropdown">
-      <button id="account-btn" class="material-icons">account_circle</button>
-      <div id="account-menu" class="dropdown-content">
-        <div class="menu-header" id="username">Tuntematon</div>
-        <hr />
-        <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Login tab -->
+    <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
+      <div class="VBox Input">
+        <label for="username">Käyttäjätunnus</label>
+        <input id="login-username" name="username" autofocus autocomplete="username" />
       </div>
+      <div class="VBox Input">
+        <label for="password">Salasana</label>
+        <input id="login-password" type="password" name="password" autocomplete="current-password" />
+      </div>
+      <div class="HBox Input" style="align-items: baseline;">
+        <input id="acceptterms" type="checkbox">
+        <label for="acceptterms" style="padding-left: 8px;">
+          Hyväksyn
+          <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
+            tietosuojaselosteen</a>
+          ja evästeiden käytön.
+          <br /><br />
+          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+      </div>
+      <div id="info"></div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end;">
+        <button onClick="return login(event)">Kirjaudu</button>
+      </div>
+    </form>
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Page not found tab -->
+    <div id="pageNotFound" hidden>
+
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Tool buttons in Navbar -->
+      <div class="IconBar ToolBar">
+
+        <button class="material-icons tooltip" tooltip-text="Edellinen sivu"
+          onClick="return goBack(event)">undo</button>
+
+        <button class="material-icons tooltip" tooltip-text="Kotisivu" onClick="return goHome(event)">home</button>
+
+        <button class="tooltip material-icons" tooltip-text="Ohjeet">
+          <a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
+            rel="noopener noreferrer">help_outline</a>
+        </button>
+
+        <div class="dropdown">
+          <button id="account-btn" class="material-icons">account_circle</button>
+          <div id="account-menu" class="dropdown-content">
+            <div class="menu-header" id="username">Tuntematon</div>
+            <hr />
+            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- General info about page not found and contact information -->
+      <div id="pageNotFoundInfo">
+
+        <h3>Valitettavasti etsimääsi sivua ei löytynyt!<span id="sadFaceIcon"
+            class="material-icons">sentiment_dissatisfied</span></h3>
+
+        <p>Tarvitsetko apua? Ota yhteyttä: <a href="mailto:melinda-posti@helsinki.fi">melinda-posti@helsinki.fi</a></p>
+
+        <p>Täältä löydät kaikki Melinda-palvelun yhteystiedot: <a
+            href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank"
+            rel="noopener noreferrer">https://www.kiwi.fi/display/melinda/Yhteystiedot</a></p>
+
+      </div>
+
+      <!-- For displaying info message for user -->
+      <div id="snackbars" class="snackbars"></div>
+
     </div>
 
   </div>
-
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- General info about page not found and contact information -->
-  <div id="pageNotFoundInfo">
-
-    <h3>Valitettavasti etsimääsi sivua ei löytynyt!<span id="sadFaceIcon"
-        class="material-icons">sentiment_dissatisfied</span></h3>
-
-    <p>Tarvitsetko apua? Ota yhteyttä: <a href="mailto:melinda-posti@helsinki.fi">melinda-posti@helsinki.fi</a></p>
-
-    <p>Täältä löydät kaikki Melinda-palvelun yhteystiedot: <a href="https://www.kiwi.fi/display/melinda/Yhteystiedot"
-        target="_blank" rel="noopener noreferrer">https://www.kiwi.fi/display/melinda/Yhteystiedot</a></p>
-
-  </div>
-
-  <!-- For displaying info message for user -->
-  <div id="snackbars" class="snackbars"></div>
 
 </body>
 
