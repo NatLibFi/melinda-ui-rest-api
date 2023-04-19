@@ -5,7 +5,7 @@ import {showRecord} from "/common/marc-record-ui.js";
 import {idbGet, idbDel, idbGetStoredValues, idbClear, getTableNames} from "/artikkelit/indexDB.js"
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from "/artikkelit/interfaces/authors.js";
 import {initAbstracts, refreshAbstractList} from "/artikkelit/interfaces/abstracts.js";
-import {initOntologyWords, refreshOntologyWordList} from "/artikkelit/interfaces/ontologyWords.js";
+import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from "/artikkelit/interfaces/ontologyWords.js";
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from "/artikkelit/interfaces/loadData.js";
 import {initArticle, refreshSciencesList, refreshMetodologysList} from "/artikkelit/interfaces/article.js";
 import {initAdditionalFields, refreshNotesList, refreshOtherTitlesList, refreshUDKsList, refreshOtherRatingsList} from "/artikkelit/interfaces/additionalFields.js";
@@ -98,6 +98,7 @@ function ontologyTypeChange(event) {
     document.getElementById("asiasana-lisaa-input").style.display = "flex";
     const opts = event.target.options;
     document.getElementById("asiasana-muu-label").innerHTML = opts[opts.selectedIndex].text + ":";
+    resetOntologySelect();
   } else {
     document.getElementById("haku-osio").style.display = "flex";
     document.getElementById("asiasana-lisaa-select").style.display = "flex";

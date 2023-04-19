@@ -66,7 +66,8 @@ function generatef600(prefLabel) {
 }
 
 function generatef610(prefLabel) {
-  return [{tag: '610', ind1: '2', ind2: '4', subfields: [{code: 'a', value: prefLabel}]}];
+  const ending = '.';
+  return [{tag: '610', ind1: '2', ind2: '4', subfields: [{code: 'a', value: prefLabel + ending}]}];
 }
 
 function generatef648(vocab, prefLabel, lang, uri) {

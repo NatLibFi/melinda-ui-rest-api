@@ -45,18 +45,18 @@ div#muuntaja {
   /*color: grey;*/
 }
 
-.tools {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-end;
-  width: 100vw;
-  /* height: 40px; */
-}
-
 .Select {
   padding-right: 5px;
   padding-left: 5px;
+}
+
+.ToolBar button {
+  font-size: var(--font-size-icon-normal);
+}
+
+#type-options select, #profile-options select {
+  margin-right: 1ch;
+  height: 24px;
 }
 
 .popup {

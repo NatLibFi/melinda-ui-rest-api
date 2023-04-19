@@ -69,7 +69,7 @@
       <div id="navbar"></div>
 
       <!-- ------------------------------------------------------------------------ -->
-      <!-- Toolbar -->
+      <!-- Toolbar Iconbar -->
       <div class="IconBar ToolBar">
         <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
             href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
@@ -84,16 +84,20 @@
           </div>
         </div>
       </div>
-      <div class="tools ToolBar col">
-        <div class="ToolBar BoxShadow header HBox">
-            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
-            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
-            <div id="type-options"></div>
-            <div id="profile-options"></div>
-            <button class="material-icons tooltip" tooltip-text="Jaa" onClick="copyLink(event)">share</button>
-            <button class="material-icons tooltip" tooltip-text="Tietue" onclick="jsonDlgOpen(event)">edit_note</button>
+
+      <!-- Muuntaja Toolbar -->
+      <div class="tools ToolBar">
+        <!-- Tools and settings for searching, editing, saving and sharing records -->
+        <div class="ToolBar HBox highlight-border">
+          <div id="profile-options"></div>
+          <div id="type-options"></div>
+          <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
+          <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)" disabled>save</button>
         </div>
-        <div class="popup">Linkki kopioitu!</div>
+        <div class="HBox">
+          <button class="material-icons tooltip" tooltip-text="Jaa linkki" onClick="copyLink(event)">share</button>
+          <button class="material-icons tooltip" tooltip-text="Tietue" onclick="jsonDlgOpen(event)">edit_note</button>
+        </div>
       </div>
 
       <!-- ------------------------------------------------------------------------ -->
@@ -211,6 +215,11 @@
   <!-- ---------------------------------------------------------------------- -->
   <!-- Tab for server side notes -->
   <div id="server-note" hidden>
+  </div>
+  
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Snackbars -->
+  <div id="snackbars" class="snackbars">
   </div>
 
 </body>

@@ -1,0 +1,9 @@
+{
+  "description": "generatef6xxx - field 610 ontologyWords, case otherCommunity, with added dot in the end of the line",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}
