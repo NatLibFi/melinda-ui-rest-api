@@ -26,5 +26,5 @@ window.goBack = function (event) {
 
 window.goHome = function (event) {
   eventHandled(event);
-  window.open('/');
+  window.open('/', '_self');
 }
