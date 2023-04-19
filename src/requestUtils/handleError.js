@@ -1,18 +1,24 @@
-import httpStatus from 'http-status';
+/* eslint-disable no-unused-vars */
+
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error} from '@natlibfi/melinda-commons';
+import httpStatus from 'http-status';
 
-const logger = createLogger();
 
+//*****************************************************************************
 // Middleware for catching errors occuring in route handlers and in other middlewares
+//*****************************************************************************
 // - logs error and debug info for developer
 // - if error is of custom class Error, sends that error status code and error message forward in response
 // - if error has status code, code is send forward in response
 // - otherwise sends forward error status code '500 - Internal server error'
 // - middleware is taken in use as last after all routes and other middleware
+//-----------------------------------------------------------------------------
+//
 export function handleError(appName) {
 
-  // eslint-disable-next-line no-unused-vars
+  const logger = createLogger();
+
   return function (err, req, res, next) {
     logger.error(`Error: ${err}`);
     logger.debug(`Error in ${appName} route! [error status code: ${err.status} | error message: ${err.payload}]`);

@@ -1,15 +1,20 @@
-import httpStatus from 'http-status';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {Error} from '@natlibfi/melinda-commons';
+import httpStatus from 'http-status';
 import {version as uuidVersion, validate as uuidValidate} from 'uuid';
 
-const logger = createLogger();
 
+//*****************************************************************************
 // Middleware for checking named route parameters
+//*****************************************************************************
 // - logs debug info for developer
 // - checks app specific route parameters
 // - if some named route parameters fail, next is called with http status '400 - Bad request'
+//-----------------------------------------------------------------------------
+//
 export function handleFailedRouteParams(appName) {
+
+  const logger = createLogger();
 
   return function (req, res, next) {
     const routeParams = req.params;
@@ -39,6 +44,22 @@ export function handleFailedRouteParams(appName) {
   };
 
 
+  //*****************************************************************************
+  // App specific checks for route parameters
+  //-----------------------------------------------------------------------------
+  //  - every function returns array of objects
+  //       - objects have two properties: name and value
+  //       - name is string (the route parameter name)
+  //       - value is boolean (if the check is passed or not)
+  //  - if route parameter is found in request (is defined), it is tested, and value is set true of false
+  //  - otherwise check is automatically passed and value is set true
+  //-----------------------------------------------------------------------------
+
+
+  //-----------------------------------------------------------------------------
+  // Checks Artikkelit app specific route parameters
+  //  - currently just a placeholder
+  //
   function checkArtikkelitRouteParams(routeParams) {
     if (appName !== 'Artikkelit') {
       return [];
@@ -48,7 +69,10 @@ export function handleFailedRouteParams(appName) {
     return [];
   }
 
-
+  //-----------------------------------------------------------------------------
+  // Checks Muuntaja app specific route parameters
+  //  - currently just a placeholder
+  //
   function checkMuuntajaRouteParams(routeParams) {
     if (appName !== 'Muuntaja') {
       return [];
@@ -58,15 +82,11 @@ export function handleFailedRouteParams(appName) {
     return [];
   }
 
+  //-----------------------------------------------------------------------------
   // Checks Viewer app specific route parameters
   //  - possible Viewer route parameter is 'id'
   //  - parameter 'id' is not present in every request
-  //  - returns array of objects
-  //       - objects have two properties: name and value
-  //       - name is string (the route parameter name)
-  //       - value is boolean (if the check is passed or not)
-  //  - if route parameter is found in request (is defined), it is tested, and value is set true of false
-  //  - otherwise check is automatically passed and value is set true
+  //
   function checkViewerRouteParams(routeParams) {
     if (appName !== 'Viewer') {
       return [];
