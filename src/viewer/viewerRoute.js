@@ -95,11 +95,8 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    logger.debug(JSON.stringify(params));
-
     logger.debug(`Getting merge log with correlation id ${JSON.stringify(params.correlationId)}`);
     logger.debug(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
-
 
     try {
       const result = await logService.getMergeLog(params);

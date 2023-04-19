@@ -34,7 +34,8 @@ export function handleFailedRouteParams(appName) {
       .map(param => param.name);
 
     if (failedParams.length === 0) {
-      logger.debug(`Route parameter check for app ${appName} passed!`);
+      logger.verbose(`Route parameter check for app ${appName} passed!`);
+      logger.debug('.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._');
       return next();
     }
 

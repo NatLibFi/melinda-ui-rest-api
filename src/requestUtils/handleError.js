@@ -20,8 +20,8 @@ export function handleError(appName) {
   const logger = createLogger();
 
   return function (err, req, res, next) {
-    logger.error(`Error: ${err}`);
-    logger.debug(`Error in ${appName} route! [error status code: ${err.status} | error message: ${err.payload}]`);
+    logger.debug(`Error: ${err}`);
+    logger.error(`Error in ${appName} route! [error status code: ${err.status} | error message: ${err.payload}]`);
 
     if (err instanceof Error) {
       logger.debug(`Sending the received httpError '${err.status} - ${httpStatus[err.status]}' with message '${err.payload}' forward`);

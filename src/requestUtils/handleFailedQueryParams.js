@@ -33,7 +33,8 @@ export function handleFailedQueryParams(appName) {
       .map(param => param.name);
 
     if (failedParams.length === 0) {
-      logger.debug(`Query parameter check for app ${appName} passed!`);
+      logger.verbose(`Query parameter check for app ${appName} passed!`);
+      logger.debug('.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._');
       return next();
     }
 
