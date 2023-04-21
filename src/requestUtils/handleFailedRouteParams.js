@@ -79,7 +79,7 @@ export function handleFailedRouteParams(appName) {
       return [];
     }
 
-    logger.debug(`Sorry, no check available for Muuntaja query parameters: ${JSON.stringify(routeParams)}`);
+    logger.debug(`Sorry, no check available for Muuntaja route parameters: ${JSON.stringify(routeParams)}`);
     return [];
   }
 
