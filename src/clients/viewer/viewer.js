@@ -844,13 +844,24 @@ function fetchCorrelationIdList() {
   idbClearList();
 
   getCorrelationIdList(expanded)
-    .then(data =>
-      setCorrelationIdListDataToIndexDB(data))
+    .then((data) => {
+      testIfObjects(data);
+      setCorrelationIdListDataToIndexDB(data);
+    })
     .catch((error) => {
       setOrClearErrorMessageAndStyle({set: 'true', text: 'Valitettavasti listaa ei pystytty juuri nyt hakemaan'});
       console.log('Error while fetching correlation id list: ', error);
       stopProcess();
     });
+
+
+    function testIfObjects(elements) {
+      const objects = elements.filter(element => typeof element === 'object');
+
+      if (objects.length !== elements.length) {
+        throw new Error('Correlation id list should contain only objects')
+      }
+    }
 }
 
 function setOrClearErrorMessageAndStyle({clear = 'false', set = 'false', text = 'Sorry, something bad happened'}) {

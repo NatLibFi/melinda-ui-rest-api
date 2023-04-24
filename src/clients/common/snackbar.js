@@ -53,7 +53,7 @@ export function showSnackbar(snackbarContent) {
 
 
 async function getSnackbarHtml() {
-  const response = await fetch('../common/templates/snackbar.html');
+  const response = await fetch('/../common/templates/snackbar.html');
   const html = await response.text();
   return html;
 }

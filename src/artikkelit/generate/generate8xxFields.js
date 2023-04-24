@@ -7,8 +7,15 @@ export function generatef856(referenceLinks, isElectronic) {
     return '0'; // electronic
   }
 
-  if (referenceLinks && referenceLinks[0].length > 0) {
-    return [{tag: '856', ind1: '4', ind2: ind2value(isElectronic), subfields: [{code: 'u', value: referenceLinks}, {code: 'y', value: 'Linkki verkkoaineistoon'}]}];
+  if (referenceLinks && referenceLinks.length > 0 && referenceLinks[0].length > 0) {
+
+    return referenceLinks.map(link => ({
+      tag: '856',
+      ind1: '4',
+      ind2: ind2value(isElectronic),
+      subfields: [{code: 'u', value: link}, {code: 'y', value: 'Linkki verkkoaineistoon'}]
+    }));
   }
+
   return [];
 }

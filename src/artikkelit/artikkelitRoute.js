@@ -13,10 +13,17 @@ import {generateJwtToken} from '@natlibfi/passport-melinda-jwt';
 //import {Error as APIError} from '@natlibfi/melinda-commons';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createArtikkelitService} from './artikkelitService';
+import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
+import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import bodyParser from 'body-parser';
+import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
+import {handleError} from '../requestUtils/handleError';
+
 
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
+
+const appName = 'Artikkelit';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -25,13 +32,10 @@ export default function () { // eslint-disable-line no-unused-vars
   const artikkelitService = createArtikkelitService();
 
   return new Router()
-    .post('/', bodyParser.text({limit: '5MB', type: '*/*'}), generateMarc)
-    .use(handleError);
-
-  function handleError(req, res, next) {
-    logger.error('Error', req, res);
-    next();
-  }
+    .use(handleFailedQueryParams(appName))
+    .post('/', handleFailedRouteParams(appName), bodyParser.text({limit: '5MB', type: '*/*'}), generateMarc)
+    .use(handleRouteNotFound(appName))
+    .use(handleError(appName));
 
   function generateMarc(req, res, next) {
     try {

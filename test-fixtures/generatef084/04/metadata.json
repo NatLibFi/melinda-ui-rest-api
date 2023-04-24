@@ -1,0 +1,7 @@
+{
+  "description": "generatef084 - field 084, no input: otherRatings",
+  "skip": false,
+  "only": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}
