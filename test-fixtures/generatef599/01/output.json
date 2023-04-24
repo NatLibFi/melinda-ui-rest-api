@@ -1,0 +1,21 @@
+[
+  {
+   "tag": "599",
+   "ind1": " ",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Tässä on 599a-poimintakoodi"
+    },
+    {
+     "code": "x",
+     "value": "Tässä on 599x-poimintakoodi"
+    },
+    {
+     "code": "5",
+     "value": "ARTO"
+    }
+   ]
+  }
+ ]

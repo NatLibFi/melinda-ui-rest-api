@@ -1,0 +1,11 @@
+{
+    "source": {     
+     "isElectronic": true
+    },
+    "article": {
+        "link": [
+            "First link",
+            "Second Link"
+        ]
+    }
+}

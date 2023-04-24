@@ -330,7 +330,7 @@
       "iso6392b": "fin",
       "ui": "Suomi"
      },
-     "link": "www.funkymusiclovers.fi",
+     "link": ["www.funkymusiclovers.fi"],
      "type": "E1 - Yleistajuinen artikkeli, sanomalehtiartikkeli",
      "reviewType": "kirja-arvostelu",
      "sectionOrColumn": "Äänentoisto"

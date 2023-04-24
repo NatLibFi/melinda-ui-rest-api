@@ -62,7 +62,25 @@ export function generatef6xxs(terms) {
 }
 
 function generatef600(prefLabel) {
-  return [{tag: '600', ind1: '1', ind2: '4', subfields: [{code: 'a', value: prefLabel}]}];
+
+  const ending = '.';
+
+  if (prefLabel.includes('$t')) {
+    const splitted = prefLabel.split('$t');
+    const ending = '.';
+
+    return [
+      {tag: '600',
+        ind1: '1',
+        ind2: '4',
+        subfields: [
+          {code: 'a', value: splitted[0].trim() + ending},
+          {code: 't', value: splitted[1].trim() + ending}
+        ]}
+    ];
+  }
+
+  return [{tag: '600', ind1: '1', ind2: '4', subfields: [{code: 'a', value: prefLabel.trim() + ending}]}];
 }
 
 function generatef610(prefLabel) {
