@@ -495,22 +495,26 @@ window.downloadFile = function (event) {
   eventHandled(event);
 
   const sequence = document.querySelector(`#viewer #sequence`).value;
-  const recordObject = {};
+  const recordObject = new Object();
 
   idbGetLogs(sequence)
     .then((data) => {
-      if (data.logItemType === 'MERGE_LOG') {
-        setPreferred(data.preference);
-        setIncomingRecord(data.incomingRecord);
-        setMelindaRecord(data.databaseRecord);
-        setMergedRecord(data.mergedRecord);
+      
+      if (data.logItemType !== 'MERGE_LOG') {
+        throw new Error('Wrong log item type (should be MERGE_LOG)');
       }
+
+      setPreferred(data.preference);
+      setIncomingRecord(data.incomingRecord);
+      setMelindaRecord(data.databaseRecord);
+      setMergedRecord(data.mergedRecord);
+      doDownload(JSON.stringify(recordObject));
+      showSnackbar({text: 'Tiedosto on ladattu onnistuneesti!', closeButton: 'true'})
     })
     .catch((error) => {
       console.log('Problem getting or setting log data while creating record object: ', error);
+      showSnackbar({text: 'Tiedostoa ei valitettavasti pystytty lataamaan', closeButton: 'true'});
     })
-
-  console.log('recordObject: ', recordObject);
 
   function setPreferred(preference) {
     if (preference.recordName === 'databaseRecord') {
@@ -531,6 +535,34 @@ window.downloadFile = function (event) {
 
   function setMergedRecord(record) {
     recordObject.mergedRecord = record;
+  }
+
+  function doDownload(fileContent) {
+    const fileName = 'Record from Viewer ' + getDateAndTime() + '.json';
+
+    const linkElement = document.createElement('a');
+    linkElement.download = fileName;
+    linkElement.href = 'data:attachment/text,' + encodeURI(fileContent);
+    linkElement.click();
+
+    function getDateAndTime() {
+      const dateNow = new Date();
+
+      const dateAndTime =
+        dateNow.getFullYear()
+        + "-"
+        + ('0' + (dateNow.getMonth() + 1)).slice(-2)
+        + "-"
+        + ('0' + dateNow.getDate()).slice(-2)
+        + ' ' +
+        + ('0' + dateNow.getHours()).slice(-2)
+        + "-"
+        + ('0' + dateNow.getMinutes()).slice(-2)
+        + "-"
+        + ('0' + dateNow.getSeconds()).slice(-2);
+
+      return dateAndTime;
+    }
   }
 }
 
