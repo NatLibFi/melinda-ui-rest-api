@@ -37,6 +37,7 @@ window.initialize = function () {
     parseUrlParameters();
     doIndexedDbCheck();
     addModalEventListeners();
+    addDialogEventListeners();
   }
 
   function parseUrlParameters() {
@@ -82,6 +83,16 @@ window.initialize = function () {
       scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
     });
   }
+
+  function addDialogEventListeners() {
+    const fileInput = document.getElementById("fileUpload");
+
+    fileInput.addEventListener('change', event => {
+      event.stopPropagation();
+      checkFile(fileInput.files[0]);
+    })
+  }
+
 }
 
 //-----------------------------------------------------------------------------
@@ -486,21 +497,17 @@ window.downloadFile = function (event) {
 }
 
 window.uploadFile = function (event) {
-  console.log("This function should upload a file");
-  // Upload logic goes here
   const dialog = document.getElementById("dialogForUpload");
   dialog.showModal();
 }
 
 window.cancelUpload = function (event) {
   console.log("Upload cancelled");
-  // Cancel logic goes here
   showSnackbar({text: "Tiedoston lähetys peruttu", closeButton: "true"});
 }
 
 window.confirmUpload = function (event) {
   console.log("Upload confirmed");
-  // Confirm logic goes here
   showSnackbar({text: "Tiedosto lähetetty", closeButton: "true"})
 }
 
@@ -600,6 +607,29 @@ function remove(id) {
     })
     .finally(() =>
       stopProcess());
+}
+
+function checkFile(file) {
+  const confirmUploadButton = document.getElementById('confirmUploadButton');
+
+  console.log('Uploaded file name: ', file.name);
+  console.log('Uploaded file size: ', file.size);
+  console.log('Uploaded file type: ', file.type);
+
+  // File type is accepted
+  if (file.type === 'application/json' && file.size > 0) {
+    // TODO: additional check to make sure that the content is formatted right
+    confirmUploadButton.removeAttribute('title');
+    enableElement(confirmUploadButton);
+  }
+
+  // File is not JSON: file is not accepted
+  if (file.type !== 'application/json') {
+    console.log(`File type '${file.type}' is not accepted for upload!`);
+    confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
+    disableElement(confirmUploadButton);
+    showSnackbar({text: 'Vain JSON-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
+  }
 }
 
 function setNewSelect(newIndex) {
@@ -853,13 +883,13 @@ function fetchCorrelationIdList() {
     });
 
 
-    function testIfObjects(elements) {
-      const objects = elements.filter(element => typeof element === 'object');
+  function testIfObjects(elements) {
+    const objects = elements.filter(element => typeof element === 'object');
 
-      if (objects.length !== elements.length) {
-        throw new Error('Correlation id list should contain only objects')
-      }
+    if (objects.length !== elements.length) {
+      throw new Error('Correlation id list should contain only objects')
     }
+  }
 }
 
 function setOrClearErrorMessageAndStyle({clear = 'false', set = 'false', text = 'Sorry, something bad happened'}) {

@@ -469,7 +469,7 @@ dialog:modal {
 }
 
 /* Special style for dialog cancel button on hover */
-button.dialog-cancel-button:hover {
+.dialog-actions button.dialog-cancel-button:hover {
   background-color: lightgrey;
 }
 
@@ -477,6 +477,11 @@ button.dialog-cancel-button:hover {
 .dialog-actions button:active {
   background-color: grey;
   color: white
+}
+
+/* Disabled dialog buttons have 'not allowed' cursor on hover */
+.dialog-actions button:disabled {
+  cursor: not-allowed;
 }
 
 /* ---------------------------------------------------------------------------- */
