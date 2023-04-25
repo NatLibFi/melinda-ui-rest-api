@@ -492,8 +492,46 @@ window.clearLogView = function (event = undefined) {
 }
 
 window.downloadFile = function (event) {
-  console.log("This function should download a file");
-  // Download logic goes here
+  eventHandled(event);
+
+  const sequence = document.querySelector(`#viewer #sequence`).value;
+  const recordObject = {};
+
+  idbGetLogs(sequence)
+    .then((data) => {
+      if (data.logItemType === 'MERGE_LOG') {
+        setPreferred(data.preference);
+        setIncomingRecord(data.incomingRecord);
+        setMelindaRecord(data.databaseRecord);
+        setMergedRecord(data.mergedRecord);
+      }
+    })
+    .catch((error) => {
+      console.log('Problem getting or setting log data while creating record object: ', error);
+    })
+
+  console.log('recordObject: ', recordObject);
+
+  function setPreferred(preference) {
+    if (preference.recordName === 'databaseRecord') {
+      recordObject.preferred = 'melindaRecord';
+      return;
+    }
+
+    recordObject.preferred = preference.recordName;
+  }
+
+  function setIncomingRecord(record) {
+    recordObject.incomingRecord = record;
+  }
+
+  function setMelindaRecord(record) {
+    recordObject.melindaRecord = record;
+  }
+
+  function setMergedRecord(record) {
+    recordObject.mergedRecord = record;
+  }
 }
 
 window.uploadFile = function (event) {
