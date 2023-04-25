@@ -39,6 +39,11 @@ div#tools {}
   font-size: var(--font-size-icon-normal);
 }
 
+/* Disabled toolbar button cannot be clicked */
+.ToolBar button:disabled {
+  pointer-events: none;
+}
+
 .uuidInput {
   width: 37ch;
 }

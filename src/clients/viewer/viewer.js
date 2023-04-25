@@ -132,6 +132,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
   disableElement(sequenceSelect);
+  const downloadFileButton = document.getElementById('export');
+  disableElement(downloadFileButton);
   const col3 = document.querySelector('#viewer #record3').parentElement;
   const idInputField = document.querySelector(`#viewer #id`);
   console.log('Fetching...');
@@ -147,6 +149,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
   if (logType === 'MERGE_LOG') {
     col3.style.display = 'block';
+    enableElement(downloadFileButton);
+
     getMergeLog(id)
       .then(logs =>
         setDataToIndexDB(logs, sequence))
@@ -499,7 +503,7 @@ window.downloadFile = function (event) {
 
   idbGetLogs(sequence)
     .then((data) => {
-      
+
       if (data.logItemType !== 'MERGE_LOG') {
         throw new Error('Wrong log item type (should be MERGE_LOG)');
       }
