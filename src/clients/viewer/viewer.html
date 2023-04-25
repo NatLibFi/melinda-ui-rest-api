@@ -151,19 +151,20 @@
           <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
             onclick="return copyLink(event)">share</button>
 
-          <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
-            disabled="true">settings</button>
-
           <button id="export" class="material-icons tooltip" tooltip-text="Lataa tiedosto"
             onclick="downloadFile(event)">file_download</button>
 
           <button id="import" class="material-icons tooltip" tooltip-text="Lähetä tiedosto"
             onclick="uploadFile(event)">file_upload</button>
+
+          <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
+            disabled="true">settings</button>
+
         </div>
 
       </div>
 
-      <!-- Dialog popup used when log is removed -->
+      <!-- Dialog popup for removing logs -->
       <dialog id="dialogForRemove">
         <form method="dialog">
 
@@ -181,9 +182,8 @@
           </div>
 
           <div class="dialog-actions">
-            <button class="dialog-cancel-button" id="cancelButton" onclick="return cancelRemove(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmButton" onclick="return confirmRemove(event)">Vahvista
-              poisto</button>
+            <button class="dialog-cancel-button" id="cancelRemoveButton" onclick="return cancelRemove(event)">Peruuta</button>
+            <button class="dialog-confirm-button" id="confirmRemoveButton" onclick="return confirmRemove(event)">Vahvista poisto</button>
           </div>
 
         </form>
@@ -191,18 +191,22 @@
 
       <!-- Dialog popup for uploading files -->
       <dialog id="dialogForUpload">
-        <div class="dialog-headline">
-          Valitse tiedosto
-        </div>
+        <form method="dialog">
 
-        <div class="dialog-actions">
-          <input id="fileUpload" type="file"/>
-        </div>
+          <div class="dialog-headline">
+            Valitse tiedosto
+          </div>
 
-        <div class="dialog-actions">
-          <button class="dialog-cancel-button" id="cancelUploadButton" onclick="return cancelUpload(event)">Peruuta</button>
-          <button class="dialog-confirm-button" id="confirmUploadButton" onclick="return confirmUpload(event)">Vahvista lähetys</button>
-        </div>
+          <div class="dialog-actions">
+            <input id="fileUpload" type="file" accept=".json"/>
+          </div>
+
+          <div class="dialog-actions">
+            <button class="dialog-cancel-button" id="cancelUploadButton" onclick="return cancelUpload(event)">Peruuta</button>
+            <button class="dialog-confirm-button" id="confirmUploadButton" onclick="return confirmUpload(event)">Vahvista lähetys</button>
+          </div>
+
+        </form>
       </dialog>
 
       <!-- Record Merge Panel -->
