@@ -16,17 +16,17 @@ export function createArtikkelitService(useMoment = 'now') {
 
   return {generateRecord};
 
-  function generateRecord(data) {          
+  function generateRecord(data) {
     console.log(data); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
     const titleFor773t = source.title;
-    const {isElectronic, publishing} = source;
+    const {isElectronic} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const referenceLinks = article.link; // field 856    
+    const referenceLinks = article.link; // field 856
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
-    const sourceTypeAsText = getSourceType(source); // journal, book, text, electronic    
+    const sourceTypeAsText = getSourceType(source); // journal, book, text, electronic
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
     const today = new Date();
     const year = today.getFullYear(); // journal year form value / book year form value / current year form value
@@ -89,8 +89,8 @@ export function getSourceType(input) {
   if (get4th === 's' || get4th === 'i') {
     return 'journal';
   }
-  
-  if (get4th === 'm' || get4th === 'c') {    
+
+  if (get4th === 'm' || get4th === 'c') {
     return 'book';
   }
 
