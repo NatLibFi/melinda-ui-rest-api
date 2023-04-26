@@ -2,11 +2,23 @@
   {
    "tag": "773",
    "ind1": "0",
-   "ind2": " ",
+   "ind2": "8",
    "subfields": [
     {
-     "code": "7",
-     "value": "nnas"
+     "code": "i",
+     "value": "Sisältyy manifestaatioon:"
+    },
+    {
+     "code": "t",
+     "value": "Suomi-Finland-USA : Suomalais-amerikkalaisen yhdistyksen julkaisu."
+    },
+    {
+     "code": "g",
+     "value": "1 (1981): 19, sivut 10 - 89"
+    },
+    {
+     "code": "x",
+     "value": "0781-447X"
     },
     {
      "code": "w",
@@ -15,20 +27,8 @@
      ]
     },
     {
-     "code": "t",
-     "value": "Suomi-Finland-USA : Suomalais-amerikkalaisen yhdistyksen julkaisu. -"
-    },
-    {
-     "code": "d",
-     "value": "Helsinki : Suomalais-amerikkalainen yhdistys, 1946-1985."
-    },
-    {
-     "code": "x",
-     "value": "0781-447X. -"
-    },
-    {
-     "code": "g",
-     "value": "1 (1981): 19, sivut 10 - 89"
+     "code": "7",
+     "value": "nnas"
     }
    ]
   }

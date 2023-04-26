@@ -16,7 +16,7 @@ export function createArtikkelitService(useMoment = 'now') {
 
   return {generateRecord};
 
-  function generateRecord(data) {
+  function generateRecord(data) {          
     console.log(data); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
@@ -24,9 +24,9 @@ export function createArtikkelitService(useMoment = 'now') {
     const {isElectronic, publishing} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const referenceLinks = article.link; // field 856
-    const sourceType = getSourceType(source);
+    const referenceLinks = article.link; // field 856    
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
+    const sourceTypeAsText = getSourceType(source); // journal, book, text, electronic    
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
     const today = new Date();
     const year = today.getFullYear(); // journal year form value / book year form value / current year form value
@@ -35,11 +35,11 @@ export function createArtikkelitService(useMoment = 'now') {
     const {f599a, f599x} = collecting;
 
     const record = {
-      leader: generateLeader(sourceType),
+      leader: generateLeader(sourceTypeAsText),
       fields: [
         ...generatef005(),
         ...generatef007(isElectronic),
-        ...generatef008(useMoment, journalNumber.publishingYear, sourceType, isElectronic, articleLanguage),
+        ...generatef008(useMoment, journalNumber.publishingYear, sourceTypeAsText, isElectronic, articleLanguage),
         ...generatef041(articleLanguage.iso6392b, abstractLanguages),
         ...generatef080(udks), // (lisäkentät)
         ...generatef084(otherRatings), // (lisäkentät)
@@ -59,7 +59,7 @@ export function createArtikkelitService(useMoment = 'now') {
         ...generatef598(collecting.f589a),
         ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
-        ...generatef773(sourceType, journalNumber, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t),
+        ...generatef773(sourceTypeAsText, journalNumber, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t),
         ...generatef787(), // review books
         ...generatef856(referenceLinks, isElectronic),
         ...generatef960()
@@ -86,19 +86,19 @@ export function getSourceType(input) {
   const get3rd = found.substr(2, 1);
   const get4th = found.substr(3, 1);
 
-  if (get4th.includes('s', 'i')) {
+  if (get4th === 's' || get4th === 'i') {
     return 'journal';
   }
-
-  if (get4th.includes('c', 'm')) {
+  
+  if (get4th === 'm' || get4th === 'c') {    
     return 'book';
   }
 
-  if (get3rd.includes('a')) {
+  if (get3rd === 'a') {
     return 'text';
   }
 
-  if (get3rd.includes('g', 'i', 'm')) {
+  if (get3rd === 'g' || get3rd === 'i' || get3rd === 'm') {
     return 'electronic';
   }
 

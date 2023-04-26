@@ -2,11 +2,23 @@
   {
    "tag": "773",
    "ind1": "0",
-   "ind2": " ",
+   "ind2": "8",
    "subfields": [
     {
-     "code": "7",
-     "value": "nnas"
+     "code": "i",
+     "value": "Sisältyy manifestaatioon:"
+    },
+    {
+     "code": "t",
+     "value": "Basso : urbaani musiikki & kulttuuri."
+    },
+    {
+     "code": "g",
+     "value": "1 (1999): 2, sivu A6"
+    },
+    {
+     "code": "x",
+     "value": "1796-3753"
     },
     {
      "code": "w",
@@ -15,20 +27,8 @@
      ]
     },
     {
-     "code": "t",
-     "value": "Basso : urbaani musiikki & kulttuuri. -"
-    },
-    {
-     "code": "d",
-     "value": "Helsinki : Basso Media, 2006-2012."
-    },
-    {
-     "code": "x",
-     "value": "1796-3753. -"
-    },
-    {
-     "code": "g",
-     "value": "1 (1999): 2, sivu A6"
+     "code": "7",
+     "value": "nnas"
     }
    ]
   }
