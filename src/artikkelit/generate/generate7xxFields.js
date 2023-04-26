@@ -1,5 +1,5 @@
 export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t) {
- 
+
   return [
     {
       tag: '773', ind1: '0', ind2: '8', subfields: [...selectSubfields()]
@@ -8,7 +8,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
   function selectSubfields() {
     if (sourceType === 'journal') {
-      return [        
+      return [
         {code: 'i', value: `Sisältyy manifestaatioon:`},
         {code: 't', value: `${titleFor773t}.`},
         ...getSubfieldG(volume, publishingYear, number, pages),
@@ -21,15 +21,15 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     if (sourceType === 'book') {
       return [
         {code: 'i', value: `Sisältyy manifestaatioon:`},
-        {code: 't', value: `${titleFor773t}.`},                
-        {code: 'g', value: pages ? printPages(pages) : ' '},        
+        {code: 't', value: `${titleFor773t}.`},
+        {code: 'g', value: pages ? printPages(pages) : ' '},
         ...checkThisSubfield(isbn, 'z'),
-        {code: 'w', value: melindaId},     
-        {code: '7', value: SourceTypeAsCode}        
+        {code: 'w', value: melindaId},
+        {code: '7', value: SourceTypeAsCode}
       ];
     }
 
-    return [      
+    return [
       ...checkThisSubfield(isbn, 'z'),
       {code: 'g', value: pages ? pages : ' '}
     ];
@@ -67,13 +67,13 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
   function printPages(pages) {
     if (pages) {
-      if (!Number.isNaN(Number(pages))) {        
+      if (!Number.isNaN(Number(pages))) {
         if (sourceType === 'journal') {
           return `, sivu ${pages}`;
         }
         if (sourceType === 'book') {
           return `Sivu ${pages}`;
-        }                
+        }
       }
 
       if (Number.isNaN(Number(pages))) { // special case (newspapers): when input type is 'A7'
@@ -86,7 +86,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
           return `, sivu ${pages}`;
         }
       }
-      
+
       if (sourceType === 'journal') {
         return `, sivut ${pages}`;
       }
