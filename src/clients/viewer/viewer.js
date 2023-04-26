@@ -234,6 +234,7 @@ window.loadLog = (event) => {
     idInputField.value = '';
     logTypeSelect.value = 'MERGE_LOG';
     sequenceInputField.value = '';
+    sequenceSelect.replaceChildren();
     sequenceSelect.value = '';
 
     col3.style.display = 'block';
@@ -260,7 +261,6 @@ window.loadLog = (event) => {
   updateSequenceView();
 
   if (logType === 'MERGE_LOG') {
-
     idbGetLogs(event.target.value).then(data => {
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, "record1", {}, 'viewer');
@@ -496,6 +496,7 @@ window.clearLogView = function (event = undefined) {
 }
 
 window.downloadFile = function (event) {
+  console.log('Downloading file...');
   eventHandled(event);
 
   const sequence = document.querySelector(`#viewer #sequence`).value;
@@ -512,6 +513,7 @@ window.downloadFile = function (event) {
       setIncomingRecord(data.incomingRecord);
       setMelindaRecord(data.databaseRecord);
       setMergedRecord(data.mergedRecord);
+      setCreationTime(data.creationTime);
       doDownload(JSON.stringify(recordObject));
       showSnackbar({text: 'Tiedosto on ladattu onnistuneesti!', closeButton: 'true'})
     })
@@ -539,6 +541,10 @@ window.downloadFile = function (event) {
 
   function setMergedRecord(record) {
     recordObject.mergedRecord = record;
+  }
+
+  function setCreationTime(time) {
+    recordObject.creationTime = time;
   }
 
   function doDownload(fileContent) {
@@ -571,18 +577,68 @@ window.downloadFile = function (event) {
 }
 
 window.uploadFile = function (event) {
-  const dialog = document.getElementById("dialogForUpload");
+  const dialog = document.getElementById('dialogForUpload');
   dialog.showModal();
 }
 
 window.cancelUpload = function (event) {
-  console.log("Upload cancelled");
-  showSnackbar({text: "Tiedoston lähetys peruttu", closeButton: "true"});
+  console.log('File upload cancelled');
+  showSnackbar({text: 'Tiedoston avaaminen peruttu', closeButton: 'true'});
 }
 
 window.confirmUpload = function (event) {
-  console.log("Upload confirmed");
-  showSnackbar({text: "Tiedosto lähetetty", closeButton: "true"})
+  const file = document.getElementById('fileUpload').files[0];
+  const reader = new FileReader();
+
+  clearLogView();
+
+  if (file) {
+    console.log(`Trying to read file ${file.name}...`);
+    reader.readAsText(file, 'UTF-8');
+
+    reader.onload = function (event) {
+      const fileContent = event.target.result;
+      const json = parseJson(fileContent);
+      const log = parseLog(json);
+      console.log('Log parsed from file: ', log)
+
+      setDataToIndexDB({0: log}, 0);
+
+      showSnackbar({text: 'Tiedoston avaus onnistui!', closeButton: 'true'});
+      setTimeout(() => {
+        showSnackbar({text: 'Huom! Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston eheys.', closeButton: 'true'});
+      }, 3000);
+    }
+
+    reader.onerror = function (event) {
+      console.log('Error reading file ', error);
+      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'})
+    }
+
+    function parseJson(text) {
+      let data = null;
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (error) {
+          console.log('Error while parsing file content to JSON: ', error);
+          showSnackbar({text: 'Tapahtui virhe JSON-tiedostoa lukiessa', closeButton: 'true'});
+        }
+      }
+
+      return data;
+    }
+
+    function parseLog(data) {
+      const log = Object.assign({}, data);
+      log.blobSequence = 0;
+      log.creationTime = data.creationTime || 'Ei saatavilla';
+      log.databaseRecord = data.melindaRecord || data.databaseRecord;
+      log.preference = {recordName: (data.preferred || '')};
+      return log;
+    }
+  }
 }
 
 function setDataToIndexDB(logs, sequence) {
