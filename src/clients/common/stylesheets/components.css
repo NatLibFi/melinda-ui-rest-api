@@ -408,7 +408,8 @@ dialog:modal {
   display: flex !important;
   flex-direction: row;
   justify-content: center;
-  padding: 0.5em;
+  padding: 20px;
+  font-size: 32px !important;
 }
 
 /* Dialog has a headline: the purpose of dialog */

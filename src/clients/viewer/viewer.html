@@ -182,8 +182,10 @@
           </div>
 
           <div class="dialog-actions">
-            <button class="dialog-cancel-button" id="cancelRemoveButton" onclick="return cancelRemove(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmRemoveButton" onclick="return confirmRemove(event)">Vahvista poisto</button>
+            <button class="dialog-cancel-button" id="cancelRemoveButton"
+              onclick="return cancelRemove(event)">Peruuta</button>
+            <button class="dialog-confirm-button" id="confirmRemoveButton"
+              onclick="return confirmRemove(event)">Vahvista poisto</button>
           </div>
 
         </form>
@@ -193,17 +195,35 @@
       <dialog id="dialogForUpload">
         <form method="dialog">
 
+          <div class="dialog-icon material-icons">
+            upload_file
+          </div>
+
           <div class="dialog-headline">
-            Valitse tiedosto
+            Lataa tietueita sisältävä tiedosto
+          </div>
+
+          <div class="dialog-supporting-text">
+            <p>Valitse tiedosto, jonka haluat avata Viewerin lukunäkymässä.</p>
+            <p>Tiedoston on oltava .json -päätteinen.</p>
+            <hr>
+            <div class="file-input">
+              <input type="file" id="fileUpload" accept=".json" style="display:none" />
+              <button id="fileSelect" type="button" class="file-button"
+                onclick="return openFileBrowse(event)">Selaa</button>
+              <div id="selectedFileName" class="file-name">Ei valittua tiedostoa</div>
+              <button id="clearFileSelect" type="button" class="material-icons close-button"
+                title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
+                style="display: none">close</button>
+            </div>
+            <hr>
           </div>
 
           <div class="dialog-actions">
-            <input id="fileUpload" type="file" accept=".json"/>
-          </div>
-
-          <div class="dialog-actions">
-            <button class="dialog-cancel-button" id="cancelUploadButton" onclick="return cancelUpload(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmUploadButton"  title="Valitse ensin JSON-tiedosto" disabled="true" onclick="return confirmUpload(event)">Vahvista lähetys</button>
+            <button class="dialog-cancel-button" id="cancelUploadButton"
+              onclick="return cancelUpload(event)">Kumoa</button>
+            <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin JSON-tiedosto"
+              disabled="true" onclick="return confirmUpload(event)">Avaa tiedosto</button>
           </div>
 
         </form>

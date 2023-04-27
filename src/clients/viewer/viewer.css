@@ -749,3 +749,53 @@ div#correlationIdListModal {}
     resize: none;
   }
 }
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* ---Dialog for file upload---*/
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+#dialogForUpload {
+  width: 500px
+}
+
+#dialogForUpload .file-input {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#dialogForUpload .file-name {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#dialogForUpload .file-button {
+  height: 28px;
+  font-size: var(--font-size-label-large);
+  font-weight: var(--font-weight-label-large);
+  background-color: rgb(182, 225, 224);
+  border: none;
+}
+
+#dialogForUpload .file-button:hover {
+  background-color: grey;
+}
+
+#dialogForUpload .close-button {
+  margin: 5px;
+  color: white;
+  background-color: black;
+}
+
+#dialogForUpload .close-button:hover {
+  background-color: lightgrey;
+  color: black;
+}
+
