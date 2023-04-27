@@ -88,6 +88,7 @@ window.initialize = function () {
     const fileInput = document.getElementById("fileUpload");
     const fileNameDiv = document.getElementById('selectedFileName');
     const clearFileSelectButton = document.getElementById('clearFileSelect');
+    const dropzone = document.getElementById('dropzone');
 
     fileInput.addEventListener('change', event => {
       event.stopPropagation();
@@ -95,8 +96,19 @@ window.initialize = function () {
       checkFile(file);
       fileNameDiv.innerHTML = file ? file.name : 'Ei valittua tiedostoa';
       file ? clearFileSelectButton.style.display = 'block' : clearFileSelectButton.style.display = 'none';
-    })
+    });
+
+    dropzone.addEventListener('dragenter', event => {
+      eventHandled(event);
+      dropzone.classList.add('dragging');
+    });
+
+    dropzone.addEventListener('dragleave', event => {
+      eventHandled(event);
+      dropzone.classList.remove('dragging');
+    });
   }
+
 
 }
 
@@ -581,26 +593,47 @@ window.downloadFile = function (event) {
   }
 }
 
+window.uploadFile = function (event) {
+  const dialog = document.getElementById('dialogForUpload');
+  dialog.showModal();
+}
+
 window.openFileBrowse = function (event) {
   eventHandled(event);
   const fileInput = document.getElementById("fileUpload");
   fileInput.click();
 }
 
+window.handleFileDrop = function (event) {
+  console.log("Something dropped");
+  eventHandled(event);
+
+  const dataTransfer = event.dataTransfer;
+  const fileInput = document.getElementById('fileUpload');
+  const dropzone = document.getElementById('dropzone');
+
+  dropzone.classList.remove('dragging');
+
+  if (dataTransfer.items[0].kind !== 'file') {
+    console.log('Dropped item is not file!');
+    showSnackbar({text: 'Voit tiputtaa ladattavaksi vain tiedostoja', closeButton: 'true'});
+    return;
+  }
+
+  fileInput.files = dataTransfer.files;
+  fileInput.dispatchEvent(new Event('change'));
+}
+
+window.handleDragOver = function (event) {
+  console.log("File in drop zone");
+  eventHandled(event);
+}
+
 window.clearSelectedFile = function (event) {
   eventHandled(event);
   const fileInput = document.getElementById("fileUpload");
-  //const fileNameDiv = document.getElementById('selectedFileName');
-  const confirmUploadButton = document.getElementById('confirmUploadButton');
-
   fileInput.value = '';
-  //fileNameDiv.innerHTML = 'Ei valittua tiedostoa';
-  return fileInput.dispatchEvent(new Event('change'));;
-}
-
-window.uploadFile = function (event) {
-  const dialog = document.getElementById('dialogForUpload');
-  dialog.showModal();
+  return fileInput.dispatchEvent(new Event('change'));
 }
 
 window.cancelUpload = function (event) {
@@ -762,8 +795,9 @@ function remove(id) {
 }
 
 function checkFile(file) {
-  console.log('Checking uploaded file..');
+  console.log('Checking uploaded file...');
   const confirmUploadButton = document.getElementById('confirmUploadButton');
+  const fileNameDiv = document.getElementById('selectedFileName');
 
   // If no file, check is skipped
   if (!file) {
@@ -779,6 +813,7 @@ function checkFile(file) {
   if (file.size === 0) {
     console.log('File is empty!');
     disableElement(confirmUploadButton);
+    highlightElement(fileNameDiv);
     showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
     return;
   }
@@ -790,6 +825,7 @@ function checkFile(file) {
     console.log(`File type '${file.type}' is not accepted for upload!`);
     confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
     disableElement(confirmUploadButton);
+    highlightElement(fileNameDiv);
     showSnackbar({text: 'Vain JSON-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
     return;
   }

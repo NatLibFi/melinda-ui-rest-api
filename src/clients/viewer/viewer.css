@@ -760,12 +760,17 @@ div#correlationIdListModal {}
   width: 500px
 }
 
+#dialogForUpload #fileDiv {
+  width: 100%;
+}
+
 #dialogForUpload .file-input {
   display: flex;
   flex-grow: 1;
   align-items: center;
   margin-top: 15px;
   margin-bottom: 15px;
+  width: 100%;
 }
 
 #dialogForUpload .file-name {
@@ -799,3 +804,23 @@ div#correlationIdListModal {}
   color: black;
 }
 
+#dialogForUpload #dropzone {
+  display: flex;
+  flex-grow: 2;
+  border: 1px dashed grey;
+  border-radius: 1em;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  color: grey;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#dialogForUpload #dropzone:hover {
+  background-color: rgb(182, 225, 224);
+}
+
+.dragging {
+  background-color: #8AB59C;
+}

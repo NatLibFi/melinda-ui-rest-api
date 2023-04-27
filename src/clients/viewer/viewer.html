@@ -200,12 +200,19 @@
           </div>
 
           <div class="dialog-headline">
-            Lataa tietueita sisältävä tiedosto
+            Lataa tietue Vieweriin
           </div>
 
           <div class="dialog-supporting-text">
-            <p>Valitse tiedosto, jonka haluat avata Viewerin lukunäkymässä.</p>
-            <p>Tiedoston on oltava .json -päätteinen.</p>
+            <p>Valitse tietue, jonka haluat avata lukunäkymässä.</p>
+            <p>
+              Voit
+              <br>
+              - selata tai tiputtaa tietueen .json-päätteisenä tiedostona laitteeltasi
+              <br>
+              - liittää tietueen JSON-muotoisena tekstinä
+            </p>
+
             <hr>
             <div class="file-input">
               <input type="file" id="fileUpload" accept=".json" style="display:none" />
@@ -216,8 +223,12 @@
                 title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
                 style="display: none">close</button>
             </div>
+            <div id="dropzone" ondrop="return handleFileDrop(event)" ondragover="return handleDragOver(event)">
+              Vedä tiedosto tai liitä tekstiä
+            </div>
             <hr>
           </div>
+
 
           <div class="dialog-actions">
             <button class="dialog-cancel-button" id="cancelUploadButton"
