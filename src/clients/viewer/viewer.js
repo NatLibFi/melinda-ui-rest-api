@@ -85,13 +85,15 @@ window.initialize = function () {
   }
 
   function addDialogEventListeners() {
-    const fileInput = document.getElementById("fileUpload");
+    const fileDialog = document.getElementById('dialogForUpload');
+    const fileInput = document.getElementById('fileUpload');
     const fileNameDiv = document.getElementById('selectedFileName');
     const clearFileSelectButton = document.getElementById('clearFileSelect');
     const dropzone = document.getElementById('dropzone');
+    const pastezone = document.getElementById('pastezone');
 
     fileInput.addEventListener('change', event => {
-      event.stopPropagation();
+      eventHandled(event);
       const file = fileInput.files[0];
       checkFile(file);
       fileNameDiv.innerHTML = file ? file.name : 'Ei valittua tiedostoa';
@@ -107,8 +109,13 @@ window.initialize = function () {
       eventHandled(event);
       dropzone.classList.remove('dragging');
     });
-  }
 
+    fileDialog.addEventListener('click', event => {
+      if (!pastezone.contains(event.target)) {
+        showDropzone();
+      }
+    })
+  }
 
 }
 
@@ -512,190 +519,6 @@ window.clearLogView = function (event = undefined) {
   return sequenceSelect.dispatchEvent(new Event('change'));;
 }
 
-window.downloadFile = function (event) {
-  console.log('Downloading file...');
-  eventHandled(event);
-
-  const sequence = document.querySelector(`#viewer #sequence`).value;
-  const recordObject = new Object();
-
-  idbGetLogs(sequence)
-    .then((data) => {
-
-      if (data.logItemType !== 'MERGE_LOG') {
-        throw new Error('Wrong log item type (should be MERGE_LOG)');
-      }
-
-      setPreferred(data.preference);
-      setIncomingRecord(data.incomingRecord);
-      setMelindaRecord(data.databaseRecord);
-      setMergedRecord(data.mergedRecord);
-      setCreationTime(data.creationTime);
-      doDownload(JSON.stringify(recordObject));
-      showSnackbar({text: 'Tiedosto on ladattu onnistuneesti!', closeButton: 'true'})
-    })
-    .catch((error) => {
-      console.log('Problem getting or setting log data while creating record object: ', error);
-      showSnackbar({text: 'Tiedostoa ei valitettavasti pystytty lataamaan', closeButton: 'true'});
-    })
-
-  function setPreferred(preference) {
-    if (preference.recordName === 'databaseRecord') {
-      recordObject.preferred = 'melindaRecord';
-      return;
-    }
-
-    recordObject.preferred = preference.recordName;
-  }
-
-  function setIncomingRecord(record) {
-    recordObject.incomingRecord = record;
-  }
-
-  function setMelindaRecord(record) {
-    recordObject.melindaRecord = record;
-  }
-
-  function setMergedRecord(record) {
-    recordObject.mergedRecord = record;
-  }
-
-  function setCreationTime(time) {
-    recordObject.creationTime = time;
-  }
-
-  function doDownload(fileContent) {
-    const fileName = 'Record from Viewer ' + getDateAndTime() + '.json';
-
-    const linkElement = document.createElement('a');
-    linkElement.download = fileName;
-    linkElement.href = 'data:attachment/text,' + encodeURI(fileContent);
-    linkElement.click();
-
-    function getDateAndTime() {
-      const dateNow = new Date();
-
-      const dateAndTime =
-        dateNow.getFullYear()
-        + "-"
-        + ('0' + (dateNow.getMonth() + 1)).slice(-2)
-        + "-"
-        + ('0' + dateNow.getDate()).slice(-2)
-        + ' ' +
-        + ('0' + dateNow.getHours()).slice(-2)
-        + "-"
-        + ('0' + dateNow.getMinutes()).slice(-2)
-        + "-"
-        + ('0' + dateNow.getSeconds()).slice(-2);
-
-      return dateAndTime;
-    }
-  }
-}
-
-window.uploadFile = function (event) {
-  const dialog = document.getElementById('dialogForUpload');
-  dialog.showModal();
-}
-
-window.openFileBrowse = function (event) {
-  eventHandled(event);
-  const fileInput = document.getElementById("fileUpload");
-  fileInput.click();
-}
-
-window.handleFileDrop = function (event) {
-  console.log("Something dropped");
-  eventHandled(event);
-
-  const dataTransfer = event.dataTransfer;
-  const fileInput = document.getElementById('fileUpload');
-  const dropzone = document.getElementById('dropzone');
-
-  dropzone.classList.remove('dragging');
-
-  if (dataTransfer.items[0].kind !== 'file') {
-    console.log('Dropped item is not file!');
-    showSnackbar({text: 'Voit tiputtaa ladattavaksi vain tiedostoja', closeButton: 'true'});
-    return;
-  }
-
-  fileInput.files = dataTransfer.files;
-  fileInput.dispatchEvent(new Event('change'));
-}
-
-window.handleDragOver = function (event) {
-  console.log("File in drop zone");
-  eventHandled(event);
-}
-
-window.clearSelectedFile = function (event) {
-  eventHandled(event);
-  const fileInput = document.getElementById("fileUpload");
-  fileInput.value = '';
-  return fileInput.dispatchEvent(new Event('change'));
-}
-
-window.cancelUpload = function (event) {
-  console.log('File upload cancelled');
-  showSnackbar({text: 'Tiedoston avaaminen peruttu', closeButton: 'true'});
-}
-
-window.confirmUpload = function (event) {
-  const file = document.getElementById('fileUpload').files[0];
-  const reader = new FileReader();
-
-  clearLogView();
-
-  if (file) {
-    console.log(`Trying to read file ${file.name}...`);
-    reader.readAsText(file, 'UTF-8');
-
-    reader.onload = function (event) {
-      const fileContent = event.target.result;
-      const json = parseJson(fileContent);
-      const log = parseLog(json);
-      console.log('Log parsed from file: ', log)
-
-      setDataToIndexDB({0: log}, 0);
-
-      showSnackbar({text: 'Tiedoston avaus onnistui!', closeButton: 'true'});
-      setTimeout(() => {
-        showSnackbar({text: 'Huom! Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
-      }, 3000);
-    }
-
-    reader.onerror = function (event) {
-      console.log('Error reading file ', error);
-      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'})
-    }
-
-    function parseJson(text) {
-      let data = null;
-
-      if (text) {
-        try {
-          data = JSON.parse(text);
-        } catch (error) {
-          console.log('Error while parsing file content to JSON: ', error);
-          showSnackbar({text: 'Tapahtui virhe JSON-tiedostoa lukiessa', closeButton: 'true'});
-        }
-      }
-
-      return data;
-    }
-
-    function parseLog(data) {
-      const log = Object.assign({}, data);
-      log.blobSequence = 0;
-      log.creationTime = data.creationTime || 'Ei saatavilla';
-      log.databaseRecord = data.melindaRecord || data.databaseRecord;
-      log.preference = {recordName: (data.preferred || '')};
-      return log;
-    }
-  }
-}
-
 function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
   console.log(JSON.stringify(logs));
@@ -794,49 +617,6 @@ function remove(id) {
       stopProcess());
 }
 
-function checkFile(file) {
-  console.log('Checking uploaded file...');
-  const confirmUploadButton = document.getElementById('confirmUploadButton');
-  const fileNameDiv = document.getElementById('selectedFileName');
-
-  // If no file, check is skipped
-  if (!file) {
-    console.log('No file to check!');
-    disableElement(confirmUploadButton);
-    return;
-  }
-
-  console.log('Uploaded file name: ', file.name);
-  console.log('Uploaded file size: ', file.size);
-
-  // Empty file is not accepted
-  if (file.size === 0) {
-    console.log('File is empty!');
-    disableElement(confirmUploadButton);
-    highlightElement(fileNameDiv);
-    showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
-    return;
-  }
-
-  console.log('Uploaded file type: ', file.type);
-
-  // File is not JSON: file is not accepted
-  if (file.type !== 'application/json') {
-    console.log(`File type '${file.type}' is not accepted for upload!`);
-    confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
-    disableElement(confirmUploadButton);
-    highlightElement(fileNameDiv);
-    showSnackbar({text: 'Vain JSON-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
-    return;
-  }
-
-  // File type is accepted
-  if (file.type === 'application/json' && file.size > 0) {
-    confirmUploadButton.removeAttribute('title');
-    enableElement(confirmUploadButton);
-  }
-}
-
 function setNewSelect(newIndex) {
   const select = document.querySelector(`#viewer #sequence`);
 
@@ -869,6 +649,303 @@ function highlightElement(element) {
   setTimeout(() => {
     element.classList.remove('highlight');
   }, 5000);
+}
+
+function getDateAndTime() {
+  const dateNow = new Date();
+
+  const dateAndTime =
+    dateNow.getFullYear()
+    + "-"
+    + ('0' + (dateNow.getMonth() + 1)).slice(-2)
+    + "-"
+    + ('0' + dateNow.getDate()).slice(-2)
+    + ' ' +
+    + ('0' + dateNow.getHours()).slice(-2)
+    + "-"
+    + ('0' + dateNow.getMinutes()).slice(-2)
+    + "-"
+    + ('0' + dateNow.getSeconds()).slice(-2);
+
+  return dateAndTime;
+}
+
+
+//-----------------------------------------------------------------------------
+// Functions for file dialog
+//-----------------------------------------------------------------------------
+
+window.downloadFile = function (event) {
+  console.log('Downloading file...');
+  eventHandled(event);
+
+  const sequence = document.querySelector(`#viewer #sequence`).value;
+  const recordObject = new Object();
+
+  idbGetLogs(sequence)
+    .then((data) => {
+
+      if (data.logItemType !== 'MERGE_LOG') {
+        throw new Error('Wrong log item type (should be MERGE_LOG)');
+      }
+
+      setPreferred(data.preference);
+      setIncomingRecord(data.incomingRecord);
+      setMelindaRecord(data.databaseRecord);
+      setMergedRecord(data.mergedRecord);
+      setCreationTime(data.creationTime);
+      doDownload(JSON.stringify(recordObject));
+      showSnackbar({text: 'Tiedosto on ladattu onnistuneesti!', closeButton: 'true'})
+    })
+    .catch((error) => {
+      console.log('Problem getting or setting log data while creating record object: ', error);
+      showSnackbar({text: 'Tiedostoa ei valitettavasti pystytty lataamaan', closeButton: 'true'});
+    })
+
+  function setPreferred(preference) {
+    if (preference.recordName === 'databaseRecord') {
+      recordObject.preferred = 'melindaRecord';
+      return;
+    }
+
+    recordObject.preferred = preference.recordName;
+  }
+
+  function setIncomingRecord(record) {
+    recordObject.incomingRecord = record;
+  }
+
+  function setMelindaRecord(record) {
+    recordObject.melindaRecord = record;
+  }
+
+  function setMergedRecord(record) {
+    recordObject.mergedRecord = record;
+  }
+
+  function setCreationTime(time) {
+    recordObject.creationTime = time;
+  }
+
+  function doDownload(fileContent) {
+    const fileName = 'Record from Viewer ' + getDateAndTime() + '.json';
+
+    const linkElement = document.createElement('a');
+    linkElement.download = fileName;
+    linkElement.href = 'data:attachment/text,' + encodeURI(fileContent);
+    linkElement.click();
+  }
+}
+
+window.uploadFile = function (event) {
+  const dialog = document.getElementById('dialogForUpload');
+  dialog.showModal();
+  showDropzone();
+}
+
+window.cancelUpload = function (event) {
+  console.log('File upload cancelled');
+  showSnackbar({text: 'Tiedoston avaaminen peruttu', closeButton: 'true'});
+}
+
+window.confirmUpload = function (event) {
+  const file = document.getElementById('fileUpload').files[0];
+  const reader = new FileReader();
+
+  clearLogView();
+
+  if (file) {
+    console.log(`Trying to read file ${file.name}...`);
+    reader.readAsText(file, 'UTF-8');
+
+    reader.onload = function (event) {
+      const fileContent = event.target.result;
+      const json = parseJson(fileContent);
+      const log = parseLog(json);
+
+      if (log) {
+        console.log('Log parsed from file: ', log);
+        setDataToIndexDB({0: log}, 0);
+        showSnackbar({text: 'Tiedoston avaus onnistui!', closeButton: 'true'});
+        setTimeout(() => {
+          showSnackbar({text: 'Huom! Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
+        }, 3000);
+      }
+    }
+
+    reader.onerror = function (event) {
+      console.log('Error reading file ', error);
+      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'})
+    }
+
+    function parseJson(text) {
+      let data = null;
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (error) {
+          console.log('Error while parsing file content to JSON: ', error);
+          showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        }
+      }
+
+      return data;
+    }
+
+    function parseLog(data) {
+      if (data === null) {
+        console.log('No json data for parsing log');
+        return;
+      }
+
+      const log = Object.assign({}, data);
+      log.blobSequence = 0;
+      log.creationTime = data.creationTime || 'Ei saatavilla';
+      log.databaseRecord = data.melindaRecord || data.databaseRecord;
+      log.preference = {recordName: (data.preferred || '')};
+      return log;
+    }
+  }
+}
+
+window.openFileBrowse = function (event) {
+  eventHandled(event);
+  const fileInput = document.getElementById("fileUpload");
+  fileInput.click();
+}
+
+window.clearSelectedFile = function (event) {
+  eventHandled(event);
+  const fileInput = document.getElementById("fileUpload");
+  fileInput.value = '';
+  return fileInput.dispatchEvent(new Event('change'));
+}
+
+window.handleDrop = function (event) {
+  console.log("Something dropped");
+  eventHandled(event);
+
+  const droppedItem = event.dataTransfer.items[0];
+  const fileInput = document.getElementById('fileUpload');
+  const dropzone = document.getElementById('dropzone');
+
+  dropzone.classList.remove('dragging');
+
+  switch (true) {
+    case (droppedItem.kind === 'file'):
+      fileInput.files = event.dataTransfer.files;
+      break;
+    case (droppedItem.kind === 'string'):
+      const newDataTransfer = new DataTransfer();
+      const string = event.dataTransfer.getData('text');
+      const file = new File([string], 'Record from Clipboard ' + getDateAndTime() + '.json', {type: 'application/json', });
+      newDataTransfer.items.add(file);
+      fileInput.files = newDataTransfer.files;
+      break;
+    default:
+      console.log('Dropped item is not file or text: ', droppedItem.kind);
+      showSnackbar({text: 'Voit tiputtaa ladattavaksi vain tiedostoja tai tekstiä', closeButton: 'true'});
+      return;
+  }
+
+  fileInput.dispatchEvent(new Event('change'));
+  showSnackbar({text: 'Tietueista muodostettiin tiedosto lukunäkymää varten', closeButton: 'true'});
+}
+
+window.handleDragOver = function (event) {
+  eventHandled(event);
+}
+
+window.handlePaste = function (event) {
+  console.log('Something pasted');
+  showPastezone();
+
+  const textInput = document.getElementById('pasteInput');
+
+  navigator.clipboard
+    .readText()
+    .then(clipText => 
+      textInput.value = clipText
+    )
+
+  textInput.dispatchEvent(new Event('change'));
+}
+
+window.handleInputChange = function (event) {
+  eventHandled(event);
+
+  const textInputValue = event.target.value;
+
+  if (textInputValue === '') {
+    return;
+  }
+
+  const dropzone = document.getElementById('dropzone');
+  const newDataTransfer = new DataTransfer();
+  const dropEvent = new Event('drop');
+
+  showDropzone();
+  newDataTransfer.items.add(textInputValue, 'text/plain');
+  dropEvent.dataTransfer = newDataTransfer;
+  dropzone.dispatchEvent(dropEvent);
+}
+
+window.showPastezone = function (event = undefined) {
+  eventHandled(event);
+
+  const pastezone = document.getElementById('pastezone');
+  const dropzone = document.getElementById('dropzone');
+
+  pastezone.style.display = 'flex'
+  dropzone.style.display = 'none';
+
+  const input = document.getElementById('pasteInput')
+  input.focus();
+  input.select();
+  input.value = '';
+}
+
+function showDropzone() {
+  const pastezone = document.getElementById('pastezone');
+  const dropzone = document.getElementById('dropzone');
+
+  pastezone.style.display = 'none'
+  dropzone.style.display = 'flex';
+}
+
+function checkFile(file) {
+  console.log('Checking uploaded file...');
+  const confirmUploadButton = document.getElementById('confirmUploadButton');
+  const fileNameDiv = document.getElementById('selectedFileName');
+
+  if (!file) {
+    console.log('No file to check!');
+    disableElement(confirmUploadButton);
+    return;
+  }
+
+  if (file.size === 0) {
+    console.log('File is empty!');
+    disableElement(confirmUploadButton);
+    highlightElement(fileNameDiv);
+    showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
+    return;
+  }
+
+  if (file.type !== 'application/json') {
+    console.log(`File type '${file.type}' is not accepted for upload!`);
+    confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
+    disableElement(confirmUploadButton);
+    highlightElement(fileNameDiv);
+    showSnackbar({text: 'Vain JSON-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
+    return;
+  }
+
+  if (file.type === 'application/json' && file.size > 0) {
+    confirmUploadButton.removeAttribute('title');
+    enableElement(confirmUploadButton);
+  }
 }
 
 

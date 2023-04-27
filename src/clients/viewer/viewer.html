@@ -193,24 +193,33 @@
 
       <!-- Dialog popup for uploading files -->
       <dialog id="dialogForUpload">
-        <form method="dialog">
+        <form method="dialog" onpaste="return handlePaste(event)">
 
           <div class="dialog-icon material-icons">
             upload_file
           </div>
 
           <div class="dialog-headline">
-            Lataa tietue Vieweriin
+            Avaa tiedosto lukunäkymässä
           </div>
 
           <div class="dialog-supporting-text">
-            <p>Valitse tietue, jonka haluat avata lukunäkymässä.</p>
+
             <p>
-              Voit
-              <br>
-              - selata tai tiputtaa tietueen .json-päätteisenä tiedostona laitteeltasi
-              <br>
-              - liittää tietueen JSON-muotoisena tekstinä
+              OHJEET:
+            </p>
+            <p>
+              Klikkaa 'Selaa' ja valitse tiedosto omalta laitteeltasi.
+              Voit myös vetää ja tiputtaa tietueet tiedostona tai tekstinä tiputusalueelle.
+              Jos klikkaat tiputusaluetta voit liittää (ctrl+v) tietueet tekstinä syötekenttään suoraan
+              leikepöydältäsi.
+            </p>
+            <p>
+              Tiedostojen on oltava .json-päätteisiä ja tietueiden on oltava json-muodossa. Kaikki tietueet on annettava samalla kertaa.
+              Tekstinä liitetyt tietueet ladataan automaattisesti tiedostoiksi.
+            </p>
+            <p>
+              Klikkaa lopuksi 'Avaa tiedosto'. Tietueet avautuvat Viewerissä lukunäkymään.
             </p>
 
             <hr>
@@ -223,10 +232,17 @@
                 title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
                 style="display: none">close</button>
             </div>
-            <div id="dropzone" ondrop="return handleFileDrop(event)" ondragover="return handleDragOver(event)">
-              Vedä tiedosto tai liitä tekstiä
+
+            <div id="dropzone" ondrop="return handleDrop(event)" ondragover="return handleDragOver(event)"
+              onclick="return showPastezone(event)">
+              Vedä tiedosto tai tietue tähän. Liitä tekstiä klikkaamalla.
+            </div>
+            <div id="pastezone" style="display: none">
+              <input id="pasteInput" type="text" oninput="return handleInputChange(event)"
+                placeholder="..liitä tietueet tekstinä...">
             </div>
             <hr>
+
           </div>
 
 

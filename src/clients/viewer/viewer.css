@@ -804,7 +804,8 @@ div#correlationIdListModal {}
   color: black;
 }
 
-#dialogForUpload #dropzone {
+#dialogForUpload #dropzone,
+#dialogForUpload #pastezone {
   display: flex;
   flex-grow: 2;
   border: 1px dashed grey;
@@ -815,12 +816,27 @@ div#correlationIdListModal {}
   color: grey;
   margin-top: 15px;
   margin-bottom: 15px;
+  overflow: hidden;
 }
 
 #dialogForUpload #dropzone:hover {
   background-color: rgb(182, 225, 224);
+  cursor: pointer;
 }
 
 .dragging {
   background-color: #8AB59C;
+}
+
+#dialogForUpload #pastezone input {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: none;
+  text-align: center;
+}
+
+#dialogForUpload #pastezone textarea:focus,
+#dialogForUpload #pastezone input:focus {
+  outline: none;
 }
