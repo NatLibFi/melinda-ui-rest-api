@@ -816,6 +816,28 @@ window.confirmUpload = function (event) {
   }
 }
 
+window.showInstructions = function (event) {
+  eventHandled(event);
+  const instructions = document.getElementById('instructions');
+  const hideButton = document.getElementById('hideInstructionsButton');
+  const showButton = document.getElementById('showInstructionsButton');
+
+  instructions.style.display = 'block';
+  showButton.style.display = 'none';
+  hideButton.style.display = 'flex';
+}
+
+window.hideInstructions = function (event) {
+  eventHandled(event);
+  const instructions = document.getElementById('instructions');
+  const hideButton = document.getElementById('hideInstructionsButton');
+  const showButton = document.getElementById('showInstructionsButton');
+
+  instructions.style.display = 'none';
+  showButton.style.display = 'flex';
+  hideButton.style.display = 'none';
+}
+
 window.openFileBrowse = function (event) {
   eventHandled(event);
   const fileInput = document.getElementById("fileUpload");

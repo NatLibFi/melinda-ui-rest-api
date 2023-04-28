@@ -764,6 +764,17 @@ div#correlationIdListModal {}
   width: 500px
 }
 
+#dialogForUpload .instructions-headline {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+}
+
+#dialogForUpload .instuctions-headline button {
+  display: flex;
+}
+
 #dialogForUpload #fileDiv {
   width: 100%;
 }

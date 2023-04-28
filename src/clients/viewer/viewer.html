@@ -216,23 +216,35 @@
 
           <div class="dialog-supporting-text">
 
-            <p>
-              OHJEET:
-            </p>
-            <p>
-              Klikkaa 'Selaa' ja valitse tiedosto omalta laitteeltasi.
-              Voit myös vetää ja tiputtaa tietueet tiedostona tai tekstinä tiputusalueelle.
-              Jos klikkaat tiputusaluetta voit liittää (ctrl+v) tietueet tekstinä syötekenttään suoraan
-              leikepöydältäsi.
-            </p>
-            <p>
-              Tiedostojen on oltava .json-päätteisiä ja tietueiden on oltava json-muodossa. Kaikki tietueet on annettava
-              samalla kertaa.
-              Tekstinä liitetyt tietueet ladataan automaattisesti tiedostoiksi.
-            </p>
-            <p>
-              Klikkaa lopuksi 'Avaa tiedosto'. Tietueet avautuvat Viewerissä lukunäkymään.
-            </p>
+            <div class="instructions-headline">
+              <div>
+                OHJEET
+              </div>
+              <button id="showInstructionsButton" onclick="return showInstructions(event)"
+                class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä">expand_more</button>
+
+              <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
+                class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                style="display: none">expand_less</button>
+
+            </div>
+
+            <div id="instructions" style="display: none">
+              <p>
+                Klikkaa 'Selaa' ja valitse tiedosto omalta laitteeltasi.
+                Voit myös vetää ja tiputtaa tietueet tiedostona tai tekstinä tiputusalueelle.
+                Jos klikkaat tiputusaluetta voit liittää (ctrl+v) tietueet tekstinä suoraan leikepöydältäsi.
+              </p>
+              <p>
+                Tiedostojen on oltava .json-päätteisiä ja tietueiden on oltava json-muodossa. Kaikki tietueet on
+                annettava yhdellä kertaa.
+                Tekstinä liitetyt tietueet ladataan automaattisesti tiedostoiksi.
+              </p>
+              <p>
+                Klikkaa lopuksi 'Avaa tiedosto'. Tietueet avautuvat Viewerissä lukunäkymään. Lukunäkymässä tietueiden
+                käsittelyä on rajoitettu.
+              </p>
+            </div>
 
             <hr>
             <div class="file-input">
