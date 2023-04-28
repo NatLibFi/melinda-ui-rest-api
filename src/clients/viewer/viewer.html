@@ -83,7 +83,12 @@
       </div>
 
       <!-- Viewer Toolbar -->
-      <div class="tools ToolBar">
+      <div id="viewerTools" class="tools ToolBar">
+
+        <div id="readMode" class="read-mode" style="display: none">
+          <span class="material-icons">disabled_visible</span>
+          <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
+        </div>
 
         <!-- Tools for searching and selecting a correlation id and sequence -->
         <form class="ToolBar HBox highlight-border">
@@ -132,6 +137,7 @@
 
           </div>
 
+
           <button class="material-icons tooltip search-button" tooltip-text="Hae"
             onclick="return doSearchPress(event)">search</button>
 
@@ -160,9 +166,14 @@
           <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
             disabled="true">settings</button>
 
+          <button id="exit" class="material-icons tooltip" tooltip-text="Sulje näkymä" style="display: none"
+            onclick="return exitReaderMode(event)">logout</button>
+
         </div>
 
       </div>
+
+
 
       <!-- Dialog popup for removing logs -->
       <dialog id="dialogForRemove">
@@ -215,7 +226,8 @@
               leikepöydältäsi.
             </p>
             <p>
-              Tiedostojen on oltava .json-päätteisiä ja tietueiden on oltava json-muodossa. Kaikki tietueet on annettava samalla kertaa.
+              Tiedostojen on oltava .json-päätteisiä ja tietueiden on oltava json-muodossa. Kaikki tietueet on annettava
+              samalla kertaa.
               Tekstinä liitetyt tietueet ladataan automaattisesti tiedostoiksi.
             </p>
             <p>

@@ -114,6 +114,10 @@ div#tools {}
   color: rgb(182, 225, 224);
 }
 
+.tools button.search-button:disabled {
+  background-color: lightgrey;
+}
+
 /* ---------------------------------------------------------------------------- */
 
 div#viewer {}
@@ -839,4 +843,29 @@ div#correlationIdListModal {}
 #dialogForUpload #pastezone textarea:focus,
 #dialogForUpload #pastezone input:focus {
   outline: none;
+}
+
+.read-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.read-mode-info {
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: grey;
+}
+
+.read-mode span {
+  color: grey;
+}
+
+button#exit {
+  background-color: rgb(182, 225, 224);
+}
+
+button#exit:hover {
+  background-color: lightgrey;
 }

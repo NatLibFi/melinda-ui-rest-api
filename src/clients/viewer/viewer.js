@@ -254,6 +254,9 @@ window.loadLog = (event) => {
     const idInputField = document.querySelector(`#viewer #id`);
     const logTypeSelect = document.querySelector(`#viewer #logType`);
     const col3 = document.querySelector('#viewer #record3').parentElement;
+    const settingsButton = document.getElementById('settings');
+    const downloadButton = document.getElementById('export');
+
 
     idInputField.value = '';
     logTypeSelect.value = 'MERGE_LOG';
@@ -270,6 +273,8 @@ window.loadLog = (event) => {
     disableElement(clearButton)
     disableElement(protectButton);
     disableElement(removeButton);
+    disableElement(settingsButton);
+    disableElement(downloadButton);
 
     setRecordTopInfo('record1', `Sisääntuleva tietue`);
     showRecord({}, "record1", {}, 'viewer');
@@ -766,6 +771,7 @@ window.confirmUpload = function (event) {
       if (log) {
         console.log('Log parsed from file: ', log);
         setDataToIndexDB({0: log}, 0);
+        showReaderMode();
         showSnackbar({text: 'Tiedoston avaus onnistui!', closeButton: 'true'});
         setTimeout(() => {
           showSnackbar({text: 'Huom! Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
@@ -800,6 +806,7 @@ window.confirmUpload = function (event) {
       }
 
       const log = Object.assign({}, data);
+      log.logItemType = 'MERGE_LOG';
       log.blobSequence = 0;
       log.creationTime = data.creationTime || 'Ei saatavilla';
       log.databaseRecord = data.melindaRecord || data.databaseRecord;
@@ -865,7 +872,7 @@ window.handlePaste = function (event) {
 
   navigator.clipboard
     .readText()
-    .then(clipText => 
+    .then(clipText =>
       textInput.value = clipText
     )
 
@@ -904,6 +911,50 @@ window.showPastezone = function (event = undefined) {
   input.focus();
   input.select();
   input.value = '';
+}
+
+window.exitReaderMode = function (event) {
+  console.log('Exiting Viewer reader mode');
+  eventHandled(event);
+
+  const toolbar = document.getElementById('viewerTools');
+  const allElements = toolbar.getElementsByTagName('*');
+
+  for (var i = -1, l = allElements.length; ++i < l;) {
+    enableElement(allElements[i])
+  }
+
+  const readMode = document.getElementById('readMode');
+  readMode.style.display = 'none';
+
+  const exitButton = document.getElementById('exit');
+  disableElement(exitButton);
+  exitButton.style.display = 'none';
+
+  clearLogView();
+}
+
+function showReaderMode() {
+  console.log('Viewer is now in reader mode: records are read only');
+
+  const toolbar = document.getElementById('viewerTools');
+  const allElements = toolbar.getElementsByTagName('*');
+
+  for (var i = -1, l = allElements.length; ++i < l;) {
+    disableElement(allElements[i])
+  }
+  const downloadButton = document.getElementById('export');
+  enableElement(downloadButton);
+
+  const uploadButton = document.getElementById('import');
+  enableElement(uploadButton);
+
+  const exitButton = document.getElementById('exit');
+  exitButton.style.display = 'block';
+  enableElement(exitButton);
+
+  const readMode = document.getElementById('readMode');
+  readMode.style.display = 'flex';
 }
 
 function showDropzone() {
