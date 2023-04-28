@@ -648,8 +648,12 @@ function disableElement(element) {
   element.disabled = true;
 }
 
-function highlightElement(element) {
+function highlightElement(element, color) {
   element.classList.add('highlight');
+
+  if (color) {
+    element.style.setProperty(`--highlightcolor`, color);
+  }
 
   setTimeout(() => {
     element.classList.remove('highlight');
@@ -772,10 +776,7 @@ window.confirmUpload = function (event) {
         console.log('Log parsed from file: ', log);
         setDataToIndexDB({0: log}, 0);
         showReaderMode();
-        showSnackbar({text: 'Tiedoston avaus onnistui!', closeButton: 'true'});
-        setTimeout(() => {
-          showSnackbar({text: 'Huom! Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
-        }, 3000);
+        showSnackbar({text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
       }
     }
 
@@ -1001,7 +1002,7 @@ function checkFile(file) {
   if (file.size === 0) {
     console.log('File is empty!');
     disableElement(confirmUploadButton);
-    highlightElement(fileNameDiv);
+    highlightElement(fileNameDiv, '#D6958B');
     showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
     return;
   }
@@ -1010,7 +1011,7 @@ function checkFile(file) {
     console.log(`File type '${file.type}' is not accepted for upload!`);
     confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
     disableElement(confirmUploadButton);
-    highlightElement(fileNameDiv);
+    highlightElement(fileNameDiv, '#D6958B');
     showSnackbar({text: 'Vain JSON-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
     return;
   }
@@ -1018,6 +1019,7 @@ function checkFile(file) {
   if (file.type === 'application/json' && file.size > 0) {
     confirmUploadButton.removeAttribute('title');
     enableElement(confirmUploadButton);
+    highlightElement(fileNameDiv, '#8AB59C');
   }
 }
 

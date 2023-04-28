@@ -238,7 +238,8 @@ span.correlation-id-font {
 
 @keyframes highlight {
   50% {
-    background-color: rgb(182, 225, 224);
+    background-color: var(--highlightcolor, #FAE196);
+    border-radius: 1em;
   }
 }
 
@@ -786,6 +787,7 @@ div#correlationIdListModal {}
   margin-top: 15px;
   margin-bottom: 15px;
   width: 100%;
+  height: 35px;
 }
 
 #dialogForUpload .file-name {
@@ -794,6 +796,7 @@ div#correlationIdListModal {}
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
+  margin-left: 5px;
 }
 
 #dialogForUpload .file-button {
