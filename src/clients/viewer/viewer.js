@@ -90,7 +90,6 @@ window.initialize = function () {
     const fileInput = document.getElementById('fileUpload');
     const fileNameDiv = document.getElementById('selectedFileName');
     const clearFileSelectButton = document.getElementById('clearFileSelect');
-    const dropzone = document.getElementById('dropzone');
 
     fileInput.addEventListener('change', event => {
       eventHandled(event);
@@ -102,16 +101,6 @@ window.initialize = function () {
         ? (fileNameDiv.innerHTML = file.name, fileNameDiv.classList.add('file-selected'), clearFileSelectButton.style.display = 'block')
         : (fileNameDiv.innerHTML = 'Ei valittua tiedostoa', fileNameDiv.classList.remove('file-selected'), clearFileSelectButton.style.display = 'none')
 
-    });
-
-    dropzone.addEventListener('dragenter', event => {
-      eventHandled(event);
-      dropzone.classList.add('dragging');
-    });
-
-    dropzone.addEventListener('dragleave', event => {
-      eventHandled(event);
-      dropzone.classList.remove('dragging');
     });
 
   }
@@ -779,36 +768,6 @@ window.openFileBrowse = function (event) {
   fileInput.click();
 }
 
-window.handleDrop = function (event) {
-  console.log('Something dropped');
-  eventHandled(event);
-
-  const fileInput = document.getElementById('fileUpload');
-  const dropzone = document.getElementById('dropzone');
-
-  const droppedItem = event.dataTransfer.items[0];
-  dropzone.classList.remove('dragging');
-
-  if (!droppedItem) {
-    console.log('Error occured while handling dropped item, this should not happen')
-    showSnackbar({text: 'Pudotuksessa tapahtui virhe, valitse tiedosto selaamalla', closeButton: 'true'});
-    return;
-  }
-
-  if (droppedItem.kind !== 'file') {
-    console.log('Dropped item is not file: ', droppedItem.kind);
-    showSnackbar({text: 'Voit tiputtaa avattavaksi vain tiedoston', closeButton: 'true'});
-    return;
-  }
-
-  fileInput.files = event.dataTransfer.files;
-  fileInput.dispatchEvent(new Event('change'));
-}
-
-window.handleDragOver = function (event) {
-  eventHandled(event);
-}
-
 window.clearSelectedFile = function (event) {
   eventHandled(event);
   const fileInput = document.getElementById('fileUpload');
@@ -953,7 +912,7 @@ function checkFile(file) {
 
   if (file.type !== 'application/json' && file.type !== 'text/plain') {
     console.log(`File type '${file.type}' is not accepted for upload!`);
-    confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
+    confirmUploadButton.title = 'Valitse ensin .json- tai .txt-päätteinen tiedosto';
     disableElement(confirmUploadButton);
     highlightElement(fileNameDiv, '#D6958B');
     showSnackbar({text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});

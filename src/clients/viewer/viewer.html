@@ -85,6 +85,7 @@
       <!-- Viewer Toolbar -->
       <div id="viewerTools" class="tools ToolBar">
 
+        <!-- Info text and icon are visible when viewer is set in reader mode -->
         <div id="readMode" class="read-mode" style="display: none">
           <span class="material-icons">disabled_visible</span>
           <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
@@ -216,32 +217,6 @@
 
           <div class="dialog-supporting-text">
 
-            <div class="instructions-headline">
-              <div>
-                OHJEET
-              </div>
-              <button id="showInstructionsButton" onclick="return showInstructions(event)"
-                class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä">expand_more</button>
-
-              <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
-                class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
-                style="display: none">expand_less</button>
-            </div>
-
-            <div id="instructions" style="display: none">
-              <p>
-                Valitse tiedosto selaamalla omalta laitteeltasi. Voit myös vetää ja tiputtaa tiedoston.
-              </p>
-              <p>
-                Tiedoston pääte on oltava .json tai .txt ja tiedoston tietueiden on oltava json-muodossa.
-              </p>
-              <p>
-                Valitse lopuksi 'Avaa tiedosto'. Tietueet avautuvat Viewerissä lukunäkymään. Lukunäkymässä tietueiden
-                käsittelyä on rajoitettu.
-              </p>
-            </div>
-
-            <hr>
             <div class="file-input">
               <input type="file" id="fileUpload" accept=".json, .txt" style="display:none" />
               <button id="fileSelect" type="button" class="file-button"
@@ -251,16 +226,46 @@
                 title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
                 style="display: none">close</button>
             </div>
-            <div id="dropzone" ondrop="return handleDrop(event)" ondragover="return handleDragOver(event)">
-              Vedä ja pudota tiedosto tähän
-            </div>
-          </div>
 
+            <hr>
+            <div class="instructions-headline">
+              <div>
+                OHJEET
+              </div>
+              <button id="showInstructionsButton" onclick="return showInstructions(event)"
+                class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä">expand_more</button>
+              <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
+                class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                style="display: none">expand_less</button>
+            </div>
+
+            <div id="instructions" style="display: none">
+              <ul>
+                <li>Valitse tiedosto ensin selaamalla omalta laitteeltasi.</li>
+                <li>
+                  Tiedoston pääte on oltava .json tai .txt.
+                </li>
+                <li>
+                  Tiedostossa tietueiden on oltava json-muodossa.
+                </li>
+                <li>
+                  Klikkaa lopuksi 'Avaa tiedosto'.
+                </li>
+                <li>
+                  Tietueet avautuvat Viewerissä lukunäkymään.
+                </li>
+                <li>
+                  Lukunäkymässä tietueiden käsittelyä on rajoitettu.
+                </li>
+              </ul>
+            </div>
+
+          </div>
 
           <div class="dialog-actions">
             <button class="dialog-cancel-button" id="cancelUploadButton"
               onclick="return cancelUpload(event)">Kumoa</button>
-            <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin JSON-tiedosto"
+            <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin tiedosto"
               disabled="true" onclick="return confirmUpload(event)">Avaa tiedosto</button>
           </div>
 

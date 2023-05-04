@@ -118,6 +118,35 @@ div#tools {}
   background-color: lightgrey;
 }
 
+
+/* Viewer reader mode styles */
+/* ---------------------------------------------------------------------------- */
+
+.tools .read-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tools .read-mode-info {
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: grey;
+}
+
+.tools .read-mode span {
+  color: grey;
+}
+
+.tools button#exit {
+  background-color: rgb(182, 225, 224);
+}
+
+.tools button#exit:hover {
+  background-color: lightgrey;
+}
+
 /* ---------------------------------------------------------------------------- */
 
 div#viewer {}
@@ -757,35 +786,20 @@ div#correlationIdListModal {}
 
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
-/* ---Dialog for file upload---*/
+/* --- Dialog for file upload --------------------------------------------------*/
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 
 #dialogForUpload {
-  width: 570px;
-}
-
-#dialogForUpload .instructions-headline {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  width: 100%;
-}
-
-#dialogForUpload .instuctions-headline button {
-  display: flex;
-}
-
-#dialogForUpload #fileDiv {
-  width: 100%;
+  width: 550px;
 }
 
 #dialogForUpload .file-input {
   display: flex;
   flex-grow: 1;
   align-items: center;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 20px;
   width: 100%;
   height: 35px;
 }
@@ -797,7 +811,6 @@ div#correlationIdListModal {}
   padding-left: 10px;
   padding-right: 10px;
   margin-left: 5px;
-
 }
 
 #dialogForUpload .file-name.file-selected {
@@ -812,8 +825,12 @@ div#correlationIdListModal {}
   border: none;
 }
 
+#dialogForUpload .file-button:active {
+  color: rgb(182, 225, 224);
+}
+
 #dialogForUpload .file-button:hover {
-  background-color: grey;
+  background-color: lightgrey;
 }
 
 #dialogForUpload .close-button {
@@ -827,55 +844,26 @@ div#correlationIdListModal {}
   color: black;
 }
 
-#dialogForUpload #dropzone {
+#dialogForUpload .close-button:active {
+  background-color: darkgrey;
+  color: black;
+}
+
+#dialogForUpload .instructions-headline {
   display: flex;
-  flex-grow: 2;
-  border: 1px dashed grey;
-  border-radius: 1em;
-  height: 100px;
   align-items: center;
-  justify-content: center;
-  color: grey;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  overflow: hidden;
+  flex-grow: 1;
+  width: 100%;
 }
 
-#dialogForUpload #dropzone:hover {
-  background-color: rgb(182, 225, 224);
-  cursor: pointer;
+#dialogForUpload .instructions-headline button {
+  margin-left: 10px;
 }
 
-#dialogForUpload #dropzone .disabled {
-  background-color: grey;
-  cursor: no-drop;
-}
-
-.dragging {
-  background-color: #8AB59C;
-}
-
-.read-mode {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.read-mode-info {
-  display: flex;
-  padding-left: 15px;
-  padding-right: 15px;
-  color: grey;
-}
-
-.read-mode span {
-  color: grey;
-}
-
-button#exit {
-  background-color: rgb(182, 225, 224);
-}
-
-button#exit:hover {
+#dialogForUpload .instructions-headline button:hover {
   background-color: lightgrey;
+}
+
+#dialogForUpload .instructions-headline button:active {
+  background-color: darkgrey;
 }
