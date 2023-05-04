@@ -762,7 +762,7 @@ div#correlationIdListModal {}
 /* ---------------------------------------------------------------------------- */
 
 #dialogForUpload {
-  width: 500px
+  width: 570px;
 }
 
 #dialogForUpload .instructions-headline {
@@ -797,6 +797,11 @@ div#correlationIdListModal {}
   padding-left: 10px;
   padding-right: 10px;
   margin-left: 5px;
+
+}
+
+#dialogForUpload .file-name.file-selected {
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
 }
 
 #dialogForUpload .file-button {
@@ -822,8 +827,7 @@ div#correlationIdListModal {}
   color: black;
 }
 
-#dialogForUpload #dropzone,
-#dialogForUpload #pastezone {
+#dialogForUpload #dropzone {
   display: flex;
   flex-grow: 2;
   border: 1px dashed grey;
@@ -842,21 +846,13 @@ div#correlationIdListModal {}
   cursor: pointer;
 }
 
+#dialogForUpload #dropzone .disabled {
+  background-color: grey;
+  cursor: no-drop;
+}
+
 .dragging {
   background-color: #8AB59C;
-}
-
-#dialogForUpload #pastezone input {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border: none;
-  text-align: center;
-}
-
-#dialogForUpload #pastezone textarea:focus,
-#dialogForUpload #pastezone input:focus {
-  outline: none;
 }
 
 .read-mode {

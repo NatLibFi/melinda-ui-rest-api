@@ -4,11 +4,11 @@
 //
 //*****************************************************************************
 
-import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from "/common/ui-utils.js";
-import {Account, doLogin, logout} from "/common/auth.js"
-import {showRecord} from "/common/marc-record-ui.js";
-import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
-import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList, doIndexedDbCheck} from "/viewer/indexDB.js";
+import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
+import {Account, doLogin, logout} from '/common/auth.js';
+import {showRecord} from '/common/marc-record-ui.js';
+import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from '/common/rest.js';
+import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList, doIndexedDbCheck} from '/viewer/indexDB.js';
 
 var viewing = {
   record1: {},
@@ -23,7 +23,7 @@ var viewing = {
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(document.querySelector('#navbar'), "Viewer")
+  setNavBar(document.querySelector('#navbar'), 'Viewer');
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
   disableElement(select);
@@ -31,8 +31,8 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    const username = document.querySelector("#account-menu #username")
-    username.innerHTML = Account.get()["Name"];
+    const username = document.querySelector(`#account-menu #username`);
+    username.innerHTML = Account.get()['Name'];
     showTab('viewer');
     parseUrlParameters();
     doIndexedDbCheck();
@@ -62,6 +62,7 @@ window.initialize = function () {
     }
   }
 
+  // event listeners for some elements for the correlation id list modal 
   function addModalEventListeners() {
     const modal = document.querySelector(`#correlationIdListModal`);
     const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
@@ -84,20 +85,23 @@ window.initialize = function () {
     });
   }
 
+  // event listeners for some elements in the dialog for file upload 
   function addDialogEventListeners() {
-    const fileDialog = document.getElementById('dialogForUpload');
     const fileInput = document.getElementById('fileUpload');
     const fileNameDiv = document.getElementById('selectedFileName');
     const clearFileSelectButton = document.getElementById('clearFileSelect');
     const dropzone = document.getElementById('dropzone');
-    const pastezone = document.getElementById('pastezone');
 
     fileInput.addEventListener('change', event => {
       eventHandled(event);
+
       const file = fileInput.files[0];
       checkFile(file);
-      fileNameDiv.innerHTML = file ? file.name : 'Ei valittua tiedostoa';
-      file ? clearFileSelectButton.style.display = 'block' : clearFileSelectButton.style.display = 'none';
+
+      file
+        ? (fileNameDiv.innerHTML = file.name, fileNameDiv.classList.add('file-selected'), clearFileSelectButton.style.display = 'block')
+        : (fileNameDiv.innerHTML = 'Ei valittua tiedostoa', fileNameDiv.classList.remove('file-selected'), clearFileSelectButton.style.display = 'none')
+
     });
 
     dropzone.addEventListener('dragenter', event => {
@@ -110,11 +114,6 @@ window.initialize = function () {
       dropzone.classList.remove('dragging');
     });
 
-    fileDialog.addEventListener('click', event => {
-      if (!pastezone.contains(event.target)) {
-        showDropzone();
-      }
-    })
   }
 
 }
@@ -126,17 +125,19 @@ window.onAccount = function (e) {
   logout();
 }
 
-//-----------------------------------------------------------------------------
-// Do button actions
-//-----------------------------------------------------------------------------
-
-const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
 
 var transformed = {
   record1: {},
   record2: {},
   record3: {}
 }
+
+const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
+
+
+//-----------------------------------------------------------------------------
+// Do button actions
+//-----------------------------------------------------------------------------
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
@@ -277,11 +278,11 @@ window.loadLog = (event) => {
     disableElement(downloadButton);
 
     setRecordTopInfo('record1', `Sisääntuleva tietue`);
-    showRecord({}, "record1", {}, 'viewer');
+    showRecord({}, 'record1', {}, 'viewer');
     setRecordTopInfo('record2', `Melinda-tietue`);
-    showRecord({}, "record2", {}, 'viewer');
+    showRecord({}, 'record2', {}, 'viewer');
     setRecordTopInfo('record3', 'Yhdistetty tietue');
-    showRecord({}, "record3", {}, 'viewer');
+    showRecord({}, 'record3', {}, 'viewer');
     return;
   }
 
@@ -292,11 +293,11 @@ window.loadLog = (event) => {
   if (logType === 'MERGE_LOG') {
     idbGetLogs(event.target.value).then(data => {
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
-      showRecord(data.incomingRecord, "record1", {}, 'viewer');
+      showRecord(data.incomingRecord, 'record1', {}, 'viewer');
       setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
-      showRecord(data.databaseRecord, "record2", {}, 'viewer');
+      showRecord(data.databaseRecord, 'record2', {}, 'viewer');
       setRecordTopInfo('record3', 'Yhdistetty tietue', `<li>Luontiaika: ${data.creationTime}</li>`);
-      showRecord(data.mergedRecord, "record3", {}, 'viewer');
+      showRecord(data.mergedRecord, 'record3', {}, 'viewer');
     });
   }
 
@@ -321,25 +322,25 @@ window.loadLog = (event) => {
     eventHandled(event);
     const sequenceSelect = document.querySelector(`#viewer #sequence`).value;
     const matchSelectWrap = document.querySelector(`.col .header .Select`);
-    showRecord({}, "record3", {}, 'viewer');
+    showRecord({}, 'record3', {}, 'viewer');
 
     if (event.target.value === 'notFound') {
       return idbGetLogs(sequenceSelect).then(data => {
         matchSelectWrap.style.visibility = 'hidden';
         setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
-        showRecord(data.incomingRecord, "record1", {}, 'viewer');
+        showRecord(data.incomingRecord, 'record1', {}, 'viewer');
         setRecordTopInfo('record2', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
-        showRecord({}, "record2", {}, 'viewer');
+        showRecord({}, 'record2', {}, 'viewer');
       });
     }
 
     idbGetLogs(sequenceSelect).then(data => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
-      showRecord(data.incomingRecord, "record1", {}, 'viewer');
+      showRecord(data.incomingRecord, 'record1', {}, 'viewer');
       const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
-      showRecord(record, "record2", {}, 'viewer');
+      showRecord(record, 'record2', {}, 'viewer');
     });
   }
 
@@ -428,7 +429,7 @@ window.copyLink = function (event) {
   let link = window.location;
 
   if (id !== '' && sequence !== '') {
-    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`
+    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`;
   }
 
   const button = createTestLinkButton(link);
@@ -553,7 +554,7 @@ function setDataToIndexDB(logs, sequence) {
     select.value = sequence;
   }
 
-  const sequenceInputField = document.getElementById("sequenceInput");
+  const sequenceInputField = document.getElementById('sequenceInput');
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
     showSnackbar({text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`, closeButton: 'true'});
@@ -632,22 +633,33 @@ function setNewSelect(newIndex) {
   select.dispatchEvent(newEvent);
 }
 
+
+//-----------------------------------------------------------------------------
+// HTML element helper functions for Viewer
+//-----------------------------------------------------------------------------
+
+// creates a new html element option and returns it
+// text and value attributes of element are given as parameters
 function createOption(text, value) {
-  const option = document.createElement("option");
+  const option = document.createElement('option');
   option.text = text;
   option.value = value;
 
   return option;
 }
 
+// enables the html element given as parameter
 function enableElement(element) {
   element.removeAttribute('disabled');
 }
 
+// disables the html element given as parameter
 function disableElement(element) {
   element.disabled = true;
 }
 
+// highligts a html element with a background color for a moment
+// if no color is given as parameter, uses default color defined in the CSS
 function highlightElement(element, color) {
   element.classList.add('highlight');
 
@@ -660,23 +672,10 @@ function highlightElement(element, color) {
   }, 5000);
 }
 
-function getDateAndTime() {
-  const dateNow = new Date();
-
-  const dateAndTime =
-    dateNow.getFullYear()
-    + "-"
-    + ('0' + (dateNow.getMonth() + 1)).slice(-2)
-    + "-"
-    + ('0' + dateNow.getDate()).slice(-2)
-    + ' ' +
-    + ('0' + dateNow.getHours()).slice(-2)
-    + "-"
-    + ('0' + dateNow.getMinutes()).slice(-2)
-    + "-"
-    + ('0' + dateNow.getSeconds()).slice(-2);
-
-  return dateAndTime;
+// returns an array of all html element descendants of the parent element
+function getAllDescendants(parentElement) {
+  const allDescendantElements = parentElement.getElementsByTagName('*');
+  return [...allDescendantElements];
 }
 
 
@@ -688,6 +687,7 @@ window.downloadFile = function (event) {
   console.log('Downloading file...');
   eventHandled(event);
 
+  const correlationId = document.querySelector(`#viewer #id`).value;
   const sequence = document.querySelector(`#viewer #sequence`).value;
   const recordObject = new Object();
 
@@ -704,7 +704,7 @@ window.downloadFile = function (event) {
       setMergedRecord(data.mergedRecord);
       setCreationTime(data.creationTime);
       doDownload(JSON.stringify(recordObject));
-      showSnackbar({text: 'Tiedosto on ladattu onnistuneesti!', closeButton: 'true'})
+      showSnackbar({text: 'Tiedosto ladattiin onnistuneesti laitteellesi!', closeButton: 'true'});
     })
     .catch((error) => {
       console.log('Problem getting or setting log data while creating record object: ', error);
@@ -737,7 +737,7 @@ window.downloadFile = function (event) {
   }
 
   function doDownload(fileContent) {
-    const fileName = 'Record from Viewer ' + getDateAndTime() + '.json';
+    const fileName = correlationId + '_' + sequence + '.json';
 
     const linkElement = document.createElement('a');
     linkElement.download = fileName;
@@ -749,7 +749,71 @@ window.downloadFile = function (event) {
 window.uploadFile = function (event) {
   const dialog = document.getElementById('dialogForUpload');
   dialog.showModal();
-  showDropzone();
+}
+
+window.showInstructions = function (event) {
+  eventHandled(event);
+  const instructions = document.getElementById('instructions');
+  const hideButton = document.getElementById('hideInstructionsButton');
+  const showButton = document.getElementById('showInstructionsButton');
+
+  instructions.style.display = 'block';
+  showButton.style.display = 'none';
+  hideButton.style.display = 'flex';
+}
+
+window.hideInstructions = function (event) {
+  eventHandled(event);
+  const instructions = document.getElementById('instructions');
+  const hideButton = document.getElementById('hideInstructionsButton');
+  const showButton = document.getElementById('showInstructionsButton');
+
+  instructions.style.display = 'none';
+  showButton.style.display = 'flex';
+  hideButton.style.display = 'none';
+}
+
+window.openFileBrowse = function (event) {
+  eventHandled(event);
+  const fileInput = document.getElementById('fileUpload');
+  fileInput.click();
+}
+
+window.handleDrop = function (event) {
+  console.log('Something dropped');
+  eventHandled(event);
+
+  const fileInput = document.getElementById('fileUpload');
+  const dropzone = document.getElementById('dropzone');
+
+  const droppedItem = event.dataTransfer.items[0];
+  dropzone.classList.remove('dragging');
+
+  if (!droppedItem) {
+    console.log('Error occured while handling dropped item, this should not happen')
+    showSnackbar({text: 'Pudotuksessa tapahtui virhe, valitse tiedosto selaamalla', closeButton: 'true'});
+    return;
+  }
+
+  if (droppedItem.kind !== 'file') {
+    console.log('Dropped item is not file: ', droppedItem.kind);
+    showSnackbar({text: 'Voit tiputtaa avattavaksi vain tiedoston', closeButton: 'true'});
+    return;
+  }
+
+  fileInput.files = event.dataTransfer.files;
+  fileInput.dispatchEvent(new Event('change'));
+}
+
+window.handleDragOver = function (event) {
+  eventHandled(event);
+}
+
+window.clearSelectedFile = function (event) {
+  eventHandled(event);
+  const fileInput = document.getElementById('fileUpload');
+  fileInput.value = '';
+  return fileInput.dispatchEvent(new Event('change'));
 }
 
 window.cancelUpload = function (event) {
@@ -782,7 +846,7 @@ window.confirmUpload = function (event) {
 
     reader.onerror = function (event) {
       console.log('Error reading file ', error);
-      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'})
+      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'});
     }
 
     function parseJson(text) {
@@ -803,6 +867,13 @@ window.confirmUpload = function (event) {
     function parseLog(data) {
       if (data === null) {
         console.log('No json data for parsing log');
+        showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        return;
+      }
+
+      if (data.melindaRecord === undefined && data.databaseRecord === undefined && data.mergedRecord === undefined && data.incomingRecord === undefined) {
+        console.log('Records are undefined, invalid json data for parsing log')
+        showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
         return;
       }
 
@@ -811,129 +882,12 @@ window.confirmUpload = function (event) {
       log.blobSequence = 0;
       log.creationTime = data.creationTime || 'Ei saatavilla';
       log.databaseRecord = data.melindaRecord || data.databaseRecord;
-      log.preference = {recordName: (data.preferred || '')};
+      log.preference = {recordName: ((data.preferred === 'melindaRecord' ? 'databaseRecord' : data.preferred) || '')};
+      delete log.melindaRecord;
+      delete log.preferred;
       return log;
     }
   }
-}
-
-window.showInstructions = function (event) {
-  eventHandled(event);
-  const instructions = document.getElementById('instructions');
-  const hideButton = document.getElementById('hideInstructionsButton');
-  const showButton = document.getElementById('showInstructionsButton');
-
-  instructions.style.display = 'block';
-  showButton.style.display = 'none';
-  hideButton.style.display = 'flex';
-}
-
-window.hideInstructions = function (event) {
-  eventHandled(event);
-  const instructions = document.getElementById('instructions');
-  const hideButton = document.getElementById('hideInstructionsButton');
-  const showButton = document.getElementById('showInstructionsButton');
-
-  instructions.style.display = 'none';
-  showButton.style.display = 'flex';
-  hideButton.style.display = 'none';
-}
-
-window.openFileBrowse = function (event) {
-  eventHandled(event);
-  const fileInput = document.getElementById("fileUpload");
-  fileInput.click();
-}
-
-window.clearSelectedFile = function (event) {
-  eventHandled(event);
-  const fileInput = document.getElementById("fileUpload");
-  fileInput.value = '';
-  return fileInput.dispatchEvent(new Event('change'));
-}
-
-window.handleDrop = function (event) {
-  console.log("Something dropped");
-  eventHandled(event);
-
-  const droppedItem = event.dataTransfer.items[0];
-  const fileInput = document.getElementById('fileUpload');
-  const dropzone = document.getElementById('dropzone');
-
-  dropzone.classList.remove('dragging');
-
-  switch (true) {
-    case (droppedItem.kind === 'file'):
-      fileInput.files = event.dataTransfer.files;
-      break;
-    case (droppedItem.kind === 'string'):
-      const newDataTransfer = new DataTransfer();
-      const string = event.dataTransfer.getData('text');
-      const file = new File([string], 'Record from Clipboard ' + getDateAndTime() + '.json', {type: 'application/json', });
-      newDataTransfer.items.add(file);
-      fileInput.files = newDataTransfer.files;
-      break;
-    default:
-      console.log('Dropped item is not file or text: ', droppedItem.kind);
-      showSnackbar({text: 'Voit tiputtaa ladattavaksi vain tiedostoja tai tekstiä', closeButton: 'true'});
-      return;
-  }
-
-  fileInput.dispatchEvent(new Event('change'));
-  showSnackbar({text: 'Tietueista muodostettiin tiedosto lukunäkymää varten', closeButton: 'true'});
-}
-
-window.handleDragOver = function (event) {
-  eventHandled(event);
-}
-
-window.handlePaste = function (event) {
-  console.log('Something pasted');
-  showPastezone();
-
-  const textInput = document.getElementById('pasteInput');
-
-  navigator.clipboard
-    .readText()
-    .then(clipText =>
-      textInput.value = clipText
-    )
-
-  textInput.dispatchEvent(new Event('change'));
-}
-
-window.handleInputChange = function (event) {
-  eventHandled(event);
-
-  const textInputValue = event.target.value;
-
-  if (textInputValue === '') {
-    return;
-  }
-
-  const dropzone = document.getElementById('dropzone');
-  const newDataTransfer = new DataTransfer();
-  const dropEvent = new Event('drop');
-
-  showDropzone();
-  newDataTransfer.items.add(textInputValue, 'text/plain');
-  dropEvent.dataTransfer = newDataTransfer;
-  dropzone.dispatchEvent(dropEvent);
-}
-
-window.showPastezone = function (event = undefined) {
-  eventHandled(event);
-
-  const pastezone = document.getElementById('pastezone');
-  const dropzone = document.getElementById('dropzone');
-
-  pastezone.style.display = 'flex'
-  dropzone.style.display = 'none';
-
-  const input = document.getElementById('pasteInput')
-  input.focus();
-  input.select();
-  input.value = '';
 }
 
 window.exitReaderMode = function (event) {
@@ -941,11 +895,9 @@ window.exitReaderMode = function (event) {
   eventHandled(event);
 
   const toolbar = document.getElementById('viewerTools');
-  const allElements = toolbar.getElementsByTagName('*');
+  const allElements = getAllDescendants(toolbar);
 
-  for (var i = -1, l = allElements.length; ++i < l;) {
-    enableElement(allElements[i])
-  }
+  allElements.forEach(element => enableElement(element));
 
   const readMode = document.getElementById('readMode');
   readMode.style.display = 'none';
@@ -960,14 +912,14 @@ window.exitReaderMode = function (event) {
 function showReaderMode() {
   console.log('Viewer is now in reader mode: records are read only');
 
-  const toolbar = document.getElementById('viewerTools');
-  const allElements = toolbar.getElementsByTagName('*');
+  const sequenceInputField = document.getElementById('sequenceInput');
+  const sequenceSelect = document.getElementById('sequence');
+  sequenceInputField.style.display = 'block';
+  sequenceSelect.style.display = 'none';
 
-  for (var i = -1, l = allElements.length; ++i < l;) {
-    disableElement(allElements[i])
-  }
-  const downloadButton = document.getElementById('export');
-  enableElement(downloadButton);
+  const toolbar = document.getElementById('viewerTools');
+  const allElements = getAllDescendants(toolbar);
+  allElements.forEach(element => disableElement(element));
 
   const uploadButton = document.getElementById('import');
   enableElement(uploadButton);
@@ -978,14 +930,6 @@ function showReaderMode() {
 
   const readMode = document.getElementById('readMode');
   readMode.style.display = 'flex';
-}
-
-function showDropzone() {
-  const pastezone = document.getElementById('pastezone');
-  const dropzone = document.getElementById('dropzone');
-
-  pastezone.style.display = 'none'
-  dropzone.style.display = 'flex';
 }
 
 function checkFile(file) {
@@ -1007,20 +951,18 @@ function checkFile(file) {
     return;
   }
 
-  if (file.type !== 'application/json') {
+  if (file.type !== 'application/json' && file.type !== 'text/plain') {
     console.log(`File type '${file.type}' is not accepted for upload!`);
     confirmUploadButton.title = 'Valitse ensin JSON-tiedosto';
     disableElement(confirmUploadButton);
     highlightElement(fileNameDiv, '#D6958B');
-    showSnackbar({text: 'Vain JSON-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
+    showSnackbar({text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
     return;
   }
 
-  if (file.type === 'application/json' && file.size > 0) {
-    confirmUploadButton.removeAttribute('title');
-    enableElement(confirmUploadButton);
-    highlightElement(fileNameDiv, '#8AB59C');
-  }
+  confirmUploadButton.removeAttribute('title');
+  enableElement(confirmUploadButton);
+  highlightElement(fileNameDiv, '#8AB59C');
 }
 
 
@@ -1052,8 +994,8 @@ window.goToTop = function (event = undefined) {
 }
 
 window.modalClose = function (event) {
-  const modal = document.querySelector("#correlationIdListModal")
-  modal.style.display = "none"
+  const modal = document.querySelector('#correlationIdListModal');
+  modal.style.display = 'none';
   return eventHandled(event);
 }
 
@@ -1539,7 +1481,7 @@ function updateListView(correlationIdList) {
       if (overWeekOld) {
         const infoIcon = document.createElement('span');
         infoIcon.classList.add('material-icons');
-        infoIcon.innerHTML = "lock_clock";
+        infoIcon.innerHTML = 'lock_clock';
         infoIcon.title = ('Tämä ID on yli 7 vrk vanha, joten se saattaa olla turvattu');
         listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
       }
@@ -1618,14 +1560,14 @@ function updateListView(correlationIdList) {
       function addSelectedIcon() {
         const selectedIcon = document.createElement('span');
         selectedIcon.classList.add('material-icons', 'selected-list-item-check-icon');
-        selectedIcon.innerHTML = "check";
+        selectedIcon.innerHTML = 'check';
         lastSearchedListItem.querySelector(`.list-item-icons`).append(selectedIcon);
       }
 
       function updateSearchIcon() {
         const searchIcon = document.querySelector(`.last-searched .list-item-icons-search`);
         searchIcon.innerHTML = 'find_replace';
-        searchIcon.title = "Hae uudelleen tällä ID:llä";
+        searchIcon.title = 'Hae uudelleen tällä ID:llä';
       }
 
       function addLinkToListItem() {

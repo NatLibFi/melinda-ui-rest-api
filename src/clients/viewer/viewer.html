@@ -204,7 +204,7 @@
 
       <!-- Dialog popup for uploading files -->
       <dialog id="dialogForUpload">
-        <form method="dialog" onpaste="return handlePaste(event)">
+        <form method="dialog">
 
           <div class="dialog-icon material-icons">
             upload_file
@@ -226,29 +226,24 @@
               <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
                 class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
                 style="display: none">expand_less</button>
-
             </div>
 
             <div id="instructions" style="display: none">
               <p>
-                Klikkaa 'Selaa' ja valitse tiedosto omalta laitteeltasi.
-                Voit myös vetää ja tiputtaa tietueet tiedostona tai tekstinä tiputusalueelle.
-                Jos klikkaat tiputusaluetta voit liittää (ctrl+v) tietueet tekstinä suoraan leikepöydältäsi.
+                Valitse tiedosto selaamalla omalta laitteeltasi. Voit myös vetää ja tiputtaa tiedoston.
               </p>
               <p>
-                Tiedostojen on oltava .json-päätteisiä ja tietueiden on oltava json-muodossa. Kaikki tietueet on
-                annettava yhdellä kertaa.
-                Tekstinä liitetyt tietueet ladataan automaattisesti tiedostoiksi.
+                Tiedoston pääte on oltava .json tai .txt ja tiedoston tietueiden on oltava json-muodossa.
               </p>
               <p>
-                Klikkaa lopuksi 'Avaa tiedosto'. Tietueet avautuvat Viewerissä lukunäkymään. Lukunäkymässä tietueiden
+                Valitse lopuksi 'Avaa tiedosto'. Tietueet avautuvat Viewerissä lukunäkymään. Lukunäkymässä tietueiden
                 käsittelyä on rajoitettu.
               </p>
             </div>
 
             <hr>
             <div class="file-input">
-              <input type="file" id="fileUpload" accept=".json" style="display:none" />
+              <input type="file" id="fileUpload" accept=".json, .txt" style="display:none" />
               <button id="fileSelect" type="button" class="file-button"
                 onclick="return openFileBrowse(event)">Selaa</button>
               <div id="selectedFileName" class="file-name">Ei valittua tiedostoa</div>
@@ -256,17 +251,9 @@
                 title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
                 style="display: none">close</button>
             </div>
-
-            <div id="dropzone" ondrop="return handleDrop(event)" ondragover="return handleDragOver(event)"
-              onclick="return showPastezone(event)">
-              Vedä tiedosto tai tietue tähän. Liitä tekstiä klikkaamalla.
+            <div id="dropzone" ondrop="return handleDrop(event)" ondragover="return handleDragOver(event)">
+              Vedä ja pudota tiedosto tähän
             </div>
-            <div id="pastezone" style="display: none">
-              <input id="pasteInput" type="text" oninput="return handleInputChange(event)"
-                placeholder="..liitä tietueet tekstinä...">
-            </div>
-            <hr>
-
           </div>
 
 
