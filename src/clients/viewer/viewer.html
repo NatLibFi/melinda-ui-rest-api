@@ -88,55 +88,55 @@
         <!-- Tools for searching and selecting a correlation id and sequence -->
         <form class="ToolBar HBox highlight-border">
 
-          <div class="Select VBox">
-            <label>Lokityyppi</label>
-            <select id="logType">
-              <option value="MERGE_LOG">Merge</option>
-              <option value="MATCH_LOG">Match</option>
-              <option value="EMPTY_LOG" hidden></option>
-            </select>
-          </div>
-
-          <div class="id-container">
+          <div class="tools-wrapper">
+            <div class="Select VBox">
+              <label>Lokityyppi</label>
+              <select id="logType">
+                <option value="MERGE_LOG">Merge</option>
+                <option value="MATCH_LOG">Match</option>
+                <option value="EMPTY_LOG" hidden></option>
+              </select>
+            </div>
             <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
               tooltip-text="Etsi ID listasta" onclick="return openCorrelationIdListModal(event)">manage_search</button>
+          </div>
 
+          <div class="tools-wrapper">
             <div class="Filler VBox Input">
               <label>ID (correlation id)</label>
               <input class="inputField uuidInput id-input" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
-
           </div>
 
-          <div class="Select VBox sequence-container">
+          <div class="tools-wrapper">
+            <div class="Select VBox sequence-container">
 
-            <label>Sekvenssi</label>
+              <label>Sekvenssi</label>
 
-            <div class="HBox Filler">
+              <div class="HBox Filler">
 
-              <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
-                onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
+                <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
+                  onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
 
-              <div class="Select VBox Filler sequence-select">
-                <select id="sequence" onchange="return loadLog(event)"></select>
+                <div class="Select VBox Filler sequence-select">
+                  <select id="sequence" onchange="return loadLog(event)"></select>
+                </div>
+
+                <div class="Filler VBox Input">
+                  <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
+                </div>
+
+                <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
+                  onclick="return selectNext(event)" disabled="true">navigate_next</button>
+
               </div>
-
-              <div class="Filler VBox Input">
-                <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
-              </div>
-
-              <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
-                onclick="return selectNext(event)" disabled="true">navigate_next</button>
 
             </div>
-
+            <button class="material-icons tooltip search-button" tooltip-text="Hae"
+              onclick="return doSearchPress(event)">search</button>
+            <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
+              onclick="return clearLogView(event)" disabled="true">backspace</button>
           </div>
-
-          <button class="material-icons tooltip search-button" tooltip-text="Hae"
-            onclick="return doSearchPress(event)">search</button>
-
-          <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
-            onclick="return clearLogView(event)" disabled="true">backspace</button>
 
         </form>
 
