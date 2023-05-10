@@ -24,7 +24,7 @@ window.initialize = function () {
   console.log('Initializing');
 
 
-  
+
   setNavBar(document.querySelector('#navbar'), "Viewer")
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
@@ -260,17 +260,13 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
-      console.log(data.matchResult);
-      if (data.matchResult && data.matchResult.length < 1) {
-        console.log('no matchResult');
-        matchSelect.add(createOption('notFound', 0));
-        matchSelect.value = 0;
-        return matchSelect.dispatchEvent(new Event('change'));
-      }
-
       data.matchResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
       });
+
+      if (data.matchResult && data.matchResult.length === 0) {
+        matchSelect.add(createOption('notFound', 0));
+      }
 
       matchSelect.value = 0;
       matchSelect.dispatchEvent(new Event('change'));
@@ -826,13 +822,13 @@ function fetchCorrelationIdList() {
     });
 
 
-    function testIfObjects(elements) {
-      const objects = elements.filter(element => typeof element === 'object');
+  function testIfObjects(elements) {
+    const objects = elements.filter(element => typeof element === 'object');
 
-      if (objects.length !== elements.length) {
-        throw new Error('Correlation id list should contain only objects')
-      }
+    if (objects.length !== elements.length) {
+      throw new Error('Correlation id list should contain only objects')
     }
+  }
 }
 
 function setOrClearErrorMessageAndStyle({clear = 'false', set = 'false', text = 'Sorry, something bad happened'}) {
