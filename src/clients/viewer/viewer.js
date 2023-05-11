@@ -22,8 +22,8 @@ var viewing = {
 
 window.initialize = function () {
   console.log('Initializing');
-
   setNavBar(document.querySelector('#navbar'), 'Viewer');
+
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
   disableElement(select);
@@ -292,15 +292,13 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
-      if (data.matchResult && data.matchResult.length < 1) {
-        matchSelect.add(createOption('notFound', '0'));
-        matchSelect.value = 'notFound';
-        return matchSelect.dispatchEvent(new Event('change'));
-      }
-
       data.matchResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
       });
+
+      if (data.matchResult && data.matchResult.length === 0) {
+        matchSelect.add(createOption('notFound', 0));
+      }
 
       matchSelect.value = 0;
       matchSelect.dispatchEvent(new Event('change'));
@@ -313,20 +311,15 @@ window.loadLog = (event) => {
     const matchSelectWrap = document.querySelector(`.col .header .Select`);
     showRecord({}, 'record3', {}, 'viewer');
 
-    if (event.target.value === 'notFound') {
-      return idbGetLogs(sequenceSelect).then(data => {
-        matchSelectWrap.style.visibility = 'hidden';
-        setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
-        showRecord(data.incomingRecord, 'record1', {}, 'viewer');
-        setRecordTopInfo('record2', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
-        showRecord({}, 'record2', {}, 'viewer');
-      });
-    }
-
     idbGetLogs(sequenceSelect).then(data => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
       setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
-      showRecord(data.incomingRecord, 'record1', {}, 'viewer');
+      showRecord(data.incomingRecord, "record1", {}, 'viewer');
+      if (data.matchResult.length === 0) {
+        setRecordTopInfo('record2', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
+        showRecord({}, "record2", {}, 'viewer');
+        return;
+      }
       const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
       showRecord(record, 'record2', {}, 'viewer');
@@ -367,18 +360,16 @@ window.loadLog = (event) => {
     sequenceInputField.style.display = 'none';
     sequenceSelect.style.display = 'block';
 
+    disableElement(nextButton)
+    disableElement(previousButton);
+
     if (sequenceSelect.selectedIndex !== 0) {
       enableElement(previousButton);
-    } else {
-      disableElement(previousButton);
     }
 
     if (sequenceSelect.selectedIndex < sequenceSelect.length - 1) {
       enableElement(nextButton);
-    } else {
-      disableElement(nextButton)
     }
-
   }
 }
 
