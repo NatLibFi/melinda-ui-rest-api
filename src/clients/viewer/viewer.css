@@ -63,6 +63,11 @@ div#tools {}
   font-size: var(--font-size-icon-normal);
 }
 
+/* Disabled toolbar button cannot be clicked */
+.ToolBar button:disabled {
+  pointer-events: none;
+}
+
 .uuidInput {
   width: 37ch;
 }
@@ -127,6 +132,39 @@ div#tools {}
 
 .tools button.search-button:active {
   color: rgb(182, 225, 224);
+}
+
+.tools button.search-button:disabled {
+  background-color: lightgrey;
+}
+
+
+/* Viewer reader mode styles */
+/* ---------------------------------------------------------------------------- */
+
+.tools .read-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tools .read-mode-info {
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: grey;
+}
+
+.tools .read-mode span {
+  color: grey;
+}
+
+.tools button#exit {
+  background-color: rgb(182, 225, 224);
+}
+
+.tools button#exit:hover {
+  background-color: lightgrey;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -249,7 +287,8 @@ span.correlation-id-font {
 
 @keyframes highlight {
   50% {
-    background-color: rgb(182, 225, 224);
+    background-color: var(--highlightcolor, #FAE196);
+    border-radius: 1em;
   }
 }
 
@@ -697,4 +736,153 @@ div#correlationIdListModal {}
 .disabled-div {
   pointer-events: none;
   opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Correlation id modal adjusting to the screen width */
+/* ---------------------------------------------------------------------------- */
+
+/* If user's screen width is over 2250px: */
+/*  - min width for modal content is smaller, there is already enough space */
+@media (min-width: 2250px) {
+  #correlationIdListModal>.modal-content {
+    min-width: 35%;
+  }
+}
+
+/* If user's screen width is over 3000px: */
+/*  - min width for modal content is even smaller, there is already enough space */
+@media (min-width: 2750px) {
+  #correlationIdListModal>.modal-content {
+    min-width: 25%;
+  }
+}
+
+/* If user's screen width is under 750px: */
+/*  - correlation ids are shown in smaller font in the list */
+/*  - list item details are hidden automatically */
+/*  - list info texts are hidden automatically */
+@media (max-width: 750px) {
+  .list-item-id {
+    font-size: var(--font-size-content-small);
+  }
+
+  .list-item-details,
+  .modal-info-text,
+  #listDetailsToggleContainer {
+    display: none !important;
+  }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
+  }
+}
+
+/* If user's screen width is under 670px: */
+/*  - correlation ids are shown in smaller font in the list */
+/*  - list item details are hidden automatically */
+/*  - list item icons are hidden automatically */
+/*  - list info texts are hidden automatically */
+/*  - list filtering buttons are hidden automatically*/
+/*  - modal close button is hidden automatically*/
+@media (max-width: 670px) {
+  .list-item-id {
+    font-size: var(--font-size-content-small);
+  }
+
+  .list-item-details-and-icons,
+  .modal-info-text,
+  .close-button,
+  .list-filtering-inputs,
+  .list-filtering-buttons {
+    display: none !important;
+  }
+
+  #correlationIdListModal>.modal-content {
+    resize: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* --- Dialog for file upload --------------------------------------------------*/
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+#dialogForUpload {
+  width: 550px;
+}
+
+#dialogForUpload .file-input {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 35px;
+}
+
+#dialogForUpload .file-name {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 5px;
+}
+
+#dialogForUpload .file-name.file-selected {
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+}
+
+#dialogForUpload .file-button {
+  height: 28px;
+  font-size: var(--font-size-label-large);
+  font-weight: var(--font-weight-label-large);
+  background-color: rgb(182, 225, 224);
+  border: none;
+}
+
+#dialogForUpload .file-button:active {
+  color: rgb(182, 225, 224);
+}
+
+#dialogForUpload .file-button:hover {
+  background-color: lightgrey;
+}
+
+#dialogForUpload .close-button {
+  margin: 5px;
+  color: white;
+  background-color: black;
+}
+
+#dialogForUpload .close-button:hover {
+  background-color: lightgrey;
+  color: black;
+}
+
+#dialogForUpload .close-button:active {
+  background-color: darkgrey;
+  color: black;
+}
+
+#dialogForUpload .instructions-headline {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+}
+
+#dialogForUpload .instructions-headline button {
+  margin-left: 10px;
+}
+
+#dialogForUpload .instructions-headline button:hover {
+  background-color: lightgrey;
+}
+
+#dialogForUpload .instructions-headline button:active {
+  background-color: darkgrey;
 }

@@ -4,11 +4,11 @@
 //
 //*****************************************************************************
 
-import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from "/common/ui-utils.js";
-import {Account, doLogin, logout} from "/common/auth.js"
-import {showRecord} from "/common/marc-record-ui.js";
-import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from "/common/rest.js";
-import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList, doIndexedDbCheck} from "/viewer/indexDB.js";
+import {showTab, setNavBar, startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
+import {Account, doLogin, logout} from '/common/auth.js';
+import {showRecord} from '/common/marc-record-ui.js';
+import {getMatchLog, getMergeLog, getCorrelationIdList, protectLog, removeLog} from '/common/rest.js';
+import {idbSetLogs, idbGetLogs, idbClearLogs, idbSetList, idbGetList, idbClearList, doIndexedDbCheck} from '/viewer/indexDB.js';
 
 var viewing = {
   record1: {},
@@ -22,10 +22,8 @@ var viewing = {
 
 window.initialize = function () {
   console.log('Initializing');
+  setNavBar(document.querySelector('#navbar'), 'Viewer');
 
-
-
-  setNavBar(document.querySelector('#navbar'), "Viewer")
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
   disableElement(select);
@@ -33,12 +31,13 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    const username = document.querySelector("#account-menu #username")
-    username.innerHTML = Account.get()["Name"];
+    const username = document.querySelector(`#account-menu #username`);
+    username.innerHTML = Account.get()['Name'];
     showTab('viewer');
     parseUrlParameters();
     doIndexedDbCheck();
     addModalEventListeners();
+    addDialogEventListeners();
   }
 
   function parseUrlParameters() {
@@ -63,6 +62,7 @@ window.initialize = function () {
     }
   }
 
+  // event listeners for some elements for the correlation id list modal 
   function addModalEventListeners() {
     const modal = document.querySelector(`#correlationIdListModal`);
     const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
@@ -84,6 +84,27 @@ window.initialize = function () {
       scrollToTopButton.style.display = (modal.scrollTop > 100 ? 'block' : 'none');
     });
   }
+
+  // event listeners for some elements in the dialog for file upload 
+  function addDialogEventListeners() {
+    const fileInput = document.getElementById('fileUpload');
+    const fileNameDiv = document.getElementById('selectedFileName');
+    const clearFileSelectButton = document.getElementById('clearFileSelect');
+
+    fileInput.addEventListener('change', event => {
+      eventHandled(event);
+
+      const file = fileInput.files[0];
+      checkFile(file);
+
+      file
+        ? (fileNameDiv.innerHTML = file.name, fileNameDiv.classList.add('file-selected'), clearFileSelectButton.style.display = 'block')
+        : (fileNameDiv.innerHTML = 'Ei valittua tiedostoa', fileNameDiv.classList.remove('file-selected'), clearFileSelectButton.style.display = 'none')
+
+    });
+
+  }
+
 }
 
 //-----------------------------------------------------------------------------
@@ -93,17 +114,19 @@ window.onAccount = function (e) {
   logout();
 }
 
-//-----------------------------------------------------------------------------
-// Do button actions
-//-----------------------------------------------------------------------------
-
-const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
 
 var transformed = {
   record1: {},
   record2: {},
   record3: {}
 }
+
+const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
+
+
+//-----------------------------------------------------------------------------
+// Do button actions
+//-----------------------------------------------------------------------------
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
@@ -123,6 +146,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   const sequenceSelect = document.querySelector('#viewer #sequence');
   sequenceSelect.innerHTML = '';
   disableElement(sequenceSelect);
+  const downloadFileButton = document.getElementById('export');
+  disableElement(downloadFileButton);
   const col3 = document.querySelector('#viewer #record3').parentElement;
   const idInputField = document.querySelector(`#viewer #id`);
   console.log('Fetching...');
@@ -138,6 +163,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
   if (logType === 'MERGE_LOG') {
     col3.style.display = 'block';
+    enableElement(downloadFileButton);
+
     getMergeLog(id)
       .then(logs =>
         setDataToIndexDB(logs, sequence))
@@ -217,10 +244,14 @@ window.loadLog = (event) => {
     const idInputField = document.querySelector(`#viewer #id`);
     const logTypeSelect = document.querySelector(`#viewer #logType`);
     const col3 = document.querySelector('#viewer #record3').parentElement;
+    const settingsButton = document.getElementById('settings');
+    const downloadButton = document.getElementById('export');
+
 
     idInputField.value = '';
     logTypeSelect.value = 'MERGE_LOG';
     sequenceInputField.value = '';
+    sequenceSelect.replaceChildren();
     sequenceSelect.value = '';
 
     col3.style.display = 'block';
@@ -232,13 +263,15 @@ window.loadLog = (event) => {
     disableElement(clearButton)
     disableElement(protectButton);
     disableElement(removeButton);
+    disableElement(settingsButton);
+    disableElement(downloadButton);
 
     setRecordTopInfo('record1', `Sisääntuleva tietue`);
-    showRecord({}, "record1", {}, 'viewer');
+    showRecord({}, 'record1', {}, 'viewer');
     setRecordTopInfo('record2', `Melinda-tietue`);
-    showRecord({}, "record2", {}, 'viewer');
+    showRecord({}, 'record2', {}, 'viewer');
     setRecordTopInfo('record3', 'Yhdistetty tietue');
-    showRecord({}, "record3", {}, 'viewer');
+    showRecord({}, 'record3', {}, 'viewer');
     return;
   }
 
@@ -247,14 +280,13 @@ window.loadLog = (event) => {
   updateSequenceView();
 
   if (logType === 'MERGE_LOG') {
-
     idbGetLogs(event.target.value).then(data => {
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
-      showRecord(data.incomingRecord, "record1", {}, 'viewer');
+      showRecord(data.incomingRecord, 'record1', {}, 'viewer');
       setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
-      showRecord(data.databaseRecord, "record2", {}, 'viewer');
+      showRecord(data.databaseRecord, 'record2', {}, 'viewer');
       setRecordTopInfo('record3', 'Yhdistetty tietue', `<li>Luontiaika: ${data.creationTime}</li>`);
-      showRecord(data.mergedRecord, "record3", {}, 'viewer');
+      showRecord(data.mergedRecord, 'record3', {}, 'viewer');
     });
   }
 
@@ -277,7 +309,7 @@ window.loadLog = (event) => {
     eventHandled(event);
     const sequenceSelect = document.querySelector(`#viewer #sequence`).value;
     const matchSelectWrap = document.querySelector(`.col .header .Select`);
-    showRecord({}, "record3", {}, 'viewer');
+    showRecord({}, 'record3', {}, 'viewer');
 
     idbGetLogs(sequenceSelect).then(data => {
       matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
@@ -290,7 +322,7 @@ window.loadLog = (event) => {
       }
       const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
       setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
-      showRecord(record, "record2", {}, 'viewer');
+      showRecord(record, 'record2', {}, 'viewer');
     });
   }
 
@@ -377,7 +409,7 @@ window.copyLink = function (event) {
   let link = window.location;
 
   if (id !== '' && sequence !== '') {
-    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`
+    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`;
   }
 
   const button = createTestLinkButton(link);
@@ -502,7 +534,7 @@ function setDataToIndexDB(logs, sequence) {
     select.value = sequence;
   }
 
-  const sequenceInputField = document.getElementById("sequenceInput");
+  const sequenceInputField = document.getElementById('sequenceInput');
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
     showSnackbar({text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`, closeButton: 'true'});
@@ -581,28 +613,306 @@ function setNewSelect(newIndex) {
   select.dispatchEvent(newEvent);
 }
 
+
+//-----------------------------------------------------------------------------
+// HTML element helper functions for Viewer
+//-----------------------------------------------------------------------------
+
+// creates a new html element option and returns it
+// text and value attributes of element are given as parameters
 function createOption(text, value) {
-  const option = document.createElement("option");
+  const option = document.createElement('option');
   option.text = text;
   option.value = value;
 
   return option;
 }
 
+// enables the html element given as parameter
 function enableElement(element) {
   element.removeAttribute('disabled');
 }
 
+// disables the html element given as parameter
 function disableElement(element) {
   element.disabled = true;
 }
 
-function highlightElement(element) {
+// highligts a html element with a background color for a moment
+// if no color is given as parameter, uses default color defined in the CSS
+function highlightElement(element, color) {
   element.classList.add('highlight');
+
+  if (color) {
+    element.style.setProperty(`--highlightcolor`, color);
+  }
 
   setTimeout(() => {
     element.classList.remove('highlight');
   }, 5000);
+}
+
+// returns an array of all html element descendants of the parent element
+function getAllDescendants(parentElement) {
+  const allDescendantElements = parentElement.getElementsByTagName('*');
+  return [...allDescendantElements];
+}
+
+
+//-----------------------------------------------------------------------------
+// Functions for file dialog
+//-----------------------------------------------------------------------------
+
+window.downloadFile = function (event) {
+  console.log('Downloading file...');
+  eventHandled(event);
+
+  const correlationId = document.querySelector(`#viewer #id`).value;
+  const sequence = document.querySelector(`#viewer #sequence`).value;
+  const recordObject = new Object();
+
+  idbGetLogs(sequence)
+    .then((data) => {
+
+      if (data.logItemType !== 'MERGE_LOG') {
+        throw new Error('Wrong log item type (should be MERGE_LOG)');
+      }
+
+      setPreferred(data.preference);
+      setIncomingRecord(data.incomingRecord);
+      setMelindaRecord(data.databaseRecord);
+      setMergedRecord(data.mergedRecord);
+      setCreationTime(data.creationTime);
+      doDownload(JSON.stringify(recordObject));
+      showSnackbar({text: 'Tiedosto ladattiin onnistuneesti laitteellesi!', closeButton: 'true'});
+    })
+    .catch((error) => {
+      console.log('Problem getting or setting log data while creating record object: ', error);
+      showSnackbar({text: 'Tiedostoa ei valitettavasti pystytty lataamaan', closeButton: 'true'});
+    })
+
+  function setPreferred(preference) {
+    if (preference.recordName === 'databaseRecord') {
+      recordObject.preferred = 'melindaRecord';
+      return;
+    }
+
+    recordObject.preferred = preference.recordName;
+  }
+
+  function setIncomingRecord(record) {
+    recordObject.incomingRecord = record;
+  }
+
+  function setMelindaRecord(record) {
+    recordObject.melindaRecord = record;
+  }
+
+  function setMergedRecord(record) {
+    recordObject.mergedRecord = record;
+  }
+
+  function setCreationTime(time) {
+    recordObject.creationTime = time;
+  }
+
+  function doDownload(fileContent) {
+    const fileName = correlationId + '_' + sequence + '.json';
+
+    const linkElement = document.createElement('a');
+    linkElement.download = fileName;
+    linkElement.href = 'data:attachment/text,' + encodeURI(fileContent);
+    linkElement.click();
+  }
+}
+
+window.uploadFile = function (event) {
+  const dialog = document.getElementById('dialogForUpload');
+  dialog.showModal();
+}
+
+window.showInstructions = function (event) {
+  eventHandled(event);
+  const instructions = document.getElementById('instructions');
+  const hideButton = document.getElementById('hideInstructionsButton');
+  const showButton = document.getElementById('showInstructionsButton');
+
+  instructions.style.display = 'block';
+  showButton.style.display = 'none';
+  hideButton.style.display = 'flex';
+}
+
+window.hideInstructions = function (event) {
+  eventHandled(event);
+  const instructions = document.getElementById('instructions');
+  const hideButton = document.getElementById('hideInstructionsButton');
+  const showButton = document.getElementById('showInstructionsButton');
+
+  instructions.style.display = 'none';
+  showButton.style.display = 'flex';
+  hideButton.style.display = 'none';
+}
+
+window.openFileBrowse = function (event) {
+  eventHandled(event);
+  const fileInput = document.getElementById('fileUpload');
+  fileInput.click();
+}
+
+window.clearSelectedFile = function (event) {
+  eventHandled(event);
+  const fileInput = document.getElementById('fileUpload');
+  fileInput.value = '';
+  return fileInput.dispatchEvent(new Event('change'));
+}
+
+window.cancelUpload = function (event) {
+  console.log('File upload cancelled');
+  showSnackbar({text: 'Tiedoston avaaminen peruttu', closeButton: 'true'});
+}
+
+window.confirmUpload = function (event) {
+  const file = document.getElementById('fileUpload').files[0];
+  const reader = new FileReader();
+
+  clearLogView();
+
+  if (file) {
+    console.log(`Trying to read file ${file.name}...`);
+    reader.readAsText(file, 'UTF-8');
+
+    reader.onload = function (event) {
+      const fileContent = event.target.result;
+      const json = parseJson(fileContent);
+      const log = parseLog(json);
+
+      if (log) {
+        console.log('Log parsed from file: ', log);
+        setDataToIndexDB({0: log}, 0);
+        showReaderMode();
+        showSnackbar({text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
+      }
+    }
+
+    reader.onerror = function (event) {
+      console.log('Error reading file ', error);
+      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'});
+    }
+
+    function parseJson(text) {
+      let data = null;
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (error) {
+          console.log('Error while parsing file content to JSON: ', error);
+          showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        }
+      }
+
+      return data;
+    }
+
+    function parseLog(data) {
+      if (data === null) {
+        console.log('No json data for parsing log');
+        showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        return;
+      }
+
+      if (data.melindaRecord === undefined && data.databaseRecord === undefined && data.mergedRecord === undefined && data.incomingRecord === undefined) {
+        console.log('Records are undefined, invalid json data for parsing log')
+        showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        return;
+      }
+
+      const log = Object.assign({}, data);
+      log.logItemType = 'MERGE_LOG';
+      log.blobSequence = 0;
+      log.creationTime = data.creationTime || 'Ei saatavilla';
+      log.databaseRecord = data.melindaRecord || data.databaseRecord;
+      log.preference = {recordName: ((data.preferred === 'melindaRecord' ? 'databaseRecord' : data.preferred) || '')};
+      delete log.melindaRecord;
+      delete log.preferred;
+      return log;
+    }
+  }
+}
+
+window.exitReaderMode = function (event) {
+  console.log('Exiting Viewer reader mode');
+  eventHandled(event);
+
+  const toolbar = document.getElementById('viewerTools');
+  const allElements = getAllDescendants(toolbar);
+
+  allElements.forEach(element => enableElement(element));
+
+  const readMode = document.getElementById('readMode');
+  readMode.style.display = 'none';
+
+  const exitButton = document.getElementById('exit');
+  disableElement(exitButton);
+  exitButton.style.display = 'none';
+
+  clearLogView();
+}
+
+function showReaderMode() {
+  console.log('Viewer is now in reader mode: records are read only');
+
+  const sequenceInputField = document.getElementById('sequenceInput');
+  const sequenceSelect = document.getElementById('sequence');
+  sequenceInputField.style.display = 'block';
+  sequenceSelect.style.display = 'none';
+
+  const toolbar = document.getElementById('viewerTools');
+  const allElements = getAllDescendants(toolbar);
+  allElements.forEach(element => disableElement(element));
+
+  const uploadButton = document.getElementById('import');
+  enableElement(uploadButton);
+
+  const exitButton = document.getElementById('exit');
+  exitButton.style.display = 'block';
+  enableElement(exitButton);
+
+  const readMode = document.getElementById('readMode');
+  readMode.style.display = 'flex';
+}
+
+function checkFile(file) {
+  console.log('Checking uploaded file...');
+  const confirmUploadButton = document.getElementById('confirmUploadButton');
+  const fileNameDiv = document.getElementById('selectedFileName');
+
+  if (!file) {
+    console.log('No file to check!');
+    disableElement(confirmUploadButton);
+    return;
+  }
+
+  if (file.size === 0) {
+    console.log('File is empty!');
+    disableElement(confirmUploadButton);
+    highlightElement(fileNameDiv, '#D6958B');
+    showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
+    return;
+  }
+
+  if (file.type !== 'application/json' && file.type !== 'text/plain') {
+    console.log(`File type '${file.type}' is not accepted for upload!`);
+    confirmUploadButton.title = 'Valitse ensin .json- tai .txt-päätteinen tiedosto';
+    disableElement(confirmUploadButton);
+    highlightElement(fileNameDiv, '#D6958B');
+    showSnackbar({text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
+    return;
+  }
+
+  confirmUploadButton.removeAttribute('title');
+  enableElement(confirmUploadButton);
+  highlightElement(fileNameDiv, '#8AB59C');
 }
 
 
@@ -634,8 +944,8 @@ window.goToTop = function (event = undefined) {
 }
 
 window.modalClose = function (event) {
-  const modal = document.querySelector("#correlationIdListModal")
-  modal.style.display = "none"
+  const modal = document.querySelector('#correlationIdListModal');
+  modal.style.display = 'none';
   return eventHandled(event);
 }
 
@@ -1121,7 +1431,7 @@ function updateListView(correlationIdList) {
       if (overWeekOld) {
         const infoIcon = document.createElement('span');
         infoIcon.classList.add('material-icons');
-        infoIcon.innerHTML = "lock_clock";
+        infoIcon.innerHTML = 'lock_clock';
         infoIcon.title = ('Tämä ID on yli 7 vrk vanha, joten se saattaa olla turvattu');
         listItem.querySelector(`.list-item-icons`).prepend(infoIcon);
       }
@@ -1200,14 +1510,14 @@ function updateListView(correlationIdList) {
       function addSelectedIcon() {
         const selectedIcon = document.createElement('span');
         selectedIcon.classList.add('material-icons', 'selected-list-item-check-icon');
-        selectedIcon.innerHTML = "check";
+        selectedIcon.innerHTML = 'check';
         lastSearchedListItem.querySelector(`.list-item-icons`).append(selectedIcon);
       }
 
       function updateSearchIcon() {
         const searchIcon = document.querySelector(`.last-searched .list-item-icons-search`);
         searchIcon.innerHTML = 'find_replace';
-        searchIcon.title = "Hae uudelleen tällä ID:llä";
+        searchIcon.title = 'Hae uudelleen tällä ID:llä';
       }
 
       function addLinkToListItem() {
