@@ -1192,9 +1192,13 @@ function updateCorrelationIdListModal() {
   clearListView();
 
   idbGetList('correlationIdList')
-    .then((data) =>
+    .then((data) => {
       updateListView(data)
-    )
+    })
+    .catch((error) => {
+      console.log('Error getting correlation id list from indexedDB (if undefined, probably it is not yet set): ', error);
+      showSnackbar({text: 'Odota hetki listan päivittymistä', closeButton: 'true'})
+    })
 }
 
 function updateListView(correlationIdList) {
