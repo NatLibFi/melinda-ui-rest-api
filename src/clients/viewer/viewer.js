@@ -1446,15 +1446,18 @@ function updateListView(correlationIdList) {
 
       function searchWithSelectedIdAndType(correlationId, logItemType) {
         const id = document.querySelector(`#viewer #id`);
-        id.value = correlationId;
-
         const logType = document.querySelector(`#viewer #logType`);
+        const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
+        const sequenceSelect = document.querySelector(`#viewer #sequence`);
+
+        id.value = correlationId;
         logType.value = logItemType;
+        sequenceInputField.value = '';
+        sequenceSelect.value = '';
 
         doSearchPress();
         modalClose();
       }
-
 
     }
   }
