@@ -513,7 +513,7 @@ window.clearLogView = function (event = undefined) {
 
 export function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
-  console.log(JSON.stringify(logs));
+  // console.log(JSON.stringify(logs));
   const keys = Object.keys(logs);
 
   if (keys.length === 0) {
