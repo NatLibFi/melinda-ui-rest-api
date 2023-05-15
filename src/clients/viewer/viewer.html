@@ -86,9 +86,13 @@
       <div id="viewerTools" class="tools ToolBar">
 
         <!-- Info text and icon are visible when viewer is set in reader mode -->
-        <div id="readMode" class="read-mode" style="display: none">
-          <span class="material-icons">disabled_visible</span>
-          <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
+        <div class="tools-wrapper">
+          <div id="readMode" class="read-mode" style="display: none">
+            <span class="material-icons">disabled_visible</span>
+            <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
+          </div>
+          <button id="exit" class="material-icons tooltip" tooltip-text="Sulje näkymä" style="display: none"
+            onclick="return exitReaderMode(event)">logout</button>
         </div>
 
         <!-- Tools for searching and selecting a correlation id and sequence -->
@@ -117,7 +121,6 @@
           <div class="tools-wrapper">
             <div class="Select VBox sequence-container">
               <label>Sekvenssi</label>
-
               <div class="HBox Filler">
                 <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
                   onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
@@ -130,36 +133,33 @@
                 <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
                   onclick="return selectNext(event)" disabled="true">navigate_next</button>
               </div>
-
             </div>
             <button class="material-icons tooltip search-button" tooltip-text="Hae"
               onclick="return doSearchPress(event)">search</button>
             <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
               onclick="return clearLogView(event)" disabled="true">backspace</button>
           </div>
-          <button class="material-icons tooltip search-button" tooltip-text="Hae"
-            onclick="return doSearchPress(event)">search</button>
-          <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
-            onclick="return clearLogView(event)" disabled="true">backspace</button>
+
         </form>
 
         <!-- Tools for handling selected correlation id and/or sequence -->
-        <div class="HBox">
-          <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
-            disabled="true">lock_open</button>
-          <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
-            onclick="return openRemoveDialog(event)" disabled="true">delete</button>
-          <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
-            onclick="return copyLink(event)">share</button>
-          <button id="export" class="material-icons tooltip" tooltip-text="Lataa tiedosto" disabled="true"
-            onclick="downloadFile(event)">file_download</button>
-          <button id="import" class="material-icons tooltip" tooltip-text="Avaa tiedosto"
-            onclick="uploadFile(event)">file_upload</button>
-          <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
-            disabled="true">settings</button>
-          <button id="exit" class="material-icons tooltip" tooltip-text="Sulje näkymä" style="display: none"
-            onclick="return exitReaderMode(event)">logout</button>
+        <div class="tools-wrapper">
+          <div class="HBox">
+            <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
+              disabled="true">lock_open</button>
+            <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
+              onclick="return openRemoveDialog(event)" disabled="true">delete</button>
+            <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
+              onclick="return copyLink(event)">share</button>
+            <button id="export" class="material-icons tooltip" tooltip-text="Lataa tiedosto" disabled="true"
+              onclick="downloadFile(event)">file_download</button>
+            <button id="import" class="material-icons tooltip" tooltip-text="Avaa tiedosto"
+              onclick="uploadFile(event)">file_upload</button>
+            <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
+              disabled="true">settings</button>
+          </div>
         </div>
+
       </div>
 
       <!-- Dialog popup for removing logs -->

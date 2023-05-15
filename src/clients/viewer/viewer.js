@@ -1192,9 +1192,13 @@ function updateCorrelationIdListModal() {
   clearListView();
 
   idbGetList('correlationIdList')
-    .then((data) =>
+    .then((data) => {
       updateListView(data)
-    )
+    })
+    .catch((error) => {
+      console.log('Error getting correlation id list from indexedDB (if undefined, probably it is not yet set): ', error);
+      showSnackbar({text: 'Odota hetki listan päivittymistä', closeButton: 'true'})
+    })
 }
 
 function updateListView(correlationIdList) {
@@ -1446,15 +1450,18 @@ function updateListView(correlationIdList) {
 
       function searchWithSelectedIdAndType(correlationId, logItemType) {
         const id = document.querySelector(`#viewer #id`);
-        id.value = correlationId;
-
         const logType = document.querySelector(`#viewer #logType`);
+        const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
+        const sequenceSelect = document.querySelector(`#viewer #sequence`);
+
+        id.value = correlationId;
         logType.value = logItemType;
+        sequenceInputField.value = '';
+        sequenceSelect.value = '';
 
         doSearchPress();
         modalClose();
       }
-
 
     }
   }

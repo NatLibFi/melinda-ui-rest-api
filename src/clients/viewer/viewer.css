@@ -19,11 +19,24 @@ div#tools {}
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1420px) {
+  #viewer .tools {
+    row-gap: 10px;
+  }
+
+  #viewerTools>div:first-child {
+    flex-basis: 100%;
+  }
 }
 
 @media screen and (max-width: 750px) {
   #viewer .tools {
     flex-direction: column;
+    row-gap: 10px;
   }
 
   #viewer .tools .ToolBar {
@@ -161,6 +174,8 @@ div#tools {}
 
 .tools button#exit {
   background-color: rgb(182, 225, 224);
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .tools button#exit:hover {
@@ -736,71 +751,6 @@ div#correlationIdListModal {}
 .disabled-div {
   pointer-events: none;
   opacity: 0.5;
-}
-
-/* ---------------------------------------------------------------------------- */
-/* Correlation id modal adjusting to the screen width */
-/* ---------------------------------------------------------------------------- */
-
-/* If user's screen width is over 2250px: */
-/*  - min width for modal content is smaller, there is already enough space */
-@media (min-width: 2250px) {
-  #correlationIdListModal>.modal-content {
-    min-width: 35%;
-  }
-}
-
-/* If user's screen width is over 3000px: */
-/*  - min width for modal content is even smaller, there is already enough space */
-@media (min-width: 2750px) {
-  #correlationIdListModal>.modal-content {
-    min-width: 25%;
-  }
-}
-
-/* If user's screen width is under 750px: */
-/*  - correlation ids are shown in smaller font in the list */
-/*  - list item details are hidden automatically */
-/*  - list info texts are hidden automatically */
-@media (max-width: 750px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
-
-  .list-item-details,
-  .modal-info-text,
-  #listDetailsToggleContainer {
-    display: none !important;
-  }
-
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
-}
-
-/* If user's screen width is under 670px: */
-/*  - correlation ids are shown in smaller font in the list */
-/*  - list item details are hidden automatically */
-/*  - list item icons are hidden automatically */
-/*  - list info texts are hidden automatically */
-/*  - list filtering buttons are hidden automatically*/
-/*  - modal close button is hidden automatically*/
-@media (max-width: 670px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
-
-  .list-item-details-and-icons,
-  .modal-info-text,
-  .close-button,
-  .list-filtering-inputs,
-  .list-filtering-buttons {
-    display: none !important;
-  }
-
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
 }
 
 /* ---------------------------------------------------------------------------- */
