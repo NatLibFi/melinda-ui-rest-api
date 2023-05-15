@@ -1,15 +1,15 @@
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
+import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
+import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
 
 export function initArticle() {
-  console.log('initializing article...')
-  document.getElementById("lisa-tiedot-lisaa-tieteenala").addEventListener("submit", addScience);
-  document.getElementById("lisa-tiedot-lisaa-metodologia").addEventListener("submit", addMetodology);
+  console.log('initializing article...');
+  document.getElementById('lisa-tiedot-lisaa-tieteenala').addEventListener('submit', addScience);
+  document.getElementById('lisa-tiedot-lisaa-metodologia').addEventListener('submit', addMetodology);
 
-  document.getElementById("tyhjenna-tieteenalat-form").addEventListener("submit", clearSciences);
-  document.getElementById("tyhjenna-metodologiat-form").addEventListener("submit", clearMetodologys);
+  document.getElementById('tyhjenna-tieteenalat-form').addEventListener('submit', clearSciences);
+  document.getElementById('tyhjenna-metodologiat-form').addEventListener('submit', clearMetodologys);
 
-  document.getElementById("lisaa-linkki").addEventListener("click", addArticleLink);
+  document.getElementById('lisaa-linkki').addEventListener('click', addArticleLink);
 
   refreshSciencesList();
   refreshMetodologysList();
@@ -20,25 +20,25 @@ function addScience(event) {
   const formJson = formToJson(event);
   console.log('science');
   const science = formJson['lisa-tiedot-tieteenala'];
-  
-  if (science === "") {
-    showSnackbar({text: "Tieteenala ei voi olla tyhjä", closeButton: "true"});
-    return;
-  
-  }
-  const [department, departmentName, subCategory, subject] = science.split(" - ");
 
-  idbGetStoredValues("artoSciences").then(sciences => {
+  if (science === '') {
+    showSnackbar({text: 'Tieteenala ei voi olla tyhjä', closeButton: 'true'});
+    return;
+
+  }
+  const [department, departmentName, subCategory, subject] = science.split(' - ');
+
+  idbGetStoredValues('artoSciences').then(sciences => {
     if (sciences.some(sci => sci.subject === subject || sci.subCategory === subCategory)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä tieteenala", closeButton: "true"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä tieteenala', closeButton: 'true'});
       return;
     }
 
     idbAddValueToLastIndex('artoSciences', {department, departmentName, subCategory, subject}).then(() => {
-      document.getElementById("lisa-tiedot-tieteenala").value = '';
+      document.getElementById('lisa-tiedot-tieteenala').value = '';
       refreshSciencesList();
     });
-  })
+  });
 }
 
 function addMetodology(event) {
@@ -47,27 +47,27 @@ function addMetodology(event) {
   console.log('metodology');
   const metodology = formJson['lisa-tiedot-metodologia'];
 
-  if (metodology === "") {
-    showSnackbar({text: "Metodologia ei voi olla tyhjä", closeButton: "true"});
+  if (metodology === '') {
+    showSnackbar({text: 'Metodologia ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
 
-  idbGetStoredValues("artoMetodologys").then(metodologies => {
+  idbGetStoredValues('artoMetodologys').then(metodologies => {
     if (metodologies.some(met => met.value === metodology)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä metodologia", closeButton: "true"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä metodologia', closeButton: 'true'});
       return;
     }
 
     idbAddValueToLastIndex('artoMetodologys', {value: metodology}).then(() => {
-      document.getElementById("lisa-tiedot-metodologia").value = '';
+      document.getElementById('lisa-tiedot-metodologia').value = '';
       refreshMetodologysList();
     });
-  })
+  });
 }
 
 export function refreshSciencesList() {
   console.log('refresh scienceList');
-  const scienceList = document.getElementById("tieteenalat-list");
+  const scienceList = document.getElementById('tieteenalat-list');
   scienceList.innerHTML = '';
 
   idbGetStoredValues('artoSciences').then(sciences => {
@@ -85,11 +85,11 @@ export function refreshSciencesList() {
     });
 
     if (sciences.length > 1) {
-      document.getElementById("tyhjenna-tieteenalat-form").style.display = 'block';
+      document.getElementById('tyhjenna-tieteenalat-form').style.display = 'block';
     }
 
     if (sciences.length < 2) {
-      document.getElementById("tyhjenna-tieteenalat-form").style.display = 'none';
+      document.getElementById('tyhjenna-tieteenalat-form').style.display = 'none';
     }
   });
 }
@@ -102,7 +102,7 @@ export function clearSciences(event) {
 
 export function refreshMetodologysList() {
   console.log('refresh metodologyList');
-  const metodologyList = document.getElementById("metodologiat-list");
+  const metodologyList = document.getElementById('metodologiat-list');
   metodologyList.innerHTML = '';
 
   idbGetStoredValues('artoMetodologys').then(metodologys => {
@@ -119,42 +119,42 @@ export function refreshMetodologysList() {
     });
 
     if (metodologys.length > 1) {
-      document.getElementById("tyhjenna-metodologiat-form").style.display = 'block';
+      document.getElementById('tyhjenna-metodologiat-form').style.display = 'block';
     }
 
     if (metodologys.length < 2) {
-      document.getElementById("tyhjenna-metodologiat-form").style.display = 'none';
+      document.getElementById('tyhjenna-metodologiat-form').style.display = 'none';
     }
   });
 }
 
 export function addArticleLink(event) {
   event.preventDefault();
-  const articleWrap = document.getElementById("artikkelin-linkki-wrap");
-  const upperDiv = document.createElement("div");
-  upperDiv.classList.add("full-width");
-  const lowerDiv = document.createElement("div");
-  lowerDiv.classList.add("Input");
-  const removeButton = createIconButton("delete", ["no-border", "negative"], `return removeArticleLink(event)`, "Poista");
-  lowerDiv.appendChild(createLabel("artikkelin-linkki"));
-  lowerDiv.appendChild(createInput("artikkelin-linkki"));
+  const articleWrap = document.getElementById('artikkelin-linkki-wrap');
+  const upperDiv = document.createElement('div');
+  upperDiv.classList.add('full-width');
+  const lowerDiv = document.createElement('div');
+  lowerDiv.classList.add('Input');
+  const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeArticleLink(event)`, 'Poista');
+  lowerDiv.appendChild(createLabel('artikkelin-linkki'));
+  lowerDiv.appendChild(createInput('artikkelin-linkki'));
   upperDiv.appendChild(lowerDiv);
   upperDiv.appendChild(removeButton);
   articleWrap.appendChild(upperDiv);
 
   function createLabel(id) {
-    const label = document.createElement("label");
-    label.setAttribute("for", id);
-    label.innerHTML = "Linkki kokotekstiin:";
+    const label = document.createElement('label');
+    label.setAttribute('for', id);
+    label.innerHTML = 'Linkki kokotekstiin:';
     return label;
   }
 
   function createInput(name) {
-    const input = document.createElement("input");
-    input.setAttribute("type", "text");
-    input.setAttribute("id", name);
-    input.setAttribute("name", name)
-    input.setAttribute("maxLength", 128);
+    const input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('id', name);
+    input.setAttribute('name', name);
+    input.setAttribute('maxLength', 128);
     return input;
   }
 }

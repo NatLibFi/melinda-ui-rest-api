@@ -1,17 +1,17 @@
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
+import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
+import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
 
 export function initAdditionalFields() {
   console.log('initializing additional fields...');
-  document.getElementById("yleinen-huomautus-lisaa-form").addEventListener("submit", addNote);
-  document.getElementById("artikkelin-muu-nimeke-lisaa-form").addEventListener("submit", addOtherTitle);
-  document.getElementById("UDK-lisaa-form").addEventListener("submit", addUDK);
-  document.getElementById("muu-luokitus-lisaa-form").addEventListener("submit", addOtherRating);
+  document.getElementById('yleinen-huomautus-lisaa-form').addEventListener('submit', addNote);
+  document.getElementById('artikkelin-muu-nimeke-lisaa-form').addEventListener('submit', addOtherTitle);
+  document.getElementById('UDK-lisaa-form').addEventListener('submit', addUDK);
+  document.getElementById('muu-luokitus-lisaa-form').addEventListener('submit', addOtherRating);
 
-  document.getElementById("tyhjenna-yleiset-huomautukset-form").addEventListener("submit", clearNotes);
-  document.getElementById("tyhjenna-muut-nimekkeet-form").addEventListener("submit", clearOtherTitles);
-  document.getElementById("tyhjenna-udk-kentat-form").addEventListener("submit", clearUDKs);
-  document.getElementById("tyhjenna-muut-luokitukset-form").addEventListener("submit", clearOtherRatings);
+  document.getElementById('tyhjenna-yleiset-huomautukset-form').addEventListener('submit', clearNotes);
+  document.getElementById('tyhjenna-muut-nimekkeet-form').addEventListener('submit', clearOtherTitles);
+  document.getElementById('tyhjenna-udk-kentat-form').addEventListener('submit', clearUDKs);
+  document.getElementById('tyhjenna-muut-luokitukset-form').addEventListener('submit', clearOtherRatings);
 
   refreshNotesList();
   refreshOtherTitlesList();
@@ -25,24 +25,24 @@ export function addNote(event) {
 
   const data = {
     value: formJson['lisakentat-yleinen-huomautus']
-  }
+  };
 
-  if (data.value === "") {
-    showSnackbar({text: "Yleinen huomautus ei voi olla tyhjä", closeButton: "true"});
+  if (data.value === '') {
+    showSnackbar({text: 'Yleinen huomautus ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
 
-  idbGetStoredValues("artoNotes").then(notes => {
+  idbGetStoredValues('artoNotes').then(notes => {
     if (notes.some(note => note.value === data.value)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä yleinen huomautus", closeButton: "true"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä yleinen huomautus', closeButton: 'true'});
       return;
     }
 
     idbAddValueToLastIndex('artoNotes', data).then(() => {
-      document.getElementById('lisakentat-yleinen-huomautus').value = "";
+      document.getElementById('lisakentat-yleinen-huomautus').value = '';
       refreshNotesList();
     });
-  })
+  });
 }
 
 export function refreshNotesList() {
@@ -54,20 +54,20 @@ export function refreshNotesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeNote(event, ${noteData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeNote(event, ${noteData.key})`, 'Poista');
       div.appendChild(createP('Yleinen huomautus', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(noteData.value));
       div.appendChild(removeButton);
       form.appendChild(div);
-      notesList.appendChild(form)
+      notesList.appendChild(form);
     });
 
     if (notes.length > 1) {
-      document.getElementById("tyhjenna-yleiset-huomautukset-form").style.display = 'block';
+      document.getElementById('tyhjenna-yleiset-huomautukset-form').style.display = 'block';
     }
 
     if (notes.length < 2) {
-      document.getElementById("tyhjenna-yleiset-huomautukset-form").style.display = 'none';
+      document.getElementById('tyhjenna-yleiset-huomautukset-form').style.display = 'none';
     }
   });
 }
@@ -83,24 +83,24 @@ export function addOtherTitle(event) {
 
   const data = {
     value: formJson['artikkelin-muu-nimeke']
-  }
+  };
 
-  if (data.value === "") {
-    showSnackbar({text: "Muu nimeke ei voi olla tyhjä", closeButton: "true"});
+  if (data.value === '') {
+    showSnackbar({text: 'Muu nimeke ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
 
-  idbGetStoredValues("artoOtherTitles").then(otherTitles => {
+  idbGetStoredValues('artoOtherTitles').then(otherTitles => {
     if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä muu nimeke", closeButton: "true"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä muu nimeke', closeButton: 'true'});
       return;
     }
 
     idbAddValueToLastIndex('artoOtherTitles', data).then(() => {
-      document.getElementById('artikkelin-muu-nimeke').value = "";
+      document.getElementById('artikkelin-muu-nimeke').value = '';
       refreshOtherTitlesList();
     });
-  })
+  });
 }
 
 export function refreshOtherTitlesList() {
@@ -112,20 +112,20 @@ export function refreshOtherTitlesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
       div.appendChild(createP('Muu nimeke', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(otherTitleData.value));
       div.appendChild(removeButton);
       form.appendChild(div);
-      otherTitlesList.appendChild(form)
+      otherTitlesList.appendChild(form);
     });
 
     if (otherTitles.length > 1) {
-      document.getElementById("tyhjenna-muut-nimekkeet-form").style.display = 'block';
+      document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'block';
     }
 
     if (otherTitles.length < 2) {
-      document.getElementById("tyhjenna-muut-nimekkeet-form").style.display = 'none';
+      document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'none';
     }
   });
 }
@@ -143,26 +143,26 @@ export function addUDK(event) {
     a080: formJson['lisakentat-UDK080a'],
     x080: formJson['lisakentat-UDK080x'],
     two080: formJson['lisakentat-UDK0802']
-  }
+  };
 
-  if (data.a080 === "") {
-    showSnackbar({text: "UDK-luokitus (080 $a) -arvo ei voi olla tyhjä", closeButton: "true"});
+  if (data.a080 === '') {
+    showSnackbar({text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
 
-  idbGetStoredValues("artoUDKs").then(udks => {
+  idbGetStoredValues('artoUDKs').then(udks => {
     if (udks.some(udk => udk.a080 === data.a080)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)", closeButton: "ture"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)', closeButton: 'ture'});
       return;
     }
 
     idbAddValueToLastIndex('artoUDKs', data).then(() => {
-      document.getElementById('lisakentat-UDK080a').value = "";
-      document.getElementById('lisakentat-UDK080x').value = "";
-      document.getElementById('lisakentat-UDK0802').value = "";
+      document.getElementById('lisakentat-UDK080a').value = '';
+      document.getElementById('lisakentat-UDK080x').value = '';
+      document.getElementById('lisakentat-UDK0802').value = '';
       refreshUDKsList();
     });
-  })
+  });
 }
 
 export function refreshUDKsList() {
@@ -174,7 +174,7 @@ export function refreshUDKsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista');
       div.appendChild(createP('UDK-luokitus (080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
       div.appendChild(createP('Lisäluokka (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
@@ -183,15 +183,15 @@ export function refreshUDKsList() {
       div.appendChild(createP(udkData.two080));
       div.appendChild(removeButton);
       form.appendChild(div);
-      udksList.appendChild(form)
+      udksList.appendChild(form);
     });
 
     if (udks.length > 1) {
-      document.getElementById("tyhjenna-udk-kentat-form").style.display = 'block';
+      document.getElementById('tyhjenna-udk-kentat-form').style.display = 'block';
     }
 
     if (udks.length < 2) {
-      document.getElementById("tyhjenna-udk-kentat-form").style.display = 'none';
+      document.getElementById('tyhjenna-udk-kentat-form').style.display = 'none';
     }
   });
 }
@@ -208,22 +208,22 @@ export function addOtherRating(event) {
   const data = {
     a084: formJson['lisakentat-muu-luokitus-084a'],
     two084: formJson['lisakentat-luokituksen-lahde-0842']
-  }
+  };
 
-  if (data.a084 === "" || data.two084 === "") {
-    showSnackbar({text: "Muun luokituksen tiedot eivät voi olla tyhjiä", closeButton: "true"});
+  if (data.a084 === '' || data.two084 === '') {
+    showSnackbar({text: 'Muun luokituksen tiedot eivät voi olla tyhjiä', closeButton: 'true'});
     return;
   }
 
-  idbGetStoredValues("artoOtherRatings").then(otherRatings => {
+  idbGetStoredValues('artoOtherRatings').then(otherRatings => {
     if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä muu luokitus (084 $a)"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
       return;
     }
 
     idbAddValueToLastIndex('artoOtherRatings', data).then(() => {
-      document.getElementById('lisakentat-muu-luokitus-084a').value = "";
-      document.getElementById('lisakentat-luokituksen-lahde-0842').value = "";
+      document.getElementById('lisakentat-muu-luokitus-084a').value = '';
+      document.getElementById('lisakentat-luokituksen-lahde-0842').value = '';
       refreshOtherRatingsList();
     });
   });
@@ -238,22 +238,22 @@ export function refreshOtherRatingsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
       div.appendChild(createP('Muu luokitus (084 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(otherRatingData.a084));
       div.appendChild(createP('Luokituksen lähde ($2)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(otherRatingData.two084));
       div.appendChild(removeButton);
       form.appendChild(div);
-      otherRatingsList.appendChild(form)
+      otherRatingsList.appendChild(form);
     });
 
     if (otherRatings.length > 1) {
-      document.getElementById("tyhjenna-muut-luokitukset-form").style.display = 'block';
+      document.getElementById('tyhjenna-muut-luokitukset-form').style.display = 'block';
     }
 
     if (otherRatings.length < 2) {
-      document.getElementById("tyhjenna-muut-luokitukset-form").style.display = 'none';
+      document.getElementById('tyhjenna-muut-luokitukset-form').style.display = 'none';
     }
   });
 }

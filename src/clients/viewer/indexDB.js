@@ -3,8 +3,7 @@
 //-----------------------------------------------------------------------------
 import {openDB, deleteDB} from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
 
-import {showSnackbar} from "/common/ui-utils.js";
-
+import {showSnackbar} from '/common/ui-utils.js';
 
 //-----------------------------------------------------------------------------
 // idb variables for Viewer
@@ -21,8 +20,8 @@ const dbPromise = openDB(dbName, dbVersion, {
   upgrade(db) {
     dbStores.forEach(store => {
       db.createObjectStore(store);
-    })
-  },
+    });
+  }
 });
 
 
@@ -31,7 +30,7 @@ const dbPromise = openDB(dbName, dbVersion, {
 //-----------------------------------------------------------------------------
 export async function deleteIdb() {
   return await deleteDB(dbName, {});
-};
+}
 
 
 //-----------------------------------------------------------------------------
@@ -39,23 +38,23 @@ export async function deleteIdb() {
 //-----------------------------------------------------------------------------
 export async function idbGetLogs(key) {
   return (await dbPromise).get('logs', key);
-};
+}
 
 export async function idbSetLogs(key, val) {
   return (await dbPromise).put('logs', val, key);
-};
+}
 
 export async function idbDelLogs(key) {
   return (await dbPromise).delete('logs', key);
-};
+}
 
 export async function idbClearLogs() {
   return (await dbPromise).clear('logs');
-};
+}
 
 export async function idbKeysLogs() {
   return (await dbPromise).getAllKeys('logs');
-};
+}
 
 
 //-----------------------------------------------------------------------------
@@ -63,22 +62,22 @@ export async function idbKeysLogs() {
 //-----------------------------------------------------------------------------
 export async function idbGetList(key) {
   return (await dbPromise).get('list', key);
-};
+}
 
 export async function idbSetList(key, val) {
   return (await dbPromise).put('list', val, key);
-};
+}
 
 export async function idbClearList() {
   return (await dbPromise).clear('list');
-};
+}
 
 
 //-----------------------------------------------------------------------------
 // function to check the status of user's indexedDB storage in browser
 //-----------------------------------------------------------------------------
 export function doIndexedDbCheck() {
-  console.log('Checking idb storage...')
+  console.log('Checking idb storage...');
 
   // Try opening a specific indexedDB in the browser storage with the name given as parameter
   // Note: no version checking at this point, just name check
@@ -88,7 +87,7 @@ export function doIndexedDbCheck() {
   // The error is logged in console.
   request.onerror = (event) => {
     console.error(`Error in opening indexedDB '${dbName}' version '${dbVersion}':`, event.target.error);
-    console.log(`Note: IndexedDB can not be used in private browsing mode in Firefox or Edge`)
+    console.log(`Note: IndexedDB can not be used in private browsing mode in Firefox or Edge`);
     showSnackbar('Note for Firefox and Edge users: Viewer features are not available in private browsing mode');
   };
 
@@ -97,7 +96,7 @@ export function doIndexedDbCheck() {
   request.onsuccess = (event) => {
     let idbCheckPass = true;
     const idbFromBrowserStorage = event.target.result;
-    const version = idbFromBrowserStorage.version;
+    const {version} = idbFromBrowserStorage;
     const storeNames = [...idbFromBrowserStorage.objectStoreNames];
 
 
@@ -107,7 +106,7 @@ export function doIndexedDbCheck() {
     }
 
     if (storeNames.length !== dbStores.length) {
-      console.log('The number of idb stores does not match!')
+      console.log('The number of idb stores does not match!');
       idbCheckPass = false;
     }
 
@@ -124,11 +123,11 @@ export function doIndexedDbCheck() {
     if (idbCheckPass === false) {
       console.log('IndexedDB check failed!');
       deleteIdb();
-      console.log('IndexedDB deleted => reloading page!')
+      console.log('IndexedDB deleted => reloading page!');
       window.location.reload();
       return;
     }
 
     console.log(`IndexedDB OK! Using version '${version}' with stores '${storeNames}'`);
-  }
+  };
 }

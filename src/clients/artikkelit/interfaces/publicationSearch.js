@@ -1,19 +1,19 @@
-import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda} from "/common/rest.js";
-import {idbGet, idbClear, idbSet, idbGetStoredValues} from "/artikkelit/indexDB.js"
-import {formToJson, setOptions} from "/common/ui-utils.js";
+import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda} from '/common/rest.js';
+import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {formToJson, setOptions} from '/common/ui-utils.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');
 
-  document.getElementById("julkaisu-haku-tyyppi").addEventListener("change", showAndHideSearchInputs);
-  document.getElementById("julkaisu-haku-tulos-lista").addEventListener("change", searchResultChange);
+  document.getElementById('julkaisu-haku-tyyppi').addEventListener('change', showAndHideSearchInputs);
+  document.getElementById('julkaisu-haku-tulos-lista').addEventListener('change', searchResultChange);
 
-  document.getElementById("julkaisu-haku-tyyppi").dispatchEvent(new Event('change'));
+  document.getElementById('julkaisu-haku-tyyppi').dispatchEvent(new Event('change'));
 
-  document.getElementById("julkaisu-haku-title-form").addEventListener("submit", searchPublications);
-  document.getElementById("julkaisu-haku-melinda-form").addEventListener("submit", searchPublications);
-  document.getElementById("julkaisu-haku-isbn-form").addEventListener("submit", searchPublications);
-  document.getElementById("julkaisu-haku-issn-form").addEventListener("submit", searchPublications);
+  document.getElementById('julkaisu-haku-title-form').addEventListener('submit', searchPublications);
+  document.getElementById('julkaisu-haku-melinda-form').addEventListener('submit', searchPublications);
+  document.getElementById('julkaisu-haku-isbn-form').addEventListener('submit', searchPublications);
+  document.getElementById('julkaisu-haku-issn-form').addEventListener('submit', searchPublications);
 
   resetSearchResultSelect();
 }
@@ -49,7 +49,7 @@ export function searchResultChange(event) {
       }
 
       document.getElementById(`lehden-julkaisu-tyyppi`).innerHTML = data.recordType;
-      document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = data.isElectronic ? "Kyllä" : "Ei";
+      document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = data.isElectronic ? 'Kyllä' : 'Ei';
       document.getElementById(`lehden-vuodet-min`).innerHTML = data.publisherInfo.publisherYears.start;
       document.getElementById(`lehden-vuodet-max`).innerHTML = data.publisherInfo.publisherYears.end;
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
@@ -148,7 +148,7 @@ function refreshSearchResultSelect() {
     const data = sources.map(record => {
       console.log(record);
       // isElectronic: true, years: "1995-"
-      const title = record.title;
+      const {title} = record;
       const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
       const years = `${record.publisherInfo.publisherYears.start}-${record.publisherInfo.publisherYears.end}`;
       const text = `${title} (${publicationType}: ${years})`;

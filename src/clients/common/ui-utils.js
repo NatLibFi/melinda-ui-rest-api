@@ -4,10 +4,10 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from "./navbar.js";
-import {showSnackbar} from "./snackbar.js";
+import {setNavBar, startProcess, stopProcess} from './navbar.js';
+import {showSnackbar} from './snackbar.js';
 
-export {setNavBar, startProcess, stopProcess, showSnackbar}
+export {setNavBar, startProcess, stopProcess, showSnackbar};
 
 //-----------------------------------------------------------------------------
 
@@ -16,13 +16,14 @@ window.eventHandled = function (e) {
     e.stopPropagation();
     e.preventDefault();
   }
+
   return true;
-}
+};
 
 window.ignore = function (e) {
-  console.log("Ignore")
+  console.log('Ignore');
   return eventHandled(e);
-}
+};
 
 //-----------------------------------------------------------------------------
 
@@ -34,10 +35,10 @@ export function formToJson(formSubmitEvent) {
       if (formJson[key] === undefined) {
         return formJson[key] = [value];
       }
-      return formJson[key].push(value)
+      return formJson[key].push(value);
     }
 
-    return formJson[key] = value
+    return formJson[key] = value;
   });
   return formJson;
 }
@@ -51,9 +52,9 @@ export function createP(value, before = '', after = '', classList = []) {
 
 export function createHiddenInput(value, name) {
   const input = document.createElement('input');
-  input.setAttribute("type", 'hidden');
-  input.setAttribute("value", value);
-  input.setAttribute("name", name);
+  input.setAttribute('type', 'hidden');
+  input.setAttribute('value', value);
+  input.setAttribute('name', name);
   return input;
 }
 
@@ -70,7 +71,7 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
 
   if (tooltip) {
     button.classList.add('tooltip');
-    button.setAttribute("tooltip-text", tooltip);
+    button.setAttribute('tooltip-text', tooltip);
   }
 
   return button;
@@ -132,7 +133,7 @@ export function reload() {
 //-----------------------------------------------------------------------------
 
 export function createMenuItem(name, className) {
-  const item = document.createElement("div");
+  const item = document.createElement('div');
   item.classList.add(className);
   item.innerHTML = name;
   return item;
@@ -140,16 +141,16 @@ export function createMenuItem(name, className) {
 
 export function createMenuSelection(group, value, desc, className) {
   const id = `${group}-${value}`;
-  const item = createMenuItem("", className);
-  const radiobtn = document.createElement("input")
-  radiobtn.setAttribute("type", "radio");
-  radiobtn.setAttribute("id", id);
-  radiobtn.setAttribute("name", group);
-  radiobtn.setAttribute("value", value);
-  radiobtn.setAttribute("value", value);
+  const item = createMenuItem('', className);
+  const radiobtn = document.createElement('input');
+  radiobtn.setAttribute('type', 'radio');
+  radiobtn.setAttribute('id', id);
+  radiobtn.setAttribute('name', group);
+  radiobtn.setAttribute('value', value);
+  radiobtn.setAttribute('value', value);
 
-  const label = document.createElement("label");
-  label.setAttribute("for", id);
+  const label = document.createElement('label');
+  label.setAttribute('for', id);
   label.innerHTML = desc;
 
   item.appendChild(radiobtn);
@@ -158,12 +159,12 @@ export function createMenuSelection(group, value, desc, className) {
 }
 
 export function createMenuBreak() {
-  const item = document.createElement("hr");
+  const item = document.createElement('hr');
   return item;
 }
 
 export function createDropdownItem(name, classNames, labelText) {
-  const item = document.createElement("div");
+  const item = document.createElement('div');
   item.classList.add(...classNames);
   item.innerHTML = name;
   item.appendChild(createSelectLabel(labelText));
@@ -171,20 +172,64 @@ export function createDropdownItem(name, classNames, labelText) {
 }
 
 export function createSelectLabel(text) {
-  const label = document.createElement("label");
+  const label = document.createElement('label');
   label.innerHTML = text;
   return label;
 }
 
 export function createSelectItem(group) {
-  const select = document.createElement("select");
-  select.setAttribute("name", group);
+  const select = document.createElement('select');
+  select.setAttribute('name', group);
   return select;
 }
 
 export function createSelectOption(value, desc) {
-  const option = document.createElement("option");
-  option.setAttribute("value", value);
+  const option = document.createElement('option');
+  option.setAttribute('value', value);
   option.innerHTML = desc;
   return option;
+}
+
+//-----------------------------------------------------------------------------
+// HTML element helper functions for Viewer
+//-----------------------------------------------------------------------------
+
+// creates a new html element option and returns it
+// text and value attributes of element are given as parameters
+export function createOption(text, value) {
+  const option = document.createElement('option');
+  option.text = text;
+  option.value = value;
+
+  return option;
+}
+
+// enables the html element given as parameter
+export function enableElement(element) {
+  element.removeAttribute('disabled');
+}
+
+// disables the html element given as parameter
+export function disableElement(element) {
+  element.disabled = true;
+}
+
+// highligts a html element with a background color for a moment
+// if no color is given as parameter, uses default color defined in the CSS
+export function highlightElement(element, color) {
+  element.classList.add('highlight');
+
+  if (color) {
+    element.style.setProperty(`--highlightcolor`, color);
+  }
+
+  setTimeout(() => {
+    element.classList.remove('highlight');
+  }, 5000);
+}
+
+// returns an array of all html element descendants of the parent element
+export function getAllDescendants(parentElement) {
+  const allDescendantElements = parentElement.getElementsByTagName('*');
+  return [...allDescendantElements];
 }

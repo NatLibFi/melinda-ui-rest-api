@@ -4,14 +4,14 @@
 //
 //*****************************************************************************
 
-import {setNavBar} from "../common/navbar.js";
-import {startProcess, stopProcess} from "/common/ui-utils.js";
-import {showTab, resetForms, reload} from "/common/ui-utils.js";
-import {createMenuBreak, createMenuItem, createMenuSelection} from "../common/ui-utils.js";
+import {setNavBar} from '../common/navbar.js';
+import {startProcess, stopProcess} from '/common/ui-utils.js';
+import {showTab, resetForms, reload} from '/common/ui-utils.js';
+import {createMenuBreak, createMenuItem, createMenuSelection} from '../common/ui-utils.js';
 
-import {Account, doLogin, logout} from "/common/auth.js"
-import {showRecord, editField} from "/common/marc-record-ui.js";
-import {modifyRecord} from "../common/rest.js";
+import {Account, doLogin, logout} from '/common/auth.js';
+import {showRecord, editField} from '/common/marc-record-ui.js';
+import {modifyRecord} from '../common/rest.js';
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -20,100 +20,100 @@ import {modifyRecord} from "../common/rest.js";
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(document.querySelector('#navbar'), "Muokkaus")
+  setNavBar(document.querySelector('#navbar'), 'Muokkaus');
 
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    const username = document.querySelector("#account-menu #username")
-    username.innerHTML = Account.get()["Name"];
+    const username = document.querySelector('#account-menu #username');
+    username.innerHTML = Account.get().Name;
     showTab('muuntaja');
     doFetch();
   }
-}
+};
 
 //-----------------------------------------------------------------------------
 
 window.onAccount = function (e) {
   console.log('Account:', e);
   logout();
-}
+};
 
 window.onEdit = function (e) {
   console.log('Edit:', e);
   editmode = !editmode;
   if (editmode) {
-    e.target.style.background = "lightblue"
+    e.target.style.background = 'lightblue';
   } else {
-    e.target.style.background = ""
+    e.target.style.background = '';
   }
-  showTransformed()
+  showTransformed();
   return eventHandled(e);
-}
+};
 
 window.onNewField = function(e) {
   editField({
-    tag: "", ind1: "", ind2: "",
+    tag: '', ind1: '', ind2: '',
     subfields: []
   });
-  return eventHandled(e)
-}
+  return eventHandled(e);
+};
 
 //-----------------------------------------------------------------------------
 // Field decorating
 //-----------------------------------------------------------------------------
 
-var transformed = {
+let transformed = {
   source: {},
   include: [],
   exclude: {},
   replace: {}
-}
+};
 
-var lookup = {
+const lookup = {
   original: {},
   included: {}
-}
+};
 
 var editmode = false;
 
 function getContent(field) {
-  return transformed.replace[field.id] ?? field
+  return transformed.replace[field.id] ?? field;
 }
 
 function getOriginal(field) {
-  return lookup.original[field.id] ?? field
+  return lookup.original[field.id] ?? field;
 }
 
 function decorateField(div, field) {
   if (transformed.exclude[field.id]) {
-    div.classList.add("row-excluded")
+    div.classList.add('row-excluded');
   }
   if (transformed.replace[field.id]) {
-    div.classList.add("row-replaced")
+    div.classList.add('row-replaced');
     return;
   }
-  if(lookup.included[field.id]) {
-    div.classList.add("row-included")
+  if (lookup.included[field.id]) {
+    div.classList.add('row-included');
   }
 }
 
 function onFieldClick(event, field) {
   //console.log("Click", field)
-  if(editmode) {
-    editField(getContent(field), getOriginal(field))
+  if (editmode) {
+    editField(getContent(field), getOriginal(field));
   } else {
-    toggleField(field)
+    toggleField(field);
   }
-  return eventHandled(event)
+  return eventHandled(event);
 
   function toggleField(field) {
-    const id = field.id;
+    const {id} = field;
 
-    console.log("Toggle:", id)
+    console.log('Toggle:', id);
 
-    if(lookup.included[id]) {
-      transformed.include.filter(f => f.id != id)
+    if (lookup.included[id]) {
+      transformed.include.filter(f => f.id != id);
     } else if (!transformed.exclude[id]) {
       transformed.exclude[id] = true;
     } else {
@@ -125,7 +125,7 @@ function onFieldClick(event, field) {
 }
 
 window.editSaveField = function(field) {
-  console.log("Saving field:", field)
+  console.log('Saving field:', field);
 
   if (field.id) {
     transformed.replace[field.id] = field;
@@ -133,20 +133,20 @@ window.editSaveField = function(field) {
     transformed.include.push(field);
   }
   doFetch();
-}
+};
 
 window.editUseOriginal = function(field) {
   delete transformed.replace[field.id];
   doFetch();
-}
+};
 
 const decorator = {
   getContent,
   getOriginal,
   decorateField,
 
-  onClick: onFieldClick,
-}
+  onClick: onFieldClick
+};
 
 //-----------------------------------------------------------------------------
 // Do transform
@@ -154,47 +154,50 @@ const decorator = {
 
 window.doFetch = function (event = undefined) {
   console.log('Fetching...');
-  if (event) event.preventDefault();
+  if (event) {
+    event.preventDefault();
+  }
 
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   //const baseID = document.querySelector(`#muuntaja .record-merge-panel #record2 #ID`).value;
 
   if (!transformed.source || sourceID != transformed.source.ID) {
-    transformed.source = {ID: sourceID}
+    transformed.source = {ID: sourceID};
   }
 
   //console.log('Source ID:', sourceID);
   //console.log('Base ID:', baseID);
-  console.log("Fetching:", transformed);
+  console.log('Fetching:', transformed);
 
   startProcess();
 
   modifyRecord(transformed)
-    .then(response => { stopProcess(); return response; })
+    .then(response => {
+      stopProcess(); return response;
+    })
     .then(response => response.json())
-    .then(records => showTransformed(records))
-}
+    .then(records => showTransformed(records));
+};
 
-function showTransformed(records)
-{
+function showTransformed(records) {
   console.log('Fetched:', records);
 
-  if(records) {
+  if (records) {
     transformed = records;
   }
 
-  lookup.original = getLookup(getFields(transformed.source))
-  lookup.included = getLookup(transformed.include)
+  lookup.original = getLookup(getFields(transformed.source));
+  lookup.included = getLookup(transformed.include);
 
   showRecord(transformed.source, 'source', decorator);
   showRecord(transformed.result, 'result', decorator);
 
   function getFields(record) {
-    return record?.fields ?? []
+    return record?.fields ?? [];
   }
 
   function getLookup(fields) {
-    return fields.reduce((a, field) => ({...a, [field.id]: field}), {})
+    return fields.reduce((a, field) => ({...a, [field.id]: field}), {});
   }
 }
 

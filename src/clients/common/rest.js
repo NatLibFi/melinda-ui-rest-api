@@ -4,11 +4,11 @@
 //
 //*****************************************************************************
 
-import {getOntologyOptions} from "../artikkelit/utils.js";
-import {Account} from "../common/auth.js"
+import {getOntologyOptions} from '../artikkelit/utils.js';
+import {Account} from '../common/auth.js';
 
 //-----------------------------------------------------------------------------
-const RESTurl = window.location.protocol + "//" + window.location.host + "/rest";
+const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
 
 //console.log(`REST: ${RESTurl}`);
 
@@ -17,11 +17,11 @@ const RESTurl = window.location.protocol + "//" + window.location.host + "/rest"
 //*****************************************************************************
 
 export function authRequest(token) {
-  return doAuthRequest(token).then(response => response.json())
+  return doAuthRequest(token).then(response => response.json());
 }
 
 export function authVerify(token) {
-  return doAuthRequest(token, 'verify')
+  return doAuthRequest(token, 'verify');
 }
 
 function doAuthRequest(token, url = '') {
@@ -35,7 +35,9 @@ function doAuthRequest(token, url = '') {
     }
   )
     .then(response => {
-      if (!response.ok) throw undefined;
+      if (!response.ok) {
+        throw undefined;
+      }
       return response;
     });
 }
@@ -55,7 +57,7 @@ export function getRecord(id) {
         Authorization: Account.getToken()
       }
     }
-  )
+  );
 }
 
 export function modifyRecord(transforming) {
@@ -70,7 +72,7 @@ export function modifyRecord(transforming) {
       },
       body: JSON.stringify(transforming)
     }
-  )
+  );
 }
 
 //*****************************************************************************
@@ -104,7 +106,7 @@ export function transformRequest(transformed) {
       },
       body: JSON.stringify(transformed)
     }
-  )
+  );
 }
 
 //*****************************************************************************
@@ -133,17 +135,18 @@ export function getArtikkeliRecord(data) {
 }
 
 export function getOntologyWords(ontology, query) {
-  const {searchVocab, language} = getOntologyOptions(ontology)
+  const {searchVocab, language} = getOntologyOptions(ontology);
 
   return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
 }
 
 async function fetchFromRest(url, method = 'GET', body = undefined) {
-  const result = await fetch(url,
+  const result = await fetch(
+    url,
     {
       method,
       headers: {
-        'Accept': 'application/json',
+        'Accept': 'application/json'
       },
       body
     }
@@ -178,7 +181,8 @@ export function getCorrelationIdList(expanded) {
 }
 
 async function fetchLogs(url) {
-  const result = await fetch(url,
+  const result = await fetch(
+    url,
     {
       method: 'GET',
       headers: {
@@ -186,7 +190,7 @@ async function fetchLogs(url) {
         Authorization: Account.getToken()
       }
     }
-  )
+  );
   return result.json();
 }
 
@@ -202,7 +206,7 @@ export async function protectLog(id, sequence) {
         Authorization: Account.getToken()
       }
     }
-  )
+  );
 }
 
 //-----------------------------------------------------------------------------
@@ -217,7 +221,7 @@ export async function removeLog(id, force) {
         Authorization: Account.getToken()
       }
     }
-  )
+  );
 }
 
 //-----------------------------------------------------------------------------
