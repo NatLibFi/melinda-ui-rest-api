@@ -1,11 +1,12 @@
-import {startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
+import {startProcess, stopProcess, showSnackbar, highlightElement} from '/common/ui-utils.js';
 import {idbSetList, idbGetList, idbClearList} from '/viewer/indexDB.js';
 import {getCorrelationIdList} from '/common/rest.js';
 
 export const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
 
+
 //-----------------------------------------------------------------------------
-// Functions for correlation id list modal
+// Functions for search modal: filtering and selecting correlation id from list
 //-----------------------------------------------------------------------------
 
 window.openCorrelationIdListModal = function (event = undefined) {
@@ -78,28 +79,27 @@ window.toggleShowLogsByCreationDate = function (clickedDateButton) {
 
 }
 
-window.clearFilters = function ({event = undefined, clearDetailsFilter = 'true', clearLogTypeFilters = 'true', clearDateFilters = 'true', clearCatalogerFilters = 'true', clearInputFilters = 'true'}) {
-  eventHandled(event);
-  resetDateFilteringButtons();
+window.clearFilters = function (event = undefined) {
 
-  if (clearDetailsFilter === 'false' && clearLogTypeFilters === 'false' && clearCatalogerFilters === 'false' && clearDateFilters === 'true' && clearInputFilters === 'false') {
+  if (!event) {
+    resetDateFilteringButtons();
     return;
   }
 
-  resetFilteringInputs();
-  resetLogTypeFilteringButtons();
-  resetCatalogerFilteringButtons();
-  resetDetailsButton();
-  console.log('All filters cleared!');
-  updateOnChange(event);
-
+  if (event.target.id = 'clearFiltersButton') {
+    resetDateFilteringButtons();
+    resetFilteringInputs();
+    resetLogTypeFilteringButtons();
+    resetCatalogerFilteringButtons();
+    resetDetailsButton();
+    updateOnChange(event);
+  }
 
   function resetDateFilteringButtons() {
     const todayButton = document.getElementById('creationTimeToday');
     const weekAgoButton = document.getElementById('creationTimeWeekAgo');
     unselectFilteringButtons(todayButton, weekAgoButton);
     setDefaultTitles(todayButton, weekAgoButton);
-
   }
 
   function resetFilteringInputs() {
@@ -146,13 +146,12 @@ window.clearFilters = function ({event = undefined, clearDetailsFilter = 'true',
   }
 }
 
-
 export function unselectDateButtons() {
   const todayButton = document.getElementById('creationTimeToday');
   const weekAgoButton = document.getElementById('creationTimeWeekAgo');
 
   if (todayButton.classList.contains('select-button-selected') || weekAgoButton.classList.contains('select-button-selected')) {
-    clearFilters({clearDetailsFilter: 'false', clearLogTypeFilters: 'false', clearCatalogerFilters: 'false', clearDateFilters: 'true', clearInputFilters: 'false'});
+    clearFilters();
   }
 }
 
@@ -352,7 +351,6 @@ function updateListView(correlationIdList) {
       return applyFiltersPump(rest, updatedList)
     }
 
-
     function filterListWithLogTypes(list) {
       const logTypeButtons = document.querySelectorAll(`#logTypeToggleContainer [id]`);
 
@@ -410,10 +408,10 @@ function updateListView(correlationIdList) {
       }
 
       return list;
-    }
 
-    function getDate(logItem) {
-      return logItem.creationTime.substring(0, 10);
+      function getDate(logItem) {
+        return logItem.creationTime.substring(0, 10);
+      }
     }
   }
 
@@ -466,14 +464,14 @@ function createListItem(logItem) {
     const listItemFragment = template.content.cloneNode(true);
     const listItem = listItemFragment.getElementById('listItem');
 
-    // logItem's correlationId is not unique, so the id for listItem containts two logItem attributes
+    // logItem's correlationId is not unique, so the id for listItem is created using two logItem attributes
     listItem.id = correlationId + ':' + logItemType;
     listItem.querySelector(`.list-item-id`).innerHTML = correlationId;
 
-    const logTypeText = `Lokityyppi: <span style="font-weight: bold">${logItemType}</span>`;
-    const catalogerText = `Luetteloija: <span style="font-weight: bold">${cataloger}</span>`;
-    const creationTimeText = `Luontiaika: <span style="font-weight: bold">${creationTime.substring(0, 10)} ${creationTime.substring(11, 22)}</span>`;
-    const logCountText = `Lokilukumäärä: <span style="font-weight: bold">${logCount}</span>`;
+    const logTypeText = 'Lokityyppi: ' + styleBold(logItemType);
+    const catalogerText = 'Luetteloija: ' + styleBold(cataloger);
+    const creationTimeText = 'Luontiaika: ' + styleBold(creationTime.substring(0, 10)) + ' ' + styleBold(creationTime.substring(11, 22));
+    const logCountText = 'Lokilukumäärä: ' + styleBold(logCount);
 
     const logTypeDiv = createDivWithInnerHtml(logTypeText);
     const catalogerDiv = createDivWithInnerHtml(catalogerText);
@@ -517,6 +515,10 @@ function createListItem(logItem) {
 
       doSearchPress();
       modalClose();
+    }
+
+    function styleBold(text) {
+      return `<span style="font-weight: bold">${text}</span>`;
     }
   }
 }

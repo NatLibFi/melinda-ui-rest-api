@@ -5,30 +5,25 @@
 //*****************************************************************************
 
 import {
-  showTab, setNavBar, startProcess,
-  stopProcess, showSnackbar, createOption,
-  enableElement, disableElement, highlightElement
+  showTab, setNavBar, startProcess, stopProcess, showSnackbar,
+  createOption, enableElement, disableElement, highlightElement
 } from '/common/ui-utils.js';
+
+import {
+  idbGetLogs, idbSetLogs, idbClearLogs,
+  doIndexedDbCheck, idbClearList
+} from '/viewer/indexDB.js';
+
 import {Account, doLogin, logout} from '/common/auth.js';
 import {showRecord} from '/common/marc-record-ui.js';
-import {getMatchLog, getMergeLog, protectLog, removeLog} from '/common/rest.js';
-import {
-  idbSetLogs, idbGetLogs, idbClearLogs,
-  idbClearList, doIndexedDbCheck
-} from '/viewer/indexDB.js';
+import {getMatchLog, getMergeLog} from '/common/rest.js';
 import {unselectDateButtons, oneDayInMs} from './searchModal.js';
+import {checkFile} from './fileHandling.js';
+import {setProtectButton} from './logActions.js';
 
-import {checkFile} from './fileHandling.js'; // eslint-disable-line
-
-const viewing = {
-  record1: {},
-  record2: {},
-  record3: {}
-};
-
-//-----------------------------------------------------------------------------
-// on page load:
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+// Initialize on page load
+//-----------------------------------------------------------------------------------------
 
 window.initialize = function () {
   console.log('Initializing');
@@ -46,8 +41,8 @@ window.initialize = function () {
     showTab('viewer');
     parseUrlParameters();
     doIndexedDbCheck();
-    addModalEventListeners();
-    addDialogEventListeners();
+    addSearchModalEventListeners();
+    addFileDialogEventListeners();
   }
 
   function parseUrlParameters() {
@@ -73,7 +68,7 @@ window.initialize = function () {
   }
 
   // event listeners for some elements for the correlation id list modal
-  function addModalEventListeners() {
+  function addSearchModalEventListeners() {
     const modal = document.querySelector(`#correlationIdListModal`);
     const dateStartInput = document.querySelector(`#correlationIdListModal #dateStartInput`);
     const dateEndInput = document.querySelector(`#correlationIdListModal #dateEndInput`);
@@ -85,18 +80,18 @@ window.initialize = function () {
     }, false);
 
     dateEndInput.addEventListener('click', event => {
+      event.stopPropagation();
       unselectDateButtons();
-      eventHandled(event);
     }, false);
 
     modal.addEventListener('scroll', event => {
-      scrollToTopButton.style.display = modal.scrollTop > 100 ? 'block' : 'none';
       eventHandled(event);
+      scrollToTopButton.style.display = modal.scrollTop > 100 ? 'block' : 'none';
     });
   }
 
   // event listeners for some elements in the dialog for file upload
-  function addDialogEventListeners() {
+  function addFileDialogEventListeners() {
     const fileInput = document.getElementById('fileUpload');
     const fileNameDiv = document.getElementById('selectedFileName');
     const clearFileSelectButton = document.getElementById('clearFileSelect');
@@ -116,7 +111,10 @@ window.initialize = function () {
   }
 };
 
-//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+// Function for logging out from app
+//-----------------------------------------------------------------------------------------
 
 window.onAccount = function (e) {
   console.log('Account:', e);
@@ -124,15 +122,9 @@ window.onAccount = function (e) {
 };
 
 
-const transformed = {
-  record1: {},
-  record2: {},
-  record3: {}
-};
-
-//-----------------------------------------------------------------------------
-// Do button actions
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+// Functions to start search for log, browse records and clear view 
+//-----------------------------------------------------------------------------------------
 
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
@@ -143,6 +135,46 @@ window.doSearchPress = function (event = undefined) {
 
   doFetch(event, id, sequence, logType);
 };
+
+window.clearLogView = function (event = undefined) {
+  eventHandled(event);
+  const logType = document.querySelector(`#viewer #logType`);
+  const sequenceSelect = document.querySelector(`#viewer #sequence`);
+
+  logType.value = 'EMPTY_LOG';
+
+  idbClearLogs();
+  idbClearList();
+
+  return sequenceSelect.dispatchEvent(new Event('change'));
+};
+
+window.selectPrevious = function (event) {
+  eventHandled(event);
+  const select = document.querySelector(`#viewer #sequence`);
+  setNewSelect(select.selectedIndex - 1);
+};
+
+window.selectNext = function (event) {
+  eventHandled(event);
+  const select = document.querySelector(`#viewer #sequence`);
+  setNewSelect(select.selectedIndex + 1);
+};
+
+function setNewSelect(newIndex) {
+  const select = document.querySelector(`#viewer #sequence`);
+
+  select.selectedIndex = newIndex;
+
+  const newEvent = new Event('change');
+  newEvent.data = select;
+  select.dispatchEvent(newEvent);
+}
+
+
+//-----------------------------------------------------------------------------------------
+// Functions to fetch log, set it to indexedDB and load record for viewing with notes
+//-----------------------------------------------------------------------------------------
 
 window.doFetch = function (event = undefined, id = '', sequence = 0, logType = 'MERGE_LOG') {
   eventHandled(event);
@@ -380,6 +412,23 @@ function getMergeCandidateInfo(data) {
   };
 }
 
+function setRecordTopInfo(record, title, additional = false) {
+  document.querySelector(`#viewer #${record} .title`).innerHTML = `${title}`;
+
+  if (additional === false) {
+    document.querySelector(`#viewer #${record} .note`).style.display = 'none';
+    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
+  }
+
+  if (additional !== false) {
+    document.querySelector(`#viewer #${record} .note`).style.display = 'block';
+    document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
+    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
+  }
+}
+
 window.showNote = (event, record) => {
   eventHandled(event);
   document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
@@ -392,123 +441,6 @@ window.hideNote = (event, record) => {
   document.querySelector(`#viewer #${record} #showNote`).style.display = 'block';
   document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
   document.querySelector(`#viewer #${record} .note`).style.display = 'none';
-};
-
-window.selectPrevious = function (event) {
-  eventHandled(event);
-  const select = document.querySelector(`#viewer #sequence`);
-  setNewSelect(select.selectedIndex - 1);
-};
-
-window.selectNext = function (event) {
-  eventHandled(event);
-  const select = document.querySelector(`#viewer #sequence`);
-  setNewSelect(select.selectedIndex + 1);
-};
-
-window.copyLink = function (event) {
-  eventHandled(event);
-
-  const logType = document.querySelector(`#viewer #logType`).value || '';
-  const id = document.querySelector(`#viewer #id`).value || '';
-  const sequence = document.querySelector(`#viewer #sequence`).value || '';
-
-  let link = window.location;
-
-  if (id !== '' && sequence !== '') {
-    link = `${window.location}?id=${id}&logType=${logType}&sequence=${sequence}`;
-  }
-
-  const button = createTestLinkButton(link);
-
-  showSnackbar({text: `Linkki kopioitu!`, actionButton: button, closeButton: 'true'});
-  navigator.clipboard.writeText(link);
-
-  function createTestLinkButton(link) {
-    const testLinkButton = document.createElement('button');
-    testLinkButton.innerHTML = 'Testaa linkkiä';
-    testLinkButton.title = link;
-    testLinkButton.addEventListener('click', () => {
-      window.open(link);
-    });
-    return testLinkButton;
-  }
-};
-
-window.protect = function (event = undefined) {
-  eventHandled(event);
-  console.log('Protecting...');
-  startProcess();
-
-  const id = document.querySelector(`#viewer #id`).value || '';
-  const sequence = document.querySelector(`#viewer #sequence`).value || 1;
-  const protectButton = document.querySelector(`#viewer #protect`);
-
-  if (id === '') {
-    showSnackbar({text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!', actionButton: 'true'});
-    console.log('Nothing to protect...');
-    stopProcess();
-    return;
-  }
-
-  protectLog(id, sequence)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Response status ok:false');
-      }
-      protectButton.innerHTML === 'lock_open'
-        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu sekvenssi ${sequence} ID:lle <span class="correlation-id-font">${id}</span>`}))
-        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`, closeButton: 'true'}));
-    })
-    .catch(error => {
-      showSnackbar({text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!', closeButton: 'true'});
-      console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence} `, error);
-    })
-    .finally(() => stopProcess());
-};
-
-window.openRemoveDialog = function (event = undefined) {
-  eventHandled(event);
-  const id = document.querySelector(`#viewer #id`).value || '';
-  const dialog = document.getElementById('dialogForRemove');
-  const dialogIdText = document.getElementById('idToBeRemoved');
-
-  if (id === '') {
-    showSnackbar({text: 'ID:tä ei poistettu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen poistamista!', closeButton: 'true'});
-    console.log('Nothing to remove...');
-    stopProcess();
-    return;
-  }
-
-  dialogIdText.innerHTML = ` ${id} `;
-  dialog.showModal();
-};
-
-window.cancelRemove = function (event = undefined) {
-  console.log('Nothing removed');
-  showSnackbar({text: 'Toiminto peruttu!', closeButton: 'true'});
-};
-
-window.confirmRemove = function (event = undefined) {
-  console.log('Removing...');
-  startProcess();
-
-  const id = document.querySelector(`#viewer #id`).value || '';
-
-  remove(id);
-};
-
-window.clearLogView = function (event = undefined) {
-  eventHandled(event);
-  const logType = document.querySelector(`#viewer #logType`);
-  const sequenceSelect = document.querySelector(`#viewer #sequence`);
-
-  logType.value = 'EMPTY_LOG';
-
-  idbClearLogs();
-  idbClearList();
-
-  return sequenceSelect.dispatchEvent(new Event('change'));
 };
 
 export function setDataToIndexDB(logs, sequence) {
@@ -553,69 +485,3 @@ export function setDataToIndexDB(logs, sequence) {
 
   stopProcess();
 }
-
-function setRecordTopInfo(record, title, additional = false) {
-  document.querySelector(`#viewer #${record} .title`).innerHTML = `${title}`;
-
-  if (additional === false) {
-    document.querySelector(`#viewer #${record} .note`).style.display = 'none';
-    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
-    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
-  }
-
-  if (additional !== false) {
-    document.querySelector(`#viewer #${record} .note`).style.display = 'block';
-    document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
-    document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
-    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
-  }
-}
-
-function setProtectButton(type) {
-  const protectButton = document.querySelector(`#viewer #protect`);
-
-  if (type === 'protected') {
-    setProtectButtonProperties('lock', 'Poista turvaus tästä sekvenssistä', 'Poista turvaus');
-    return;
-  }
-
-  if (type === 'not protected') {
-    setProtectButtonProperties('lock_open', 'Turvaa tämä sekvenssi', 'Turvaa');
-    return;
-  }
-
-  disableElement(protectButton);
-
-  function setProtectButtonProperties(icon, infoText, tooltipText) {
-    protectButton.innerHTML = icon;
-    protectButton.title = infoText;
-    protectButton.setAttribute('tooltip-text', tooltipText);
-  }
-}
-
-function remove(id) {
-  const force = '1';
-
-  removeLog(id, force)
-    .then(() => {
-      clearLogView();
-      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
-      console.log(`Log ${id} removed`);
-    })
-    .catch(error => {
-      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
-      console.log(`Error while trying to remove log with correlation id ${id}: `, error);
-    })
-    .finally(() => stopProcess());
-}
-
-function setNewSelect(newIndex) {
-  const select = document.querySelector(`#viewer #sequence`);
-
-  select.selectedIndex = newIndex;
-
-  const newEvent = new Event('change');
-  newEvent.data = select;
-  select.dispatchEvent(newEvent);
-}
-

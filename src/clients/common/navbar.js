@@ -72,15 +72,3 @@ export function setNavBar(elem, name) {
     }
   };
 }
-
-//-----------------------------------------------------------------------------
-
-export function startProcess() {
-  const progressbar = document.querySelector(`#progressbar`);
-  progressbar.className = 'progress-bar';
-}
-
-export function stopProcess() {
-  const progressbar = document.querySelector(`#progressbar`);
-  progressbar.className = 'progress-bar-inactive';
-}

@@ -1,12 +1,17 @@
+import {
+  enableElement, disableElement, highlightElement,
+  getAllDescendants, showSnackbar
+} from '/common/ui-utils.js';
+
 import {idbGetLogs} from '/viewer/indexDB.js';
 import {setDataToIndexDB} from './viewer.js'
-import {showSnackbar, enableElement, disableElement, getAllDescendants, highlightElement} from '/common/ui-utils.js';
 
-//-----------------------------------------------------------------------------
-// Functions for file dialog
-//-----------------------------------------------------------------------------
 
-export default function() {
+//-----------------------------------------------------------------------------------------
+// Functions for file dialog: file upload and file download for merge records
+//-----------------------------------------------------------------------------------------
+
+export default function () {
   return {checkFile}
 }
 

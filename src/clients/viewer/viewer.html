@@ -250,7 +250,7 @@
 
           <div class="dialog-actions">
             <button class="dialog-cancel-button" id="cancelUploadButton"
-              onclick="return cancelUpload(event)">Peru</button>
+              onclick="return cancelUpload(event)">Peruuta</button>
             <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin tiedosto"
               disabled="true" onclick="return confirmUpload(event)">Avaa tiedosto</button>
           </div>
@@ -464,7 +464,7 @@
             <!-- button for resetting search and clearing all filters -->
             <div id="clearFilters" class="clear-filters">
               <button id="clearFiltersButton" class="clear-filter-button modal-function-button"
-                title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters({event})">Nollaa
+                title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters(event)">Nollaa
                 suodattimet</button>
             </div>
 
@@ -520,17 +520,6 @@
 
     </div>
 
-  </div>
-
-  <!-- ---------------------------------------------------------------------- -->
-  <!-- Search dialog -->
-  <dialog id="searchDlg">
-    Testi
-  </dialog>
-
-  <!-- ---------------------------------------------------------------------- -->
-  <!-- Tab for server side notes -->
-  <div id="server-note" hidden>
   </div>
 
 </body>

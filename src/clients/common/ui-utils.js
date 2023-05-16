@@ -4,7 +4,8 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess} from './navbar.js';
+import {setNavBar} from './navbar.js';
+import {startProcess, stopProcess} from './progressbar.js';
 import {showSnackbar} from './snackbar.js';
 
 export {setNavBar, startProcess, stopProcess, showSnackbar};
@@ -21,7 +22,6 @@ window.eventHandled = function (e) {
 };
 
 window.ignore = function (e) {
-  console.log('Ignore');
   return eventHandled(e);
 };
 

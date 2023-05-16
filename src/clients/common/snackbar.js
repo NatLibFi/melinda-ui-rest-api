@@ -176,7 +176,7 @@ function createSnackbar(snackbarContent, html) {
     function listenToSnackbarAnimationStart() {
       snackbar.onanimationstart = (event) => {
         if (event.animationName === 'fadein') {
-          console.log('Now showing snackbar to user!');
+          //console.log('Now showing snackbar to user!');
         }
       };
     }
