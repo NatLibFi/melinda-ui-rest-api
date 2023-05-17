@@ -22,8 +22,8 @@ export function handleFailedRouteParams(appName) {
 
     logger.debug('.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._');
     logger.debug(`Starting route parameter check for app...`);
-    logger.debug(`The current route is: ${route}`);
-    logger.debug(`All route parameters: ${JSON.stringify(routeParams)}`);
+    logger.verbose(`The current route is: ${route}`);
+    logger.verbose(`All route parameters: ${JSON.stringify(routeParams)}`);
 
     const failedParams = [
       ...checkArtikkelitRouteParams(routeParams),
@@ -34,12 +34,12 @@ export function handleFailedRouteParams(appName) {
       .map(param => param.name);
 
     if (failedParams.length === 0) {
-      logger.verbose(`Route parameter check for app ${appName} passed!`);
+      logger.info(`Route parameter check for app ${appName} passed!`);
       logger.debug('.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._');
       return next();
     }
 
-    logger.error(`Failed route parameters: ${failedParams}`);
+    logger.warn(`Failed route parameters: ${failedParams}`);
     const error = new Error(httpStatus.BAD_REQUEST, 'Invalid route parameter');
     next(error);
   };
@@ -95,7 +95,7 @@ export function handleFailedRouteParams(appName) {
 
     const {id} = routeParams;
 
-    logger.debug(id === undefined ? `No route parameter 'id'` : `Route parameter 'id' is ${id}`);
+    logger.verbose(id === undefined ? `No route parameter 'id'` : `Route parameter 'id' is ${id}`);
 
     return [{name: 'id', value: id ? uuidValidate(id) && uuidVersion(id) === 4 : true}];
   }

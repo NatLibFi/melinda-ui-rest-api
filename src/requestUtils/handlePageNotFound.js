@@ -17,8 +17,8 @@ export function handlePageNotFound() {
   const logger = createLogger();
 
   return function (req, res, next) {
-    logger.error(`Error: it seems that this page is not found!`);
-    logger.debug(`Request method: ${req.method} | Path: ${req.path} | Query parameters: ${JSON.stringify(req.query)}`);
+    logger.warn(`Error: it seems that this page is not found!`);
+    logger.verbose(`Request method: ${req.method} | Path: ${req.path} | Query parameters: ${JSON.stringify(req.query)}`);
     res.status(httpStatus.NOT_FOUND).sendFile(path.join(__dirname, '../clients/common/templates', 'pageNotFound.html'));
   };
 

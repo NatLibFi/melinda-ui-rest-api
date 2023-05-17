@@ -21,8 +21,8 @@ export function handleFailedQueryParams(appName) {
 
     logger.debug('.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._');
     logger.debug(`Starting query parameter check for app ${appName}...`);
-    logger.debug(`The current route is: ${route}`);
-    logger.debug(`All query parameters: ${JSON.stringify(queryParams)}`);
+    logger.verbose(`The current route is: ${route}`);
+    logger.verbose(`All query parameters: ${JSON.stringify(queryParams)}`);
 
     const failedParams = [
       ...checkArtikkelitQueryParams(queryParams),
@@ -33,12 +33,12 @@ export function handleFailedQueryParams(appName) {
       .map(param => param.name);
 
     if (failedParams.length === 0) {
-      logger.verbose(`Query parameter check for app ${appName} passed!`);
+      logger.info(`Query parameter check for app ${appName} passed!`);
       logger.debug('.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._');
       return next();
     }
 
-    logger.error(`Failed query parameters: ${failedParams}`);
+    logger.warn(`Failed query parameters: ${failedParams}`);
     const error = new Error(httpStatus.BAD_REQUEST, 'Invalid query parameter');
     next(error);
   };
@@ -93,9 +93,9 @@ export function handleFailedQueryParams(appName) {
 
     const {sequence, force, expanded} = queryParams;
 
-    logger.debug(sequence === undefined ? `No query parameter 'sequence'` : `Query parameter 'sequence' is ${sequence}`);
-    logger.debug(force === undefined ? `No query parameter 'force'` : `Query parameter 'force' is ${force}`);
-    logger.debug(expanded === undefined ? `No query parameter 'expanded'` : `Query parameter 'expanded' is ${expanded}`);
+    logger.verbose(sequence === undefined ? `No query parameter 'sequence'` : `Query parameter 'sequence' is ${sequence}`);
+    logger.verbose(force === undefined ? `No query parameter 'force'` : `Query parameter 'force' is ${force}`);
+    logger.verbose(expanded === undefined ? `No query parameter 'expanded'` : `Query parameter 'expanded' is ${expanded}`);
 
     return [
       {name: 'sequence', value: sequence ? (/^(?:[0-9]{1,3})$/u).test(sequence) : true},
