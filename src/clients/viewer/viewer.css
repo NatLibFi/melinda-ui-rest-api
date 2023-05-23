@@ -10,6 +10,43 @@ div#loading {}
 
 div#tools {}
 
+.tools {
+  flex-wrap: wrap;
+  flex-shrink: 2;
+}
+
+.tools-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1420px) {
+  #viewer .tools {
+    row-gap: 10px;
+  }
+
+  #viewerTools>div:first-child {
+    flex-basis: 100%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #viewer .tools {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  #viewer .tools .ToolBar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+  }
+}
+
 .Input>label,
 .Select>label,
 .sequence-container>label {
@@ -39,6 +76,11 @@ div#tools {}
   font-size: var(--font-size-icon-normal);
 }
 
+/* Disabled toolbar button cannot be clicked */
+.ToolBar button:disabled {
+  pointer-events: none;
+}
+
 .uuidInput {
   width: 37ch;
 }
@@ -49,14 +91,10 @@ div#tools {}
   height: 24px;
 }
 
-.tools .id-container {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.id-container .id-input {
+.id-input {
   display: flex;
   align-items: flex-end;
+  font-family: roboto_monoregular, "Roboto Mono", monospace !important;
 }
 
 /* Sequence container */
@@ -109,6 +147,41 @@ div#tools {}
   color: rgb(182, 225, 224);
 }
 
+.tools button.search-button:disabled {
+  background-color: lightgrey;
+}
+
+
+/* Viewer reader mode styles */
+/* ---------------------------------------------------------------------------- */
+
+.tools .read-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tools .read-mode-info {
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: grey;
+}
+
+.tools .read-mode span {
+  color: grey;
+}
+
+.tools button#exit {
+  background-color: rgb(182, 225, 224);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.tools button#exit:hover {
+  background-color: lightgrey;
+}
+
 /* ---------------------------------------------------------------------------- */
 
 div#viewer {}
@@ -117,7 +190,7 @@ div#viewer {}
   #viewer .record-merge-panel {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
   }
 
@@ -229,7 +302,8 @@ span.correlation-id-font {
 
 @keyframes highlight {
   50% {
-    background-color: rgb(182, 225, 224);
+    background-color: var(--highlightcolor, #FAE196);
+    border-radius: 1em;
   }
 }
 
@@ -259,7 +333,7 @@ div#correlationIdListModal {}
   padding-top: 8px;
   resize: horizontal;
   overflow: auto;
-  max-width: 60%;
+  max-width: 90%;
   min-width: 39%;
   min-height: 90%;
 }
@@ -365,7 +439,6 @@ div#correlationIdListModal {}
   width: fit-content;
   overflow: hidden;
   min-width: 0;
-  max-width: 700px;
   row-gap: 0.25em;
 }
 
@@ -681,66 +754,85 @@ div#correlationIdListModal {}
 }
 
 /* ---------------------------------------------------------------------------- */
-/* Correlation id modal adjusting to the screen width */
+/* ---------------------------------------------------------------------------- */
+/* --- Dialog for file upload --------------------------------------------------*/
+/* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 
-/* If user's screen width is over 2250px: */
-/*  - min width for modal content is smaller, there is already enough space */
-@media (min-width: 2250px) {
-  #correlationIdListModal>.modal-content {
-    min-width: 35%;
-  }
+#dialogForUpload {
+  width: 550px;
 }
 
-/* If user's screen width is over 3000px: */
-/*  - min width for modal content is even smaller, there is already enough space */
-@media (min-width: 2750px) {
-  #correlationIdListModal>.modal-content {
-    min-width: 25%;
-  }
+#dialogForUpload .file-input {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 35px;
 }
 
-/* If user's screen width is under 750px: */
-/*  - correlation ids are shown in smaller font in the list */
-/*  - list item details are hidden automatically */
-/*  - list info texts are hidden automatically */
-@media (max-width: 750px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
-
-  .list-item-details,
-  .modal-info-text,
-  #listDetailsToggleContainer {
-    display: none !important;
-  }
-
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
+#dialogForUpload .file-name {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 5px;
 }
 
-/* If user's screen width is under 670px: */
-/*  - correlation ids are shown in smaller font in the list */
-/*  - list item details are hidden automatically */
-/*  - list item icons are hidden automatically */
-/*  - list info texts are hidden automatically */
-/*  - list filtering buttons are hidden automatically*/
-/*  - modal close button is hidden automatically*/
-@media (max-width: 670px) {
-  .list-item-id {
-    font-size: var(--font-size-content-small);
-  }
+#dialogForUpload .file-name.file-selected {
+  font-family: roboto_monoregular, "Roboto Mono", monospace;
+}
 
-  .list-item-details-and-icons,
-  .modal-info-text,
-  .close-button,
-  .list-filtering-inputs,
-  .list-filtering-buttons {
-    display: none !important;
-  }
+#dialogForUpload .file-button {
+  height: 28px;
+  font-size: var(--font-size-label-large);
+  font-weight: var(--font-weight-label-large);
+  background-color: rgb(182, 225, 224);
+  border: none;
+}
 
-  #correlationIdListModal>.modal-content {
-    resize: none;
-  }
+#dialogForUpload .file-button:active {
+  color: rgb(182, 225, 224);
+}
+
+#dialogForUpload .file-button:hover {
+  background-color: lightgrey;
+}
+
+#dialogForUpload .close-button {
+  margin: 5px;
+  color: white;
+  background-color: black;
+}
+
+#dialogForUpload .close-button:hover {
+  background-color: lightgrey;
+  color: black;
+}
+
+#dialogForUpload .close-button:active {
+  background-color: darkgrey;
+  color: black;
+}
+
+#dialogForUpload .instructions-headline {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+}
+
+#dialogForUpload .instructions-headline button {
+  margin-left: 10px;
+}
+
+#dialogForUpload .instructions-headline button:hover {
+  background-color: lightgrey;
+}
+
+#dialogForUpload .instructions-headline button:active {
+  background-color: darkgrey;
 }

@@ -83,81 +83,86 @@
       </div>
 
       <!-- Viewer Toolbar -->
-      <div class="tools ToolBar">
+      <div id="viewerTools" class="tools ToolBar">
+
+        <!-- Info text and icon are visible when viewer is set in reader mode -->
+        <div class="tools-wrapper">
+          <div id="readMode" class="read-mode" style="display: none">
+            <span class="material-icons">disabled_visible</span>
+            <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
+          </div>
+          <button id="exit" class="material-icons tooltip" tooltip-text="Sulje näkymä" style="display: none"
+            onclick="return exitReaderMode(event)">logout</button>
+        </div>
 
         <!-- Tools for searching and selecting a correlation id and sequence -->
         <form class="ToolBar HBox highlight-border">
 
-          <div class="Select VBox">
-            <label>Lokityyppi</label>
-            <select id="logType">
-              <option value="MERGE_LOG">Merge</option>
-              <option value="MATCH_LOG">Match</option>
-              <option value="EMPTY_LOG" hidden></option>
-            </select>
-          </div>
-
-          <div class="id-container">
+          <div class="tools-wrapper">
+            <div class="Select VBox">
+              <label>Lokityyppi</label>
+              <select id="logType">
+                <option value="MERGE_LOG">Merge</option>
+                <option value="MATCH_LOG">Match</option>
+                <option value="EMPTY_LOG" hidden></option>
+              </select>
+            </div>
             <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
               tooltip-text="Etsi ID listasta" onclick="return openCorrelationIdListModal(event)">manage_search</button>
+          </div>
 
+          <div class="tools-wrapper">
             <div class="Filler VBox Input">
               <label>ID (correlation id)</label>
               <input class="inputField uuidInput id-input" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
             </div>
-
           </div>
 
-          <div class="Select VBox sequence-container">
-
-            <label>Sekvenssi</label>
-
-            <div class="HBox Filler">
-
-              <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
-                onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
-
-              <div class="Select VBox Filler sequence-select">
-                <select id="sequence" onchange="return loadLog(event)"></select>
+          <div class="tools-wrapper">
+            <div class="Select VBox sequence-container">
+              <label>Sekvenssi</label>
+              <div class="HBox Filler">
+                <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
+                  onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
+                <div class="Select VBox Filler sequence-select">
+                  <select id="sequence" onchange="return loadLog(event)"></select>
+                </div>
+                <div class="Filler VBox Input">
+                  <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
+                </div>
+                <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
+                  onclick="return selectNext(event)" disabled="true">navigate_next</button>
               </div>
-
-              <div class="Filler VBox Input">
-                <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
-              </div>
-
-              <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
-                onclick="return selectNext(event)" disabled="true">navigate_next</button>
-
             </div>
-
+            <button class="material-icons tooltip search-button" tooltip-text="Hae"
+              onclick="return doSearchPress(event)">search</button>
+            <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
+              onclick="return clearLogView(event)" disabled="true">backspace</button>
           </div>
-
-          <button class="material-icons tooltip search-button" tooltip-text="Hae"
-            onclick="return doSearchPress(event)">search</button>
-
-          <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
-            onclick="return clearLogView(event)" disabled="true">backspace</button>
 
         </form>
 
         <!-- Tools for handling selected correlation id and/or sequence -->
-        <div class="HBox">
-          <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
-            disabled="true">lock_open</button>
-
-          <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
-            onclick="return openRemoveDialog(event)" disabled="true">delete</button>
-
-          <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
-            onclick="return copyLink(event)">share</button>
-
-          <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
-            disabled="true">settings</button>
+        <div class="tools-wrapper">
+          <div class="HBox">
+            <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
+              disabled="true">lock_open</button>
+            <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
+              onclick="return openRemoveDialog(event)" disabled="true">delete</button>
+            <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
+              onclick="return copyLink(event)">share</button>
+            <button id="export" class="material-icons tooltip" tooltip-text="Lataa tiedosto" disabled="true"
+              onclick="downloadFile(event)">file_download</button>
+            <button id="import" class="material-icons tooltip" tooltip-text="Avaa tiedosto"
+              onclick="uploadFile(event)">file_upload</button>
+            <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
+              disabled="true">settings</button>
+          </div>
         </div>
 
       </div>
 
-      <!-- Dialog popup used when log is removed -->
+      <!-- Dialog popup for removing logs -->
       <dialog id="dialogForRemove">
         <form method="dialog">
 
@@ -175,9 +180,79 @@
           </div>
 
           <div class="dialog-actions">
-            <button class="dialog-cancel-button" id="cancelButton" onclick="return cancelRemove(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmButton" onclick="return confirmRemove(event)">Vahvista
-              poisto</button>
+            <button class="dialog-cancel-button" id="cancelRemoveButton"
+              onclick="return cancelRemove(event)">Peruuta</button>
+            <button class="dialog-confirm-button" id="confirmRemoveButton"
+              onclick="return confirmRemove(event)">Vahvista poisto</button>
+          </div>
+
+        </form>
+      </dialog>
+
+      <!-- Dialog popup for uploading files -->
+      <dialog id="dialogForUpload">
+        <form method="dialog">
+
+          <div class="dialog-icon material-icons">
+            upload_file
+          </div>
+
+          <div class="dialog-headline">
+            Avaa tiedosto lukunäkymässä
+          </div>
+
+          <div class="dialog-supporting-text">
+
+            <div class="file-input">
+              <input type="file" id="fileUpload" accept=".json, .txt" style="display:none" />
+              <button id="fileSelect" type="button" class="file-button"
+                onclick="return openFileBrowse(event)">Selaa</button>
+              <div id="selectedFileName" class="file-name">Ei valittua tiedostoa</div>
+              <button id="clearFileSelect" type="button" class="material-icons close-button"
+                title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
+                style="display: none">close</button>
+            </div>
+
+            <hr>
+            <div class="instructions-headline">
+              <div>
+                OHJEET
+              </div>
+              <button id="showInstructionsButton" onclick="return showInstructions(event)"
+                class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä">expand_more</button>
+              <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
+                class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                style="display: none">expand_less</button>
+            </div>
+
+            <div id="instructions" style="display: none">
+              <ul>
+                <li>Valitse tiedosto ensin selaamalla omalta laitteeltasi.</li>
+                <li>
+                  Tiedoston pääte on oltava .json tai .txt.
+                </li>
+                <li>
+                  Tiedostossa tietueiden on oltava json-muodossa.
+                </li>
+                <li>
+                  Klikkaa lopuksi 'Avaa tiedosto'.
+                </li>
+                <li>
+                  Tietueet avautuvat Viewerissä lukunäkymään.
+                </li>
+                <li>
+                  Lukunäkymässä tietueiden käsittelyä on rajoitettu.
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="dialog-actions">
+            <button class="dialog-cancel-button" id="cancelUploadButton"
+              onclick="return cancelUpload(event)">Kumoa</button>
+            <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin tiedosto"
+              disabled="true" onclick="return confirmUpload(event)">Avaa tiedosto</button>
           </div>
 
         </form>
