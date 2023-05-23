@@ -11,7 +11,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
       return [
         {code: 'i', value: `Sisältyy manifestaatioon:`},
         {code: 't', value: `${titleFor773t}.`},
-        ...getSubfieldG(volume, publishingYear, number, pages),
+        ...getSubfieldGfoJournal(volume, publishingYear, number, pages),
         {code: 'x', value: `${issn}`},
         {code: 'w', value: melindaId},
         {code: '7', value: SourceTypeAsCode}
@@ -21,8 +21,8 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     if (sourceType === 'book') {
       return [
         {code: 'i', value: `Sisältyy manifestaatioon:`},
-        {code: 't', value: `${titleFor773t}.`},
-        {code: 'g', value: pages ? printPages(pages) : ' '},
+        {code: 't', value: `${titleFor773t}.`},        
+        ...getSubfieldGfoBook(),
         ...checkThisSubfield(isbn, 'z'),
         {code: 'w', value: melindaId},
         {code: '7', value: SourceTypeAsCode}
@@ -34,7 +34,15 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
       {code: 'g', value: pages ? pages : ' '}
     ];
 
-    function getSubfieldG() {
+    function getSubfieldGfoBook() {
+      if (pages.trim().length > 0 && !isNaN(pages)) {
+        return [{code: 'g', value: printPages(pages)}];
+      }
+
+      return '';
+    }
+
+    function getSubfieldGfoJournal() {
 
       const gvalue = `${printVolume(volume)} (${printPublishingYear(publishingYear)})${printNumber(number)}${printPages(pages)}`;
 
