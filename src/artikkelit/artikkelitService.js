@@ -24,10 +24,9 @@ export function createArtikkelitService(useMoment = 'now') {
     const {isElectronic} = source;
     const {issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
-    const referenceLinks = article.link; // field 856
-    const sourceType = getSourceType(source);
+    const referenceLinks = article.link; // field 856    
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
-    const sourceTypeAsText = getSourceType(source); // journal, book, text, electronic
+    const sourceTypeAsText = getSourceTypeAsText(source); // journal, book, text, electronic
     const abstractLanguages = abstracts.map(elem => elem.language.iso6392b);
     const today = new Date();
     const year = today.getFullYear(); // journal year form value / book year form value / current year form value
@@ -82,7 +81,7 @@ export function parseIncomingData(data) {
   };
 }
 
-export function getSourceType(input) {
+export function getSourceTypeAsText(input) {
   const found = input.sourceType;
   const get3rd = found.substr(2, 1);
   const get4th = found.substr(3, 1);

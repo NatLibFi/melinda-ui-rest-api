@@ -21,7 +21,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     if (sourceType === 'book') {
       return [
         {code: 'i', value: `Sisältyy manifestaatioon:`},
-        {code: 't', value: `${titleFor773t}.`},        
+        {code: 't', value: `${titleFor773t}.`},
         ...getSubfieldGfoBook(),
         ...checkThisSubfield(isbn, 'z'),
         {code: 'w', value: melindaId},
@@ -35,7 +35,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     ];
 
     function getSubfieldGfoBook() {
-      if (pages.trim().length > 0 ) {
+      if (pages.trim().length > 0) {
         return [{code: 'g', value: printPages(pages)}];
       }
 
