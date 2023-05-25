@@ -34,7 +34,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
       {code: 'g', value: pages ? pages : ' '}
     ];
 
-    function getSubfieldGfoBook() { // <--- new modifications 
+    function getSubfieldGfoBook() {
       if (pages.trim().length > 0 ) {
         return [{code: 'g', value: printPages(pages)}];
       }

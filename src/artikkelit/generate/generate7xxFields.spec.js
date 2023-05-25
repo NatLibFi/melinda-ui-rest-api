@@ -25,7 +25,7 @@ async function testF773({getFixture, expectToFail = false}) {
     const {publishingYear, volume, number, pages} = input.journalNumber;
     const result = await generatef773(getSourceType(input.source), {publishingYear, volume, number, pages}, melindaId, isbn, issn, input.source.sourceType, input.source.title);
 
-    expect(result).to.deep.equal(expectedResults);
+    expect(result).to.deep.equal(expectedResults);    
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
   } catch (error) {
