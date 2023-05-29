@@ -1,15 +1,15 @@
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
+import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
+import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
 
 export function initAbstracts() {
   console.log('initializing abstracts...');
-  document.getElementById("tiivistelma-lisaa-form").addEventListener("submit", addAbstract);
+  document.getElementById('tiivistelma-lisaa-form').addEventListener('submit', addAbstract);
 
-  document.getElementById("tyhjenna-tiivistelmat-form").addEventListener("submit", clearAbstracts);
+  document.getElementById('tyhjenna-tiivistelmat-form').addEventListener('submit', clearAbstracts);
 
-  document.getElementById("tiivistelma-abstrakti").addEventListener("input", characterCounter);
+  document.getElementById('tiivistelma-abstrakti').addEventListener('input', characterCounter);
 
-  document.getElementById("tiivistelma-lisaa-form").addEventListener("reset", resetCharacterCounter);
+  document.getElementById('tiivistelma-lisaa-form').addEventListener('reset', resetCharacterCounter);
 
   refreshAbstractList();
 }
@@ -22,24 +22,24 @@ export function addAbstract(event) {
   const data = {
     language: {iso6391, iso6392b, ui},
     abstract: formJson['tiivistelma-abstrakti']
-  }
+  };
 
-  if (data.abstract === "") {
-    showSnackbar({text: "Tiivistelmä ei voi olla tyhjä", closeButton: "true"});
+  if (data.abstract === '') {
+    showSnackbar({text: 'Tiivistelmä ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
 
-  idbGetStoredValues("artoAbstracts").then(abstracts => {
+  idbGetStoredValues('artoAbstracts').then(abstracts => {
     if (abstracts.some(abs => abs.abstract === data.abstract)) {
-      showSnackbar({text: "Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa", closeButton: "true"});
+      showSnackbar({text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa', closeButton: 'true'});
       return;
     }
 
     idbAddValueToLastIndex('artoAbstracts', data).then(() => {
-      document.getElementById("tiivistelma-lisaa-form").reset();
+      document.getElementById('tiivistelma-lisaa-form').reset();
       refreshAbstractList();
     });
-  })
+  });
 }
 
 export function refreshAbstractList() {
@@ -51,23 +51,23 @@ export function refreshAbstractList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAbstract(event, ${abstractData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAbstract(event, ${abstractData.key})`, 'Poista');
       div.appendChild(createP(abstractData.language.ui, '', '&nbsp;-&nbsp;', ['label-text']));
       const abstractP = createP(abstractData.abstract);
       abstractP.classList.add('long-text');
-      abstractP.setAttribute("lang", abstractData.language.iso6391);
+      abstractP.setAttribute('lang', abstractData.language.iso6391);
       div.appendChild(abstractP);
       div.appendChild(removeButton);
       form.appendChild(div);
-      abstractsList.appendChild(form)
+      abstractsList.appendChild(form);
     });
 
     if (abstracts.length > 1) {
-      document.getElementById("tyhjenna-tiivistelmat-form").style.display = 'block';
+      document.getElementById('tyhjenna-tiivistelmat-form').style.display = 'block';
     }
 
     if (abstracts.length < 2) {
-      document.getElementById("tyhjenna-tiivistelmat-form").style.display = 'none';
+      document.getElementById('tyhjenna-tiivistelmat-form').style.display = 'none';
     }
   });
 }
@@ -80,23 +80,23 @@ export function clearAbstracts(event) {
 export function characterCounter(event) {
   const maxLength = 2000;
   const currentLength = event.target.value.length || 0;
-  document.getElementById("tiivistelma-merkkiraja").innerHTML = `${currentLength}/${maxLength}`;
-  const warning = document.getElementById("tiivistelma-merkkirajan-ylitys");
+  document.getElementById('tiivistelma-merkkiraja').innerHTML = `${currentLength}/${maxLength}`;
+  const warning = document.getElementById('tiivistelma-merkkirajan-ylitys');
   if (currentLength > maxLength) {
     const overLimitText = event.target.value.slice(maxLength);
     warning.innerHTML = `<strong>HUOM!</strong> Tiivistelmän merkkiraja on ylittynyt.<br><br>
                           Voit jatkaa kirjoittamista ja lisätä tiivistelmän, mutta rajan ylittävä osuus katkaistaan ennen tallennusta Melindaan.<br><br>
                           Rajan ylittävä osuus: ${overLimitText}`;
-    warning.style.padding = "4px 14px";
+    warning.style.padding = '4px 14px';
   } else {
-    warning.innerHTML = "";
-    warning.style.padding = "";
+    warning.innerHTML = '';
+    warning.style.padding = '';
   }
 }
 
 export function resetCharacterCounter(event) {
-  document.getElementById("tiivistelma-merkkiraja").innerHTML = "0/2000";
-  const warning = document.getElementById("tiivistelma-merkkirajan-ylitys");
-  warning.innerHTML = "";
-  warning.style.padding = "";
+  document.getElementById('tiivistelma-merkkiraja').innerHTML = '0/2000';
+  const warning = document.getElementById('tiivistelma-merkkirajan-ylitys');
+  warning.innerHTML = '';
+  warning.style.padding = '';
 }

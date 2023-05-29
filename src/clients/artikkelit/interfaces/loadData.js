@@ -1,5 +1,5 @@
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList, sectionOrColumnList} from "/artikkelit/interfaces/constants.js";
-import {setOptions} from "/common/ui-utils.js"
+import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList, sectionOrColumnList} from '/artikkelit/interfaces/constants.js';
+import {setOptions} from '/common/ui-utils.js';
 
 export function fillFormOptions() {
   fillSelectOptions();
@@ -10,7 +10,7 @@ export function fillFormOptions() {
 export async function fillSelectOptions() {
   const selects = document.getElementsByTagName('select');
   //console.log(selects);
-  for (var index = 0; index < selects.length; index += 1) {
+  for (let index = 0; index < selects.length; index += 1) {
     const select = selects[index];
 
     if (select.name.indexOf('julkaisu-haku-tyyppi') === 0) {
@@ -34,7 +34,7 @@ export async function fillSelectOptions() {
     }
 
     if (select.name.indexOf('-arvostelu-tyyppi') !== -1) {
-      setOptions(select, reviewTypesList, false, "Ei arvostelutyyppiä");
+      setOptions(select, reviewTypesList, false, 'Ei arvostelutyyppiä');
     }
   }
 }
@@ -42,7 +42,7 @@ export async function fillSelectOptions() {
 export function fillDatalistOptions() {
   const datalists = document.getElementsByTagName('datalist');
   //console.log(datalists);
-  for (var index = 0; index < datalists.length; index += 1) {
+  for (let index = 0; index < datalists.length; index += 1) {
     const datalist = datalists[index];
     if (datalist.id.indexOf('-tieteenala-lista') !== -1) {
       setOptions(datalist, sciences);
@@ -51,7 +51,7 @@ export function fillDatalistOptions() {
     if (datalist.id.indexOf('-organisaatio-lista') !== -1) {
       setOptions(datalist, organizations);
     }
-    
+
     if (datalist.id.indexOf('-osasto-toistuva-lista') !== -1) {
       setOptions(datalist, sectionOrColumnList);
     }
@@ -59,8 +59,8 @@ export function fillDatalistOptions() {
 }
 
 export function fillArticleTypeOptions() {
-  const sourceType = document.querySelector("#kuvailtava-kohde").value;
-  const articleType = document.querySelector("#artikkelin-tyyppi");
+  const sourceType = document.querySelector('#kuvailtava-kohde').value;
+  const articleType = document.querySelector('#artikkelin-tyyppi');
   if (sourceType === 'book') {
     setOptions(articleType, articleTypesBooks);
   }

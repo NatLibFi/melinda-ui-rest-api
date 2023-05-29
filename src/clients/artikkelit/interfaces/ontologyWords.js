@@ -1,15 +1,15 @@
-import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from "/artikkelit/sessionStorageManager.js"
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, setOptions, showSnackbar} from "/common/ui-utils.js";
-import {getOntologyWords} from "/common/rest.js";
+import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from '/artikkelit/sessionStorageManager.js';
+import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
+import {formToJson, createIconButton, createP, setOptions, showSnackbar} from '/common/ui-utils.js';
+import {getOntologyWords} from '/common/rest.js';
 
 
 export function initOntologyWords() {
-  console.log('initializing ontology...')
-  document.getElementById("asiasana-haku-yso-form").addEventListener("submit", searchOntologyWords);
-  document.getElementById("asiasana-lisaa-form").addEventListener("submit", addOntologyWord);
+  console.log('initializing ontology...');
+  document.getElementById('asiasana-haku-yso-form').addEventListener('submit', searchOntologyWords);
+  document.getElementById('asiasana-lisaa-form').addEventListener('submit', addOntologyWord);
 
-  document.getElementById("tyhjenna-asiasanat-form").addEventListener("submit", clearOntologyWords);
+  document.getElementById('tyhjenna-asiasanat-form').addEventListener('submit', clearOntologyWords);
 
   resetOntologySelect();
   refreshOntologyWordList();
@@ -19,7 +19,7 @@ export function searchOntologyWords(event) {
   event.preventDefault();
   resetOntologySelect(true);
   const formJson = formToJson(event);
-  getOntologyWords(formJson['asiasana-ontologia'], formJson['haku-arvo'] + "*").then(data => setOntologyWords(data.results));
+  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo']}*`).then(data => setOntologyWords(data.results));
   // Added an asterisk (*) after formJson['haku-arvo'] in order to find more matches/options with the search feature
 }
 
@@ -55,28 +55,28 @@ export function addOntologyWord(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
-  const ontologyWordOther = formJson["asiasana-muu"];
+  const ontologyWordOther = formJson['asiasana-muu'];
 
   if (ontologyWord) {
     var data = ontologyWord;
   } else if (ontologyWordOther) {
     var data = {
       prefLabel: ontologyWordOther,
-      vocab: document.getElementById("asiasana-ontologia").value
-    }
+      vocab: document.getElementById('asiasana-ontologia').value
+    };
   } else {
-    showSnackbar({text: "Asia-/avainsana ei voi olla tyhjä", closeButton: "true"});
+    showSnackbar({text: 'Asia-/avainsana ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
-  
-  idbGetStoredValues("artoOntologyWords").then(words => {
+
+  idbGetStoredValues('artoOntologyWords').then(words => {
     if (words.some(word => data.localname ? word.localname === data.localname : word.prefLabel === data.prefLabel)) {
-      showSnackbar({text: "Artikkelille on jo lisätty tämä asia-/avainsana", closeButton: "true"});
+      showSnackbar({text: 'Artikkelille on jo lisätty tämä asia-/avainsana', closeButton: 'true'});
       return;
     }
 
-    idbAddValueToLastIndex("artoOntologyWords", data).then(() => {
-      document.getElementById("asiasana-muu").value = "";
+    idbAddValueToLastIndex('artoOntologyWords', data).then(() => {
+      document.getElementById('asiasana-muu').value = '';
       resetOntologySelect();
       refreshOntologyWordList();
     });
@@ -98,7 +98,7 @@ export function refreshOntologyWordList() {
       pRelator.classList.add('capitalize');
       div.appendChild(pRelator);
       div.appendChild(generateVocabInfo(wordData));
-      if (!/other/.test(wordData.vocab)) {
+      if (!(/other/).test(wordData.vocab)) {
         div.appendChild(createP(wordData.uri, '&nbsp;-&nbsp;', '', ['long-text']));
       }
       div.appendChild(removeButton);
@@ -107,11 +107,11 @@ export function refreshOntologyWordList() {
     });
 
     if (ontologyWords.length > 1) {
-      document.getElementById("tyhjenna-asiasanat-form").style.display = 'block';
+      document.getElementById('tyhjenna-asiasanat-form').style.display = 'block';
     }
 
     if (ontologyWords.length < 2) {
-      document.getElementById("tyhjenna-asiasanat-form").style.display = 'none';
+      document.getElementById('tyhjenna-asiasanat-form').style.display = 'none';
     }
   });
 
@@ -119,8 +119,8 @@ export function refreshOntologyWordList() {
     if (['yso', 'yso-paikat', 'yso-aika'].includes(word.vocab)) {
       return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
     }
-    if (/other/.test(word.vocab)) {
-      return createP(`${word.vocab}`, "&nbsp;-&nbsp;");
+    if ((/other/).test(word.vocab)) {
+      return createP(`${word.vocab}`, '&nbsp;-&nbsp;');
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }

@@ -1,7 +1,7 @@
 // ************************************************************************************** /
 // ************************************************************************************** /
 // ************************************************************************************** /
-// SNACKBAR 
+// SNACKBAR
 //
 // Function for showing messages for user
 //
@@ -14,20 +14,20 @@
 //    * contains just the message as string. If long message, you can use <br> to create line breaks.
 //    => showSnackbar(string)
 //    => example: showSnackbar('This is my message')
-//      
+//
 // B: Custom snackbar
 //    * currently the options for custom snackbar are
 //       - text (as string) => the message for user
 //       - actionButton (as <button> element) => if the user can do some extra action
 //       - closeButton (as boolean) => if the button for closing snackbar should be visible or not
-//    => showSnackbar({text: string, actionButton: <button>, closeButton: boolean}) 
+//    => showSnackbar({text: string, actionButton: <button>, closeButton: boolean})
 //    => example: showSnackbar({text: 'This is my message', actionButton: myActionButton, closeButton: 'true'})
-//        - note for actionButton: 
-//            1. create a button element in app 
+//        - note for actionButton:
+//            1. create a button element in app
 //                  => example: const myActionButton = document.createElement('button')
 //            2. add button text as innerHtml
 //                  => example: myActionButton.innerHtml = 'do some action'
-//            3. add listener for 'click' events to include the chosen action for snacbar 
+//            3. add listener for 'click' events to include the chosen action for snacbar
 //                  => example: myActionButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
 
 
@@ -39,12 +39,9 @@ export function showSnackbar(snackbarContent) {
   }
 
   getSnackbarHtml()
-    .then(html =>
-      createSnackbar(snackbarContent, html))
-    .catch(error =>
-      console.log('Error while fetching snackbar html: ', error))
+    .then(html => createSnackbar(snackbarContent, html))
+    .catch(error => console.log('Error while fetching snackbar html: ', error));
 }
-
 
 
 // ************************************************************************************** //
@@ -57,7 +54,6 @@ async function getSnackbarHtml() {
   const html = await response.text();
   return html;
 }
-
 
 
 // ************************************************************************************** //
@@ -79,20 +75,20 @@ function createSnackbar(snackbarContent, html) {
   const snackbarType = checkSnackbarType(snackbarContent);
 
   switch (true) {
-    case (snackbarType === 'string'):
-      createDefaultSnackbar(snackbarContent);
-      break;
-    case (snackbarType === 'object'):
-      createCustomSnackbar(snackbarContent);
-      break;
-    default:
-      console.log('Snackbar argument type should be string or object');
-      return;
+  case snackbarType === 'string':
+    createDefaultSnackbar(snackbarContent);
+    break;
+  case snackbarType === 'object':
+    createCustomSnackbar(snackbarContent);
+    break;
+  default:
+    console.log('Snackbar argument type should be string or object');
+    return;
   }
 
   const supportingText = snackbarElement.querySelector(`.snackbar-supporting-text`).innerHTML;
   if (supportingText === 'undefined' || supportingText === '') {
-    console.log('Snackbar is missing supporting text and is not displayed!')
+    console.log('Snackbar is missing supporting text and is not displayed!');
     return;
   }
 
@@ -143,7 +139,7 @@ function createSnackbar(snackbarContent, html) {
 
     function addActionButton() {
       if (actionButton !== undefined && actionButton.nodeName === 'BUTTON') {
-        snackbarElement.querySelector(`.snackbar-action`).style.display = 'flex'
+        snackbarElement.querySelector(`.snackbar-action`).style.display = 'flex';
         snackbarElement.querySelector(`.snackbar-action`).append(actionButton);
       }
     }
@@ -170,7 +166,7 @@ function createSnackbar(snackbarContent, html) {
   }
 
   function displaySnackbar() {
-    const snackbar = document.querySelector('#snackbar')
+    const snackbar = document.querySelector('#snackbar');
 
     listenToSnackbarAnimationStart();
     listenToSnackbarAnimationEnd();
@@ -180,9 +176,9 @@ function createSnackbar(snackbarContent, html) {
     function listenToSnackbarAnimationStart() {
       snackbar.onanimationstart = (event) => {
         if (event.animationName === 'fadein') {
-          console.log('Now showing snackbar to user!');
+          //console.log('Now showing snackbar to user!');
         }
-      }
+      };
     }
 
     function listenToSnackbarAnimationEnd() {
@@ -190,7 +186,7 @@ function createSnackbar(snackbarContent, html) {
         if (event.animationName === 'fadeout') {
           snackbar.style.visibility = 'hidden';
         }
-      }
+      };
     }
 
   }
@@ -201,7 +197,7 @@ function createSnackbar(snackbarContent, html) {
     // This should be accurate enough for most use cases
     timeoutId = setTimeout(() => {
       removeAllSnackbarElements();
-    }, 7000)
+    }, 7000);
 
     function removeAllSnackbarElements() {
       const snackbarsContainer = document.getElementById('snackbars');
