@@ -10,7 +10,7 @@ export function addValueToSessionStoreList(storeName, value = {identifier: undef
   }
 
   const oldItemsArray = JSON.parse(oldItems);
-  if(oldItemsArray.some(item => item.identifier === value.identifier)) {
+  if (oldItemsArray.some(item => item.identifier === value.identifier)) {
     if (replace) {
       removeValueFromSessionStoreList(storeName, value.identifier);
       window.sessionStorage.setItem(storeName, JSON.stringify([...oldItemsArray, value]));

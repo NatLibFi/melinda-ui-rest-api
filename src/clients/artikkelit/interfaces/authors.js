@@ -1,12 +1,12 @@
-import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from "/artikkelit/indexDB.js"
-import {formToJson, createIconButton, createP, showSnackbar} from "/common/ui-utils.js";
+import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
 
 export function initAuthors() {
   console.log('initializing authors...');
-  document.getElementById("tekija-lisaa-form").addEventListener("submit", addAuthor);
-  document.getElementById("tekija-lisaa-organisaatio").addEventListener("submit", addOrganizationForAuthor);
+  document.getElementById('tekija-lisaa-form').addEventListener('submit', addAuthor);
+  document.getElementById('tekija-lisaa-organisaatio').addEventListener('submit', addOrganizationForAuthor);
 
-  document.getElementById("tyhjenna-tekijat-form").addEventListener("submit", clearAuthors);
+  document.getElementById('tyhjenna-tekijat-form').addEventListener('submit', clearAuthors);
 
   refreshAuthorsList();
   refreshAuthorOrganizationList();
@@ -23,10 +23,10 @@ export function addAuthor(event) {
       lastName: formJson['tekija-sukunimi'],
       relator: formJson['tekija-rooli'],
       authorsTempOrganizations
-    }
+    };
 
-    if (data.firstName === "" || data.lastName === "") {
-      showSnackbar({text: "Tekijän nimi ei voi olla tyhjä", closeButton: "true"});
+    if (data.firstName === '' || data.lastName === '') {
+      showSnackbar({text: 'Tekijän nimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
@@ -58,7 +58,7 @@ export function refreshAuthorsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista');
       div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
@@ -81,18 +81,18 @@ export function refreshAuthorsList() {
       });
       div.appendChild(removeButton);
       form.appendChild(div);
-      authorList.appendChild(form)
+      authorList.appendChild(form);
     });
 
     if (authors.length > 1) {
-      document.getElementById("tyhjenna-tekijat-form").style.display = 'block';
+      document.getElementById('tyhjenna-tekijat-form').style.display = 'block';
     }
 
     if (authors.length < 2) {
-      document.getElementById("tyhjenna-tekijat-form").style.display = 'none';
+      document.getElementById('tyhjenna-tekijat-form').style.display = 'none';
     }
   });
-};
+}
 
 export function clearAuthors(event) {
   event.preventDefault();
@@ -103,30 +103,30 @@ export function clearAuthors(event) {
 export function addOrganizationForAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);
-  const organizationInputValue = formJson['tekija-organisaatio']
+  const organizationInputValue = formJson['tekija-organisaatio'];
 
-  if (organizationInputValue === "") {
-    showSnackbar({text: "Organisaatio ei voi olla tyhjä", closeButton: "true"});
+  if (organizationInputValue === '') {
+    showSnackbar({text: 'Organisaatio ei voi olla tyhjä', closeButton: 'true'});
     return;
   }
 
   // See if this can be simplified or optimized (e.g. by utilizing event.target etc)
-  const code = document.querySelector('#tekija-organisaatio-lista [value="' + organizationInputValue + '"]').dataset.code;
+  const {code} = document.querySelector(`#tekija-organisaatio-lista [value="${organizationInputValue}"]`).dataset;
 
   const [organizationName = false, note = false] = organizationInputValue.replace(' (uusi)', '').replace(' (vanha)', '').split(' - ');
 
-  idbGetStoredValues("artoAuthorTempOrg").then(organizations => {
+  idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
     if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
-      showSnackbar({text: "Tekijälle on jo lisätty tämä organisaatio", closeButton: "true"});
+      showSnackbar({text: 'Tekijälle on jo lisätty tämä organisaatio', closeButton: 'true'});
       return;
     }
 
     idbAddValueToLastIndex('artoAuthorTempOrg', {organizationName, code, note}).then(() => {
       document.getElementById('tekija-organisaatio').value = '';
-      refreshAuthorOrganizationList()
+      refreshAuthorOrganizationList();
     });
   });
-};
+}
 
 export function refreshAuthorOrganizationList() {
   const organizationList = document.getElementById('tekija-organisaatiot-list');
@@ -137,7 +137,7 @@ export function refreshAuthorOrganizationList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista')
+      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista');
       div.appendChild(createP('Organisaatio', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(tempOrgData.organizationName));
 

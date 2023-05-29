@@ -4,9 +4,9 @@
 //
 //*****************************************************************************
 
-import {authVerify, authRequest} from "./rest.js";
-import {reload, resetForms, showTab} from "./ui-utils.js"
-import {startProcess, stopProcess} from "./ui-utils.js";
+import {authVerify, authRequest} from './rest.js';
+import {reload, resetForms, showTab} from './ui-utils.js';
+import {startProcess, stopProcess} from './ui-utils.js';
 
 //*****************************************************************************
 //
@@ -36,7 +36,9 @@ export const Account = {
 
   getToken() {
     const user = Account.get();
-    if (!user) return null;
+    if (!user) {
+      return null;
+    }
 
     return user.Token;
   },
@@ -44,7 +46,7 @@ export const Account = {
   //---------------------------------------------------------------------------
 
   verify() {
-    return authVerify(this.getToken())
+    return authVerify(this.getToken());
   },
 
   login(username, password) {
@@ -58,7 +60,7 @@ export const Account = {
 
       console.log(user);
       return user;
-    })
+    });
 
     function createToken(username, password = '') {
       //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
@@ -68,7 +70,7 @@ export const Account = {
   },
 
   logout() {
-    this.remove()
+    this.remove();
   }
 
   //---------------------------------------------------------------------------
@@ -83,7 +85,7 @@ export const Account = {
 export function doLogin(onSuccess) {
 
   window.login = function (e) {
-    eventHandled(e)
+    eventHandled(e);
 
     logininfo('');
 
@@ -110,7 +112,7 @@ export function doLogin(onSuccess) {
       const infodiv = document.querySelector('#login #info');
       infodiv.innerHTML = msg;
     }
-  }
+  };
 
   Account.verify()
     .then(response => onSuccess(Account.get()))

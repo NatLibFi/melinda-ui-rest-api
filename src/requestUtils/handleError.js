@@ -21,7 +21,7 @@ export function handleError(appName) {
 
   return function (err, req, res, next) {
     logger.debug(`Error: ${err}`);
-    logger.error(`Error in ${appName} route! [error status code: ${err.status} | error message: ${err.payload}]`);
+    logger.warn(`Error in ${appName} route! [error status code: ${err.status} | error message: ${err.payload}]`);
 
     if (err instanceof Error) {
       logger.debug(`Sending the received httpError '${err.status} - ${httpStatus[err.status]}' with message '${err.payload}' forward`);
