@@ -10,4 +10,4 @@
 
 window.initialize = function () {
   console.log('Initializing');
-}
+};

@@ -1,6 +1,6 @@
 export function getOntologyOptions(ontology) {
-  const sweOntologies = ["allfo", "allfoOrter", "allfoTid", "fgf"];
-  const localOntologies = ["other", "otherPerson", "otherCommunity", "otherTime"];
+  const sweOntologies = ['allfo', 'allfoOrter', 'allfoTid', 'fgf'];
+  const localOntologies = ['other', 'otherPerson', 'otherCommunity', 'otherTime'];
 
   const vocabularies = {
     yso: 'yso',
@@ -17,7 +17,7 @@ export function getOntologyOptions(ontology) {
     koko: 'koko',
     kanto: 'finaf',
     finmesh: 'mesh'
-  }
+  };
 
   const searchVocab = vocabularies[ontology];
   const language = sweOntologies.includes(ontology) ? 'sv' : 'fi';

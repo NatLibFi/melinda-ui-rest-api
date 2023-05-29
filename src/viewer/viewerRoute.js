@@ -35,7 +35,7 @@ export default function (melindaApiOptions) {
 
 
   async function getMatchLog(req, res, next) {
-    logger.verbose('GET getMatchLog');
+    logger.info('GET getMatchLog');
     const correlationId = req.params.id;
     const blobSequence = req.query.sequence;
 
@@ -45,8 +45,8 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    logger.debug(`Getting match log with correlation id ${JSON.stringify(params.correlationId)}`);
-    logger.debug(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
+    logger.verbose(`Getting match log with correlation id ${JSON.stringify(params.correlationId)}`);
+    logger.verbose(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
 
 
     try {
@@ -59,7 +59,7 @@ export default function (melindaApiOptions) {
   }
 
   async function getMatchValidationLog(req, res, next) {
-    logger.verbose('GET getMatchValidationLog');
+    logger.info('GET getMatchValidationLog');
 
     const correlationId = req.params.id;
     const blobSequence = req.query.sequence;
@@ -70,8 +70,8 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    logger.debug(`Getting match validation log with correlation id ${JSON.stringify(params.correlationId)}`);
-    logger.debug(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
+    logger.verbose(`Getting match validation log with correlation id ${JSON.stringify(params.correlationId)}`);
+    logger.verbose(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
 
 
     try {
@@ -84,7 +84,7 @@ export default function (melindaApiOptions) {
   }
 
   async function getMergeLog(req, res, next) {
-    logger.verbose('GET getMergeLog');
+    logger.info('GET getMergeLog');
 
     const correlationId = req.params.id;
     const blobSequence = req.query.sequence;
@@ -95,12 +95,11 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    logger.debug(`Getting merge log with correlation id ${JSON.stringify(params.correlationId)}`);
-    logger.debug(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
+    logger.verbose(`Getting merge log with correlation id ${JSON.stringify(params.correlationId)}`);
+    logger.verbose(blobSequence ? `Sequence selected for fetching: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, getting all sequences for this id`);
 
     try {
       const result = await logService.getMergeLog(params);
-      logger.debug('*******************************************');
       res.json(result);
     } catch (error) {
       return next(error);
@@ -108,7 +107,7 @@ export default function (melindaApiOptions) {
   }
 
   async function getCorrelationIdList(req, res, next) {
-    logger.verbose('GET getCorrelationIdList');
+    logger.info('GET getCorrelationIdList');
 
     const {expanded} = req.query;
 
@@ -117,11 +116,10 @@ export default function (melindaApiOptions) {
       limit: 0
     };
 
-    logger.debug(`Getting correlation id list with expanded value: ${JSON.stringify(params.expanded)}`);
+    logger.verbose(`Getting correlation id list with expanded value: ${JSON.stringify(params.expanded)}`);
 
     try {
       const result = await logService.getCorrelationIdList(params);
-      logger.debug('*******************************************');
       res.json(result);
     } catch (error) {
       return next(error);
@@ -130,19 +128,18 @@ export default function (melindaApiOptions) {
   }
 
   async function protectLog(req, res, next) {
-    logger.verbose('PUT protectLog');
+    logger.info('PUT protectLog');
 
     const correlationId = req.params.id;
     const blobSequence = req.query.sequence;
 
     const params = blobSequence ? blobSequence : {};
 
-    logger.debug(`Protecting (or unprotecting) log id: ${JSON.stringify(correlationId)}`);
-    logger.debug(blobSequence ? `Sequence selected for protecting: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, protecting all sequences for this id`);
+    logger.verbose(`Protecting (or unprotecting) log id: ${JSON.stringify(correlationId)}`);
+    logger.verbose(sequence ? `Sequence selected for protecting: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, protecting all sequences for this id`);
 
     try {
       const result = await logService.protectLog(correlationId, params);
-      logger.debug('*******************************************');
       res.json(result);
     } catch (e) {
       return next(e);
@@ -150,7 +147,7 @@ export default function (melindaApiOptions) {
   }
 
   async function removeLog(req, res, next) {
-    logger.verbose('DELETE removeLog');
+    logger.info('DELETE removeLog');
 
     const correlationId = req.params.id;
     const {force} = req.query;
@@ -159,11 +156,10 @@ export default function (melindaApiOptions) {
       force
     };
 
-    logger.debug(`Removing log: ${JSON.stringify(correlationId)}, params: ${JSON.stringify(params)}`);
+    logger.verbose(`Removing log: ${JSON.stringify(correlationId)}, params: ${JSON.stringify(params)}`);
 
     try {
       const result = await logService.removeLog(correlationId, params);
-      logger.debug('*******************************************');
       res.json(result);
     } catch (e) {
       return next(e);

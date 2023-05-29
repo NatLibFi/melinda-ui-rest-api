@@ -30,28 +30,28 @@ export function getTableNames() {
 
 export async function idbGet(tableName, key) {
   return (await dbPromise).get(tableName, key);
-};
+}
 
 export async function idbSet(tableName, key, val) {
   return (await dbPromise).put(tableName, val, key);
-};
+}
 
 export async function idbDel(tableName, key) {
   return (await dbPromise).delete(tableName, key);
-};
+}
 
 export async function idbClear(tableName) {
   return (await dbPromise).clear(tableName);
-};
+}
 
 export async function idbKeys(tableName) {
   return (await dbPromise).getAllKeys(tableName);
-};
+}
 
 export async function idbGetStoredValues(tableName) {
   const keys = await idbKeys(tableName);
   const promises = keys.map(async key => {
-    const data = await idbGet(tableName, key)
+    const data = await idbGet(tableName, key);
     return {key, ...data};
   });
 

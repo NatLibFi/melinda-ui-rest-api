@@ -19,8 +19,8 @@ export function handleRouteNotFound(appName) {
 
   return function (req, res, next) {
     const {path, query, method} = req;
-    logger.error(`Error: it seems that this ${appName} route is not found!`);
-    logger.debug(`Request method: ${method} | Path: ${path} | Query parameters: ${JSON.stringify(query)}`);
+    logger.warn(`Error: it seems that this ${appName} route is not found!`);
+    logger.verbose(`Request method: ${method} | Path: ${path} | Query parameters: ${JSON.stringify(query)}`);
     res.sendStatus(httpStatus.NOT_FOUND);
   };
 
