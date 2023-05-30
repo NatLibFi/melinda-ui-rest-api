@@ -126,6 +126,13 @@ window.onAccount = function (e) {
 // Functions to start search for log, browse records and clear view 
 //-----------------------------------------------------------------------------------------
 
+const oneDayInMs = (1 * 24 * 60 * 60 * 1000);
+
+
+//-----------------------------------------------------------------------------
+// Do button actions
+//-----------------------------------------------------------------------------
+
 window.doSearchPress = function (event = undefined) {
   const id = document.querySelector(`#viewer #id`).value || '';
   const logType = document.querySelector(`#viewer #logType`).value;
@@ -308,7 +315,6 @@ window.loadLog = (event) => {
     showRecord({}, 'record2', {}, 'viewer');
     setRecordTopInfo('record3', 'Yhdistetty tietue');
     showRecord({}, 'record3', {}, 'viewer');
-
     return;
   }
 

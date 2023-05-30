@@ -1,45 +1,51 @@
-export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, publishing, isbn, issn, SourceTypeAsCode, titleFor773t) {
+export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t) {
+
   return [
     {
-      tag: '773', ind1: '0', ind2: ' ', subfields: [...selectSubfields()]
+      tag: '773', ind1: '0', ind2: '8', subfields: [...selectSubfields()]
     }
   ];
 
   function selectSubfields() {
     if (sourceType === 'journal') {
       return [
-        {code: '7', value: SourceTypeAsCode},
+        {code: 'i', value: `Sisältyy manifestaatioon:`},
+        {code: 't', value: `${titleFor773t}.`},
+        ...getSubfieldGfoJournal(volume, publishingYear, number, pages),
+        {code: 'x', value: `${issn}`},
         {code: 'w', value: melindaId},
-        {code: 't', value: `${titleFor773t}. -`},
-        {code: 'd', value: publishing},
-        {code: 'x', value: `${issn}. -`},
-        ...getSubfieldG(volume, publishingYear, number, pages)
+        {code: '7', value: SourceTypeAsCode}
       ];
     }
 
     if (sourceType === 'book') {
       return [
-        {code: '7', value: SourceTypeAsCode},
+        {code: 'i', value: `Sisältyy manifestaatioon:`},
+        {code: 't', value: `${titleFor773t}.`},
+        ...getSubfieldGfoBook(),
+        ...checkThisSubfield(isbn, 'z'),
         {code: 'w', value: melindaId},
-        {code: 't', value: titleFor773t},
-        {code: 'd', value: publishing},
-        ...selectSubfield(isbn, 'z'),
-        ...selectSubfield(issn, 'x'),
-        {code: 'k', value: melindaId},
-        {code: 'g', value: pages ? pages : ' '}
+        {code: '7', value: SourceTypeAsCode}
       ];
     }
 
     return [
-      {code: 'z', value: `${isbn}. -`},
+      ...checkThisSubfield(isbn, 'z'),
       {code: 'g', value: pages ? pages : ' '}
     ];
 
-    function getSubfieldG() {
+    function getSubfieldGfoBook() {
+      if (pages.trim().length > 0) {
+        return [{code: 'g', value: printPages(pages)}];
+      }
 
-      const value = `${printVolume(volume)} (${printPublishingYear(publishingYear)})${printNumber(number)}${printPages(pages)}`;
+      return '';
+    }
 
-      return [{code: 'g', value}];
+    function getSubfieldGfoJournal() {
+      const gvalue = `${printVolume(volume)} (${printPublishingYear(publishingYear)}) : ${printNumber(number)}${printPages(pages)}`;
+
+      return [{code: 'g', value: gvalue}];
 
       function printVolume(volume) {
         if (volume) {
@@ -58,29 +64,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
       function printNumber(number) {
         if (number) {
-          return `: ${number}`;
-        }
-        return '';
-      }
-
-      function printPages(pages) {
-        if (pages) {
-
-          if (!Number.isNaN(Number(pages))) {
-            return `, sivu ${pages}`;
-          }
-
-          if (Number.isNaN(Number(pages))) { // special case (newspapers): when input type is 'A7'
-            const first = pages.trim().split(/[0-9]/u);
-            const rest = pages.trim().split(/[a-zA-Z]/u);
-            const testA = (/[a-zA-Z]/u).test(first[0]);
-            const testB = (/[0-9]/u).test(rest[1]);
-
-            if (testA && testB) {
-              return `, sivu ${pages}`;
-            }
-          }
-          return `, sivut ${pages}`;
+          return number;
         }
         return '';
       }
@@ -88,7 +72,40 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
   }
 
-  function selectSubfield(value, code = false) {
+  function printPages(pages) {
+    if (pages) {
+      if (!Number.isNaN(Number(pages))) {
+        if (sourceType === 'journal') {
+          return `, sivu ${pages}`;
+        }
+        if (sourceType === 'book') {
+          return `Sivu ${pages}`;
+        }
+      }
+
+      if (Number.isNaN(Number(pages))) { // special case (newspapers): when input type is 'A7'
+        const first = pages.trim().split(/[0-9]/u);
+        const rest = pages.trim().split(/[a-zA-Z]/u);
+        const testA = (/[a-zA-Z]/u).test(first[0]);
+        const testB = (/[0-9]/u).test(rest[1]);
+
+        if (testA && testB) {
+          return `, sivu ${pages}`;
+        }
+      }
+
+      if (sourceType === 'journal') {
+        return `, sivut ${pages}`;
+      }
+      if (sourceType === 'book') {
+        return `Sivut ${pages}`;
+      }
+
+    }
+    return '';
+  }
+
+  function checkThisSubfield(value, code = false) {
     if (value) {
       return [{code, value}];
     }

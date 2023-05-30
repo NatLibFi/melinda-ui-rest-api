@@ -1,0 +1,249 @@
+{
+    "source": {
+     "title": "Uudenlainen Hyvinkää kirja",
+     "isElectronic": false,
+     "years": "1980.",
+     "issns": [],
+     "isbns": [
+      [
+       "951-95580-1-2"
+      ]
+     ],
+     "sourceIds": [
+      "(FI-MELINDA)000046551"
+     ],
+     "publishing": "Hyvinkää : Medialehdet, 1980.",
+     "publisherInfo": {
+      "publisherLocation": "Hyvinkää",
+      "publisher": "Medialehdet",
+      "publisherYears": {
+       "start": "1980"
+      }
+     },
+     "notices": [],
+     "authors": [
+      {
+       "firstName": "Riitta",
+       "lastName": "Harkoma-Laine",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000043301"
+      },
+      {
+       "firstName": "Mikko",
+       "lastName": "Ahvenlampi",
+       "relator": "",
+       "organisations": []
+      },
+      {
+       "firstName": "Juha",
+       "lastName": "Ahokas",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000110347"
+      }
+     ],
+     "simpleGroups": {
+      "universalDecimalClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "908"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "908"
+        },
+        {
+         "code": "x",
+         "value": "(480.1)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "308"
+        },
+        {
+         "code": "x",
+         "value": "(480.1)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "908"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "908"
+        },
+        {
+         "code": "x",
+         "value": "(480.1)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "308"
+        },
+        {
+         "code": "x",
+         "value": "(480.1)"
+        }
+       ]
+      ],
+      "otherClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "HIS:24.3 Hyvinkää"
+        },
+        {
+         "code": "2",
+         "value": "z"
+        }
+       ]
+      ],
+      "abstract": {
+       "term": [],
+       "language": []
+      },
+      "localNotes599": []
+     },
+     "simpleElements": {
+      "referenceLink": [],
+      "f655s": [],
+      "f653s": [],
+      "f651s": [
+       [
+        {
+         "code": "a",
+         "value": "Hyvinkää"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p94143"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Hyvinge"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p94143"
+        }
+       ]
+      ],
+      "f650s": [
+       [
+        {
+         "code": "a",
+         "value": "paikallishistoriat (historiikit)"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1779"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "lokalhistoriker"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1779"
+        }
+       ]
+      ],
+      "f648s": [],
+      "f610s": [],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [],
+      "methodology": []
+     },
+     "recordType": "Monografia",
+     "sourceType": "nnam"
+    },
+    "journalNumber": {
+     "publishingYear": "",
+     "volume": "",
+     "number": "",
+     "pages": ""
+    },
+    "article": {
+     "title": "",
+     "titleOther": "",
+     "language": {
+      "iso6391": "fi",
+      "iso6392b": "fin",
+      "ui": "Suomi"
+     },
+     "link": [
+      ""
+     ],
+     "type": "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    },
+    "collecting": {
+     "f589a": "",
+     "f599a": "",
+     "f599x": ""
+    },
+    "sciences": [
+     {
+      "key": 1,
+      "department": "1",
+      "departmentName": "Luonnontieteet",
+      "subCategory": "112",
+      "subject": "Tilastotiede"
+     }
+    ],
+    "metodologys": [],
+    "authors": [],
+    "ontologyWords": [],
+    "abstracts": [],
+    "notes": [],
+    "udks": [
+     {
+      "key": 1,
+      "a080": "aaa",
+      "x080": "bbb",
+      "two080": ""
+     }
+    ],
+    "otherRatings": []
+   }
+   

@@ -1,0 +1,132 @@
+{
+    "source": {
+     "title": "Erämiesten juhlakirja : SMKL 50 vuotta",
+     "isElectronic": false,
+     "years": "1996",
+     "issns": [],
+     "isbns": [
+      [
+       "951-95893-3-3"
+      ]
+     ],
+     "sourceIds": [
+      "(FI-MELINDA)000149774"
+     ],
+     "publishing": "[Tampere] : Suomen metsästäjä- ja kalastajaliitto, 1996",
+     "publisherInfo": {
+      "publisherLocation": "[Tampere]",
+      "publisher": "Suomen metsästäjä- ja kalastajaliitto",
+      "publisherYears": {
+       "start": "1996"
+      }
+     },
+     "notices": [],
+     "authors": [
+      {
+       "firstName": "Ilkka",
+       "lastName": "Mäkelä",
+       "relator": "kirjoittaja.",
+       "organisations": []
+      },
+      {
+       "firstName": "Sulo",
+       "lastName": "Tiainen",
+       "relator": "kirjoittaja.",
+       "organisations": [],
+       "asteriId": "000060844"
+      },
+      {
+       "lastName": "Suomen metsästäjä- ja kalastajaliitto",
+       "relator": "yhteisö",
+       "organisations": [],
+       "asteriId": "000008962"
+      }
+     ],
+     "simpleElements": {
+      "referenceLink": [],
+      "f655s": [],
+      "f653s": [
+       "Erämies"
+      ],
+      "f651s": [],
+      "f648s": [],
+      "f610s": [
+       [
+        {
+         "code": "a",
+         "value": "Suomen metsästäjä- ja kalastajaliitto."
+        },
+        {
+         "code": "0",
+         "value": "(FI-ASTERI-N)000008962"
+        }
+       ]
+      ],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [
+       "ENNAKKOTIETO / KIRJAVÄLITYS.",
+       "TARKISTETTU ENNAKKOTIETO / KIRJAVÄLITYS."
+      ],
+      "methodology": []
+     },
+     "recordType": "Monografia",
+     "sourceType": "nnam"
+    },
+    "journalNumber": {
+     "publishingYear": "",
+     "volume": "",
+     "number": "",
+     "pages": ""
+    },
+    "article": {
+     "title": "",
+     "titleOther": "",
+     "language": {
+      "iso6391": "fi",
+      "iso6392b": "fin",
+      "ui": "Suomi"
+     },
+     "link": [
+      ""
+     ],
+     "type": "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    },
+    "collecting": {
+     "f589a": "",
+     "f599a": "",
+     "f599x": ""
+    },
+    "sciences": [
+     {
+      "key": 1,
+      "department": "1",
+      "departmentName": "Luonnontieteet",
+      "subCategory": "112",
+      "subject": "Tilastotiede"
+     }
+    ],
+    "metodologys": [],
+    "authors": [],
+    "ontologyWords": [],
+    "abstracts": [],
+    "notes": [],
+    "udks": [
+     {
+      "key": 1,
+      "a080": "aaa",
+      "x080": "bbb",
+      "two080": ""
+     }
+    ],
+    "otherRatings": []
+}
+   

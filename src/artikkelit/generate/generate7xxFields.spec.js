@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
 import {generatef773} from './generate7xxFields.js';
 
-import {getSourceType, parseIncomingData} from './../artikkelitService.js';
+import {getSourceTypeAsText, parseIncomingData} from './../artikkelitService.js';
 
 generateTests({
   callback: testF773,
@@ -23,7 +23,7 @@ async function testF773({getFixture, expectToFail = false}) {
     const {issn, melindaId} = parseIncomingData(input.source);
     const isbn = '951-isbn';
     const {publishingYear, volume, number, pages} = input.journalNumber;
-    const result = await generatef773(getSourceType(input.source), {publishingYear, volume, number, pages}, melindaId, input.source.publishing, isbn, issn, input.source.sourceType, input.source.title);
+    const result = await generatef773(getSourceTypeAsText(input.source), {publishingYear, volume, number, pages}, melindaId, isbn, issn, input.source.sourceType, input.source.title);
 
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
