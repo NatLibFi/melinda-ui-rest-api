@@ -43,8 +43,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
     }
 
     function getSubfieldGfoJournal() {
-
-      const gvalue = `${printVolume(volume)} (${printPublishingYear(publishingYear)})${printNumber(number)}${printPages(pages)}`;
+      const gvalue = `${printVolume(volume)} (${printPublishingYear(publishingYear)}) : ${printNumber(number)}${printPages(pages)}`;
 
       return [{code: 'g', value: gvalue}];
 
@@ -65,7 +64,7 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 
       function printNumber(number) {
         if (number) {
-          return `: ${number}`;
+          return number;
         }
         return '';
       }

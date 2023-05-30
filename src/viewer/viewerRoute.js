@@ -131,9 +131,9 @@ export default function (melindaApiOptions) {
     logger.info('PUT protectLog');
 
     const correlationId = req.params.id;
-    const blobSequence = req.query.sequence;
+    const {sequence} = req.query;
 
-    const params = blobSequence ? blobSequence : {};
+    const params = sequence ? {blobSequence: sequence} : {};
 
     logger.verbose(`Protecting (or unprotecting) log id: ${JSON.stringify(correlationId)}`);
     logger.verbose(sequence ? `Sequence selected for protecting: ${JSON.stringify(params.blobSequence)}` : `No sequence selected, protecting all sequences for this id`);
