@@ -1,4 +1,4 @@
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, reviewTypesList, sectionOrColumnList} from '/artikkelit/interfaces/constants.js';
+import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, sectionOrColumnList} from '/artikkelit/interfaces/constants.js';
 import {setOptions} from '/common/ui-utils.js';
 
 export function fillFormOptions() {
@@ -33,9 +33,6 @@ export async function fillSelectOptions() {
       setOptions(select, ontologyTypes);
     }
 
-    if (select.name.indexOf('-arvostelu-tyyppi') !== -1) {
-      setOptions(select, reviewTypesList, false, 'Ei arvostelutyyppiä');
-    }
   }
 }
 
