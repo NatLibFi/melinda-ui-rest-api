@@ -65,7 +65,6 @@ function sourceTypeChange(event) {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
-    document.getElementById('artikkelin-arvostelu-tyyppi').value = '';
     document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuosi:';
     document.getElementById('lehden-vuodet-valiviiva').style.display = 'none';
     document.getElementById('lehden-vuodet-max').style.display = 'none';
