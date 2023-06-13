@@ -52,7 +52,6 @@ function sourceTypeChange(event) {
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
     document.getElementById(`numeron-numero-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
-    document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'block';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
     document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuodet:';
     document.getElementById('lehden-vuodet-valiviiva').style.display = 'block';
@@ -64,7 +63,6 @@ function sourceTypeChange(event) {
     document.getElementById(`numeron-vol-wrap`).style.display = 'none';
     document.getElementById(`numeron-numero-wrap`).style.display = 'none';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
-    document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
     document.getElementById('artikkelin-arvostelu-tyyppi').value = '';
