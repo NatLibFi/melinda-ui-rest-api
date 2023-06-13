@@ -1008,38 +1008,6 @@ export const organizations = [
 //   }
 // ]
 
-// (https://finto.fi/mts/fi/page/m991)
-export const reviewTypesList = [
-  {
-    value: 'elokuva-arvostelu',
-    text: 'Elokuva-arvostelu'
-  },
-  {
-    value: 'kirja-arvostelu',
-    text: 'Kirja-arvostelu'
-  },
-  {
-    value: 'musiikkiarvostelu',
-    text: 'Musiikkiarvostelu'
-  },
-  {
-    value: 'sirkusarvostelu',
-    text: 'Sirkusarvostelu'
-  },
-  {
-    value: 'taidearvostelu',
-    text: 'Taidearvostelu'
-  },
-  {
-    value: 'tanssiarvostelu',
-    text: 'Tanssiarvostelu'
-  },
-  {
-    value: 'teatteriarvostelu',
-    text: 'Teatteriarvostelu'
-  }
-];
-
 export const sectionOrColumnList = [
   {
     value: 'Artikkelit',
