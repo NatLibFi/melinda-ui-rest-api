@@ -186,7 +186,6 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
     },
     collecting: {
