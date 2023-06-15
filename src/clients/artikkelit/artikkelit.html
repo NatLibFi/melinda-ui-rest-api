@@ -8,7 +8,7 @@
 <head>
   <link rel="shortcut icon" href="/common/images/favicon.png" />
   <link rel="stylesheet" href="artikkelit.css" />
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,7 +60,7 @@
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus/>
+        <input id="login-username" name="username" autofocus />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
@@ -83,11 +83,13 @@
     </form>
 
     <!-- ---------------------------------------------------------------------- -->
-    <!-- Muuntaja tab -->
+    <!-- Artikkelit tab -->
 
     <div id="artikkelit-lisaa" hidden>
       <div class="record-merge-panel">
 
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Add article form -->
         <div class="col">
           <div class="BoxShadow">
             <div class="header">
@@ -215,14 +217,15 @@
                 <div id="numeron-vol-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-vol">Vol.:</label>
-                    <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="6" onwheel="this.blur()">
+                    <input type="number" id="numeron-vol" name="numeron-vol" min="1" max="400" size="6"
+                      onwheel="this.blur()">
                   </div>
                 </div>
                 <div id="numeron-numero-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-numero">Numero:</label>
                     <input type="text" id="numeron-numero" name="numeron-numero" maxlength="32" size="6"
-                    pattern="^[\p{N}\p{L}\-\/.,\s]+$">
+                      pattern="^[\p{N}\p{L}\-\/.,\s]+$">
                   </div>
                 </div>
                 <div id="numeron-sivut-wrap" class="full-width">
@@ -235,7 +238,8 @@
               <div class="full-width">
                 <div class="Input">
                   <label class="bold-text" for="artikkelin-otsikko">Nimeke:</label>
-                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128" required title="">
+                  <input type="text" id="artikkelin-otsikko" name="artikkelin-otsikko" maxLength="128" required
+                    title="">
                 </div>
               </div>
               <div class="full-width">
@@ -251,7 +255,8 @@
                     <label class="bold-text" for="artikkelin-linkki">Linkki kokotekstiin:</label>
                     <input type="text" id="artikkelin-linkki" name="artikkelin-linkki" maxLength="128">
                   </div>
-                  <button id="lisaa-linkki" class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
+                  <button id="lisaa-linkki" class="material-icons tooltip no-border icon positive"
+                    tooltip-text="Lisää">add</button>
                 </div>
               </div>
               <div class="full-width">
@@ -265,12 +270,68 @@
                 <div class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="artikkelin-osasto-toistuva">Osasto tai toistuva palsta:</label>
-                    <input type="text" id="artikkelin-osasto-toistuva" name="artikkelin-osasto-toistuva"
-                      maxLength="128" list="artikkelin-osasto-toistuva-lista">
+                    <input type="text" id="artikkelin-osasto-toistuva" name="artikkelin-osasto-toistuva" maxLength="128"
+                      list="artikkelin-osasto-toistuva-lista">
                     <datalist id="artikkelin-osasto-toistuva-lista">
                     </datalist>
                   </div>
                 </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Lisää tekijä</legend>
+              <form id="tekija-lisaa-form" name="tekija-lisaa-form">
+                <div class="Select full-width">
+                  <label class="bold-text" for="tekija-rooli">Rooli:</label>
+                  <select id="tekija-rooli" name="tekija-rooli">
+                  </select>
+                </div>
+                <div class="Input">
+                  <label class="bold-text" for="tekija-sukunimi">Sukunimi:</label>
+                  <input type="text" id="tekija-sukunimi" name="tekija-sukunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
+                    maxLength="128">
+                </div>
+                <div class="Input">
+                  <label class="bold-text" for="tekija-etunimi">Etunimi:</label>
+                  <input type="text" id="tekija-etunimi" name="tekija-etunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
+                    maxlength="128">
+                </div>
+              </form>
+              <div class="full-width">
+                <div id="tekija-organisaatiot-list">
+                </div>
+              </div>
+              <form id="tekija-lisaa-organisaatio" name="tekija-lisaa-organisaatio">
+                <div class="Input full-width">
+                  <label for="tekija-organisaatio">Lisää tekijälle organisaatio:</label>
+                  <input type="text" id="tekija-organisaatio" name="tekija-organisaatio"
+                    list="tekija-organisaatio-lista">
+                  <datalist id="tekija-organisaatio-lista">
+                  </datalist>
+                  <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
+                </div>
+              </form>
+              <div class="full-width justify-content-end">
+                <div class="Button">
+                  <button class="negative" onclick="return resetAuthor(event)">Tyhjennä tekijä</button>
+                </div>
+                <div class="Button">
+                  <button class="positive" type="submit" form="tekija-lisaa-form">Lisää tekijä</button>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Lisätyt tekijät</legend>
+              <div class="full-width">
+                <div id="tekija-list">
+                </div>
+              </div>
+              <div class="full-width justify-content-end">
+                <form id="tyhjenna-tekijat-form">
+                  <div class="Button">
+                    <button type="submit" class="negative">Tyhjennä lisätyt tekijät</button>
+                  </div>
+                </form>
               </div>
             </fieldset>
             <fieldset id="arvostellun-teoksen-tiedot">
@@ -280,7 +341,7 @@
                   <div class="Input full-width">
                     <label class="bold-text" for="arvosteltu-teos">Haku:</label>
                     <input type="text" id="arvosteltu-teos" name="arvosteltu-teos"
-                        pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$" maxlength="30">
+                      pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$" maxlength="30">
                   </div>
                   <button type="submit" class="material-icons tooltip no-border icon positive"
                     tooltip-text="Hae">search</button>
@@ -354,62 +415,6 @@
                 <form id="tyhjenna-arvostelut-form">
                   <div class="Button">
                     <button type="submit" class="negative">Tyhjennä lisätyt arvostelut</button>
-                  </div>
-                </form>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>Lisää tekijä</legend>
-              <form id="tekija-lisaa-form" name="tekija-lisaa-form">
-                <div class="Select full-width">
-                  <label class="bold-text" for="tekija-rooli">Rooli:</label>
-                  <select id="tekija-rooli" name="tekija-rooli">
-                  </select>
-                </div>
-                <div class="Input">
-                  <label class="bold-text" for="tekija-sukunimi">Sukunimi:</label>
-                  <input type="text" id="tekija-sukunimi" name="tekija-sukunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
-                    maxLength="128">
-                </div>
-                <div class="Input">
-                  <label class="bold-text" for="tekija-etunimi">Etunimi:</label>
-                  <input type="text" id="tekija-etunimi" name="tekija-etunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
-                    maxlength="128">
-                </div>
-              </form>
-              <div class="full-width">
-                <div id="tekija-organisaatiot-list">
-                </div>
-              </div>
-              <form id="tekija-lisaa-organisaatio" name="tekija-lisaa-organisaatio">
-                <div class="Input full-width">
-                  <label for="tekija-organisaatio">Lisää tekijälle organisaatio:</label>
-                  <input type="text" id="tekija-organisaatio" name="tekija-organisaatio"
-                    list="tekija-organisaatio-lista">
-                  <datalist id="tekija-organisaatio-lista">
-                  </datalist>
-                  <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
-                </div>
-              </form>
-              <div class="full-width justify-content-end">
-                <div class="Button">
-                  <button class="negative" onclick="return resetAuthor(event)">Tyhjennä tekijä</button>
-                </div>
-                <div class="Button">
-                  <button class="positive" type="submit" form="tekija-lisaa-form">Lisää tekijä</button>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>Lisätyt tekijät</legend>
-              <div class="full-width">
-                <div id="tekija-list">
-                </div>
-              </div>
-              <div class="full-width justify-content-end">
-                <form id="tyhjenna-tekijat-form">
-                  <div class="Button">
-                    <button type="submit" class="negative">Tyhjennä lisätyt tekijät</button>
                   </div>
                 </form>
               </div>
@@ -530,8 +535,8 @@
                   </div>
                   <div id="asiasana-lisaa-input" class="Input full-width">
                     <label for="asiasana-muu" id="asiasana-muu-label"></label>
-                    <input type="text" id="asiasana-muu" name="asiasana-muu" pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}\p{S}]+$"
-                    maxlength="256">
+                    <input type="text" id="asiasana-muu" name="asiasana-muu"
+                      pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}\p{S}]+$" maxlength="256">
                   </div>
                   <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
@@ -666,6 +671,8 @@
           </div>
         </div>
 
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Article preview-->
         <div class="col">
           <div id="record1" class="BoxShadow">
             <form class="ToolBar HBox header">
