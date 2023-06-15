@@ -52,7 +52,6 @@ function sourceTypeChange(event) {
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
     document.getElementById(`numeron-numero-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
-    document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'block';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
     document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuodet:';
     document.getElementById('lehden-vuodet-valiviiva').style.display = 'block';
@@ -64,10 +63,8 @@ function sourceTypeChange(event) {
     document.getElementById(`numeron-vol-wrap`).style.display = 'none';
     document.getElementById(`numeron-numero-wrap`).style.display = 'none';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
-    document.getElementById(`artikkelin-arvostelu-tyyppi-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
-    document.getElementById('artikkelin-arvostelu-tyyppi').value = '';
     document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuosi:';
     document.getElementById('lehden-vuodet-valiviiva').style.display = 'none';
     document.getElementById('lehden-vuodet-max').style.display = 'none';
@@ -189,7 +186,6 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      reviewType: document.getElementById(`artikkelin-arvostelu-tyyppi`).value,
       sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
     },
     collecting: {
