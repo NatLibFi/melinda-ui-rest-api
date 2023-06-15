@@ -109,6 +109,8 @@ window.doUpdate = (event) => {
   event.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
+  collectReviewsCheck();
+
   const promises = [
     idbGetStoredValues('artoSciences'),
     idbGetStoredValues('artoMetodologys'),
@@ -117,7 +119,8 @@ window.doUpdate = (event) => {
     idbGetStoredValues('artoAbstracts'),
     idbGetStoredValues('artoNotes'),
     idbGetStoredValues('artoUDKs'),
-    idbGetStoredValues('artoOtherRatings')
+    idbGetStoredValues('artoOtherRatings'),
+    idbGetStoredValues('artoReviews')
   ];
 
   if (tietueIndex === '') {
@@ -141,22 +144,22 @@ window.doUpdate = (event) => {
     abstracts,
     notes,
     udks,
-    otherRatings
+    otherRatings,
+    reviews
   ]) => {
     const formData = collectFormData();
-    const reviews = collectReviews();
     getArtikkeliRecord({
       source,
       ...formData,
       sciences,
       metodologys,
       authors,
-      ...reviews,
       ontologyWords,
       abstracts,
       notes,
       udks,
-      otherRatings
+      otherRatings,
+      reviews
     }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit-lisaa'));
   });
 };
@@ -168,6 +171,14 @@ window.resetAuthor = (event) => {
 window.resetReview = (event) => {
   resetReview(event);
 };
+
+function collectReviewsCheck() {
+  const articleType = document.getElementById('artikkelin-tyyppi').value;
+  const includeReviews = ['B1', 'B2', 'D1', 'E1'].some(str => articleType.includes(str));
+  if (!includeReviews) {
+    idbClear('artoReviews').then(() => refreshReviewsList());
+  }
+}
 
 function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
@@ -194,15 +205,6 @@ function collectFormData() {
       f599x: document.getElementById(`poimintatiedot-poimintakoodi599x`).value
     }
   };
-}
-
-function collectReviews() {
-  const articleType = document.getElementById('artikkelin-tyyppi').value;
-  const includeReviews = ['B1', 'B2', 'D1', 'E1'].some(str => articleType.includes(str));
-  if (!includeReviews) {
-    idbClear('artoReviews').then(() => refreshReviewsList());
-  }
-  return idbGetStoredValues('artoReviews');
 }
 
 function idbClearAllTables() {

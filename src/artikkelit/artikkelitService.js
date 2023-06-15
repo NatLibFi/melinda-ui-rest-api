@@ -19,7 +19,7 @@ export function createArtikkelitService(useMoment = 'now') {
   function generateRecord(data) {
     console.log(data); // eslint-disable-line
     // eslint-disable-next-line no-unused-vars
-    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys} = data;
+    const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys, reviews} = data;
     const titleFor773t = source.title;
     const {isElectronic} = source;
     const {issn, melindaId} = parseIncomingData(source);
@@ -60,7 +60,7 @@ export function createArtikkelitService(useMoment = 'now') {
         ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
         ...generatef773(sourceTypeAsText, journalNumber, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t),
-        ...generatef787(), // review books
+        ...generatef787(reviews), // review books
         ...generatef856(referenceLinks, isElectronic),
         ...generatef960()
       ]
