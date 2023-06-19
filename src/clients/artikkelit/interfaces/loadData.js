@@ -66,10 +66,10 @@ export function fillArticleTypeOptions() {
   const articleType = document.querySelector('#artikkelin-tyyppi');
 
   if (sourceType === 'book') {
-    setOptions(articleType, articleTypesBooks);
+    setOptions(articleType, articleTypesBooks, false, 'Ei artikkelin tyyppiä');
   }
 
   if (sourceType === 'journal') {
-    setOptions(articleType, articleTypesJournal);
+    setOptions(articleType, articleTypesJournal, false, 'Ei artikkelin tyyppiä');
   }
 }
