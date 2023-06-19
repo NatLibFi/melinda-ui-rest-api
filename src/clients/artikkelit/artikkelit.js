@@ -76,10 +76,11 @@ window.articleTypeChange = (event) => {
   const reviewFieldset = document.getElementById('arvostellun-teoksen-tiedot');
   const addedReviews = document.getElementById('arvostellut-teokset');
   const selectedType = event.target.value;
-  if (['B1', 'B2', 'D1', 'E1'].some(str => selectedType.includes(str))) {
-    reviewFieldset.style.display = 'flex';
-    addedReviews.style.display = 'flex';
-  } else {
+
+  reviewFieldset.style.display = 'flex';
+  addedReviews.style.display = 'flex';
+  
+  if (['A1', 'A2', 'A3'].some(str => selectedType.includes(str))) {
     reviewFieldset.style.display = 'none';
     addedReviews.style.display = 'none';
   }
