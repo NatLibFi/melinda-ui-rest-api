@@ -1,18 +1,24 @@
 import {setNavBar, showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {getArtikkeliRecord} from '../common/rest.js';
+import {getArtikkeliRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
-import {idbGet, idbDel, idbGetStoredValues, idbClear, getTableNames} from '/artikkelit/indexDB.js';
-import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
+import {
+  idbClear, idbDel, idbGet, 
+  idbGetStoredValues, getTableNames
+} from '/artikkelit/indexDB.js';
+
 import {initAbstracts, refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
-import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
-import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
+import {
+  initAdditionalFields, refreshNotesList, refreshOtherTitlesList,
+  refreshUDKsList, refreshOtherRatingsList
+} from '/artikkelit/interfaces/additionalFields.js';
 import {initArticle, refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/article.js';
-import {initAdditionalFields, refreshNotesList, refreshOtherTitlesList, refreshUDKsList, refreshOtherRatingsList} from '/artikkelit/interfaces/additionalFields.js';
-import {initReviewSearch, resetReview, refreshReviewsList, clearReviews} from './interfaces/reviewSearch.js';
-import {initPublicationSearch, resetSearchResultSelect} from './interfaces/publicationSearch.js';
-import {journalTemplate, bookTemplate} from './interfaces/constants.js';
-//import { } from "./interfaces/";
+import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
+import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
+import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
+import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
+import {initPublicationSearch, resetSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
+import {initReviewSearch, resetReview, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 
 window.initialize = function () {
   console.log('Initializing');
@@ -47,6 +53,7 @@ function sourceTypeChange(event) {
   fillArticleTypeOptions();
 
   const sourceType = event.target.value;
+ 
   if (sourceType === 'journal') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
@@ -68,7 +75,6 @@ function sourceTypeChange(event) {
     document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuosi:';
     document.getElementById('lehden-vuodet-valiviiva').style.display = 'none';
     document.getElementById('lehden-vuodet-max').style.display = 'none';
-
   }
 }
 
@@ -76,10 +82,11 @@ window.articleTypeChange = (event) => {
   const reviewFieldset = document.getElementById('arvostellun-teoksen-tiedot');
   const addedReviews = document.getElementById('arvostellut-teokset');
   const selectedType = event.target.value;
-  if (['B1', 'B2', 'D1', 'E1'].some(str => selectedType.includes(str))) {
-    reviewFieldset.style.display = 'flex';
-    addedReviews.style.display = 'flex';
-  } else {
+
+  reviewFieldset.style.display = 'flex';
+  addedReviews.style.display = 'flex';
+  
+  if (['A1', 'A2', 'A3'].some(str => selectedType.includes(str))) {
     reviewFieldset.style.display = 'none';
     addedReviews.style.display = 'none';
   }
@@ -87,8 +94,8 @@ window.articleTypeChange = (event) => {
 
 function ontologyTypeChange(event) {
   event.preventDefault();
-
   const ontologyType = event.target.value;
+
   if ((/other/).test(ontologyType)) {
     document.getElementById('haku-osio').style.display = 'none';
     document.getElementById('asiasana-lisaa-select').style.display = 'none';
@@ -175,6 +182,7 @@ window.resetReview = (event) => {
 function collectReviewsCheck() {
   const articleType = document.getElementById('artikkelin-tyyppi').value;
   const includeReviews = ['B1', 'B2', 'D1', 'E1'].some(str => articleType.includes(str));
+  
   if (!includeReviews) {
     idbClear('artoReviews').then(() => refreshReviewsList());
   }
@@ -184,6 +192,7 @@ function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
   const links = [];
   document.getElementsByName('artikkelin-linkki').forEach(el => links.push(el.value));
+  
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
