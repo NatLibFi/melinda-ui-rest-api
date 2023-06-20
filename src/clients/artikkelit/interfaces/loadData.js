@@ -1,4 +1,9 @@
-import {articleTypesBooks, articleTypesJournal, authorRelators, languages, ontologyTypes, organizations, sciences, searchTypes, sourceTypes, sectionOrColumnList} from '/artikkelit/interfaces/constants.js';
+import {
+  articleTypesBooks, articleTypesJournal, authorRelators,
+  languages, ontologyTypes, organizations, sciences,
+  searchTypes, sourceTypes, sectionOrColumnList
+} from '/artikkelit/interfaces/constants.js';
+
 import {setOptions} from '/common/ui-utils.js';
 
 export function fillFormOptions() {
@@ -7,9 +12,9 @@ export function fillFormOptions() {
   fillArticleTypeOptions();
 }
 
-export async function fillSelectOptions() {
+function fillSelectOptions() {
   const selects = document.getElementsByTagName('select');
-  //console.log(selects);
+
   for (let index = 0; index < selects.length; index += 1) {
     const select = selects[index];
 
@@ -38,9 +43,10 @@ export async function fillSelectOptions() {
 
 export function fillDatalistOptions() {
   const datalists = document.getElementsByTagName('datalist');
-  //console.log(datalists);
+
   for (let index = 0; index < datalists.length; index += 1) {
     const datalist = datalists[index];
+
     if (datalist.id.indexOf('-tieteenala-lista') !== -1) {
       setOptions(datalist, sciences);
     }
@@ -58,11 +64,12 @@ export function fillDatalistOptions() {
 export function fillArticleTypeOptions() {
   const sourceType = document.querySelector('#kuvailtava-kohde').value;
   const articleType = document.querySelector('#artikkelin-tyyppi');
+
   if (sourceType === 'book') {
-    setOptions(articleType, articleTypesBooks);
+    setOptions(articleType, articleTypesBooks, false, 'Ei artikkelin tyyppiä');
   }
 
   if (sourceType === 'journal') {
-    setOptions(articleType, articleTypesJournal);
+    setOptions(articleType, articleTypesJournal, false, 'Ei artikkelin tyyppiä');
   }
 }
