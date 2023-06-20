@@ -129,6 +129,10 @@ export function getPublicationByTitle(title, type = 'journal') {
   return fetchFromRest(`${RESTurl}/bib/title/${title}?arto=1&type=${type}`);
 }
 
+export function getBookForReviewByTitle(title) {
+  return fetchFromRest(`${RESTurl}/bib/title/${title}?reviewSearch=1&type=book`);
+}
+
 export function getArtikkeliRecord(data) {
   //console.log(`body: ${data}`);
   return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));

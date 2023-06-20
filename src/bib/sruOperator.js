@@ -92,6 +92,10 @@ export async function createSruOperator({sruUrl, recordSchema}) {
       return ' AND melinda.collection=arto';
     }
 
+    if (parseBoolean(additionalQueryParams.reviewSearch)) {
+      return '';
+    }
+
     return `&${new URLSearchParams(additionalQueryParams).toString()}`;
   }
 }

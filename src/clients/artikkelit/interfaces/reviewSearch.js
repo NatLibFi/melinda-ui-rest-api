@@ -1,6 +1,6 @@
 import {idbGet, idbClear, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
 import {formToJson, setOptions, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
-import {getPublicationByTitle} from '/common/rest.js';
+import {getBookForReviewByTitle} from '/common/rest.js';
 
 export function initReviewSearch() {
   console.log('initializing review search...');
@@ -119,7 +119,7 @@ function searchPublications(event) {
 
   const formJson = formToJson(event);
 
-  return getPublicationByTitle(formJson['arvosteltu-teos'], 'book').then(result => {
+  return getBookForReviewByTitle(formJson['arvosteltu-teos']).then(result => {
     if (result.error === undefined) {
       return setRecordsToSearch(result);
     }
