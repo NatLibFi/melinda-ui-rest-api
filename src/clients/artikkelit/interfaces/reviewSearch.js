@@ -143,6 +143,7 @@ function setRecordsToSearch(records) {
 
 function refreshSearchResultSelect() {
   const select = document.getElementById('arvosteltu-teos-tulos-lista');
+  const searchType = document.getElementById(`kuvailtava-kohde`).value;
   select.innerHTML = '';
 
   idbGetStoredValues('artoTempReviews').then(sources => {
@@ -151,8 +152,9 @@ function refreshSearchResultSelect() {
       const publicationType = record.isElectric ? 'E-aineisto' : 'Painettu';
       const yearsStart = record.publisherInfo.publisherYears.start;
       const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
+      const hyphen = (searchType === 'journal' ? ' - ' : '');
 
-      const text = `${title} (${publicationType}: ${yearsStart}-${yearsEnd})`;
+      const text = `${title} (${publicationType}: ${yearsStart}${hyphen}${yearsEnd})`;
       return {value: record.key, text};
     });
 

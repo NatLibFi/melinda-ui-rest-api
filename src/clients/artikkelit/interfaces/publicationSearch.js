@@ -142,6 +142,7 @@ function setRecordsToSearch(records) {
 
 function refreshSearchResultSelect() {
   const select = document.getElementById('julkaisu-haku-tulos-lista');
+  const searchType = document.getElementById(`kuvailtava-kohde`).value;
   select.innerHTML = '';
 
   idbGetStoredValues('artoSources').then(sources => {
@@ -151,8 +152,9 @@ function refreshSearchResultSelect() {
       const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
       const yearsStart = record.publisherInfo.publisherYears.start;
       const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
+      const hyphen = (searchType === 'journal' ? ' - ' : '');
 
-      const text = `${title} (${publicationType}: ${yearsStart}-${yearsEnd})`;
+      const text = `${title} (${publicationType}: ${yearsStart}${hyphen}${yearsEnd})`;
       return {value: record.key, text};
     });
 
