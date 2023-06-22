@@ -149,11 +149,10 @@ function refreshSearchResultSelect() {
     const data = sources.map(record => {
       const {title} = record;
       const publicationType = record.isElectric ? 'E-aineisto' : 'Painettu';
-      const years = `${record.publisherInfo.publisherYears.start}`;
-      if (record.publisherInfo.publisherYears.end) {
-        years += -`${record.publisherInfo.publisherYears.end}`;
-      }
-      const text = `${title} (${publicationType}: ${years})`;
+      const yearsStart = record.publisherInfo.publisherYears.start;
+      const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
+
+      const text = `${title} (${publicationType}: ${yearsStart}-${yearsEnd})`;
       return {value: record.key, text};
     });
 
