@@ -148,7 +148,7 @@ function refreshSearchResultSelect() {
   idbGetStoredValues('artoTempReviews').then(sources => {
     const data = sources.map(record => {
       const {title} = record;
-      const publicationType = record.isElectric ? 'E-aineisto' : 'Painettu';
+      const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
       const yearsStart = record.publisherInfo.publisherYears.start;
       const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
       const hyphen = (record.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') ? ' - ' : '');
