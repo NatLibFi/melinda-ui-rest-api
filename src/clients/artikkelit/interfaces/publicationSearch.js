@@ -152,7 +152,7 @@ function refreshSearchResultSelect() {
       const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
       const hyphen = (record.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') ? ' - ' : '');
 
-      const text = `${title} (${publicationType}: ${yearsStart}${hyphen}${yearsEnd})`;
+      const text = `${title} (${publicationType}, ${yearsStart}${hyphen}${yearsEnd})`;
       return {value: record.key, text};
     });
 
