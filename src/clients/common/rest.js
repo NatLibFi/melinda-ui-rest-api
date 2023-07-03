@@ -150,7 +150,8 @@ async function fetchFromRest(url, method = 'GET', body = undefined) {
     {
       method,
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        Authorization: Account.getToken()
       },
       body
     }
