@@ -42,6 +42,36 @@ function doAuthRequest(token, url = '') {
     });
 }
 
+
+//*****************************************************************************
+// Do rest call
+//*****************************************************************************
+
+async function doRestCall({url = undefined, method = undefined, body = undefined, contentType = undefined, resultAsJson = false}) {
+
+  const headers = {
+    'Accept': 'application/json',
+    'Authorization': Account.getToken(),
+    ...contentType ? {'Content-Type': contentType} : {}
+  };
+
+  const result = await fetch(
+    url,
+    {
+      method: method,
+      headers: headers,
+      ...body ? {body: body} : {}
+    }
+  );
+
+  if (resultAsJson) {
+    return result.json();
+  }
+
+  return result;
+}
+
+
 //*****************************************************************************
 // Single records
 //*****************************************************************************
