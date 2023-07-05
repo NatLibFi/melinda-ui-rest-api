@@ -7,13 +7,16 @@
 import {getOntologyOptions} from '../artikkelit/utils.js';
 import {Account} from '../common/auth.js';
 
-//-----------------------------------------------------------------------------
-const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
-
-//console.log(`REST: ${RESTurl}`);
 
 //*****************************************************************************
-// Authentication
+// REST URL
+//*****************************************************************************
+
+const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
+
+
+//*****************************************************************************
+// AUTHENTICATION
 //*****************************************************************************
 
 export function authRequest(token) {
@@ -44,7 +47,7 @@ function doAuthRequest(token, url = '') {
 
 
 //*****************************************************************************
-// Do rest call
+// FETCH FROM REST
 //*****************************************************************************
 
 async function doRestCall({url = undefined, method = undefined, body = undefined, contentType = undefined, resultAsJson = false}) {
@@ -73,41 +76,19 @@ async function doRestCall({url = undefined, method = undefined, body = undefined
 
 
 //*****************************************************************************
-// Single records
+// RECORDS AND TRANSFORMATIONS (muuntaja)
 //*****************************************************************************
 
 export function getRecord(id) {
-  return fetch(
-    `${RESTurl}/bib/${id}`,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
+  const url = `${RESTurl}/bib/${id}`;
+  return doRestCall({url: url, method: 'GET'});
 }
 
 export function modifyRecord(transforming) {
-  return fetch(
-    `${RESTurl}/record/modify`,
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: Account.getToken()
-      },
-      body: JSON.stringify(transforming)
-    }
-  );
+  const url = `${RESTurl}/record/modify`;
+  const body = JSON.stringify(transforming);
+  return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
 }
-
-//*****************************************************************************
-// TRANSFORMATIONS (muuntaja)
-//*****************************************************************************
 
 export function profileRequest() {
   const url = `${RESTurl}/muuntaja/profiles`;
@@ -196,6 +177,3 @@ export function removeLog(id, force) {
   const url = `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`;
   return doRestCall({url: url, method: 'DELETE'});
 }
-
-
-//*****************************************************************************
