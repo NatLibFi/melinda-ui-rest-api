@@ -200,66 +200,34 @@ async function fetchFromRest(url, method = 'GET', body = undefined) {
 //*****************************************************************************
 
 export function getMatchLog(id, sequence) {
-  return fetchLogs(`${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+  const url = `${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getMatchValidationLog(id, sequence) {
-  return fetchLogs(`${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+  const url = `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getMergeLog(id, sequence) {
-  return fetchLogs(`${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+  const url = `${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getCorrelationIdList(expanded) {
-  return fetchLogs(`${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`);
+  const url = `${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-async function fetchLogs(url) {
-  const result = await fetch(
-    url,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
-  return result.json();
+export function protectLog(id, sequence) {
+  const url = `${RESTurl}/viewer/protect/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'PUT'});
 }
 
-//-----------------------------------------------------------------------------
-
-export async function protectLog(id, sequence) {
-  return fetch(
-    `${RESTurl}/viewer/protect/${id}${sequence ? `?sequence=${sequence}` : ''}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
+export function removeLog(id, force) {
+  const url =`${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`;
+  return doRestCall({url: url, method: 'DELETE'});
 }
-
-//-----------------------------------------------------------------------------
-
-export async function removeLog(id, force) {
-  return fetch(
-    `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
-}
-
-//-----------------------------------------------------------------------------
 
 
 //*****************************************************************************
