@@ -140,58 +140,44 @@ export function transformRequest(transformed) {
 }
 
 //*****************************************************************************
-// Artikkelit (artikkelit)
+// PUBLICATIONS, ARTICLES AND ONTOLOGY WORDS (artikkelit)
 //*****************************************************************************
 
 export function getPublicationByISSN(issn, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getPublicationByISBN(isbn, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getPublicationByMelinda(melindaId, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/${melindaId}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/${melindaId}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getPublicationByTitle(title, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/title/${title}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/title/${title}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getBookForReviewByTitle(title) {
-  return fetchFromRest(`${RESTurl}/bib/title/${title}?reviewSearch=1&type=book`);
+  const url = `${RESTurl}/bib/title/${title}?reviewSearch=1&type=book`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getArtikkeliRecord(data) {
-  //console.log(`body: ${data}`);
-  return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
+  const url = `${RESTurl}/artikkelit/`;
+  const body = JSON.stringify(data);
+  return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
 }
 
 export function getOntologyWords(ontology, query) {
   const {searchVocab, language} = getOntologyOptions(ontology);
-
-  return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
-}
-
-async function fetchFromRest(url, method = 'GET', body = undefined) {
-  const result = await fetch(
-    url,
-    {
-      method,
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      },
-      body
-    }
-  );
-
-  if (result.ok) {
-    return result.json();
-  }
-
-  return {error: {status: result.status, message: result.text()}};
+  const url = `${RESTurl}/ontologies/${language}/${searchVocab}/${query}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 
@@ -225,7 +211,7 @@ export function protectLog(id, sequence) {
 }
 
 export function removeLog(id, force) {
-  const url =`${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`;
+  const url = `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`;
   return doRestCall({url: url, method: 'DELETE'});
 }
 
