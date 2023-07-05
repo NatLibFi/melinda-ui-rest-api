@@ -106,38 +106,20 @@ export function modifyRecord(transforming) {
 }
 
 //*****************************************************************************
-// Transformations (Muuntaja)
+// TRANSFORMATIONS (muuntaja)
 //*****************************************************************************
 
 export function profileRequest() {
-  return fetch(
-    `${RESTurl}/muuntaja/profiles`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: Account.getToken()
-      }
-    }
-  )
-    .then(response => response.json());
+  const url = `${RESTurl}/muuntaja/profiles`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
-
-//-----------------------------------------------------------------------------
 
 export function transformRequest(transformed) {
-  return fetch(
-    `${RESTurl}/muuntaja/transform`,
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: Account.getToken()
-      },
-      body: JSON.stringify(transformed)
-    }
-  );
+  const url = `${RESTurl}/muuntaja/transform`;
+  const body = JSON.stringify(transformed);
+  return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
 }
+
 
 //*****************************************************************************
 // PUBLICATIONS, ARTICLES AND ONTOLOGY WORDS (artikkelit)
