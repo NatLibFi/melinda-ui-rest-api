@@ -150,7 +150,7 @@ function refreshSearchResultSelect() {
       const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
       const yearsStart = record.publisherInfo.publisherYears.start;
       const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
-      const hyphen = (record.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') ? ' - ' : '');
+      const hyphen = (record.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') ? '-' : '');
 
       const text = `${title} (${publicationType}: ${yearsStart}${hyphen}${yearsEnd})`;
       return {value: record.key, text};

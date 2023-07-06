@@ -67,9 +67,9 @@ export function refreshReviewsList() {
       const div = document.createElement('div');
       div.classList.add('full-width');
       const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeReviewedBook(event, ${reviewData.key})`, 'Poista');
-      div.appendChild(createP('Arvosteltu teos', '', '&nbsp;-&nbsp;', ['label-text']));
+      div.appendChild(createP('Arvosteltu teos', '', ':&nbsp', ['label-text']));
       div.appendChild(createP(reviewData.title));
-      div.appendChild(createP('ISBN', '', '&nbsp;-&nbsp;', ['label-text']));
+      div.appendChild(createP('ISBN', ',&nbsp', '&nbsp'));
       div.appendChild(createP(reviewData.isbns));
 
       div.appendChild(removeButton);
@@ -151,7 +151,7 @@ function refreshSearchResultSelect() {
       const publicationType = record.isElectronic ? 'E-aineisto' : 'Painettu';
       const yearsStart = record.publisherInfo.publisherYears.start;
       const yearsEnd = record.publisherInfo.publisherYears.end ?? '';
-      const hyphen = (record.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') ? ' - ' : '');
+      const hyphen = (record.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') ? '-' : '');
 
       const text = `${title} (${publicationType}: ${yearsStart}${hyphen}${yearsEnd})`;
       return {value: record.key, text};

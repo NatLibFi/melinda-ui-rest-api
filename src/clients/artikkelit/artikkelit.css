@@ -120,7 +120,6 @@ form {
   display: flex;
   align-items: center;
   align-content: center;
-  gap: 5px;
 }
 
 .full-width label {
@@ -201,6 +200,10 @@ fieldset .panel p {
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-normal);
   font-weight: var(--font-weight-label-normal);
+}
+
+label.label-text {
+  margin-right: 8px;
 }
 
 .title-text {
