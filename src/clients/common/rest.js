@@ -7,13 +7,16 @@
 import {getOntologyOptions} from '../artikkelit/utils.js';
 import {Account} from '../common/auth.js';
 
-//-----------------------------------------------------------------------------
-const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
-
-//console.log(`REST: ${RESTurl}`);
 
 //*****************************************************************************
-// Authentication
+// REST URL
+//*****************************************************************************
+
+const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
+
+
+//*****************************************************************************
+// AUTHENTICATION
 //*****************************************************************************
 
 export function authRequest(token) {
@@ -42,125 +45,102 @@ function doAuthRequest(token, url = '') {
     });
 }
 
+
 //*****************************************************************************
-// Single records
+// FETCH FROM REST
+//*****************************************************************************
+
+async function doRestCall({url = undefined, method = undefined, body = undefined, contentType = undefined, resultAsJson = false}) {
+
+  const headers = {
+    'Accept': 'application/json',
+    'Authorization': Account.getToken(),
+    ...contentType ? {'Content-Type': contentType} : {}
+  };
+
+  const result = await fetch(
+    url,
+    {
+      method: method,
+      headers: headers,
+      ...body ? {body: body} : {}
+    }
+  );
+
+  if (resultAsJson) {
+    return result.json();
+  }
+
+  return result;
+}
+
+
+//*****************************************************************************
+// RECORDS AND TRANSFORMATIONS (muuntaja)
 //*****************************************************************************
 
 export function getRecord(id) {
-  return fetch(
-    `${RESTurl}/bib/${id}`,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
+  const url = `${RESTurl}/bib/${id}`;
+  return doRestCall({url: url, method: 'GET'});
 }
 
 export function modifyRecord(transforming) {
-  return fetch(
-    `${RESTurl}/record/modify`,
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: Account.getToken()
-      },
-      body: JSON.stringify(transforming)
-    }
-  );
+  const url = `${RESTurl}/record/modify`;
+  const body = JSON.stringify(transforming);
+  return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
 }
-
-//*****************************************************************************
-// Transformations (Muuntaja)
-//*****************************************************************************
 
 export function profileRequest() {
-  return fetch(
-    `${RESTurl}/muuntaja/profiles`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: Account.getToken()
-      }
-    }
-  )
-    .then(response => response.json());
+  const url = `${RESTurl}/muuntaja/profiles`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
-
-//-----------------------------------------------------------------------------
 
 export function transformRequest(transformed) {
-  return fetch(
-    `${RESTurl}/muuntaja/transform`,
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: Account.getToken()
-      },
-      body: JSON.stringify(transformed)
-    }
-  );
+  const url = `${RESTurl}/muuntaja/transform`;
+  const body = JSON.stringify(transformed);
+  return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
 }
 
+
 //*****************************************************************************
-// Artikkelit (artikkelit)
+// PUBLICATIONS, ARTICLES AND ONTOLOGY WORDS (artikkelit)
 //*****************************************************************************
 
 export function getPublicationByISSN(issn, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getPublicationByISBN(isbn, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getPublicationByMelinda(melindaId, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/${melindaId}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/${melindaId}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getPublicationByTitle(title, type = 'journal') {
-  return fetchFromRest(`${RESTurl}/bib/title/${title}?arto=1&type=${type}`);
+  const url = `${RESTurl}/bib/title/${title}?arto=1&type=${type}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getBookForReviewByTitle(title) {
-  return fetchFromRest(`${RESTurl}/bib/title/${title}?reviewSearch=1&type=book`);
+  const url = `${RESTurl}/bib/title/${title}?reviewSearch=1&type=book`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getArtikkeliRecord(data) {
-  //console.log(`body: ${data}`);
-  return fetchFromRest(`${RESTurl}/artikkelit/`, 'POST', JSON.stringify(data));
+  const url = `${RESTurl}/artikkelit/`;
+  const body = JSON.stringify(data);
+  return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
 }
 
 export function getOntologyWords(ontology, query) {
   const {searchVocab, language} = getOntologyOptions(ontology);
-
-  return fetchFromRest(`${RESTurl}/ontologies/${language}/${searchVocab}/${query}`);
-}
-
-async function fetchFromRest(url, method = 'GET', body = undefined) {
-  const result = await fetch(
-    url,
-    {
-      method,
-      headers: {
-        'Accept': 'application/json'
-      },
-      body
-    }
-  );
-
-  if (result.ok) {
-    return result.json();
-  }
-
-  return {error: {status: result.status, message: result.text()}};
+  const url = `${RESTurl}/ontologies/${language}/${searchVocab}/${query}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 
@@ -169,66 +149,31 @@ async function fetchFromRest(url, method = 'GET', body = undefined) {
 //*****************************************************************************
 
 export function getMatchLog(id, sequence) {
-  return fetchLogs(`${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+  const url = `${RESTurl}/viewer/match-log/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getMatchValidationLog(id, sequence) {
-  return fetchLogs(`${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+  const url = `${RESTurl}/viewer/match-validation-log/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getMergeLog(id, sequence) {
-  return fetchLogs(`${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`);
+  const url = `${RESTurl}/viewer/merge-log/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
 export function getCorrelationIdList(expanded) {
-  return fetchLogs(`${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`);
+  const url = `${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-async function fetchLogs(url) {
-  const result = await fetch(
-    url,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
-  return result.json();
+export function protectLog(id, sequence) {
+  const url = `${RESTurl}/viewer/protect/${id}${sequence ? `?sequence=${sequence}` : ''}`;
+  return doRestCall({url: url, method: 'PUT'});
 }
 
-//-----------------------------------------------------------------------------
-
-export async function protectLog(id, sequence) {
-  return fetch(
-    `${RESTurl}/viewer/protect/${id}${sequence ? `?sequence=${sequence}` : ''}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
+export function removeLog(id, force) {
+  const url = `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`;
+  return doRestCall({url: url, method: 'DELETE'});
 }
-
-//-----------------------------------------------------------------------------
-
-export async function removeLog(id, force) {
-  return fetch(
-    `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        Authorization: Account.getToken()
-      }
-    }
-  );
-}
-
-//-----------------------------------------------------------------------------
-
-
-//*****************************************************************************
