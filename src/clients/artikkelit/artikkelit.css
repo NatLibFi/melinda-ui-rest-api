@@ -1,8 +1,13 @@
-/* CSS file for muuntaja */
-@import "/common/stylesheets/fonts.css";
+/* ---------------------------------------------------------------------------- */
+/* Styles for ARTIKKELIT app                                                    */
+/* ---------------------------------------------------------------------------- */
+
+
+
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
+
 
 div#loading {}
 
@@ -81,7 +86,7 @@ div#muuntaja {}
   text-transform: uppercase;
   font-family: var(--font-family-headline);
   font-size: var(--font-size-headline-normal);
-  font-weight: var(--font-weight-headline-normal);
+  font-weight: var(--font-weight-headline);
   line-height: var(--font-line-height-headline-normal);
   border-bottom: 1px solid lightgrey;
   align-items: center;
@@ -106,7 +111,7 @@ form {
 
 .header label {
   font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-normal);
   /*color: grey;*/
 }
@@ -162,8 +167,8 @@ fieldset {
 }
 
 fieldset legend {
-  font-size: var(--font-size-title-large);
-  font-weight: var(--font-weight-title-large);
+  font-size: var(--font-size-title-normal);
+  font-weight: var(--font-weight-title);
 }
 
 fieldset .panel {
@@ -200,14 +205,14 @@ fieldset .panel p {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-weight: var(--font-weight-label);
 }
 
 .title-text {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-title);
   font-size: var(--font-size-title-normal);
-  font-weight: var(--font-weight-title-normal);
+  font-weight: var(--font-weight-title);
 
 }
 
@@ -215,7 +220,7 @@ fieldset .panel p {
   color: rgb(0, 0, 0);
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-normal);
-  font-weight: var(--font-weight-content-normal);
+  font-weight: var(--font-weight-content);
 }
 
 .bold-text {
@@ -226,6 +231,7 @@ fieldset .panel p {
   display: inline-flex;
   justify-content: end;
 }
+
 .justify-content-end>form {
   width: auto;
 }

@@ -1,7 +1,7 @@
 @import "/common/stylesheets/fonts.css";
 
 /* ---------------------------------------------------------------------------- */
-/* CSS for generic GUI components */
+/* Styles for generic GUI components                                            */
 /* ---------------------------------------------------------------------------- */
 
 /* Filler div to take remaining space */
@@ -43,8 +43,8 @@
   /* basic styles */
   background: rgb(182, 225, 224);
   color: #000;
-  font-size: 0.5em;
-  font-family: "Roboto", "Roboto-mono", "Roboto-serif";
+  font-size: var(--font-size-label-small);
+  font-family: var(--font-family-label)
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -93,13 +93,12 @@
 /* ---------------------------------------------------------------------------- */
 
 button {
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
-  font-family: "Roboto-mono", "Roboto", "Roboto-serif";
+  font-size: var(--font-size-button-normal);
+  font-weight: var(--font-weight-button);
+  font-family: var(--font-family-button);
   color: inherit;
   border: 1px solid grey;
   background-color: transparent;
-  /*padding: 4px 16px;*/
   padding: 4px 14px;
   cursor: pointer;
   border-radius: 1em;
@@ -118,10 +117,10 @@ button.no-border.negative {
 button.icon {
   font-size: var(--font-size-icon-normal);
   border-radius: 0.75rem;
-  min-height: var(--font-line-height-content-normal);
-  min-width: var(--font-line-height-content-normal);
-  max-height: var(--font-line-height-content-normal);
-  max-width: var(--font-line-height-content-normal);
+  min-height: var(--font-line-height-icon-normal);
+  min-width: var(--font-line-height-icon-normal);
+  max-height: var(--font-line-height-icon-normal);
+  max-width: var(--font-line-height-icon-normal);
   padding: 4px;
 }
 
@@ -136,12 +135,11 @@ button.negative {
 }
 
 .Button input {
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-size: var(--font-size-input-normal);
+  font-weight: var(--font-weight-input);
   color: inherit;
   border: 1px solid grey;
   background-color: transparent;
-  /*padding: 4px 16px;*/
   padding: 4px 14px;
   cursor: pointer;
   border-radius: 1em;
@@ -152,12 +150,11 @@ button.negative {
 }
 
 .ToolBar button {
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-size: var(--font-size-button-normal);
+  font-weight: var(--font-weight-button);
   color: inherit;
   border: 0;
   background-color: transparent;
-  /*padding: 4px 16px;*/
   padding: 4px 14px;
   cursor: pointer;
 }
@@ -190,26 +187,26 @@ button>a:visited {
 
 .Input>label {
   color: rgb(48, 93, 109);
-  font-family: "Roboto-mono", "Roboto", "Roboto-serif";
+  font-family: var(--font-family-label);
   font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-weight: var(--font-weight-label);
   margin-right: 8px;
 }
 
 .Input>input {
-  font-family: var(--font-family-content);
+  font-family: var(--font-family-input);
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-size: var(--font-size-content-normal);
-  font-weight: var(--font-weight-content-normal);
+  font-size: var(--font-size-input-normal);
+  font-weight: var(--font-weight-input);
   flex-grow: 1;
 }
 
 .Input>datalist>option {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-content);
 }
 
 .Input>input:valid {
@@ -228,7 +225,7 @@ button>a:visited {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-weight: var(--font-weight-label);
   margin-right: 8px;
 }
 
@@ -239,7 +236,7 @@ button>a:visited {
   background: #fff;
   outline: none;
   font-size: var(--font-size-content-normal);
-  font-weight: var(--font-weight-content-normal);
+  font-weight: var(--font-weight-content);
 }
 
 .Select>select:focus {
@@ -248,8 +245,8 @@ button>a:visited {
 
 .Select>select>option {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-contentl);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -439,7 +436,8 @@ dialog:modal {
 
 /* If hr or p element is used in supporting text, */
 /* sets the horizontal line on it's own row */
-.dialog-supporting-text hr, p:not(.full-width p) {
+.dialog-supporting-text hr,
+p:not(.full-width p) {
   flex: 0 0 100%
 }
 
@@ -460,8 +458,8 @@ dialog:modal {
   padding-top: 6px;
   padding-bottom: 6px;
   color: rgb(40, 165, 165);
-  font-size: var(--font-size-label-large);
-  font-weight: var(--font-weight-label-large);
+  font-size: var(--font-size-button-large);
+  font-weight: var(--font-weight-button);
 }
 
 /* Dialog buttons show accent background-color on hover */
@@ -549,8 +547,9 @@ dialog:modal {
 /* Select button has icon */
 /* Use with material-icons class, check icon and a <span> element: */
 .select-button-icon {
-  font-size: 13px !important;
-  height: 16px !important;
+  /*   font-size: 13px !important;
+  height: 16px !important; */
+  font-size: var(--font-size-icon-small);
   padding-right: 5px;
 }
 

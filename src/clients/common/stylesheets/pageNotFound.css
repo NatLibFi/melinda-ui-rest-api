@@ -1,4 +1,12 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for 404 page                                                          */
+/* ---------------------------------------------------------------------------- */
+
+
+
 @import "/common/stylesheets/common.css";
+
+/* ---------------------------------------------------------------------------- */
 
 
 .Input>label {
@@ -23,7 +31,6 @@
 #pageNotFoundInfo h3 {
   display: flex;
   align-items: center;
-  font-family: 'Montserrat-Regular', Arial, sans-serif;
 }
 
 #pageNotFoundInfo a {

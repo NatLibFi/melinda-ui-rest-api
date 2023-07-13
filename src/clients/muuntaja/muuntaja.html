@@ -27,6 +27,10 @@
 
 <body onload="initialize()">
 
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Nav bar -->
+  <div id="navbar"></div>
+
   <!-- Application "tabs" -->
   <div id="root">
 
@@ -41,7 +45,7 @@
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus/>
+        <input id="login-username" name="username" autofocus />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
@@ -68,9 +72,7 @@
 
     <div id="muuntaja" hidden>
 
-      <!-- ------------------------------------------------------------------------ -->
-      <!-- Nav bar -->
-      <div id="navbar"></div>
+
 
       <!-- ------------------------------------------------------------------------ -->
       <!-- Toolbar Iconbar -->
@@ -125,7 +127,7 @@
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
-              <input id="ID"/>
+              <input id="ID" />
             </div>
             <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
             <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
@@ -187,7 +189,7 @@
       <!-- <span id="msgHeader" class="marc-record"></span><br/>
       <hr/> -->
       <div id="msg" class="marc-record"><span id="recordType"></span>tietuetta ei löytynyt annetulla hakuehdolla</div>
-      <br/>
+      <br />
       <div style="display: flex; justify-content: right;">
         <button onclick="return notFoundDlgClose(event)">Sulje</button>
       </div>
@@ -197,14 +199,16 @@
   <!-- ---------------------------------------------------------------------- -->
   <!-- JSON dialog -->
   <div id="jsonDlg" class="modal" onclick="return jsonDlgClose(event)">
-    <div class="modal-content BoxShadow" style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;" onclick="return ignore(event)">
+    <div class="modal-content BoxShadow"
+      style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;"
+      onclick="return ignore(event)">
       <div style="position: sticky; top: 0; background-color: white; padding-top: 16px;">
         <div style="display: flex; justify-content: right;">
           <button onclick="return saveJson(event)">Tallenna muutokset</button>
           <button onclick="return selectJson(event)">Valitse koko sisältö</button>
           <button onclick="return jsonDlgClose(event)">Sulje ikkuna</button>
         </div>
-        <hr/>
+        <hr />
       </div>
       <div id="jsonContent" class="marc-record"></div>
     </div>
@@ -220,7 +224,7 @@
   <!-- Tab for server side notes -->
   <div id="server-note" hidden>
   </div>
-  
+
   <!-- ---------------------------------------------------------------------- -->
   <!-- Snackbars -->
   <div id="snackbars" class="snackbars">

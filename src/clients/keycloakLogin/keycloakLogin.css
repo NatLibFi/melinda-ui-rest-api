@@ -1,8 +1,13 @@
-/* CSS file for muuntaja */
+/* ---------------------------------------------------------------------------- */
+/* Styles for keycloak login                                                    */
+/* ---------------------------------------------------------------------------- */
+
+
 
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
+
 
 div#loading {}
 
@@ -50,7 +55,7 @@ div#tools {}
   content: attr(data-text);
   position: absolute;
   left: 0;
-  right:0;
+  right: 0;
   top: 100%;
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
