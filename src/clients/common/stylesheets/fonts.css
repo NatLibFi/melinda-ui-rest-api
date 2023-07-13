@@ -77,61 +77,136 @@
 /******************************************************************************************************************************************/
 /* Root variables */
 
-/* ---------------------------------------------------------------------*/
-/* Font family variable definitions: */
-/*    - default: web font (defined in app's html file head element, requested from Google Fonts API) */
-/*    - first fallback: self-hosted font (loaded from .ttf file) */
-/*    - second fallback: local system font (any suitable monospace, serif or sans-serif font available in user's system)   */
-
 :root {
+
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font family variable definitions: */
+  /*    - default: web font (defined in app's html file head element, requested from Google Fonts API) */
+  /*    - first fallback: self-hosted font (loaded from .ttf file) */
+  /*    - second fallback: local system font (any suitable monospace, serif or sans-serif font available in user's system) */
+
   --font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (local)', serif;
-  --font-family-headline: 'Public Sans', 'Public Sans Semibold (local)' sans-serif;
-  --font-family-title: 'Public Sans', 'Public Sans Medium (local)', sans-serif;
-  --font-family-label: 'Public Sans', 'Public Sans Light (local)', sans-serif;
+
+  --font-family-button: 'Public Sans', 'Public Sans Semibold (local)' sans-serif;
   --font-family-content: 'Public Sans', 'Public Sans Light (local)', sans-serif;
+  --font-family-headline: 'Public Sans', 'Public Sans Semibold (local)' sans-serif;
+  --font-family-input: 'Public Sans', 'Public Sans Medium (local)', sans-serif;
+  --font-family-label: 'Public Sans', 'Public Sans Medium (local)', sans-serif;
+  --font-family-link: 'Public Sans', 'Public Sans Semibold (local)' sans-serif;
+  --font-family-list: 'Public Sans', 'Public Sans Medium (local)', sans-serif;
+  --font-family-placeholder: 'Public Sans', 'Public Sans Light (local)', sans-serif;
+  --font-family-title: 'Public Sans', 'Public Sans Medium (local)', sans-serif;
+
   --font-family-mono: 'Roboto Mono', 'Roboto Mono Regular (local)' monospace;
+
+
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font size variable definitions: */
+
+  --font-size-brand: 2.8125rem;
 
   --font-size-icon-large: 2rem;
   --font-size-icon-normal: 1.5rem;
-  --font-size-headline-large: 2rem;
-  --font-size-headline-normal: 1.75rem;
-  --font-size-headline-small: 1.5rem;
+  --font-size-icon-small: 1.25rem;
+
+  --font-size-button-large: 1.125rem;
+  --font-size-button-medium: 1.0rem;
+  --font-size-button-small: 0.875rem;
+
+  --font-size-content-large: 1.375rem;
+  --font-size-content-normal: 1.0rem;
+  --font-size-content-small: 0.875rem;
+
+  --font-size-headline-large: 1.75rem;
+  --font-size-headline-normal: 1.4375rem;
+  --font-size-headline-small: 1.25rem;
+
+  --font-size-input-large: 1.3rem;
+  --font-size-input-normal: 1.125rem;
+  --font-size-input-small: 1.0rem;
+
+  --font-size-label-large: 1.125rem;
+  --font-size-label-normal: 1rem;
+  --font-size-label-small: 0.875rem;
+
+  --font-size-link-large: 1.125rem;
+  --font-size-link-medium: 1.0rem;
+  --font-size-link-small: 0.875rem;
+
+  --font-size-list-large: 1.125rem;
+  --font-size-list-medium: 1.0rem;
+  --font-size-list-small: 0.875rem;
+
+  --font-size-placeholder-large: 1.3rem;
+  --font-size-placeholder-medium: 1.125rem;
+  --font-size-placeholder-small: 1.0rem;
+
   --font-size-title-large: 1.375rem;
   --font-size-title-normal: 1rem;
   --font-size-title-small: 0.875rem;
-  --font-size-label-large: 0.875rem;
-  --font-size-label-normal: 0.75rem;
-  --font-size-label-small: 0.6875rem;
-  --font-size-content-large: 1rem;
-  --font-size-content-normal: 0.875rem;
-  --font-size-content-small: 0.75rem;
 
-  --font-weight-headline-large: 400;
-  --font-weight-headline-normal: 400;
-  --font-weight-headline-small: 400;
-  --font-weight-title-large: 400;
-  --font-weight-title-normal: 500;
-  --font-weight-title-small: 500;
-  --font-weight-label-large: 500;
-  --font-weight-label-normal: 500;
-  --font-weight-label-small: 500;
-  --font-weight-content-large: 400;
-  --font-weight-content-normal: 400;
-  --font-weight-content-small: 400;
 
-  --font-line-height-headline-large: 2.5rem;
-  --font-line-height-headline-normal: 2.25rem;
-  --font-line-height-headline-small: 2rem;
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font weight variable definitions: */
+
+  --font-weight-brand: 400;
+  --font-weight-button: 600;
+  --font-weight-content: 300;
+  --font-weight-headline: 600;
+  --font-weight-input: 500;
+  --font-weight-label: 500;
+  --font-weight-link: 600;
+  --font-weight-list: 600;
+  --font-weight-placeholder: 300;
+  --font-weight-title: 500;
+
+ 
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font line height variable definitions: */
+
+  --font-line-height-brand: 3.125rem;
+
+  --font-line-height-button-large: 1.6125rem;
+  --font-line-height-button-normal: 1.5rem;
+  --font-line-height-button-small: 1.25rem;
+
+  --font-line-height-content-large: 2.65rem;
+  --font-line-height-content-normal: 1.5rem;
+  --font-line-height-content-small: 1.25rem;
+
+  --font-line-height-headline-large: 2.375rem;
+  --font-line-height-headline-normal: 1.95rem;
+  --font-line-height-headline-small: 1.625rem;
+
+  --font-line-height-input-large: 1.5rem;
+  --font-line-height-input-normal: 1.375rem;
+  --font-line-height-input-small: 1.125rem;
+
+  --font-line-height-label-large: 1.5rem;
+  --font-line-height-label-normal: 1.375rem;
+  --font-line-height-label-small: 1.125rem;
+
+  --font-line-height-link-large: 1.6125rem;
+  --font-line-height-link-normal: 1.5rem;
+  --font-line-height-link-small: 1.25rem;
+
+  --font-line-height-list-large: 1.25rem;
+  --font-line-height-list-normal: 1.0rem;
+  --font-line-height-list-small: 1.75rem;
+
+  --font-line-height-placeholder-large: 1.5rem;
+  --font-line-height-placeholder-normal: 1.375rem;
+  --font-line-height-placeholder-small: 1.125rem;
+
   --font-line-height-title-large: 1.75rem;
   --font-line-height-title-normal: 1.5rem;
   --font-line-height-title-small: 1.25rem;
-  --font-line-height-label-large: 1.25rem;
-  --font-line-height-label-normal: 1rem;
-  --font-line-height-label-small: 1rem;
-  --font-line-height-content-large: 1.5rem;
-  --font-line-height-content-normal: 1.25rem;
-  --font-line-height-content-small: 1rem;
+
+
 }
+
+/* ----------------------------------------------------------------------------------------------------------------------*/
+/* Notes: */
 
 /*
 1sp   0.0625rem
@@ -147,4 +222,18 @@
 32px  2rem
 40sp  2,5rem
 60sp	3.75rem
+*/
+
+/*
+brand
+icon
+button
+content
+headline
+input
+label
+link
+list
+placeholder
+title
 */
