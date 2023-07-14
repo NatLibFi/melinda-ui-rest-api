@@ -1,1 +1,21 @@
 /* ---Footer CSS---*/
+
+:root {
+    --footer-height: 200px;
+}
+
+.footer {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.footer-filler {
+    flex-grow: 1;
+}
+
+.footer-content {
+    height: var(--footer-height);
+    background-color: #002855;
+    color: white;
+}
