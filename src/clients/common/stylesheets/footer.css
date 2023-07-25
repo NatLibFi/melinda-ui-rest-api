@@ -1,21 +1,231 @@
 /* ---Footer CSS---*/
 
 :root {
-    --footer-height: 200px;
+  --footer-height: 200px;
+  --color-melinda-green: #0DB14B;
+  --color-melinda-darkblue: #00224F;
+  --color-melinda-lightblue: #00B3F0;
+  --color-natlib-blue: #002855;
+  --color-natlib-link-hover: #E29D92;
 }
 
 .footer {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  font-family: sans-serif;
 }
 
 .footer-filler {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .footer-content {
-    height: var(--footer-height);
-    background-color: #002855;
-    color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  letter-spacing: 0.05rem;
+}
+
+/* ************************************************************ */
+
+
+.footer-heading {
+  font-size: 26px;
+  font-weight: 600;
+  padding-bottom: 15px;
+}
+
+.footer-heading-small {
+  color: white;
+  padding-top: 16px;
+}
+
+.footer-text {
+  color: white;
+}
+
+.footer-paragraph {
+  padding-top: 5px;
+  padding-bottom: 15px;
+  max-width: 750px;
+}
+
+.footer-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+a .footer-email {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.footer-link {
+  display: flex;
+}
+
+a .footer-link {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  color: white;
+  cursor: pointer;
+}
+
+ a:active .footer-link,
+.footer-email:active {
+  outline: #FFFFFF solid 0.2rem;
+  outline-offset: .2rem
+}
+
+.footer-link-text {
+  color: white;
+  font-size: 18px;
+}
+
+.footer-link-text a {
+  font-size: 18px;
+  display: flex;
+  color: white;
+}
+
+.footer-link:hover .footer-link-text,
+.footer-email:hover a {
+  text-decoration: underline;
+  text-underline-position: auto;
+}
+
+.footer-link-icon {
+  display: flex;
+  padding-right: 15px;
+}
+
+.link-icon-small {
+  font-size: 16px !important;
+}
+
+.icon-open-in-new {
+  padding-left: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: end;
+  padding-bottom: 5px;
+}
+
+.footer-link .icon-arrow {
+  transform: translateX(0px);
+  transition: transform 0.5s;
+}
+
+.footer-link:hover .icon-arrow {
+  transform: translateX(10px);
+  transition: transform 0.75s;
+}
+
+
+/* ************************************************************ */
+/* Melinda banner specific styles in footer*/
+
+.melinda-banner {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  color: white;
+  background-color: var(--color-melinda-green);
+  padding: 48px;
+  gap: 40px;
+}
+
+.melinda-logo-and-contact-info,
+.melinda-about,
+.melinda-links,
+.melinda-social-media {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.melinda-logo-and-contact-info,
+.melinda-links,
+.melinda-social-media {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.melinda-about {
+  flex-grow: 2;
+  flex-basis: 0;
+}
+
+.melinda-logo-and-contact {
+  display: flex;
+  flex-direction: column;
+}
+
+.melinda-logo img {
+  max-height: 150px;
+}
+
+.melinda-banner a:hover .footer-link-text,
+.melinda-banner a:hover .footer-link-icon,
+.melinda-banner a:hover .footer-email {
+  color: var(--color-melinda-darkblue);
+  text-decoration-color: var(--color-melinda-darkblue);
+}
+
+
+/* ************************************************************ */
+/* NatLib banner specific styles in footer*/
+
+.natlib-banner {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  color: white;
+  background-color: var(--color-natlib-blue);
+  gap: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+.natlib-logo,
+.natlib-text,
+.natlib-link {
+  display: flex;
+}
+
+.natlib-link {
+  font-family: sans-serif;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.natlib-text,
+.natlib-link {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.natlib-logo img {
+  max-height: 78px;
+}
+
+.natlib-text {
+  font-size: 26px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.natlib-banner .footer-link:hover .footer-link-text,
+.natlib-banner .footer-link:hover .footer-link-icon {
+  color: var(--color-natlib-link-hover);
+  text-decoration-color: var(--color-natlib-link-hover);
 }
