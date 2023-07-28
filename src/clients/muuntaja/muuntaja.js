@@ -4,7 +4,7 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess,
+import {startProcess, stopProcess,
   showTab, resetForms, reload, showSnackbar,
   createDropdownItem, createSelectItem,
   createSelectOption} from '/common/ui-utils.js';
@@ -19,8 +19,6 @@ import {showRecord, editField} from '/common/marc-record-ui.js';
 
 window.initialize = function () {
   console.log('Initializing');
-
-  setNavBar(document.querySelector('#navbar'), 'Muuntaja');
 
   doLogin(authSuccess);
 

@@ -5,7 +5,7 @@
 //*****************************************************************************
 
 import {
-  showTab, setNavBar, startProcess, stopProcess, showSnackbar,
+  showTab, startProcess, stopProcess, showSnackbar,
   createOption, enableElement, disableElement, highlightElement
 } from '/common/ui-utils.js';
 
@@ -27,7 +27,6 @@ import {setProtectButton} from './logActions.js';
 
 window.initialize = function () {
   console.log('Initializing');
-  setNavBar(document.querySelector('#navbar'), 'Viewer');
 
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';

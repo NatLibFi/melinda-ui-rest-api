@@ -1,4 +1,4 @@
-import {setNavBar, showTab} from '/common/ui-utils.js';
+import {showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
 import {getArtikkeliRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
@@ -22,7 +22,6 @@ import {initReviewSearch, resetReview, refreshReviewsList} from '/artikkelit/int
 
 window.initialize = function () {
   console.log('Initializing');
-  setNavBar(document.querySelector('#navbar'), 'artikkelit');
 
   doLogin(authSuccess);
 

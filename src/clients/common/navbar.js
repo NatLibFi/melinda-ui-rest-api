@@ -22,7 +22,7 @@ class Navbar extends HTMLElement {
       )
 
     async function getNavbarHtml() {
-      const response = await fetch('/../common/templates/navbar2.html');
+      const response = await fetch('/../common/templates/navbar.html');
       const html = await response.text();
       return html;
     }

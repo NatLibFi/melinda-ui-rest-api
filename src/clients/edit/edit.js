@@ -4,7 +4,6 @@
 //
 //*****************************************************************************
 
-import {setNavBar} from '../common/navbar.js';
 import {startProcess, stopProcess} from '/common/ui-utils.js';
 import {showTab, resetForms, reload} from '/common/ui-utils.js';
 import {createMenuBreak, createMenuItem, createMenuSelection} from '../common/ui-utils.js';
@@ -19,8 +18,6 @@ import {modifyRecord} from '../common/rest.js';
 
 window.initialize = function () {
   console.log('Initializing');
-
-  setNavBar(document.querySelector('#navbar'), 'Muokkaus');
 
   doLogin(authSuccess);
 

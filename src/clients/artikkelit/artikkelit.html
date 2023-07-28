@@ -10,11 +10,9 @@
   <link rel="stylesheet" href="artikkelit.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script type="module" src="artikkelit.js"></script>
-
+  <script src="/common/navbar.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -22,25 +20,14 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Nav bar -->
 
-  <div id="navbar">
-    <div class="IconBar ToolBar">
-      <button><a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
-          rel="noopener noreferrer">help_outline</a></button>
-      <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
-      <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
-      <div class="dropdown">
-        <button id="account-btn" class="material-icons">account_circle</button>
-        <div id="account-menu" class="dropdown-content">
-          <div class="menu-header" id="username">Tuntematon</div>
-          <hr />
-          <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Navigation bar -->
+  <melinda-navbar></melinda-navbar>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Progress bar -->
+  <div id="progressbar" class="progress-bar-inactive"></div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
@@ -361,7 +348,8 @@
                   <button class="negative" onclick="return resetReview(event)">Tyhjennä</button>
                 </div>
                 <div class="Button">
-                  <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvosteltu teos</button>
+                  <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvosteltu
+                    teos</button>
                 </div>
               </div>
               <div class="full-width">

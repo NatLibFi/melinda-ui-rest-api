@@ -7,8 +7,10 @@
 
 <head>
   <link rel="shortcut icon" href="favicon.png" />
+  <link rel="stylesheet" href="login.css" />
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <script src="/common/navbar.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -16,6 +18,15 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Navigation bar -->
+  <melinda-navbar></melinda-navbar>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Progress bar -->
+  <div id="progressbar" class="progress-bar-inactive"></div>
+
   Choose:
   <p>
     <a href="/artikkelit">Artikkelit</a>
@@ -36,4 +47,5 @@
     <a href="/viewer">Viewer</a>
   </p>
 </body>
+
 </html>

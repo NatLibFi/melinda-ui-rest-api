@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="module" src="viewer.js"></script>
+  <script src="/common/navbar.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -21,8 +22,12 @@
 <body onload="initialize()">
 
   <!-- ------------------------------------------------------------------------ -->
-  <!-- Navbar -->
-  <div id="navbar"></div>
+  <!-- Navigation bar -->
+  <melinda-navbar></melinda-navbar>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Progress bar -->
+  <div id="progressbar" class="progress-bar-inactive"></div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
@@ -64,23 +69,6 @@
     <!-- ---------------------------------------------------------------------- -->
     <!-- Viewer tab -->
     <div id="viewer" hidden>
-
-      <!-- Viewer Iconbar -->
-      <div class="IconBar ToolBar">
-
-        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-
-        <div class="dropdown">
-          <button id="account-btn" class="material-icons">account_circle</button>
-          <div id="account-menu" class="dropdown-content">
-            <div class="menu-header" id="username">Tuntematon</div>
-            <hr />
-            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-          </div>
-        </div>
-
-      </div>
 
       <!-- Viewer Toolbar -->
       <div id="viewerTools" class="tools ToolBar">

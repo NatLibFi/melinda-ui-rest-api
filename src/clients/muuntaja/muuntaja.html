@@ -10,11 +10,9 @@
   <link rel="stylesheet" href="muuntaja.css" />
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat' />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-
   <script type="module" src="muuntaja.js"></script>
-  <!-- <script type="text/javascript" src="../common/index.js"></script> -->
+  <script src="/common/navbar.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -22,6 +20,14 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Navigation bar -->
+  <melinda-navbar></melinda-navbar>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Progress bar -->
+  <div id="progressbar" class="progress-bar-inactive"></div>
 
   <!-- Application "tabs" -->
   <div id="root">
@@ -37,7 +43,7 @@
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus/>
+        <input id="login-username" name="username" autofocus />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
@@ -67,23 +73,6 @@
       <!-- ------------------------------------------------------------------------ -->
       <!-- Nav bar -->
       <div id="navbar"></div>
-
-      <!-- ------------------------------------------------------------------------ -->
-      <!-- Toolbar Iconbar -->
-      <div class="IconBar ToolBar">
-        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-        <button class="material-icons tooltip" tooltip-text="Uusi" onClick="onNew(event)">add</button>
-        <button class="material-icons tooltip" tooltip-text="Etsi" onClick="onSearch(event)">search</button>
-        <div class="dropdown">
-          <button id="account-btn" class="material-icons">account_circle</button>
-          <div id="account-menu" class="dropdown-content">
-            <div class="menu-header" id="username">Tuntematon</div>
-            <hr />
-            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-          </div>
-        </div>
-      </div>
 
       <!-- Muuntaja Toolbar -->
       <div class="tools ToolBar">
@@ -121,7 +110,7 @@
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Pohjatietue</label>
-              <input id="ID"/>
+              <input id="ID" />
             </div>
             <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
             <button class="material-icons tooltip" tooltip-text="Lisää kenttä" onClick="onNewField(event)">add</button>
@@ -183,7 +172,7 @@
       <!-- <span id="msgHeader" class="marc-record"></span><br/>
       <hr/> -->
       <div id="msg" class="marc-record"><span id="recordType"></span>tietuetta ei löytynyt annetulla hakuehdolla</div>
-      <br/>
+      <br />
       <div style="display: flex; justify-content: right;">
         <button onclick="return notFoundDlgClose(event)">Sulje</button>
       </div>
@@ -193,14 +182,16 @@
   <!-- ---------------------------------------------------------------------- -->
   <!-- JSON dialog -->
   <div id="jsonDlg" class="modal" onclick="return jsonDlgClose(event)">
-    <div class="modal-content BoxShadow" style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;" onclick="return ignore(event)">
+    <div class="modal-content BoxShadow"
+      style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;"
+      onclick="return ignore(event)">
       <div style="position: sticky; top: 0; background-color: white; padding-top: 16px;">
         <div style="display: flex; justify-content: right;">
           <button onclick="return saveJson(event)">Tallenna muutokset</button>
           <button onclick="return selectJson(event)">Valitse koko sisältö</button>
           <button onclick="return jsonDlgClose(event)">Sulje ikkuna</button>
         </div>
-        <hr/>
+        <hr />
       </div>
       <div id="jsonContent" class="marc-record"></div>
     </div>
@@ -216,7 +207,7 @@
   <!-- Tab for server side notes -->
   <div id="server-note" hidden>
   </div>
-  
+
   <!-- ---------------------------------------------------------------------- -->
   <!-- Snackbars -->
   <div id="snackbars" class="snackbars">

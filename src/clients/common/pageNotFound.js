@@ -1,8 +1,7 @@
-import {setNavBar, showSnackbar, showTab} from '/./common/ui-utils.js';
+import {showSnackbar, showTab} from '/./common/ui-utils.js';
 import {Account, doLogin, logout} from '/./common/auth.js';
 
 window.initialize = function () {
-  setNavBar(document.querySelector('#navbar'), 'Valitse sovellus');
 
   doLogin(authSuccess);
 

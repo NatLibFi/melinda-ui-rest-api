@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
   <script type="module" src="edit.js"></script>
+  <script src="/common/navbar.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -21,10 +22,14 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body onload="initialize()">
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Nav bar -->
 
-  <div id="navbar"></div>
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Navigation bar -->
+  <melinda-navbar></melinda-navbar>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Progress bar -->
+  <div id="progressbar" class="progress-bar-inactive"></div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
@@ -35,7 +40,7 @@
     <!-- Loading "screen" -->
 
     <div id="loading">
-      </div>
+    </div>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Login tab -->
@@ -44,56 +49,43 @@
     <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
       <div class="VBox Input">
         <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus/>
+        <input id="login-username" name="username" autofocus />
       </div>
       <div class="VBox Input">
         <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password"/>
+        <input id="login-password" type="password" name="password" />
       </div>
       <div class="HBox Input" style="align-items: baseline;">
         <input id="acceptterms" type="checkbox">
         <label for="acceptterms" style="padding-left: 8px;">
           Hyväksyn
           <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
-          tietosuojaselosteen</a>
+            tietosuojaselosteen</a>
           ja evästeiden käytön.
-          <br/><br/>
+          <br /><br />
           Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-          </div>
+      </div>
       <div id="info"></div>
       <div style="display: flex; flex-direction: column; align-items: flex-end;">
         <button onClick="return login(event)">Kirjaudu</button>
-        </div>
-      </form>
+      </div>
+    </form>
 
     <!-- ---------------------------------------------------------------------- -->
     <!-- Muuntaja tab -->
 
     <div id="muuntaja" hidden>
-      <div class="IconBar ToolBar">
-        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-          href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-        <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
-        <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
-        <div class="dropdown">
-          <button id="account-btn" class="material-icons">account_circle</button>
-          <div id="account-menu" class="dropdown-content">
-            <div class="menu-header" id="username">Tuntematon</div>
-            <hr/>
-            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-            </div>
-          </div>
-      </div>
+
       <div class="record-merge-panel">
 
         <div id="source" class="col BoxShadow">
           <form class="ToolBar HBox header">
             <div class="Filler VBox Input">
               <label>Alkuperäinen tietue</label>
-              <input id="ID"/>
-              </div>
+              <input id="ID" />
+            </div>
             <button class="material-icons" onclick="return doFetch(event)">search</button>
-            </form>
+          </form>
           <div id="Record" class="marc-record">
           </div>
         </div>
@@ -106,7 +98,7 @@
             <button class="material-icons" onClick="onSave(event)" disabled>save</button>
           </div>
           <div id="Record" class="marc-record">
-            </div>
+          </div>
         </div>
 
       </div>
@@ -118,11 +110,11 @@
   <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
     <div class="modal-content BoxShadow" onclick="return ignore(event)">
       <div id="original" hidden>
-        <span id="field" class="marc-record"></span><br/>
+        <span id="field" class="marc-record"></span><br />
         <div style="display: flex; justify-content: right;">
           <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
         </div>
-        <hr/>
+        <hr />
       </div>
       <div class="fieldedit marc-record">
         <div style="display: flex;">
@@ -130,12 +122,12 @@
           Ind1: <div id="ind1"></div>
           Ind2: <div id="ind2"></div>
         </div>
-        <hr/>
+        <hr />
         <div id="fieldlist" width="100%">
         </div>
         <button onclick="return onAddField(event)">Uusi osakenttä</button>
       </div>
-      <hr/>
+      <hr />
       <div style="display: flex; justify-content: right;">
         <button onclick="return editDlgClose(event)">Peru muutokset</button>
         <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
@@ -149,4 +141,5 @@
   </div>
 
 </body>
+
 </html>
