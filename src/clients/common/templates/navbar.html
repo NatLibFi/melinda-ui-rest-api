@@ -1,1 +1,139 @@
 <!-- Melinda navigation bar template for apps -->
+
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+
+  <!-- template for navbar -->
+  <template id="navbarTemplate">
+
+    <!-- html for navbar here -->
+    <!-- Navbar is shared with all applications-->
+    <div id="navbar" class="navbar">
+
+      <!-- Navbar content cointains two menu bars, primary and secondary -->
+      <div class="navbar-content">
+
+        <!-- Primary menu bar contains Melinda logo and primary navigation links -->
+        <div class="primary-menu-bar">
+
+          <div class="logo-area">
+            <a href="/">
+              <img src="/common/images/logo-melinda-text-horizontal-color-cropped.png">
+            </a>
+          </div>
+
+          <div class="primary-navigation-links">
+
+            <a href="https://www.kiwi.fi/display/melinda/Ohjeet" target="_blank" rel="noopener noreferrer">
+              <div class="nav-link">
+                <div class="nav-link-icon">
+                  <span class="material-icons">help_outline</span>
+                </div>
+                <div class="nav-link-text">
+                  Ohjeet
+                </div>
+              </div>
+            </a>
+
+            <div class="nav-link">
+              <div class="nav-link-icon">
+                <span class="material-icons">language</span>
+              </div>
+              <div class="nav-link-text">
+                Suomeksi
+              </div>
+            </div>
+
+            <div class="nav-link">
+              <div class="nav-link-icon">
+                <span class="material-icons">login</span>
+              </div>
+              <div class="nav-link-text">
+                Kirjaudu sisään
+              </div>
+            </div>
+
+
+            <!-- TODO: add dropdown menu for account handling (logout etc.)  -->
+            <div id="account-menu" class="nav-link">
+              <div class="nav-link-icon">
+                <span class="material-icons">person_outline</span>
+              </div>
+              <div id="username" class="nav-link-text">
+                <!-- Display user name here after login -->
+              </div>
+              <div class="nav-link-icon">
+                <span class="material-icons dropdown">arrow_drop_down</span>
+              </div>
+
+              <!--                       
+                <div id="account-menu">
+                  <div onClick="onAccount(event)">Kirjaudu ulos</div>
+                </div>
+              -->
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Secondary menu bar contains secondary navigation links: path for navigation and app selection -->
+        <div class="secondary-menu-bar">
+
+          <div class="secondary-navigation-links">
+
+            <div class="app-navigation">
+
+              <div class="nav-link">
+                <div class="nav-link-icon">
+                  <span class="material-icons">home</span>
+                </div>
+                <div class="nav-link-text">
+                  ETUSIVU
+                </div>
+
+              </div>
+
+              <div class="nav-slash">
+                /
+              </div>
+
+              <div class="nav-link app-name">
+                <div class="nav-link-text">
+                  <!-- Display app name here after selection -->
+                </div>
+              </div>
+
+            </div>
+
+            <!-- TODO: add dropdown menu for app selection, display app name at navigation path  -->
+            <div class="app-selection">
+
+              <div class="nav-link">
+                <div class="nav-link-icon">
+                  <span class="material-icons">apps</span>
+                </div>
+                <div class="nav-link-text">
+                  Valitse sovellus
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </template>
+
+</body>
+
+</html>
