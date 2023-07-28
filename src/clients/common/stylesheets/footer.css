@@ -48,6 +48,7 @@
 .footer-paragraph {
   padding-top: 5px;
   padding-bottom: 15px;
+  padding-right: 50px;
   max-width: 750px;
 }
 
@@ -73,12 +74,6 @@ a .footer-link {
   display: flex;
   color: white;
   cursor: pointer;
-}
-
- a:active .footer-link,
-.footer-email:active {
-  outline: #FFFFFF solid 0.2rem;
-  outline-offset: .2rem
 }
 
 .footer-link-text {
@@ -137,20 +132,23 @@ a .footer-link {
   color: white;
   background-color: var(--color-melinda-green);
   padding: 48px;
-  gap: 40px;
+  gap: 25px;
 }
 
-.melinda-logo-and-contact-info,
-.melinda-about,
-.melinda-links,
-.melinda-social-media {
+.melinda-logo-and-contact-info {
   display: flex;
   flex-direction: column;
   flex-basis: 0;
   flex-grow: 1;
 }
 
-.melinda-logo-and-contact-info,
+.melinda-about,
+.melinda-links,
+.melinda-social-media {
+  display: flex;
+  flex-direction: column;
+}
+
 .melinda-links,
 .melinda-social-media {
   flex-basis: 0;
@@ -158,11 +156,11 @@ a .footer-link {
 }
 
 .melinda-about {
-  flex-grow: 2;
+  flex-grow: 3;
   flex-basis: 0;
 }
 
-.melinda-logo-and-contact {
+.melinda-contact-info {
   display: flex;
   flex-direction: column;
 }
@@ -176,6 +174,21 @@ a .footer-link {
 .melinda-banner a:hover .footer-email {
   color: var(--color-melinda-darkblue);
   text-decoration-color: var(--color-melinda-darkblue);
+}
+
+.melinda-banner a:active .footer-link {
+  outline: #FFFFFF solid 0.2rem;
+  outline-offset: .4rem
+}
+
+.melinda-banner .footer-email:active {
+  outline: #FFFFFF solid 0.2rem;
+  outline-offset: .1rem
+}
+
+.melinda-logo a:active {
+  outline: #FFFFFF solid 0.2rem;
+  outline-offset: .6rem
 }
 
 
@@ -228,4 +241,14 @@ a .footer-link {
 .natlib-banner .footer-link:hover .footer-link-icon {
   color: var(--color-natlib-link-hover);
   text-decoration-color: var(--color-natlib-link-hover);
+}
+
+.natlib-logo a:active {
+  outline: #FFFFFF solid 0.2rem;
+  outline-offset: .6rem
+}
+
+.natlib-link a:active {
+  outline: #FFFFFF solid 0.2rem;
+  outline-offset: 0.4rem
 }
