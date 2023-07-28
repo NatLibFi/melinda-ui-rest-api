@@ -1,5 +1,179 @@
 /*****************************************************************************/
 /*                                                                           */
-/* Melinda navigation bar custom element for apps                            */
+/* Melinda navigation bar stylesheet                                         */
 /*                                                                           */
 /*****************************************************************************/
+
+:root {
+  --color-melinda-green: #0DB14B;
+  --color-melinda-darkblue: #00224F;
+  --color-melinda-lightblue: #00B3F0;
+  --color-natlib-blue: #002855;
+  --color-natlib-link-hover: #E29D92;
+  --color-functional-blue: #0D2FC4;
+}
+
+.navbar {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  font-family: sans-serif;
+}
+
+.navbar-content {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  letter-spacing: 0.05rem;
+}
+
+
+/* ************************************************************ */
+/* Common styles for primary and secondary menu bar components */
+
+.nav-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* .nav-link:not(:first-child) {
+  margin-left: 16px;
+}
+*/
+.nav-link-text {
+  font-size: 16px;
+  font-weight: 600;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.nav-link-icon span {
+  font-size: 34px;
+}
+
+.nav-link-icon span.dropdown {
+  font-size: 42px;
+}
+
+.nav-link:hover .nav-link-text {
+  text-decoration: underline;
+  text-underline-position: auto;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+
+/* ************************************************************ */
+/* Primary menu bar specific styles in navbar*/
+
+.primary-menu-bar {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  padding: 12px;
+  height: 66px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+}
+
+.logo-area img {
+  max-height: 70px;
+}
+
+.primary-navigation-links {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: end;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-natlib-blue);
+}
+
+.primary-navigation-links a .nav-link {
+  color: var(--color-natlib-blue);
+}
+
+.primary-menu-bar .nav-link:hover {
+  color: var(--color-functional-blue);
+}
+
+.primary-navigation-links .nav-link:active {
+  outline: var(--color-melinda-darkblue) solid 0.2rem;
+  border-radius: 0.25rem;
+  outline-offset: .2rem
+}
+
+
+/* ************************************************************ */
+/* Secondary menu bar specific styles in navbar*/
+
+.secondary-menu-bar {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-natlib-blue);
+  padding: 12px;
+  height: 36px;
+}
+
+.secondary-navigation-links {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.secondary-navigation-links .app-navigation .nav-link.app-name .nav-link-text {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.secondary-navigation-links a .nav-link {
+  color: white;
+}
+
+.secondary-navigation-links .nav-link:hover {
+  color: var(--color-natlib-link-hover);
+  cursor: pointer;
+}
+
+.secondary-navigation-links .nav-link:hover .nav-link-text {
+  text-decoration: underline;
+  text-underline-position: auto;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+.secondary-navigation-links .nav-link:active {
+  outline: white solid 0.2rem;
+  outline-offset: .2rem
+}
+
+.app-navigation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.app-navigation .nav-slash {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  padding-left: 12px;
+  padding-right: 16px;
+}
+
+.app-selection {
+  display: flex;
+  flex-direction: row;
+  flex-basis: 0;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
