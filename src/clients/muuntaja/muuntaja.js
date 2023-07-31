@@ -28,7 +28,7 @@ window.initialize = function () {
       .then(profiles => {
         setProfiles(profiles);
 
-        const username = document.querySelector('#account-menu #username');
+        const username = document.querySelector('#accountMenu #username');
         username.innerHTML = Account.get().Name;
         showTab('muuntaja');
         parseUrlParameters();

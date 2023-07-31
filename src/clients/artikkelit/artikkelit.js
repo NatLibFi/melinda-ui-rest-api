@@ -26,7 +26,7 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    const username = document.querySelector('#account-menu #username');
+    const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
     showTab('artikkelit-lisaa');
     initTypeChanges();

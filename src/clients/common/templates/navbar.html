@@ -11,11 +11,11 @@
   <template id="navbarTemplate">
 
     <!-- html for navbar here -->
-    <!-- Navbar is shared with all applications-->
+    <!-- Navbar is shared with all applications -->
     <div id="navbar" class="navbar">
 
-      <!-- Navbar content cointains two menu bars, primary and secondary -->
-      <div class="navbar-content">
+      <!-- Navbar contains two menu bars, primary and secondary -->
+      <div class="navbar-menu-bars">
 
         <!-- Primary menu bar contains Melinda logo and primary navigation links -->
         <div class="primary-menu-bar">
@@ -59,24 +59,30 @@
 
 
             <!-- TODO: add dropdown menu for account handling (logout etc.)  -->
-            <div id="account-menu" class="nav-link">
-              <div class="nav-link-icon">
-                <span class="material-icons">person_outline</span>
-              </div>
-              <div id="username" class="nav-link-text">
-                <!-- Display user name here after login -->
-              </div>
-              <div class="nav-link-icon">
-                <span class="material-icons dropdown">arrow_drop_down</span>
+            <div id="accountMenu" class="account-menu navbar-dropdown-button">
+              <div class="nav-link">
+                <div class="nav-link-icon">
+                  <span class="material-icons">person_outline</span>
+                </div>
+                <div id="username" class="nav-link-text">
+                  <!-- Display user name here after login -->
+                </div>
+                <div class="nav-link-icon expand-more show">
+                  <span class="material-icons">expand_more</span>
+                </div>
+                <div class="nav-link-icon expand-less">
+                  <span class="material-icons">expand_less</span>
+                </div>
               </div>
 
               <!--                       
-                <div id="account-menu">
+                <div id="account">
                   <div onClick="onAccount(event)">Kirjaudu ulos</div>
                 </div>
               -->
 
             </div>
+
           </div>
 
         </div>
@@ -95,7 +101,6 @@
                 <div class="nav-link-text">
                   ETUSIVU
                 </div>
-
               </div>
 
               <div class="nav-slash">
@@ -105,13 +110,14 @@
               <div class="nav-link app-name">
                 <div class="nav-link-text">
                   <!-- Display app name here after selection -->
+                  VIEWER
                 </div>
               </div>
 
             </div>
 
             <!-- TODO: add dropdown menu for app selection, display app name at navigation path  -->
-            <div class="app-selection">
+            <div id="appSelectionMenu" class="app-selection navbar-dropdown-button">
 
               <div class="nav-link">
                 <div class="nav-link-icon">
@@ -119,6 +125,12 @@
                 </div>
                 <div class="nav-link-text">
                   Valitse sovellus
+                </div>
+                <div class="nav-link-icon expand-more show">
+                  <span class="material-icons">expand_more</span>
+                </div>
+                <div class="nav-link-icon expand-less">
+                  <span class="material-icons">expand_less</span>
                 </div>
               </div>
 
@@ -128,6 +140,214 @@
 
         </div>
 
+      </div>
+
+      <!-- Several dropdowns can be opened from primary and secondary navigation links -->
+
+      <div id="accountMenuDropdown" class="primary-menu-bar-dropdown navbar-dropdown-menu" style="display: none">
+        <div class="dropdown-inner">
+
+          <div class="dropdown-inner-content">
+
+            <div class="dropdown-info">
+              <div class="info-title">
+                Käyttäjäprofiili
+              </div>
+              <div class="info-content">
+
+                <div class="info-paragraph">
+                  Käyttäjänimi
+                </div>
+
+                <div class="info-paragraph">
+                  Sähköpostiosoite
+                </div>
+
+              </div>
+            </div>
+
+            <div class="dropdown-items">
+
+              <div class="dropdown-item">
+
+                <div class="item-header">
+                  <div class="item-header-title">
+                    Muuta salasanaa
+                  </div>
+                  <div class="item-header-icon">
+                    <span class="material-icons">east</span>
+                  </div>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Tästä voit muuttaa salasanaa
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="dropdown-item">
+
+                <div class="item-header">
+                  <div class="item-header-title">
+                    Kirjaudu ulos
+                  </div>
+                  <div class="item-header-icon">
+                    <span class="material-icons">east</span>
+                  </div>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Tästä voit kirjautua ulos
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="dropdown-button-close">
+            <div class="button-close-icon">
+              <span class="material-icons">close</span>
+            </div>
+            <div class="button-close-text">
+              Sulje
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="appSelectionMenuDropdown" class="secondary-menu-bar-dropdown navbar-dropdown-menu" style="display: none">
+        <div class="dropdown-inner">
+
+          <div class="dropdown-inner-content">
+
+            <div class="dropdown-info">
+              <div class="info-title">
+                Melinda-kuvailijan aputyökalut
+              </div>
+              <div class="info-content">
+
+                <div class="info-paragraph">
+                  Aputyökalut kuvaus 1.
+                </div>
+
+                <div class="info-paragraph">
+                  Aputyökalut kuvaus 2.
+                </div>
+
+              </div>
+            </div>
+
+            <div class="dropdown-items">
+
+              <div class="dropdown-item">
+
+                <div class="item-header">
+                  <div class="item-header-title">
+                    Muuntaja
+                  </div>
+                  <div class="item-header-icon">
+                    <span class="material-icons">east</span>
+                  </div>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Työkalun kuvaus 1.
+                  </div>
+                  <div class="item-content-paragraph">
+                   Työkalun kuvaus 2.
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="dropdown-item">
+
+                <div class="item-header">
+                  <div class="item-header-title">
+                    Artikkelien kuvailutyökalu
+                  </div>
+                  <div class="item-header-icon">
+                    <span class="material-icons">east</span>
+                  </div>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Työkalun kuvaus 1.
+
+                  </div>
+                  <div class="item-content-paragraph">
+                   Työkalun kuvaus 2.
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="dropdown-item">
+
+                <div class="item-header">
+                  <div class="item-header-title">
+                    Merge
+                  </div>
+                  <div class="item-header-icon">
+                    <span class="material-icons">east</span>
+                  </div>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Työkalun kuvaus 1.
+                  </div>
+                  <div class="item-content-paragraph">
+                    Työkalun kuvaus 2.
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="dropdown-item">
+
+                <div class="item-header">
+                  <div class="item-header-title">
+                    Viewer
+                  </div>
+                  <div class="item-header-icon">
+                    <span class="material-icons">east</span>
+                  </div>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Työkalun kuvaus 1.
+                  </div>
+                  <div class="item-content-paragraph">
+                    Työkalun kuvaus 2.
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="dropdown-button-close">
+            <div class="button-close-icon">
+              <span class="material-icons">close</span>
+            </div>
+            <div class="button-close-text">
+              Sulje
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>
