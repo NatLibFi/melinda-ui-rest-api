@@ -15,6 +15,15 @@
   --height-secondary-menu-bar: 60px;
 }
 
+
+/* ************************************************************ */
+/* NAVIGATION BAR COMPONENT                                     */
+/* ************************************************************ */
+
+
+/* ************************************************************ */
+/* Navigation main component */
+
 .navbar {
   display: flex;
   flex-grow: 1;
@@ -22,6 +31,9 @@
   font-family: sans-serif;
 }
 
+
+/* ************************************************************ */
+/* Navigation menu bars main component */
 .navbar-menu-bars {
   display: flex;
   flex-direction: column;
@@ -30,32 +42,35 @@
 }
 
 
+/* ************************************************************ */
+/* General styles for navigation component */
+
 .show {
   display: flex;
 }
 
-.hide {
-  display: none !important;
+a {
+  font-family: sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 
+
 /* ************************************************************ */
-/* Common styles for primary and secondary menu bar components */
+/* NAVIGATION BAR MENUS                                         */
+/* ************************************************************ */
+
+/* ************************************************************ */
+/* Common styles for navigation menu bar components */
 
 .nav-link {
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-/* Overriding default link element styles */
-a {
-  font-family: sans-serif;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 600;
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .nav-link-text {
@@ -78,24 +93,23 @@ a {
 
 .nav-link.link-disabled .nav-link-text {
   text-decoration: none;
-  color: grey;
 }
 
 .nav-link.link-disabled .nav-link-icon {
   text-decoration: none;
-  color: grey;
 }
 
 .nav-link.link-disabled:hover {
-  cursor: help !important;
-  color: grey;
+  cursor: default !important;
+  color: grey !important;
 }
 
 .nav-link.link-disabled:hover .nav-link-text {
   text-decoration: none;
 }
 
-.nav-link .nav-link-text.outer-link {
+.nav-link .nav-link-text.outer-link,
+.item-header .item-header-title.outer-link {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -106,10 +120,49 @@ a {
   padding-left: 5px;
 }
 
+a .item-header {
+  color: var(--color-melinda-darkblue);
+}
+
+a:hover .item-header,
+.item-header:hover {
+  cursor: pointer;
+}
+
+a:hover .item-header .item-header-title,
+.item-header:hover .item-header-title {
+  text-decoration: underline;
+  text-underline-position: auto;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.dropdown-item .item-header .icon-arrow {
+  padding-right: 10px;
+  transform: translateX(0px);
+  transition: transform 0.5s;
+}
+
+.dropdown-item .item-header:hover .icon-arrow {
+  transform: translateX(10px);
+  transition: transform 0.75s;
+}
+
+.dropdown-item .item-header:active {
+  outline-color: var(--color-melinda-darkblue);
+  outline-style: solid;
+  outline-width: 0.2rem;
+  outline-offset: .2rem;
+  border-radius: 0.25rem;
+}
+
+.item-content-paragraph a:hover {
+  text-decoration: underline;
+}
 
 
 /* ************************************************************ */
-/* Primary menu bar specific styles in navbar*/
+/* Primary navigation bar specific styles in navbar*/
 
 .primary-menu-bar {
   display: flex;
@@ -135,11 +188,11 @@ a {
   justify-content: end;
   align-items: center;
   gap: 24px;
-  color: var(--color-natlib-blue);
+  color: var(--color-melinda-darkblue);
 }
 
 .primary-navigation-links a .nav-link {
-  color: var(--color-natlib-blue);
+  color: var(--color-melinda-darkblue);
 }
 
 .primary-menu-bar .nav-link:hover {
@@ -148,9 +201,11 @@ a {
 }
 
 .primary-navigation-links .nav-link:active:not(.nav-link.link-disabled) {
-  outline: var(--color-melinda-darkblue) solid 0.2rem;
+  outline-color: var(--color-melinda-darkblue);
+  outline-style: solid;
+  outline-width: 0.2rem;
+  outline-offset: .2rem;
   border-radius: 0.25rem;
-  outline-offset: .2rem
 }
 
 .primary-navigation-links #accountMenu {
@@ -163,12 +218,11 @@ a {
 
 
 /* ************************************************************ */
-/* Secondary menu bar specific styles in navbar*/
+/* Secondary navigation bar specific styles in navbar*/
 
 .secondary-menu-bar {
   display: flex;
   flex-direction: row;
-  background-color: var(--color-natlib-blue);
   background-color: var(--color-melinda-lightblue);
   padding: 12px;
   height: 36px;
@@ -191,7 +245,6 @@ a {
 
 .secondary-navigation-links a .nav-link {
   color: white;
-
 }
 
 .secondary-navigation-links .nav-link:hover {
@@ -207,8 +260,10 @@ a {
 }
 
 .secondary-navigation-links .nav-link:active {
-  outline: white solid 0.2rem;
-  outline-offset: .2rem
+  outline-color: white; 
+  outline-style: solid;
+  outline-width: 0.2rem;
+  outline-offset: .2rem;
 }
 
 .app-navigation {
@@ -240,34 +295,14 @@ a {
   display: flex;
 }
 
+
+
 /* ************************************************************ */
-/* Dropdown menu styles in navbar*/
+/* NAVIGATION BAR MENU DROPDOWNS                                */
+/* ************************************************************ */
 
-.primary-menu-bar-dropdown {
-  display: flex;
-  position: absolute;
-  margin-top: var(--height-primary-menu-bar);
-  background-color: hsl(212, 100%, 85%);
-  background-color: #F2F5F7;
-  opacity: 1;
-  width: 100%;
-  z-index: 5;
-  box-shadow: 0 0.75rem 2rem -2rem rgb(0, 20, 42);
-  justify-content: center;
-}
-
-.secondary-menu-bar-dropdown {
-  display: flex;
-  position: absolute;
-  margin-top: calc(var(--height-primary-menu-bar) + var(--height-secondary-menu-bar));
-  background-color: hsl(195, 100%, 90%);
-  opacity: 1;
-  width: 100%;
-  z-index: 6;
-  box-shadow: 0 0.75rem 2rem -2rem rgb(0, 20, 42);
-  justify-content: center;
-
-}
+/* ************************************************************ */
+/* Common navigation bar dropdown specific styles in navbar*/
 
 .dropdown-inner {
   display: flex;
@@ -283,6 +318,7 @@ a {
 .dropdown-inner-content {
   display: flex;
   padding-top: 50px;
+  color: var(--color-melinda-darkblue);
 }
 
 .dropdown-info {
@@ -297,8 +333,6 @@ a {
 }
 
 .info-title {
-  /* display: inline-flex; */
-  /*  white-space: nowrap; */
   font-size: 24px;
   font-weight: 600;
   border-bottom: 0.1rem solid #002855;
@@ -321,7 +355,6 @@ a {
   padding-right: 125px;
 }
 
-/* Max width is item/items share */
 .dropdown-item {
   display: flex;
   flex-basis: 0;
@@ -333,7 +366,6 @@ a {
   padding-bottom: 0px;
   padding-top: 0px;
   min-width: 300px;
-  max-width: 20%;
 }
 
 .item-header {
@@ -358,10 +390,9 @@ a {
   align-items: flex-end;
 }
 
-.item-content {}
-
 .item-content-paragraph {
   margin-bottom: 13px;
+  overflow-wrap: break-word;
 }
 
 .dropdown-button-close {
@@ -379,7 +410,6 @@ a {
 
 .dropdown-button-close:hover {
   cursor: pointer;
-  color: var(--color-melinda-lightblue);
 }
 
 .dropdown-button-close:hover .button-close-text {
@@ -388,11 +418,6 @@ a {
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
 }
-
-.button-close-icon {}
-
-.button-close-text {}
-
 
 .expand-less,
 .expand-more {
@@ -406,4 +431,68 @@ a {
 
 .navbar-dropdown-menu.show {
   display: flex !important;
+}
+
+/* ************************************************************ */
+/* Primary navigation bar dropdown specific styles in navbar*/
+
+.primary-menu-bar-dropdown {
+  display: flex;
+  position: absolute;
+  opacity: 1;
+  width: 100%;
+  z-index: 5;
+  justify-content: center;
+  box-shadow: 0 0.75rem 2rem -2rem rgb(0, 20, 42);
+  margin-top: var(--height-primary-menu-bar);
+  background-color: #F2F5F7;
+}
+
+.primary-menu-bar-dropdown .dropdown-item {
+  max-width: 35%;
+}
+
+.primary-menu-bar-dropdown a:hover .item-header,
+.primary-menu-bar-dropdown .item-header:hover,
+.primary-menu-bar-dropdown .dropdown-button-close:hover {
+  color: var(--color-functional-blue);
+}
+
+.primary-menu-bar-dropdown .dropdown-item.logout .item-header {
+  outline: var(--color-melinda-green) solid 0.2rem;
+  outline-offset: .1rem;
+  border-radius: 0.25rem;
+  border-bottom: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.primary-menu-bar-dropdown .dropdown-item.logout .item-header:active {
+  outline-color: var(--color-functional-blue);
+}
+
+
+/* ************************************************************ */
+/* Secondary navigation bar dropdown specific styles in navbar*/
+
+.secondary-menu-bar-dropdown {
+  display: flex;
+  position: absolute;
+  opacity: 1;
+  width: 100%;
+  z-index: 6;
+  box-shadow: 0 0.75rem 2rem -2rem rgb(0, 20, 42);
+  justify-content: center;
+  margin-top: calc(var(--height-primary-menu-bar) + var(--height-secondary-menu-bar));
+  background-color: hsl(195, 100%, 95%);
+}
+
+.secondary-menu-bar-dropdown .dropdown-item {
+  max-width: 25%;
+}
+
+.secondary-menu-bar-dropdown a:hover .item-header,
+.secondary-menu-bar-dropdown .item-header:hover,
+.secondary-menu-bar-dropdown .dropdown-button-close:hover {
+  color: var(--color-melinda-lightblue);
 }

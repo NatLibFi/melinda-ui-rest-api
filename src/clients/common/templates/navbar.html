@@ -28,6 +28,7 @@
 
           <div class="primary-navigation-links">
 
+            <!-- link to instructions  -->
             <a href="https://www.kiwi.fi/display/melinda/Ohjeet" target="_blank" rel="noopener noreferrer">
               <div class="nav-link" title="Avautuu uuteen välilehteen">
                 <div class="nav-link-icon">
@@ -39,12 +40,11 @@
                     <span class="material-icons open-in-new">open_in_new</span>
                   </div>
                 </div>
-
               </div>
             </a>
 
-            <!-- TODO: language selection  -->
-            <div class="nav-link link-disabled" title="Sovellus on saatavilla vain suomeksi" disabled="true">
+            <!-- language selection  -->
+            <div class="nav-link link-disabled" title="Palvelu on saatavilla vain suomeksi" disabled="true">
               <div class="nav-link-icon">
                 <span class="material-icons">language</span>
               </div>
@@ -53,19 +53,7 @@
               </div>
             </div>
 
-            <!-- TODO: add functionality for login button  -->
-            <!-- 
-            <div class="nav-link">
-              <div class="nav-link-icon">
-                <span class="material-icons">login</span>
-              </div>
-              <div class="nav-link-text">
-                Kirjaudu sisään
-              </div>
-            </div>
- -->
-
-            <!-- TODO: add dropdown menu for account handling (logout etc.)  -->
+            <!-- user profile dropdown menu button -->
             <div id="accountMenu" class="account-menu navbar-dropdown-button">
               <div class="nav-link">
                 <div class="nav-link-icon">
@@ -83,6 +71,19 @@
               </div>
             </div>
 
+
+            <!-- ON HOLD: logout as separate button in primary navigation bar  -->
+            <!-- 
+            <div class="nav-link" onClick="onAccount(event)">
+              <div class="nav-link-icon">
+                <span class="material-icons">logout</span>
+              </div>
+              <div class="nav-link-text">
+                Kirjaudu ulos
+              </div>
+            </div>
+ -->
+
           </div>
 
         </div>
@@ -92,8 +93,10 @@
 
           <div class="secondary-navigation-links">
 
+            <!-- breadcrumb-->
             <div class="app-navigation">
 
+              <!-- link to home -->
               <a href="/">
                 <div class="nav-link">
                   <div class="nav-link-icon">
@@ -109,6 +112,7 @@
                 /
               </div>
 
+              <!-- link to current app -->
               <a id="appLink">
                 <div class="nav-link app-name">
                   <div id="appName" class="nav-link-text">
@@ -117,6 +121,7 @@
                 </div>
               </a>
 
+              <!-- only if app is not found, show this go back function instead of app name -->
               <div id="goBack" class="nav-link" onClick="return goBack(event)">
                 <div class="nav-link-icon">
                   <span class="material-icons">undo</span>
@@ -128,17 +133,17 @@
 
             </div>
 
+            <!-- filler between breadcruom and app selection menu -->
             <div class="Filler VBox"></div>
 
-            <!-- TODO: add dropdown menu for app selection, display app name at navigation path  -->
+            <!-- app selection dropdown menu button-->
             <div id="appSelectionMenu" class="app-selection navbar-dropdown-button">
-
               <div class="nav-link">
                 <div class="nav-link-icon">
                   <span class="material-icons">apps</span>
                 </div>
                 <div class="nav-link-text">
-                  Valitse sovellus
+                  Valitse aputyökalu
                 </div>
                 <div class="nav-link-icon expand-more show">
                   <span class="material-icons">expand_more</span>
@@ -147,7 +152,6 @@
                   <span class="material-icons">expand_less</span>
                 </div>
               </div>
-
             </div>
 
           </div>
@@ -156,93 +160,145 @@
 
       </div>
 
-      <!-- Several dropdowns can be opened from primary and secondary navigation links -->
-
+      <!-- dropdown menu for user profile and account functions (including logout) -->
+      <!-- this dropdown menu can be opened from primary navigation bar button -->
       <div id="accountMenuDropdown" class="primary-menu-bar-dropdown navbar-dropdown-menu" style="display: none">
         <div class="dropdown-inner">
 
           <div class="dropdown-inner-content">
 
             <div class="dropdown-info">
+
               <div class="info-title">
                 Käyttäjäprofiili
               </div>
+
               <div class="info-content">
-
                 <div class="info-paragraph">
-                  Käyttäjänimi
+                  Vaihda oman Melinda-tunnuksesi salasanaa tai kirjaudu ulos.
                 </div>
-
                 <div class="info-paragraph">
-                  Sähköpostiosoite
+                  Organisaation pääkäyttäjä saa Melindan pääkäyttäjätunnuksen (admin), joilla voi tavanomaisen
+                  kuvailutyön lisäksi myös hallinnoida oman organisaation muita Melinda-käyttäjiä.
                 </div>
-
               </div>
+
             </div>
 
             <div class="dropdown-items">
 
               <div class="dropdown-item">
 
-                <div class="item-header">
-                  <div class="item-header-title">
-                    Muuta salasanaa
+                <a href="https://asetukset.melinda.kansalliskirjasto.fi/" target="_blank" rel="noopener noreferrer"
+                  title="Avautuu uuteen välilehteen">
+                  <div class="item-header">
+                    <div class="item-header-title outer-link">
+                      Muuta salasanaa
+                      <div class="nav-link-icon">
+                        <span class="material-icons open-in-new">open_in_new</span>
+                      </div>
+                    </div>
+                    <div class="item-header-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
                   </div>
-                  <div class="item-header-icon">
-                    <span class="material-icons">east</span>
-                  </div>
-                </div>
+                </a>
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-                    Vaihda salasanaa tästä
+                    Vaihda Melinda-tunnuksesi salasanaa.
                   </div>
-
                   <div class="item-content-paragraph">
-                    https://asetukset.melinda.kansalliskirjasto.fi/
+                    Salasananvaihtotyökalu avautuu uuteen välilehteen.
                   </div>
-
+                  <div class="item-content-paragraph">
+                    Vinkkejä uuteen salasanaan ja muita ohjeita
+                    salasanan vaihtamiseen löydät
+                    <a href="https://www.kiwi.fi/display/melinda/Salasanan+vaihtaminen" target="_blank"
+                      rel="noopener noreferrer">
+                      Melindan asiakaswikistä.
+                    </a>
+                  </div>
                 </div>
+
               </div>
 
               <div class="dropdown-item">
 
-                <div class="item-header">
+                <a href="https://melinda.kansalliskirjasto.fi/users/" target="_blank" rel="noopener noreferrer"
+                  title="Avautuu uuteen välilehteen">
+                  <div class="item-header">
+                    <div class="item-header-title outer-link">
+                      Käyttäjänhallinta
+                      <div class="nav-link-icon">
+                        <span class="material-icons open-in-new">open_in_new</span>
+                      </div>
+                    </div>
+                    <div class="item-header-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                  </div>
+                </a>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Työkalu käyttäjien hallintaan. Työkalun käyttö on rajattu vain organisaation admin-käyttäjille.
+                  </div>
+                  <div class="item-content-paragraph">
+                    Käyttäjänhallintatatyökalu avautuu uuteen välilehteen.
+                  </div>
+                  <div class="item-content-paragraph">
+                    Melindan pääkäyttäjät voivat lisätä organisaatioonsa uusia käyttäjiä, muokata käyttäjien oikeuksia
+                    ja poistaa vanhentuneita käyttäjätietoja. Lisätietoja pääkäyttäjille
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=167870625" target="_blank"
+                      rel="noopener noreferrer">
+                      Melindan asiakaswikistä.
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="dropdown-item logout">
+
+                <div class="item-header" onClick="onAccount(event)">
                   <div class="item-header-title">
                     Kirjaudu ulos
                   </div>
-                  <div class="item-header-icon">
-                    <span class="material-icons">east</span>
+                  <div class="item-header-icon icon-arrow">
+                    <span class="material-icons">logout</span>
                   </div>
                 </div>
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-
-                    <div id="account">
-                      <div onClick="onAccount(event)">Tästä voit kirjautua ulos</div>
-                    </div>
-
+                    Kirjaudu ulos aputyökaluista.
                   </div>
                 </div>
 
               </div>
 
             </div>
+
           </div>
 
           <div class="dropdown-button-close">
+
             <div class="button-close-icon">
               <span class="material-icons close-icon">close</span>
             </div>
+
             <div class="button-close-text">
               Sulje
             </div>
+
           </div>
 
         </div>
       </div>
 
+      <!-- dropdown for browsing app selection and navigating to an app -->
+      <!-- this dropdown menu can be opened from secondary navigation bar button -->
       <div id="appSelectionMenuDropdown" class="secondary-menu-bar-dropdown navbar-dropdown-menu" style="display: none">
         <div class="dropdown-inner">
 
@@ -253,15 +309,16 @@
                 Melinda-kuvailijan aputyökalut
               </div>
               <div class="info-content">
-
                 <div class="info-paragraph">
-                  Aputyökalut kuvaus 1.
+                  Melinda on tiedonkuvailijoiden toimintaympäristö. Melinda-kuvailun perimmäinen tarkoitus on helpottaa
+                  ja nopeuttaa kuvailutietojen tallennusprosessia, kun aineiston kuvailu ei ole vain yksittäisen
+                  organisaation kuvailijoiden vastuulla.
                 </div>
-
                 <div class="info-paragraph">
-                  Aputyökalut kuvaus 2.
+                  Melinda-metatietovarannossa säilytetään kuvailutietojen
+                  masterdata. Kaikki metatietovarantoon aineistoa kuvailevat voivat muokata tietueita voimassa olevien
+                  kuvailusääntöjen ja formaatin mukaisesti.
                 </div>
-
               </div>
             </div>
 
@@ -274,7 +331,7 @@
                     <div class="item-header-title">
                       Muuntaja
                     </div>
-                    <div class="item-header-icon">
+                    <div class="item-header-icon icon-arrow">
                       <span class="material-icons">east</span>
                     </div>
                   </div>
@@ -282,33 +339,15 @@
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-                    Työkalun kuvaus 1.
+                    Muuntaja on Kansalliskirjastossa kehitetty ohjelma tietueiden muuntamiseen aineistotyypistä toiseen.
+                    Voit muuntaa painetun version tietueita verkkojulkaisuiksi ja verkkojulkaisujen tietueita
+                    painetuiksi. Muokatut tietueet päivittyvät Melindaan.
                   </div>
                   <div class="item-content-paragraph">
-                    Työkalun kuvaus 2.
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="dropdown-item">
-
-                <div class="item-header">
-                  <div class="item-header-title">
-                    Artikkelien kuvailutyökalu
-                  </div>
-                  <div class="item-header-icon">
-                    <span class="material-icons">east</span>
-                  </div>
-                </div>
-
-                <div class="item-content">
-                  <div class="item-content-paragraph">
-                    Työkalun kuvaus 1.
-
-                  </div>
-                  <div class="item-content-paragraph">
-                    Työkalun kuvaus 2.
+                    Lue lisää ohjeita <a
+                      href="https://www.kiwi.fi/display/melinda/Muuntaja-ohjelma%3A+tietueiden+muunnokset"
+                      target="_blank" rel="noopener noreferrer">Melindan
+                      asiakaswikistä.</a>
                   </div>
                 </div>
 
@@ -316,59 +355,121 @@
 
               <div class="dropdown-item">
 
-                <div class="item-header">
-                  <div class="item-header-title">
-                    Merge
+                <a href="/artikkelit">
+                  <div class="item-header">
+                    <div class="item-header-title">
+                      Artikkelien kuvailutyökalu
+                    </div>
+                    <div class="item-header-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
                   </div>
-                  <div class="item-header-icon">
-                    <span class="material-icons">east</span>
-                  </div>
-                </div>
+                </a>
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-                    Työkalun kuvaus 1.
+                    Artikkelien kuvailutyökalu tarjoaa helppokäyttöisen tavan tallentaa kotimaisten tieteellisten
+                    artikkelien tietoja Melindaan. Kuvailutyökalua hyödyntävät kirjastot, tiedekustantajat ja muut alan
+                    toimijat. Viitteet ovat haettavissa esimerkiksi Finnassa.
                   </div>
                   <div class="item-content-paragraph">
-                    Työkalun kuvaus 2.
+                    Lue lisää ohjeita <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=155648846"
+                      target="_blank" rel="noopener noreferrer">Melindan
+                      asiakaswikistä.</a>
                   </div>
-
                 </div>
 
               </div>
 
               <div class="dropdown-item">
 
-                <div class="item-header">
-                  <div class="item-header-title">
-                    Viewer
+                <a href="/edit">
+                  <div class="item-header">
+                    <div class="item-header-title">
+                      Muokkaus
+                    </div>
+                    <div class="item-header-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
                   </div>
-                  <div class="item-header-icon">
-                    <span class="material-icons">east</span>
-                  </div>
-                </div>
+                </a>
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-                    Työkalun kuvaus 1.
+                    Työkalun kuvaus.
                   </div>
                   <div class="item-content-paragraph">
-                    Työkalun kuvaus 2.
+                    Linkki ohjeeseen.
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="dropdown-item">
+
+                <a href="">
+                  <div class="item-header">
+                    <div class="item-header-title">
+                      Merge
+                    </div>
+                    <div class="item-header-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                  </div>
+                </a>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Mergen avulla voi yhdistää Melindan tuplatietueita. Mergeä voidaan käyttää myös
+                    emo-osakohdeperheiden yhdistämiseen. Mergellä tietueisiin tehdyt muutokset päivittyvät suoraan
+                    Melindaan.
+                  </div>
+                  <div class="item-content-paragraph">
+                    Lue lisää ohjeita <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=77365409"
+                      target="_blank" rel="noopener noreferrer">Melindan
+                      asiakaswikistä.</a>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="dropdown-item">
+
+                <a href="/viewer">
+                  <div class="item-header">
+                    <div class="item-header-title">
+                      Viewer
+                    </div>
+                    <div class="item-header-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                  </div>
+                </a>
+
+                <div class="item-content">
+                  <div class="item-content-paragraph">
+                    Vieweriä hyödynnetään tietuetietokannan teknisessä tarkastelussa ja Melindan ylläpidossa.
                   </div>
                 </div>
 
               </div>
 
             </div>
+
           </div>
 
           <div class="dropdown-button-close">
+
             <div class="button-close-icon">
               <span class="material-icons close-icon">close</span>
             </div>
+
             <div class="button-close-text">
               Sulje
             </div>
+
           </div>
 
         </div>
