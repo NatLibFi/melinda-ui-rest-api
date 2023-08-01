@@ -17,6 +17,7 @@ class Navbar extends HTMLElement {
         this.appendChild(navbar);
         console.log('Navbar is added: ', navbar.isConnected);
         addNavbarEventListeners();
+        addFauxBreadcrumb();
       })
       .catch(error =>
         console.log('Error while setting navbar: ', error)
@@ -96,7 +97,6 @@ class Navbar extends HTMLElement {
       // hides automativally all dropdown menus in navbar
       function addDismissNavbarEventListener() {
         window.addEventListener('click', function (event) {
-          event.preventDefault();
 
           const navbar = document.getElementById('navbar');
 
@@ -127,6 +127,21 @@ class Navbar extends HTMLElement {
         })
 
       }
+    }
+
+    // Add the current location as app name
+    function addFauxBreadcrumb() {
+      const currentUrl = window.location.href;
+      const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
+      const appNameDiv = document.getElementById('appName');
+      appNameDiv.innerHTML = appName;
+
+      if (appName === 'edit') {
+        appNameDiv.innerHTML = 'muokkaus';
+      }
+
+      const appLinkDiv = document.getElementById('appLink');
+      appLinkDiv.setAttribute('href', '/' + appName);
     }
 
   }

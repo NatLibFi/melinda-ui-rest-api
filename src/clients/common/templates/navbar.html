@@ -29,17 +29,22 @@
           <div class="primary-navigation-links">
 
             <a href="https://www.kiwi.fi/display/melinda/Ohjeet" target="_blank" rel="noopener noreferrer">
-              <div class="nav-link">
+              <div class="nav-link" title="Avautuu uuteen välilehteen">
                 <div class="nav-link-icon">
                   <span class="material-icons">help_outline</span>
                 </div>
-                <div class="nav-link-text">
+                <div class="nav-link-text outer-link">
                   Ohjeet
+                  <div class="nav-link-icon">
+                    <span class="material-icons open-in-new">open_in_new</span>
+                  </div>
                 </div>
+
               </div>
             </a>
 
-            <div class="nav-link">
+            <!-- TODO: language selection  -->
+            <div class="nav-link link-disabled" title="Sovellus on saatavilla vain suomeksi" disabled="true">
               <div class="nav-link-icon">
                 <span class="material-icons">language</span>
               </div>
@@ -48,6 +53,8 @@
               </div>
             </div>
 
+            <!-- TODO: add functionality for login button  -->
+            <!-- 
             <div class="nav-link">
               <div class="nav-link-icon">
                 <span class="material-icons">login</span>
@@ -56,7 +63,7 @@
                 Kirjaudu sisään
               </div>
             </div>
-
+ -->
 
             <!-- TODO: add dropdown menu for account handling (logout etc.)  -->
             <div id="accountMenu" class="account-menu navbar-dropdown-button">
@@ -74,47 +81,54 @@
                   <span class="material-icons">expand_less</span>
                 </div>
               </div>
-
-              <!--                       
-                <div id="account">
-                  <div onClick="onAccount(event)">Kirjaudu ulos</div>
-                </div>
-              -->
-
             </div>
 
           </div>
 
         </div>
 
-        <!-- Secondary menu bar contains secondary navigation links: path for navigation and app selection -->
+        <!-- Secondary menu bar contains secondary navigation links: path for navigation (faux breadcrumb) and app selection -->
         <div class="secondary-menu-bar">
 
           <div class="secondary-navigation-links">
 
             <div class="app-navigation">
 
-              <div class="nav-link">
-                <div class="nav-link-icon">
-                  <span class="material-icons">home</span>
+              <a href="/">
+                <div class="nav-link">
+                  <div class="nav-link-icon">
+                    <span class="material-icons">home</span>
+                  </div>
+                  <div class="nav-link-text">
+                    ETUSIVU
+                  </div>
                 </div>
-                <div class="nav-link-text">
-                  ETUSIVU
-                </div>
-              </div>
+              </a>
 
               <div class="nav-slash">
                 /
               </div>
 
-              <div class="nav-link app-name">
+              <a id="appLink">
+                <div class="nav-link app-name">
+                  <div id="appName" class="nav-link-text">
+                    <!-- Displays current app's name here -->
+                  </div>
+                </div>
+              </a>
+
+              <div id="goBack" class="nav-link" onClick="return goBack(event)">
+                <div class="nav-link-icon">
+                  <span class="material-icons">undo</span>
+                </div>
                 <div class="nav-link-text">
-                  <!-- Display app name here after selection -->
-                  VIEWER
+                  EDELLINEN SIVU
                 </div>
               </div>
 
             </div>
+
+            <div class="Filler VBox"></div>
 
             <!-- TODO: add dropdown menu for app selection, display app name at navigation path  -->
             <div id="appSelectionMenu" class="app-selection navbar-dropdown-button">
@@ -181,7 +195,11 @@
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-                    Tästä voit muuttaa salasanaa
+                    Vaihda salasanaa tästä
+                  </div>
+
+                  <div class="item-content-paragraph">
+                    https://asetukset.melinda.kansalliskirjasto.fi/
                   </div>
 
                 </div>
@@ -200,7 +218,11 @@
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
-                    Tästä voit kirjautua ulos
+
+                    <div id="account">
+                      <div onClick="onAccount(event)">Tästä voit kirjautua ulos</div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -211,7 +233,7 @@
 
           <div class="dropdown-button-close">
             <div class="button-close-icon">
-              <span class="material-icons">close</span>
+              <span class="material-icons close-icon">close</span>
             </div>
             <div class="button-close-text">
               Sulje
@@ -247,21 +269,23 @@
 
               <div class="dropdown-item">
 
-                <div class="item-header">
-                  <div class="item-header-title">
-                    Muuntaja
+                <a href="/muuntaja">
+                  <div class="item-header">
+                    <div class="item-header-title">
+                      Muuntaja
+                    </div>
+                    <div class="item-header-icon">
+                      <span class="material-icons">east</span>
+                    </div>
                   </div>
-                  <div class="item-header-icon">
-                    <span class="material-icons">east</span>
-                  </div>
-                </div>
+                </a>
 
                 <div class="item-content">
                   <div class="item-content-paragraph">
                     Työkalun kuvaus 1.
                   </div>
                   <div class="item-content-paragraph">
-                   Työkalun kuvaus 2.
+                    Työkalun kuvaus 2.
                   </div>
 
                 </div>
@@ -284,7 +308,7 @@
 
                   </div>
                   <div class="item-content-paragraph">
-                   Työkalun kuvaus 2.
+                    Työkalun kuvaus 2.
                   </div>
                 </div>
 
@@ -340,7 +364,7 @@
 
           <div class="dropdown-button-close">
             <div class="button-close-icon">
-              <span class="material-icons">close</span>
+              <span class="material-icons close-icon">close</span>
             </div>
             <div class="button-close-text">
               Sulje

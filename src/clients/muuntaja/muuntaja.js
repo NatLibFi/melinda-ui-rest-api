@@ -27,7 +27,8 @@ window.initialize = function () {
     profileRequest()
       .then(profiles => {
         setProfiles(profiles);
-
+        const accountMenu = document.getElementById('accountMenu');
+        accountMenu.classList.add('show');
         const username = document.querySelector('#accountMenu #username');
         username.innerHTML = Account.get().Name;
         showTab('muuntaja');

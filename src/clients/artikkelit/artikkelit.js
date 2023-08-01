@@ -26,6 +26,8 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
+    const accountMenu = document.getElementById('accountMenu');
+    accountMenu.classList.add('show');
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
     showTab('artikkelit-lisaa');
