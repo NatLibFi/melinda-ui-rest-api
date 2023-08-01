@@ -114,21 +114,21 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
   }
 }
 
-
 export function generatef787(reviewBooks = false) {
-  if (reviewBooks) {
-    return reviewBooks.map(book => [
+	
+  if (reviewBooks && reviewBooks.length > 0) {
+    return reviewBooks.map(book => (
       {
         tag: '787', ind1: '0', ind2: '8',
         subfields: [
           {code: 'i', value: 'Arvosteltu teos:'},
-          {code: 't', value: `${book.title} ${book.details}`},
+          {code: 't', value: `${book.title}.`},
           {code: 'd', value: book.publishing},
-          {code: 'z', value: `${book.isbn}. -`},
-          {code: 'w', value: `(FI-MELINDA)${book.melindaId}`}
+          {code: 'z', value: `${book.isbns}`},
+          {code: 'w', value: book.sourceIds}
         ]
       }
-    ]);
+    ));
   }
 
   return [];
