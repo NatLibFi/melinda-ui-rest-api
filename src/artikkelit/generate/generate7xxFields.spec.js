@@ -1,7 +1,7 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {generatef773,generatef787} from './generate7xxFields.js';
+import {generatef773, generatef787} from './generate7xxFields.js';
 
 import {getSourceTypeAsText, parseIncomingData} from './../artikkelitService.js';
 
@@ -52,7 +52,7 @@ async function testF787({getFixture, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
     const result = await generatef787(input.reviews);
-   
+
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 

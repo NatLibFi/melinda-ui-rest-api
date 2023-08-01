@@ -115,7 +115,6 @@ export function generatef773(sourceType, {publishingYear, volume, number, pages}
 }
 
 export function generatef787(reviewBooks = false) {
-	
   if (reviewBooks && reviewBooks.length > 0) {
     return reviewBooks.map(book => (
       {
