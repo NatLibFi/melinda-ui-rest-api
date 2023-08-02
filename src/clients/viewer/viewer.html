@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="viewer.css">
 
   <script type="module" src="viewer.js"></script>
+  <script src="/common/footer.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -26,505 +27,520 @@
 
 <body onload="initialize()">
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Navbar -->
-  <div id="navbar"></div>
+  <div id="bodywrapper" class="viewport-full VBox">
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Application "tabs" -->
-  <div id="root">
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Navbar -->
+    <div id="navbar"></div>
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Loading "screen" -->
-    <div id="loading">
-    </div>
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Application -->
+    <div id="root">
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Login tab -->
-    <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-    <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
-      <div class="VBox Input">
-        <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus autocomplete="username" />
+
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Loading "screen" -->
+      <div id="loading">
       </div>
-      <div class="VBox Input">
-        <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password" autocomplete="current-password" />
-      </div>
-      <div class="HBox Input" style="align-items: baseline;">
-        <input id="acceptterms" type="checkbox">
-        <label for="acceptterms" style="padding-left: 8px;">
-          Hyväksyn
-          <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
-            tietosuojaselosteen</a>
-          ja evästeiden käytön.
-          <br /><br />
-          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-      </div>
-      <div id="info"></div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end;">
-        <button onClick="return login(event)">Kirjaudu</button>
-      </div>
-    </form>
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Viewer tab -->
-    <div id="viewer" hidden>
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Login tab -->
+      <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
+      <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
+        <div class="VBox Input">
+          <label for="username">Käyttäjätunnus</label>
+          <input id="login-username" name="username" autofocus autocomplete="username" />
+        </div>
+        <div class="VBox Input">
+          <label for="password">Salasana</label>
+          <input id="login-password" type="password" name="password" autocomplete="current-password" />
+        </div>
+        <div class="HBox Input" style="align-items: baseline;">
+          <input id="acceptterms" type="checkbox">
+          <label for="acceptterms" style="padding-left: 8px;">
+            Hyväksyn
+            <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
+              tietosuojaselosteen</a>
+            ja evästeiden käytön.
+            <br /><br />
+            Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+        </div>
+        <div id="info"></div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+          <button onClick="return login(event)">Kirjaudu</button>
+        </div>
+      </form>
 
-      <!-- Viewer Iconbar -->
-      <div class="IconBar ToolBar">
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Viewer tab -->
+      <div id="viewer" hidden>
 
-        <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-            href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
 
-        <div class="dropdown">
-          <button id="account-btn" class="material-icons">account_circle</button>
-          <div id="account-menu" class="dropdown-content">
-            <div class="menu-header" id="username">Tuntematon</div>
-            <hr />
-            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+
+        <!-- Viewer Iconbar -->
+        <div class="IconBar ToolBar">
+
+          <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
+              href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
+
+          <div class="dropdown">
+            <button id="account-btn" class="material-icons">account_circle</button>
+            <div id="account-menu" class="dropdown-content">
+              <div class="menu-header" id="username">Tuntematon</div>
+              <hr />
+              <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+            </div>
           </div>
+
         </div>
 
-      </div>
+        <!-- Viewer Toolbar -->
+        <div id="viewerTools" class="tools ToolBar">
 
-      <!-- Viewer Toolbar -->
-      <div id="viewerTools" class="tools ToolBar">
-
-        <!-- Info text and icon are visible when viewer is set in reader mode -->
-        <div class="tools-wrapper">
-          <div id="readMode" class="read-mode" style="display: none">
-            <span class="material-icons">disabled_visible</span>
-            <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
-          </div>
-          <button id="exit" class="material-icons tooltip" tooltip-text="Sulje näkymä" style="display: none"
-            onclick="return exitReaderMode(event)">logout</button>
-        </div>
-
-        <!-- Tools for searching and selecting a correlation id and sequence -->
-        <form class="ToolBar HBox highlight-border">
-
+          <!-- Info text and icon are visible when viewer is set in reader mode -->
           <div class="tools-wrapper">
-            <div class="Select VBox">
-              <label>Lokityyppi</label>
-              <select id="logType">
-                <option value="MERGE_LOG">Merge</option>
-                <option value="MATCH_LOG">Match</option>
-                <option value="EMPTY_LOG" hidden></option>
-              </select>
+            <div id="readMode" class="read-mode" style="display: none">
+              <span class="material-icons">disabled_visible</span>
+              <div id="readModeInfo" class="read-mode-info">VIEWER ON LUKUNÄKYMÄSSÄ</div>
             </div>
-            <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
-              tooltip-text="Etsi ID listasta" onclick="return openCorrelationIdListModal(event)">manage_search</button>
+            <button id="exit" class="material-icons tooltip" tooltip-text="Sulje näkymä" style="display: none"
+              onclick="return exitReaderMode(event)">logout</button>
           </div>
 
+          <!-- Tools for searching and selecting a correlation id and sequence -->
+          <form class="ToolBar HBox highlight-border">
+
+            <div class="tools-wrapper">
+              <div class="Select VBox">
+                <label>Lokityyppi</label>
+                <select id="logType">
+                  <option value="MERGE_LOG">Merge</option>
+                  <option value="MATCH_LOG">Match</option>
+                  <option value="EMPTY_LOG" hidden></option>
+                </select>
+              </div>
+              <button id="viewCorrelationIdsButton" type="button" class="material-icons tooltip"
+                tooltip-text="Etsi ID listasta"
+                onclick="return openCorrelationIdListModal(event)">manage_search</button>
+            </div>
+
+            <div class="tools-wrapper">
+              <div class="Filler VBox Input">
+                <label>ID (correlation id)</label>
+                <input class="inputField uuidInput id-input" id="id"
+                  placeholder="00000000-0000-0000-0000-000000000000" />
+              </div>
+            </div>
+
+            <div class="tools-wrapper">
+              <div class="Select VBox sequence-container">
+                <label>Sekvenssi</label>
+                <div class="HBox Filler">
+                  <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
+                    onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
+                  <div class="Select VBox Filler sequence-select">
+                    <select id="sequence" onchange="return loadLog(event)"></select>
+                  </div>
+                  <div class="Filler VBox Input">
+                    <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
+                  </div>
+                  <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
+                    onclick="return selectNext(event)" disabled="true">navigate_next</button>
+                </div>
+              </div>
+              <button class="material-icons tooltip search-button" tooltip-text="Hae"
+                onclick="return doSearchPress(event)">search</button>
+              <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
+                onclick="return clearLogView(event)" disabled="true">backspace</button>
+            </div>
+
+          </form>
+
+          <!-- Tools for handling selected correlation id and/or sequence -->
           <div class="tools-wrapper">
-            <div class="Filler VBox Input">
-              <label>ID (correlation id)</label>
-              <input class="inputField uuidInput id-input" id="id" placeholder="00000000-0000-0000-0000-000000000000" />
+            <div class="HBox">
+              <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
+                disabled="true">lock_open</button>
+              <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
+                onclick="return openRemoveDialog(event)" disabled="true">delete</button>
+              <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
+                onclick="return copyLink(event)">share</button>
+              <button id="export" class="material-icons tooltip" tooltip-text="Lataa tiedosto" disabled="true"
+                onclick="return downloadFile(event)">file_download</button>
+              <button id="import" class="material-icons tooltip" tooltip-text="Avaa tiedosto"
+                onclick="return uploadFile(event)">file_upload</button>
+              <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
+                disabled="true">settings</button>
             </div>
           </div>
 
-          <div class="tools-wrapper">
-            <div class="Select VBox sequence-container">
-              <label>Sekvenssi</label>
-              <div class="HBox Filler">
-                <button id="previousSequence" class="material-icons tooltip navigate-button" tooltip-text="Edellinen"
-                  onclick="return selectPrevious(event)" disabled="true">navigate_before</button>
-                <div class="Select VBox Filler sequence-select">
-                  <select id="sequence" onchange="return loadLog(event)"></select>
-                </div>
-                <div class="Filler VBox Input">
-                  <input id="sequenceInput" class="inputField" placeholder="000" maxlength="3" />
-                </div>
-                <button id="nextSequence" class="material-icons tooltip navigate-button" tooltip-text="Seuraava"
-                  onclick="return selectNext(event)" disabled="true">navigate_next</button>
-              </div>
-            </div>
-            <button class="material-icons tooltip search-button" tooltip-text="Hae"
-              onclick="return doSearchPress(event)">search</button>
-            <button id="clearLogs" class="material-icons tooltip clear-logs-button" tooltip-text="Tyhjää haku"
-              onclick="return clearLogView(event)" disabled="true">backspace</button>
-          </div>
-
-        </form>
-
-        <!-- Tools for handling selected correlation id and/or sequence -->
-        <div class="tools-wrapper">
-          <div class="HBox">
-            <button id="protect" class="material-icons tooltip" tooltip-text="Turvaa" onclick="return protect(event)"
-              disabled="true">lock_open</button>
-            <button id="delete" class="material-icons tooltip" tooltip-text="Poista ID"
-              onclick="return openRemoveDialog(event)" disabled="true">delete</button>
-            <button id="share" class="material-icons tooltip" tooltip-text="Jaa linkki"
-              onclick="return copyLink(event)">share</button>
-            <button id="export" class="material-icons tooltip" tooltip-text="Lataa tiedosto" disabled="true"
-              onclick="return downloadFile(event)">file_download</button>
-            <button id="import" class="material-icons tooltip" tooltip-text="Avaa tiedosto"
-              onclick="return uploadFile(event)">file_upload</button>
-            <button id="settings" class="material-icons tooltip" tooltip-text="Asetukset"
-              disabled="true">settings</button>
-          </div>
         </div>
 
-      </div>
+        <!-- Dialog popup for removing logs -->
+        <dialog id="dialogForRemove">
+          <form method="dialog">
 
-      <!-- Dialog popup for removing logs -->
-      <dialog id="dialogForRemove">
-        <form method="dialog">
-
-          <div class="dialog-icon material-icons">
-            delete_outline
-          </div>
-
-          <div class="dialog-headline">
-            Haluatko varmasti poistaa ID:n?
-          </div>
-
-          <div class="dialog-supporting-text">
-            <p>Seuraava ID poistetaan pysyvästi:</p>
-            <p><span id="idToBeRemoved" class="correlation-id-font"></span></p>
-          </div>
-
-          <div class="dialog-actions">
-            <button class="dialog-cancel-button" id="cancelRemoveButton"
-              onclick="return cancelRemove(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmRemoveButton"
-              onclick="return confirmRemove(event)">Vahvista poisto</button>
-          </div>
-
-        </form>
-      </dialog>
-
-      <!-- Dialog popup for uploading files -->
-      <dialog id="dialogForUpload">
-        <form method="dialog">
-
-          <div class="dialog-icon material-icons">
-            upload_file
-          </div>
-
-          <div class="dialog-headline">
-            Avaa tiedosto lukunäkymässä
-          </div>
-
-          <div class="dialog-supporting-text">
-
-            <div class="file-input">
-              <input type="file" id="fileUpload" accept=".json, .txt" style="display:none" />
-              <button id="fileSelect" type="button" class="file-button"
-                onclick="return openFileBrowse(event)">Selaa</button>
-              <div id="selectedFileName" class="file-name">Ei valittua tiedostoa</div>
-              <button id="clearFileSelect" type="button" class="material-icons close-button"
-                title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
-                style="display: none">close</button>
+            <div class="dialog-icon material-icons">
+              delete_outline
             </div>
 
-            <hr>
-            <div class="instructions-headline">
-              <div>
-                OHJEET
+            <div class="dialog-headline">
+              Haluatko varmasti poistaa ID:n?
+            </div>
+
+            <div class="dialog-supporting-text">
+              <p>Seuraava ID poistetaan pysyvästi:</p>
+              <p><span id="idToBeRemoved" class="correlation-id-font"></span></p>
+            </div>
+
+            <div class="dialog-actions">
+              <button class="dialog-cancel-button" id="cancelRemoveButton"
+                onclick="return cancelRemove(event)">Peruuta</button>
+              <button class="dialog-confirm-button" id="confirmRemoveButton"
+                onclick="return confirmRemove(event)">Vahvista poisto</button>
+            </div>
+
+          </form>
+        </dialog>
+
+        <!-- Dialog popup for uploading files -->
+        <dialog id="dialogForUpload">
+          <form method="dialog">
+
+            <div class="dialog-icon material-icons">
+              upload_file
+            </div>
+
+            <div class="dialog-headline">
+              Avaa tiedosto lukunäkymässä
+            </div>
+
+            <div class="dialog-supporting-text">
+
+              <div class="file-input">
+                <input type="file" id="fileUpload" accept=".json, .txt" style="display:none" />
+                <button id="fileSelect" type="button" class="file-button"
+                  onclick="return openFileBrowse(event)">Selaa</button>
+                <div id="selectedFileName" class="file-name">Ei valittua tiedostoa</div>
+                <button id="clearFileSelect" type="button" class="material-icons close-button"
+                  title="Poista valittu tiedosto" onclick="return clearSelectedFile(event)"
+                  style="display: none">close</button>
               </div>
-              <button id="showInstructionsButton" onclick="return showInstructions(event)"
-                class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä">expand_more</button>
-              <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
-                class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
-                style="display: none">expand_less</button>
-            </div>
 
-            <div id="instructions" style="display: none">
-              <ul>
-                <li>Valitse tiedosto ensin selaamalla omalta laitteeltasi.</li>
-                <li>
-                  Tiedoston pääte on oltava .json tai .txt.
-                </li>
-                <li>
-                  Tiedostossa tietueiden on oltava json-muodossa.
-                </li>
-                <li>
-                  Klikkaa lopuksi 'Avaa tiedosto'.
-                </li>
-                <li>
-                  Tietueet avautuvat Viewerissä lukunäkymään.
-                </li>
-                <li>
-                  Lukunäkymässä tietueiden käsittelyä on rajoitettu.
-                </li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="dialog-actions">
-            <button class="dialog-cancel-button" id="cancelUploadButton"
-              onclick="return cancelUpload(event)">Peruuta</button>
-            <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin tiedosto"
-              disabled="true" onclick="return confirmUpload(event)">Avaa tiedosto</button>
-          </div>
-
-        </form>
-      </dialog>
-
-      <!-- Record Merge Panel -->
-      <div class="record-merge-panel">
-
-        <div class="col">
-          <div id="record1" class="BoxShadow">
-
-            <div class="header">
-              <p class="title">Sisääntuleva tietue</p>
-              <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
-                  onclick="return showNote(event, 'record1')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
-                  onclick="return hideNote(event, 'record1')">expand_less</button>
+              <hr>
+              <div class="instructions-headline">
+                <div>
+                  OHJEET
+                </div>
+                <button id="showInstructionsButton" onclick="return showInstructions(event)"
+                  class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä">expand_more</button>
+                <button id="hideInstructionsButton" onclick="return hideInstructions(event)"
+                  class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                  style="display: none">expand_less</button>
               </div>
+
+              <div id="instructions" style="display: none">
+                <ul>
+                  <li>Valitse tiedosto ensin selaamalla omalta laitteeltasi.</li>
+                  <li>
+                    Tiedoston pääte on oltava .json tai .txt.
+                  </li>
+                  <li>
+                    Tiedostossa tietueiden on oltava json-muodossa.
+                  </li>
+                  <li>
+                    Klikkaa lopuksi 'Avaa tiedosto'.
+                  </li>
+                  <li>
+                    Tietueet avautuvat Viewerissä lukunäkymään.
+                  </li>
+                  <li>
+                    Lukunäkymässä tietueiden käsittelyä on rajoitettu.
+                  </li>
+                </ul>
+              </div>
+
             </div>
 
-            <div class="note">
-              <ul class="additional"></ul>
+            <div class="dialog-actions">
+              <button class="dialog-cancel-button" id="cancelUploadButton"
+                onclick="return cancelUpload(event)">Peruuta</button>
+              <button class="dialog-confirm-button" id="confirmUploadButton" title="Valitse ensin tiedosto"
+                disabled="true" onclick="return confirmUpload(event)">Avaa tiedosto</button>
             </div>
 
-            <div id="Record" class="marc-record">
-            </div>
+          </form>
+        </dialog>
 
+        <!-- Record Merge Panel -->
+        <div class="record-merge-panel">
+
+          <div class="col">
+            <div id="record1" class="BoxShadow">
+
+              <div class="header">
+                <p class="title">Sisääntuleva tietue</p>
+                <div class="show-hide-buttons-wrap">
+                  <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                    onclick="return showNote(event, 'record1')">expand_more</button>
+                  <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                    onclick="return hideNote(event, 'record1')">expand_less</button>
+                </div>
+              </div>
+
+              <div class="note">
+                <ul class="additional"></ul>
+              </div>
+
+              <div id="Record" class="marc-record">
+              </div>
+
+            </div>
           </div>
+
+          <div class="col">
+            <div id="record2" class="BoxShadow">
+
+              <div class="header">
+                <p class="title">Melinda-tietue</p>
+                <div class="VBox Select">
+                  <label>Match nro.</label>
+                  <select id="match" onchange="return loadMatch(event)"></select>
+                </div>
+                <div class="show-hide-buttons-wrap">
+                  <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                    onclick="return showNote(event, 'record2')">expand_more</button>
+                  <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                    onclick="return hideNote(event, 'record2')">expand_less</button>
+                </div>
+              </div>
+
+              <div class="note">
+                <ul class="additional"></ul>
+              </div>
+
+              <div id="Record" class="marc-record">
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col">
+            <div id="record3" class="BoxShadow">
+
+              <div class="header">
+                <p class="title">Yhdistetty tietue</p>
+                <div class="show-hide-buttons-wrap">
+                  <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
+                    onclick="return showNote(event, 'record3')">expand_more</button>
+                  <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
+                    onclick="return hideNote(event, 'record3')">expand_less</button>
+                </div>
+              </div>
+
+              <div class="note">
+                <ul class="additional"></ul>
+              </div>
+
+              <div id="Record" class="marc-record">
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
-        <div class="col">
-          <div id="record2" class="BoxShadow">
+        <!-- Modal for browsing and selecting a correlation id from a list -->
+        <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
 
-            <div class="header">
-              <p class="title">Melinda-tietue</p>
-              <div class="VBox Select">
-                <label>Match nro.</label>
-                <select id="match" onchange="return loadMatch(event)"></select>
+          <!-- The modal box outline and content  -->
+          <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
+
+            <!-- Shows instructional title for list, info text and close button -->
+            <div class="modal-top-div">
+
+              <!-- the title for modal, and some additional info text -->
+              <div class="modal-title-and-info">
+                <div class="modal-title">Valitse ID listasta ja aloita haku</div>
+                <div id="lastSearchedInfoText" class="modal-info-text"></div>
               </div>
-              <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
-                  onclick="return showNote(event, 'record2')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
-                  onclick="return hideNote(event, 'record2')">expand_less</button>
+
+              <!-- button for closing modal, works the same way as clicking outside modal  -->
+              <div class="modal-top-div-buttons">
+                <button id="closeModalButton" class="material-icons close-button modal-function-button"
+                  title="Sulje lista ilman hakua" onclick="return modalClose(event)">close</button>
+              </div>
+
+            </div>
+
+            <!-- All buttons for filtering correlation id list  -->
+            <div id="filteringButtons" class="list-filtering-buttons">
+
+              <!-- button toggles showing specific catalogers or hiding them from the list -->
+              <!-- segmented button used as multi-select button -->
+              <div id="catalogerToggleContainer" class="segmented-button-container select-button-container"></div>
+
+              <!-- button toggles showing logs by log type or hiding them from the list -->
+              <!-- segmented button used as multi-select button -->
+              <div id="logTypeToggleContainer" class="segmented-button-container select-button-container"></div>
+
+              <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
+              <!-- segmented button used as single-select button -->
+              <div id="logCreationDateToggleContainer" class="segmented-button-container select-button-container">
+
+                <button id="creationTimeToday" class="select-button segmented-button"
+                  data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
+                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                  onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Tänään</span>
+                  </div>
+                </button>
+
+                <button id="creationTimeWeekAgo" class="select-button segmented-button"
+                  data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
+                  data-title-b="Nollaa kaikki päivämääräsuodattimet"
+                  onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Yli viikko sitten</span>
+                  </div>
+                </button>
+
+              </div>
+
+              <!-- button toggles showing extra details for correlation id list items or hiding them  -->
+              <!-- single-select button -->
+              <div id="listDetailsToggleContainer" class="select-button-container">
+                <button id="toggleListDetails" class="select-button select-button-selected"
+                  data-title-a="Piilota tarkat tiedot listanäkymästä" data-title-b="Näytä tarkat tiedot listanäkymässä"
+                  onclick="return toggleListDetails(event)" data-value="true">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text">Tarkat tiedot</span>
+                  </div>
+                </button>
+              </div>
+
+              <!-- This is helper html for filtering buttons  -->
+              <!-- template's contents are not rendered on page -->
+              <template id="buttonTemplate">
+
+                <!-- base for one select button-->
+                <!-- select button has a container that holds the button element  -->
+                <button id="segmentedSelectButton" class="select-button segmented-button select-button-selected"
+                  data-title-a="" data-title-b="" data-value="true">
+                  <div class="select-button-content">
+                    <span class="material-icons select-button-icon">check</span>
+                    <span class="select-button-text"></span>
+                  </div>
+                </button>
+
+              </template>
+
+            </div>
+
+            <!-- All inputs for filtering correlation id list  -->
+            <div id="filteringInputs" class="list-filtering-inputs">
+
+              <!-- inputs for star date and end end date date pickers  -->
+              <div class="date-filter-container">
+                Päivämäärähaku:
+                <div class="datepicker-container">
+                  <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                    placeholder="Start date"
+                    title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                    onchange="return updateOnChange(event)">
+                  <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
+                    placeholder="End date"
+                    title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
+                    onchange="return updateOnChange(event)">
+                </div>
+              </div>
+
+              <!-- input for searching with correlation id string -->
+              <div class="correlation-id-filter-container">
+                Tekstihaku:
+                <input id="correlationIdInput" type="text" class="correlation-id-input"
+                  title="Näytä listanäkymässä vain ID:t, jotka sopivat hakutermiisi" placeholder="...0a1b-23cd45ef..."
+                  oninput="return updateOnChange(event)">
+              </div>
+
+            </div>
+
+            <!-- Div for search results info and sorting options -->
+            <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
+
+              <!-- shows info about search results -->
+              <div id="fetchListPlaceholderText" class="search-results-placeholder">Haetaan listaa, hetkinen...</div>
+
+              <!-- button for resetting search and clearing all filters -->
+              <div id="clearFilters" class="clear-filters">
+                <button id="clearFiltersButton" class="clear-filter-button modal-function-button"
+                  title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters(event)">Nollaa
+                  suodattimet</button>
+              </div>
+
+              <!-- shows the dropdown for sorting -->
+              <div class="Select VBox list-sorting">
+                <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
+                  <option selected value="sortByTimeNewestFirst">Näytä uusimmat ID:t ensin</option>
+                  <option value="sortByTimeOldestFirst">Näytä vanhimmat ID:t ensin</option>
+                  <option value="sortById">Järjestä ID:n mukaan (0->9 a->f)</option>
+                </select>
               </div>
             </div>
 
-            <div class="note">
-              <ul class="additional"></ul>
-            </div>
+            <!-- Shows the list of correlation ids -->
+            <div id="correlationIdList" class="list-items"></div>
 
-            <div id="Record" class="marc-record">
-            </div>
-
-          </div>
-        </div>
-
-        <div class="col">
-          <div id="record3" class="BoxShadow">
-
-            <div class="header">
-              <p class="title">Yhdistetty tietue</p>
-              <div class="show-hide-buttons-wrap">
-                <button id="showNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Näytä"
-                  onclick="return showNote(event, 'record3')">expand_more</button>
-                <button id="hideNote" class="material-icons show-hide-buttons tooltip" tooltip-text="Piilota"
-                  onclick="return hideNote(event, 'record3')">expand_less</button>
-              </div>
-            </div>
-
-            <div class="note">
-              <ul class="additional"></ul>
-            </div>
-
-            <div id="Record" class="marc-record">
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Modal for browsing and selecting a correlation id from a list -->
-      <div id="correlationIdListModal" class="modal" onclick="return modalClose(event)">
-
-        <!-- The modal box outline and content  -->
-        <div id="correlationIdListModalContent" class="modal-content BoxShadow" onclick="return ignore(event)">
-
-          <!-- Shows instructional title for list, info text and close button -->
-          <div class="modal-top-div">
-
-            <!-- the title for modal, and some additional info text -->
-            <div class="modal-title-and-info">
-              <div class="modal-title">Valitse ID listasta ja aloita haku</div>
-              <div id="lastSearchedInfoText" class="modal-info-text"></div>
-            </div>
-
-            <!-- button for closing modal, works the same way as clicking outside modal  -->
-            <div class="modal-top-div-buttons">
-              <button id="closeModalButton" class="material-icons close-button modal-function-button"
-                title="Sulje lista ilman hakua" onclick="return modalClose(event)">close</button>
-            </div>
-
-          </div>
-
-          <!-- All buttons for filtering correlation id list  -->
-          <div id="filteringButtons" class="list-filtering-buttons">
-
-            <!-- button toggles showing specific catalogers or hiding them from the list -->
-            <!-- segmented button used as multi-select button -->
-            <div id="catalogerToggleContainer" class="segmented-button-container select-button-container"></div>
-
-            <!-- button toggles showing logs by log type or hiding them from the list -->
-            <!-- segmented button used as multi-select button -->
-            <div id="logTypeToggleContainer" class="segmented-button-container select-button-container"></div>
-
-            <!-- button toggles showing only correlation ids with logs with creation time today or over week ago -->
-            <!-- segmented button used as single-select button -->
-            <div id="logCreationDateToggleContainer" class="segmented-button-container select-button-container">
-
-              <button id="creationTimeToday" class="select-button segmented-button"
-                data-title-a="Näytä vain tänään luodut ID:t listanäkymässä"
-                data-title-b="Nollaa kaikki päivämääräsuodattimet"
-                onclick="return toggleShowLogsByCreationDate(`today`)" data-value="false">
-                <div class="select-button-content">
-                  <span class="material-icons select-button-icon">check</span>
-                  <span class="select-button-text">Tänään</span>
-                </div>
-              </button>
-
-              <button id="creationTimeWeekAgo" class="select-button segmented-button"
-                data-title-a="Näytä vain yli viikko sitten luodut ID:t listanäkymässä"
-                data-title-b="Nollaa kaikki päivämääräsuodattimet"
-                onclick="return toggleShowLogsByCreationDate(`weekAgo`)" data-value="false">
-                <div class="select-button-content">
-                  <span class="material-icons select-button-icon">check</span>
-                  <span class="select-button-text">Yli viikko sitten</span>
-                </div>
-              </button>
-
-            </div>
-
-            <!-- button toggles showing extra details for correlation id list items or hiding them  -->
-            <!-- single-select button -->
-            <div id="listDetailsToggleContainer" class="select-button-container">
-              <button id="toggleListDetails" class="select-button select-button-selected"
-                data-title-a="Piilota tarkat tiedot listanäkymästä" data-title-b="Näytä tarkat tiedot listanäkymässä"
-                onclick="return toggleListDetails(event)" data-value="true">
-                <div class="select-button-content">
-                  <span class="material-icons select-button-icon">check</span>
-                  <span class="select-button-text">Tarkat tiedot</span>
-                </div>
-              </button>
-            </div>
-
-            <!-- This is helper html for filtering buttons  -->
+            <!-- This is helper html for list items  -->
             <!-- template's contents are not rendered on page -->
-            <template id="buttonTemplate">
+            <template id="listItemTemplate">
 
-              <!-- base for one select button-->
-              <!-- select button has a container that holds the button element  -->
-              <button id="segmentedSelectButton" class="select-button segmented-button select-button-selected"
-                data-title-a="" data-title-b="" data-value="true">
-                <div class="select-button-content">
-                  <span class="material-icons select-button-icon">check</span>
-                  <span class="select-button-text"></span>
+              <!-- base for one correlation id list item -->
+              <!-- one list item has id and details+icons -->
+              <div id="listItem" class="list-item">
+                <div class="list-item-id"></div>
+                <div class="list-item-details-and-icons">
+                  <div class="list-item-details"></div>
+                  <div class="list-item-icons">
+                    <span class="material-icons list-item-icons-search" title="Tee haku tällä ID:llä">search</span>
+                  </div>
                 </div>
-              </button>
+              </div>
 
             </template>
 
-          </div>
-
-          <!-- All inputs for filtering correlation id list  -->
-          <div id="filteringInputs" class="list-filtering-inputs">
-
-            <!-- inputs for star date and end end date date pickers  -->
-            <div class="date-filter-container">
-              Päivämäärähaku:
-              <div class="datepicker-container">
-                <input id="dateStartInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
-                  placeholder="Start date"
-                  title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
-                  onchange="return updateOnChange(event)">
-                <input id="dateEndInput" type="text" class="datepicker-input" onfocus="(this.type='date')"
-                  placeholder="End date"
-                  title="Näytä listanäkymässä vain ID:t, joiden luontiaika on valitsemiesi päivämäärien välillä"
-                  onchange="return updateOnChange(event)">
-              </div>
-            </div>
-
-            <!-- input for searching with correlation id string -->
-            <div class="correlation-id-filter-container">
-              Tekstihaku:
-              <input id="correlationIdInput" type="text" class="correlation-id-input"
-                title="Näytä listanäkymässä vain ID:t, jotka sopivat hakutermiisi" placeholder="...0a1b-23cd45ef..."
-                oninput="return updateOnChange(event)">
-            </div>
-
-          </div>
-
-          <!-- Div for search results info and sorting options -->
-          <div id="searchResultsAndSorting" class="list-search-results-and-sorting">
-
-            <!-- shows info about search results -->
-            <div id="fetchListPlaceholderText" class="search-results-placeholder">Haetaan listaa, hetkinen...</div>
-
-            <!-- button for resetting search and clearing all filters -->
-            <div id="clearFilters" class="clear-filters">
-              <button id="clearFiltersButton" class="clear-filter-button modal-function-button"
-                title="Poista kaikki listanäkymän suodatukset" onclick="return clearFilters(event)">Nollaa
-                suodattimet</button>
-            </div>
-
-            <!-- shows the dropdown for sorting -->
-            <div class="Select VBox list-sorting">
-              <select id="correlationIdListSorting" class="sort-dropdown" onchange="return updateOnChange(event)">
-                <option selected value="sortByTimeNewestFirst">Näytä uusimmat ID:t ensin</option>
-                <option value="sortByTimeOldestFirst">Näytä vanhimmat ID:t ensin</option>
-                <option value="sortById">Järjestä ID:n mukaan (0->9 a->f)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Shows the list of correlation ids -->
-          <div id="correlationIdList" class="list-items"></div>
-
-          <!-- This is helper html for list items  -->
-          <!-- template's contents are not rendered on page -->
-          <template id="listItemTemplate">
-
-            <!-- base for one correlation id list item -->
-            <!-- one list item has id and details+icons -->
-            <div id="listItem" class="list-item">
-              <div class="list-item-id"></div>
-              <div class="list-item-details-and-icons">
-                <div class="list-item-details"></div>
-                <div class="list-item-icons">
-                  <span class="material-icons list-item-icons-search" title="Tee haku tällä ID:llä">search</span>
-                </div>
-              </div>
-            </div>
-
-          </template>
-
-          <!-- Bottom div floating on top of modal contents ->
+            <!-- Bottom div floating on top of modal contents ->
       <!- button for scrolling back to the top of modal and screen -->
-          <div id="modalBottomDiv" class="modal-bottom-div">
-            <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
-              title="Siirry takaisin listan alkuun" onclick="return goToTop(event)">Takaisin ylös</button>
-          </div>
+            <div id="modalBottomDiv" class="modal-bottom-div">
+              <button id="scrollToTopButton" class="scroll-top-button modal-function-button"
+                title="Siirry takaisin listan alkuun" onclick="return goToTop(event)">Takaisin ylös</button>
+            </div>
 
-          <!-- Shows error message -->
-          <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
-            <span class="material-icons error-message-icon">error_outline</span>
-            <span class="error-message-text"></span>
-          </div>
+            <!-- Shows error message -->
+            <div id="errorFetchingListPlaceholder" class="error-message-placeholder" style="display: none">
+              <span class="material-icons error-message-icon">error_outline</span>
+              <span class="error-message-text"></span>
+            </div>
 
+          </div>
         </div>
+
+        <!-- For displaying info messages and errors to user -->
+        <div id="snackbars" class="snackbars"></div>
+
       </div>
 
-      <!-- For displaying info messages and errors to user -->
-      <div id="snackbars" class="snackbars"></div>
 
     </div>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Footer -->
+    <melinda-footer class="Filler VBox"></melinda-footer>
 
   </div>
 
