@@ -2,18 +2,13 @@
 
 :root {
   --footer-height: 200px;
-  --color-melinda-green: #0DB14B;
-  --color-melinda-darkblue: #00224F;
-  --color-melinda-lightblue: #00B3F0;
-  --color-natlib-blue: #002855;
-  --color-natlib-link-hover: #E29D92;
 }
 
 .footer {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  font-family: sans-serif;
+  font-family: var(--font-family-content);
 }
 
 .footer-filler {
@@ -25,24 +20,25 @@
   flex-direction: column;
   font-size: 18px;
   letter-spacing: 0.05rem;
+  line-height: var(--font-line-height-content-medium);
 }
 
 /* ************************************************************ */
 
 
 .footer-heading {
-  font-size: 26px;
-  font-weight: 600;
+  font-size: var(--font-size-headline-large);
+  font-weight: var(--font-weight-headline);
   padding-bottom: 15px;
 }
 
 .footer-heading-small {
-  color: white;
+  color: var(--color-primary-white);
   padding-top: 16px;
 }
 
 .footer-text {
-  color: white;
+  color: var(--color-primary-white);
 }
 
 .footer-paragraph {
@@ -59,9 +55,9 @@
 }
 
 a .footer-email {
-  font-size: 18px;
-  font-weight: 600;
-  color: white;
+  font-size: var(--font-size-link-large);
+  font-weight: var(--font-weight-link);
+  color: var(--color-primary-white);
 }
 
 .footer-link {
@@ -69,22 +65,22 @@ a .footer-email {
 }
 
 a .footer-link {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--font-size-link-large);
+  font-weight: var(--font-weight-link);
   display: flex;
-  color: white;
+  color: var(--color-primary-white);
   cursor: pointer;
 }
 
 .footer-link-text {
-  color: white;
-  font-size: 18px;
+  color: var(--color-primary-white);
+  font-size: var(--font-size-link-large);
 }
 
 .footer-link-text a {
-  font-size: 18px;
+  font-size: var(--font-size-link-large);
   display: flex;
-  color: white;
+  color: var(--color-primary-white);
 }
 
 .footer-link:hover .footer-link-text,
@@ -99,7 +95,7 @@ a .footer-link {
 }
 
 .link-icon-small {
-  font-size: 16px !important;
+  font-size: var(--font-size-icon-extra-small) !important;
 }
 
 .icon-open-in-new {
@@ -129,7 +125,7 @@ a .footer-link {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  color: white;
+  color: var(--color-primary-white);
   background-color: var(--color-melinda-green);
   padding: 48px;
   gap: 25px;
@@ -176,19 +172,24 @@ a .footer-link {
   text-decoration-color: var(--color-melinda-darkblue);
 }
 
+.melinda-banner a:active .footer-link,
+.melinda-banner .footer-email:active,
+.melinda-logo a:active {
+  outline-color: var(--color-primary-white);
+  outline-style: solid;
+  outline-width: 0.2rem;
+}
+
 .melinda-banner a:active .footer-link {
-  outline: #FFFFFF solid 0.2rem;
-  outline-offset: .4rem
+  outline-offset: 0.4rem
 }
 
 .melinda-banner .footer-email:active {
-  outline: #FFFFFF solid 0.2rem;
-  outline-offset: .1rem
+  outline-offset: 0.1rem
 }
 
 .melinda-logo a:active {
-  outline: #FFFFFF solid 0.2rem;
-  outline-offset: .6rem
+  outline-offset: 0.6rem
 }
 
 
@@ -199,8 +200,8 @@ a .footer-link {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  color: white;
-  background-color: var(--color-natlib-blue);
+  color: var(--color-primary-white);
+  background-color: var(--color-primary-blue);
   gap: 40px;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -215,7 +216,7 @@ a .footer-link {
 }
 
 .natlib-link {
-  font-family: sans-serif;
+  font-family: var(--font-family-content);
   justify-content: flex-end;
   align-items: center;
 }
@@ -231,24 +232,29 @@ a .footer-link {
 }
 
 .natlib-text {
-  font-size: 26px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: var(--font-size-headline-large);
+  font-family: var(--font-family-brand);
   align-items: center;
   justify-content: flex-start;
 }
 
 .natlib-banner .footer-link:hover .footer-link-text,
 .natlib-banner .footer-link:hover .footer-link-icon {
-  color: var(--color-natlib-link-hover);
-  text-decoration-color: var(--color-natlib-link-hover);
+  color: var(--color-red-80);
+  text-decoration-color: var(--color-red-80);
+}
+
+.natlib-logo a:active,
+.natlib-link a:active {
+  outline-color: var(--color-primary-white);
+  outline-style: solid;
+  outline-width: 0.2rem;
 }
 
 .natlib-logo a:active {
-  outline: #FFFFFF solid 0.2rem;
-  outline-offset: .6rem
+  outline-offset: 0.6rem
 }
 
 .natlib-link a:active {
-  outline: #FFFFFF solid 0.2rem;
   outline-offset: 0.4rem
 }
