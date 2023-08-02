@@ -25,7 +25,7 @@
   display: none;
   align-items: center;
   background-color: rgba(40, 40, 40, 0.95);
-  color: white;
+  color: var(--color-primary-white);
   min-height: 48px;
   border-radius: 0.5em;
   overflow: auto;
@@ -71,13 +71,13 @@
 .snackbar-action button:hover,
 .snackbar-icon button:hover {
   background-color: rgb(182, 225, 224);
-  color: black
+  color: var(--color-primary-black);
 }
 
 .snackbar-icon button:focus,
 .snackbar-action button:focus {
-  background-color: white;
-  color: black
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-black);
 }
 
 

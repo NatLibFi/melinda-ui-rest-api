@@ -154,7 +154,7 @@ div#tools {}
 }
 
 .tools button.search-button:disabled {
-  background-color: lightgrey;
+  background-color: var(--color-grey-60);
 }
 
 
@@ -185,7 +185,7 @@ div#tools {}
 }
 
 .tools button#exit:hover {
-  background-color: lightgrey;
+  background-color: var(--color-grey-60);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -233,14 +233,14 @@ div#viewer {}
   font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
   line-height: var(--font-line-height-headline-medium);
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   display: flex;
 }
 
 .col .note {
   font-family: var(--font-family-mono) !important;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   display: none;
 }
@@ -287,7 +287,6 @@ div#viewer {}
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-medium);
-  /*color: grey;*/
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -346,19 +345,19 @@ div#correlationIdListModal {}
 
 /* Buttons in correlation id list modal are small */
 #correlationIdListModal>.modal-content button.modal-function-button {
-  background-color: black;
-  color: white;
+  background-color: var(--color-primary-black);
+  color: var(--color-primary-white);
 }
 
 /* Buttons in correlation id list modal show effect when hovered */
 #correlationIdListModal>.modal-content button:hover {
-  background-color: lightgrey;
-  color: black;
+  background-color: var(--color-grey-60);
+  color: var(--color-primary-black);
 }
 
 /* Buttons in correlation id list modal show effect when clicked */
 #correlationIdListModal>.modal-content button:active {
-  background-color: darkgrey;
+  background-color: var(--color-grey-100);
 }
 
 /* Placeholder texts and input texts are small in correlation id modal */
@@ -392,7 +391,7 @@ div#correlationIdListModal {}
 
 .modal-info-text {
   display: flex;
-  color: black;
+  color: var(--color-primary-black);
   min-height: 14px;
   padding-top: 0.5em;
 }
@@ -406,7 +405,7 @@ div#correlationIdListModal {}
 
 /* Span part in info text is black and underlined when link is active */
 .modal-info-text.link-active span {
-  color: black;
+  color: var(--color-primary-black);
   text-decoration: underline;
 }
 
@@ -573,28 +572,28 @@ div#correlationIdListModal {}
   display: flex;
   overflow: hidden;
   flex-wrap: wrap;
-  border-bottom: solid 1px lightgrey;
+  border-bottom: solid 1px var(--color-grey-60);
 }
 
 /* The first list item has also border on top */
 .list-item:first-child {
-  border-top: solid 1px lightgrey;
+  border-top: solid 1px var(--color-grey-60);
 }
 
 /* A list item has style effect on mouse hovering */
 .list-item:hover {
-  background-color: lightgrey !important;
+  background-color: var(--color-grey-60) !important;
   cursor: pointer;
 }
 
 /* A list item has style effect on clicking */
 .list-item:active {
-  background-color: darkgrey !important;
+  background-color: var(--color-grey-100) !important;
 }
 
 /* Highlighting the last searched list item */
 .list-item.last-searched {
-  background-color: darkgrey;
+  background-color: var(--color-grey-100);
   border-bottom: 5px solid grey;
 }
 
@@ -676,7 +675,7 @@ div#correlationIdListModal {}
 /* search icon shows animation when it's row is clicked (and search is started) */
 .list-item:active .list-item-icons-search {
   display: flex !important;
-  color: white;
+  color: var(--color-primary-white);
   animation-name: resize-and-rotate;
   animation-duration: 1s;
   animation-fill-mode: both;
@@ -805,23 +804,23 @@ div#correlationIdListModal {}
 }
 
 #dialogForUpload .file-button:hover {
-  background-color: lightgrey;
+  background-color: var(--color-grey-60);
 }
 
 #dialogForUpload .close-button {
   margin: 5px;
-  color: white;
-  background-color: black;
+  color: var(--color-primary-white);
+  background-color: var(--color-primary-black);
 }
 
 #dialogForUpload .close-button:hover {
-  background-color: lightgrey;
-  color: black;
+  background-color: var(--color-grey-60);
+  color: var(--color-primary-black);
 }
 
 #dialogForUpload .close-button:active {
-  background-color: darkgrey;
-  color: black;
+  background-color: var(--color-grey-100);
+  color: var(--color-primary-black);
 }
 
 #dialogForUpload .instructions-headline {
@@ -836,9 +835,9 @@ div#correlationIdListModal {}
 }
 
 #dialogForUpload .instructions-headline button:hover {
-  background-color: lightgrey;
+  background-color: var(--color-grey-60);
 }
 
 #dialogForUpload .instructions-headline button:active {
-  background-color: darkgrey;
+  background-color: var(--color-grey-100);
 }

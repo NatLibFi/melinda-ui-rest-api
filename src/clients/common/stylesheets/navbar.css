@@ -171,7 +171,7 @@ a:hover .item-header .item-header-title,
 .primary-menu-bar {
   display: flex;
   flex-direction: row;
-  background-color: white;
+  background-color: var(--color-primary-white);
   padding: 12px;
   height: 66px;
 }
@@ -238,7 +238,7 @@ a:hover .item-header .item-header-title,
   flex-grow: 1;
   align-items: center;
   gap: 12px;
-  color: white;
+  color: var(--color-primary-white);
 }
 
 .secondary-navigation-links .app-navigation .nav-link.app-name .nav-link-text {
@@ -248,7 +248,7 @@ a:hover .item-header .item-header-title,
 }
 
 .secondary-navigation-links a .nav-link {
-  color: white;
+  color: var(--color-primary-white);
 }
 
 .secondary-navigation-links .nav-link:hover {
@@ -264,7 +264,7 @@ a:hover .item-header .item-header-title,
 }
 
 .secondary-navigation-links .nav-link:active {
-  outline-color: white;
+  outline-color: var(--color-primary-white);
   outline-style: solid;
   outline-width: 0.2rem;
   outline-offset: .2rem;
@@ -284,7 +284,7 @@ a:hover .item-header .item-header-title,
 .app-navigation .nav-slash {
   font-size: 24px;
   font-weight: var(--font-weight-link);
-  color: white;
+  color: var(--color-primary-white);
   padding-left: 12px;
   padding-right: 16px;
   cursor: default;
@@ -334,7 +334,7 @@ a:hover .item-header .item-header-title,
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  border-right: 0.1rem solid #002855;
+  border-right: 0.1rem solid var(--color-primary-blue);
   padding-right: 40px;
   min-width: 225px;
   max-width: 20%;
@@ -344,7 +344,7 @@ a:hover .item-header .item-header-title,
 .info-title {
   font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
-  border-bottom: 0.1rem solid #002855;
+  border-bottom: 0.1rem solid var(--color-primary-blue);
   line-height: 30px;
   padding-top: 7px;
   padding-bottom: 4px;
@@ -380,7 +380,7 @@ a:hover .item-header .item-header-title,
 .item-header {
   display: flex;
   flex-direction: row;
-  border-bottom: 0.1rem solid #002855;
+  border-bottom: 0.1rem solid var(--color-primary-blue);
   justify-content: space-between;
   line-height: 26px;
   margin-bottom: 13px;
@@ -454,7 +454,7 @@ a:hover .item-header .item-header-title,
   justify-content: center;
   box-shadow: 0 0.75rem 2rem -2rem rgb(0, 20, 42);
   margin-top: var(--height-primary-menu-bar);
-  background-color: #F2F5F7;
+  background-color: var(--color-blue-20);
 }
 
 .primary-menu-bar-dropdown .dropdown-item {

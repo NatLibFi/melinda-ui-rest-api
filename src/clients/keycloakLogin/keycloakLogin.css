@@ -61,7 +61,7 @@ div#tools {}
   border-radius: 0px 0px 4px 4px;
   /* basic styles */
   background: rgb(182, 225, 224);
-  color: #000;
+  color: var(--color-primary-black);
   font-size: 0.3em;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
 }
@@ -108,7 +108,7 @@ div#muuntaja {}
   height: 48px;
   text-transform: uppercase;
   font-family: roboto_monoregular, "Roboto Mono", monospace;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
 }
 
@@ -119,5 +119,4 @@ div#muuntaja {}
 
 .header label {
   font-size: 12pt;
-  /*color: grey;*/
 }

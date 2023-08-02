@@ -88,7 +88,7 @@ div#muuntaja {}
   font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
   line-height: var(--font-line-height-headline-medium);
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   display: flex;
 }
@@ -113,7 +113,6 @@ form {
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-medium);
-  /*color: grey;*/
 }
 
 .half-width {
@@ -220,7 +219,7 @@ label.label-text {
 }
 
 .content-text {
-  color: rgb(0, 0, 0);
+  color: var(--color-primary-black);
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);

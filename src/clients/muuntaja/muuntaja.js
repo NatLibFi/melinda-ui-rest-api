@@ -145,7 +145,7 @@ window.onEdit = function (e) {
   console.log('Edit:', e);
   editmode = !editmode;
   if (editmode) {
-    e.target.style.background = 'lightblue';
+    e.target.style.background = 'var(--color-teal-60)';
   } else {
     e.target.style.background = '';
   }

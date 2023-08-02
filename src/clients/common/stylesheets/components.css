@@ -52,7 +52,7 @@
   border-radius: 0px 0px 4px 4px;
   /* basic styles */
   background: rgb(182, 225, 224);
-  color: #000;
+  color: var(--color-primary-black);
   font-size: var(--font-size-label-small);
   font-family: var(--font-family-label)
 }
@@ -95,7 +95,7 @@
 }
 
 .tools button:active {
-  background-color: darkgrey !important;
+  background-color: var(--color-grey-100) !important;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -107,7 +107,7 @@ button {
   font-weight: var(--font-weight-button);
   font-family: var(--font-family-button);
   color: inherit;
-  border: 1px solid grey;
+  border: 1px solid var(--color-grey-80);
   background-color: transparent;
   padding: 4px 14px;
   cursor: pointer;
@@ -121,7 +121,7 @@ button.no-border {
 button.no-border.negative {
   border-color: #F99;
   background-color: #F99;
-  color: #000;
+  color: var(--color-primary-black);
 }
 
 button.icon {
@@ -148,7 +148,7 @@ button.negative {
   font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);
   color: inherit;
-  border: 1px solid grey;
+  border: 1px solid var(--color-grey-80);
   background-color: transparent;
   padding: 4px 14px;
   cursor: pointer;
@@ -156,7 +156,7 @@ button.negative {
 }
 
 .button-down {
-  background-color: lightblue;
+  background-color: var(--color-teal-60);
 }
 
 .ToolBar button {
@@ -170,7 +170,7 @@ button.negative {
 }
 
 .ToolBar button:disabled {
-  color: gray;
+  color: var(--color-grey-80);
   cursor: default;
 }
 
@@ -206,7 +206,7 @@ button>a:visited {
 .Input>input {
   font-family: var(--font-family-input);
   border: 0;
-  border-bottom: 1pt solid grey;
+  border-bottom: 1pt solid var(--color-grey-80);
   outline: none;
   font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);
@@ -220,11 +220,11 @@ button>a:visited {
 }
 
 .Input>input:valid {
-  border-bottom: 1pt solid green;
+  border-bottom: 1pt solid var(--color-functional-green);
 }
 
 .Input>input:invalid {
-  border-bottom: 1pt solid red;
+  border-bottom: 1pt solid var(--color-functional-red);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -242,7 +242,7 @@ button>a:visited {
 .Select>select {
   font-family: var(--font-family-content);
   border: 0;
-  border-bottom: 1pt solid grey;
+  border-bottom: 1pt solid var(--color-grey-80);
   background: #fff;
   outline: none;
   font-size: var(--font-size-content-medium);
@@ -277,8 +277,8 @@ button>a:visited {
   display: none;
   position: absolute;
   right: 0;
-  background-color: white;
-  color: black;
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-black);
   min-width: 160px;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
@@ -297,7 +297,7 @@ button>a:visited {
 
 .dropdown-content hr {
   border: 0px;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid var(--color-grey-60);
 }
 
 .dropdown-content .menu-item {
@@ -307,7 +307,7 @@ button>a:visited {
 }
 
 .dropdown-content .menu-item:hover {
-  background-color: lightgrey;
+  background-color: var(--color-grey-60);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -337,7 +337,6 @@ button>a:visited {
   /* Full height */
   overflow: auto;
   /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -349,13 +348,13 @@ button>a:visited {
   min-width: 33%;
   max-width: 50%;
   min-height: 25%;
-  border: 2px solid grey;
+  border: 2px solid var(--color-grey-80);
   border-radius: 8px;
 }
 
 .modal-content hr {
   border: 0px;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid var(--color-grey-60);
   margin: 8px 0px;
 }
 
@@ -368,7 +367,7 @@ button>a:visited {
 
 .modal-content .close:hover,
 .modal-content .close:focus {
-  color: #000;
+  color: var(--color-primary-black);
   text-decoration: none;
   cursor: pointer;
 }
@@ -407,7 +406,7 @@ dialog:hover {
 dialog:modal {
   display: flex;
   flex-direction: column;
-  color: black;
+  color: var(--color-primary-black);
 }
 
 /* Dialog can have icon: informative picture on top */
@@ -474,19 +473,19 @@ p:not(.full-width p) {
 
 /* Dialog buttons show accent background-color on hover */
 .dialog-actions button:hover {
-  color: black;
+  color: var(--color-primary-black);
   background-color: rgb(182, 225, 224);
 }
 
 /* Special style for dialog cancel button on hover */
 .dialog-actions button.dialog-cancel-button:hover {
-  background-color: lightgrey;
+  background-color: var(--color-grey-60);
 }
 
 /* Dialog buttons show accent background-color on hover */
 .dialog-actions button:active {
-  background-color: grey;
-  color: white
+  background-color: var(--color-grey-80);
+  color: var(--color-primary-white);
 }
 
 /* Disabled dialog buttons have 'not allowed' cursor on hover */
@@ -570,8 +569,8 @@ p:not(.full-width p) {
 
 /* Select button has selected style when it is selected */
 .select-button-selected {
-  background-color: darkgrey;
-  color: black
+  background-color: var(--color-grey-100);
+  color: var(--color-primary-black);
 }
 
 /* When the select button is unselected, the icon is hidden */

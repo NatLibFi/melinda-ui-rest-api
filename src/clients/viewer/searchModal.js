@@ -548,7 +548,7 @@ function highlightMatches() {
     function stylePatternMatches() {
       const listItemIdDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-id`);
 
-      const styledString = `<span style="background-color:lightgrey">${searchString}</span>`;
+      const styledString = `<span style="background-color:var(--color-grey-60)">${searchString}</span>`;
       const regExp = new RegExp(`${searchString}`, 'g');
 
       listItemIdDivs.forEach(listItemId => listItemId.innerHTML = listItemId.innerHTML.replace(regExp, styledString));

@@ -33,7 +33,7 @@ div#muuntaja {}
 
 .col .header {
   height: 48px;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
 }
 
@@ -44,5 +44,4 @@ div#muuntaja {}
 
 .header label {
   font-size: 12pt;
-  /*color: grey;*/
 }
