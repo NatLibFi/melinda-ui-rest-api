@@ -3,49 +3,30 @@
 /* ---------------------------------------------------------------------------- */
 
 .progress-bar-inactive {
-  height: 3px;
   width: 100%;
   margin: 0;
+  padding-bottom: 10px;
 }
 
 .progress-bar,
 .progress-bar:before {
-  height: 3px;
+  height: 10px;
   width: 100%;
   margin: 0;
 }
 
 .progress-bar {
-  background-color: #b3d4fc;
-  display: -webkit-flex;
+  background-color: var(--color-melinda-green);
   display: flex;
 }
 
 .progress-bar:before {
-  background-color: #3f51b5;
+  background-color: var(--color-melinda-darkblue);
   content: '';
-  animation: running-progress 2s linear infinite;
-  -webkit-animation: running-progress 2s linear infinite;
+  animation: running-progress 1s linear infinite;
 }
 
 @keyframes running-progress {
-  0% {
-    margin-left: 0px;
-    margin-right: 100%;
-  }
-
-  50% {
-    margin-left: 0%;
-    margin-right: 0%;
-  }
-
-  100% {
-    margin-left: 100%;
-    margin-right: 0%;
-  }
-}
-
-@-webkit-keyframes running-progress {
   0% {
     margin-left: 0px;
     margin-right: 100%;
