@@ -54,7 +54,7 @@
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
   /* basic styles */
-  background: rgb(182, 225, 224);
+  background: var(--color-melinda-lightblue);
   color: var(--color-primary-black);
   font-size: 0.3em;
   font-family:  var(--font-family-mono);

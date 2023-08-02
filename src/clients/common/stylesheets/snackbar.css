@@ -51,7 +51,7 @@
   padding-left: 12px;
   padding-right: 12px;
   border: none;
-  color: rgb(182, 225, 224);
+  color: var(--color-melinda-lightblue);
 }
 
 /* Snackbar icon is container for a close button */
@@ -70,7 +70,7 @@
 
 .snackbar-action button:hover,
 .snackbar-icon button:hover {
-  background-color: rgb(182, 225, 224);
+  background-color: var(--color-melinda-lightblue);
   color: var(--color-primary-black);
 }
 

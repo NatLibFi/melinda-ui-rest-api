@@ -248,7 +248,7 @@ export function checkFile(file) {
   if (file.size === 0) {
     console.log('File is empty!');
     disableElement(confirmUploadButton);
-    highlightElement(fileNameDiv, '#D6958B');
+    highlightElement(fileNameDiv, 'var(--color-functional-red)');
     showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
     return;
   }
@@ -257,12 +257,12 @@ export function checkFile(file) {
     console.log(`File type '${file.type}' is not accepted for upload!`);
     confirmUploadButton.title = 'Valitse ensin .json- tai .txt-päätteinen tiedosto';
     disableElement(confirmUploadButton);
-    highlightElement(fileNameDiv, '#D6958B');
+    highlightElement(fileNameDiv, 'var(--color-functional-red)');
     showSnackbar({text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
     return;
   }
 
   confirmUploadButton.removeAttribute('title');
   enableElement(confirmUploadButton);
-  highlightElement(fileNameDiv, '#8AB59C');
+  highlightElement(fileNameDiv, 'var(--color-functional-green)');
 }

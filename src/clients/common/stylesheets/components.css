@@ -49,8 +49,8 @@
   transform: translateX(-50%);
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
-  background: rgb(182, 225, 224);
-  color: var(--color-primary-black);
+  background: var(--color-melinda-lightblue);
+  color: var(--color-primary-white);
   font-size: var(--font-size-label-small);
   font-family: var(--font-family-label)
 }
@@ -70,7 +70,7 @@
 }
 
 .tools .highlight-border {
-  border: 2px solid rgb(182, 225, 224);
+  border: 2px solid var(--color-melinda-lightblue);;
   border-radius: 1em;
   padding-left: 1.5em;
   padding-right: 1em;
@@ -464,15 +464,15 @@ p:not(.full-width p) {
   border: none;
   padding-top: 6px;
   padding-bottom: 6px;
-  color: rgb(40, 165, 165);
+  color: var(--color-melinda-lightblue);
   font-size: var(--font-size-button-large);
   font-weight: var(--font-weight-button);
 }
 
 /* Dialog buttons show accent background-color on hover */
 .dialog-actions button:hover {
-  color: var(--color-primary-black);
-  background-color: rgb(182, 225, 224);
+  color: var(--color-primary-white);
+  background-color: var(--color-melinda-lightblue);
 }
 
 /* Special style for dialog cancel button on hover */

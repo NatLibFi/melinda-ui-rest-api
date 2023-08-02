@@ -52,12 +52,12 @@
 }
 
 .marc-record .tag {
-  color: var(--color-melinda-lightblue);
+  color: var(--color-melinda-green);
   margin-right: 9pt;
 }
 
 .marc-record .inds {
-  color: var(--color-melinda-lightblue);
+  color: var(--color-melinda-green);
   margin-right: 9pt;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .marc-record .subfield .code {
-  color: var(--color-red-80);
+  color: var(--color-melinda-lightblue);
   margin-right: 2px;
 }
 
