@@ -110,8 +110,12 @@ a {
   align-items: center;
 }
 
-.nav-link-icon .open-in-new {
+.nav-link-icon .open-in-new,
+.outer-link a span.open-in-new {
   font-size: 16px;
+}
+
+.nav-link-icon .open-in-new {
   padding-left: 5px;
 }
 
@@ -151,8 +155,13 @@ a:hover .item-header .item-header-title,
   border-radius: 0.25rem;
 }
 
+.item-content-paragraph a {
+  text-decoration: underline dotted #0D2FC4 0.1rem
+}
+
 .item-content-paragraph a:hover {
   text-decoration: underline;
+  color: var(--color-melinda-darkblue);
 }
 
 
