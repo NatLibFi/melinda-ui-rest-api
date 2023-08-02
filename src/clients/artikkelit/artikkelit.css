@@ -8,13 +8,6 @@
 
 /* ---------------------------------------------------------------------------- */
 
-
-div#loading {}
-
-/* ---------------------------------------------------------------------------- */
-
-div#tools {}
-
 .tools {
   display: flex;
   flex-direction: row;
@@ -22,10 +15,6 @@ div#tools {}
   align-items: flex-end;
   width: 100vw;
 }
-
-/* ---------------------------------------------------------------------------- */
-
-div#muuntaja {}
 
 /* ---------------------------------------------------------------------------- */
 /* Tooltips, overwritten specifically for Arto */
@@ -263,5 +252,6 @@ input::-webkit-inner-spin-button {
 }
 
 input[type=number] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }

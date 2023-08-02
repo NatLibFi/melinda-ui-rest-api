@@ -9,11 +9,8 @@
 /* ---------------------------------------------------------------------------- */
 
 
-div#loading {}
-
 /* ---------------------------------------------------------------------------- */
-
-div#tools {}
+/* TOOLS */
 
 .tools {
   flex-wrap: wrap;
@@ -189,8 +186,7 @@ div#tools {}
 }
 
 /* ---------------------------------------------------------------------------- */
-
-div#viewer {}
+/* div#viewer */
 
 @media screen and (min-width: 1100px) {
   #viewer .record-merge-panel {
@@ -319,15 +315,11 @@ span.correlation-id-font {
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 
-div#correlationIdListModal {}
-
 
 /* Modal content does not move sideways when scroll bar becomes visible or hidden */
 #correlationIdListModal {
   overflow-y: scroll
 }
-
-#correlationIdListModal>.modal {}
 
 /* Text content in correlation id modal is small */
 /* Modal starts vertically almost from top */

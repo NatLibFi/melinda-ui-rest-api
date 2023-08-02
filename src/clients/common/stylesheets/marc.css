@@ -3,13 +3,8 @@
 /* ---------------------------------------------------------------------------- */
 
 .marc-record {
-  /* margin-left: 20pt; */
   font-family: var(--font-family-mono);
   font-size: 14.5px;
-  /*
-  font-weight: 400;
-  line-height: 1.5;
-  */
 }
 
 .marc-record > * {
@@ -38,7 +33,6 @@
 
 .marc-record .row-included {
   background-color: #f8fcd8;
-  /* color grey; */
 }
 
 .marc-record .row-excluded {
@@ -77,9 +71,6 @@
   margin-right: 2px;
 }
 
-.marc-record .subfield .value {
-}
-
 /* ---------------------------------------------------------------------------- */
 /* Styles for MARC record field edit */
 
@@ -94,7 +85,6 @@
 }
 
 .fieldedit .subfield {
-  /* padding: 6px 8px; */
   display: flex;
   align-items: center;
   padding: 2px;
@@ -110,8 +100,6 @@
 }
 
 .fieldedit .ghost-row {
-  /* border: 1px solid grey; */
-  /*padding: 6px 10px;*/
   background-color: lightblue;
 }
 
@@ -131,5 +119,4 @@
 
 .fieldedit button.material-icons:enabled:hover {
   background-color: rgba(0, 0, 0, 0.10);
-  /*transition: background-color .10s;*/
 }

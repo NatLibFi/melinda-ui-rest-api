@@ -45,12 +45,10 @@
   content: attr(tooltip-text);
   position: absolute;
   left: 50%;
-  /* right: 0; */
   top: 100%;
   transform: translateX(-50%);
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
-  /* basic styles */
   background: rgb(182, 225, 224);
   color: var(--color-primary-black);
   font-size: var(--font-size-label-small);
@@ -509,7 +507,6 @@ p:not(.full-width p) {
 
 /* Segmented button class is used with element <button> */
 /* First and last button are rendered with round button edges */
-.segmented-button {}
 
 .segmented-button:first-child {
   border-radius: 1em 0em 0em 1em;
@@ -544,7 +541,6 @@ p:not(.full-width p) {
 
 /* Helper class for html readibility, used for marking a button as select button */
 /* Select button in unselected state has default button style*/
-.select-button {}
 
 /* Select button inner container for content */
 /* Contents for select button are icon and text */
@@ -556,8 +552,6 @@ p:not(.full-width p) {
 /* Select button has icon */
 /* Use with material-icons class, check icon and a <span> element: */
 .select-button-icon {
-  /*   font-size: 13px !important;
-  height: 16px !important; */
   font-size: var(--font-size-icon-small);
   padding-right: 5px;
 }
@@ -586,6 +580,11 @@ p:not(.full-width p) {
   padding-left: 9px;
   padding-right: 9px;
 }
+
+
+/* ---------------------------------------------------------------------------- */
+/* Login form styles */
+/* ---------------------------------------------------------------------------- */
 
 #login {
   margin: 50px auto;
