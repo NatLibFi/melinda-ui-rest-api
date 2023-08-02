@@ -22,7 +22,7 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  font-family: sans-serif;
+  font-family: var(--font-family-content);
 }
 
 
@@ -31,7 +31,7 @@
 .navbar-menu-bars {
   display: flex;
   flex-direction: column;
-  font-size: 18px;
+  font-size: var(--font-size-content-large);
   letter-spacing: 0.05rem;
 }
 
@@ -44,10 +44,10 @@
 }
 
 a {
-  font-family: sans-serif;
+  font-family: var(--font-family-link);
   text-decoration: none;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: var(--font-size-link-medium);
+  font-weight: 300;
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -68,8 +68,9 @@ a {
 }
 
 .nav-link-text {
-  font-size: 16px;
-  font-weight: 600;
+  font-family: var(--font-family-link);
+  font-size: var(--font-size-link-medium);
+  font-weight: var(--font-weight-link);
   padding-left: 12px;
   padding-right: 10px;
 }
@@ -254,7 +255,7 @@ a:hover .item-header .item-header-title,
 }
 
 .secondary-navigation-links .nav-link:active {
-  outline-color: white; 
+  outline-color: white;
   outline-style: solid;
   outline-width: 0.2rem;
   outline-offset: .2rem;
@@ -266,9 +267,14 @@ a:hover .item-header .item-header-title,
   align-items: center;
 }
 
+.app-navigation .nav-link-text,
+.app-selection .nav-link-text {
+  font-size: 18px;
+}
+
 .app-navigation .nav-slash {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: var(--font-weight-link);
   color: white;
   padding-left: 12px;
   padding-right: 16px;
@@ -327,8 +333,8 @@ a:hover .item-header .item-header-title,
 }
 
 .info-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: var(--font-size-headline-medium);
+  font-weight: var(--font-weight-headline);
   border-bottom: 0.1rem solid #002855;
   line-height: 30px;
   padding-top: 7px;
@@ -372,7 +378,7 @@ a:hover .item-header .item-header-title,
   padding-top: 8px;
   padding-bottom: 8px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: var(--font-weight-headline);
 }
 
 .item-header-title {
@@ -399,7 +405,7 @@ a:hover .item-header .item-header-title,
 }
 
 .dropdown-button-close .close-icon {
-  font-size: 32px;
+  font-size: var(--font-size-icon-large);
 }
 
 .dropdown-button-close:hover {
