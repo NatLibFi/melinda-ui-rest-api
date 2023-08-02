@@ -15,7 +15,10 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Public+Sans:wght@300;500;600&family=Roboto+Mono&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="login.css" />
+
+  <script src="/common/navbar.js"></script>
+  <script src="/common/footer.js"></script>
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -23,22 +26,51 @@
 <!-- -------------------------------------------------------------------------- -->
 
 <body>
-  Valitse sovellus:
-  <p>
-    <a href="/artikkelit">Artikkelit</a>
-  </p>
-  <p>
-    <a href="/keycloak">Keycloak</a>
-  </p>
-  <p>
-    <a href="/muuntaja">Muuntaja</a>
-  </p>
-  <p>
-    <a href="/edit">Muokkaus</a>
-  </p>
-  <p>
-    <a href="/viewer">Viewer</a>
-  </p>
+
+  <div id="bodywrapper" class="viewport-full VBox">
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Navigation bar -->
+    <melinda-navbar></melinda-navbar>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Home page -->
+    <div id="homePage">
+
+      <div id="appListing">
+        Valitse aputyökalu:
+        <p>
+          <a href="/artikkelit">Artikkelit</a>
+        </p>
+        <p>
+          <a href="/keycloak">Keycloak</a>
+        </p>
+        <p>
+          <a href="/muuntaja">Muuntaja</a>
+        </p>
+        <p>
+          <a href="/edit">Muokkaus</a>
+        </p>
+        <p>
+          <a href="/viewer">Viewer</a>
+        </p>
+      </div>
+
+      <!-- For displaying info messages and errors to user -->
+      <div id="snackbars" class="snackbars"></div>
+
+    </div>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Footer -->
+    <melinda-footer class="Filler VBox"></melinda-footer>
+
+  </div>
+
 </body>
 
 </html>

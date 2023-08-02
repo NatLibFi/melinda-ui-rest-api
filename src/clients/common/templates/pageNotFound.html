@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="/../common/stylesheets/pageNotFound.css" />
 
   <script type="module" src="/../common/pageNotFound.js"></script>
+  <script src="/../common/navbar.js"></script>
+
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -27,9 +29,12 @@
 <body onload="initialize()">
 
   <!-- ------------------------------------------------------------------------ -->
-  <!-- Navbar with app navigation dropdown-->
-  <div id="navbar"></div>
+  <!-- Navigation bar -->
+  <melinda-navbar></melinda-navbar>
 
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Progress bar -->
+  <div id="progressbar" class="progress-bar-inactive"></div>
 
   <!-- ------------------------------------------------------------------------ -->
   <!-- Application "tabs" -->
@@ -70,31 +75,6 @@
     <!-- ---------------------------------------------------------------------- -->
     <!-- Page not found tab -->
     <div id="pageNotFound" hidden>
-
-      <!-- ------------------------------------------------------------------------ -->
-      <!-- Tool buttons in Navbar -->
-      <div class="IconBar ToolBar">
-
-        <button class="material-icons tooltip" tooltip-text="Edellinen sivu"
-          onClick="return goBack(event)">undo</button>
-
-        <button class="material-icons tooltip" tooltip-text="Kotisivu" onClick="return goHome(event)">home</button>
-
-        <button class="tooltip material-icons" tooltip-text="Ohjeet">
-          <a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
-            rel="noopener noreferrer">help_outline</a>
-        </button>
-
-        <div class="dropdown">
-          <button id="account-btn" class="material-icons">account_circle</button>
-          <div id="account-menu" class="dropdown-content">
-            <div class="menu-header" id="username">Tuntematon</div>
-            <hr />
-            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-          </div>
-        </div>
-
-      </div>
 
       <!-- ------------------------------------------------------------------------ -->
       <!-- General info about page not found and contact information -->

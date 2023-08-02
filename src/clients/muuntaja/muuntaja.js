@@ -4,7 +4,7 @@
 //
 //*****************************************************************************
 
-import {setNavBar, startProcess, stopProcess,
+import {startProcess, stopProcess,
   showTab, resetForms, reload, showSnackbar,
   createDropdownItem, createSelectItem,
   createSelectOption} from '/common/ui-utils.js';
@@ -20,8 +20,6 @@ import {showRecord, editField} from '/common/marc-record-ui.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  setNavBar(document.querySelector('#navbar'), 'Muuntaja');
-
   doLogin(authSuccess);
 
   function authSuccess(user) {
@@ -29,8 +27,9 @@ window.initialize = function () {
     profileRequest()
       .then(profiles => {
         setProfiles(profiles);
-
-        const username = document.querySelector('#account-menu #username');
+        const accountMenu = document.getElementById('accountMenu');
+        accountMenu.classList.add('show');
+        const username = document.querySelector('#accountMenu #username');
         username.innerHTML = Account.get().Name;
         showTab('muuntaja');
         parseUrlParameters();

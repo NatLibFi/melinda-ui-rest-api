@@ -4,11 +4,10 @@
 //
 //*****************************************************************************
 
-import {setNavBar} from './navbar.js';
 import {startProcess, stopProcess} from './progressbar.js';
 import {showSnackbar} from './snackbar.js';
 
-export {setNavBar, startProcess, stopProcess, showSnackbar};
+export {startProcess, stopProcess, showSnackbar};
 
 //-----------------------------------------------------------------------------
 

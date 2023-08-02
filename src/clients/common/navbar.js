@@ -1,74 +1,150 @@
+//****************************************************************************//
+//                                                                            //
+// Melinda navigation bar custom element for apps                             //
+//                                                                            //
+//****************************************************************************//
 
-export function setNavBar(elem, name) {
-  const navBar = createItem('div', ['NavBar', 'ToolBar']);
-  elem.appendChild(navBar);
-  navBar.appendChild(createImageItem());
+class Navbar extends HTMLElement {
+  constructor() {
+    super();
+  }
 
-  const appName = createItem('div', ['AppName']);
+  connectedCallback() {
 
-  const btn = createButtonItem(name);
-  navBar.appendChild(appName);
-  appName.appendChild(btn);
-  btn.appendChild(createDropdownMenu(name));
+    getNavbarHtml()
+      .then(html => {
+        const navbar = getNavbarElement(html);
+        this.appendChild(navbar);
+        console.log('Navbar is added: ', navbar.isConnected);
+        addNavbarEventListeners();
+        addFauxBreadcrumb();
+      })
+      .catch(error =>
+        console.log('Error while setting navbar: ', error)
+      )
 
-  elem.appendChild(createItem('div', ['progress-bar-inactive'], 'progressbar'));
-
-  function createItem(elemTag, clsList = [], id = '') {
-    const item = document.createElement(elemTag);
-    if (clsList.length > 0) {
-      item.classList.add(...clsList);
+    async function getNavbarHtml() {
+      const response = await fetch('/../common/templates/navbar.html');
+      const html = await response.text();
+      return html;
     }
-    if (id.length > 0) {
-      item.id = id;
+
+    function getNavbarElement(html) {
+      const parser = new DOMParser();
+      const navbarDocument = parser.parseFromString(html, 'text/html');
+      const navbarTemplate = navbarDocument.getElementById('navbarTemplate');
+      const navbarFragment = navbarTemplate.content.cloneNode(true);
+      const navbarElement = navbarFragment.getElementById('navbar');
+      return navbarElement;
     }
-    return item;
-  }
 
-  function createImageItem() {
-    const img = createItem('img', ['logo']);
-    img.src = '/common/images/Melinda-logo-white.png';
-    return img;
-  }
+    // Add event listeners for navbar related functions
+    function addNavbarEventListeners() {
+      console.log('Adding navbar event listeners');
 
-  function createButtonItem(name) {
-    const btn = createItem('button', ['dropdown-btn']);
-    btn.addEventListener('click', () => {
-      togglePages();
-    });
-    btn.innerHTML = `${name}<span class="material-icons">arrow_drop_down</span>`;
-    return btn;
-  }
+      const dropdownMenuButtons = document.querySelectorAll('.navbar-dropdown-button');
+      const dropdownCloseButtons = document.querySelectorAll('.dropdown-button-close');
 
-  function createDropdownMenu(name) {
-    const pageData = ['Artikkelit', 'Keycloak', 'Muokkaus', 'Muuntaja', 'Viewer'];
-    const dropdownMenu = createItem('ul', ['page-dropdown-content'], 'pageDropdown');
-    for (const page of pageData) {
-      if (page.toLowerCase() !== name.toLowerCase()) {
-        const listElem = createItem('li');
-        const linkElem = createItem('a');
-        linkElem.href = page === 'Muokkaus' ? '/edit' : `/${page.toLowerCase()}`;
-        const linkTextElem = createItem('div', ['menu-item']);
-        linkTextElem.innerHTML = page;
-        linkElem.appendChild(linkTextElem);
-        listElem.appendChild(linkElem);
-        dropdownMenu.appendChild(listElem);
+      dropdownMenuButtons.forEach(button => {
+        addDropdownMenuEventListener(button);
+      });
+
+      dropdownCloseButtons.forEach(button => {
+        addDropdownCloseButtonEventListener(button);
+      });
+
+      addDismissNavbarEventListener();
+
+
+      // Toggles showing or hiding dropdown menus in navbar
+      // - shows the dropdown menu when it's button is clicked and it is not closed
+      // - hides the dropdown menu if it's already open.
+      // In addition, automatically close all other dropdown menus in navbar.
+      function addDropdownMenuEventListener(button) {
+
+        button.addEventListener('click', event => {
+          event.preventDefault();
+
+          const dropdownMenuId = button.id + 'Dropdown';
+          const dropdownMenu = document.getElementById(dropdownMenuId);
+          const expandMoreIcon = document.querySelector(`#${button.id} .expand-more`);
+          const expandLessIcon = document.querySelector(`#${button.id} .expand-less`);
+          const showDropdownMenu = !dropdownMenu.classList.contains('show');
+
+          closeAllDropdownMenus();
+
+          if (showDropdownMenu) {
+            dropdownMenu.classList.add('show');
+            expandLessIcon.classList.add('show');
+            expandMoreIcon.classList.remove('show');
+          }
+
+        })
+      }
+
+      // Clicking a close button in a dropdown menu
+      // hides automatically all dropdown menus in navbar.
+      function addDropdownCloseButtonEventListener(button) {
+
+        button.addEventListener('click', event => {
+          event.preventDefault();
+
+          closeAllDropdownMenus();
+        });
+      }
+
+      // Clicking outside of navbar in window
+      // hides automativally all dropdown menus in navbar
+      function addDismissNavbarEventListener() {
+        window.addEventListener('click', function (event) {
+
+          const navbar = document.getElementById('navbar');
+
+          if (!navbar.contains(event.target)) {
+            closeAllDropdownMenus();
+          }
+        })
+
+      }
+
+      // Closes all dropdown menus in navbar
+      // and updates all the chevron icons
+      function closeAllDropdownMenus() {
+        const allDropdownMenus = document.querySelectorAll('.navbar-dropdown-menu');
+        const allExpandMoreIcons = document.querySelectorAll('.expand-more');
+        const allExpandLessIcons = document.querySelectorAll('.expand-less');
+
+        allDropdownMenus.forEach(menu =>
+          menu.classList.remove('show')
+        );
+
+        allExpandMoreIcons.forEach(icon => {
+          icon.classList.add('show');
+        })
+
+        allExpandLessIcons.forEach(icon => {
+          icon.classList.remove('show');
+        })
+
       }
     }
 
-    return dropdownMenu;
-  }
+    // Add the current location as app name
+    function addFauxBreadcrumb() {
+      const currentUrl = window.location.href;
+      const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
+      const appNameDiv = document.getElementById('appName');
+      appNameDiv.innerHTML = appName;
 
-  function togglePages() {
-    document.querySelector('#pageDropdown').classList.toggle('show-pages');
-  }
-
-  // Hide page list if the user clicks outsife of it while open
-  window.onclick = function(e) {
-    if (!e.target.matches('.dropdown-btn') && !e.target.matches('.material-icons')) {
-      const dropdown = document.querySelector('#pageDropdown');
-      if (dropdown.classList.contains('show-pages')) {
-        dropdown.classList.remove('show-pages');
+      if (appName === 'edit') {
+        appNameDiv.innerHTML = 'muokkaus';
       }
+
+      const appLinkDiv = document.getElementById('appLink');
+      appLinkDiv.setAttribute('href', '/' + appName);
     }
-  };
+
+  }
 }
+
+customElements.define('melinda-navbar', Navbar);

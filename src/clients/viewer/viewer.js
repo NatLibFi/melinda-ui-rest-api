@@ -5,7 +5,7 @@
 //*****************************************************************************
 
 import {
-  showTab, setNavBar, startProcess, stopProcess, showSnackbar,
+  showTab, startProcess, stopProcess, showSnackbar,
   createOption, enableElement, disableElement, highlightElement
 } from '/common/ui-utils.js';
 
@@ -27,7 +27,6 @@ import {setProtectButton} from './logActions.js';
 
 window.initialize = function () {
   console.log('Initializing');
-  setNavBar(document.querySelector('#navbar'), 'Viewer');
 
   const select = document.querySelector(`#viewer #sequence`);
   select.innerHTML = '';
@@ -36,7 +35,9 @@ window.initialize = function () {
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    const username = document.querySelector(`#account-menu #username`);
+    const accountMenu = document.getElementById('accountMenu');
+    accountMenu.classList.add('show');
+    const username = document.querySelector(`#accountMenu #username`);
     username.innerHTML = Account.get().Name;
     showTab('viewer');
     parseUrlParameters();

@@ -19,6 +19,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <script type="module" src="edit.js"></script>
+  <script src="/common/navbar.js"></script>
   <script src="/common/footer.js"></script>
 </head>
 
@@ -31,8 +32,12 @@
   <div id="bodywrapper" class="viewport-full VBox">
 
     <!-- ------------------------------------------------------------------------ -->
-    <!-- Navbar -->
-    <div id="navbar"></div>
+    <!-- Navigation bar -->
+    <melinda-navbar></melinda-navbar>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
 
     <!-- ------------------------------------------------------------------------ -->
     <!-- Application -->
@@ -40,22 +45,19 @@
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Loading "screen" -->
-
-      <div id="loading">
-      </div>
+      <div id="loading"></div>
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Login tab -->
       <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-
       <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
         <div class="VBox Input">
           <label for="username">Käyttäjätunnus</label>
-          <input id="login-username" name="username" autofocus />
+          <input id="login-username" name="username" autofocus autocomplete="username" />
         </div>
         <div class="VBox Input">
           <label for="password">Salasana</label>
-          <input id="login-password" type="password" name="password" />
+          <input id="login-password" type="password" name="password" autocomplete="current-password" />
         </div>
         <div class="HBox Input" style="align-items: baseline;">
           <input id="acceptterms" type="checkbox">
@@ -74,23 +76,11 @@
       </form>
 
       <!-- ---------------------------------------------------------------------- -->
-      <!-- Muuntaja tab -->
-
+      <!-- Muokkaus tab -->
       <div id="muuntaja" hidden>
-        <div class="IconBar ToolBar">
-          <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-              href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-          <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
-          <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
-          <div class="dropdown">
-            <button id="account-btn" class="material-icons">account_circle</button>
-            <div id="account-menu" class="dropdown-content">
-              <div class="menu-header" id="username">Tuntematon</div>
-              <hr />
-              <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-            </div>
-          </div>
-        </div>
+
+        <!-- ------------------------------------------------------------------------ -->
+        <!-- Record-Merge Panel -->
         <div class="record-merge-panel">
 
           <div id="source" class="col BoxShadow">
@@ -151,8 +141,10 @@
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Tab for server side notes -->
-      <div id="server-note" hidden>
-      </div>
+      <div id="server-note" hidden></div>
+
+      <!-- For displaying info messages and errors to user -->
+      <div id="snackbars" class="snackbars"></div>
     </div>
 
     <!-- ------------------------------------------------------------------------ -->

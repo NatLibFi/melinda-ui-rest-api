@@ -19,8 +19,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <script type="module" src="muuntaja.js"></script>
+  <script src="/common/navbar.js"></script>
   <script src="/common/footer.js"></script>
-
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -30,122 +30,108 @@
 <body onload="initialize()">
 
   <div id="bodywrapper" class="viewport-full VBox">
+    
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Navigation bar -->
+    <melinda-navbar></melinda-navbar>
 
     <!-- ------------------------------------------------------------------------ -->
-    <!-- Navbar -->
-    <div id="navbar"></div>
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
 
-    <!-- ------------------------------------------------------------------------ -->
     <!-- Application -->
     <div id="root">
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Loading "screen" -->
-      <div id="loading">
-      </div>
+      <div id="loading"></div>
 
-      <!-- ---------------------------------------------------------------------- -->
-      <!-- Login tab -->
-      <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-      <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
-        <div class="VBox Input">
-          <label for="username">Käyttäjätunnus</label>
-          <input id="login-username" name="username" autofocus />
-        </div>
-        <div class="VBox Input">
-          <label for="password">Salasana</label>
-          <input id="login-password" type="password" name="password" />
-        </div>
-        <div class="HBox Input" style="align-items: baseline;">
-          <input id="acceptterms" type="checkbox">
-          <label for="acceptterms" style="padding-left: 8px;">
-            Hyväksyn
-            <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
-              tietosuojaselosteen</a>
-            ja evästeiden käytön.
-            <br /><br />
-            Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-        </div>
-        <div id="info"></div>
-        <div style="display: flex; flex-direction: column; align-items: flex-end;">
-          <button onClick="return login(event)">Kirjaudu</button>
-        </div>
-      </form>
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Login tab -->
+        <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
+        <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
+          <div class="VBox Input">
+            <label for="username">Käyttäjätunnus</label>
+            <input id="login-username" name="username" autofocus />
+          </div>
+          <div class="VBox Input">
+            <label for="password">Salasana</label>
+            <input id="login-password" type="password" name="password" />
+          </div>
+          <div class="HBox Input" style="align-items: baseline;">
+            <input id="acceptterms" type="checkbox">
+            <label for="acceptterms" style="padding-left: 8px;">
+              Hyväksyn
+              <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
+                tietosuojaselosteen</a>
+              ja evästeiden käytön.
+              <br /><br />
+              Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+          </div>
+          <div id="info"></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end;">
+            <button onClick="return login(event)">Kirjaudu</button>
+          </div>
+        </form>
 
-      <!-- ---------------------------------------------------------------------- -->
-      <!-- Muuntaja tab -->
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Muuntaja tab -->
+        <div id="muuntaja" hidden>
 
-      <div id="muuntaja" hidden>
-
-        <!-- ------------------------------------------------------------------------ -->
-        <!-- Toolbar Iconbar -->
-        <div class="IconBar ToolBar">
-          <button class="tooltip material-icons" tooltip-text="Ohjeet"><a class="material-icons"
-              href="https://www.kiwi.fi/x/iBcvBQ" target="_blank" rel="noopener noreferrer">help_outline</a></button>
-          <button class="material-icons tooltip" tooltip-text="Uusi" onClick="onNew(event)">add</button>
-          <button class="material-icons tooltip" tooltip-text="Etsi" onClick="onSearch(event)">search</button>
-          <div class="dropdown">
-            <button id="account-btn" class="material-icons">account_circle</button>
-            <div id="account-menu" class="dropdown-content">
-              <div class="menu-header" id="username">Tuntematon</div>
-              <hr />
-              <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
+          <!-- Muuntaja Toolbar -->
+          <div class="tools ToolBar">
+            <!-- Tools and settings for searching, editing, saving and sharing records -->
+            <div class="ToolBar HBox highlight-border">
+              <div id="profile-options"></div>
+              <div id="type-options"></div>
+              <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
+              <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)"
+                disabled>save</button>
+            </div>
+            <div class="HBox">
+              <button class="material-icons tooltip" tooltip-text="Jaa linkki" onClick="copyLink(event)">share</button>
+              <button class="material-icons tooltip" tooltip-text="Tietue"
+                onclick="jsonDlgOpen(event)">edit_note</button>
             </div>
           </div>
-        </div>
 
-        <!-- Muuntaja Toolbar -->
-        <div class="tools ToolBar">
-          <!-- Tools and settings for searching, editing, saving and sharing records -->
-          <div class="ToolBar HBox highlight-border">
-            <div id="profile-options"></div>
-            <div id="type-options"></div>
-            <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
-            <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)"
-              disabled>save</button>
-          </div>
-          <div class="HBox">
-            <button class="material-icons tooltip" tooltip-text="Jaa linkki" onClick="copyLink(event)">share</button>
-            <button class="material-icons tooltip" tooltip-text="Tietue" onclick="jsonDlgOpen(event)">edit_note</button>
-          </div>
-        </div>
-
-        <!-- ------------------------------------------------------------------------ -->
-        <!-- Record-Merge Panel -->
-        <div class="record-merge-panel">
-          <div id="source" class="col BoxShadow">
-            <form class="ToolBar HBox header">
-              <div class="Filler VBox Input">
-                <label>Lähdetietue</label>
-                <input id="ID" />
+          <!-- ------------------------------------------------------------------------ -->
+          <!-- Record-Merge Panel -->
+          <div class="record-merge-panel">
+            <div id="source" class="col BoxShadow">
+              <form class="ToolBar HBox header">
+                <div class="Filler VBox Input">
+                  <label>Lähdetietue</label>
+                  <input id="ID" />
+                </div>
+                <button class="material-icons tooltip" tooltip-text="Hae"
+                  onclick="return doTransform(event)">search</button>
+                <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
+              </form>
+              <div id="Record" class="marc-record">
               </div>
-              <button class="material-icons tooltip" tooltip-text="Hae"
-                onclick="return doTransform(event)">search</button>
-              <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
-            </form>
-            <div id="Record" class="marc-record">
             </div>
-          </div>
 
-          <div id="base" class="col BoxShadow">
-            <form class="ToolBar HBox header">
-              <div class="Filler VBox Input">
-                <label>Pohjatietue</label>
-                <input id="ID" />
+            <div id="base" class="col BoxShadow">
+              <form class="ToolBar HBox header">
+                <div class="Filler VBox Input">
+                  <label>Pohjatietue</label>
+                  <input id="ID" />
+                </div>
+                <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
+                <button class="material-icons tooltip" tooltip-text="Lisää kenttä"
+                  onClick="onNewField(event)">add</button>
+              </form>
+              <div id="Record" class="marc-record">
               </div>
-              <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
-              <button class="material-icons tooltip" tooltip-text="Lisää kenttä"
-                onClick="onNewField(event)">add</button>
-            </form>
-            <div id="Record" class="marc-record">
             </div>
-          </div>
 
-          <div id="result" class="col BoxShadow">
-            <div class="ToolBar HBox header">
-              <div class="Filler">TULOSTIETUE</div>
-            </div>
-            <div id="Record" class="marc-record">
+            <div id="result" class="col BoxShadow">
+              <div class="ToolBar HBox header">
+                <div class="Filler">TULOSTIETUE</div>
+              </div>
+              <div id="Record" class="marc-record">
+              </div>
             </div>
           </div>
         </div>
@@ -232,9 +218,12 @@
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Snackbars -->
-      <div id="snackbars" class="snackbars">
-      </div>
+      <div id="snackbars" class="snackbars"></div>
+
     </div>
+
+
+  </div>
 
     <!-- ------------------------------------------------------------------------ -->
     <!-- Footer -->

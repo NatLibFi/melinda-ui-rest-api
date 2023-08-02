@@ -18,7 +18,9 @@
   <link rel="stylesheet" href="artikkelit.css">
 
   <script type="module" src="artikkelit.js"></script>
+  <script src="/common/navbar.js"></script>
   <script src="/common/footer.js"></script>
+
 </head>
 
 <!-- -------------------------------------------------------------------------- -->
@@ -30,23 +32,12 @@
   <div id="bodywrapper" class="viewport-full VBox">
 
     <!-- ------------------------------------------------------------------------ -->
-    <!-- Navbar -->
-    <div id="navbar">
-      <div class="IconBar ToolBar">
-        <button><a class="material-icons" href="https://www.kiwi.fi/x/iBcvBQ" target="_blank"
-            rel="noopener noreferrer">help_outline</a></button>
-        <!-- <button class="material-icons" onClick="onNew(event)">add</button> -->
-        <!-- <button class="material-icons" onClick="onSearch(event)">search</button> -->
-        <div class="dropdown">
-          <button id="account-btn" class="material-icons">account_circle</button>
-          <div id="account-menu" class="dropdown-content">
-            <div class="menu-header" id="username">Tuntematon</div>
-            <hr />
-            <div class="menu-item" onClick="onAccount(event)">Kirjaudu ulos</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Navigation bar -->
+    <melinda-navbar></melinda-navbar>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
 
     <!-- ------------------------------------------------------------------------ -->
     <!-- Application -->
@@ -54,18 +45,15 @@
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Loading "screen" -->
-
-      <div id="loading">
-      </div>
+      <div id="loading"></div>
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Login tab -->
       <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
-
       <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
         <div class="VBox Input">
           <label for="username">Käyttäjätunnus</label>
-          <input id="login-username" name="username" autocomplete="username" autofocus />
+          <input id="login-username" name="username" autofocus autocomplete="username" />
         </div>
         <div class="VBox Input">
           <label for="password">Salasana</label>
@@ -89,8 +77,8 @@
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Artikkelit tab -->
-
       <div id="artikkelit-lisaa" hidden>
+
         <div class="record-merge-panel">
 
           <!-- ---------------------------------------------------------------------- -->
@@ -255,7 +243,7 @@
                     </select>
                   </div>
                 </div>
-                <div id="artikkelin-linkki-wrap">
+                <<<<<<< HEAD <div id="artikkelin-linkki-wrap">
                   <div class="full-width">
                     <div class="Input">
                       <label class="bold-text" for="artikkelin-linkki">Linkki kokotekstiin:</label>
@@ -264,25 +252,42 @@
                     <button id="lisaa-linkki" class="material-icons tooltip no-border icon positive"
                       tooltip-text="Lisää">add</button>
                   </div>
-                </div>
-                <div class="full-width">
-                  <div class="Select full-width">
-                    <label class="bold-text" for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
-                    <select id="artikkelin-tyyppi" name="artikkelin-tyyppi" onchange="return articleTypeChange(event)">
-                    </select>
-                  </div>
-                </div>
-                <div id="artikkelin-osasto-toistuva-wrap">
-                  <div class="full-width">
-                    <div class="Input">
-                      <label class="bold-text" for="artikkelin-osasto-toistuva">Osasto tai toistuva palsta:</label>
-                      <input type="text" id="artikkelin-osasto-toistuva" name="artikkelin-osasto-toistuva"
-                        maxLength="128" list="artikkelin-osasto-toistuva-lista">
-                      <datalist id="artikkelin-osasto-toistuva-lista">
-                      </datalist>
+                  =======
+                  </form>
+                  <div class="full-width justify-content-end">
+                    <div class="Button">
+                      <button class="negative" onclick="return resetReview(event)">Tyhjennä</button>
+                    </div>
+                    <div class="Button">
+                      <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvosteltu
+                        teos</button>
                     </div>
                   </div>
-                </div>
+                  <div class="full-width">
+                    <div class="full-width">
+                      <label for="teoksen-nimi" class="label-text">Nimeke:</label>
+                      <p id="teoksen-nimi" name="teoksen-nimi" class="content-text"> </p>
+                      >>>>>>> 2dbd8a9241b213fcce334e22a137cf5e558b287b
+                    </div>
+                    <div class="full-width">
+                      <div class="Select full-width">
+                        <label class="bold-text" for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
+                        <select id="artikkelin-tyyppi" name="artikkelin-tyyppi"
+                          onchange="return articleTypeChange(event)">
+                        </select>
+                      </div>
+                    </div>
+                    <div id="artikkelin-osasto-toistuva-wrap">
+                      <div class="full-width">
+                        <div class="Input">
+                          <label class="bold-text" for="artikkelin-osasto-toistuva">Osasto tai toistuva palsta:</label>
+                          <input type="text" id="artikkelin-osasto-toistuva" name="artikkelin-osasto-toistuva"
+                            maxLength="128" list="artikkelin-osasto-toistuva-lista">
+                          <datalist id="artikkelin-osasto-toistuva-lista">
+                          </datalist>
+                        </div>
+                      </div>
+                    </div>
               </fieldset>
               <fieldset>
                 <legend>Lisää tekijä</legend>
@@ -693,51 +698,51 @@
           </div>
 
         </div>
-      </div>
 
-      <!-- ---------------------------------------------------------------------- -->
-      <!-- Field edit dialog -->
-      <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
-        <div class="modal-content BoxShadow" onclick="return ignore(event)">
-          <span id="field" class="marc-record"></span><br />
-          <div style="display: flex; justify-content: right;">
-            <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
-          </div>
-          <hr />
-          <div class="fieldedit marc-record">
-            <div style="display: flex;">
-              Tag: <div id="tag"></div>
-              Ind1: <div id="ind1"></div>
-              Ind2: <div id="ind2"></div>
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Field edit dialog -->
+        <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
+          <div class="modal-content BoxShadow" onclick="return ignore(event)">
+            <span id="field" class="marc-record"></span><br />
+            <div style="display: flex; justify-content: right;">
+              <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
             </div>
             <hr />
-            <div id="fieldlist" width="100%">
+            <div class="fieldedit marc-record">
+              <div style="display: flex;">
+                Tag: <div id="tag"></div>
+                Ind1: <div id="ind1"></div>
+                Ind2: <div id="ind2"></div>
+              </div>
+              <hr />
+              <div id="fieldlist" width="100%">
+              </div>
+              <button onclick="return onAddField(event)">Uusi osakenttä</button>
             </div>
-            <button onclick="return onAddField(event)">Uusi osakenttä</button>
-          </div>
-          <hr />
-          <div style="display: flex; justify-content: right;">
-            <button onclick="return editDlgClose(event)">Peru muutokset</button>
-            <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
+            <hr />
+            <div style="display: flex; justify-content: right;">
+              <button onclick="return editDlgClose(event)">Peru muutokset</button>
+              <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
+            </div>
           </div>
         </div>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Search dialog -->
+        <dialog id="searchDlg">
+          Testi
+        </dialog>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Tab for server side notes -->
+        <div id="server-note" hidden></div>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Snackbars -->
+        <div id="snackbars" class="snackbars"></div>
+
       </div>
 
-      <!-- ---------------------------------------------------------------------- -->
-      <!-- Search dialog -->
-      <dialog id="searchDlg">
-        Testi
-      </dialog>
-
-      <!-- ---------------------------------------------------------------------- -->
-      <!-- Tab for server side notes -->
-      <div id="server-note" hidden>
-      </div>
-
-      <!-- ---------------------------------------------------------------------- -->
-      <!-- Snackbars -->
-      <div id="snackbars" class="snackbars">
-      </div>
     </div>
 
     <!-- ------------------------------------------------------------------------ -->
