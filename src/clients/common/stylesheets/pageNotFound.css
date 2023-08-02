@@ -12,7 +12,7 @@
 .Input>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   text-align: center;
 }
 
@@ -21,7 +21,7 @@
   border-bottom: 1pt solid grey;
   outline: none;
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
 #pageNotFoundInfo {

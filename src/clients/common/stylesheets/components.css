@@ -103,7 +103,7 @@
 /* ---------------------------------------------------------------------------- */
 
 button {
-  font-size: var(--font-size-button-normal);
+  font-size: var(--font-size-button-medium);
   font-weight: var(--font-weight-button);
   font-family: var(--font-family-button);
   color: inherit;
@@ -125,12 +125,12 @@ button.no-border.negative {
 }
 
 button.icon {
-  font-size: var(--font-size-icon-normal);
+  font-size: var(--font-size-icon-medium);
   border-radius: 0.75rem;
-  min-height: var(--font-line-height-icon-normal);
-  min-width: var(--font-line-height-icon-normal);
-  max-height: var(--font-line-height-icon-normal);
-  max-width: var(--font-line-height-icon-normal);
+  min-height: var(--font-line-height-icon-medium);
+  min-width: var(--font-line-height-icon-medium);
+  max-height: var(--font-line-height-icon-medium);
+  max-width: var(--font-line-height-icon-medium);
   padding: 4px;
 }
 
@@ -145,7 +145,7 @@ button.negative {
 }
 
 .Button input {
-  font-size: var(--font-size-input-normal);
+  font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);
   color: inherit;
   border: 1px solid grey;
@@ -160,8 +160,8 @@ button.negative {
 }
 
 .ToolBar button {
-  font-size: var(--font-size-button-normal);
-  font-weight: var(--font-weight-button);
+  font-size: var(--font-size-icon-medium);
+  font-weight: var(--font-weight-icon);
   color: inherit;
   border: 0;
   background-color: transparent;
@@ -198,7 +198,7 @@ button>a:visited {
 .Input>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
   margin-right: 8px;
 }
@@ -208,14 +208,14 @@ button>a:visited {
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-size: var(--font-size-input-normal);
+  font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);
   flex-grow: 1;
 }
 
 .Input>datalist>option {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);
 }
 
@@ -234,7 +234,7 @@ button>a:visited {
 .Select>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
   margin-right: 8px;
 }
@@ -245,7 +245,7 @@ button>a:visited {
   border-bottom: 1pt solid grey;
   background: #fff;
   outline: none;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);
 }
 
@@ -255,7 +255,7 @@ button>a:visited {
 
 .Select>select>option {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-contentl);
 }
 
@@ -441,7 +441,7 @@ dialog:modal {
   padding-right: 0.5em;
   padding-top: 25px;
   padding-bottom: 25px;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
 /* If hr or p element is used in supporting text, */

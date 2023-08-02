@@ -52,7 +52,7 @@ div#muuntaja {}
 }
 
 .ToolBar button {
-  font-size: var(--font-size-icon-normal);
+  font-size: var(--font-size-icon-medium);
   font-weight: var(--font-weight-icon);
 }
 

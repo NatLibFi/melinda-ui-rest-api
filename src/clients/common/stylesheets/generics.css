@@ -10,7 +10,7 @@ body {
   margin: 0;
   font-family: var(--font-family-content);
   font-weight: var(--font-weight-content);
-  line-height: var(--font-line-height-content-normal);
+  line-height: var(--font-line-height-content-medium);
   font-size: 100%;
 }
 
@@ -26,24 +26,24 @@ select,
 input,
 option {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);
-  line-height: var(--font-line-height-content-normal);
+  line-height: var(--font-line-height-content-medium);
 }
 
 .label-text,
 label,
 button {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);
-  line-height: var(--font-line-height-content-normal);
+  line-height: var(--font-line-height-content-medium);
 }
 
 .title-text,
 legend {
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);
-  line-height: var(--font-line-height-content-normal);
+  line-height: var(--font-line-height-content-medium);
 }

@@ -57,7 +57,7 @@ div#tools {}
 .sequence-container>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   text-align: center;
 }
 
@@ -66,7 +66,7 @@ div#tools {}
   border-bottom: 1pt solid grey;
   outline: none;
   font-family: var(--font-family-input);
-  font-size: var(--font-size-input-normal);
+  font-size: var(--font-size-input-medium);
 }
 
 .Select>select {
@@ -74,11 +74,11 @@ div#tools {}
   border-bottom: 1pt solid grey;
   outline: none;
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
 .ToolBar button {
-  font-size: var(--font-size-icon-normal);
+  font-size: var(--font-size-icon-medium);
   font-weight: var(--font-weight-icon);
 }
 
@@ -230,9 +230,9 @@ div#viewer {}
   height: 40px;
   text-transform: uppercase;
   font-family: var(--font-family-headline);
-  font-size: var(--font-size-headline-normal);
+  font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
-  line-height: var(--font-line-height-headline-normal);
+  line-height: var(--font-line-height-headline-medium);
   border-bottom: 1px solid lightgrey;
   align-items: center;
   display: flex;
@@ -284,9 +284,9 @@ div#viewer {}
 }
 
 .header label {
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
-  line-height: var(--font-line-height-label-normal);
+  line-height: var(--font-line-height-label-medium);
   /*color: grey;*/
 }
 
@@ -387,7 +387,7 @@ div#correlationIdListModal {}
 .modal-title {
   display: flex;
   align-items: center;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
 .modal-info-text {
@@ -515,7 +515,7 @@ div#correlationIdListModal {}
   flex-wrap: wrap;
   overflow: hidden;
   padding-left: 0.5em;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   align-items: center;
 }
 
@@ -609,7 +609,7 @@ div#correlationIdListModal {}
   padding: 0.5em;
   margin-right: 0.5em;
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
 /* A list item has supporting text + trailing icons */
@@ -748,7 +748,7 @@ div#correlationIdListModal {}
 .error-message-text {
   display: flex;
   padding: 0.5em;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: bold;
   align-items: center;
 }

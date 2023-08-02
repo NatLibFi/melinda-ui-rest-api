@@ -85,9 +85,9 @@ div#muuntaja {}
 .header {
   text-transform: uppercase;
   font-family: var(--font-family-headline);
-  font-size: var(--font-size-headline-normal);
+  font-size: var(--font-size-headline-medium);
   font-weight: var(--font-weight-headline);
-  line-height: var(--font-line-height-headline-normal);
+  line-height: var(--font-line-height-headline-medium);
   border-bottom: 1px solid lightgrey;
   align-items: center;
   display: flex;
@@ -106,13 +106,13 @@ form {
 }
 
 .header .material-icons {
-  font-size: var(--font-size-icon-normal);
+  font-size: var(--font-size-icon-medium);
 }
 
 .header label {
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
-  line-height: var(--font-line-height-label-normal);
+  line-height: var(--font-line-height-label-medium);
   /*color: grey;*/
 }
 
@@ -166,7 +166,7 @@ fieldset {
 }
 
 fieldset legend {
-  font-size: var(--font-size-title-normal);
+  font-size: var(--font-size-title-medium);
   font-weight: var(--font-weight-title);
 }
 
@@ -184,13 +184,13 @@ fieldset .panel label {
   font-family: var(--font-family-label);
   text-align: end;
   margin-right: 10px;
-  line-height: var(--font-line-height-label-normal);
+  line-height: var(--font-line-height-label-medium);
   color: rgb(48, 93, 109);
 }
 
 fieldset .panel p {
   display: inline-flex;
-  line-height: var(--font-line-height-content-normal);
+  line-height: var(--font-line-height-content-medium);
 }
 
 .long-text {
@@ -203,7 +203,7 @@ fieldset .panel p {
 .label-text {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
 }
 
@@ -214,7 +214,7 @@ label.label-text {
 .title-text {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-title);
-  font-size: var(--font-size-title-normal);
+  font-size: var(--font-size-title-medium);
   font-weight: var(--font-weight-title);
 
 }
@@ -222,7 +222,7 @@ label.label-text {
 .content-text {
   color: rgb(0, 0, 0);
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);
 }
 
