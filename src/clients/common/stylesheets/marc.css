@@ -4,7 +4,7 @@
 
 .marc-record {
   /* margin-left: 20pt; */
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
   font-size: 14.5px;
   /*
   font-weight: 400;
