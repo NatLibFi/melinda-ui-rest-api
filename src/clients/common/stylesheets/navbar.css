@@ -1,11 +1,13 @@
 /* ---------------------------------------------------------------------------- */
-/* CSS for navbar */
+/* Styles for navigation bar component                                          */
+/* ---------------------------------------------------------------------------- */
 
 .NavBar {
   /*
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
   */
-  background-color: #305d6d; /* For browsers not support gradients  */
+  background-color: #305d6d;
+  /* For browsers not support gradients  */
 
   /*
   background-image: linear-gradient(to right, #305d6d, #7bb9ce);
@@ -24,21 +26,19 @@
   height: 64px;
 }
 
-.NavBar .AppName > button {
+.NavBar .AppName>button {
   display: inline-block;
   z-index: 2;
   text-transform: uppercase;
   padding-top: 14px;
   padding-bottom: 16px;
-  /* padding-left: 0px; */
-  font-family: 'Montserrat-Regular', Arial, sans-serif;
   font-size: 16px;
   font-weight: 100;
   line-height: 18px;
   vertical-align: middle;
 }
 
-.NavBar .AppName > button > span {
+.NavBar .AppName>button>span {
   position: relative;
   top: 8px;
 }
@@ -105,6 +105,7 @@ a:any-link {
 /* ---------------------------------------------------------------------------- */
 /* NavBar icons are 32px */
 
-.NavBar .material-icons, .IconBar .material-icons {
+.NavBar .material-icons,
+.IconBar .material-icons {
   font-size: 32px;
 }

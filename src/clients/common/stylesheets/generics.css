@@ -1,19 +1,15 @@
 /* ---------------------------------------------------------------------------- */
-/* Some generic CSS elements */
+/* Some generic CSS elements                                                    */
 /* ---------------------------------------------------------------------------- */
 
 /* Remove margins and paddings, and set default font to sans-serif */
 
 html,
-body{
+body {
   padding: 0;
   margin: 0;
-  /* font-family: "Montserrat", Arial, Helvetica, sans-serif; /**/
-  /* font-family: "Roboto", Arial, Helvetica, sans-serif; /**/
-  /* font-weight: normal; /**/
-  /* font-size: 12pt; /**/
   font-family: var(--font-family-content);
-  font-weight: var(--font-weight-content-normal);
+  font-weight: var(--font-weight-content);
   line-height: var(--font-line-height-content-normal);
   font-size: 100%;
 }
@@ -23,23 +19,31 @@ div {
   margin: 0;
 }
 
-.content-text, p,a,select, input, option {
+.content-text,
+p,
+a,
+select,
+input,
+option {
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-normal);
-  font-weight: var(--font-weight-content-normal);
+  font-weight: var(--font-weight-content);
   line-height: var(--font-line-height-content-normal);
 }
 
-.label-text, label, button {
-  font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
-  line-height: var(--font-line-height-label-normal);
+.label-text,
+label,
+button {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-content-normal);
 }
 
-.title-text, legend {
-  font-family: var(--font-family-title);
-  font-size: var(--font-size-title-normal);
-  font-weight: var(--font-weight-title-normal);
-  line-height: var(--font-line-height-title-normal);
+.title-text,
+legend {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-normal);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-content-normal);
 }

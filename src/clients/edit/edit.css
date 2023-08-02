@@ -1,17 +1,19 @@
-/* CSS file for muuntaja */
+/* ---------------------------------------------------------------------------- */
+/* Styles for MUOKKAUS app                                                      */
+/* ---------------------------------------------------------------------------- */
+
+
 
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
 
-div#loading {
-}
+
+div#loading {}
 
 /* ---------------------------------------------------------------------------- */
 
-div#muuntaja {
-
-}
+div#muuntaja {}
 
 #muuntaja .record-merge-panel {
   display: flex;
@@ -25,7 +27,7 @@ div#muuntaja {
   margin: 8pt;
 }
 
-.col > * {
+.col>* {
   padding: 8pt;
 }
 

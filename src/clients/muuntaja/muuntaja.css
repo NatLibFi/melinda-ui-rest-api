@@ -1,17 +1,19 @@
-/* CSS file for muuntaja */
+/* ---------------------------------------------------------------------------- */
+/* Styles for MUUNTAJA app                                                      */
+/* ---------------------------------------------------------------------------- */
+
+
 
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
 
-div#loading {
-}
+
+div#loading {}
 
 /* ---------------------------------------------------------------------------- */
 
-div#muuntaja {
-
-}
+div#muuntaja {}
 
 #muuntaja .record-merge-panel {
   display: flex;
@@ -25,7 +27,7 @@ div#muuntaja {
   margin: 8pt;
 }
 
-.col > * {
+.col>* {
   padding: 8pt;
 }
 
@@ -37,7 +39,6 @@ div#muuntaja {
 
 .header .material-icons {
   padding: 8px;
-  font-size: 32px;
 }
 
 .header label {
@@ -52,9 +53,11 @@ div#muuntaja {
 
 .ToolBar button {
   font-size: var(--font-size-icon-normal);
+  font-weight: var(--font-weight-icon);
 }
 
-#type-options select, #profile-options select {
+#type-options select,
+#profile-options select {
   margin-right: 1ch;
   height: 24px;
 }

@@ -1,8 +1,13 @@
-/* CSS file for muuntaja */
+/* ---------------------------------------------------------------------------- */
+/* Styles for VIEWER app                                                        */
+/* ---------------------------------------------------------------------------- */
+
+
 
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
+
 
 div#loading {}
 
@@ -60,8 +65,8 @@ div#tools {}
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-normal);
 }
 
 .Select>select {
@@ -74,6 +79,7 @@ div#tools {}
 
 .ToolBar button {
   font-size: var(--font-size-icon-normal);
+  font-weight: var(--font-weight-icon);
 }
 
 /* Disabled toolbar button cannot be clicked */
@@ -94,7 +100,7 @@ div#tools {}
 .id-input {
   display: flex;
   align-items: flex-end;
-  font-family: roboto_monoregular, "Roboto Mono", monospace !important;
+  font-family: var(--font-family-mono) !important;
 }
 
 /* Sequence container */
@@ -225,7 +231,7 @@ div#viewer {}
   text-transform: uppercase;
   font-family: var(--font-family-headline);
   font-size: var(--font-size-headline-normal);
-  font-weight: var(--font-weight-headline-normal);
+  font-weight: var(--font-weight-headline);
   line-height: var(--font-line-height-headline-normal);
   border-bottom: 1px solid lightgrey;
   align-items: center;
@@ -233,7 +239,7 @@ div#viewer {}
 }
 
 .col .note {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono) !important;
   border-bottom: 1px solid lightgrey;
   align-items: center;
   display: none;
@@ -279,7 +285,7 @@ div#viewer {}
 
 .header label {
   font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
+  font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-normal);
   /*color: grey;*/
 }
@@ -289,7 +295,7 @@ div#viewer {}
 
 /* For span elements */
 span.correlation-id-font {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
   cursor: text;
 }
 
@@ -393,7 +399,7 @@ div#correlationIdListModal {}
 
 /* Span part in info text is grey by default */
 .modal-info-text span {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-content);
   padding-left: 0.5em;
   color: grey;
 }
@@ -489,7 +495,7 @@ div#correlationIdListModal {}
   min-width: 275px;
   max-width: 350px;
   padding-left: 0.5em;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -602,7 +608,7 @@ div#correlationIdListModal {}
   align-items: center;
   padding: 0.5em;
   margin-right: 0.5em;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-content-normal);
 }
 
@@ -783,13 +789,13 @@ div#correlationIdListModal {}
 }
 
 #dialogForUpload .file-name.file-selected {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
 }
 
 #dialogForUpload .file-button {
   height: 28px;
   font-size: var(--font-size-label-large);
-  font-weight: var(--font-weight-label-large);
+  font-weight: var(--font-weight-label);
   background-color: rgb(182, 225, 224);
   border: none;
 }
