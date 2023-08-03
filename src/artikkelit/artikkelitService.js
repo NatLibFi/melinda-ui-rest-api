@@ -33,7 +33,7 @@ export function createArtikkelitService(useMoment = 'now') {
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
     const isbn = '951-isbn';
     const {f599a, f599x} = collecting;
-    
+
     const record = {
       leader: generateLeader(sourceTypeAsText),
       fields: [
@@ -47,7 +47,7 @@ export function createArtikkelitService(useMoment = 'now') {
         ...generatef245(articleTitle, authors, article.language.iso6392b),
         ...generatef246(articleTitleOther),
         ...generatef336(),
-        ...generatef337(isElectronic),        
+        ...generatef337(isElectronic),
         ...generatef490(article.sectionOrColumn),
         ...generatef500(notes), // general notes
         ...generatef506(referenceLinks, isElectronic),

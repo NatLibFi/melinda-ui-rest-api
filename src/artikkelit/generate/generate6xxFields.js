@@ -173,7 +173,6 @@ function generatef655(vocab, prefLabel, lang, uri, subdivision = false) {
 }
 
 export function generatef655reviews(reviews) {
-	
   if (reviews && Array.isArray(reviews) && reviews.length > 0) {
     return [
       {tag: '655', ind1: ' ', ind2: '7', subfields:
