@@ -259,8 +259,16 @@ a:hover .item-header .item-header-title,
 }
 
 .secondary-navigation-links .nav-link:hover {
-  color: var(--color-red-80);
   cursor: pointer;
+  color: var(--color-red-80);
+}
+
+.secondary-navigation-links .link-home .nav-link:hover {
+  color: var(--color-melinda-green);
+}
+
+.secondary-navigation-links .link-app .nav-link:hover {
+  color: var(--color-melinda-lightblue);
 }
 
 .secondary-navigation-links .nav-link:hover .nav-link-text {

@@ -39,12 +39,10 @@ function showAppName(currentUrl) {
 
   appNames.includes(appName)
     ? (
-      appNameDiv.innerHTML = (appName === 'edit' ? 'muokkaus' : appName),
       appLinkDiv.style.display = 'flex',
       goBackDiv.style.display = 'none'
     )
     : (
-      appNameDiv.innerHTML = '',
       appLinkDiv.style.display = 'none',
       goBackDiv.classList.add('show')
     )
