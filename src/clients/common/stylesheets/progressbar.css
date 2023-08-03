@@ -21,7 +21,7 @@
 }
 
 .progress-bar:before {
-  background-color: var(--color-melinda-darkblue);
+  background-color: var(--color-melinda-lightblue);
   content: '';
   animation: running-progress 1s linear infinite;
 }

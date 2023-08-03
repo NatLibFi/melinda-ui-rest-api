@@ -134,10 +134,22 @@ class Navbar extends HTMLElement {
       const currentUrl = window.location.href;
       const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
       const appNameDiv = document.getElementById('appName');
-      const appNames = ['viewer', 'muuntaja', 'edit', 'artikkelit'];
+      const appNames = ['viewer', 'muuntaja', 'edit', 'artikkelit', ''];
       const appLinkDiv = document.getElementById('appLink');
 
-      appNames.includes(appName) ? (appNameDiv.innerHTML = (appName === 'edit' ? 'muokkaus' : appName)) : appNameDiv.innerHTML = ''      
+      if (appNames.includes(appName)) {
+
+        appNameDiv.innerHTML = appName;
+
+        if (appName === '') {
+          appNameDiv.innerHTML = 'etusivu';
+        }
+        
+        if (appName === 'edit') {
+          appNameDiv.innerHTML = 'muokkaus';
+        }
+      }
+
       appLinkDiv.setAttribute('href', '/' + appName);
     }
 
