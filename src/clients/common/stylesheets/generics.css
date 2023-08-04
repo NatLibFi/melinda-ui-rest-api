@@ -32,8 +32,7 @@ option {
 }
 
 .label-text,
-label,
-button {
+label {
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);

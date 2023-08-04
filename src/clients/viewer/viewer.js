@@ -104,7 +104,7 @@ window.initialize = function () {
       checkFile(file);
 
       file
-        ? (fileNameDiv.innerHTML = file.name, fileNameDiv.classList.add('file-selected'), clearFileSelectButton.style.display = 'block')
+        ? (fileNameDiv.innerHTML = file.name, fileNameDiv.classList.add('file-selected'), clearFileSelectButton.style.display = 'flex')
         : (fileNameDiv.innerHTML = 'Ei valittua tiedostoa', fileNameDiv.classList.remove('file-selected'), clearFileSelectButton.style.display = 'none');
 
     });
@@ -238,7 +238,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     const removeButton = document.querySelector(`#viewer #delete`);
 
     const button = createClearViewButton();
-    showSnackbar({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, actionButton: button});
+    showSnackbar({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, linkButton: button});
     highlightElement(idInputField);
     enableElement(clearButton);
     disableElement(protectButton);

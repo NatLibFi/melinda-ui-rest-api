@@ -21,7 +21,7 @@ window.copyLink = function (event) {
 
   const button = createTestLinkButton(link);
 
-  showSnackbar({style: 'success', text: `Linkki kopioitu!`, linkButton: button, actionButton: 'true'});
+  showSnackbar({style: 'success', text: `Linkki kopioitu!`, linkButton: button});
   navigator.clipboard.writeText(link);
 
   function createTestLinkButton(link) {
@@ -45,7 +45,7 @@ window.protect = function (event = undefined) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
-    showSnackbar({style: 'alert', text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!', actionButton: 'true'});
+    showSnackbar({style: 'alert', text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!'});
     console.log('Nothing to protect...');
     stopProcess();
     return;

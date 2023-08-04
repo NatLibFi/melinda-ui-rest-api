@@ -4,10 +4,12 @@
 //
 //*****************************************************************************
 
-import {startProcess, stopProcess,
+import {
+  startProcess, stopProcess,
   showTab, resetForms, reload, showSnackbar,
   createDropdownItem, createSelectItem,
-  createSelectOption} from '/common/ui-utils.js';
+  createSelectOption
+} from '/common/ui-utils.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
 import {profileRequest, transformRequest} from '/common/rest.js';
@@ -145,15 +147,15 @@ window.onEdit = function (e) {
   console.log('Edit:', e);
   editmode = !editmode;
   if (editmode) {
-    e.target.style.background = 'var(--color-teal-60)';
+    e.target.classList.add('edit-mode');
   } else {
-    e.target.style.background = '';
+    e.target.classList.remove('edit-mode');
   }
   showTransformed();
   return eventHandled(e);
 };
 
-window.onNewField = function(e) {
+window.onNewField = function (e) {
   editField({
     tag: '', ind1: '', ind2: '',
     subfields: []
@@ -200,7 +202,7 @@ window.copyLink = function (e) {
 
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
 
-  showSnackbar({style:'success', text: 'Linkki kopioitu!'});
+  showSnackbar({style: 'success', text: 'Linkki kopioitu!'});
 };
 
 //-----------------------------------------------------------------------------
@@ -317,7 +319,7 @@ function onFieldClick(event, field) {
   }
 }
 
-window.editSaveField = function(field) {
+window.editSaveField = function (field) {
   console.log('Saving field:', field);
 
   if (field.id) {
@@ -328,7 +330,7 @@ window.editSaveField = function(field) {
   doTransform();
 };
 
-window.editUseOriginal = function(field) {
+window.editUseOriginal = function (field) {
   delete transformed.replace[field.id];
   doTransform();
 };

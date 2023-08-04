@@ -58,7 +58,7 @@ export function refreshAuthorsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['alternate-red'], `return removeAuthor(event, ${authorData.key})`, 'Poista');
       div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
@@ -137,7 +137,7 @@ export function refreshAuthorOrganizationList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['alternate-red'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista');
       div.appendChild(createP('Organisaatio', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(tempOrgData.organizationName));
 

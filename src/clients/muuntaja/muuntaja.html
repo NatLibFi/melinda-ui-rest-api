@@ -84,13 +84,13 @@
             <div class="ToolBar HBox highlight-border">
               <div id="profile-options"></div>
               <div id="type-options"></div>
-              <button class="material-icons tooltip" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
-              <button class="material-icons tooltip" tooltip-text="Tallenna" onClick="onSave(event)"
+              <button class="material-icons tooltip icon-only" tooltip-text="Muokkaa" onClick="onEdit(event)">edit</button>
+              <button class="material-icons tooltip icon-only" tooltip-text="Tallenna" onClick="onSave(event)"
                 disabled>save</button>
             </div>
             <div class="HBox">
-              <button class="material-icons tooltip" tooltip-text="Jaa linkki" onClick="copyLink(event)">share</button>
-              <button class="material-icons tooltip" tooltip-text="Tietue"
+              <button class="material-icons tooltip icon-only" tooltip-text="Jaa linkki" onClick="copyLink(event)">share</button>
+              <button class="material-icons tooltip icon-only" tooltip-text="Tietue"
                 onclick="jsonDlgOpen(event)">edit_note</button>
             </div>
           </div>
@@ -104,9 +104,9 @@
                   <label>Lähdetietue</label>
                   <input id="ID" />
                 </div>
-                <button class="material-icons tooltip" tooltip-text="Hae"
+                <button class="material-icons tooltip icon-only" tooltip-text="Hae"
                   onclick="return doTransform(event)">search</button>
-                <button class="material-icons tooltip" tooltip-text="Vaihda" disabled>swap_horiz</button>
+                <button class="material-icons tooltip icon-only" tooltip-text="Vaihda" disabled>swap_horiz</button>
               </form>
               <div id="Record" class="marc-record">
               </div>
@@ -118,8 +118,8 @@
                   <label>Pohjatietue</label>
                   <input id="ID" />
                 </div>
-                <button class="material-icons tooltip" tooltip-text="Hae" onclick="doTransform(event)">search</button>
-                <button class="material-icons tooltip" tooltip-text="Lisää kenttä"
+                <button class="material-icons tooltip icon-only" tooltip-text="Hae" onclick="doTransform(event)">search</button>
+                <button class="material-icons tooltip icon-only" tooltip-text="Lisää kenttä"
                   onClick="onNewField(event)">add</button>
               </form>
               <div id="Record" class="marc-record">

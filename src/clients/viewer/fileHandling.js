@@ -227,7 +227,7 @@ function showReaderMode() {
   enableElement(uploadButton);
 
   const exitButton = document.getElementById('exit');
-  exitButton.style.display = 'block';
+  exitButton.style.display = 'flex';
   enableElement(exitButton);
 
   const readMode = document.getElementById('readMode');

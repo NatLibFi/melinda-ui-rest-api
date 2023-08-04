@@ -74,14 +74,34 @@
   font-size: var(--font-size-content-medium);
 }
 
-.ToolBar button {
-  font-size: var(--font-size-icon-medium);
-  font-weight: var(--font-weight-icon);
+.ToolBar button:not(.dialog-cancel-button) {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  border-color: transparent;
 }
 
-/* Disabled toolbar button cannot be clicked */
-.ToolBar button:disabled {
-  pointer-events: none;
+.ToolBar button:hover,
+.tools button.search-button:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+.ToolBar button:active,
+.tools button.search-button:active,
+.tools button#exit:active {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+.ToolBar button:disabled,
+.tools button.search-button:disabled {
+  color: var(--color-grey-100);
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .uuidInput {
@@ -143,21 +163,15 @@
 .tools button.search-button {
   color: var(--color-primary-white);
   background-color: var(--color-melinda-lightblue);
+  border-color: var(--color-melinda-lightblue);
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
-.tools button.search-button:hover{
-  color: var(--color-melinda-lightblue);
-}
-
-.tools button.search-button:active {
-  color: var(--color-melinda-lightblue);
-  background-color: white;
-}
-
 .tools button.search-button:disabled {
+  color: var(--color-grey-100);
   background-color: var(--color-grey-60);
+  border-color: transparent;
 }
 
 
@@ -182,14 +196,19 @@
 }
 
 .tools button#exit {
+  color: var(--color-primary-white);
   background-color: var(--color-melinda-lightblue);
+  border-color: var(--color-melinda-lightblue);
   margin-left: 5px;
   margin-right: 5px;
 }
 
 .tools button#exit:hover {
-  background-color: var(--color-grey-60);
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
 }
+
 
 /* ---------------------------------------------------------------------------- */
 /* div#viewer */
@@ -341,27 +360,6 @@ span.correlation-id-font {
   min-height: 90%;
 }
 
-/* Buttons in correlation id list modal are small */
-#correlationIdListModal>.modal-content button.modal-function-button {
-  background-color: var(--color-primary-black);
-  color: var(--color-primary-white);
-}
-
-/* Buttons in correlation id list modal show effect when hovered */
-#correlationIdListModal>.modal-content button:hover {
-  background-color: var(--color-grey-60);
-  color: var(--color-primary-black);
-}
-
-/* Buttons in correlation id list modal show effect when clicked */
-#correlationIdListModal>.modal-content button:active {
-  background-color: var(--color-grey-100);
-}
-
-/* Placeholder texts and input texts are small in correlation id modal */
-#correlationIdListModal>.modal-content input {
-  font-size: var(--font-size-content-small);
-}
 
 /* ---------------------------------------------------------------------------- */
 /* Correlation id modal title and top buttons*/
@@ -410,7 +408,7 @@ span.correlation-id-font {
 /* Span part in info text shows style on hover */
 .modal-info-text.link-active span:hover {
   cursor: pointer;
-  color: grey;
+  color: var(--color-functional-blue);
 }
 
 /* Modal top div has place for buttons */
@@ -420,14 +418,14 @@ span.correlation-id-font {
   align-items: flex-start;
   justify-content: flex-end;
   overflow: hidden;
+  padding-top:5px;
 }
 
 .close-button {
-  min-height: 25px;
-  min-width: 25px;
+  display: flex;
   border-radius: 50%;
-  padding: 0;
-  font-size: 12px !important;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -442,7 +440,10 @@ span.correlation-id-font {
   width: fit-content;
   overflow: hidden;
   min-width: 0;
+  min-height: 125px;
   row-gap: 0.25em;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -527,6 +528,8 @@ span.correlation-id-font {
   display: flex;
   overflow: hidden;
   flex-grow: 1;
+  align-items: center;
+  min-height: 60px;
 }
 
 .clear-filter-button {
@@ -580,18 +583,19 @@ span.correlation-id-font {
 
 /* A list item has style effect on mouse hovering */
 .list-item:hover {
-  background-color: var(--color-grey-60) !important;
+  background-color: var(--color-green-40) !important;
   cursor: pointer;
 }
 
 /* A list item has style effect on clicking */
 .list-item:active {
-  background-color: var(--color-grey-100) !important;
+  color: white;
+  background-color: var(--color-green-100) !important;
 }
 
 /* Highlighting the last searched list item */
 .list-item.last-searched {
-  background-color: var(--color-grey-100);
+  background-color: var(--color-green-80);
   border-bottom: 5px solid grey;
 }
 
@@ -793,33 +797,6 @@ span.correlation-id-font {
   height: 28px;
   font-size: var(--font-size-label-large);
   font-weight: var(--font-weight-label);
-  color: var(--color-primary-white);
-  background-color: var(--color-melinda-lightblue);
-  border: none;
-}
-
-#dialogForUpload .file-button:active {
-  color: var(--color-melinda-lightblue);
-}
-
-#dialogForUpload .file-button:hover {
-  background-color: var(--color-grey-60);
-}
-
-#dialogForUpload .close-button {
-  margin: 5px;
-  color: var(--color-primary-white);
-  background-color: var(--color-primary-black);
-}
-
-#dialogForUpload .close-button:hover {
-  background-color: var(--color-grey-60);
-  color: var(--color-primary-black);
-}
-
-#dialogForUpload .close-button:active {
-  background-color: var(--color-grey-100);
-  color: var(--color-primary-black);
 }
 
 #dialogForUpload .instructions-headline {
@@ -833,10 +810,6 @@ span.correlation-id-font {
   margin-left: 10px;
 }
 
-#dialogForUpload .instructions-headline button:hover {
-  background-color: var(--color-grey-60);
-}
-
-#dialogForUpload .instructions-headline button:active {
-  background-color: var(--color-grey-100);
+#dialogForUpload .close-button {
+  margin-left: 5px;
 }

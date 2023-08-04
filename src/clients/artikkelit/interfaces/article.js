@@ -75,7 +75,7 @@ export function refreshSciencesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeScience(event, ${scienceData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['alternate-red'], `return removeScience(event, ${scienceData.key})`, 'Poista');
       div.appendChild(createP('Tieteenala', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(scienceData.departmentName));
       div.appendChild(createP(scienceData.subject, '&nbsp;-&nbsp;'));
@@ -110,7 +110,7 @@ export function refreshMetodologysList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
+      const removeButton = createIconButton('delete', ['alternate-red'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
       div.appendChild(createP('Metodologia', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(metodologyData.value));
       div.appendChild(removeButton);
@@ -135,7 +135,7 @@ export function addArticleLink(event) {
   upperDiv.classList.add('full-width');
   const lowerDiv = document.createElement('div');
   lowerDiv.classList.add('Input');
-  const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeArticleLink(event)`, 'Poista');
+  const removeButton = createIconButton('delete', ['alternate-red'], `return removeArticleLink(event)`, 'Poista');
   lowerDiv.appendChild(createLabel('artikkelin-linkki'));
   lowerDiv.appendChild(createInput('artikkelin-linkki'));
   upperDiv.appendChild(lowerDiv);

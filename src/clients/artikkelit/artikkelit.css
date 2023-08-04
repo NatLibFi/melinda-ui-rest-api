@@ -8,25 +8,12 @@
 
 /* ---------------------------------------------------------------------------- */
 
-.tools {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-end;
-  width: 100vw;
+/* add space around all buttons in article form */
+#articleForm button,
+#articlePreview button {
+  margin: 10px;
 }
 
-/* ---------------------------------------------------------------------------- */
-/* Tooltips, overwritten specifically for Arto */
-/* ---------------------------------------------------------------------------- */
-
-.tooltip:hover:after {
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 0px 4px 4px 0px;
-  font-size: 0.6em;
-}
 
 /* ---------------------------------------------------------------------------- */
 
@@ -242,7 +229,7 @@ label.label-text {
 }
 
 .character-warning {
-  background-color: #F99;
+  background-color: var(--color-red-80);
 }
 
 input::-webkit-outer-spin-button,

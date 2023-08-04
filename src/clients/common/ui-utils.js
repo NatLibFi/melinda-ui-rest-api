@@ -61,7 +61,7 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
   const button = document.createElement('button');
   button.innerHTML = icon;
   button.classList.add('material-icons');
-  button.classList.add('icon');
+  button.classList.add('icon-only');
 
   classList.forEach(htmlClass => button.classList.add(htmlClass));
   if (onclickAttribute) {

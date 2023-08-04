@@ -28,6 +28,7 @@
   align-items: center;
   background-color: var(--style-background-color, var(--color-blue-60));
   min-width: 550px;
+  max-height: 68px;
   overflow: auto;
   margin: 0.5em;
   pointer-events: all;
@@ -70,11 +71,15 @@
 
 .snackbar-link button {
   border: none;
+  background-color: transparent;
   color: var(--color-functional-blue);
   text-decoration: underline dotted var(--color-functional-blue) 0.1rem;
   font-family: var(--font-family-link);
   font-weight: var(--font-weight-link);
   font-size: var(--font-size-link-large);
+  padding: 0px;
+  margin: 0px;
+  height: 24px;
 }
 
 .snackbar-close {

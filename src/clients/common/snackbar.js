@@ -145,7 +145,7 @@ function createSnackbar(snackbarContent, html) {
 
       // style 'info' is the default status message
       // snackbar has blue background with info icon
-      let backgroundColor = 'var(--color-blue-80)';
+      let backgroundColor = 'var(--color-blue-60)';
       let iconColor = 'var(--color-blue-100)';
       let icon = 'error_outline';
 

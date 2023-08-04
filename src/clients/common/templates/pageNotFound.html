@@ -19,6 +19,8 @@
 
   <script type="module" src="/../common/pageNotFound.js"></script>
   <script src="/../common/navbar.js"></script>
+  <script src="/../common/footer.js"></script>
+
 
 </head>
 
@@ -28,73 +30,82 @@
 
 <body onload="initialize()">
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Navigation bar -->
-  <melinda-navbar></melinda-navbar>
+  <div id="bodywrapper" class="viewport-full VBox">
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Progress bar -->
-  <div id="progressbar" class="progress-bar-inactive"></div>
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Navigation bar -->
+    <melinda-navbar></melinda-navbar>
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- Application "tabs" -->
-  <div id="root">
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Loading "screen" -->
-    <div id="loading">
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Application "tabs" -->
+    <div id="root">
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Loading "screen" -->
+      <div id="loading">
+      </div>
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Login tab -->
+      <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
+        <div class="VBox Input">
+          <label for="username">Käyttäjätunnus</label>
+          <input id="login-username" name="username" autofocus autocomplete="username" />
+        </div>
+        <div class="VBox Input">
+          <label for="password">Salasana</label>
+          <input id="login-password" type="password" name="password" autocomplete="current-password" />
+        </div>
+        <div class="HBox Input" style="align-items: baseline;">
+          <input id="acceptterms" type="checkbox">
+          <label for="acceptterms" style="padding-left: 8px;">
+            Hyväksyn
+            <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
+              tietosuojaselosteen</a>
+            ja evästeiden käytön.
+            <br /><br />
+            Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+        </div>
+        <div id="info"></div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+          <button onClick="return login(event)">Kirjaudu</button>
+        </div>
+      </form>
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Page not found tab -->
+      <div id="pageNotFound" hidden>
+
+        <!-- ------------------------------------------------------------------------ -->
+        <!-- General info about page not found and contact information -->
+        <div id="pageNotFoundInfo">
+
+          <h3>Valitettavasti etsimääsi sivua ei löytynyt!<span id="sadFaceIcon"
+              class="material-icons">sentiment_dissatisfied</span></h3>
+
+          <p>Tarvitsetko apua? Ota yhteyttä: <a href="mailto:melinda-posti@helsinki.fi">melinda-posti@helsinki.fi</a>
+          </p>
+
+          <p>Täältä löydät kaikki Melinda-palvelun yhteystiedot: <a
+              href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank"
+              rel="noopener noreferrer">https://www.kiwi.fi/display/melinda/Yhteystiedot</a></p>
+
+        </div>
+
+        <!-- For displaying info message for user -->
+        <div id="snackbars" class="snackbars"></div>
+
+      </div>
+
     </div>
 
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Login tab -->
-    <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
-      <div class="VBox Input">
-        <label for="username">Käyttäjätunnus</label>
-        <input id="login-username" name="username" autofocus autocomplete="username" />
-      </div>
-      <div class="VBox Input">
-        <label for="password">Salasana</label>
-        <input id="login-password" type="password" name="password" autocomplete="current-password" />
-      </div>
-      <div class="HBox Input" style="align-items: baseline;">
-        <input id="acceptterms" type="checkbox">
-        <label for="acceptterms" style="padding-left: 8px;">
-          Hyväksyn
-          <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
-            tietosuojaselosteen</a>
-          ja evästeiden käytön.
-          <br /><br />
-          Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
-      </div>
-      <div id="info"></div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end;">
-        <button onClick="return login(event)">Kirjaudu</button>
-      </div>
-    </form>
-
-    <!-- ---------------------------------------------------------------------- -->
-    <!-- Page not found tab -->
-    <div id="pageNotFound" hidden>
-
-      <!-- ------------------------------------------------------------------------ -->
-      <!-- General info about page not found and contact information -->
-      <div id="pageNotFoundInfo">
-
-        <h3>Valitettavasti etsimääsi sivua ei löytynyt!<span id="sadFaceIcon"
-            class="material-icons">sentiment_dissatisfied</span></h3>
-
-        <p>Tarvitsetko apua? Ota yhteyttä: <a href="mailto:melinda-posti@helsinki.fi">melinda-posti@helsinki.fi</a></p>
-
-        <p>Täältä löydät kaikki Melinda-palvelun yhteystiedot: <a
-            href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank"
-            rel="noopener noreferrer">https://www.kiwi.fi/display/melinda/Yhteystiedot</a></p>
-
-      </div>
-
-      <!-- For displaying info message for user -->
-      <div id="snackbars" class="snackbars"></div>
-
-    </div>
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Footer -->
+    <melinda-footer class="Filler VBox"></melinda-footer>
 
   </div>
 
