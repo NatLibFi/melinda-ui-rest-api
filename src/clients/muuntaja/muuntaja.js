@@ -200,7 +200,7 @@ window.copyLink = function (e) {
 
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
 
-  showSnackbar({text: 'Linkki kopioitu!', closeButton: 'true'});
+  showSnackbar({style:'success', text: 'Linkki kopioitu!'});
 };
 
 //-----------------------------------------------------------------------------

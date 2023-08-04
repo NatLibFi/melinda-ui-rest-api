@@ -36,11 +36,11 @@ window.downloadFile = function (event) {
       setMergedRecord(data.mergedRecord);
       setCreationTime(data.creationTime);
       doDownload(JSON.stringify(recordObject));
-      showSnackbar({text: 'Tiedosto ladattiin onnistuneesti laitteellesi!', closeButton: 'true'});
+      showSnackbar({style: 'success', text: 'Tiedosto ladattiin onnistuneesti laitteellesi!'});
     })
     .catch((error) => {
       console.log('Problem getting or setting log data while creating record object: ', error);
-      showSnackbar({text: 'Tiedostoa ei valitettavasti pystytty lataamaan', closeButton: 'true'});
+      showSnackbar({style: 'error', text: 'Tiedostoa ei valitettavasti pystytty lataamaan'});
     });
 
   function setPreferred(preference) {
@@ -120,7 +120,7 @@ window.clearSelectedFile = function (event) {
 
 window.cancelUpload = function (event) {
   console.log('File upload cancelled');
-  showSnackbar({text: 'Tiedoston avaaminen peruttu', closeButton: 'true'});
+  showSnackbar({style: 'status', text: 'Tiedoston avaaminen peruttu'});
 };
 
 window.confirmUpload = function (event) {
@@ -142,13 +142,13 @@ window.confirmUpload = function (event) {
         console.log('Log parsed from file: ', log);
         setDataToIndexDB({0: log}, 0);
         showReaderMode();
-        showSnackbar({text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.', closeButton: 'true'});
+        showSnackbar({style: 'info', text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.'});
       }
     };
 
     reader.onerror = function (event) {
       console.log('Error reading file ', error);
-      showSnackbar({text: 'Valitettavasti tiedoston avaus ei onnistunut!', closeButton: 'true'});
+      showSnackbar({style: 'error', text: 'Valitettavasti tiedoston avaus ei onnistunut!'});
     };
 
     function parseJson(text) {
@@ -159,7 +159,7 @@ window.confirmUpload = function (event) {
           data = JSON.parse(text);
         } catch (error) {
           console.log('Error while parsing file content to JSON: ', error);
-          showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+          showSnackbar({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
         }
       }
 
@@ -169,13 +169,13 @@ window.confirmUpload = function (event) {
     function parseLog(data) {
       if (data === null) {
         console.log('No json data for parsing log');
-        showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        showSnackbar({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
         return;
       }
 
       if (data.melindaRecord === undefined && data.databaseRecord === undefined && data.mergedRecord === undefined && data.incomingRecord === undefined) {
         console.log('Records are undefined, invalid json data for parsing log');
-        showSnackbar({text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto', closeButton: 'true'});
+        showSnackbar({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
         return;
       }
 
@@ -249,7 +249,7 @@ export function checkFile(file) {
     console.log('File is empty!');
     disableElement(confirmUploadButton);
     highlightElement(fileNameDiv, 'var(--color-functional-red)');
-    showSnackbar({text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!'});
     return;
   }
 
@@ -258,7 +258,7 @@ export function checkFile(file) {
     confirmUploadButton.title = 'Valitse ensin .json- tai .txt-päätteinen tiedosto';
     disableElement(confirmUploadButton);
     highlightElement(fileNameDiv, 'var(--color-functional-red)');
-    showSnackbar({text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!'});
     return;
   }
 

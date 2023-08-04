@@ -22,7 +22,7 @@ function addScience(event) {
   const science = formJson['lisa-tiedot-tieteenala'];
 
   if (science === '') {
-    showSnackbar({text: 'Tieteenala ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Tieteenala ei voi olla tyhjä'});
     return;
 
   }
@@ -30,7 +30,7 @@ function addScience(event) {
 
   idbGetStoredValues('artoSciences').then(sciences => {
     if (sciences.some(sci => sci.subject === subject || sci.subCategory === subCategory)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä tieteenala', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä tieteenala'});
       return;
     }
 
@@ -48,13 +48,13 @@ function addMetodology(event) {
   const metodology = formJson['lisa-tiedot-metodologia'];
 
   if (metodology === '') {
-    showSnackbar({text: 'Metodologia ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Metodologia ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoMetodologys').then(metodologies => {
     if (metodologies.some(met => met.value === metodology)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä metodologia', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä metodologia'});
       return;
     }
 

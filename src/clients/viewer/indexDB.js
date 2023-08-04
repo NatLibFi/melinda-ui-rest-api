@@ -88,7 +88,7 @@ export function doIndexedDbCheck() {
   request.onerror = (event) => {
     console.error(`Error in opening indexedDB '${dbName}' version '${dbVersion}':`, event.target.error);
     console.log(`Note: IndexedDB can not be used in private browsing mode in Firefox or Edge`);
-    showSnackbar('Note for Firefox and Edge users: Viewer features are not available in private browsing mode');
+    showSnackbar({style: 'info', text: 'Note for Firefox and Edge users: Viewer features are not available in private browsing mode'});
   };
 
   // The indexedDB was succesfully opened.

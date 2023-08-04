@@ -25,13 +25,13 @@ export function addAbstract(event) {
   };
 
   if (data.abstract === '') {
-    showSnackbar({text: 'Tiivistelmä ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Tiivistelmä ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoAbstracts').then(abstracts => {
     if (abstracts.some(abs => abs.abstract === data.abstract)) {
-      showSnackbar({text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa'});
       return;
     }
 

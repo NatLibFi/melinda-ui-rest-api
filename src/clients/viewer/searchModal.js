@@ -234,7 +234,7 @@ function updateCorrelationIdListModal() {
     })
     .catch((error) => {
       console.log('Error getting correlation id list from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({text: 'Odota hetki listan päivittymistä', closeButton: 'true'})
+      showSnackbar({style: 'info', text: 'Odota hetki listan päivittymistä'})
     })
 }
 

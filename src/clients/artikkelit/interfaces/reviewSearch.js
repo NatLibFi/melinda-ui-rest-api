@@ -36,7 +36,7 @@ export function addReview(event) {
   const reviewIndex = document.getElementById('arvosteltu-teos-tulos-lista').value;
 
   if (reviewIndex === '') {
-    showSnackbar({text: 'Arvostelu ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Arvostelu ei voi olla tyhjä'});
     return;
   }
 
@@ -45,7 +45,7 @@ export function addReview(event) {
 
     idbGetStoredValues('artoReviews').then(reviews => {
       if (reviews.some(review => review.title === tempReview.title || review.sourceIds === tempReview.sourceIds)) {
-        showSnackbar({text: 'Artikkelille on jo lisätty tämä arvostelu', closeButton: 'true'});
+        showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä arvostelu'});
         return;
       }
 

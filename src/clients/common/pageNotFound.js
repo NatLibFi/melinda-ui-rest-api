@@ -8,7 +8,7 @@ window.initialize = function () {
 
   function authSuccess(user) {
     showTab('pageNotFound');
-    showSnackbar({text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
   }

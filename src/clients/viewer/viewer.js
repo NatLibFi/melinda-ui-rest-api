@@ -64,7 +64,7 @@ window.initialize = function () {
 
     if (id !== '') {
       doSearchPress();
-      showSnackbar({text: 'Haetaan linkin tietuetta...', closeButton: 'true'});
+      showSnackbar({style: 'info', text: 'Haetaan linkin tietuetta...'});
     }
   }
 
@@ -194,7 +194,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   console.log('Fetching...');
 
   if (id === '') {
-    showSnackbar({text: 'Lisää ID haun aloittamista varten', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Lisää ID haun aloittamista varten'});
     highlightElement(idInputField);
     console.log('Nothing to fetch...');
     return stopProcess();
@@ -238,7 +238,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     const removeButton = document.querySelector(`#viewer #delete`);
 
     const button = createClearViewButton();
-    showSnackbar({text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, actionButton: button, closeButton: 'true'});
+    showSnackbar({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, actionButton: button});
     highlightElement(idInputField);
     enableElement(clearButton);
     disableElement(protectButton);
@@ -456,7 +456,7 @@ export function setDataToIndexDB(logs, sequence) {
     idbSetLogs('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
     select.value = 0;
     disableElement(protectButton);
-    showSnackbar({text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta'});
     stopProcess();
     return select.dispatchEvent(new Event('change'));
   }
@@ -477,7 +477,7 @@ export function setDataToIndexDB(logs, sequence) {
   const sequenceInputField = document.getElementById('sequenceInput');
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
-    showSnackbar({text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`, closeButton: 'true'});
+    showSnackbar({style: 'alert', text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`});
     highlightElement(select);
   }
 

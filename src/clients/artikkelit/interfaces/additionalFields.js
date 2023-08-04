@@ -28,13 +28,13 @@ export function addNote(event) {
   };
 
   if (data.value === '') {
-    showSnackbar({text: 'Yleinen huomautus ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoNotes').then(notes => {
     if (notes.some(note => note.value === data.value)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä yleinen huomautus', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
       return;
     }
 
@@ -86,13 +86,13 @@ export function addOtherTitle(event) {
   };
 
   if (data.value === '') {
-    showSnackbar({text: 'Muu nimeke ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOtherTitles').then(otherTitles => {
     if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä muu nimeke', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
       return;
     }
 
@@ -146,13 +146,13 @@ export function addUDK(event) {
   };
 
   if (data.a080 === '') {
-    showSnackbar({text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoUDKs').then(udks => {
     if (udks.some(udk => udk.a080 === data.a080)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)', closeButton: 'ture'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
       return;
     }
 
@@ -211,13 +211,13 @@ export function addOtherRating(event) {
   };
 
   if (data.a084 === '' || data.two084 === '') {
-    showSnackbar({text: 'Muun luokituksen tiedot eivät voi olla tyhjiä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
     return;
   }
 
   idbGetStoredValues('artoOtherRatings').then(otherRatings => {
     if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
       return;
     }
 

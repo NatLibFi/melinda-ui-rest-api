@@ -26,7 +26,7 @@ export function addAuthor(event) {
     };
 
     if (data.firstName === '' || data.lastName === '') {
-      showSnackbar({text: 'Tekijän nimi ei voi olla tyhjä', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Tekijän nimi ei voi olla tyhjä'});
       return;
     }
 
@@ -106,7 +106,7 @@ export function addOrganizationForAuthor(event) {
   const organizationInputValue = formJson['tekija-organisaatio'];
 
   if (organizationInputValue === '') {
-    showSnackbar({text: 'Organisaatio ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
     return;
   }
 
@@ -117,7 +117,7 @@ export function addOrganizationForAuthor(event) {
 
   idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
     if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
-      showSnackbar({text: 'Tekijälle on jo lisätty tämä organisaatio', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
       return;
     }
 

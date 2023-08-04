@@ -65,13 +65,13 @@ export function addOntologyWord(event) {
       vocab: document.getElementById('asiasana-ontologia').value
     };
   } else {
-    showSnackbar({text: 'Asia-/avainsana ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Asia-/avainsana ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOntologyWords').then(words => {
     if (words.some(word => data.localname ? word.localname === data.localname : word.prefLabel === data.prefLabel)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä asia-/avainsana', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
       return;
     }
 
