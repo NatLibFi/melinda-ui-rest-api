@@ -40,8 +40,6 @@ class Navbar extends HTMLElement {
 
     // Add event listeners for navbar related functions
     function addNavbarEventListeners() {
-      console.log('Adding navbar event listeners');
-
       const dropdownMenuButtons = document.querySelectorAll('.navbar-dropdown-button');
       const dropdownCloseButtons = document.querySelectorAll('.dropdown-button-close');
 
@@ -93,16 +91,27 @@ class Navbar extends HTMLElement {
         });
       }
 
-      // Clicking outside of navbar in window
-      // hides automativally all dropdown menus in navbar
+      // Clicking outside of navbar in window or pressing Esc
+      // hides automatically all dropdown menus in navbar
       function addDismissNavbarEventListener() {
-        window.addEventListener('click', function (event) {
 
+        window.addEventListener('click', event => {
           const navbar = document.getElementById('navbar');
 
           if (!navbar.contains(event.target)) {
             closeAllDropdownMenus();
           }
+        })
+
+        window.addEventListener('keydown', event => {
+          const dropdownMenus = document.querySelectorAll(`.navbar-dropdown-menu`);
+
+          dropdownMenus.forEach(dropdown => {
+            if (dropdown.classList.contains('show') && event.code === 'Escape') {
+              eventHandled(event);
+              closeAllDropdownMenus();
+            }
+          })
         })
 
       }
@@ -144,7 +153,7 @@ class Navbar extends HTMLElement {
         if (appName === '') {
           appNameDiv.innerHTML = 'etusivu';
         }
-        
+
         if (appName === 'edit') {
           appNameDiv.innerHTML = 'muokkaus';
         }
