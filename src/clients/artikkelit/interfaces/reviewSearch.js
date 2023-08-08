@@ -66,7 +66,7 @@ export function refreshReviewsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['alternate-red'], `return removeReviewedBook(event, ${reviewData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeReviewedBook(event, ${reviewData.key})`, 'Poista');
       div.appendChild(createP('Arvosteltu teos', '', ':&nbsp', ['label-text']));
       div.appendChild(createP(reviewData.title));
       div.appendChild(createP('ISBN', ',&nbsp', '&nbsp'));

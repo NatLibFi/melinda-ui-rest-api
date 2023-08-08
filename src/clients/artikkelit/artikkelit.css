@@ -11,28 +11,29 @@
 /* add space around all buttons in article form */
 #articleForm button,
 #articlePreview button {
-  margin: 10px;
+  margin-bottom: 5px;
+  margin-left: 5px;
 }
-
+ 
 
 /* ---------------------------------------------------------------------------- */
 
 @media screen and (min-width: 1100px) {
-  #artikkelit-lisaa .record-merge-panel {
+  #artikkelit .article-form-and-preview {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .record-merge-panel .col {
+  .article-form-and-preview .col {
     width: 32vw;
     display: flex;
     flex-direction: column;
     padding: 0.5vw;
   }
 
-  .record-merge-panel>div:first-of-type {
+  .article-form-and-preview>div:first-of-type {
     width: 64vw;
     display: flex;
     flex-direction: column;
@@ -41,12 +42,12 @@
 }
 
 @media screen and (max-width: 1099px) {
-  #artikkelit-lisaa .record-merge-panel {
+  #artikkelit .article-form-and-preview {
     display: flex;
     flex-direction: column;
   }
 
-  .record-merge-panel .col {
+  .article-form-and-preview .col {
     width: 99vw;
     display: flex;
     flex-direction: column;
@@ -59,14 +60,15 @@
 }
 
 .header {
-  text-transform: uppercase;
+  display: flex;
+  color: var(--color-blue-100);
   font-family: var(--font-family-headline);
-  font-size: var(--font-size-headline-medium);
+  font-size: var(--font-size-headline-small);
   font-weight: var(--font-weight-headline);
   line-height: var(--font-line-height-headline-medium);
-  border-bottom: 1px solid var(--color-grey-60);
+  text-transform: uppercase;
   align-items: center;
-  display: flex;
+  padding-bottom: 20px;
 }
 
 .hidden {
@@ -138,11 +140,23 @@ fieldset {
   gap: 8px;
   margin-bottom: 20px;
   border-radius: 8px;
+  border-color: var(--color-blue-100);
 }
 
 fieldset legend {
-  font-size: var(--font-size-title-medium);
+  color: var(--color-blue-100);
+  font-size: var(--font-size-headline-small);
   font-weight: var(--font-weight-title);
+}
+
+fieldset .fieldset-sub-heading {
+  color: var(--color-blue-100);
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-headline-extra-small);
+  font-weight: var(--font-weight-title);
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
 fieldset .panel {
@@ -176,7 +190,7 @@ fieldset .panel p {
 }
 
 .label-text {
-  color: rgb(48, 93, 109);
+  color: var(--color-blue-100);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
@@ -187,11 +201,10 @@ label.label-text {
 }
 
 .title-text {
-  color: rgb(48, 93, 109);
+  color: var(--color-blue-100);
   font-family: var(--font-family-title);
   font-size: var(--font-size-title-medium);
   font-weight: var(--font-weight-title);
-
 }
 
 .content-text {
@@ -241,4 +254,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   appearance: textfield;
   -moz-appearance: textfield;
+}
+
+Input,
+Select {
+  height: 30px;
 }

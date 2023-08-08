@@ -54,7 +54,7 @@ export function refreshNotesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['alternate-red'], `return removeNote(event, ${noteData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeNote(event, ${noteData.key})`, 'Poista');
       div.appendChild(createP('Yleinen huomautus', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(noteData.value));
       div.appendChild(removeButton);
@@ -112,7 +112,7 @@ export function refreshOtherTitlesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['alternate-red'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
       div.appendChild(createP('Muu nimeke', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(otherTitleData.value));
       div.appendChild(removeButton);
@@ -174,12 +174,12 @@ export function refreshUDKsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['alternate-red'], `return removeUDK(event, ${udkData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeUDK(event, ${udkData.key})`, 'Poista');
       div.appendChild(createP('UDK-luokitus (080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
       div.appendChild(createP('Lisäluokka (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.x080));
-      div.appendChild(createP('Luokituksen lähde (080 $2', '&nbsp;', '&nbsp;', ['label-text']));
+      div.appendChild(createP('Luokituksen lähde (080 $2)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.two080));
       div.appendChild(removeButton);
       form.appendChild(div);
@@ -238,7 +238,7 @@ export function refreshOtherRatingsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['alternate-red'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
       div.appendChild(createP('Muu luokitus (084 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(otherRatingData.a084));
       div.appendChild(createP('Luokituksen lähde ($2)', '&nbsp;', '&nbsp;', ['label-text']));

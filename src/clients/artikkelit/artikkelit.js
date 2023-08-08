@@ -30,7 +30,7 @@ window.initialize = function () {
     accountMenu.classList.add('show');
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
-    showTab('artikkelit-lisaa');
+    showTab('artikkelit');
     initTypeChanges();
     fillFormOptions();
     initPublicationSearch();
@@ -168,7 +168,7 @@ window.doUpdate = (event) => {
       udks,
       otherRatings,
       reviews
-    }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit-lisaa'));
+    }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit'));
   });
 };
 

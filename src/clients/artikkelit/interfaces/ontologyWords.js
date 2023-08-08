@@ -92,7 +92,7 @@ export function refreshOntologyWordList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['alternate-red'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
       div.appendChild(createP('Asia- tai avainsana', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(wordData.prefLabel);
       pRelator.classList.add('capitalize');

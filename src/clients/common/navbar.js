@@ -157,6 +157,10 @@ class Navbar extends HTMLElement {
         if (appName === 'edit') {
           appNameDiv.innerHTML = 'muokkaus';
         }
+
+        if (appName === 'artikkelit') {
+          appNameDiv.innerHTML = 'artikkelien kuvailutyökalu';
+        }
       }
 
       appLinkDiv.setAttribute('href', '/' + appName);

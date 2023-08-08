@@ -156,8 +156,26 @@ button.alternate-blue {
 
 
 /* ---------------------------------------------------------------------------- */
-/* Minimal buttons for closing modals                                           */
+/* Minimal buttons for closing modals, clearing form subfield etc.              */
 button.minimal {
+  color: var(--color-blue-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.alternate-red.minimal {
+  color: var(--color-red-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.alternate-green.minimal {
+  color: var(--color-green-100);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.alternate-blue.minimal {
   color: var(--color-blue-100);
   border-color: transparent;
   background-color: transparent;
@@ -299,6 +317,7 @@ button.inverse:disabled {
 .tooltip:hover:after {
   content: attr(tooltip-text);
   position: absolute;
+  z-index: 7;
   left: 50%;
   top: 110%;
   transform: translateX(-50%);
@@ -371,7 +390,7 @@ button.inverse:disabled {
 }
 
 .Input>label {
-  color: rgb(48, 93, 109);
+  color: var(--color-blue-100);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
@@ -407,7 +426,7 @@ button.inverse:disabled {
 /* ---------------------------------------------------------------------------- */
 
 .Select>label {
-  color: rgb(48, 93, 109);
+  color: var(--color-blue-100);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
