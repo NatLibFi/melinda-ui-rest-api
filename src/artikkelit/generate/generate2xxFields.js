@@ -16,33 +16,33 @@ export function generatef245(articleTitle, authors, artLang) {
 
   return [];
 
-function ind1Value () {
+  function ind1Value () {
 
-if (authors.length === 0) {
-  return '0';
-}
+    if (authors.length === 0) {
+      return '0';
+    }
 
-const listYkktRelators = authors.filter((element) => element.relator === 'yhteisö' || element.relator === 'kuvittaja' || element.relator === 'kääntäjä' || element.relator === 'toimittaja');
-const listKirjoittajaRelators = authors.filter((element) => element.relator === 'kirjoittaja');
+    const listYkktRelators = authors.filter((element) => element.relator === 'yhteisö' || element.relator === 'kuvittaja' || element.relator === 'kääntäjä' || element.relator === 'toimittaja');
+    const listKirjoittajaRelators = authors.filter((element) => element.relator === 'kirjoittaja');
 
-if (authors.length === 1 && authors[0].relator === 'yhteisö') {
-  return '1' ;
-}
+    if (authors.length === 1 && authors[0].relator === 'yhteisö') {
+      return '1';
+    }
 
-if (authors[0].relator === 'yhteisö') {
-  return '1' ;
-}
+    if (authors[0].relator === 'yhteisö') {
+      return '1';
+    }
 
-if (listYkktRelators.length > 0 && listKirjoittajaRelators.length === 0) {
-  return '0' ;
-}
+    if (listYkktRelators.length > 0 && listKirjoittajaRelators.length === 0) {
+      return '0';
+    }
 
-if (listYkktRelators.length > 0 && listKirjoittajaRelators.length > 0) {
-  return '1' ;
-}
+    if (listYkktRelators.length > 0 && listKirjoittajaRelators.length > 0) {
+      return '1';
+    }
 
-return '1';
-}
+    return '1';
+  }
 
   function ind2Value () {
 
