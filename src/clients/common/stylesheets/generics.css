@@ -23,7 +23,6 @@ div {
 p,
 a,
 select,
-input,
 option {
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-medium);
@@ -31,8 +30,7 @@ option {
   line-height: var(--font-line-height-content-medium);
 }
 
-.label-text,
-label {
+.label-text {
   font-family: var(--font-family-content);
   font-size: var(--font-size-content-medium);
   font-weight: var(--font-weight-content);

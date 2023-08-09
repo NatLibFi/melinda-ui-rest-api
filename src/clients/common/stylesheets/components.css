@@ -331,6 +331,282 @@ button.inverse:disabled {
 
 
 
+/* ---------------------------------------------------------------------------- */
+/* INPUTS AND LABELS FOR INPUTS                                                 */
+/* ---------------------------------------------------------------------------- */
+
+/* form-field-container is a wrapper for label and input */
+.form-field-container {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  box-sizing: border-box;
+  width: fit-content;
+}
+
+.form-field-container.full-width {
+  width: 100%;
+}
+
+.form-field-container.half-width {
+  width: 50%;
+}
+
+.form-field-container.quarter-width {
+  width: 25%;
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Default M size label and input */
+
+.label-wrapper {
+  display: flex;
+  flex-direction: row;
+  color: var(--color-blue-100);
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  font-weight: var(--font-weight-input);
+  background-color: var(--color-primary-white);
+  height: 46px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: var(--color-blue-100);
+  border-width: 1px;
+  padding-left: 16px;
+  margin-left: 2px;
+  margin-right: 2px;
+  align-items: center;
+}
+
+.input-wrapper input {
+  font-size: var(--font-size-input-medium);
+  color: var(--color-blue-100);
+  border: none;
+  flex-grow: 1;
+  padding-right: 12px;
+}
+
+.form-field-container .input-wrapper span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  padding-right: 12px;
+}
+
+.form-field-container .input-wrapper>:not(button):last-child {
+  padding-right: 16px;
+}
+
+.form-field-container .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-medium);
+}
+
+.form-field-container .input-wrapper button {
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  border-radius: 4px;
+}
+
+.form-field-container .input-wrapper button.icon-only {
+  color: var(--color-blue-100);
+  background-color: transparent;
+  border-color: transparent;
+}
+
+/* Placeholder text in input fields */
+.input-wrapper input::placeholder {
+  color: var(--color-blue-80);
+  font-family: var(--font-family-placeholder);
+}
+
+/* Input text field can grow */
+.inputs-wrapper input[type] {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Small S size label and input */
+
+.form-field-container.small {
+  gap: 8px;
+}
+
+.form-field-container.small .label-wrapper {
+  font-size: var(--font-size-label-small);
+}
+
+.form-field-container.small .input-wrapper {
+  height: 32px;
+  border-radius: 3px;
+  padding-left: 12px;
+}
+
+.form-field-container.small .input-wrapper span.material-icons {
+  font-size: var(--font-size-icon-small);
+}
+
+.form-field-container.small .input-wrapper>:not(button):last-child {
+  padding-right: 12px;
+}
+
+.form-field-container.small input {
+  font-size: var(--font-size-input-small);
+  padding-right: 8px;
+}
+
+.form-field-container.small .input-wrapper button {
+  font-size: var(--font-size-button-small);
+  height: 32px;
+  width: 32px;
+  border-radius: 2px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input wrapper has focus style */
+/* when form field is focused */
+.form-field-container:focus-within .input-wrapper {
+  border-width: 1px;
+  border-color: var(--color-functional-blue);
+  border-style: solid;
+  outline-width: 2px;
+  outline-color: var(--color-functional-blue);
+  outline-style: solid;
+}
+
+.input-wrapper input:focus-visible {
+  outline: none;
+}
+
+.input-wrapper button:focus {
+  outline: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input wrappers button has active style when clicked */
+
+.input-wrapper button.icon-only:hover span.material-icons {
+  cursor: pointer;
+  color: var(--color-red-100);
+}
+
+.input-wrapper button.icon-only:active {
+  outline: none;
+  background-color: var(--color-red-100);
+}
+
+.input-wrapper button.icon-only:active span.material-icons {
+  color: var(--color-primary-white);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input field disabled state */
+/* form-field-container wrapper div should have attribute disabled="true" */
+/* also the input element itself should be disabled */
+
+.form-field-container:focus-within[disabled=true] .input-wrapper {
+  outline: none;
+  border-color: var(--color-blue-60);
+}
+
+.form-field-container[disabled=true] .input-wrapper {
+  pointer-events: none;
+  border-color: var(--color-blue-60);
+  background-color: var(--color-grey-20);
+}
+
+.form-field-container[disabled=true] .input-wrapper input[type] {
+  pointer-events: none;
+  background-color: var(--color-grey-20);
+}
+
+.form-field-container[disabled=true] .input-wrapper span {
+  color: var(--color-blue-80);
+}
+
+.form-field-container[disabled=true] .input-wrapper input::placeholder {
+  color: var(--color-blue-60);
+}
+
+.form-field-container[disabled=true] .input-wrapper button {
+  color: var(--color-grey-20);
+  background-color: var(--color-blue-60);
+  border-color: var(--color-blue-60);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Input field success and error state */
+/* success and error states should show correct icon at the end of input field
+/* Error state can also have additional hint under input field */
+
+
+.form-field-container.success .input-wrapper {
+  border-width: 1px;
+  border-color: var(--color-functional-green);
+  border-style: solid;
+  outline-width: 2px;
+  outline-color: var(--color-functional-green);
+  outline-style: solid;
+}
+
+.form-field-container.success .input-wrapper>span.material-icons:last-child {
+  color: var(--color-functional-green);
+}
+
+.form-field-container.error .input-wrapper {
+  border-width: 1px;
+  border-color: var(--color-functional-red);
+  border-style: solid;
+  outline-width: 2px;
+  outline-color: var(--color-functional-red);
+  outline-style: solid;
+}
+
+.form-field-container.error .input-wrapper>span.material-icons:last-child {
+  color: var(--color-functional-red);
+}
+
+.form-field-container.error .hint-wrapper {
+  color: var(--color-functional-red);
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* Inverse colors for labels and inputs */
+
+.form-field-container.inverse .label-wrapper {
+  color: var(--color-primary-white);
+}
+
+.form-field-container.inverse:focus-within .input-wrapper {
+  border-color: var(--color-blue-60);
+  outline-color: var(--color-blue-60);
+}
+
 
 
 
@@ -367,7 +643,6 @@ button.inverse:disabled {
 
 
 /* ARTIKKELIT */
-
 .Button input {
   font-size: var(--font-size-input-medium);
   font-weight: var(--font-weight-input);
@@ -379,9 +654,8 @@ button.inverse:disabled {
   border-radius: 1em;
 }
 
-
 /* ---------------------------------------------------------------------------- */
-/* Inputs & their labels */
+/* Inputs & their labels (old versions) */
 /* ---------------------------------------------------------------------------- */
 
 .Input {
