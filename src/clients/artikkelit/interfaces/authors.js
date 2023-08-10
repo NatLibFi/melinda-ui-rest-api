@@ -69,9 +69,18 @@ export function refreshAuthorsList() {
       div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
+
       div.appendChild(pRelator);
-      div.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
-      div.appendChild(createP(authorData.firstName, ',&nbsp;'));
+
+      if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(authorData.relator)) {
+        div.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
+        div.appendChild(createP(authorData.firstName, ',&nbsp;'));
+      }
+
+      if (authorData.relator === 'yhteisö') {
+        div.appendChild(createP(authorData.relatorName, ',&nbsp;'));
+      }
+
       authorData.authorsTempOrganizations.forEach(organization => {
         div.appendChild(createP(organization.organizationName, '&nbsp;-&nbsp;'));
         if (organization.code) {
