@@ -95,19 +95,19 @@ window.articleTypeChange = (event) => {
 window.articleAuthorRoleChange = (event) => {
   const authorFirstName = document.getElementById('input-tekija-etunimi');
   const authorLastName = document.getElementById('input-tekija-sukunimi');
-  const authorRelatorName = document.getElementById('input-tekija-yhteison-nimi');
+  const authorCorporateName = document.getElementById('input-tekija-yhteison-nimi');
 
   const selectedRole = event.target.value;
 
   authorFirstName.style.display = 'flex';
   authorLastName.style.display = 'flex';
-  authorRelatorName.style.display = 'none';
+  authorCorporateName.style.display = 'none';
 
 
   if (selectedRole === 'yhteisö') {
     authorFirstName.style.display = 'none';
     authorLastName.style.display = 'none';
-    authorRelatorName.style.display = 'flex';
+    authorCorporateName.style.display = 'flex';
   }
 };
 

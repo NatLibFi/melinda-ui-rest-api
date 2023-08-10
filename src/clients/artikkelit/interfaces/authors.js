@@ -21,7 +21,7 @@ export function addAuthor(event) {
     const data = {
       firstName: formJson['tekija-etunimi'],
       lastName: formJson['tekija-sukunimi'],
-      relatorName: formJson['tekija-yhteison-nimi'],
+      corporateName: formJson['tekija-yhteison-nimi'],
       relator: formJson['tekija-rooli'],
       authorsTempOrganizations
     };
@@ -31,12 +31,12 @@ export function addAuthor(event) {
       return;
     }
 
-    if (data.relator === 'yhteisö' && data.relatorName === '') {
+    if (data.relator === 'yhteisö' && data.corporateName === '') {
       showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
-    if(data.lastName === ' ' || data.firstName === ' ' || data.relatorName === ' ') {
+    if(data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
       showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
       return;
     }
@@ -88,7 +88,7 @@ export function refreshAuthorsList() {
       }
 
       if (authorData.relator === 'yhteisö') {
-        div.appendChild(createP(authorData.relatorName, '&nbsp;-&nbsp;'));
+        div.appendChild(createP(authorData.corporateName, '&nbsp;-&nbsp;'));
       }
 
       authorData.authorsTempOrganizations.forEach(organization => {
