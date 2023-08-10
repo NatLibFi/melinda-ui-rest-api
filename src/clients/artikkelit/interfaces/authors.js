@@ -26,13 +26,18 @@ export function addAuthor(event) {
       authorsTempOrganizations
     };
 
-    if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && (data.firstName === '' || data.lastName === '')) {
-      showSnackbar({text: 'Tekijän nimi ei voi olla tyhjä', closeButton: 'true'});
+    if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
+      showSnackbar({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
     if (data.relator === 'yhteisö' && data.relatorName === '') {
       showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
+      return;
+    }
+
+    if(data.lastName === ' ' || data.firstName === ' ' || data.relatorName === ' ') {
+      showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
       return;
     }
 
@@ -47,12 +52,14 @@ export function resetAuthor(event) {
   event.preventDefault();
   idbClear('artoAuthorTempOrg').then(() => {
     const organizationList = document.getElementById('tekija-organisaatiot-list');
+    const authorRoleSelect = document.getElementById('tekija-rooli');
     organizationList.innerHTML = '';
     document.getElementById('tekija-etunimi').value = '';
     document.getElementById('tekija-sukunimi').value = '';
     document.getElementById('tekija-yhteison-nimi').value = '';
-    document.getElementById('tekija-rooli').value = 'kirjoittaja';
     document.getElementById('tekija-organisaatio').value = '';
+    document.getElementById('tekija-rooli').value = 'kirjoittaja';
+    return authorRoleSelect.dispatchEvent(new Event('change'));
   });
 }
 
@@ -74,11 +81,14 @@ export function refreshAuthorsList() {
 
       if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(authorData.relator)) {
         div.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
-        div.appendChild(createP(authorData.firstName, ',&nbsp;'));
+
+        if (authorData.firstName !== '') {
+          div.appendChild(createP(authorData.firstName, ',&nbsp;'));
+        }
       }
 
       if (authorData.relator === 'yhteisö') {
-        div.appendChild(createP(authorData.relatorName, ',&nbsp;'));
+        div.appendChild(createP(authorData.relatorName, '&nbsp;-&nbsp;'));
       }
 
       authorData.authorsTempOrganizations.forEach(organization => {
