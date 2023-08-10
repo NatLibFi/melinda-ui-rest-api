@@ -278,8 +278,10 @@
                 </div>
               </div>
             </fieldset>
+           
             <fieldset>
               <legend>Lisää tekijä</legend>
+
               <form id="tekija-lisaa-form" name="tekija-lisaa-form">
                 <div class="Select full-width">
                   <label class="bold-text" for="tekija-rooli">Rooli:</label>
@@ -296,11 +298,18 @@
                   <input type="text" id="tekija-etunimi" name="tekija-etunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
                     maxlength="128">
                 </div>
+                <div class="Input">
+                  <label class="bold-text" for="tekija-yhteison-nimi">Yhteisön nimi:</label>
+                  <input type="text" id="tekija-yhteison-nimi" name="tekija-yhteison-nimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
+                    maxlength="128">
+                </div>
               </form>
+
               <div class="full-width">
                 <div id="tekija-organisaatiot-list">
                 </div>
               </div>
+
               <form id="tekija-lisaa-organisaatio" name="tekija-lisaa-organisaatio">
                 <div class="Input full-width">
                   <label for="tekija-organisaatio">Lisää tekijälle organisaatio:</label>
@@ -311,6 +320,7 @@
                   <button class="material-icons tooltip no-border icon positive" tooltip-text="Lisää">add</button>
                 </div>
               </form>
+
               <div class="full-width justify-content-end">
                 <div class="Button">
                   <button class="negative" onclick="return resetAuthor(event)">Tyhjennä</button>
@@ -319,7 +329,9 @@
                   <button class="positive" type="submit" form="tekija-lisaa-form">Lisää tekijä</button>
                 </div>
               </div>
+
             </fieldset>
+
             <fieldset>
               <legend>Lisätyt tekijät</legend>
               <div class="full-width">
