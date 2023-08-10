@@ -50,6 +50,7 @@ export function resetAuthor(event) {
     organizationList.innerHTML = '';
     document.getElementById('tekija-etunimi').value = '';
     document.getElementById('tekija-sukunimi').value = '';
+    document.getElementById('tekija-yhteison-nimi').value = '';
     document.getElementById('tekija-rooli').value = 'kirjoittaja';
     document.getElementById('tekija-organisaatio').value = '';
   });
