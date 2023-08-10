@@ -278,30 +278,30 @@
                 </div>
               </div>
             </fieldset>
-           
+
             <fieldset>
               <legend>Lisää tekijä</legend>
 
               <form id="tekija-lisaa-form" name="tekija-lisaa-form">
                 <div class="Select full-width">
                   <label class="bold-text" for="tekija-rooli">Rooli:</label>
-                  <select id="tekija-rooli" name="tekija-rooli">
+                  <select id="tekija-rooli" name="tekija-rooli" onchange="return articleAuthorRoleChange(event)">
                   </select>
                 </div>
-                <div class="Input">
+                <div id="input-tekija-sukunimi" class="Input">
                   <label class="bold-text" for="tekija-sukunimi">Sukunimi:</label>
                   <input type="text" id="tekija-sukunimi" name="tekija-sukunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
                     maxLength="128">
                 </div>
-                <div class="Input">
+                <div id="input-tekija-etunimi" class="Input">
                   <label class="bold-text" for="tekija-etunimi">Etunimi:</label>
                   <input type="text" id="tekija-etunimi" name="tekija-etunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
                     maxlength="128">
                 </div>
-                <div class="Input">
+                <div id="input-tekija-yhteison-nimi" class="Input">
                   <label class="bold-text" for="tekija-yhteison-nimi">Yhteisön nimi:</label>
-                  <input type="text" id="tekija-yhteison-nimi" name="tekija-yhteison-nimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
-                    maxlength="128">
+                  <input type="text" id="tekija-yhteison-nimi" name="tekija-yhteison-nimi"
+                    pattern="^[\p{L}\p{P}\p{Zs}]+$" maxlength="128">
                 </div>
               </form>
 
@@ -373,7 +373,8 @@
                   <button class="negative" onclick="return resetReview(event)">Tyhjennä</button>
                 </div>
                 <div class="Button">
-                  <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvosteltu teos</button>
+                  <button class="positive" type="submit" form="arvosteltu-teos-lisaa-form">Lisää arvosteltu
+                    teos</button>
                 </div>
               </div>
               <div class="full-width">

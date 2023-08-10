@@ -3,7 +3,7 @@ import {Account, doLogin, logout} from '/common/auth.js';
 import {getArtikkeliRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
 import {
-  idbClear, idbDel, idbGet, 
+  idbClear, idbDel, idbGet,
   idbGetStoredValues, getTableNames
 } from '/artikkelit/indexDB.js';
 
@@ -53,7 +53,7 @@ function sourceTypeChange(event) {
   fillArticleTypeOptions();
 
   const sourceType = event.target.value;
- 
+
   if (sourceType === 'journal') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
@@ -85,10 +85,29 @@ window.articleTypeChange = (event) => {
 
   reviewFieldset.style.display = 'flex';
   addedReviews.style.display = 'flex';
-  
+
   if (['A1', 'A2', 'A3'].some(str => selectedType.includes(str))) {
     reviewFieldset.style.display = 'none';
     addedReviews.style.display = 'none';
+  }
+};
+
+window.articleAuthorRoleChange = (event) => {
+  const authorFirstName = document.getElementById('input-tekija-etunimi');
+  const authorLastName = document.getElementById('input-tekija-sukunimi');
+  const authorRelatorName = document.getElementById('input-tekija-yhteison-nimi');
+
+  const selectedRole = event.target.value;
+
+  authorFirstName.style.display = 'flex';
+  authorLastName.style.display = 'flex';
+  authorRelatorName.style.display = 'none';
+
+
+  if (selectedRole === 'yhteisö') {
+    authorFirstName.style.display = 'none';
+    authorLastName.style.display = 'none';
+    authorRelatorName.style.display = 'flex';
   }
 };
 
@@ -182,7 +201,7 @@ window.resetReview = (event) => {
 function collectReviewsCheck() {
   const articleType = document.getElementById('artikkelin-tyyppi').value;
   const includeReviews = ['B1', 'B2', 'D1', 'E1'].some(str => articleType.includes(str));
-  
+
   if (!includeReviews) {
     idbClear('artoReviews').then(() => refreshReviewsList());
   }
@@ -192,7 +211,7 @@ function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
   const links = [];
   document.getElementsByName('artikkelin-linkki').forEach(el => links.push(el.value));
-  
+
   return {
     journalNumber: {
       publishingYear: document.getElementById(`numeron-vuosi`).value,
