@@ -21,12 +21,18 @@ export function addAuthor(event) {
     const data = {
       firstName: formJson['tekija-etunimi'],
       lastName: formJson['tekija-sukunimi'],
+      relatorName: formJson['tekija-yhteison-nimi'],
       relator: formJson['tekija-rooli'],
       authorsTempOrganizations
     };
 
-    if (data.firstName === '' || data.lastName === '') {
+    if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && (data.firstName === '' || data.lastName === '')) {
       showSnackbar({text: 'Tekijän nimi ei voi olla tyhjä', closeButton: 'true'});
+      return;
+    }
+
+    if (data.relator === 'yhteisö' && data.relatorName === '') {
+      showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
