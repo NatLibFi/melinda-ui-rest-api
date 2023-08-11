@@ -314,7 +314,7 @@
 /* ---Correlation id font helper---*/
 
 /* For span elements */
-span.correlation-id-font {
+#viewer span.correlation-id-font {
   font-family: var(--font-family-mono);
   cursor: text;
 }

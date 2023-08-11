@@ -75,7 +75,7 @@
   display: none;
 }
 
-form {
+#artikkelit form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -132,7 +132,7 @@ form {
   text-transform: capitalize;
 }
 
-fieldset {
+#artikkelit fieldset {
   display: flex;
   align-items: stretch;
   flex-direction: column;
@@ -143,13 +143,13 @@ fieldset {
   border-color: var(--color-blue-100);
 }
 
-fieldset legend {
+#artikkelit fieldset legend {
   color: var(--color-blue-100);
   font-size: var(--font-size-headline-small);
   font-weight: var(--font-weight-title);
 }
 
-fieldset .fieldset-sub-heading {
+#artikkelit fieldset .fieldset-sub-heading {
   color: var(--color-blue-100);
   font-family: var(--font-family-title);
   font-size: var(--font-size-headline-extra-small);
@@ -159,16 +159,16 @@ fieldset .fieldset-sub-heading {
   padding-bottom: 10px;
 }
 
-fieldset .panel {
+#artikkelit fieldset .panel {
   width: 49%;
   align-items: center;
 }
 
-fieldset .panel>.full-width {
+#artikkelit fieldset .panel>.full-width {
   display: flex;
 }
 
-fieldset .panel label {
+#artikkelit fieldset .panel label {
   display: inline-flex;
   font-family: var(--font-family-label);
   text-align: end;
@@ -177,7 +177,7 @@ fieldset .panel label {
   color: rgb(48, 93, 109);
 }
 
-fieldset .panel p {
+#artikkelit fieldset .panel p {
   display: inline-flex;
   line-height: var(--font-line-height-content-medium);
 }
@@ -196,7 +196,7 @@ fieldset .panel p {
   font-weight: var(--font-weight-label);
 }
 
-label.label-text {
+#artikkelit label.label-text {
   margin-right: 8px;
 }
 
@@ -245,18 +245,18 @@ label.label-text {
   background-color: var(--color-red-80);
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+#artikkelit input::-webkit-outer-spin-button,
+#artikkelit input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0
 }
 
-input[type=number] {
+#artikkelit input[type=number] {
   appearance: textfield;
   -moz-appearance: textfield;
 }
 
-Input,
-Select {
+#artikkelit Input,
+#artikkelit Select {
   height: 30px;
 }

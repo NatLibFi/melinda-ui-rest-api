@@ -949,7 +949,7 @@ dialog:modal {
 /* If hr or p element is used in supporting text, */
 /* sets the horizontal line on it's own row */
 .dialog-supporting-text hr,
-p:not(.full-width p) {
+.dialog-supporting-text p:not(.full-width p) {
   flex: 0 0 100%
 }
 

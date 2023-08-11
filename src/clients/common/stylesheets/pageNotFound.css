@@ -9,43 +9,68 @@
 /* ---------------------------------------------------------------------------- */
 
 
-.Input>label {
-  color: rgb(48, 93, 109);
-  font-family: var(--font-family-label);
-  font-size: var(--font-size-label-medium);
-  text-align: center;
+#bodywrapper {
+  background-color: var(--color-grey-20);
 }
 
-.Input>input {
-  border: 0;
-  border-bottom: 1pt solid grey;
-  outline: none;
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-content-medium);
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#pageNotFound {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 #pageNotFoundInfo {
-  padding-left: 3em;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  background-color: var(--color-primary-white);
+  color: var(--color-primary-blue);
+  padding: 25px;
+  margin: 25px;
+  gap: 25px;
 }
 
 #pageNotFoundInfo h3 {
   display: flex;
   align-items: center;
+  margin: 0px;
+  padding: 0px;
 }
 
 #pageNotFoundInfo a {
   padding-left: 0.5em;
+  text-decoration: underline dotted var(--color-functional-blue) 0.1rem
 }
 
 #pageNotFoundInfo a:hover {
-  text-decoration: underline;
+  color: var(--color-primary-blue);
+  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
 }
+
 
 #pageNotFoundInfo p {
-  height: 30px;
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
 }
 
-#sadFaceIcon {
+#pageNotFoundInfo #sadFaceIcon {
   font-size: 30px;
   padding: 0.5em;
+}
+
+#pageNotFoundInfo img {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  height: 40px;
 }

@@ -54,7 +54,7 @@
   gap: 15px;
 }
 
-a .footer-email {
+.footer a .footer-email {
   font-size: var(--font-size-link-large);
   font-weight: var(--font-weight-link);
   color: var(--color-primary-white);
@@ -64,12 +64,17 @@ a .footer-email {
   display: flex;
 }
 
-a .footer-link {
+.footer a {
+  text-decoration: none;
+}
+
+.footer a .footer-link {
   font-size: var(--font-size-link-large);
   font-weight: var(--font-weight-link);
   display: flex;
   color: var(--color-primary-white);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .footer-link-text {

@@ -2,13 +2,12 @@ import {showSnackbar, showTab} from '/./common/ui-utils.js';
 import {Account, doLogin, logout} from '/./common/auth.js';
 
 window.initialize = function () {
-  showAppName(window.location.href);
-
   doLogin(authSuccess);
 
   function authSuccess(user) {
     showTab('pageNotFound');
     showSnackbar({style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
+    showAppName(window.location.href);
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
   }
