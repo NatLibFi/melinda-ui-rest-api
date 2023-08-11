@@ -44,6 +44,16 @@
 
 
 /* ---------------------------------------------------------------------------- */
+/* BOX-SHADOW
+/* ---------------------------------------------------------------------------- */
+
+.BoxShadow {
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+
+
+/* ---------------------------------------------------------------------------- */
 /* BUTTONS
 /* ---------------------------------------------------------------------------- */
 /* Basic buttons                                                                */
@@ -103,26 +113,26 @@ button.icon-only {
 /* ---------------------------------------------------------------------------- */
 /* Small S size button                                                          */
 
-button.button-small {
-  font-size: var(--font-size-button-small);
+button.small {
+  font-size: var(--font-size-small);
   padding-left: 12px;
   padding-right: 12px;
   height: 32px;
 }
 
-button.button-small .material-icons {
+button.small .material-icons {
   font-size: var(--font-size-icon-small);
 }
 
-button.button-small.icon-on-left .material-icons {
+button.small.icon-on-left .material-icons {
   padding-right: 12px;
 }
 
-button.button-small.icon-on-right .material-icons {
+button.small.icon-on-right .material-icons {
   padding-left: 12px;
 }
 
-button.button-small.icon-only {
+button.small.icon-only {
   width: 32px;
 }
 
@@ -309,24 +319,60 @@ button.inverse:disabled {
 /* ---------------------------------------------------------------------------- */
 /* TOOLTIPS                                                                     */
 /* ---------------------------------------------------------------------------- */
+/* Styles for small bottom tooltips that appear on button hover                 */
+/* Styles for larger info tooltips (clickable, with icons and more text) TODO   */
 
 .tooltip {
   position: relative;
 }
 
-.tooltip:hover:after {
+.tooltip:hover:before {
+  pointer-events: none;
   content: attr(tooltip-text);
   position: absolute;
   z-index: 7;
   left: 50%;
-  top: 110%;
+  top: 120%;
   transform: translateX(-50%);
-  padding: 0.5em;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 6px;
+  padding-top: 6px;
   border-radius: 0.2rem;
-  background: var(--color-primary-black);
+  background-color: var(--color-blue-100);
   color: var(--color-primary-white);
   font-size: var(--font-size-label-extra-small);
   font-family: var(--font-family-label);
+  filter: drop-shadow(0px 5px 3px var(--color-grey-80));
+}
+
+.tooltip:hover:after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: 90%;
+  border-style: solid;
+  border-color: transparent;
+  border-bottom-color: var(--color-blue-100);
+  border-width: 7px;
+  margin-left: -7px;
+}
+
+/* for small sized buttons */
+button.small.tooltip:hover:before {
+  left: 50%;
+  top: 130%;
+}
+
+
+button.small.tooltip:hover:after {
+  z-index: 7;
+  left: 50%;
+  top: 88%;
+  border-width: 7px;
+  margin-left: -7px;
 }
 
 
@@ -473,7 +519,7 @@ button.inverse:disabled {
 }
 
 .form-field-container.small .input-wrapper button {
-  font-size: var(--font-size-button-small);
+  font-size: var(--font-size-small);
   height: 32px;
   width: 32px;
   border-radius: 2px;
@@ -773,13 +819,7 @@ button.inverse:disabled {
   background-color: var(--color-grey-60);
 }
 
-/* ---------------------------------------------------------------------------- */
-/* Box
-/* ---------------------------------------------------------------------------- */
 
-.BoxShadow {
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-}
 
 /* ---------------------------------------------------------------------------- */
 /* Modal dialogs

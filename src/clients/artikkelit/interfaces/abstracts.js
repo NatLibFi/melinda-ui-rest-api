@@ -51,7 +51,7 @@ export function refreshAbstractList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete_outline', ['alternate-red', 'button-small'], `return removeAbstract(event, ${abstractData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeAbstract(event, ${abstractData.key})`, 'Poista');
       div.appendChild(createP(abstractData.language.ui, '', '&nbsp;-&nbsp;', ['label-text']));
       const abstractP = createP(abstractData.abstract);
       abstractP.classList.add('long-text');
