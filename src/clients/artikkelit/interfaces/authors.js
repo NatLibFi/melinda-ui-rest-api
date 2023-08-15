@@ -21,12 +21,23 @@ export function addAuthor(event) {
     const data = {
       firstName: formJson['tekija-etunimi'],
       lastName: formJson['tekija-sukunimi'],
+      corporateName: formJson['tekija-yhteison-nimi'],
       relator: formJson['tekija-rooli'],
       authorsTempOrganizations
     };
 
-    if (data.firstName === '' || data.lastName === '') {
-      showSnackbar({text: 'Tekijän nimi ei voi olla tyhjä', closeButton: 'true'});
+    if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
+      showSnackbar({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
+      return;
+    }
+
+    if (data.relator === 'yhteisö' && data.corporateName === '') {
+      showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
+      return;
+    }
+
+    if(data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
+      showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
       return;
     }
 
@@ -41,11 +52,14 @@ export function resetAuthor(event) {
   event.preventDefault();
   idbClear('artoAuthorTempOrg').then(() => {
     const organizationList = document.getElementById('tekija-organisaatiot-list');
+    const authorRoleSelect = document.getElementById('tekija-rooli');
     organizationList.innerHTML = '';
     document.getElementById('tekija-etunimi').value = '';
     document.getElementById('tekija-sukunimi').value = '';
-    document.getElementById('tekija-rooli').value = 'kirjoittaja';
+    document.getElementById('tekija-yhteison-nimi').value = '';
     document.getElementById('tekija-organisaatio').value = '';
+    document.getElementById('tekija-rooli').value = 'kirjoittaja';
+    return authorRoleSelect.dispatchEvent(new Event('change'));
   });
 }
 
@@ -62,9 +76,21 @@ export function refreshAuthorsList() {
       div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
+
       div.appendChild(pRelator);
-      div.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
-      div.appendChild(createP(authorData.firstName, ',&nbsp;'));
+
+      if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(authorData.relator)) {
+        div.appendChild(createP(authorData.lastName, '&nbsp;-&nbsp;'));
+
+        if (authorData.firstName !== '') {
+          div.appendChild(createP(authorData.firstName, ',&nbsp;'));
+        }
+      }
+
+      if (authorData.relator === 'yhteisö') {
+        div.appendChild(createP(authorData.corporateName, '&nbsp;-&nbsp;'));
+      }
+
       authorData.authorsTempOrganizations.forEach(organization => {
         div.appendChild(createP(organization.organizationName, '&nbsp;-&nbsp;'));
         if (organization.code) {
