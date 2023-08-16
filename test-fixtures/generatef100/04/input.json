@@ -3,7 +3,8 @@
     {
       "key": 1,
       "firstName": " ",
-      "lastName": "Kirjailijayhteisö Kynäniekat",
+      "lastName": "",
+      "corporateName": "Kirjailijayhteisö Kynäniekat",      
       "relator": "yhteisö",
       "authorsTempOrganizations": []
     }

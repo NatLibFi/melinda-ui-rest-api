@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - name with organization name & code",
+  "description": "generatef100 - name with organization name & code (authorsTempOrganizations)",
   "skip": false,
   "only": false,
   "expectToFail": false,

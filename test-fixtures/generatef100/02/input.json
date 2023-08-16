@@ -5,6 +5,7 @@
     "key":1,
     "firstName":"August",
     "lastName":"Walden",
+    "corporateName": "",    
     "relator":"kirjoittaja",
     "authorsTempOrganizations":
     [{"key":1,"organizationName":"Sibelius-Akatemia","code":"1742","note":false},

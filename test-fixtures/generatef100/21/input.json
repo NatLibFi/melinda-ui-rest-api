@@ -5,6 +5,7 @@
             "key": 1,
             "firstName": "Jakke",
             "lastName": "Jäyhä",
+            "corporateName": "",            
             "relator": "kirjoittaja",
             "authorsTempOrganizations": [
              {
@@ -19,6 +20,7 @@
             "key": 2,
             "firstName": "Etumini_II",
             "lastName": "Sukunimi_II",
+            "corporateName": "",            
             "relator": "kirjoittaja",
             "authorsTempOrganizations": [
              {
@@ -34,6 +36,7 @@
             "key": 3,
             "firstName": "Etumini_III",
             "lastName": "Sukunimi_III",
+            "corporateName": "",            
             "relator": "kirjoittaja",
             "authorsTempOrganizations": [
              {

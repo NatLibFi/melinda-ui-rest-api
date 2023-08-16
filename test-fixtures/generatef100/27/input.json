@@ -1,0 +1,15 @@
+{
+  "authors" :
+  [
+    {
+    "key":1,
+    "firstName":"*** valittu yhteisö: tämän ei tulisi näkyä!",
+    "lastName":"*** valittu yhteisö: tämän ei tulisi näkyä!",
+    "corporateName": "Tässä Yhteisön nimi",
+    "relator": "yhteisö",
+    "authorsTempOrganizations":
+    [{"key":1,"organizationName":"Sibelius-Akatemia","code":"1742","note":false},
+      {"key":2,"organizationName":"Oulun yliopisto","code":"1904","note":false}]
+    }
+  ] 
+}

@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - case kirjoittaja, kuvittaja and yhteisö with organization.",
+  "description": "generatef100 - case kirjoittaja, kuvittaja and yhteisö. With: authorsTempOrganizations.",
   "skip": false,
   "only": false,
   "expectToFail": false,

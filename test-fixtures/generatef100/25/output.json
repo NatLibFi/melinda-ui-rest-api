@@ -1,0 +1,88 @@
+[
+  {
+   "tag": "100",
+   "ind1": "1",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Reilly, Ted,"
+    },
+    {
+     "code": "e",
+     "value": "kirjoittaja."
+    }
+   ]
+  },
+  {
+   "tag": "700",
+   "ind1": "1",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Dore, Gustav,"
+    },
+    {
+     "code": "e",
+     "value": "kuvittaja."
+    }
+   ]
+  },
+  {
+   "tag": "700",
+   "ind1": "1",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Hollo, Anselm,"
+    },
+    {
+     "code": "e",
+     "value": "kääntäjä."
+    }
+   ]
+  },
+  {
+   "tag": "700",
+   "ind1": "1",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Virtanen, Tauno,"
+    },
+    {
+     "code": "e",
+     "value": "toimittaja."
+    }
+   ]
+  },
+  {
+   "tag": "700",
+   "ind1": "1",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Vonnegut, Kurt,"
+    },
+    {
+     "code": "e",
+     "value": "kirjoittaja."
+    }
+   ]
+  },
+  {
+   "tag": "710",
+   "ind1": "0",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "Kirjallisuusseura."
+    }
+   ]
+  }
+ ]

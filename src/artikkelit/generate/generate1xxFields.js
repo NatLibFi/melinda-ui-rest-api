@@ -17,7 +17,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
     return generate700or710();
 
     function generate100or110() {
-      if (authors[0].firstName === ' ' && authors[0].lastName === ' ') {
+      if (authors[0].firstName === ' ' && authors[0].lastName === ' ') {          
         return []; // hit space key on both means: 'skip this'
       }
 
@@ -106,6 +106,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
         return [subA, subE, subU, subG];
       }
+      
 
       if (checkIfOnlyOneNameCase() === 'titleCase') {
         return [subAshort, subC, subE];
@@ -125,7 +126,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
 
     function generateSubfieldsForYhteiso() { // 110 & 710
       // Here subA ends in dot (.) & uses only lastName; subE NOT used in 110,710
-      const subA = {code: 'a', value: `${author.lastName}.`};
+      const subA = {code: 'a', value: `${author.corporateName}.`};
       const mapOrgnNames = author.authorsTempOrganizations.map(elem => `${elem.organizationName}`);
 
       if (mapOrgnNames.length > 0) {

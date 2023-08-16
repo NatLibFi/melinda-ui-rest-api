@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": "Jonathan",
      "lastName": "Swift",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": [
       {

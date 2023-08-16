@@ -1,0 +1,21 @@
+{
+    "authors": [
+        {
+          "key": 1,
+          "firstName": " ",
+          "lastName": "",
+          "corporateName": "Suomen Geologinen Yhdistys",          
+          "relator": "yhteisö",
+          "authorsTempOrganizations": []
+        }
+      ],
+    "article": {
+        "title": "Tähän syötetty Articletitle eli Artikkelin tiedot-Nimeke!",
+        "titleOther": "",
+        "language": { "iso6391": "fi", "iso6392b": "fin", "ui": "Suomi" },
+        "link": [ "" ],
+        "type": "",
+        "sectionOrColumn": ""
+      }
+    
+}

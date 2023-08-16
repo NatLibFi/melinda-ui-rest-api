@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": " ",
      "lastName": "Outsider",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": []
     },
@@ -11,6 +12,7 @@
      "key": 2,
      "firstName": " ",
      "lastName": "Outsider",
+     "corporateName": "",     
      "relator": "kuvittaja",
      "authorsTempOrganizations": []
     }
