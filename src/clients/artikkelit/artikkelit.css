@@ -8,6 +8,12 @@
 
 /* ---------------------------------------------------------------------------- */
 
+#artikkelit {
+  background-color: var(--color-primary-white);
+}
+
+
+
 /* add space around all buttons in article form */
 #articleForm button,
 #articlePreview button {
@@ -83,52 +89,52 @@
   width: 100%;
 }
 
-.header .material-icons {
+#artikkelit .header .material-icons {
   font-size: var(--font-size-icon-medium);
 }
 
-.header label {
+#artikkelit .header label {
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-medium);
 }
 
-.half-width {
+#artikkelit  .half-width {
   width: 50%;
 }
 
-.full-width {
+#artikkelit .full-width {
   width: 100%;
   display: flex;
   align-items: center;
   align-content: center;
 }
 
-.full-width label {
+#artikkelit .full-width label {
   overflow: visible;
   white-space: nowrap;
 }
 
-.full-width select {
+#artikkelit .full-width select {
   width: inherit;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.full-width select option {
+#artikkelit  .full-width select option {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.full-width p {
+#artikkelit .full-width p {
   margin: 0px;
 }
 
-.full-width p:last-of-type {
+#artikkelit .full-width p:last-of-type {
   flex-grow: 1;
 }
 
-.capitalize {
+#artikkelit .capitalize {
   text-transform: capitalize;
 }
 

@@ -9,10 +9,6 @@
 /* ---------------------------------------------------------------------------- */
 
 
-#bodywrapper {
-  background-color: var(--color-grey-20);
-}
-
 #root {
   display: flex;
   flex-direction: column;
@@ -53,7 +49,6 @@
   color: var(--color-primary-blue);
   text-decoration: underline solid var(--color-primary-blue) 0.1rem;
 }
-
 
 #pageNotFoundInfo p {
   display: flex;

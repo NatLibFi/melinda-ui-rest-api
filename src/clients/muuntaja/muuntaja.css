@@ -8,6 +8,11 @@
 
 /* ---------------------------------------------------------------------------- */
 
+#muuntaja {
+  background-color: var(--color-primary-white);
+}
+
+
 .ToolBar button {
   margin-left: 5px;
   margin-right: 5px;

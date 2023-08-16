@@ -50,29 +50,73 @@
 
       <!-- ---------------------------------------------------------------------- -->
       <!-- Login tab -->
-      <form id="login" class="VBox modal-content BoxShadow" style="display: none;">
-        <div class="VBox Input">
-          <label for="username">Käyttäjätunnus</label>
-          <input id="login-username" name="username" autofocus autocomplete="username" />
+      <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
+      <form id="login" class="VBox BoxShadow form-modal" style="display: none;">
+
+        <div class="form-headline">
+          <h3>Kirjaudu sisään</h3>
         </div>
-        <div class="VBox Input">
-          <label for="password">Salasana</label>
-          <input id="login-password" type="password" name="password" autocomplete="current-password" />
+
+        <div class="form-content">
+
+          <div id="loginFormUsername" class="HBox form-field-container full-width">
+            <div class="label-wrapper">
+              <label for="username">
+                Käyttäjätunnus <span class="form-field-required">*</span>
+              </label>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-icons">person_outline</span>
+              <input id="login-username" type="text" name="username" required="true" autofocus="true" spellcheck="false"
+                placeholder="Syötä Melinda-tunnus" title="Käyttäjätunnus on vaadittu kenttä">
+            </div>
+          </div>
+
+          <div id="loginFormPassword" class="HBox form-field-container full-width">
+            <div class="label-wrapper">
+              <label for="password">Salasana <span class="form-field-required">*</label>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-icons">lock_outline</span>
+              <input id="login-password" type="password" name="password" required="true" spellcheck="false"
+                placeholder="Syötä salasana" title="Salasana on vaadittu kenttä">
+            </div>
+          </div>
+
+          <div id="loginFormAcceptTerms" class="VBox">
+
+            <div class="HBox form-field-container checkbox full-width">
+              <div class="label-wrapper">
+                <label for="acceptterms">
+
+                  <div class="input-wrapper">
+                    <input id="acceptterms" type="checkbox">
+                    <span class="material-icons"></span>
+                  </div>
+
+                  <div class="outer-link">
+                    Hyväksyn
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank"
+                      rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      tietosuojaselosteen <span class="material-icons open-in-new">open_in_new</span></a>
+                    ja evästeiden käytön. Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.
+                  </div>
+
+                </label>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-        <div class="HBox Input" style="align-items: baseline;">
-          <input id="acceptterms" type="checkbox">
-          <label for="acceptterms" style="padding-left: 8px;">
-            Hyväksyn
-            <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank">
-              tietosuojaselosteen</a>
-            ja evästeiden käytön.
-            <br /><br />
-            Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.</label>
+
+        <div class="form-action">
+          <button onClick="return login(event)">
+            Kirjaudu
+          </button>
+          <div id="info"></div>
         </div>
-        <div id="info"></div>
-        <div style="display: flex; flex-direction: column; align-items: flex-end;">
-          <button onClick="return login(event)">Kirjaudu</button>
-        </div>
+
       </form>
 
       <!-- ---------------------------------------------------------------------- -->
@@ -96,8 +140,8 @@
           <p class="outer-link">
             <img src="/common/images/logo-melinda-favicon-color-cropped.png">
             Täältä löydät kaikki Melinda-palvelun yhteystiedot: <a
-              href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank"
-              rel="noopener noreferrer" title="Avautuu uuteen välilehteen">https://www.kiwi.fi/display/melinda/Yhteystiedot
+              href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank" rel="noopener noreferrer"
+              title="Avautuu uuteen välilehteen">https://www.kiwi.fi/display/melinda/Yhteystiedot
               <span class="material-icons open-in-new">open_in_new</span></a>
           </p>
 
