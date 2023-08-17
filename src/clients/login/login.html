@@ -34,30 +34,151 @@
     <melinda-navbar></melinda-navbar>
 
     <!-- ------------------------------------------------------------------------ -->
-    <!-- Progress bar -->
-    <div id="progressbar" class="progress-bar-inactive"></div>
-
-    <!-- ------------------------------------------------------------------------ -->
     <!-- Home page -->
     <div id="homePage">
 
-      <div id="appListing">
-        Valitse aputyökalu:
-        <p>
-          <a href="/artikkelit">Artikkelit</a>
-        </p>
-        <p>
-          <a href="/keycloak">Keycloak</a>
-        </p>
-        <p>
-          <a href="/muuntaja">Muuntaja</a>
-        </p>
-        <p>
-          <a href="/edit">Muokkaus</a>
-        </p>
-        <p>
-          <a href="/viewer">Viewer</a>
-        </p>
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Progress bar -->
+      <div id="progressbar" class="progress-bar-inactive"></div>
+
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Homepage Melinda info and service links -->
+      <div class="homepage-content">
+
+        <!-- Home page info section -->
+        <div class="homepage-info">
+
+          <!-- Home page main headline -->
+          <div class="homepage-info-header">
+            Melinda-kuvailijan aputyökalut
+          </div>
+
+          <!-- Home page info text -->
+          <div class="homepage-info-text">
+            Melinda on kansallinen kuvailun yhteistyöympäristö ja metatietovaranto, joka kokoaa kirjastoaineistojen
+            kuvailevat metatiedot yhteen paikkaan.
+          </div>
+
+          <!-- Home page link to wiki -->
+          <div class="homepage-info-link">
+
+            <a href="https://www.kiwi.fi/display/melinda" target="_blank" rel="noopener noreferrer"
+              title="Avautuu uuteen välilehteen">
+              <div class="service-link">
+                <div class="service-link-icon icon-arrow">
+                  <span class="material-icons">east</span>
+                </div>
+                <div class="service-link-text">
+                  Melindan asiakaswiki
+                  <span class="material-icons service-link-icon open-in-new">open_in_new</span>
+                </div>
+              </div>
+            </a>
+
+          </div>
+
+        </div>
+
+        <!-- Home page services section -->
+        <div class="homepage-services">
+
+          <!-- List of tool services -->
+          <div class="services-tools">
+
+            <div class="homepage-services-header">
+              Melinda-kuvailu
+            </div>
+
+            <div class="homepage-services-list">
+
+              <a href="/artikkelit">
+                <div class="service-link">
+                  <div class="service-link-icon icon-arrow">
+                    <span class="material-icons">east</span>
+                  </div>
+                  <div class="service-link-text">
+                    Artikkelien kuvailutyökalu
+                  </div>
+                </div>
+              </a>
+
+              <a href="/edit">
+                <div class="service-link">
+                  <div class="service-link-icon icon-arrow">
+                    <span class="material-icons">east</span>
+                  </div>
+                  <div class="service-link-text">
+                    Muokkaus
+                  </div>
+                </div>
+              </a>
+
+              <a href="/muuntaja">
+                <div class="service-link">
+                  <div class="service-link-icon icon-arrow">
+                    <span class="material-icons">east</span>
+                  </div>
+                  <div class="service-link-text">
+                    Muuntaja
+                  </div>
+                </div>
+              </a>
+
+              <a href="/viewer">
+                <div class="service-link">
+                  <div class="service-link-icon icon-arrow">
+                    <span class="material-icons">east</span>
+                  </div>
+                  <div class="service-link-text">
+                    Viewer
+                  </div>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+          <!-- List of user services -->
+          <div class="services-user">
+
+            <div class="homepage-services-header">
+              Melinda-tunnus
+            </div>
+
+            <div class="homepage-services-list">
+
+              <a href="https://asetukset.melinda.kansalliskirjasto.fi/" target="_blank" rel="noopener noreferrer"
+                title="Avautuu uuteen välilehteen">
+                <div class="service-link">
+                  <div class="service-link-icon icon-arrow">
+                    <span class="material-icons">east</span>
+                  </div>
+                  <div class="service-link-text">
+                    Muuta salasanaa
+                    <span class="material-icons service-link-icon open-in-new">open_in_new</span>
+                  </div>
+                </div>
+              </a>
+
+              <a href="https://melinda.kansalliskirjasto.fi/users/" target="_blank" rel="noopener noreferrer"
+                title="Avautuu uuteen välilehteen">
+                <div class="service-link">
+                  <div class="service-link-icon icon-arrow">
+                    <span class="material-icons">east</span>
+                  </div>
+                  <div class="service-link-text">
+                    Käyttäjänhallinta
+                    <span class="material-icons service-link-icon open-in-new">open_in_new</span>
+                  </div>
+                </div>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
       <!-- For displaying info messages and errors to user -->

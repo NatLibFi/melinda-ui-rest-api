@@ -3,3 +3,188 @@
 /* ---------------------------------------------------------------------------- */
 
 @import "/common/stylesheets/common.css";
+
+#homePage {
+    background-color: var(--color-grey-20);
+}
+
+/* ----------------------------------------------------------------------------------------------------------------------*/
+/* HOMEPAGE CONTENT */
+/* Common styles for homepage info section and homepage services section */
+
+.homepage-content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    color: var(--color-blue-100);
+    min-height: 500px;
+    padding-right: 135px;
+    padding-left: 135px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    gap: 100px;
+}
+
+.homepage-content .service-link {
+    display: flex;
+}
+
+.homepage-content a {
+    text-decoration: none;
+}
+
+.homepage-content a .service-link {
+    font-weight: var(--font-weight-link);
+    display: flex;
+    color: var(--color-functional-blue);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.homepage-content .service-link .service-link-text {
+    color: var(--color-functional-blue);
+}
+
+.homepage-content .service-link .service-link-text a {
+    display: flex;
+    color: var(--color-functional-blue);
+}
+
+.homepage-content .service-link:hover .service-link-text {
+    text-decoration: none;
+}
+
+.homepage-content .service-link .icon-arrow {
+    display: flex;
+    padding-right: 15px;
+    transform: translateX(0px);
+    transition: transform 0.5s;
+}
+
+.homepage-content .service-link:hover .icon-arrow {
+    transform: translateX(10px);
+    transition: transform 0.75s;
+}
+
+.homepage-content .service-link .service-link-icon .open-in-new {
+    display: flex;
+    padding-left: 5px;
+}
+
+.homepage-content .service-link span.open-in-new {
+    font-size: var(--font-size-icon-extra-small);
+}
+
+
+
+/* ----------------------------------------------------------------------------------------------------------------------*/
+/* HOMEPAGE INFO */
+
+.homepage-content .homepage-info {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 0;
+    flex-grow: 2;
+}
+
+.homepage-info .homepage-info-header {
+    display: flex;
+    flex-direction: row;
+    font-family: var(--font-family-brand);
+    font-size: var(--font-size-brand);
+    font-weight: var(--font-weight-brand);
+    line-height: var(--font-line-height-brand);
+    padding-bottom: 32px;
+}
+
+.homepage-info .homepage-info-text {
+    display: flex;
+    flex-direction: row;
+    font-size: var(--font-size-content-large);
+    line-height: var(--font-line-height-content-extra-large);
+    padding-bottom: 40px;
+}
+
+.homepage-info .homepage-info-link {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    font-size: var(--font-size-link-large);
+    border-color: var(--color-functional-blue);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.homepage-info .homepage-info-link:active {
+    color: var(--color-functional-blue);
+    outline-color: var(--color-functional-blue);
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 2px;
+    border-radius: 5px;
+}
+
+.homepage-info .homepage-info-link a .service-link {
+    font-size: var(--font-size-link-large);
+}
+
+.homepage-info .homepage-info-link .service-link-text {
+    font-size: var(--font-size-link-large);
+}
+
+.homepage-info .service-link span.open-in-new {
+    font-size: var(--font-size-icon-small);
+}
+
+
+/* ----------------------------------------------------------------------------------------------------------------------*/
+/* HOMEPAGE SERVICES */
+
+.homepage-content .homepage-services {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 0;
+    flex-grow: 1;
+    gap: 40px;
+}
+
+.homepage-services .homepage-services-header {
+    display: flex;
+    flex-direction: row;
+    text-transform: uppercase;
+    padding-bottom: 16px;
+    font-size: var(--font-size-headline-extra-small);
+    font-weight: var(--font-weight-headline);
+}
+
+.homepage-services .homepage-services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 24px;
+}
+
+.homepage-services a .service-link {
+    font-size: var(--font-size-link-medium);
+}
+
+.homepage-services a:active {
+    outline-color: var(--color-functional-blue);
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 2px;
+}
+
+.homepage-services .service-link .service-link-text {
+    font-size: var(--font-size-link-medium);
+}
+
+.homepage-services .service-link span.open-in-new {
+    font-size: var(--font-size-icon-extra-small);
+}
