@@ -8,6 +8,8 @@ window.initialize = function () {
     showTab('pageNotFound');
     showSnackbar({style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
     showAppName(window.location.href);
+    const accountMenu = document.getElementById('accountMenu');
+    accountMenu.classList.add('show');
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
   }

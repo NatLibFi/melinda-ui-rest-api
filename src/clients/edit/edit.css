@@ -5,12 +5,12 @@
 
 @import "/common/stylesheets/common.css";
 
-#edit {
+#muuntaja {
   background-color: var(--color-primary-white);
 }
 
 
-#edit .record-merge-panel {
+#muuntaja .record-merge-panel {
   display: flex;
   flex-direction: row;
 }

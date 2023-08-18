@@ -325,6 +325,116 @@ button.inverse:disabled {
   border-color: var(--color-blue-80);
 }
 
+/* ---------------------------------------------------------------------------- */
+/* ACCORDIONS                                                                   */
+/* ---------------------------------------------------------------------------- */
+/* Styles for accordions, that can be used to hide and show extra information   */
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2.5px;
+}
+
+/* Accordion heading contains headline and + or - icon */
+.accordion .accordion-heading {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-small);
+  font-weight: var(--font-weight-headline);
+  border-bottom-color: var(--color-blue-100);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  align-items: center;
+}
+
+.accordion .accordion-heading .accordion-heading-icon {
+  pointer-events: none;
+  display: flex;
+  padding-left: 8px;
+  padding-right: 24px;
+}
+
+.accordion .accordion-heading .accordion-heading-icon span.material-icons {
+  display: flex;
+  font-size: var(--font-size-icon-large)
+}
+
+.accordion .accordion-heading .accordion-heading-text {
+  pointer-events: none;
+  display: flex;
+}
+
+.accordion .accordion-heading:hover .accordion-heading-text,
+.accordion .accordion-heading:active .accordion-heading-text {
+  text-decoration: underline;
+  text-underline-position: auto;
+  text-underline-offset: 2px;
+}
+
+.accordion .accordion-heading:active {
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+  border-radius: 6px;
+  border-bottom: none;
+}
+
+/* accordion default state is collapsed and content is hidden */
+.accordion .accordion-heading~.accordion-content {
+  display: none;
+}
+
+/* accordion default icon is + when accordion can be opened */
+.accordion .accordion-heading .accordion-heading-icon span:before {
+  content: 'add';
+}
+
+/* accordion content is shown when expanded  */
+.accordion .accordion-heading.expanded {
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+  border-radius: 6px;
+  border-bottom: none;
+}
+
+/* accordion content is shown when expanded  */
+.accordion .accordion-heading.expanded~.accordion-content {
+  display: flex;
+  flex-direction: row;
+  padding-top: 16px;
+}
+
+/* accordion icon is - when accordion can be closed */
+.accordion .accordion-heading.expanded .accordion-heading-icon span:before {
+  content: 'remove';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* ---------------------------------------------------------------------------- */
@@ -554,6 +664,17 @@ button.small.tooltip:hover:after {
   height: 32px;
   width: 32px;
   border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Input wrapper has hover style */
+.form-field-container .input-wrapper:hover {
+  border-width: 1px;
+  border-color: var(--color-blue-100);
+  border-style: solid;
+  outline-width: 1px;
+  outline-color: var(--color-blue-100);
+  outline-style: solid;
 }
 
 
@@ -861,6 +982,12 @@ button.small.tooltip:hover:after {
   outline-color: var(--color-blue-100);
   outline-style: solid;
   outline-width: 1px;
+}
+
+.form-field-container.checkbox .input-wrapper:hover,
+.form-field-container.radio .input-wrapper:hover {
+  border: none;
+  outline: none;
 }
 
 

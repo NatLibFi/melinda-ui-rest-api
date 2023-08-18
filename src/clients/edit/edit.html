@@ -60,25 +60,25 @@
 
           <div id="loginFormUsername" class="HBox form-field-container full-width">
             <div class="label-wrapper">
-              <label for="username">
+              <label for="login-username">
                 Käyttäjätunnus <span class="form-field-required">*</span>
               </label>
             </div>
             <div class="input-wrapper">
               <span class="material-icons">person_outline</span>
               <input id="login-username" type="text" name="username" required="true" autofocus="true" spellcheck="false"
-                placeholder="Syötä Melinda-tunnus" title="Käyttäjätunnus on vaadittu kenttä">
+                autocomplete="username" placeholder="Syötä Melinda-tunnus" title="Käyttäjätunnus on vaadittu kenttä">
             </div>
           </div>
 
           <div id="loginFormPassword" class="HBox form-field-container full-width">
             <div class="label-wrapper">
-              <label for="password">Salasana <span class="form-field-required">*</label>
+              <label for="login-password">Salasana <span class="form-field-required">*</label>
             </div>
             <div class="input-wrapper">
               <span class="material-icons">lock_outline</span>
               <input id="login-password" type="password" name="password" required="true" spellcheck="false"
-                placeholder="Syötä salasana" title="Salasana on vaadittu kenttä">
+                autocomplete="current-password" placeholder="Syötä salasana" title="Salasana on vaadittu kenttä">
             </div>
           </div>
 
@@ -119,8 +119,8 @@
       </form>
 
       <!-- ---------------------------------------------------------------------- -->
-      <!-- Muokkaus tab -->
-      <div id="edit" hidden>
+      <!-- Muokkaus tab (using #muuntaja id)-->
+      <div id="muuntaja" hidden>
 
         <!-- ------------------------------------------------------------------------ -->
         <!-- Record-Merge Panel -->

@@ -24,6 +24,21 @@ window.ignore = function (e) {
   return eventHandled(e);
 };
 
+
+//-----------------------------------------------------------------------------
+// Helper for HTML component: accordion
+//-----------------------------------------------------------------------------
+
+window.toggleAccordion = function(event) {
+  const accordionId = event.target.id;
+  const accordion = document.getElementById(accordionId);
+
+  accordion.classList.toggle('expanded');
+
+  return eventHandled(event);
+};
+
+
 //-----------------------------------------------------------------------------
 
 export function formToJson(formSubmitEvent) {

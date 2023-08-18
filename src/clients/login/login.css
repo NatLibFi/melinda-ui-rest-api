@@ -15,15 +15,25 @@
 .homepage-content {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
     flex-wrap: wrap;
     color: var(--color-blue-100);
-    min-height: 500px;
     padding-right: 135px;
     padding-left: 135px;
     padding-top: 80px;
     padding-bottom: 80px;
-    gap: 100px;
+    justify-content: center;
+}
+
+@media screen and (min-width: 1800px) {
+    #homePage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .homepage-content {
+        max-width: 66%;
+    }
 }
 
 .homepage-content .service-link {
@@ -86,6 +96,8 @@
     flex-direction: column;
     flex-basis: 0;
     flex-grow: 2;
+    padding-right: 100px;
+    padding-bottom: 75px;
 }
 
 .homepage-info .homepage-info-header {
@@ -152,6 +164,7 @@
     flex-basis: 0;
     flex-grow: 1;
     gap: 40px;
+    padding-bottom: 75px;
 }
 
 .homepage-services .homepage-services-header {
@@ -186,5 +199,125 @@
 }
 
 .homepage-services .service-link span.open-in-new {
+    font-size: var(--font-size-icon-extra-small);
+}
+
+
+
+/* ----------------------------------------------------------------------------------------------------------------------*/
+/* HOMEPAGE CONTACT AND HELP */
+
+.homepage-contact-and-help {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.homepage-contact-and-help .info-contact-and-help-content {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 24px;
+    margin-left: 16px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.homepage-contact-and-help .info-contact-and-help-content .info-contact-and-help-heading {
+    display: flex;
+    flex-direction: row;
+    min-width: 375px;
+}
+
+.homepage-contact-and-help .info-contact-and-help-heading .contact-and-help-heading-icon {
+    border-radius: 50%;
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 100px;
+    max-height: 100px;
+    margin-right: 24px;
+    overflow: hidden;
+    background-color: var(--color-primary-white);
+}
+
+.homepage-contact-and-help .info-contact-and-help-heading .contact-and-help-heading-icon img {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 25px;
+    left: 25px;
+}
+
+.homepage-contact-and-help .info-contact-and-help-heading .contact-and-help-heading-text {
+    font-family: var(--font-family-headline);
+    display: flex;
+    font-size: var(--font-size-headline-extra-small);
+    font-weight: var(--font-weight-headline);
+    padding-top: 16px;
+}
+
+.homepage-contact-and-help .info-contact-and-help-content .info-contact-and-help-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.homepage-contact-and-help .info-contact-and-help-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.homepage-contact-and-help .info-contact-and-help-list {
+    min-width: 375px;
+}
+
+.homepage-contact-and-help .info-contact-and-help-list-heading {
+    text-transform: uppercase;
+    font-family: var(--font-family-headline-small);
+    font-weight: var(--font-weight-headline);
+    min-width: 375px;
+}
+
+.homepage-contact-and-help .info-contact-and-help-list-items {
+    padding-top: 16px;
+}
+
+.homepage-contact-and-help .info-contact-and-help-list .contact-and-help-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--color-blue-100);
+    padding-bottom: 13px;
+    gap: 16px;
+}
+
+.homepage-contact-and-help a .contact-and-help-list-item .list-item-text {
+    color: var(--color-functional-blue);
+}
+
+.homepage-contact-and-help a .contact-and-help-list-item .list-item-text:not(.email) {
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-functional-blue);
+    text-decoration-style: dotted;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+}
+
+.homepage-contact-and-help a .contact-and-help-list-item:hover .list-item-text {
+    color: var(--color-blue-100);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-blue-100);
+    text-decoration-style: solid;
+}
+
+.homepage-contact-and-help .contact-and-help-list-item .list-item-icon {
+    display: flex;
+}
+
+.homepage-contact-and-help .contact-and-help-list-item span.open-in-new {
     font-size: var(--font-size-icon-extra-small);
 }
