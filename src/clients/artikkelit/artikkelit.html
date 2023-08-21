@@ -289,7 +289,6 @@
                       title="">
                   </div>
                 </div>
-
                 <div class="full-width">
                   <div class="Select full-width">
                     <label class="bold-text" for="artikkelin-kieli">Kieli:</label>
@@ -308,7 +307,6 @@
                       tooltip-text="Lisää">add</button>
                   </div>
                 </div>
-
                 <div class="full-width">
                   <div class="Select full-width">
                     <label class="bold-text" for="artikkelin-tyyppi">Artikkelin tyyppi:</label>
@@ -339,18 +337,23 @@
                 <form id="tekija-lisaa-form" name="tekija-lisaa-form">
                   <div class="Select full-width">
                     <label class="bold-text" for="tekija-rooli">Rooli:</label>
-                    <select id="tekija-rooli" name="tekija-rooli">
+                    <select id="tekija-rooli" name="tekija-rooli" onchange="return articleAuthorRoleChange(event)">
                     </select>
                   </div>
-                  <div class="Input">
+                  <div id="input-tekija-sukunimi" class="Input">
                     <label class="bold-text" for="tekija-sukunimi">Sukunimi:</label>
                     <input type="text" id="tekija-sukunimi" name="tekija-sukunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
                       maxLength="128">
                   </div>
-                  <div class="Input">
+                  <div id="input-tekija-etunimi" class="Input">
                     <label class="bold-text" for="tekija-etunimi">Etunimi:</label>
                     <input type="text" id="tekija-etunimi" name="tekija-etunimi" pattern="^[\p{L}\p{P}\p{Zs}]+$"
                       maxlength="128">
+                  </div>
+                  <div id="input-tekija-yhteison-nimi" class="Input">
+                    <label class="bold-text" for="tekija-yhteison-nimi">Yhteisön nimi:</label>
+                    <input type="text" id="tekija-yhteison-nimi" name="tekija-yhteison-nimi"
+                      pattern="^[\p{L}\p{P}\p{Zs}]+$" maxlength="128">
                   </div>
                 </form>
                 <div class="full-width">
@@ -376,8 +379,6 @@
                     <button class="alternate-green" type="submit" form="tekija-lisaa-form">Lisää tekijä</button>
                   </div>
                 </div>
-
-
 
                 <div>
                   <div class="fieldset-sub-heading">Lisätyt tekijät</div>
