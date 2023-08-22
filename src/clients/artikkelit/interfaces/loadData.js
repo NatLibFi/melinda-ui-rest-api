@@ -1,7 +1,7 @@
 import {
   articleTypesBooks, articleTypesJournal, authorRelators,
-  languages, ontologyTypes, organizations, sciences,
-  searchTypes, sourceTypes, sectionOrColumnList
+  ccLicenses, languages, ontologyTypes, organizations,
+  sciences, searchTypes, sourceTypes, sectionOrColumnList
 } from '/artikkelit/interfaces/constants.js';
 
 import {setOptions} from '/common/ui-utils.js';
@@ -24,6 +24,10 @@ function fillSelectOptions() {
 
     if (select.name.indexOf('kuvailtava-kohde') === 0) {
       setOptions(select, sourceTypes);
+    }
+
+    if (select.name === 'artikkelin-cc-lisenssi') {
+      setOptions(select, ccLicenses, false, 'Ei CC-lisenssiä');
     }
 
     if (select.name.indexOf('-kieli') !== -1) {
