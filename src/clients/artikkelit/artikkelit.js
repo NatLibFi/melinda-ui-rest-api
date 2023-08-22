@@ -225,7 +225,8 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
+      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value,
+      ccLicense: document.getElementById(`artikkelin-cc-lisenssi`).value
     },
     collecting: {
       f589a: document.getElementById(`poimintatiedot-poimintakoodi598a`).value,
