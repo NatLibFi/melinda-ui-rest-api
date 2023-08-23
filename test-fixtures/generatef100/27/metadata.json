@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - name with authorsTempOrganizations name & code",
+  "description": "generatef100 - Yhteiso, with authorsTempOrganizations name & code (test: excludes old names)",
   "skip": false,
   "only": false,
   "expectToFail": false,

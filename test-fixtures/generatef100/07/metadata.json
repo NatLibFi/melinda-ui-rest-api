@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - generates fields for cases arvonimi, yksiniminen, organisaatio (i.e. authorsTempOrganizations)",
+  "description": "generatef100 - generates fields for cases arvonimi, yksiniminen, toimittaja with authorsTempOrganizations",
   "skip": false,
   "only": false,
   "expectToFail": false,

@@ -2,7 +2,7 @@
   "authors": [
     {
      "key": 1,
-     "firstName": " ",
+     "firstName": "",
      "lastName": "Outsider",
      "corporateName": "",     
      "relator": "kirjoittaja",
@@ -10,8 +10,8 @@
     },
     {
      "key": 2,
-     "firstName": " ",
-     "lastName": "Outsider",
+     "firstName": "",
+     "lastName": "Banksy",
      "corporateName": "",     
      "relator": "kuvittaja",
      "authorsTempOrganizations": []

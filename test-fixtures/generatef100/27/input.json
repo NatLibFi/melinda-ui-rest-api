@@ -3,8 +3,8 @@
   [
     {
     "key":1,
-    "firstName":"*** valittu yhteisö: tämän ei tulisi näkyä!",
-    "lastName":"*** valittu yhteisö: tämän ei tulisi näkyä!",
+    "firstName":"*** keinotekoisesti luotu kenttä: tämän ei tulisi näkyä!",
+    "lastName":"*** keinotekoisesti luotu kenttä: tämän ei tulisi näkyä!",
     "corporateName": "Tässä Yhteisön nimi",
     "relator": "yhteisö",
     "authorsTempOrganizations":

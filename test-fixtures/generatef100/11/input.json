@@ -15,6 +15,14 @@
      "corporateName": "",     
      "relator": "kääntäjä",
      "authorsTempOrganizations": []
+    },
+    {
+     "key": 3,
+     "firstName": "Gustav",
+     "lastName": "Dore",
+     "corporateName": "",     
+     "relator": "kuvittaja",
+     "authorsTempOrganizations": []
     }
    ]
 }
