@@ -86,7 +86,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
         return false;
       }
 
-      function RelatorIsPerson() {
+      function relatorIsPerson() {
         if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(author.relator)) {
           return true;
         }
@@ -103,7 +103,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
           return [subAshort, subC, subE, subU, subG];
         }
 
-        if (checkCaseType() === 'oneNameCase' && RelatorIsPerson()) {
+        if (checkCaseType() === 'oneNameCase' && relatorIsPerson()) {
           return [subAshort, subE, subU, subG];
         }
 
@@ -119,7 +119,7 @@ export function generatef100sf110sf700sf710s(authors = []) {
         return [subAshort, subC, subE];
       }
 
-      if (checkCaseType() === 'oneNameCase' && RelatorIsPerson()) {
+      if (checkCaseType() === 'oneNameCase' && relatorIsPerson()) {
         return [subAshort, subE];
       }
 
