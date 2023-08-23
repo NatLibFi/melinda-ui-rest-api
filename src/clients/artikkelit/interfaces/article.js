@@ -13,6 +13,7 @@ export function initArticle() {
 
   refreshSciencesList();
   refreshMetodologysList();
+  resetAndHideCcLicense();
 }
 
 function addScience(event) {
@@ -99,7 +100,6 @@ export function clearSciences(event) {
   idbClear('artoSciences').then(() => refreshSciencesList());
 }
 
-
 export function refreshMetodologysList() {
   console.log('refresh metodologyList');
   const metodologyList = document.getElementById('metodologiat-list');
@@ -162,4 +162,25 @@ export function addArticleLink(event) {
 export function clearMetodologys(event) {
   event.preventDefault();
   idbClear('artoMetodologys').then(() => refreshMetodologysList());
+}
+
+export function resetAndHideCcLicense() {
+  const ccLicenseSelect = document.getElementById('artikkelin-cc-lisenssi');
+  const ccLicenseFormField = document.getElementById('artikkelin-cc-lisenssi-wrap');
+
+  ccLicenseSelect.selectedIndex = 0;
+  hideCcLicense();
+
+  function hideCcLicense() {
+    ccLicenseFormField.style.display = 'none';
+    ccLicenseSelect.disabled = true;
+  }
+}
+
+export function showCcLicense() {
+  const ccLicenseFormField = document.getElementById('artikkelin-cc-lisenssi-wrap');
+  const ccLicenseSelect = document.getElementById('artikkelin-cc-lisenssi');
+
+  ccLicenseFormField.style.display = 'block';
+  ccLicenseSelect.removeAttribute('disabled');
 }

@@ -12,7 +12,7 @@ import {
   initAdditionalFields, refreshNotesList, refreshOtherTitlesList,
   refreshUDKsList, refreshOtherRatingsList
 } from '/artikkelit/interfaces/additionalFields.js';
-import {initArticle, refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/article.js';
+import {initArticle, refreshSciencesList, refreshMetodologysList, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
@@ -348,4 +348,5 @@ window.clearAllFields = function () {
   resetInputFields();
   resetTextareaFields();
   resetSelectFields();
+  resetAndHideCcLicense();
 };
