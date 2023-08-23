@@ -49,10 +49,10 @@ export function generatef100sf110sf700sf710s(authors = []) {
     function ind1Value() {
 
       if (firstPart === 'c' && firstNameSplitted.length > 1) { // title case
-        return '0';        
+        return '0';
       }
 
-      if (author.firstName === '' && author.lastName.length > 0 && author.relator != 'yhteisö') { // one name case
+      if (author.firstName === '' && author.lastName.length > 0 && author.relator !== 'yhteisö') { // one name case
         return '0';
       }
 
@@ -71,11 +71,11 @@ export function generatef100sf110sf700sf710s(authors = []) {
       const subE = {code: 'e', value: `${author.relator}.`};
       const mapOrgnNames = author.authorsTempOrganizations.map(elem => `${elem.organizationName}`);
 
-      function CheckCaseType() {
+      function checkCaseType() {
         // checking: is it title-case ( = c+title) or onlyOneName-case ( = empty entered as first name)
         // 'etunimi'-field in both cases is essential. First entered character there is crucial.
 
-        if (author.firstName === '' && author.lastName.length > 0 ) { // case: only one name entered
+        if (author.firstName === '' && author.lastName.length > 0) { // case: only one name entered
           return 'oneNameCase';
         }
 
@@ -99,15 +99,15 @@ export function generatef100sf110sf700sf710s(authors = []) {
         const subU = generateOrganizations();
         const subG = generateOrgnCodes();
 
-        if (CheckCaseType() === 'titleCase') {
+        if (checkCaseType() === 'titleCase') {
           return [subAshort, subC, subE, subU, subG];
         }
-          
-        if (CheckCaseType() === 'oneNameCase' && RelatorIsPerson()) {
+
+        if (checkCaseType() === 'oneNameCase' && RelatorIsPerson()) {
           return [subAshort, subE, subU, subG];
         }
 
-        if (CheckCaseType()) {
+        if (checkCaseType()) {
           return [subAshort, subC, subE, subU, subG];
         }
 
@@ -115,15 +115,15 @@ export function generatef100sf110sf700sf710s(authors = []) {
       }
 
       // ---> NON-mapOrgnNames cases:
-      if (CheckCaseType() === 'titleCase') {
+      if (checkCaseType() === 'titleCase') {
         return [subAshort, subC, subE];
       }
 
-      if (CheckCaseType() === 'oneNameCase' && RelatorIsPerson()) {
+      if (checkCaseType() === 'oneNameCase' && RelatorIsPerson()) {
         return [subAshort, subE];
       }
 
-      if (CheckCaseType()) {
+      if (checkCaseType()) {
         return [subAshort, subC, subE];
       }
 
