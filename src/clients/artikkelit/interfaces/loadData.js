@@ -1,7 +1,7 @@
 import {
   articleTypesBooks, articleTypesJournal, authorRelators,
   languages, ontologyTypes, organizations, sciences,
-  searchTypes, sourceTypes, sectionOrColumnList
+  searchFilters, searchTypes, sourceTypes, sectionOrColumnList
 } from '/artikkelit/interfaces/constants.js';
 
 import {setOptions} from '/common/ui-utils.js';
@@ -20,6 +20,10 @@ function fillSelectOptions() {
 
     if (select.name.indexOf('julkaisu-haku-tyyppi') === 0) {
       setOptions(select, searchTypes);
+    }
+
+    if (select.name === 'julkaisu-haku-rajaus') {
+      setOptions(select, searchFilters);
     }
 
     if (select.name.indexOf('kuvailtava-kohde') === 0) {
