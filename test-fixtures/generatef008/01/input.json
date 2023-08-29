@@ -1,0 +1,46 @@
+{
+    "source": {
+     "title": "Basso : urbaani musiikki & kulttuuri",
+     "isElectronic": false,
+     "years": "2006-2012.",
+     "issns": [
+      "1796-3753"
+     ],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)000434823"
+     ],
+     "publishing": "Helsinki : Basso Media, 2006-2012.",
+     "publisherInfo": {
+      "publisherLocation": "Helsinki",
+      "publisher": "Basso Media",
+      "publisherYears": {
+       "start": "2006",
+       "end": "2012"
+      }
+     },
+     "notices": [],
+     "authors": [],
+     "recordType": "Kausijulkaisu",
+     "sourceType": "nnas"
+    },
+    "journalNumber": {
+     "publishingYear": "",
+     "volume": "",
+     "number": "",
+     "pages": ""
+    },
+    "article": {
+     "title": "",
+     "titleOther": "",
+     "language": {
+      "iso6391": "es",
+      "iso6392b": "esp",
+      "ui": "Espanja"
+     },
+     "link": "",
+     "type": "",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    }
+}

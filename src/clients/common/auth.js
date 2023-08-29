@@ -5,7 +5,7 @@
 //*****************************************************************************
 
 import {authVerify, authRequest} from './rest.js';
-import {reload, resetForms, showTab} from './ui-utils.js';
+import {reload, resetForms, showSnackbar, showTab} from './ui-utils.js';
 import {startProcess, stopProcess} from './ui-utils.js';
 
 //*****************************************************************************
@@ -91,7 +91,7 @@ export function doLogin(onSuccess) {
 
     const termschecked = document.querySelector('#login #acceptterms').checked;
     if (!termschecked) {
-      logininfo('Tietosuojaselosteen hyväksyminen vaaditaan');
+      logininfo('Tietosuojaselosteen ja evästeiden käytön hyväksyminen vaaditaan');
       return;
     }
 
@@ -105,7 +105,7 @@ export function doLogin(onSuccess) {
       .catch(err => {
         console.log(err);
         Account.remove();
-        logininfo('Tunnus tai salasana ei täsmää');
+        logininfo('Käyttäjätunnus tai salasana on väärin');
       })
       .finally(stopProcess);
     function logininfo(msg) {

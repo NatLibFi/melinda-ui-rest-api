@@ -1,8 +1,0 @@
-{
-  "description": "generatef380 - selected article.reviewType & subfield 2.",
-  "skip": false,
-  "only": false,
-  "expectToFail": false,
-  "expectedError": false,
-  "expectedErrorStatus": "200"
-}

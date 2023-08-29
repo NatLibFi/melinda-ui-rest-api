@@ -1,14 +1,19 @@
-/* CSS file for muuntaja */
+/* ---------------------------------------------------------------------------- */
+/* Styles for VIEWER app                                                        */
+/* ---------------------------------------------------------------------------- */
+
+
 
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
 
-div#loading {}
+#viewer {
+  background-color: var(--color-primary-white);
+}
 
 /* ---------------------------------------------------------------------------- */
-
-div#tools {}
+/* TOOLS */
 
 .tools {
   flex-wrap: wrap;
@@ -52,7 +57,7 @@ div#tools {}
 .sequence-container>label {
   color: rgb(48, 93, 109);
   font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
+  font-size: var(--font-size-label-medium);
   text-align: center;
 }
 
@@ -60,8 +65,8 @@ div#tools {}
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
 }
 
 .Select>select {
@@ -69,16 +74,37 @@ div#tools {}
   border-bottom: 1pt solid grey;
   outline: none;
   font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
-.ToolBar button {
-  font-size: var(--font-size-icon-normal);
+.ToolBar button:not(.dialog-cancel-button) {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: var(--color-blue-100);
+  background-color: transparent;
+  border-color: transparent;
 }
 
-/* Disabled toolbar button cannot be clicked */
-.ToolBar button:disabled {
-  pointer-events: none;
+.ToolBar button:hover,
+.tools button.search-button:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+.ToolBar button:active,
+.tools button.search-button:active,
+.tools button#exit:active {
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+.ToolBar button:disabled,
+.tools button.search-button:disabled {
+  color: var(--color-grey-100);
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .uuidInput {
@@ -94,7 +120,7 @@ div#tools {}
 .id-input {
   display: flex;
   align-items: flex-end;
-  font-family: roboto_monoregular, "Roboto Mono", monospace !important;
+  font-family: var(--font-family-mono) !important;
 }
 
 /* Sequence container */
@@ -138,17 +164,17 @@ div#tools {}
 
 /* Adding some color to make the search button pop in toolbar */
 .tools button.search-button {
-  background-color: rgb(182, 225, 224);
+  color: var(--color-primary-white);
+  background-color: var(--color-melinda-lightblue);
+  border-color: var(--color-melinda-lightblue);
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
-.tools button.search-button:active {
-  color: rgb(182, 225, 224);
-}
-
 .tools button.search-button:disabled {
-  background-color: lightgrey;
+  color: var(--color-grey-100);
+  background-color: var(--color-grey-60);
+  border-color: transparent;
 }
 
 
@@ -173,18 +199,22 @@ div#tools {}
 }
 
 .tools button#exit {
-  background-color: rgb(182, 225, 224);
+  color: var(--color-primary-white);
+  background-color: var(--color-melinda-lightblue);
+  border-color: var(--color-melinda-lightblue);
   margin-left: 5px;
   margin-right: 5px;
 }
 
 .tools button#exit:hover {
-  background-color: lightgrey;
+  color: var(--color-primary-white);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
 }
 
-/* ---------------------------------------------------------------------------- */
 
-div#viewer {}
+/* ---------------------------------------------------------------------------- */
+/* div#viewer */
 
 @media screen and (min-width: 1100px) {
   #viewer .record-merge-panel {
@@ -224,17 +254,17 @@ div#viewer {}
   height: 40px;
   text-transform: uppercase;
   font-family: var(--font-family-headline);
-  font-size: var(--font-size-headline-normal);
-  font-weight: var(--font-weight-headline-normal);
-  line-height: var(--font-line-height-headline-normal);
-  border-bottom: 1px solid lightgrey;
+  font-size: var(--font-size-headline-medium);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-headline-medium);
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   display: flex;
 }
 
 .col .note {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  border-bottom: 1px solid lightgrey;
+  font-family: var(--font-family-mono) !important;
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   display: none;
 }
@@ -278,18 +308,17 @@ div#viewer {}
 }
 
 .header label {
-  font-size: var(--font-size-label-normal);
-  font-weight: var(--font-weight-label-normal);
-  line-height: var(--font-line-height-label-normal);
-  /*color: grey;*/
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+  line-height: var(--font-line-height-label-medium);
 }
 
 /* ---------------------------------------------------------------------------- */
 /* ---Correlation id font helper---*/
 
 /* For span elements */
-span.correlation-id-font {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+#viewer span.correlation-id-font {
+  font-family: var(--font-family-mono);
   cursor: text;
 }
 
@@ -302,7 +331,7 @@ span.correlation-id-font {
 
 @keyframes highlight {
   50% {
-    background-color: var(--highlightcolor, #FAE196);
+    background-color: var(--highlightcolor, var(--color-yellow-60));
     border-radius: 1em;
   }
 }
@@ -314,15 +343,11 @@ span.correlation-id-font {
 /* ---------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------- */
 
-div#correlationIdListModal {}
-
 
 /* Modal content does not move sideways when scroll bar becomes visible or hidden */
 #correlationIdListModal {
   overflow-y: scroll
 }
-
-#correlationIdListModal>.modal {}
 
 /* Text content in correlation id modal is small */
 /* Modal starts vertically almost from top */
@@ -338,27 +363,6 @@ div#correlationIdListModal {}
   min-height: 90%;
 }
 
-/* Buttons in correlation id list modal are small */
-#correlationIdListModal>.modal-content button.modal-function-button {
-  background-color: black;
-  color: white;
-}
-
-/* Buttons in correlation id list modal show effect when hovered */
-#correlationIdListModal>.modal-content button:hover {
-  background-color: lightgrey;
-  color: black;
-}
-
-/* Buttons in correlation id list modal show effect when clicked */
-#correlationIdListModal>.modal-content button:active {
-  background-color: darkgrey;
-}
-
-/* Placeholder texts and input texts are small in correlation id modal */
-#correlationIdListModal>.modal-content input {
-  font-size: var(--font-size-content-small);
-}
 
 /* ---------------------------------------------------------------------------- */
 /* Correlation id modal title and top buttons*/
@@ -381,33 +385,33 @@ div#correlationIdListModal {}
 .modal-title {
   display: flex;
   align-items: center;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
 }
 
 .modal-info-text {
   display: flex;
-  color: black;
+  color: var(--color-primary-black);
   min-height: 14px;
   padding-top: 0.5em;
 }
 
 /* Span part in info text is grey by default */
 .modal-info-text span {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-content);
   padding-left: 0.5em;
   color: grey;
 }
 
 /* Span part in info text is black and underlined when link is active */
 .modal-info-text.link-active span {
-  color: black;
+  color: var(--color-primary-black);
   text-decoration: underline;
 }
 
 /* Span part in info text shows style on hover */
 .modal-info-text.link-active span:hover {
   cursor: pointer;
-  color: grey;
+  color: var(--color-functional-blue);
 }
 
 /* Modal top div has place for buttons */
@@ -417,14 +421,14 @@ div#correlationIdListModal {}
   align-items: flex-start;
   justify-content: flex-end;
   overflow: hidden;
+  padding-top:5px;
 }
 
 .close-button {
-  min-height: 25px;
-  min-width: 25px;
+  display: flex;
   border-radius: 50%;
-  padding: 0;
-  font-size: 12px !important;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -439,7 +443,10 @@ div#correlationIdListModal {}
   width: fit-content;
   overflow: hidden;
   min-width: 0;
+  min-height: 125px;
   row-gap: 0.25em;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -489,7 +496,7 @@ div#correlationIdListModal {}
   min-width: 275px;
   max-width: 350px;
   padding-left: 0.5em;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -509,7 +516,7 @@ div#correlationIdListModal {}
   flex-wrap: wrap;
   overflow: hidden;
   padding-left: 0.5em;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   align-items: center;
 }
 
@@ -524,6 +531,8 @@ div#correlationIdListModal {}
   display: flex;
   overflow: hidden;
   flex-grow: 1;
+  align-items: center;
+  min-height: 60px;
 }
 
 .clear-filter-button {
@@ -567,28 +576,29 @@ div#correlationIdListModal {}
   display: flex;
   overflow: hidden;
   flex-wrap: wrap;
-  border-bottom: solid 1px lightgrey;
+  border-bottom: solid 1px var(--color-grey-60);
 }
 
 /* The first list item has also border on top */
 .list-item:first-child {
-  border-top: solid 1px lightgrey;
+  border-top: solid 1px var(--color-grey-60);
 }
 
 /* A list item has style effect on mouse hovering */
 .list-item:hover {
-  background-color: lightgrey !important;
+  background-color: var(--color-green-40) !important;
   cursor: pointer;
 }
 
 /* A list item has style effect on clicking */
 .list-item:active {
-  background-color: darkgrey !important;
+  color: white;
+  background-color: var(--color-green-100) !important;
 }
 
 /* Highlighting the last searched list item */
 .list-item.last-searched {
-  background-color: darkgrey;
+  background-color: var(--color-green-80);
   border-bottom: 5px solid grey;
 }
 
@@ -602,8 +612,8 @@ div#correlationIdListModal {}
   align-items: center;
   padding: 0.5em;
   margin-right: 0.5em;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  font-size: var(--font-size-content-normal);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-content-medium);
 }
 
 /* A list item has supporting text + trailing icons */
@@ -670,7 +680,7 @@ div#correlationIdListModal {}
 /* search icon shows animation when it's row is clicked (and search is started) */
 .list-item:active .list-item-icons-search {
   display: flex !important;
-  color: white;
+  color: var(--color-primary-white);
   animation-name: resize-and-rotate;
   animation-duration: 1s;
   animation-fill-mode: both;
@@ -742,7 +752,7 @@ div#correlationIdListModal {}
 .error-message-text {
   display: flex;
   padding: 0.5em;
-  font-size: var(--font-size-content-normal);
+  font-size: var(--font-size-content-medium);
   font-weight: bold;
   align-items: center;
 }
@@ -783,39 +793,13 @@ div#correlationIdListModal {}
 }
 
 #dialogForUpload .file-name.file-selected {
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family: var(--font-family-mono);
 }
 
 #dialogForUpload .file-button {
   height: 28px;
   font-size: var(--font-size-label-large);
-  font-weight: var(--font-weight-label-large);
-  background-color: rgb(182, 225, 224);
-  border: none;
-}
-
-#dialogForUpload .file-button:active {
-  color: rgb(182, 225, 224);
-}
-
-#dialogForUpload .file-button:hover {
-  background-color: lightgrey;
-}
-
-#dialogForUpload .close-button {
-  margin: 5px;
-  color: white;
-  background-color: black;
-}
-
-#dialogForUpload .close-button:hover {
-  background-color: lightgrey;
-  color: black;
-}
-
-#dialogForUpload .close-button:active {
-  background-color: darkgrey;
-  color: black;
+  font-weight: var(--font-weight-label);
 }
 
 #dialogForUpload .instructions-headline {
@@ -829,10 +813,6 @@ div#correlationIdListModal {}
   margin-left: 10px;
 }
 
-#dialogForUpload .instructions-headline button:hover {
-  background-color: lightgrey;
-}
-
-#dialogForUpload .instructions-headline button:active {
-  background-color: darkgrey;
+#dialogForUpload .close-button {
+  margin-left: 5px;
 }

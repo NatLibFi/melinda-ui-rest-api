@@ -1,29 +1,221 @@
-/* Montserrat - Designed by Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly */
-/* source https://fonts.google.com/specimen/Montserrat 2022-07-28*/
+/* ---------------------------------------------------------------------------- */
+/* Font styles                                                                  */
+/* ---------------------------------------------------------------------------- */
+
+/* DM Serif Text | Designed by Colophon Foundry  | https://fonts.google.com/specimen/DM+Serif+Text */
+/* Public Sans | Designed by USWDS, Dan Williams, Pablo Impallari, Rodrigo Fuenzalida | https://fonts.google.com/specimen/Public+Sans */
+/* Roboto Mono | Designed by Christian Robertson | https://fonts.google.com/specimen/Roboto+Mono */
+
+
+
+/******************************************************************************************************************************************/
+/* Font definitions for fallback font files */
+
+
+/* ---------------------------------------------------------------------*/
+/* DM SERIF TEXT */
+/*    - Regular 400 */
+
 @font-face {
-  font-family: "Montserrat-Regular";
-  src: url("/common/fonts/Montserrat-Regular.ttf") format("truetype");
+  font-family: 'DM Serif Text Regular (file)';
+  src: url('/common/fonts/DMSerifText-Regular.ttf') format('truetype');
+  font-stretch: normal;
+  font-weight: 300 500;
+  font-style: normal;
+  font-display: swap
+}
+
+
+/* ---------------------------------------------------------------------*/
+/* PUBLIC SANS */
+/*    - Light 300 */
+/*    - Medium 500 */
+/*    - Semibold 600 */
+
+@font-face {
+  font-family: 'Public Sans Light (file)';
+  src: url('/common/fonts/PublicSans-Light.ttf') format('truetype');
+  font-stretch: normal;
+  font-weight: 200 400;
+  font-style: normal;
+  font-display: swap
 }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("/common/fonts/Roboto-Regular.ttf") format("truetype");
+  font-family: 'Public Sans Medium (file)';
+  src: url('/common/fonts/PublicSans-Medium.ttf') format('truetype');
+  font-stretch: normal;
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap
 }
 
 @font-face {
-  font-family: "Roboto-flex";
-  src: url("/common/fonts/RobotoFlex-Regular.ttf") format("truetype");
+  font-family: 'Public Sans Semibold (file)';
+  src: url('/common/fonts/PublicSans-Semibold.ttf') format('truetype');
+  font-stretch: normal;
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap
 }
 
-@font-face {
-  font-family: "Roboto-mono";
-  src: url("/common/fonts/RobotoMono-Regular.ttf") format("truetype");
-}
+
+/* ---------------------------------------------------------------------*/
+/* ROBOTO MONO */
+/*    - Regular 400 */
 
 @font-face {
-  font-family: "Roboto-serif";
-  src: url("/common/fonts/RobotoSerif-Regular.ttf") format("truetype");
+  font-family: 'Roboto Mono Regular (file)';
+  src: url('/common/fonts/RobotoMono-Regular.ttf') format('truetype');
+  font-stretch: normal;
+  font-weight: 300 500;
+  font-style: normal;
+  font-display: swap
 }
+
+/* ---------------------------------------------------------------------*/
+
+
+
+/******************************************************************************************************************************************/
+/* Root variables */
+
+:root {
+
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font family variable definitions: */
+  /*    - default: web font (defined in app's html file head element, requested from Google Fonts API) */
+  /*    - first fallback: self-hosted font (loaded from .ttf file) */
+  /*    - second fallback: local system font (any suitable monospace, serif or sans-serif font available in user's system) */
+
+  --font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (file)', serif;
+  --font-family-mono: 'Roboto Mono', 'Roboto Mono Regular (file)', monospace;
+  --font-family-button: 'Public Sans', 'Public Sans Semibold (file)', sans-serif;
+  --font-family-content: 'Public Sans', 'Public Sans Light (file)', sans-serif;
+  --font-family-headline: 'Public Sans', 'Public Sans Semibold (file)', sans-serif;
+  --font-family-input: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
+  --font-family-label: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
+  --font-family-link: 'Public Sans', 'Public Sans Semibold (file)', sans-serif;
+  --font-family-list: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
+  --font-family-placeholder: 'Public Sans', 'Public Sans Light (file)', sans-serif;
+  --font-family-title: 'Public Sans', 'Public Sans Medium (file)', sans-serif;
+
+
+
+
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font size variable definitions: */
+
+  --font-size-brand: 2.8125rem;
+
+  --font-size-icon-extra-large: 2.5rem;
+  --font-size-icon-large: 2rem;
+  --font-size-icon-medium: 1.5rem;
+  --font-size-icon-small: 1.25rem;
+  --font-size-icon-extra-small: 1.0rem;
+
+  --font-size-button-large: 1.125rem;
+  --font-size-button-medium: 1.0rem;
+  --font-size-small: 0.875rem;
+
+  --font-size-content-large: 1.375rem;
+  --font-size-content-medium: 1.0rem;
+  --font-size-content-small: 0.875rem;
+
+  --font-size-headline-large: 1.75rem;
+  --font-size-headline-medium: 1.4375rem;
+  --font-size-headline-small: 1.25rem;
+  --font-size-headline-extra-small: 1.125rem;
+
+  --font-size-input-large: 1.3rem;
+  --font-size-input-medium: 1.125rem;
+  --font-size-input-small: 1.0rem;
+
+  --font-size-label-large: 1.125rem;
+  --font-size-label-medium: 1rem;
+  --font-size-label-small: 0.875rem;
+  --font-size-label-extra-small: 0.75rem;
+
+  --font-size-link-large: 1.125rem;
+  --font-size-link-medium: 1.0rem;
+  --font-size-link-small: 0.875rem;
+
+  --font-size-list-large: 1.125rem;
+  --font-size-list-medium: 1.0rem;
+  --font-size-list-small: 0.875rem;
+
+  --font-size-placeholder-large: 1.3rem;
+  --font-size-placeholder-medium: 1.125rem;
+  --font-size-placeholder-small: 1.0rem;
+
+  --font-size-title-large: 1.375rem;
+  --font-size-title-medium: 1rem;
+  --font-size-title-small: 0.875rem;
+
+
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font weight variable definitions: */
+
+  --font-weight-brand: 400;
+  --font-weight-icon: 400;
+  --font-weight-button: 600;
+  --font-weight-content: 300;
+  --font-weight-headline: 600;
+  --font-weight-input: 500;
+  --font-weight-label: 500;
+  --font-weight-link: 600;
+  --font-weight-list: 600;
+  --font-weight-placeholder: 300;
+  --font-weight-title: 500;
+
+
+  /* ----------------------------------------------------------------------------------------------------------------------*/
+  /* Font line height variable definitions: */
+
+  --font-line-height-brand: 3.125rem;
+
+  --font-line-height-button-large: 1.6125rem;
+  --font-line-height-button-medium: 1.5rem;
+  --font-line-height-small: 1.25rem;
+
+  --font-line-height-content-extra-large: 2.0rem;
+  --font-line-height-content-large: 1.75rem;
+  --font-line-height-content-medium: 1.5rem;
+  --font-line-height-content-small: 1.25rem;
+
+  --font-line-height-headline-large: 2.375rem;
+  --font-line-height-headline-medium: 1.95rem;
+  --font-line-height-headline-small: 1.625rem;
+
+  --font-line-height-input-large: 1.5rem;
+  --font-line-height-input-medium: 1.375rem;
+  --font-line-height-input-small: 1.125rem;
+
+  --font-line-height-label-large: 1.5rem;
+  --font-line-height-label-medium: 1.375rem;
+  --font-line-height-label-small: 1.125rem;
+
+  --font-line-height-link-large: 1.6125rem;
+  --font-line-height-link-medium: 1.5rem;
+  --font-line-height-link-small: 1.25rem;
+
+  --font-line-height-list-large: 1.25rem;
+  --font-line-height-list-medium: 1.0rem;
+  --font-line-height-list-small: 1.75rem;
+
+  --font-line-height-placeholder-large: 1.5rem;
+  --font-line-height-placeholder-medium: 1.375rem;
+  --font-line-height-placeholder-small: 1.125rem;
+
+  --font-line-height-title-large: 1.75rem;
+  --font-line-height-title-medium: 1.5rem;
+  --font-line-height-title-small: 1.25rem;
+
+
+}
+
+/* ----------------------------------------------------------------------------------------------------------------------*/
+/* Notes: */
 
 /*
 1sp   0.0625rem
@@ -41,50 +233,16 @@
 60sp	3.75rem
 */
 
-:root{
-  --font-family-headline: "Roboto", "Roboto-mono", "Roboto-serif";
-  --font-family-title: "Roboto", "Roboto-mono", "Roboto-serif";
-  --font-family-label: "Roboto", "Roboto-mono", "Roboto-serif";
-  --font-family-content: "Roboto", "Roboto-serif", "Roboto-mono";
-
-  --font-size-icon-large: 2rem;
-  --font-size-icon-normal: 1.5rem;
-  --font-size-headline-large: 2rem;
-  --font-size-headline-normal: 1.75rem;
-  --font-size-headline-small: 1.5rem;
-  --font-size-title-large: 1,375rem;
-  --font-size-title-normal: 1rem;
-  --font-size-title-small: 0.875rem;
-  --font-size-label-large: 0.875rem;
-  --font-size-label-normal: 0.75rem;
-  --font-size-label-small: 0.6875rem;
-  --font-size-content-large: 1rem;
-  --font-size-content-normal: 0.875rem;
-  --font-size-content-small: 0.75rem;
-
-  --font-weight-headline-large: 400;
-  --font-weight-headline-normal: 400;
-  --font-weight-headline-small: 400;
-  --font-weight-title-large: 400;
-  --font-weight-title-normal: 500;
-  --font-weight-title-small: 500;
-  --font-weight-label-large: 500;
-  --font-weight-label-normal: 500;
-  --font-weight-label-small: 500;
-  --font-weight-content-large: 400;
-  --font-weight-content-normal: 400;
-  --font-weight-content-small: 400;
-
-  --font-line-height-headline-large: 2.5rem;
-  --font-line-height-headline-normal: 2.25rem;
-  --font-line-height-headline-small: 2rem;
-  --font-line-height-title-large: 1.75rem;
-  --font-line-height-title-normal: 1.5rem;
-  --font-line-height-title-small: 1.25rem;
-  --font-line-height-label-large: 1,25rem;
-  --font-line-height-label-normal: 1rem;
-  --font-line-height-label-small: 1rem;
-  --font-line-height-content-large: 1.5rem;
-  --font-line-height-content-normal: 1,25rem;
-  --font-line-height-content-small: 1rem;
-}
+/*
+brand
+icon
+button
+content
+headline
+input
+label
+link
+list
+placeholder
+title
+*/
