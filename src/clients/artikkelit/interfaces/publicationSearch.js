@@ -85,10 +85,18 @@ function searchPublications(event) {
 
   const hakuTyyppi = document.getElementById(`julkaisu-haku-tyyppi`).value;
   const sourceType = document.querySelector('#kuvailtava-kohde').value;
+  const searchFilter = document.getElementById('julkaisu-haku-rajaus').value;
+
+  const searchFilters = {
+    arto: searchFilter.includes('arto'),
+    fennica: searchFilter.includes('fennica'),
+    melinda: searchFilter.includes('melinda')
+  };
+
   const formJson = formToJson(event);
 
   if (hakuTyyppi === 'issn') {
-    return getPublicationByISSN(formJson['haku-arvo'], sourceType).then(result => {
+    return getPublicationByISSN(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
       if (result.error === undefined) {
         return setRecordsToSearch([result]);
       }
@@ -97,7 +105,7 @@ function searchPublications(event) {
     });
   }
   if (hakuTyyppi === 'isbn') {
-    return getPublicationByISBN(formJson['haku-arvo'], sourceType).then(result => {
+    return getPublicationByISBN(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
       if (result.error === undefined) {
         return setRecordsToSearch([result]);
       }
@@ -106,7 +114,7 @@ function searchPublications(event) {
     });
   }
   if (hakuTyyppi === 'title') {
-    return getPublicationByTitle(formJson['haku-arvo'], sourceType).then(result => {
+    return getPublicationByTitle(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
       if (result.error === undefined) {
         return setRecordsToSearch(result);
       }
@@ -115,7 +123,7 @@ function searchPublications(event) {
     });
   }
   if (hakuTyyppi === 'melinda') {
-    return getPublicationByMelinda(formJson['haku-arvo'], sourceType).then(result => {
+    return getPublicationByMelinda(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
       if (result.error === undefined) {
         return setRecordsToSearch([result]);
       }

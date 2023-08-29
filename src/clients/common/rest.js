@@ -106,23 +106,23 @@ export function transformRequest(transformed) {
 // PUBLICATIONS, ARTICLES AND ONTOLOGY WORDS (artikkelit)
 //*****************************************************************************
 
-export function getPublicationByISSN(issn, type = 'journal') {
-  const url = `${RESTurl}/bib/issn/${issn}?arto=1&type=${type}`;
+export function getPublicationByISSN(issn, {arto, fennica, melinda}, type = 'journal') {
+  const url = `${RESTurl}/bib/issn/${issn}?arto=${arto ? 1 : 0}&fennica=${fennica ? 1 : 0}&melinda=${melinda ? 1 : 0}&type=${type}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getPublicationByISBN(isbn, type = 'journal') {
-  const url = `${RESTurl}/bib/isbn/${isbn}?arto=1&type=${type}`;
+export function getPublicationByISBN(isbn, {arto, fennica, melinda}, type = 'journal') {
+  const url = `${RESTurl}/bib/isbn/${isbn}?arto=${arto ? 1 : 0}&fennica=${fennica ? 1 : 0}&melinda=${melinda ? 1 : 0}&type=${type}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getPublicationByMelinda(melindaId, type = 'journal') {
-  const url = `${RESTurl}/bib/${melindaId}?arto=1&type=${type}`;
+export function getPublicationByMelinda(melindaId, {arto, fennica, melinda}, type = 'journal') {
+  const url = `${RESTurl}/bib/${melindaId}?arto=${arto ? 1 : 0}&fennica=${fennica ? 1 : 0}&melinda=${melinda ? 1 : 0}&type=${type}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getPublicationByTitle(title, type = 'journal') {
-  const url = `${RESTurl}/bib/title/${title}?arto=1&type=${type}`;
+export function getPublicationByTitle(title, {arto, fennica, melinda}, type = 'journal') {
+  const url = `${RESTurl}/bib/title/${title}?arto=${arto ? 1 : 0}&fennica=${fennica ? 1 : 0}&melinda=${melinda ? 1 : 0}&type=${type}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
