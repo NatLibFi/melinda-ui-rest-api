@@ -43,10 +43,12 @@ export function searchResultChange(event) {
 
       if (searchType === 'journal') {
         document.getElementById(`lehden-tunniste`).innerHTML = data.issns;
+        document.getElementById(`lehden-vuodet`).innerHTML = data.publisherInfo.publisherYears.start + '-' + data.publisherInfo.publisherYears.end;
       }
 
       if (searchType === 'book') {
         document.getElementById(`lehden-tunniste`).innerHTML = data.isbns;
+        document.getElementById(`lehden-vuodet`).innerHTML = data.publisherInfo.publisherYears.start
       }
 
       document.getElementById(`lehden-julkaisu-tyyppi`).innerHTML = data.recordType;
@@ -55,8 +57,6 @@ export function searchResultChange(event) {
         ? (document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = 'Kyllä', showCcLicense())
         : (document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = 'Ei', resetAndHideCcLicense())
 
-      document.getElementById(`lehden-vuodet-min`).innerHTML = data.publisherInfo.publisherYears.start;
-      document.getElementById(`lehden-vuodet-max`).innerHTML = data.publisherInfo.publisherYears.end;
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
     });
   }
@@ -72,8 +72,7 @@ export function resetSearchResultSelect(searching) {
   document.getElementById(`lehden-paikka`).innerHTML = '';
   document.getElementById(`lehden-julkaisu-tyyppi`).innerHTML = '';
   document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = '';
-  document.getElementById(`lehden-vuodet-min`).innerHTML = '';
-  document.getElementById(`lehden-vuodet-max`).innerHTML = '';
+  document.getElementById(`lehden-vuodet`).innerHTML = '';
 
   if (searching) {
     return setOptions(select, [{value: '', text: 'Etsitään...'}], true);
