@@ -1,6 +1,7 @@
 import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda} from '/common/rest.js';
 import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
 import {formToJson, setOptions} from '/common/ui-utils.js';
+import {showCcLicense, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');
@@ -51,7 +52,11 @@ export function searchResultChange(event) {
       }
 
       document.getElementById(`lehden-julkaisu-tyyppi`).innerHTML = data.recordType;
-      document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = data.isElectronic ? 'Kyllä' : 'Ei';
+
+      data.isElectronic
+        ? (document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = 'Kyllä', showCcLicense())
+        : (document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = 'Ei', resetAndHideCcLicense())
+
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
     });
   }

@@ -12,7 +12,7 @@ import {
   initAdditionalFields, refreshNotesList, refreshOtherTitlesList,
   refreshUDKsList, refreshOtherRatingsList
 } from '/artikkelit/interfaces/additionalFields.js';
-import {initArticle, refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/article.js';
+import {initArticle, refreshSciencesList, refreshMetodologysList, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
@@ -222,7 +222,8 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
+      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value,
+      ccLicense: document.getElementById(`artikkelin-cc-lisenssi`).value
     },
     collecting: {
       f589a: document.getElementById(`poimintatiedot-poimintakoodi598a`).value,
@@ -344,4 +345,5 @@ window.clearAllFields = function () {
   resetInputFields();
   resetTextareaFields();
   resetSelectFields();
+  resetAndHideCcLicense();
 };
