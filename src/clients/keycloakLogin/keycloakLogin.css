@@ -1,18 +1,17 @@
-/* CSS file for muuntaja */
+/* ---------------------------------------------------------------------------- */
+/* Styles for keycloak login                                                    */
+/* ---------------------------------------------------------------------------- */
+
+
 
 @import "/common/stylesheets/common.css";
 
 /* ---------------------------------------------------------------------------- */
 
-div#loading {}
-
-/* ---------------------------------------------------------------------------- */
-
-div#tools {}
 
 .tools .Input>label {
   color: rgb(48, 93, 109);
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family:  var(--font-family-mono);
   font-size: 0.8em;
   text-align: center;
 }
@@ -21,7 +20,7 @@ div#tools {}
   border: 0;
   border-bottom: 1pt solid grey;
   outline: none;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family:  var(--font-family-mono);
   font-size: 1em;
   width: 37ch;
 }
@@ -50,20 +49,19 @@ div#tools {}
   content: attr(data-text);
   position: absolute;
   left: 0;
-  right:0;
+  right: 0;
   top: 100%;
   padding: 0.4em;
   border-radius: 0px 0px 4px 4px;
   /* basic styles */
-  background: rgb(182, 225, 224);
-  color: #000;
+  background: var(--color-melinda-lightblue);
+  color: var(--color-primary-black);
   font-size: 0.3em;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
+  font-family:  var(--font-family-mono);
 }
 
 /* ---------------------------------------------------------------------------- */
-
-div#muuntaja {}
+/* div#muuntaja {} */
 
 @media screen and (min-width: 1100px) {
   #viewer .record-merge-panel {
@@ -102,8 +100,8 @@ div#muuntaja {}
 .col .header {
   height: 48px;
   text-transform: uppercase;
-  font-family: roboto_monoregular, "Roboto Mono", monospace;
-  border-bottom: 1px solid lightgrey;
+  font-family:  var(--font-family-mono);
+  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
 }
 
@@ -114,5 +112,4 @@ div#muuntaja {}
 
 .header label {
   font-size: 12pt;
-  /*color: grey;*/
 }

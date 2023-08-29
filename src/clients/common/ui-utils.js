@@ -4,11 +4,10 @@
 //
 //*****************************************************************************
 
-import {setNavBar} from './navbar.js';
 import {startProcess, stopProcess} from './progressbar.js';
 import {showSnackbar} from './snackbar.js';
 
-export {setNavBar, startProcess, stopProcess, showSnackbar};
+export {startProcess, stopProcess, showSnackbar};
 
 //-----------------------------------------------------------------------------
 
@@ -24,6 +23,21 @@ window.eventHandled = function (e) {
 window.ignore = function (e) {
   return eventHandled(e);
 };
+
+
+//-----------------------------------------------------------------------------
+// Helper for HTML component: accordion
+//-----------------------------------------------------------------------------
+
+window.toggleAccordion = function(event) {
+  const accordionId = event.target.id;
+  const accordion = document.getElementById(accordionId);
+
+  accordion.classList.toggle('expanded');
+
+  return eventHandled(event);
+};
+
 
 //-----------------------------------------------------------------------------
 
@@ -62,7 +76,7 @@ export function createIconButton(icon, classList = [], onclickAttribute = false,
   const button = document.createElement('button');
   button.innerHTML = icon;
   button.classList.add('material-icons');
-  button.classList.add('icon');
+  button.classList.add('icon-only');
 
   classList.forEach(htmlClass => button.classList.add(htmlClass));
   if (onclickAttribute) {

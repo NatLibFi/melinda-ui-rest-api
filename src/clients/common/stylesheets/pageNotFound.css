@@ -1,44 +1,65 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for 404 page                                                          */
+/* ---------------------------------------------------------------------------- */
+
+
+
 @import "/common/stylesheets/common.css";
 
+/* ---------------------------------------------------------------------------- */
 
-.Input>label {
-  color: rgb(48, 93, 109);
-  font-family: var(--font-family-label);
-  font-size: var(--font-size-label-normal);
-  text-align: center;
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
-.Input>input {
-  border: 0;
-  border-bottom: 1pt solid grey;
-  outline: none;
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-content-normal);
+#pageNotFound {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: var(--color-grey-20);
+}
+
+@media screen and (min-width: 1800px) {
+  #pageNotFound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 550px;
+  }
+
+  #pageNotFoundInfo {
+    max-width: 66%;
+    min-width: 50%;
+  }
 }
 
 #pageNotFoundInfo {
-  padding-left: 3em;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  /*   background-color: var(--color-primary-white); */
+  color: var(--color-primary-blue);
+  padding: 25px;
+  margin: 25px;
+  gap: 25px;
 }
 
 #pageNotFoundInfo h3 {
   display: flex;
   align-items: center;
-  font-family: 'Montserrat-Regular', Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+#pageNotFoundInfo #sadFaceIcon {
+  font-size: 30px;
+  padding: 0.5em;
 }
 
 #pageNotFoundInfo a {
-  padding-left: 0.5em;
-}
-
-#pageNotFoundInfo a:hover {
-  text-decoration: underline;
-}
-
-#pageNotFoundInfo p {
-  height: 30px;
-}
-
-#sadFaceIcon {
-  font-size: 30px;
-  padding: 0.5em;
+  text-decoration: none;
 }

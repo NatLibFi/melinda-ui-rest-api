@@ -65,13 +65,13 @@ export function addOntologyWord(event) {
       vocab: document.getElementById('asiasana-ontologia').value
     };
   } else {
-    showSnackbar({text: 'Asia-/avainsana ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Asia-/avainsana ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOntologyWords').then(words => {
     if (words.some(word => data.localname ? word.localname === data.localname : word.prefLabel === data.prefLabel)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä asia-/avainsana', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
       return;
     }
 
@@ -92,7 +92,7 @@ export function refreshOntologyWordList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeOntologyWord(event, ${wordData.key})`, 'Poista');
       div.appendChild(createP('Asia- tai avainsana', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(wordData.prefLabel);
       pRelator.classList.add('capitalize');

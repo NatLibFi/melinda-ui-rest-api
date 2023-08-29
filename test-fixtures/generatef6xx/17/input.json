@@ -1,0 +1,12 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "prefLabel": "muistelmat",
+         "vocab": "slm",
+         "lang": "fi",
+         "uri": "http://urn.fi/URN:NBN:fi:au:slm:s286"
+        }
+       ]    
+}
+

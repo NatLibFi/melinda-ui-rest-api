@@ -1,0 +1,21 @@
+{
+    "reviews": [
+      {
+        "key": 1,
+      "title": "Musiikki kuvataiteessa",
+      "isElectronic": false,
+      "years": "1997",
+      "issns": [],
+      "isbns": [],
+      "sourceIds": [],
+      "publishing": "[Mikkeli] : [Mikkelin taidemuseo], 1997",
+      "publisherInfo": [],
+      "notices": [],
+      "authors": [],
+      "simpleGroups": [],
+      "simpleElements": [],
+      "recordType": "Monografia",
+      "sourceType": "nnam"
+    }
+    ]
+}

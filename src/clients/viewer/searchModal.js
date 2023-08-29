@@ -234,7 +234,7 @@ function updateCorrelationIdListModal() {
     })
     .catch((error) => {
       console.log('Error getting correlation id list from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({text: 'Odota hetki listan päivittymistä', closeButton: 'true'})
+      showSnackbar({style: 'info', text: 'Odota hetki listan päivittymistä'})
     })
 }
 
@@ -548,7 +548,7 @@ function highlightMatches() {
     function stylePatternMatches() {
       const listItemIdDivs = document.querySelectorAll(`#correlationIdListModal #correlationIdList .list-item-id`);
 
-      const styledString = `<span style="background-color:lightgrey">${searchString}</span>`;
+      const styledString = `<span style="background-color:var(--color-green-60)">${searchString}</span>`;
       const regExp = new RegExp(`${searchString}`, 'g');
 
       listItemIdDivs.forEach(listItemId => listItemId.innerHTML = listItemId.innerHTML.replace(regExp, styledString));
@@ -593,7 +593,7 @@ function highlightMatches() {
 
       infoTextSpan.addEventListener('click', () => {
         lastSearchedListItem.scrollIntoView({behavior: 'smooth', block: 'center'});
-        highlightElement(lastSearchedListItem);
+        highlightElement(lastSearchedListItem, 'var(--color-green-60)');
       });
     }
   }

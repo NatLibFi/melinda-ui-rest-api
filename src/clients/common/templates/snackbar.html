@@ -10,13 +10,21 @@
   <template id="snackbarTemplate">
 
     <!-- base for one snackbar -->
-    <!-- one snackbar has always supporting text, the message for user -->
-    <!-- snackbar has optionally also action button and icon for closing the snackbar -->
+    <!-- one snackbar has always text, the message for user -->
+    <!-- snackbar has optionally link button for additional action -->
+    <!-- and always a close button for dismissing the snackbar -->
+
     <div id="snackbar" class="snackbar-container">
-      <div class="snackbar-supporting-text"></div>
-      <div class="snackbar-action"></div>
       <div class="snackbar-icon">
-        <button class="material-icons">close</button>
+        <span class="material-icons">error_outline</span>
+      </div>
+      <div class="snackbar-text"></div>
+      <div class="snackbar-link"></div>
+      <div class="snackbar-close">
+        <div class="snackbar-close-text">
+          Sulje
+        </div>
+        <span class="material-icons snackbar-close-icon">close</span>
       </div>
     </div>
 

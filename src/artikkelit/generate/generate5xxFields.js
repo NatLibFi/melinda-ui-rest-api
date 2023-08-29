@@ -5,7 +5,7 @@ export function generatef500(notes = false) {
       tag: '500',
       ind1: ' ',
       ind2: ' ',
-      subfields: [{code: 'a', value: notes.value}]
+      subfields: [{code: 'a', value: notes.value + addDotIfNeeded(notes.value)}]
     }));
   }
 
@@ -39,7 +39,7 @@ export function generatef520(abstracts) {
         tag: '520',
         ind1: ' ',
         ind2: ' ',
-        subfields: [{code: 'a', value: elem.abstract}]
+        subfields: [{code: 'a', value: elem.abstract + addDotIfNeeded(elem.abstract)}]
       }
     ]);
   }
@@ -106,4 +106,14 @@ export function generatef599(f599a, f599x) {
     ];
   }
   return [];
+}
+
+function addDotIfNeeded(checkThis) {
+  const string = checkThis.trim();
+  const stringLength = string.length;
+  const lastChar = string.charAt(stringLength - 1);
+  if (lastChar === '.' || lastChar === '?' || lastChar === '!') {
+    return '';
+  }
+  return '.';
 }
