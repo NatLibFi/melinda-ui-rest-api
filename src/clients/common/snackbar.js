@@ -11,24 +11,27 @@
 // - call function with a string to create default snackbar or with a object parameter to create custom snackbar
 //
 // A: Default snackbar
-//    * contains just the message as string. If long message, you can use <br> to create line breaks.
+//    * notification banner that is shown on top of the page to the user
+//    * contains just your message as string with default style 'info' and button for closing snackbar.
+//    * if your message text is long, you can use <br> to create line breaks.
 //    => showSnackbar(string)
 //    => example: showSnackbar('This is my message')
 //
 // B: Custom snackbar
+//    * notification banner that is shown on top of the page to the user
 //    * currently the options for custom snackbar are
+//       - style (as string) => the style of messagge, one of the following: info, success, alert, error
 //       - text (as string) => the message for user
-//       - actionButton (as <button> element) => if the user can do some extra action
-//       - closeButton (as boolean) => if the button for closing snackbar should be visible or not
-//    => showSnackbar({text: string, actionButton: <button>, closeButton: boolean})
-//    => example: showSnackbar({text: 'This is my message', actionButton: myActionButton, closeButton: 'true'})
-//        - note for actionButton:
+//       - linkButton (as <button> element) => if the user can do some extra action
+//    => showSnackbar({style: string, text: string, linkButton: <button>})
+//    => example: showSnackbar({style: 'alert', text: 'This is my warning message', linkButton: myLinkButton})
+//        - note for linkButton:
 //            1. create a button element in app
-//                  => example: const myActionButton = document.createElement('button')
+//                  => example: const myLinkButton = document.createElement('button')
 //            2. add button text as innerHtml
-//                  => example: myActionButton.innerHtml = 'do some action'
+//                  => example: myLinkButton.innerHtml = 'open link or do some action'
 //            3. add listener for 'click' events to include the chosen action for snacbar
-//                  => example: myActionButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
+//                  => example: myLinkButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
 
 
 export function showSnackbar(snackbarContent) {
@@ -75,20 +78,20 @@ function createSnackbar(snackbarContent, html) {
   const snackbarType = checkSnackbarType(snackbarContent);
 
   switch (true) {
-  case snackbarType === 'string':
-    createDefaultSnackbar(snackbarContent);
-    break;
-  case snackbarType === 'object':
-    createCustomSnackbar(snackbarContent);
-    break;
-  default:
-    console.log('Snackbar argument type should be string or object');
-    return;
+    case snackbarType === 'string':
+      createDefaultSnackbar(snackbarContent);
+      break;
+    case snackbarType === 'object':
+      createCustomSnackbar(snackbarContent);
+      break;
+    default:
+      console.log('Snackbar argument type should be string or object');
+      return;
   }
 
-  const supportingText = snackbarElement.querySelector(`.snackbar-supporting-text`).innerHTML;
-  if (supportingText === 'undefined' || supportingText === '') {
-    console.log('Snackbar is missing supporting text and is not displayed!');
+  const text = snackbarElement.querySelector(`.snackbar-text`).innerHTML;
+  if (text === 'undefined' || text === '') {
+    console.log('Snackbar is missing text and is not displayed!');
     return;
   }
 
@@ -127,37 +130,68 @@ function createSnackbar(snackbarContent, html) {
   }
 
   function createDefaultSnackbar(snackbarString) {
-    addTextToSnackbar(snackbarString);
+    createCustomSnackbar({text: snackbarString});
   }
 
   function createCustomSnackbar(snackbarObject) {
-    const {text, actionButton, closeButton} = snackbarObject;
+    const {style, text, linkButton} = snackbarObject;
 
+    setSnackbarStyle();
     addTextToSnackbar(text);
-    addActionButton();
+    addLinkButton();
     addCloseButton();
 
-    function addActionButton() {
-      if (actionButton !== undefined && actionButton.nodeName === 'BUTTON') {
-        snackbarElement.querySelector(`.snackbar-action`).style.display = 'flex';
-        snackbarElement.querySelector(`.snackbar-action`).append(actionButton);
+    function setSnackbarStyle() {
+
+      // style 'info' is the default status message
+      // snackbar has blue background with info icon
+      let backgroundColor = 'var(--color-blue-60)';
+      let iconColor = 'var(--color-blue-100)';
+      let icon = 'error_outline';
+
+
+      if (style === 'success') {
+        backgroundColor = 'var(--color-green-80)';
+        iconColor = 'var(--color-green-100)';
+        icon = 'check_circle_outline';
+      }
+
+      if (style === 'alert') {
+        backgroundColor = 'var(--color-yellow-80)';
+        iconColor = 'var(--color-blue-100)';
+        icon = 'warning_amber';
+      }
+
+      if (style === 'error') {
+        backgroundColor = 'var(--color-red-80)';
+        iconColor = 'var(--color-red-100)';
+        icon = 'report_gmailerrorred';
+      }
+
+      snackbarElement.style.setProperty(`--style-background-color`, backgroundColor);
+      snackbarElement.style.setProperty(`--style-icon-color`, iconColor);
+      snackbarElement.querySelector(`.snackbar-icon .material-icons`).innerHTML = icon;
+
+    }
+
+    function addLinkButton() {
+      if (linkButton !== undefined && linkButton.nodeName === 'BUTTON') {
+        snackbarElement.querySelector(`.snackbar-link`).style.display = 'flex';
+        snackbarElement.querySelector(`.snackbar-link`).append(linkButton);
       }
     }
 
-    function addCloseButton() {
-      if (closeButton === 'true') {
-        snackbarElement.querySelector(`.snackbar-icon`).style.display = 'flex';
-
-        snackbarElement.querySelector(`.snackbar-icon button`).addEventListener('click', (event) => {
-          eventHandled(event);
-          snackbarElement.style.visibility = 'hidden';
-        });
-      }
-    }
   }
 
   function addTextToSnackbar(text) {
-    snackbarElement.querySelector(`.snackbar-supporting-text`).innerHTML = text;
+    snackbarElement.querySelector(`.snackbar-text`).innerHTML = text;
+  }
+
+  function addCloseButton() {
+    snackbarElement.querySelector(`.snackbar-close`).addEventListener('click', (event) => {
+      eventHandled(event);
+      snackbarElement.style.visibility = 'hidden';
+    });
   }
 
   function addSnackbar() {

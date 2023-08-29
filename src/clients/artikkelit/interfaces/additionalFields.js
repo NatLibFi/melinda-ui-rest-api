@@ -28,13 +28,13 @@ export function addNote(event) {
   };
 
   if (data.value === '') {
-    showSnackbar({text: 'Yleinen huomautus ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoNotes').then(notes => {
     if (notes.some(note => note.value === data.value)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä yleinen huomautus', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
       return;
     }
 
@@ -54,7 +54,7 @@ export function refreshNotesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeNote(event, ${noteData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeNote(event, ${noteData.key})`, 'Poista');
       div.appendChild(createP('Yleinen huomautus', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(noteData.value));
       div.appendChild(removeButton);
@@ -86,13 +86,13 @@ export function addOtherTitle(event) {
   };
 
   if (data.value === '') {
-    showSnackbar({text: 'Muu nimeke ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOtherTitles').then(otherTitles => {
     if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä muu nimeke', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
       return;
     }
 
@@ -112,7 +112,7 @@ export function refreshOtherTitlesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
       div.appendChild(createP('Muu nimeke', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(otherTitleData.value));
       div.appendChild(removeButton);
@@ -146,13 +146,13 @@ export function addUDK(event) {
   };
 
   if (data.a080 === '') {
-    showSnackbar({text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoUDKs').then(udks => {
     if (udks.some(udk => udk.a080 === data.a080)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)', closeButton: 'ture'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
       return;
     }
 
@@ -174,12 +174,12 @@ export function refreshUDKsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeUDK(event, ${udkData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeUDK(event, ${udkData.key})`, 'Poista');
       div.appendChild(createP('UDK-luokitus (080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
       div.appendChild(createP('Lisäluokka (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.x080));
-      div.appendChild(createP('Luokituksen lähde (080 $2', '&nbsp;', '&nbsp;', ['label-text']));
+      div.appendChild(createP('Luokituksen lähde (080 $2)', '&nbsp;', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.two080));
       div.appendChild(removeButton);
       form.appendChild(div);
@@ -211,13 +211,13 @@ export function addOtherRating(event) {
   };
 
   if (data.a084 === '' || data.two084 === '') {
-    showSnackbar({text: 'Muun luokituksen tiedot eivät voi olla tyhjiä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
     return;
   }
 
   idbGetStoredValues('artoOtherRatings').then(otherRatings => {
     if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
       return;
     }
 
@@ -238,7 +238,7 @@ export function refreshOtherRatingsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
       div.appendChild(createP('Muu luokitus (084 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(otherRatingData.a084));
       div.appendChild(createP('Luokituksen lähde ($2)', '&nbsp;', '&nbsp;', ['label-text']));
