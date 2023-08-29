@@ -1,5 +1,5 @@
 {
-  "description": "generatef380 - selected article.reviewType & subfield 2.",
+  "description": "generatef245 - many authors: all input options in use, first in line is yhteiso.",
   "skip": false,
   "only": false,
   "expectToFail": false,

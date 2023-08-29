@@ -1,0 +1,9 @@
+{
+  "description": "generatef655 B - reviews / no reviews",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

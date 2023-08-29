@@ -1,0 +1,21 @@
+[
+    {
+    "tag": "655",
+    "ind1": " ",
+    "ind2": "7",
+    "subfields": [
+        {
+        "code": "a",
+        "value": "muistelmat"
+        },
+        {
+        "code": "2",
+        "value": "slm/fin"            
+        },
+        {
+            "code": "0",
+            "value": "http://urn.fi/URN:NBN:fi:au:slm:s286"        
+        }                
+    ]        
+    }
+]

@@ -1,5 +1,5 @@
 {
-  "description": "generatef380 - selected article.reviewType & subfield 2.",
+  "description": "generatef245 - authors: only input is yhteiso, no other authors",
   "skip": false,
   "only": false,
   "expectToFail": false,

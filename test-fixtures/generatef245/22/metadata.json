@@ -1,5 +1,5 @@
 {
-  "description": "generatef380 - selected article.reviewType & subfield 2.",
+  "description": "generatef245 - many authors: all input options in use, two times kirjoittaja.",
   "skip": false,
   "only": false,
   "expectToFail": false,
