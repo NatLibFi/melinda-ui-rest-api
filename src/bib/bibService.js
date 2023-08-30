@@ -4,8 +4,8 @@ import {createSruOperator} from './sruOperator';
 import {parseBoolean} from '@natlibfi/melinda-commons';
 import {checkRecordType} from './collectorUtils';
 
-export async function createBibService(sruUrl) {
-  const sruOperator = await createSruOperator({sruUrl, recordSchema: 'marcxml'});
+export function createBibService(sruUrl) {
+  const sruOperator = createSruOperator({sruUrl, recordSchema: 'marcxml'});
 
   return {getRecordByTitle, getRecordByIssn, getRecordByIsbn, getRecordByID};
 

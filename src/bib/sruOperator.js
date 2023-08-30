@@ -4,8 +4,8 @@ import {noValidation} from '../marcUtils/marcUtils';
 import {Error as SruError, parseBoolean} from '@natlibfi/melinda-commons';
 
 
-export async function createSruOperator({sruUrl, recordSchema}) {
-  const client = await createClient({
+export function createSruOperator({sruUrl, recordSchema}) {
+  const client = createClient({
     url: sruUrl,
     recordSchema, // Resp = xml
     retrieveAll: false,
