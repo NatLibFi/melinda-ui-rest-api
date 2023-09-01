@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - generates fields for 100 & 700, $u & $g only if organization entered.",
+  "description": "generatef100 - generates fields for 100 & 700, $u & $g only if authorsTempOrganizations entered.",
   "skip": false,
   "only": false,
   "expectToFail": false,

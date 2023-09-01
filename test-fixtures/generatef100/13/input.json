@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": "c metropoliitta",
      "lastName": "Ambrosius",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": []
     },
@@ -11,6 +12,7 @@
      "key": 2,
      "firstName": "c metropoliitta",
      "lastName": "Panteleimon",
+     "corporateName": "",     
      "relator": "toimittaja",
      "authorsTempOrganizations": []
     }

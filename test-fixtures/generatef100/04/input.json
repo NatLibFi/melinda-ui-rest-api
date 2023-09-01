@@ -2,8 +2,9 @@
   "authors": [
     {
       "key": 1,
-      "firstName": " ",
-      "lastName": "Kirjailijayhteisö Kynäniekat",
+      "firstName": "",
+      "lastName": "",
+      "corporateName": "Kirjailijayhteisö Kynäniekat",      
       "relator": "yhteisö",
       "authorsTempOrganizations": []
     }

@@ -4,6 +4,7 @@
        "key": 1,
        "firstName": "Ray",
        "lastName": "Dyffey",
+       "corporateName": "",       
        "relator": "kirjoittaja",
        "authorsTempOrganizations": []
       }

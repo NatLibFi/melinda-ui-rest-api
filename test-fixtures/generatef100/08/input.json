@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": "Charles",
      "lastName": "Baudelaire",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": []
     },
@@ -11,6 +12,7 @@
      "key": 2,
      "firstName": "Hans",
      "lastName": "Gadd",
+     "corporateName": "",     
      "relator": "kuvittaja",
        "authorsTempOrganizations": [
       {

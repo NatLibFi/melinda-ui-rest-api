@@ -1,0 +1,8 @@
+{
+  "description": "generatef100 - Yhteiso, with authorsTempOrganizations name & code (test: excludes old names)",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

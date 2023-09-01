@@ -1,5 +1,5 @@
 {
-"description": "generatef100 - case updated list, one named organisation.",
+"description": "generatef100 - case updated list, one named organisation (authorsTempOrganizations).",
 "skip": false,
 "only": false,
 "expectedError": false,

@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - generates fields when two authors: yksiniminen.",
+  "description": "generatef100 - generates fields when two authors entered as yksiniminen.",
   "skip": false,
   "only": false,
   "expectToFail": false,

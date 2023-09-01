@@ -12,6 +12,7 @@
     "key": 1,
     "firstName": "Ted",
     "lastName": "Reilly",
+    "corporateName": "",    
     "relator": "kirjoittaja",
     "authorsTempOrganizations": []
   },
@@ -19,6 +20,7 @@
       "key": 2,
       "firstName": "Gustav",
       "lastName": "Dore",
+      "corporateName": "",      
       "relator": "kuvittaja",
       "authorsTempOrganizations": []
     },
@@ -26,6 +28,7 @@
       "key": 3,
       "firstName": "Anselm",
       "lastName": "Hollo",
+      "corporateName": "",      
       "relator": "kääntäjä",
       "authorsTempOrganizations": []
     },
@@ -33,6 +36,7 @@
       "key": 4,
       "firstName": "Tauno",
       "lastName": "Virtanen",
+      "corporateName": "",      
       "relator": "toimittaja",
       "authorsTempOrganizations": []
     },
@@ -41,6 +45,7 @@
       "key": 5,
       "firstName": "Kurt",
       "lastName": "Vonnegut",
+      "corporateName": "",      
       "relator": "kirjoittaja",
       "authorsTempOrganizations": []
     }   

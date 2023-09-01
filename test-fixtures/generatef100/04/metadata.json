@@ -1,5 +1,5 @@
 {
-  "description": "generatef100 - generates fields when selected: yhteisö",
+  "description": "generatef100 - generates fields when selected: yhteisö (relator)",
   "skip": false,
   "only": false,
   "expectToFail": false,

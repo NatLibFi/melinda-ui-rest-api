@@ -1,0 +1,21 @@
+[
+    {
+     "tag": "110",
+     "ind1": "2",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Tässä Yhteisön nimi."
+      },
+      {
+       "code": "u",
+       "value": "Sibelius-Akatemia ; Oulun yliopisto"
+      },
+      {
+       "code": "g",
+       "value": "(orgn)1742 1904"
+      }
+     ]
+    }
+]

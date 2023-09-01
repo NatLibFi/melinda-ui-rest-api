@@ -5,6 +5,7 @@
          "key": 1,
          "firstName": "Jakke",
          "lastName": "Jäyhä",
+         "corporateName": "",         
          "relator": "kirjoittaja",
          "authorsTempOrganizations": [
           {

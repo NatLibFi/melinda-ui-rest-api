@@ -4,6 +4,7 @@
       "key": 1,
       "firstName": "Eino",
       "lastName": "Leino",
+      "corporateName": "",      
       "relator": "kirjoittaja",
       "authorsTempOrganizations": []
     }

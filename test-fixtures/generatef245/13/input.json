@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": "Dan",
      "lastName": "Truffles",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": []
     }

@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": "Toni",
      "lastName": "Toimittaja",
+     "corporateName": "",     
      "relator": "toimittaja",
      "authorsTempOrganizations": []
     },
@@ -11,7 +12,16 @@
      "key": 2,
      "firstName": "Kale",
      "lastName": "Kääntäjä",
+     "corporateName": "",     
      "relator": "kääntäjä",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 3,
+     "firstName": "Gustav",
+     "lastName": "Dore",
+     "corporateName": "",     
+     "relator": "kuvittaja",
      "authorsTempOrganizations": []
     }
    ]
