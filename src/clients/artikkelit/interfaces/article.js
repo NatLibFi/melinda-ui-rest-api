@@ -13,6 +13,7 @@ export function initArticle() {
 
   refreshSciencesList();
   refreshMetodologysList();
+  resetAndHideCcLicense();
 }
 
 function addScience(event) {
@@ -22,7 +23,7 @@ function addScience(event) {
   const science = formJson['lisa-tiedot-tieteenala'];
 
   if (science === '') {
-    showSnackbar({text: 'Tieteenala ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Tieteenala ei voi olla tyhjä'});
     return;
 
   }
@@ -30,7 +31,7 @@ function addScience(event) {
 
   idbGetStoredValues('artoSciences').then(sciences => {
     if (sciences.some(sci => sci.subject === subject || sci.subCategory === subCategory)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä tieteenala', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä tieteenala'});
       return;
     }
 
@@ -48,13 +49,13 @@ function addMetodology(event) {
   const metodology = formJson['lisa-tiedot-metodologia'];
 
   if (metodology === '') {
-    showSnackbar({text: 'Metodologia ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Metodologia ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoMetodologys').then(metodologies => {
     if (metodologies.some(met => met.value === metodology)) {
-      showSnackbar({text: 'Artikkelille on jo lisätty tämä metodologia', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä metodologia'});
       return;
     }
 
@@ -75,7 +76,7 @@ export function refreshSciencesList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeScience(event, ${scienceData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeScience(event, ${scienceData.key})`, 'Poista');
       div.appendChild(createP('Tieteenala', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(scienceData.departmentName));
       div.appendChild(createP(scienceData.subject, '&nbsp;-&nbsp;'));
@@ -99,7 +100,6 @@ export function clearSciences(event) {
   idbClear('artoSciences').then(() => refreshSciencesList());
 }
 
-
 export function refreshMetodologysList() {
   console.log('refresh metodologyList');
   const metodologyList = document.getElementById('metodologiat-list');
@@ -110,7 +110,7 @@ export function refreshMetodologysList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeMetodology(event, ${metodologyData.key})`, 'Poista');
       div.appendChild(createP('Metodologia', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(metodologyData.value));
       div.appendChild(removeButton);
@@ -135,7 +135,7 @@ export function addArticleLink(event) {
   upperDiv.classList.add('full-width');
   const lowerDiv = document.createElement('div');
   lowerDiv.classList.add('Input');
-  const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeArticleLink(event)`, 'Poista');
+  const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeArticleLink(event)`, 'Poista');
   lowerDiv.appendChild(createLabel('artikkelin-linkki'));
   lowerDiv.appendChild(createInput('artikkelin-linkki'));
   upperDiv.appendChild(lowerDiv);
@@ -162,4 +162,25 @@ export function addArticleLink(event) {
 export function clearMetodologys(event) {
   event.preventDefault();
   idbClear('artoMetodologys').then(() => refreshMetodologysList());
+}
+
+export function resetAndHideCcLicense() {
+  const ccLicenseSelect = document.getElementById('artikkelin-cc-lisenssi');
+  const ccLicenseFormField = document.getElementById('artikkelin-cc-lisenssi-wrap');
+
+  ccLicenseSelect.selectedIndex = 0;
+  hideCcLicense();
+
+  function hideCcLicense() {
+    ccLicenseFormField.style.display = 'none';
+    ccLicenseSelect.disabled = true;
+  }
+}
+
+export function showCcLicense() {
+  const ccLicenseFormField = document.getElementById('artikkelin-cc-lisenssi-wrap');
+  const ccLicenseSelect = document.getElementById('artikkelin-cc-lisenssi');
+
+  ccLicenseFormField.style.display = 'block';
+  ccLicenseSelect.removeAttribute('disabled');
 }
