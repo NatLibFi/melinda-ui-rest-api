@@ -2,7 +2,6 @@ import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
 import {generatef500, generatef506, generatef520, generatef540, generatef567, generatef591, generatef598, generatef599} from './generate5xxFields.js';
-import { stringify } from 'uuid';
 
 generateTests({
   callback: testF500,

@@ -1,4 +1,4 @@
-import { localReducers } from "@natlibfi/melinda-marc-record-merge-reducers/dist/reducers";
+//import {localReducers} from "@natlibfi/melinda-marc-record-merge-reducers/dist/reducers";
 
 export function generatef500(notes = false) {
 
@@ -50,60 +50,60 @@ export function generatef520(abstracts) {
 }
 
 export function generatef540(article) {
-  //supported licenses: 
+  //supported licenses:
   const allowed = ['CC BY 4.0', 'CC BY-NC 4.0', 'CC BY-NC-ND 4.0', 'CC BY-NC-SA 4.0', 'CC BY-ND 4.0', 'CC BY-SA 4.0', 'CC0 1.0', 'Public Domain 1.0'];
-  if (!article || !article.ccLicense){
+  if (!article || !article.ccLicense) {
     return [];
   }
 
-  if (article && article.ccLicense && allowed.includes(article.ccLicense )) {
+  if (article && article.ccLicense && allowed.includes(article.ccLicense)) {
     return [
       {
         tag: '540',
         ind1: ' ',
         ind2: ' ',
         subfields: [
-      {code: 'f', value: article.ccLicense},
-      {code: '2', value: 'cc'},
-      {code: 'u', value: uField (article.ccLicense)}
-      ]
+          {code: 'f', value: article.ccLicense},
+          {code: '2', value: 'cc'},
+          {code: 'u', value: uField(article)}
+        ]
       }
-    ]
-}
+    ];
+  }
 
   return [];
 
-  function uField (articledata){
+  function uField (article) {
 
-    if (article.ccLicense === 'CC BY 4.0'){
+    if (article.ccLicense === 'CC BY 4.0') {
     return 'https://creativecommons.org/licenses/by/4.0/deed.fi';
     }
 
-    if (article.ccLicense === 'CC BY-NC 4.0'){
+    if (article.ccLicense === 'CC BY-NC 4.0') {
       return 'https://creativecommons.org/licenses/by-nc/4.0/deed.fi';
     }
 
-    if (article.ccLicense === 'CC BY-NC-ND 4.0'){
-      return 'https://creativecommons.org/licenses/by-nc-nd/4.0/deed.fi'
+    if (article.ccLicense === 'CC BY-NC-ND 4.0') {
+      return 'https://creativecommons.org/licenses/by-nc-nd/4.0/deed.fi';
     }
 
-    if (article.ccLicense === 'CC BY-NC-SA 4.0'){
-      return 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fi'
+    if (article.ccLicense === 'CC BY-NC-SA 4.0') {
+      return 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fi';
     }
 
-    if (article.ccLicense === 'CC BY-ND 4.0'){
+    if (article.ccLicense === 'CC BY-ND 4.0') {
       return 'https://creativecommons.org/licenses/by-nd/4.0/deed.fi';
     }
 
-    if (article.ccLicense === 'CC BY-SA 4.0'){
+    if (article.ccLicense === 'CC BY-SA 4.0') {
       return 'https://creativecommons.org/licenses/by-sa/4.0/deed.fi';
     }
 
-    if (article.ccLicense === 'CC0 1.0'){
+    if (article.ccLicense === 'CC0 1.0') {
       return 'https://creativecommons.org/publicdomain/zero/1.0/deed.fi';
     }
 
-    if (article.ccLicense === 'Public Domain 1.0'){
+    if (article.ccLicense === 'Public Domain 1.0') {
       return 'https://creativecommons.org/publicdomain/mark/1.0/deed.fi';
     }
 
