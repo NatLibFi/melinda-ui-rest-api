@@ -14,14 +14,14 @@ export function createSruOperator({sruUrl, recordSchema}) {
 
   return {getRecordByTitle, getRecordByID, getRecordByIssn, getRecordByIsbn};
 
-  async function getRecordByTitle(title, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`title=${title}${handleAdditionalQueryParams(additionalQueryParams)}`);
-      return record;
-    }
+  async function getRecordByTitle(title, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
 
-    const record = await search(`rec.id=${title}`);
-    return record;
+    const searchUrl = `title=${title}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
   }
 
   async function getRecordByID(id, additionalQueryParams = false) {
@@ -87,15 +87,37 @@ export function createSruOperator({sruUrl, recordSchema}) {
     });
   }
 
-  function handleAdditionalQueryParams(additionalQueryParams) {
-    if (parseBoolean(additionalQueryParams.arto)) {
-      return ' AND melinda.collection=arto';
-    }
+  function handleCollectionQueryParams(collectionQueryParams) {
+    const artoSearchParameter = 'melinda.collection=arto';
+    const fennicaSearchParameter = 'melinda.authenticationcode=finb';
 
-    if (parseBoolean(additionalQueryParams.reviewSearch)) {
+    if (parseBoolean(collectionQueryParams.melinda)) {
       return '';
     }
 
-    return `&${new URLSearchParams(additionalQueryParams).toString()}`;
+    if (parseBoolean(collectionQueryParams.arto) && parseBoolean(collectionQueryParams.fennica)) {
+      return ` AND (${artoSearchParameter} OR ${fennicaSearchParameter})`;
+    }
+
+    if (parseBoolean(collectionQueryParams.arto)) {
+      return ` AND ${artoSearchParameter}`;
+    }
+
+    if (parseBoolean(collectionQueryParams.fennica)) {
+      return ` AND ${fennicaSearchParameter}`;
+    }
+
+    return '';
   }
+
+  function handleAdditionalQueryParams(additionalQueryParams) {
+
+    if (Object.keys(additionalQueryParams).length === 0) {
+      return '';
+    }
+
+    const urlSearchParamObject = new URLSearchParams(additionalQueryParams);
+    return urlSearchParamObject.toString();
+  }
+
 }

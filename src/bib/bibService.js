@@ -9,15 +9,12 @@ export function createBibService(sruUrl) {
 
   return {getRecordByTitle, getRecordByIssn, getRecordByIsbn, getRecordByID};
 
-  async function getRecordByTitle(title, additionalQueryParams) {
-    const records = await sruOperator.getRecordByTitle(title, additionalQueryParams);
+  async function getRecordByTitle(title, typeParam, collectionQueryParams, additionalQueryParams) {
+    const records = await sruOperator.getRecordByTitle(title, collectionQueryParams, additionalQueryParams);
 
-    if (parseBoolean(additionalQueryParams.arto) || parseBoolean(additionalQueryParams.reviewSearch)) {
-      return records
-        .filter(record => checkRecordType(additionalQueryParams.type, record))
-        .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
-    }
-    return records;
+    return records
+      .filter(record => checkRecordType(typeParam, record))
+      .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
   }
 
   async function getRecordByIssn(issn, additionalQueryParams) {

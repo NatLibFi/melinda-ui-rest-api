@@ -27,14 +27,19 @@ export default function (sruUrl) {
 
   async function fetchOneByTitle(req, res, next) {
     logger.info('GET publication by title');
-    const {title} = req.params;
 
-    logger.debug(`Params..: ${JSON.stringify(req.params)}`);
-    logger.debug(`Query..: ${JSON.stringify(req.query)}`);
-    logger.debug(`Fetching: ${title}`);
+    const {title} = req.params;
+    const {arto, fennica, melinda, type, ...rest} = req.query;
+    const collectionQueryParams = {arto, fennica, melinda};
+    const typeParam = type;
+    const additionalQueryParams = rest;
+
+    logger.verbose(`Fetching ${typeParam} with title '${title}'`);
+    logger.verbose(`Fetching using collection parameters ${JSON.stringify(collectionQueryParams)}`);
+    logger.verbose(Object.keys(additionalQueryParams).length > 0 ? `Fetching with these additional query parameters: ${JSON.stringify(additionalQueryParams)}` : `No additional query parameters added for fetching`);
 
     try {
-      const result = await bibService.getRecordByTitle(title, req.query);
+      const result = await bibService.getRecordByTitle(title, typeParam, collectionQueryParams, additionalQueryParams);
       res.json(result);
     } catch (error) {
       return next(error);
