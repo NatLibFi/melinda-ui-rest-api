@@ -1,0 +1,21 @@
+[
+    {
+     "tag": "540",
+     "ind1": " ",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "f",
+       "value": "Public Domain 1.0"
+      },
+      {
+       "code": "2",
+       "value": "cc"
+      },
+      {
+       "code": "u",
+       "value": "https://creativecommons.org/publicdomain/mark/1.0/deed.fi"
+      }
+     ]
+    }
+]

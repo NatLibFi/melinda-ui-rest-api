@@ -1,7 +1,8 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {generatef500, generatef506, generatef520, generatef567, generatef591, generatef598, generatef599} from './generate5xxFields.js';
+import {generatef500, generatef506, generatef520, generatef540, generatef567, generatef591, generatef598, generatef599} from './generate5xxFields.js';
+import { stringify } from 'uuid';
 
 generateTests({
   callback: testF500,
@@ -74,6 +75,34 @@ async function testF520({getFixture, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResults = getFixture('output.json');
     const result = await generatef520(input.abstracts);
+
+    expect(result).to.deep.equal(expectedResults);
+    expect(expectToFail, 'This is expected to succes').to.equal(false);
+
+  } catch (error) {
+    if (!expectToFail) {
+      throw error;
+    }
+
+    expect(expectToFail, 'This is expected to fail').to.equal(true);
+  }
+}
+
+generateTests({
+  callback: testF540,
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef540'],
+  useMetadataFile: true,
+  recurse: false,
+  fixura: {
+    reader: READERS.JSON
+  }
+});
+
+async function testF540({getFixture, expectToFail = false}) {
+  try {
+    const input = getFixture('input.json');
+    const expectedResults = getFixture('output.json');
+    const result = await generatef540(input.article);
 
     expect(result).to.deep.equal(expectedResults);
     expect(expectToFail, 'This is expected to succes').to.equal(false);

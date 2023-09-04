@@ -6,11 +6,3 @@
   "expectedError": false,
   "expectedErrorStatus": "200"
 }
-{
-  "description": "generatef245 - many authors: all input options in use, except kirjoittaja.",
-  "skip": false,
-  "only": false,
-  "expectToFail": false,
-  "expectedError": false,
-  "expectedErrorStatus": "200"
-}
