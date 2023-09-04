@@ -76,7 +76,7 @@ export function generatef540(article) {
   function uField (article) {
 
     if (article.ccLicense === 'CC BY 4.0') {
-    return 'https://creativecommons.org/licenses/by/4.0/deed.fi';
+      return 'https://creativecommons.org/licenses/by/4.0/deed.fi';
     }
 
     if (article.ccLicense === 'CC BY-NC 4.0') {
