@@ -412,18 +412,60 @@
               <!-- FIELDSET: lisää arvosteltu teos ja listaa lisätyt arvostellut teokset -->
               <fieldset id="arvostellun-teoksen-tiedot">
                 <legend>Arvostellun teoksen tiedot</legend>
+                
+                <div class="Select full-width">
+                  <label class="bold-text" for="arvosteltu-teos-haku-tyyppi">Hakutyyppi:</label>
+                  <select id="arvosteltu-teos-haku-tyyppi" name="arvosteltu-teos-haku-tyyppi">
+                  </select>
+                </div>
 
-                <form id="arvosteltu-teos-hae-form">
+                <form id="arvosteltu-teos-haku-title-form">
                   <div class="full-width">
                     <div class="Input full-width">
                       <label class="bold-text" for="arvosteltu-teos">Haku:</label>
-                      <input type="text" id="arvosteltu-teos" name="arvosteltu-teos"
+                      <input type="text" id="arvosteltu-teos-haku-title" name="arvosteltu-teos"
                         pattern="^[\p{L}\p{N}\p{M}\p{P}\p{Zs}]+$" maxlength="30">
                     </div>
                     <button type="submit" class="material-icons tooltip icon-only small alternate-blue"
                       tooltip-text="Hae">search</button>
                   </div>
                 </form>
+
+                <form id="arvosteltu-teos-haku-melinda-form" class="hidden">
+                  <div class="full-width">
+                    <div class="Input full-width">
+                      <label class="bold-text" for="arvosteltu-teos">Haku:</label>
+                      <input type="text" id="arvosteltu-teos-haku-melinda" name="arvosteltu-teos" pattern="^[\p{N}]+$"
+                        maxlength="9">
+                    </div>
+                    <button type="submit" class="material-icons tooltip icon-only small alternate-blue"
+                      tooltip-text="Hae">search</button>
+                  </div>
+                </form>
+               
+                <form id="arvosteltu-teos-haku-isbn-form" class="hidden">
+                  <div class="full-width">
+                    <div class="Input full-width">
+                      <label class="bold-text" for="arvosteltu-teos">Haku:</label>
+                      <input type="text" id="arvosteltu-teos-haku-isbn" name="arvosteltu-teos">
+                    </div>
+                    <button type="submit" class="material-icons tooltip icon-only small alternate-blue"
+                      tooltip-text="Hae">search</button>
+                  </div>
+                </form>
+
+                <form id="arvosteltu-teos-haku-issn-form" class="hidden">
+                  <div class="full-width">
+                    <div class="Input full-width">
+                      <label class="bold-text" for="arvosteltu-teos">Haku:</label>
+                      <input type="text" id="arvosteltu-teos-haku-issn" name="arvosteltu-teos" pattern="^[\p{N}]{4}-[\p{N}]{4}$"
+                        maxlength="9">
+                    </div>
+                    <button type="submit" class="material-icons tooltip icon-only small alternate-blue"
+                      tooltip-text="Hae">search</button>
+                  </div>
+                </form>
+
                 <form id="arvosteltu-teos-lisaa-form">
                   <div class="full-width">
                     <div class="Select full-width">
@@ -433,6 +475,7 @@
                     </div>
                   </div>
                 </form>
+
                 <div class="full-width justify-content-end">
                   <div class="Button">
                     <button class="alternate-red minimal" onclick="return resetReview(event)">Tyhjennä</button>
