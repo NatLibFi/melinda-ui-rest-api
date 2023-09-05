@@ -1,6 +1,6 @@
 import {idbGet, idbClear, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
-import {formToJson, setOptions, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
-import {getBookForReviewByTitle} from '/common/rest.js';
+import {formToJson, setOptions, createIconButton, createP, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
+import {getPublicationByTitle} from '/common/rest.js';
 
 export function initReviewSearch() {
   console.log('initializing review search...');
@@ -112,20 +112,30 @@ function resetSearchResultSelect(searching) {
 }
 
 function searchPublications(event) {
+  startProcess();
   event.preventDefault();
   idbClear('artoTempReviews').then(() => {
     resetSearchResultSelect(true);
   });
 
+  const collectionFilters = {
+    arto: true,
+    fennica: true,
+    melinda: false
+  };
+  const sourceType = 'book'
   const formJson = formToJson(event);
 
-  return getBookForReviewByTitle(formJson['arvosteltu-teos']).then(result => {
-    if (result.error === undefined) {
-      return setRecordsToSearch(result);
-    }
-
-    return resetSearchResultSelect();
-  });
+  return getPublicationByTitle(formJson['arvosteltu-teos'], collectionFilters, sourceType)
+    .then(result => {
+      setRecordsToSearch(result);
+    })
+    .catch(error => {
+      resetSearchResultSelect();
+      showSnackbar({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt tietueita!'});
+      console.log('Error while trying to get review book by title', error);
+    })
+    .finally(() => stopProcess());
 }
 
 function setRecordsToSearch(records) {

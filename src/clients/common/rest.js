@@ -126,11 +126,6 @@ export function getPublicationByTitle(title, {arto, fennica, melinda}, type = 'j
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getBookForReviewByTitle(title) {
-  const url = `${RESTurl}/bib/title/${title}?reviewSearch=1&type=book`;
-  return doRestCall({url: url, method: 'GET', resultAsJson: true});
-}
-
 export function getArtikkeliRecord(data) {
   const url = `${RESTurl}/artikkelit/`;
   const body = JSON.stringify(data);
