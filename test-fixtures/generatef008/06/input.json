@@ -1,0 +1,67 @@
+{
+    "source": {
+     "title": "Basso : urbaani musiikki & kulttuuri",
+     "isElectronic": true,
+     "years": "2006-2012.",
+     "issns": [
+      "1796-3753"
+     ],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)000434823"
+     ],
+     "publishing": "Helsinki : Basso Media, 2006-2012.",
+     "publisherInfo": {
+      "publisherLocation": "Helsinki",
+      "publisher": "Basso Media",
+      "publisherYears": {
+       "start": "2006",
+       "end": "2012"
+      }
+     },
+     "notices": [],
+     "authors": [],
+     "simpleElements": {
+      "referenceLink": [],
+      "f653s": [],
+      "f651s": [],
+      "f648s": [],
+      "f610s": [],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [
+       "Alanimeke vaihtelee.",
+       "Alanimeke vaihtelee. - Myöhemmin ilman alanimekettä.",
+       "Alanimeke 2008-: uuden musiikin ja ilmiöiden aikakauslehti."
+      ],
+      "methodology": []
+     },
+     "recordType": "Kausijulkaisu",
+     "sourceType": "nnas"
+    },
+    "journalNumber": {
+     "publishingYear": "2020",
+     "volume": "",
+     "number": "",
+     "pages": ""
+    },
+    "article": {
+     "title": "",
+     "titleOther": "",
+     "language": {
+      "iso6391": "smn",
+      "iso6392b": "smn",
+      "ui": "Inarinsaame."
+     },
+     "link": "",
+     "type": "",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    }
+}

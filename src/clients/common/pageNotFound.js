@@ -1,15 +1,16 @@
-import {setNavBar, showSnackbar, showTab} from '/./common/ui-utils.js';
+import {showSnackbar, showTab} from '/./common/ui-utils.js';
 import {Account, doLogin, logout} from '/./common/auth.js';
 
 window.initialize = function () {
-  setNavBar(document.querySelector('#navbar'), 'Valitse sovellus');
-
   doLogin(authSuccess);
 
   function authSuccess(user) {
     showTab('pageNotFound');
-    showSnackbar({text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!', closeButton: 'true'});
-    const username = document.querySelector('#account-menu #username');
+    showSnackbar({style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
+    showAppName(window.location.href);
+    const accountMenu = document.getElementById('accountMenu');
+    accountMenu.classList.add('show');
+    const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
   }
 };
@@ -28,3 +29,23 @@ window.goHome = function (event) {
   eventHandled(event);
   window.open('/', '_self');
 };
+
+function showAppName(currentUrl) {
+  const appNameDiv = document.getElementById('appName');
+  const appLinkDiv = document.getElementById('appLink');
+  const goBackDiv = document.getElementById('goBack');
+
+  const appNames = ['viewer', 'muuntaja', 'edit', 'artikkelit'];
+  const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
+
+  appNames.includes(appName)
+    ? (
+      appLinkDiv.style.display = 'flex',
+      goBackDiv.style.display = 'none'
+    )
+    : (
+      appLinkDiv.style.display = 'none',
+      goBackDiv.classList.add('show')
+    )
+
+}

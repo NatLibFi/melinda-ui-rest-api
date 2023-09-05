@@ -4,6 +4,7 @@
       "key": 1,
       "firstName": "Charles",
       "lastName": "Baudelaire",
+      "corporateName": "",         
       "relator": "kirjoittaja",
       "authorsTempOrganizations": []
     },
@@ -11,13 +12,15 @@
       "key": 2,
       "firstName": "Anselm",
       "lastName": "Hollo",
+      "corporateName": "",         
       "relator": "kääntäjä",
       "authorsTempOrganizations": []
     },
     {
       "key": 3,
-      "firstName": " ",
-      "lastName": "Osuuskunta-kuvittajat",
+      "firstName": "",
+      "lastName": "",
+      "corporateName": "Osuuskunta-kuvittajat",         
       "relator": "yhteisö",
       "authorsTempOrganizations": []
     }

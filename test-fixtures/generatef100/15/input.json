@@ -11,13 +11,15 @@
      "key": 2,
      "firstName": "Anselm",
      "lastName": "Hollo",
+     "corporateName": "",  
      "relator": "kääntäjä",
      "authorsTempOrganizations": []
     },
     {
      "key": 3,
      "firstName": "",
-     "lastName": "YhteisöKuvittajat",
+     "lastName": "",
+     "corporateName": "YhteisöKuvittajat",     
      "relator": "yhteisö",
      "authorsTempOrganizations": [
       {

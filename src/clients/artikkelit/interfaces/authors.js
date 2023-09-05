@@ -72,7 +72,7 @@ export function refreshAuthorsList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAuthor(event, ${authorData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeAuthor(event, ${authorData.key})`, 'Poista');
       div.appendChild(createP('Tekijä', '', '&nbsp;-&nbsp;', ['label-text']));
       const pRelator = createP(authorData.relator);
       pRelator.classList.add('capitalize');
@@ -132,7 +132,7 @@ export function addOrganizationForAuthor(event) {
   const organizationInputValue = formJson['tekija-organisaatio'];
 
   if (organizationInputValue === '') {
-    showSnackbar({text: 'Organisaatio ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
     return;
   }
 
@@ -143,7 +143,7 @@ export function addOrganizationForAuthor(event) {
 
   idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
     if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
-      showSnackbar({text: 'Tekijälle on jo lisätty tämä organisaatio', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
       return;
     }
 
@@ -163,7 +163,7 @@ export function refreshAuthorOrganizationList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeOrgForAuthor(event, ${tempOrgData.key})`, 'Poista');
       div.appendChild(createP('Organisaatio', '', '&nbsp;-&nbsp;', ['label-text']));
       div.appendChild(createP(tempOrgData.organizationName));
 

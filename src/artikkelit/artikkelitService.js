@@ -1,16 +1,14 @@
-
-
 import {generatef005, generatef007, generatef008, generateLeader} from './generate/generateControlFields';
 import {generatef041, generatef080, generatef084} from './generate/generate0xxFields';
 import {generatef245, generatef246} from './generate/generate2xxFields';
 import {generatef100sf110sf700sf710s} from './generate/generate1xxFields';
-import {generatef336, generatef337, generatef380} from './generate/generate3xxFields';
+import {generatef336, generatef337} from './generate/generate3xxFields';
 import {generatef490} from './generate/generate4xxFields';
-import {generatef500, generatef506, generatef520, generatef567, generatef591, generatef593, generatef598, generatef599} from './generate/generate5xxFields';
+import {generatef500, generatef506, generatef520, generatef540, generatef567, generatef591, generatef593, generatef598, generatef599} from './generate/generate5xxFields';
 import {generatef773, generatef787} from './generate/generate7xxFields';
 import {generatef856} from './generate/generate8xxFields';
 import {generatef960} from './generate/generate9xxFields';
-import {generatef6xxs} from './generate/generate6xxFields';
+import {generatef6xxs, generatef655reviews} from './generate/generate6xxFields';
 
 export function createArtikkelitService(useMoment = 'now') {
 
@@ -48,17 +46,18 @@ export function createArtikkelitService(useMoment = 'now') {
         ...generatef246(articleTitleOther),
         ...generatef336(),
         ...generatef337(isElectronic),
-        ...generatef380(article.reviewType),
         ...generatef490(article.sectionOrColumn),
         ...generatef500(notes), // general notes
         ...generatef506(referenceLinks, isElectronic),
         ...generatef520(abstracts), // Abstracts
+        ...generatef540(article),
         ...generatef567(metodologys),
         ...generatef591(sciences, article.type),
         ...generatef593(journalJufo, year),
         ...generatef598(collecting.f589a),
         ...generatef599(f599a, f599x),
         ...generatef6xxs(ontologyWords),
+        ...generatef655reviews(reviews),
         ...generatef773(sourceTypeAsText, journalNumber, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t),
         ...generatef787(reviews), // review books
         ...generatef856(referenceLinks, isElectronic),

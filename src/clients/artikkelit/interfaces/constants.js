@@ -244,6 +244,41 @@ export const languages = [
   }
 ];
 
+export const ccLicenses = [
+  {
+    value: 'CC BY 4.0',
+    text: 'CC BY 4.0'
+  },
+  {
+    value: 'CC BY-NC 4.0',
+    text: 'CC BY-NC 4.0'
+  },
+  {
+    value: 'CC BY-NC-ND 4.0',
+    text: 'CC BY-NC-ND 4.0'
+  },
+  {
+    value: 'CC BY-NC-SA 4.0',
+    text: 'CC BY-NC-SA 4.0'
+  },
+  {
+    value: 'CC BY-ND 4.0',
+    text: 'CC BY-ND 4.0'
+  },
+  {
+    value: 'CC BY-SA 4.0',
+    text: 'CC BY-SA 4.0'
+  },
+  {
+    value: 'CC0 1.0',
+    text: 'CC0 1.0'
+  },
+  {
+    value: 'Public Domain 1.0',
+    text: 'Public Domain 1.0'
+  }
+]
+
 // https://wiki.eduuni.fi/display/cscsuorat/7.3+Tieteenalaluokitus+2021
 export const sciences = [
   {
@@ -514,7 +549,7 @@ export const sciences = [
 
 // https://wiki.eduuni.fi/display/cscsuorat/7.6+Tutkimuslaitosten+ja+yliopistollisten+sairaaloiden+organisaatiotunnukset+2022
 // https://wiki.eduuni.fi/display/cscsuorat/7.1+Korkeakoulujen+oppilaitosnumerot+2022
-// updated 21.3.2023
+// Latest update: 24.8.2023 (MUU-384)
 export const organizations = [
   {value: 'Aalto yliopisto', text: '', code: '10076'},
   {value: 'Centria-ammattikorkeakoulu', text: '', code: '02536'},
@@ -534,7 +569,6 @@ export const organizations = [
   {value: 'Karelia-ammattikorkeakoulu', text: '', code: '02469'},
   {value: 'Kuopion yliopistollisen sairaalan erityisvastuualue', text: '', code: '01714953'},
   {value: 'LAB-ammattikorkeakoulu', text: '', code: '10126'},
-  {value: 'Lahden ammattikorkeakoulu', text: '', code: '02470'},
   {value: 'Lapin ammattikorkeakoulu', text: '', code: '10108'},
   {value: 'Lapin yliopisto', text: '', code: '01918'},
   {value: 'Lappeenrannan-Lahden teknillinen yliopisto LUT', text: '', code: '01914'},
@@ -548,7 +582,6 @@ export const organizations = [
   {value: 'Oulun yliopistollisen sairaalan erityisvastuualue', text: '', code: '06794809'},
   {value: 'Poliisiammattikorkeakoulu', text: '', code: '02557'},
   {value: 'Ruokavirasto', text: '', code: '430001'},
-  {value: 'Saimaan ammattikorkeakoulu', text: '', code: '02609'},
   {value: 'Satakunnan ammattikorkeakoulu', text: '', code: '02507'},
   {value: 'Savonia-ammattikorkeakoulu', text: '', code: '02537'},
   {value: 'Seinäjoen ammattikorkeakoulu', text: '', code: '02472'},
@@ -558,9 +591,7 @@ export const organizations = [
   {value: 'Säteilyturvakeskus', text: '', code: '5550012'},
   {value: 'Taideyliopisto', text: '', code: '10103'},
   {value: 'Tampereen ammattikorkeakoulu', text: '', code: '02630'},
-  {value: 'Tampereen tekn. yliopisto', text: '', code: '01915'},
-  {value: 'Tampereen yliopisto (uusi)', text: '', code: '10122'},
-  {value: 'Tampereen yliopisto (vanha)', text: '', code: '01905'},
+  {value: 'Tampereen yliopisto', text: '', code: '10122'},
   {value: 'Tampereen yliopistollisen sairaalan erityisvastuualue', text: '', code: '08265978'},
   {value: 'Teknologian tutkimuskeskus VTT Oy', text: '', code: '26473754'},
   {value: 'Terveyden ja hyvinvoinnin laitos', text: '', code: '5610017'},
@@ -570,11 +601,11 @@ export const organizations = [
   {value: 'Työterveyslaitos', text: '', code: '02202669'},
   {value: 'Ulkopoliittinen instituutti', text: '', code: '1120017'},
   {value: 'Vaasan ammattikorkeakoulu', text: '', code: '02627'},
-  {value: 'Vaasan yliopisto', text: '', code: '01913'},
+  {value: 'Vaasan yliopisto  ', text: '', code: '01913'},
   {value: 'Valtion taloudellinen tutkimuskeskus', text: '', code: '3060016'},
   {value: 'Yrkeshögskolan Arcada', text: '', code: '02535'},
   {value: 'Yrkeshögskolan Novia', text: '', code: '10066'},
-  {value: 'Åbo Akademi', text: '', code: '01903'}
+  {value: 'Åbo Akademi', text: '', code: '01903'},
 ];
 
 // Old organization list

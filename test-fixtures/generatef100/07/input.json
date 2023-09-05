@@ -4,21 +4,24 @@
      "key": 1,
      "firstName": "c metropoliitta",
      "lastName": "Panteleimon",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": []
     },
     {
      "key": 2,
-     "firstName": " ",
+     "firstName": "",
      "lastName": "Yksiniminen",
+     "corporateName": "",     
      "relator": "kääntäjä",
      "authorsTempOrganizations": []
     },
     {
      "key": 3,
-     "firstName": " ",
-     "lastName": "KuvitusKollektiivi",
-     "relator": "kuvittaja",
+     "firstName": "Gustav",
+     "lastName": "Dore",
+     "corporateName": "",     
+     "relator": "kuvittaja",     
      "authorsTempOrganizations": [
       {
        "key": 1,
@@ -32,6 +35,7 @@
      "key": 4,
      "firstName": "Reino",
      "lastName": "Walden",
+     "corporateName": "",     
      "relator": "toimittaja",
      "authorsTempOrganizations": []
     }

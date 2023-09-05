@@ -6,7 +6,7 @@
    "subfields": [
     {
      "code": "a",
-     "value": "Tässä Tiivistelmä, lomakkeen kohdasta Tiivistelmän tiedot"
+     "value": "Tässä Tiivistelmä, lomakkeen kohdasta Tiivistelmän tiedot."
     }
    ]
   },
@@ -17,7 +17,7 @@
    "subfields": [
     {
      "code": "a",
-     "value": "Toinen tiivistelmä"
+     "value": "Toinen tiivistelmä."
     }
    ]
   }

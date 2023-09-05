@@ -25,13 +25,13 @@ export function addAbstract(event) {
   };
 
   if (data.abstract === '') {
-    showSnackbar({text: 'Tiivistelmä ei voi olla tyhjä', closeButton: 'true'});
+    showSnackbar({style: 'alert', text: 'Tiivistelmä ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoAbstracts').then(abstracts => {
     if (abstracts.some(abs => abs.abstract === data.abstract)) {
-      showSnackbar({text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa', closeButton: 'true'});
+      showSnackbar({style: 'alert', text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa'});
       return;
     }
 
@@ -51,7 +51,7 @@ export function refreshAbstractList() {
       const form = document.createElement('form');
       const div = document.createElement('div');
       div.classList.add('full-width');
-      const removeButton = createIconButton('delete', ['no-border', 'negative'], `return removeAbstract(event, ${abstractData.key})`, 'Poista');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeAbstract(event, ${abstractData.key})`, 'Poista');
       div.appendChild(createP(abstractData.language.ui, '', '&nbsp;-&nbsp;', ['label-text']));
       const abstractP = createP(abstractData.abstract);
       abstractP.classList.add('long-text');

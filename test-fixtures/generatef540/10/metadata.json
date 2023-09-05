@@ -1,0 +1,8 @@
+{
+  "description": "generatef540 - Licence: empty space entered",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

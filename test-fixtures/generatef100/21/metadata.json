@@ -1,5 +1,5 @@
 {
-"description": "generatef100 - three organisations, two same (old and new).",
+"description": "generatef100 - three organisations (authorsTempOrganizations), two same (old and new).",
 "skip": false,
 "only": false,
 "expectedError": false,

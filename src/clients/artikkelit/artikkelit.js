@@ -1,4 +1,4 @@
-import {setNavBar, showTab} from '/common/ui-utils.js';
+import {showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
 import {getArtikkeliRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
@@ -12,7 +12,7 @@ import {
   initAdditionalFields, refreshNotesList, refreshOtherTitlesList,
   refreshUDKsList, refreshOtherRatingsList
 } from '/artikkelit/interfaces/additionalFields.js';
-import {initArticle, refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/article.js';
+import {initArticle, refreshSciencesList, refreshMetodologysList, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
@@ -22,14 +22,15 @@ import {initReviewSearch, resetReview, refreshReviewsList} from '/artikkelit/int
 
 window.initialize = function () {
   console.log('Initializing');
-  setNavBar(document.querySelector('#navbar'), 'artikkelit');
 
   doLogin(authSuccess);
 
   function authSuccess(user) {
-    const username = document.querySelector('#account-menu #username');
+    const accountMenu = document.getElementById('accountMenu');
+    accountMenu.classList.add('show');
+    const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
-    showTab('artikkelit-lisaa');
+    showTab('artikkelit');
     initTypeChanges();
     fillFormOptions();
     initPublicationSearch();
@@ -60,9 +61,7 @@ function sourceTypeChange(event) {
     document.getElementById(`numeron-numero-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
-    document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuodet:';
-    document.getElementById('lehden-vuodet-valiviiva').style.display = 'block';
-    document.getElementById('lehden-vuodet-max').style.display = 'block';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
   }
 
   if (sourceType === 'book') {
@@ -72,9 +71,7 @@ function sourceTypeChange(event) {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
-    document.getElementById('lehden-vuodet-min-label').innerHTML = 'Julkaisuvuosi:';
-    document.getElementById('lehden-vuodet-valiviiva').style.display = 'none';
-    document.getElementById('lehden-vuodet-max').style.display = 'none';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi:';
   }
 }
 
@@ -186,7 +183,7 @@ window.doUpdate = (event) => {
       udks,
       otherRatings,
       reviews
-    }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit-lisaa'));
+    }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit'));
   });
 };
 
@@ -225,7 +222,8 @@ function collectFormData() {
       language: {iso6391, iso6392b, ui},
       link: links,
       type: document.getElementById(`artikkelin-tyyppi`).value,
-      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value
+      sectionOrColumn: document.getElementById(`artikkelin-osasto-toistuva`).value,
+      ccLicense: document.getElementById(`artikkelin-cc-lisenssi`).value
     },
     collecting: {
       f589a: document.getElementById(`poimintatiedot-poimintakoodi598a`).value,
@@ -347,4 +345,5 @@ window.clearAllFields = function () {
   resetInputFields();
   resetTextareaFields();
   resetSelectFields();
+  resetAndHideCcLicense();
 };

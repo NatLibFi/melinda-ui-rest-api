@@ -1,8 +1,0 @@
-{
-  "description": "generatef380 - no input: reviewType.",
-  "skip": false,
-  "only": false,
-  "expectToFail": false,
-  "expectedError": false,
-  "expectedErrorStatus": "200"
-}

@@ -1,0 +1,8 @@
+{
+  "description": "generatef540 - Licence: CC0 1.0",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

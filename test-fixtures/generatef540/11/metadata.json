@@ -1,0 +1,8 @@
+{
+  "description": "generatef540 - Licence: No correct input",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

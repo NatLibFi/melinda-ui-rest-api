@@ -21,7 +21,7 @@ window.copyLink = function (event) {
 
   const button = createTestLinkButton(link);
 
-  showSnackbar({text: `Linkki kopioitu!`, actionButton: button, closeButton: 'true'});
+  showSnackbar({style: 'success', text: `Linkki kopioitu!`, linkButton: button});
   navigator.clipboard.writeText(link);
 
   function createTestLinkButton(link) {
@@ -45,7 +45,7 @@ window.protect = function (event = undefined) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
-    showSnackbar({text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!', actionButton: 'true'});
+    showSnackbar({style: 'alert', text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!'});
     console.log('Nothing to protect...');
     stopProcess();
     return;
@@ -57,11 +57,11 @@ window.protect = function (event = undefined) {
         throw new Error('Response status ok:false');
       }
       protectButton.innerHTML === 'lock_open'
-        ? (setProtectButton('protected'), showSnackbar({text: `Turvattu sekvenssi ${sequence} ID:lle <span class="correlation-id-font">${id}</span>`}))
-        : (setProtectButton('not protected'), showSnackbar({text: `Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`, closeButton: 'true'}));
+        ? (setProtectButton('protected'), showSnackbar({style: 'success', text: `Turvattu sekvenssi ${sequence} ID:lle <span class="correlation-id-font">${id}</span>`}))
+        : (setProtectButton('not protected'), showSnackbar({style: 'success', text: `Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`}));
     })
     .catch(error => {
-      showSnackbar({text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!', closeButton: 'true'});
+      showSnackbar({style: 'error', text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!'});
       console.log(`Error while trying to protect log with correlation id ${id} and sequence ${sequence} `, error);
     })
     .finally(() => stopProcess());
@@ -96,7 +96,7 @@ window.openRemoveDialog = function (event = undefined) {
   const dialogIdText = document.getElementById('idToBeRemoved');
 
   if (id === '') {
-    showSnackbar({text: 'ID:tä ei poistettu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen poistamista!', closeButton: 'true'});
+    showSnackbar({status: 'alert', text: 'ID:tä ei poistettu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen poistamista!'});
     console.log('Nothing to remove...');
     stopProcess();
     return;
@@ -108,7 +108,7 @@ window.openRemoveDialog = function (event = undefined) {
 
 window.cancelRemove = function (event = undefined) {
   console.log('Nothing removed');
-  showSnackbar({text: 'Toiminto peruttu!', closeButton: 'true'});
+  showSnackbar({status: 'info', text: 'Toiminto peruttu!'});
 };
 
 window.confirmRemove = function (event = undefined) {
@@ -126,11 +126,11 @@ function remove(id) {
   removeLog(id, force)
     .then(() => {
       clearLogView();
-      showSnackbar({text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`, closeButton: 'true'});
+      showSnackbar({status: 'success', text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`});
       console.log(`Log ${id} removed`);
     })
     .catch(error => {
-      showSnackbar({text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!', closeButton: 'true'});
+      showSnackbar({status: 'error', text: 'Valitettavasti tätä ID:tä ei pystytty poistamaan!'});
       console.log(`Error while trying to remove log with correlation id ${id}: `, error);
     })
     .finally(() => stopProcess());

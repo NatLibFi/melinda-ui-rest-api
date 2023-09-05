@@ -4,6 +4,7 @@
      "key": 1,
      "firstName": "Friedrich",
      "lastName": "Schiller",
+     "corporateName": "",     
      "relator": "kirjoittaja",
      "authorsTempOrganizations": []
     }

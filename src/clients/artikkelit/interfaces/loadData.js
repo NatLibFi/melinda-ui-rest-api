@@ -1,5 +1,5 @@
 import {
-  articleTypesBooks, articleTypesJournal, authorRelators,
+  articleTypesBooks, articleTypesJournal, authorRelators, ccLicenses,
   languages, ontologyTypes, organizations, sciences,
   searchFilters, searchTypes, sourceTypes, sectionOrColumnList
 } from '/artikkelit/interfaces/constants.js';
@@ -18,7 +18,7 @@ function fillSelectOptions() {
   for (let index = 0; index < selects.length; index += 1) {
     const select = selects[index];
 
-    if (select.name.indexOf('julkaisu-haku-tyyppi') === 0) {
+    if (select.name === 'julkaisu-haku-tyyppi') {
       setOptions(select, searchTypes);
     }
 
@@ -26,19 +26,23 @@ function fillSelectOptions() {
       setOptions(select, searchFilters);
     }
 
-    if (select.name.indexOf('kuvailtava-kohde') === 0) {
+    if (select.name === 'kuvailtava-kohde') {
       setOptions(select, sourceTypes);
     }
 
-    if (select.name.indexOf('-kieli') !== -1) {
+    if (select.name === 'artikkelin-cc-lisenssi') {
+      setOptions(select, ccLicenses, false, 'Ei CC-lisenssiä');
+    }
+
+    if (select.name.endsWith('-kieli')) {
       setOptions(select, languages);
     }
 
-    if (select.name.indexOf('-rooli') !== -1) {
+    if (select.name.endsWith('-rooli')) {
       setOptions(select, authorRelators);
     }
 
-    if (select.name.indexOf('-ontologia') !== -1) {
+    if (select.name.endsWith('-ontologia')) {
       setOptions(select, ontologyTypes);
     }
 
@@ -51,15 +55,15 @@ export function fillDatalistOptions() {
   for (let index = 0; index < datalists.length; index += 1) {
     const datalist = datalists[index];
 
-    if (datalist.id.indexOf('-tieteenala-lista') !== -1) {
+    if (datalist.id.endsWith('-tieteenala-lista')) {
       setOptions(datalist, sciences);
     }
 
-    if (datalist.id.indexOf('-organisaatio-lista') !== -1) {
+    if (datalist.id.endsWith('-organisaatio-lista')) {
       setOptions(datalist, organizations);
     }
 
-    if (datalist.id.indexOf('-osasto-toistuva-lista') !== -1) {
+    if (datalist.id.endsWith('-osasto-toistuva-lista')) {
       setOptions(datalist, sectionOrColumnList);
     }
   }
