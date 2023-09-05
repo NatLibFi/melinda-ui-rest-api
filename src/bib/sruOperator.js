@@ -1,3 +1,9 @@
+/*******************************************************************************/
+/*                                                                             */
+/* SRU OPERATOR                                                                */
+/*                                                                             */
+/*******************************************************************************/
+
 import createClient from '@natlibfi/sru-client';
 import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {noValidation} from '../marcUtils/marcUtils';
@@ -12,7 +18,37 @@ export function createSruOperator({sruUrl, recordSchema}) {
     maxRecordsPerRequest: 10
   });
 
-  return {getRecordByTitle, getRecordByID, getRecordByIssn, getRecordByIsbn};
+  return {getRecordById, getRecordByIsbn, getRecordByIssn, getRecordByTitle};
+
+  async function getRecordById(id, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
+
+    const searchUrl = `rec.id=${id}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
+  }
+
+  async function getRecordByIsbn(isbn, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
+
+    const searchUrl = `bath.isbn=${isbn}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
+  }
+
+  async function getRecordByIssn(issn, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
+
+    const searchUrl = `bath.issn=${issn}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
+  }
 
   async function getRecordByTitle(title, collectionQueryParams = false, additionalQueryParams = false) {
     const collectionParams = handleCollectionQueryParams(collectionQueryParams);
@@ -24,41 +60,13 @@ export function createSruOperator({sruUrl, recordSchema}) {
     return records;
   }
 
-  async function getRecordByID(id, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`rec.id=${id}${handleAdditionalQueryParams(additionalQueryParams)}`, true).catch((error) => error);
-      return record;
-    }
-
-    const record = await search(`rec.id=${id}`, true).catch((error) => error);
-    return record;
-  }
-
-  async function getRecordByIssn(issn, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`bath.issn=${issn}${handleAdditionalQueryParams(additionalQueryParams)}`, true);
-      return record;
-    }
-
-    const record = await search(`bath.issn=${issn}`, true);
-    return record;
-  }
-
-  async function getRecordByIsbn(isbn, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`bath.isbn=${isbn}${handleAdditionalQueryParams(additionalQueryParams)}`, true);
-      return record;
-    }
-
-    const record = await search(`bath.isbn=${isbn}`, true);
-    return record;
-  }
+  /*******************************************************************************/
+  /* Search and retrieve                                                         */
 
   function search(query, one = false) {
-    return new Promise((resolve, reject) => {
-      const promises = []; // eslint-disable-line functional/no-let
 
-      // rec.id -> foo.bar --> virhe
+    return new Promise((resolve, reject) => {
+      const promises = [];
 
       client.searchRetrieve(query)
         .on('record', xmlString => {
@@ -67,7 +75,9 @@ export function createSruOperator({sruUrl, recordSchema}) {
         })
         .on('end', async () => {
           try {
+
             if (promises.length > 0) {
+
               if (one) {
                 const [firstPromise] = promises;
                 const firstRecord = await firstPromise;
@@ -77,15 +87,19 @@ export function createSruOperator({sruUrl, recordSchema}) {
               const records = await Promise.all(promises);
               return resolve(records);
             }
-            //resolve();
-            reject(new SruError(404, 'Not found.'));
-          } catch (err) {
-            reject(err);
+            reject(new SruError(404, 'No records found with search and retrieve'));
+          } catch (error) {
+            reject(error);
           }
         })
-        .on('error', err => reject(err));
+        .on('error', error => {
+          reject(error);
+        });
     });
   }
+
+  /*******************************************************************************/
+  /* Helper function for handling search parameters for collection               */
 
   function handleCollectionQueryParams(collectionQueryParams) {
     const artoSearchParameter = 'melinda.collection=arto';
@@ -109,6 +123,9 @@ export function createSruOperator({sruUrl, recordSchema}) {
 
     return '';
   }
+
+  /*******************************************************************************/
+  /* Helper function for handling any other search parameters                    */
 
   function handleAdditionalQueryParams(additionalQueryParams) {
 

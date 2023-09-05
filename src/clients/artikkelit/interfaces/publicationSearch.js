@@ -1,6 +1,7 @@
-import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda} from '/common/rest.js';
+import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelindaId} from '/common/rest.js';
 import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
 import {formToJson, setOptions} from '/common/ui-utils.js';
+import {showSnackbar} from '/common/snackbar.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');
@@ -85,36 +86,18 @@ function searchPublications(event) {
 
   const hakuTyyppi = document.getElementById(`julkaisu-haku-tyyppi`).value;
   const sourceType = document.querySelector('#kuvailtava-kohde').value;
-  const searchFilter = document.getElementById('julkaisu-haku-rajaus').value;
+  const collectionFilter = document.getElementById('julkaisu-haku-rajaus').value;
 
-  const searchFilters = {
-    arto: searchFilter.includes('arto'),
-    fennica: searchFilter.includes('fennica'),
-    melinda: searchFilter.includes('melinda')
+  const collectionFilters = {
+    arto: collectionFilter.includes('arto'),
+    fennica: collectionFilter.includes('fennica'),
+    melinda: collectionFilter.includes('melinda')
   };
 
   const formJson = formToJson(event);
 
-  if (hakuTyyppi === 'issn') {
-    return getPublicationByISSN(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch([result]);
-      }
-
-      return resetSearchResultSelect();
-    });
-  }
-  if (hakuTyyppi === 'isbn') {
-    return getPublicationByISBN(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch([result]);
-      }
-
-      return resetSearchResultSelect();
-    });
-  }
   if (hakuTyyppi === 'title') {
-    return getPublicationByTitle(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
+    return getPublicationByTitle(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
       if (result.error === undefined) {
         return setRecordsToSearch(result);
       }
@@ -122,10 +105,31 @@ function searchPublications(event) {
       return resetSearchResultSelect();
     });
   }
+
   if (hakuTyyppi === 'melinda') {
-    return getPublicationByMelinda(formJson['haku-arvo'], searchFilters, sourceType).then(result => {
+    return getPublicationByMelindaId(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
       if (result.error === undefined) {
-        return setRecordsToSearch([result]);
+        return setRecordsToSearch(result);
+      }
+
+      return resetSearchResultSelect();
+    });
+  }
+
+  if (hakuTyyppi === 'isbn') {
+    return getPublicationByISBN(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch(result);
+      }
+
+      return resetSearchResultSelect();
+    });
+  }
+
+  if (hakuTyyppi === 'issn') {
+    return getPublicationByISSN(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
+      if (result.error === undefined) {
+        return setRecordsToSearch(result);
       }
 
       return resetSearchResultSelect();
@@ -141,7 +145,6 @@ function setRecordsToSearch(records) {
   }
 
   const promises = records.map((record, index) => {
-    console.log(record.data.title);
     return idbSet('artoSources', index, record.data);
   });
 

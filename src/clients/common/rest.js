@@ -116,7 +116,7 @@ export function getPublicationByISBN(isbn, {arto, fennica, melinda}, type = 'jou
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getPublicationByMelinda(melindaId, {arto, fennica, melinda}, type = 'journal') {
+export function getPublicationByMelindaId(melindaId, {arto, fennica, melinda}, type = 'journal') {
   const url = `${RESTurl}/bib/${melindaId}?arto=${arto ? 1 : 0}&fennica=${fennica ? 1 : 0}&melinda=${melinda ? 1 : 0}&type=${type}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
