@@ -15,7 +15,7 @@ export function createSruOperator({sruUrl, recordSchema}) {
     url: sruUrl,
     recordSchema, // Resp = xml
     retrieveAll: false,
-    maxRecordsPerRequest: 10
+    maxRecordsPerRequest: 100
   });
 
   return {getRecordById, getRecordByIsbn, getRecordByIssn, getRecordByTitle};
