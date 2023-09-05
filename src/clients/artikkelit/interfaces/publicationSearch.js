@@ -2,6 +2,7 @@ import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPu
 import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
 import {formToJson, setOptions} from '/common/ui-utils.js';
 import {showCcLicense, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
+import {startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');
@@ -82,6 +83,8 @@ export function resetSearchResultSelect(searching) {
 }
 
 function searchPublications(event) {
+  startProcess();
+
   event.preventDefault();
   idbClear('artoSources').then(() => {
     resetSearchResultSelect(true);
@@ -100,43 +103,55 @@ function searchPublications(event) {
   const formJson = formToJson(event);
 
   if (hakuTyyppi === 'title') {
-    return getPublicationByTitle(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch(result);
-      }
-
-      return resetSearchResultSelect();
-    });
+    return getPublicationByTitle(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by title', error);
+      })
+      .finally(() => stopProcess());
   }
 
   if (hakuTyyppi === 'melinda') {
-    return getPublicationByMelindaId(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch(result);
-      }
-
-      return resetSearchResultSelect();
-    });
+    return getPublicationByMelindaId(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by Melinda ID', error);
+      })
+      .finally(() => stopProcess());
   }
 
   if (hakuTyyppi === 'isbn') {
-    return getPublicationByISBN(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch(result);
-      }
-
-      return resetSearchResultSelect();
-    });
+    return getPublicationByISBN(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by ISBN', error);
+      })
+      .finally(() => stopProcess());
   }
 
   if (hakuTyyppi === 'issn') {
-    return getPublicationByISSN(formJson['haku-arvo'], collectionFilters, sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch(result);
-      }
-
-      return resetSearchResultSelect();
-    });
+    return getPublicationByISSN(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by ISSN', error);
+      })
+      .finally(() => stopProcess());
   }
 
   throw new Error('Invalid search type!');
