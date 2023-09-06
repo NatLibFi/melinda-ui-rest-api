@@ -26,9 +26,11 @@ export function showAndHideSearchInputs(event) {
   document.getElementById(`arvosteltu-teos-haku-isbn-form`).style.display = 'none';
   document.getElementById(`arvosteltu-teos-haku-melinda-form`).style.display = 'none';
 
-  // console.log(event.target.value);
+  //console.log('Valittu hakutyyppi (nimeke, melinda, isbn, issn): ', event.target.value);
 
   document.getElementById(`arvosteltu-teos-haku-${event.target.value}-form`).style.display = 'block';
+
+  document.querySelector(`select#arvosteltu-teos-haku-tyyppi option[value='issn']`).setAttribute('hidden', 'hidden');;
 }
 
 export function searchResultChange(event) {

@@ -26,28 +26,43 @@ export function showAndHideSearchInputs(event) {
   document.getElementById(`julkaisu-haku-isbn-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-melinda-form`).style.display = 'none';
 
-  // console.log(event.target.value);
+  //console.log('Valittu hakutyyppi (nimeke, melinda, isbn, issn): ', event.target.value);
 
   document.getElementById(`julkaisu-haku-${event.target.value}-form`).style.display = 'block';
+
+  const sourceType = document.getElementById(`kuvailtava-kohde`).value;
+  const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
+  const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
+
+  if (sourceType === 'journal') {
+    optionIsbn.setAttribute('hidden', 'hidden');
+    optionIssn.removeAttribute('hidden')
+  }
+
+  if (sourceType === 'book') {
+    optionIssn.setAttribute('hidden', 'hidden');
+    optionIsbn.removeAttribute('hidden')
+  }
 }
 
 export function searchResultChange(event) {
-  const searchType = document.getElementById(`kuvailtava-kohde`).value;
+  const sourceType = document.getElementById(`kuvailtava-kohde`).value;
 
   if (event.target.value !== '') {
     idbGet('artoSources', parseInt(event.target.value)).then(data => {
       console.log(data);
       const [melindaId] = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
+
       document.getElementById(`lehden-nimi`).innerHTML = data.title;
       document.getElementById(`lehden-julkaisija`).innerHTML = data.publisherInfo.publisher;
       document.getElementById(`lehden-melindaId`).innerHTML = melindaId.replace('(FI-MELINDA)', '');
 
-      if (searchType === 'journal') {
+      if (sourceType === 'journal') {
         document.getElementById(`lehden-tunniste`).innerHTML = data.issns;
         document.getElementById(`lehden-vuodet`).innerHTML = data.publisherInfo.publisherYears.start + '-' + data.publisherInfo.publisherYears.end;
       }
 
-      if (searchType === 'book') {
+      if (sourceType === 'book') {
         document.getElementById(`lehden-tunniste`).innerHTML = data.isbns;
         document.getElementById(`lehden-vuodet`).innerHTML = data.publisherInfo.publisherYears.start
       }
