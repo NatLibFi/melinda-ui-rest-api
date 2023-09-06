@@ -1,6 +1,7 @@
 import {idbGet, idbClear, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
 import {formToJson, setOptions, createIconButton, createP, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
 import {getPublicationByTitle, getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN} from '/common/rest.js';
+import {sortRecordData} from '/artikkelit/utils.js';
 
 export function initReviewSearch() {
   console.log('initializing review search...');
@@ -231,7 +232,12 @@ function refreshSearchResultSelect() {
       return {value: record.key, text};
     });
 
-    setOptions(select, data);
+    const searchString = (document.getElementById('arvosteltu-teos-haku-tyyppi').value === 'title')
+      ? document.getElementById('arvosteltu-teos-haku-title').value.toLowerCase()
+      : ''
+
+    const sortedData = sortRecordData(searchString, data);
+    return setOptions(select, sortedData);
   });
 }
 

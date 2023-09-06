@@ -1,8 +1,8 @@
 import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelindaId} from '/common/rest.js';
 import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
-import {formToJson, setOptions} from '/common/ui-utils.js';
+import {formToJson, setOptions, startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
 import {showCcLicense, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
-import {startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
+import {sortRecordData} from '/artikkelit/utils.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');
@@ -200,6 +200,11 @@ function refreshSearchResultSelect() {
       return {value: record.key, text};
     });
 
-    setOptions(select, data);
+    const searchString = (document.getElementById('julkaisu-haku-tyyppi').value === 'title')
+      ? document.getElementById('julkaisu-haku-arvo-title').value.toLowerCase()
+      : ''
+
+    const sortedData = sortRecordData(searchString, data);
+    return setOptions(select, sortedData);
   });
 }
