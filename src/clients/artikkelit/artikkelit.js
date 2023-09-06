@@ -46,6 +46,7 @@ window.initialize = function () {
 function initTypeChanges() {
   document.getElementById('kuvailtava-kohde').addEventListener('change', sourceTypeChange);
   document.getElementById('asiasana-ontologia').addEventListener('change', ontologyTypeChange);
+  document.getElementById('kuvailtava-kohde').dispatchEvent(new Event('change'));
 }
 
 function sourceTypeChange(event) {

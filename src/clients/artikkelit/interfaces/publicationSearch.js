@@ -29,20 +29,6 @@ export function showAndHideSearchInputs(event) {
   //console.log('Valittu hakutyyppi (nimeke, melinda, isbn, issn): ', event.target.value);
 
   document.getElementById(`julkaisu-haku-${event.target.value}-form`).style.display = 'block';
-
-  const sourceType = document.getElementById(`kuvailtava-kohde`).value;
-  const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
-  const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
-
-  if (sourceType === 'journal') {
-    optionIsbn.setAttribute('hidden', 'hidden');
-    optionIssn.removeAttribute('hidden')
-  }
-
-  if (sourceType === 'book') {
-    optionIssn.setAttribute('hidden', 'hidden');
-    optionIsbn.removeAttribute('hidden')
-  }
 }
 
 export function searchResultChange(event) {
