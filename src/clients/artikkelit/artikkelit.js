@@ -66,8 +66,11 @@ function sourceTypeChange(event) {
 
   if (sourceType === 'book') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'none';
+    document.getElementById(`numeron-vuosi`).value = '';
     document.getElementById(`numeron-vol-wrap`).style.display = 'none';
+    document.getElementById(`numeron-vol`).value = '';
     document.getElementById(`numeron-numero-wrap`).style.display = 'none';
+    document.getElementById(`numeron-numero`).value = '';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
