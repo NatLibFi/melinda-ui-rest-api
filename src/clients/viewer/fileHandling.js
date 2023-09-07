@@ -26,15 +26,25 @@ window.downloadFile = function (event) {
   idbGetLogs(sequence)
     .then((data) => {
 
-      if (data.logItemType !== 'MERGE_LOG') {
-        throw new Error('Wrong log item type (should be MERGE_LOG)');
+      if (data.logItemType !== 'MERGE_LOG' && data.logItemType !== 'MATCH_LOG') {
+        throw new Error('Wrong log item type (should be MERGE_LOG or MATCH_LOG)');
       }
 
-      setPreferred(data.preference);
-      setIncomingRecord(data.incomingRecord);
-      setMelindaRecord(data.databaseRecord);
-      setMergedRecord(data.mergedRecord);
-      setCreationTime(data.creationTime);
+      if (data.logItemType === 'MERGE_LOG') {
+        setPreferred(data.preference);
+        setIncomingRecord(data.incomingRecord);
+        setMelindaRecord(data.databaseRecord);
+        setMergedRecord(data.mergedRecord);
+        setCreationTime(data.creationTime);
+      }
+
+      if (data.logItemType === 'MATCH_LOG') {
+        setIncomingRecord(data.incomingRecord);
+        setMatchedRecord(data.matchResult[0]);
+        setMatcherReports(data.matchResult[0]);
+        setCreationTime(data.creationTime);
+      }
+
       doDownload(JSON.stringify(recordObject));
       showSnackbar({style: 'success', text: 'Tiedosto ladattiin onnistuneesti laitteellesi!'});
     })
@@ -62,6 +72,18 @@ window.downloadFile = function (event) {
 
   function setMergedRecord(record) {
     recordObject.mergedRecord = record;
+  }
+
+  function setMatchedRecord(result) {
+    recordObject.matchedRecord = result?.candidate.record ?? {};
+  }
+
+  function setMatcherReports(result) {
+    recordObject.matcherReport = {};
+    recordObject.matcherReport.melindaId = result?.candidate.id;
+    recordObject.matcherReport.action = result?.action;
+    recordObject.matcherReport.probability = result?.probability;
+    recordObject.matcherReport.preferenceRecord = result?.preference;
   }
 
   function setCreationTime(time) {

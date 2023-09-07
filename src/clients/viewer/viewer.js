@@ -217,6 +217,8 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 
   if (logType === 'MATCH_LOG') {
     col3.style.display = 'none';
+    enableElement(downloadFileButton);
+
     getMatchLog(id)
       .then(logs => setDataToIndexDB(logs, sequence))
       .catch(error => {
