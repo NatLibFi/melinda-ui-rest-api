@@ -75,15 +75,25 @@ window.downloadFile = function (event) {
   }
 
   function setMatchedRecord(result) {
-    recordObject.matchedRecord = result?.candidate.record ?? {};
+    if (result === undefined) {
+      recordObject.matchedRecord = {};
+      return;
+    }
+
+    recordObject.matchedRecord = result.candidate.record
   }
 
   function setMatcherReports(result) {
+    if (result === undefined) {
+      recordObject.matcherReport = 'No match result'
+      return;
+    }
+
     recordObject.matcherReport = {};
-    recordObject.matcherReport.melindaId = result?.candidate.id;
-    recordObject.matcherReport.action = result?.action;
-    recordObject.matcherReport.probability = result?.probability;
-    recordObject.matcherReport.preferenceRecord = result?.preference;
+    recordObject.matcherReport.melindaId = result.candidate.id;
+    recordObject.matcherReport.action = result.action;
+    recordObject.matcherReport.probability = result.probability;
+    recordObject.matcherReport.preferenceRecord = result.preference;
   }
 
   function setCreationTime(time) {
