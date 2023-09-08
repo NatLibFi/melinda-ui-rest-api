@@ -249,14 +249,14 @@
                 </div>
               </fieldset>
 
-              <!-- FIELDSET: artikkelin haku-->
+              <!-- FIELDSET: artikkelin perustietojen lisääminen -->
               <fieldset>
                 <legend>Artikkelin tiedot</legend>
 
                 <div id="numeron-vuosi-wrap" class="full-width">
                   <div class="Input">
                     <label class="bold-text" for="numeron-vuosi">Vuosi:</label>
-                    <input type="text" id="numeron-vuosi" name="numeron-vuosi" size="6" required="true" title="">
+                    <input type="number" id="numeron-vuosi" name="numeron-vuosi" min="1750" max="2050" minlength="4" maxlength="4" size="6" required="true" title="">
                   </div>
                 </div>
 
