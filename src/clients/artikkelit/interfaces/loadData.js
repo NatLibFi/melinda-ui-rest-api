@@ -1,7 +1,7 @@
 import {
-  articleTypesBooks, articleTypesJournal, authorRelators,
-  ccLicenses, languages, ontologyTypes, organizations,
-  sciences, searchTypes, sourceTypes, sectionOrColumnList
+  articleTypesBooks, articleTypesJournal, authorRelators, ccLicenses,
+  languages, ontologyTypes, organizations, sciences,
+  searchFilters, searchTypes, sourceTypes, sectionOrColumnList
 } from '/artikkelit/interfaces/constants.js';
 
 import {setOptions} from '/common/ui-utils.js';
@@ -18,8 +18,8 @@ function fillSelectOptions() {
   for (let index = 0; index < selects.length; index += 1) {
     const select = selects[index];
 
-    if (select.name === 'julkaisu-haku-tyyppi') {
-      setOptions(select, searchTypes);
+    if (select.name === 'julkaisu-haku-rajaus') {
+      setOptions(select, searchFilters);
     }
 
     if (select.name === 'kuvailtava-kohde') {
@@ -28,6 +28,10 @@ function fillSelectOptions() {
 
     if (select.name === 'artikkelin-cc-lisenssi') {
       setOptions(select, ccLicenses, false, 'Ei CC-lisenssiä');
+    }
+
+    if (select.name.endsWith('-haku-tyyppi')) {
+      setOptions(select, searchTypes);
     }
 
     if (select.name.endsWith('-kieli')) {

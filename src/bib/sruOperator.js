@@ -1,64 +1,72 @@
+/*******************************************************************************/
+/*                                                                             */
+/* SRU OPERATOR                                                                */
+/*                                                                             */
+/*******************************************************************************/
+
 import createClient from '@natlibfi/sru-client';
 import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {noValidation} from '../marcUtils/marcUtils';
 import {Error as SruError, parseBoolean} from '@natlibfi/melinda-commons';
 
 
-export async function createSruOperator({sruUrl, recordSchema}) {
-  const client = await createClient({
+export function createSruOperator({sruUrl, recordSchema}) {
+  const client = createClient({
     url: sruUrl,
     recordSchema, // Resp = xml
     retrieveAll: false,
-    maxRecordsPerRequest: 10
+    maxRecordsPerRequest: 100
   });
 
-  return {getRecordByTitle, getRecordByID, getRecordByIssn, getRecordByIsbn};
+  return {getRecordById, getRecordByIsbn, getRecordByIssn, getRecordByTitle};
 
-  async function getRecordByTitle(title, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`title=${title}${handleAdditionalQueryParams(additionalQueryParams)}`);
-      return record;
-    }
+  async function getRecordById(id, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
 
-    const record = await search(`rec.id=${title}`);
-    return record;
+    const searchUrl = `rec.id=${id}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
   }
 
-  async function getRecordByID(id, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`rec.id=${id}${handleAdditionalQueryParams(additionalQueryParams)}`, true).catch((error) => error);
-      return record;
-    }
+  async function getRecordByIsbn(isbn, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
 
-    const record = await search(`rec.id=${id}`, true).catch((error) => error);
-    return record;
+    const searchUrl = `bath.isbn=${isbn}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
   }
 
-  async function getRecordByIssn(issn, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`bath.issn=${issn}${handleAdditionalQueryParams(additionalQueryParams)}`, true);
-      return record;
-    }
+  async function getRecordByIssn(issn, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
 
-    const record = await search(`bath.issn=${issn}`, true);
-    return record;
+    const searchUrl = `bath.issn=${issn}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
   }
 
-  async function getRecordByIsbn(isbn, additionalQueryParams = false) {
-    if (additionalQueryParams) {
-      const record = await search(`bath.isbn=${isbn}${handleAdditionalQueryParams(additionalQueryParams)}`, true);
-      return record;
-    }
+  async function getRecordByTitle(title, collectionQueryParams = false, additionalQueryParams = false) {
+    const collectionParams = handleCollectionQueryParams(collectionQueryParams);
+    const additionalParams = handleAdditionalQueryParams(additionalQueryParams);
 
-    const record = await search(`bath.isbn=${isbn}`, true);
-    return record;
+    const searchUrl = `title=${title}${collectionParams}${additionalParams ? `&${additionalParams}` : ''}`;
+
+    const records = await search(searchUrl);
+    return records;
   }
+
+  /*******************************************************************************/
+  /* Search and retrieve                                                         */
 
   function search(query, one = false) {
-    return new Promise((resolve, reject) => {
-      const promises = []; // eslint-disable-line functional/no-let
 
-      // rec.id -> foo.bar --> virhe
+    return new Promise((resolve, reject) => {
+      const promises = [];
 
       client.searchRetrieve(query)
         .on('record', xmlString => {
@@ -67,7 +75,9 @@ export async function createSruOperator({sruUrl, recordSchema}) {
         })
         .on('end', async () => {
           try {
+
             if (promises.length > 0) {
+
               if (one) {
                 const [firstPromise] = promises;
                 const firstRecord = await firstPromise;
@@ -77,25 +87,54 @@ export async function createSruOperator({sruUrl, recordSchema}) {
               const records = await Promise.all(promises);
               return resolve(records);
             }
-            //resolve();
-            reject(new SruError(404, 'Not found.'));
-          } catch (err) {
-            reject(err);
+            reject(new SruError(404, 'No records found with search and retrieve'));
+          } catch (error) {
+            reject(error);
           }
         })
-        .on('error', err => reject(err));
+        .on('error', error => {
+          reject(error);
+        });
     });
   }
 
-  function handleAdditionalQueryParams(additionalQueryParams) {
-    if (parseBoolean(additionalQueryParams.arto)) {
-      return ' AND melinda.collection=arto';
-    }
+  /*******************************************************************************/
+  /* Helper function for handling search parameters for collection               */
 
-    if (parseBoolean(additionalQueryParams.reviewSearch)) {
+  function handleCollectionQueryParams(collectionQueryParams) {
+    const artoSearchParameter = 'melinda.collection=arto';
+    const fennicaSearchParameter = 'melinda.authenticationcode=finb';
+
+    if (parseBoolean(collectionQueryParams.melinda)) {
       return '';
     }
 
-    return `&${new URLSearchParams(additionalQueryParams).toString()}`;
+    if (parseBoolean(collectionQueryParams.arto) && parseBoolean(collectionQueryParams.fennica)) {
+      return ` AND (${artoSearchParameter} OR ${fennicaSearchParameter})`;
+    }
+
+    if (parseBoolean(collectionQueryParams.arto)) {
+      return ` AND ${artoSearchParameter}`;
+    }
+
+    if (parseBoolean(collectionQueryParams.fennica)) {
+      return ` AND ${fennicaSearchParameter}`;
+    }
+
+    return '';
   }
+
+  /*******************************************************************************/
+  /* Helper function for handling any other search parameters                    */
+
+  function handleAdditionalQueryParams(additionalQueryParams) {
+
+    if (Object.keys(additionalQueryParams).length === 0) {
+      return '';
+    }
+
+    const urlSearchParamObject = new URLSearchParams(additionalQueryParams);
+    return urlSearchParamObject.toString();
+  }
+
 }

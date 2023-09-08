@@ -31,8 +31,8 @@ window.initialize = function () {
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
     showTab('artikkelit');
-    initTypeChanges();
     fillFormOptions();
+    initTypeChanges();
     initPublicationSearch();
     initArticle();
     initReviewSearch();
@@ -46,6 +46,7 @@ window.initialize = function () {
 function initTypeChanges() {
   document.getElementById('kuvailtava-kohde').addEventListener('change', sourceTypeChange);
   document.getElementById('asiasana-ontologia').addEventListener('change', ontologyTypeChange);
+  document.getElementById('kuvailtava-kohde').dispatchEvent(new Event('change'));
 }
 
 function sourceTypeChange(event) {
@@ -54,6 +55,8 @@ function sourceTypeChange(event) {
   fillArticleTypeOptions();
 
   const sourceType = event.target.value;
+  const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
+  const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
 
   if (sourceType === 'journal') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
@@ -62,16 +65,23 @@ function sourceTypeChange(event) {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
     document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
+    optionIsbn.setAttribute('hidden', 'hidden');
+    optionIssn.removeAttribute('hidden')
   }
 
   if (sourceType === 'book') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'none';
+    document.getElementById(`numeron-vuosi`).value = '';
     document.getElementById(`numeron-vol-wrap`).style.display = 'none';
+    document.getElementById(`numeron-vol`).value = '';
     document.getElementById(`numeron-numero-wrap`).style.display = 'none';
+    document.getElementById(`numeron-numero`).value = '';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
     document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi:';
+    optionIssn.setAttribute('hidden', 'hidden');
+    optionIsbn.removeAttribute('hidden')
   }
 }
 

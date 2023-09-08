@@ -1,7 +1,8 @@
-import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelinda} from '/common/rest.js';
+import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelindaId} from '/common/rest.js';
 import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
-import {formToJson, setOptions} from '/common/ui-utils.js';
+import {formToJson, setOptions, startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
 import {showCcLicense, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
+import {sortRecordData} from '/artikkelit/utils.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');
@@ -25,28 +26,29 @@ export function showAndHideSearchInputs(event) {
   document.getElementById(`julkaisu-haku-isbn-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-melinda-form`).style.display = 'none';
 
-  // console.log(event.target.value);
+  //console.log('Valittu hakutyyppi (nimeke, melinda, isbn, issn): ', event.target.value);
 
   document.getElementById(`julkaisu-haku-${event.target.value}-form`).style.display = 'block';
 }
 
 export function searchResultChange(event) {
-  const searchType = document.getElementById(`kuvailtava-kohde`).value;
+  const sourceType = document.getElementById(`kuvailtava-kohde`).value;
 
   if (event.target.value !== '') {
     idbGet('artoSources', parseInt(event.target.value)).then(data => {
       console.log(data);
       const [melindaId] = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
+
       document.getElementById(`lehden-nimi`).innerHTML = data.title;
       document.getElementById(`lehden-julkaisija`).innerHTML = data.publisherInfo.publisher;
       document.getElementById(`lehden-melindaId`).innerHTML = melindaId.replace('(FI-MELINDA)', '');
 
-      if (searchType === 'journal') {
+      if (sourceType === 'journal') {
         document.getElementById(`lehden-tunniste`).innerHTML = data.issns;
         document.getElementById(`lehden-vuodet`).innerHTML = data.publisherInfo.publisherYears.start + '-' + data.publisherInfo.publisherYears.end;
       }
 
-      if (searchType === 'book') {
+      if (sourceType === 'book') {
         document.getElementById(`lehden-tunniste`).innerHTML = data.isbns;
         document.getElementById(`lehden-vuodet`).innerHTML = data.publisherInfo.publisherYears.start
       }
@@ -82,6 +84,8 @@ export function resetSearchResultSelect(searching) {
 }
 
 function searchPublications(event) {
+  startProcess();
+
   event.preventDefault();
   idbClear('artoSources').then(() => {
     resetSearchResultSelect(true);
@@ -89,43 +93,66 @@ function searchPublications(event) {
 
   const hakuTyyppi = document.getElementById(`julkaisu-haku-tyyppi`).value;
   const sourceType = document.querySelector('#kuvailtava-kohde').value;
+  const collectionFilter = document.getElementById('julkaisu-haku-rajaus').value;
+
+  const collectionFilters = {
+    arto: collectionFilter.includes('arto'),
+    fennica: collectionFilter.includes('fennica'),
+    melinda: collectionFilter.includes('melinda')
+  };
+
   const formJson = formToJson(event);
 
-  if (hakuTyyppi === 'issn') {
-    return getPublicationByISSN(formJson['haku-arvo'], sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch([result]);
-      }
-
-      return resetSearchResultSelect();
-    });
-  }
-  if (hakuTyyppi === 'isbn') {
-    return getPublicationByISBN(formJson['haku-arvo'], sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch([result]);
-      }
-
-      return resetSearchResultSelect();
-    });
-  }
   if (hakuTyyppi === 'title') {
-    return getPublicationByTitle(formJson['haku-arvo'], sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch(result);
-      }
-
-      return resetSearchResultSelect();
-    });
+    return getPublicationByTitle(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by title', error);
+      })
+      .finally(() => stopProcess());
   }
-  if (hakuTyyppi === 'melinda') {
-    return getPublicationByMelinda(formJson['haku-arvo'], sourceType).then(result => {
-      if (result.error === undefined) {
-        return setRecordsToSearch([result]);
-      }
 
-      return resetSearchResultSelect();
-    });
+  if (hakuTyyppi === 'melinda') {
+    return getPublicationByMelindaId(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by Melinda ID', error);
+      })
+      .finally(() => stopProcess());
+  }
+
+  if (hakuTyyppi === 'isbn') {
+    return getPublicationByISBN(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by ISBN', error);
+      })
+      .finally(() => stopProcess());
+  }
+
+  if (hakuTyyppi === 'issn') {
+    return getPublicationByISSN(formJson['haku-arvo'], collectionFilters, sourceType)
+      .then(result => {
+        setRecordsToSearch(result);
+      })
+      .catch(error => {
+        resetSearchResultSelect();
+        showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt tietueita!'});
+        console.log('Error while trying to get publication by ISSN', error);
+      })
+      .finally(() => stopProcess());
   }
 
   throw new Error('Invalid search type!');
@@ -137,7 +164,6 @@ function setRecordsToSearch(records) {
   }
 
   const promises = records.map((record, index) => {
-    console.log(record.data.title);
     return idbSet('artoSources', index, record.data);
   });
 
@@ -160,6 +186,11 @@ function refreshSearchResultSelect() {
       return {value: record.key, text};
     });
 
-    setOptions(select, data);
+    const searchString = (document.getElementById('julkaisu-haku-tyyppi').value === 'title')
+      ? document.getElementById('julkaisu-haku-arvo-title').value.toLowerCase()
+      : ''
+
+    const sortedData = sortRecordData(searchString, data);
+    return setOptions(select, sortedData);
   });
 }

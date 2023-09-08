@@ -9,7 +9,6 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import {v4 as uuid} from 'uuid';
-import {getRecordByID} from '../bib/bibService';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 export {uuid};
@@ -35,7 +34,7 @@ export async function getRecordWithIDs(bibService, record) {
     if (!record?.ID) {
       return record;
     }
-    return bibService.getRecordByID(record.ID);
+    return bibService.getRecordById(record.ID);
   }
 }
 
