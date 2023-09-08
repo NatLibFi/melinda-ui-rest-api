@@ -1,96 +1,48 @@
-// Common functions for REST UI services
-import {collectData} from './artoDataCollector';
+/*******************************************************************************/
+/*                                                                             */
+/* BIB SERVICE                                                                 */
+/*                                                                             */
+/*******************************************************************************/
+
 import {createSruOperator} from './sruOperator';
-import {parseBoolean} from '@natlibfi/melinda-commons';
 import {checkRecordType} from './collectorUtils';
+import {collectData} from './artoDataCollector';
 
-export async function createBibService(sruUrl) {
-  const sruOperator = await createSruOperator({sruUrl, recordSchema: 'marcxml'});
+export function createBibService(sruUrl) {
+  const sruOperator = createSruOperator({sruUrl, recordSchema: 'marcxml'});
 
-  return {getRecordByTitle, getRecordByIssn, getRecordByIsbn, getRecordByID};
+  return {getRecordById, getRecordByIsbn, getRecordByIssn, getRecordByTitle};
 
-  async function getRecordByTitle(title, additionalQueryParams) {
-    const records = await sruOperator.getRecordByTitle(title, additionalQueryParams);
+  async function getRecordById(id, typeParam, collectionQueryParams, additionalQueryParams) {
+    const records = await sruOperator.getRecordById(id, collectionQueryParams, additionalQueryParams);
 
-    if (parseBoolean(additionalQueryParams.arto) || parseBoolean(additionalQueryParams.reviewSearch)) {
-      return records
-        .filter(record => checkRecordType(additionalQueryParams.type, record))
-        .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
-    }
-    return records;
+    return records
+      .filter(record => checkRecordType(typeParam, record))
+      .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
   }
 
-  async function getRecordByIssn(issn, additionalQueryParams) {
-    const record = await sruOperator.getRecordByIssn(issn, additionalQueryParams);
-    if (parseBoolean(additionalQueryParams.arto)) {
-      return {leader: record.leader, fields: record.fields, data: collectData(record)};
-    }
-    return record;
+  async function getRecordByIsbn(isbn, typeParam, collectionQueryParams, additionalQueryParams) {
+    const records = await sruOperator.getRecordByIsbn(isbn, collectionQueryParams, additionalQueryParams);
+
+    return records
+      .filter(record => checkRecordType(typeParam, record))
+      .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
   }
 
-  async function getRecordByIsbn(isbn, additionalQueryParams) {
-    const record = await sruOperator.getRecordByIsbn(isbn, additionalQueryParams);
-    if (parseBoolean(additionalQueryParams.arto)) {
-      return {leader: record.leader, fields: record.fields, data: collectData(record)};
-    }
-    return record;
+  async function getRecordByIssn(issn, typeParam, collectionQueryParams, additionalQueryParams) {
+    const records = await sruOperator.getRecordByIssn(issn, typeParam, collectionQueryParams, additionalQueryParams);
+
+    return records
+      .filter(record => checkRecordType(typeParam, record))
+      .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
   }
 
-  async function getRecordByID(id, additionalQueryParams) {
-    const record = await sruOperator.getRecordByID(id, additionalQueryParams);
-    if (parseBoolean(additionalQueryParams?.arto)) {
-      return {leader: record.leader, fields: record.fields, data: collectData(record)};
-    }
-    return {ID: id, ...record};
+  async function getRecordByTitle(title, typeParam, collectionQueryParams, additionalQueryParams) {
+    const records = await sruOperator.getRecordByTitle(title, collectionQueryParams, additionalQueryParams);
 
-    /*
-      const result = await client.searchRetrieve(`rec.id=${id}`)
-      .on('record', record => MARCXML.from(record, {subfieldValues: false}))
-        .on('end', () => resultRecord)
-        .on('error', err => err);
-
-        return result;
-        */
-
-    /*
-    function processRecord(data) {
-      //logger.debug(`Process record ${data}`);
-      recordPromise = MARCXML.from(data, {subfieldValues: false});
-    }
-
-    // https://github.com/NatLibFi/melinda-rest-api-http/blob/0252517d2184f6cddd07ed44bf0a42dbf0d5eb21/src/interfaces/prio.js#L165
-
-    function endProcessing() {
-      //logger.debug('End Processing');
-      //logger.debug(`record Promise ${recordPromise}`);
-      Promise.resolve(recordPromise).then(result => result.toObject());
-      //Promise.resolve(recordPromise).then(result => {
-      //logger.debug(`Got result ${result}`);
-      //res.json(result.toObject());
-      //});
-    }
-
-    function handleError(err) { // eslint-disable-line
-      //logger.error(`handleError ${err}`);
-      // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
-      // https://www.npmjs.com/package/http-status
-      //next(new APIError(404, 'errori tuli'));
-    }
-    */
+    return records
+      .filter(record => checkRecordType(typeParam, record))
+      .map(record => ({leader: record.leader, fields: record.fields, data: collectData(record)}));
   }
 
-  /*
-  function readRecord(client, recordId) {
-    return new Promise((resolve, reject) => {
-      client.read(recordId).then(({record}) => {
-        logger.log('http', 'Record reading success');
-        logger.log('silly', `Record: ${JSON.stringify({record})}`);
-        resolve(record);
-      }).catch(error => {
-        logger.log('debug', 'Record loading error');
-        reject(error);
-      });
-    });
-  }
-  */
 }
