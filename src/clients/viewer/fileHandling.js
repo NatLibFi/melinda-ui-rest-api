@@ -21,20 +21,37 @@ window.downloadFile = function (event) {
 
   const correlationId = document.querySelector(`#viewer #id`).value;
   const sequence = document.querySelector(`#viewer #sequence`).value;
+  const logType = document.querySelector(`#viewer #logType`).value;
   const recordObject = new Object();
 
   idbGetLogs(sequence)
     .then((data) => {
 
-      if (data.logItemType !== 'MERGE_LOG') {
-        throw new Error('Wrong log item type (should be MERGE_LOG)');
+      if (data.logItemType !== 'MERGE_LOG' && data.logItemType !== 'MATCH_LOG') {
+        throw new Error('Wrong log item type (should be MERGE_LOG or MATCH_LOG)');
       }
 
-      setPreferred(data.preference);
-      setIncomingRecord(data.incomingRecord);
-      setMelindaRecord(data.databaseRecord);
-      setMergedRecord(data.mergedRecord);
+      if (correlationId !== data.correlationId || sequence !== data.blobSequence.toString() || logType !== data.logItemType) {
+        throw new Error('Id, sequence or log type do not match in UI and data');
+      }
+
+      setCorrelationId(data.correlationId);
+      setBlobSequence(data.blobSequence.toString());
+      setLogItemType(data.logItemType);
       setCreationTime(data.creationTime);
+      setIncomingRecord(data.incomingRecord);
+
+      if (data.logItemType === 'MERGE_LOG') {
+        setPreferred(data.preference);
+        setMelindaRecord(data.databaseRecord);
+        setMergedRecord(data.mergedRecord);
+      }
+
+      if (data.logItemType === 'MATCH_LOG') {
+        setMatchResults(data.matchResult);
+        setMatcherReports(data.matcherReports);
+      }
+
       doDownload(JSON.stringify(recordObject));
       showSnackbar({style: 'success', text: 'Tiedosto ladattiin onnistuneesti laitteellesi!'});
     })
@@ -42,6 +59,22 @@ window.downloadFile = function (event) {
       console.log('Problem getting or setting log data while creating record object: ', error);
       showSnackbar({style: 'error', text: 'Tiedostoa ei valitettavasti pystytty lataamaan'});
     });
+
+  function setCorrelationId(id) {
+    recordObject.correlationId = id;
+  }
+
+  function setBlobSequence(sequence) {
+    recordObject.blobSequence = sequence;
+  }
+
+  function setLogItemType(logType) {
+    recordObject.logItemType = logType;
+  }
+
+  function setCreationTime(time) {
+    recordObject.creationTime = time;
+  }
 
   function setPreferred(preference) {
     if (preference.recordName === 'databaseRecord') {
@@ -64,12 +97,26 @@ window.downloadFile = function (event) {
     recordObject.mergedRecord = record;
   }
 
-  function setCreationTime(time) {
-    recordObject.creationTime = time;
+  function setMatchResults(results) {
+    if (results === undefined) {
+      recordObject.matchResult = 'No match results'
+      return;
+    }
+
+    recordObject.matchResults = results;
+  }
+
+  function setMatcherReports(reports) {
+    if (reports === undefined) {
+      recordObject.matcherReports = 'No matcher reports'
+      return;
+    }
+
+    recordObject.matcherReports = reports;
   }
 
   function doDownload(fileContent) {
-    const fileName = `${correlationId}_${sequence}.json`;
+    const fileName = `${correlationId}_${sequence}_${logType}.json`;
 
     const linkElement = document.createElement('a');
     linkElement.download = fileName;
