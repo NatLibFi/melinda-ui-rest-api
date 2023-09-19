@@ -18,6 +18,8 @@ import createOntologyRoute from './ontologies/ontologyRoute';
 
 import {handlePageNotFound} from './requestUtils/handlePageNotFound';
 
+import ping from './route/pingroute';
+
 //import fs from 'fs';
 import path from 'path';
 
@@ -53,6 +55,13 @@ export default async function ({
     app.use(createExpressLogger());
 
     app.use(cors());
+
+    // --->
+    app.use('/', () => {
+      console.log('   ,,,,,,  app.js / app.use -> to ping');
+      ping();          
+    })      
+    // <---
 
     passport.use(new AlephStrategy({
       xServiceURL, userLibrary,
