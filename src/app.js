@@ -88,11 +88,8 @@ export default async function ({
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
-
-    // --->
-    app.use('/rest/artikkelit', createPingRoute());
-    // <---
-
+    app.use('/rest/ping', createPingRoute());
+    
     // middleware 'handlePageNotFound' is used for catching all the requests for routes not handled by clients or rest api
     // app.all() handles all HTTP request methods and '*' matches all routes
     app.all('*', handlePageNotFound());
