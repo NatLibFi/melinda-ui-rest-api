@@ -16,9 +16,7 @@ import createMuuntajaRoute from './muuntaja/muuntajaRoute';
 import createViewerRoute from './viewer/viewerRoute';
 import createOntologyRoute from './ontologies/ontologyRoute';
 import createPingRoute from './utilRoute/statusRoute';
-
 import {handlePageNotFound} from './requestUtils/handlePageNotFound';
-
 
 
 //import fs from 'fs';
@@ -89,7 +87,7 @@ export default async function ({
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
     app.use('/rest/ping', createPingRoute());
-    
+
     // middleware 'handlePageNotFound' is used for catching all the requests for routes not handled by clients or rest api
     // app.all() handles all HTTP request methods and '*' matches all routes
     app.all('*', handlePageNotFound());
@@ -109,7 +107,7 @@ export default async function ({
 
         if (req.aborted) {
           logger.debug(`Responding timeout: ${err.status} ${err.payload}`);
-          return status(httpStatus.REQUEST_TIMEOUT).send(httpStatus['504_MESSAGE']);
+          return res.status(httpStatus.REQUEST_TIMEOUT).send(httpStatus['504_MESSAGE']);
         }
 
         logger.debug(`Responding unexpected: ${err.status} ${err.payload}`);
