@@ -28,6 +28,7 @@ updates:
         dependency-type: "production"
       development-dependencies:
         dependency-type: "development"
+
   # Major updates to npm dependencies weekly @tuesday
   # Not possible yet https://github.com/dependabot/dependabot-core/issues/1778
   # - package-ecosystem: "npm"
