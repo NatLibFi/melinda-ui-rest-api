@@ -16,6 +16,10 @@ export function checkRecordType(wantedType, record) {
   const {leader} = record;
   const c7 = getIndexOfString(leader, 7);
 
+  if (!wantedType) {
+    return true;
+  }
+
   if (wantedType === 'journal' && ['s', 'i'].includes(c7)) {
     return true;
   }

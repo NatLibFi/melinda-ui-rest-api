@@ -20,22 +20,21 @@ const logger = createLogger();
 
 export async function getRecordWithIDs(bibService, record) {
   //logger.debug(`Record: ${JSON.stringify(record, null, 2)}`);
-  const result = await fetch(record);
-  //logger.debug(`Result: ${JSON.stringify(record, null, 2)}`);
+
+  if (record?.leader) {
+    return [record];
+  }
+
+  if (!record?.ID) {
+    return [record];
+  }
+
+  const [result] = await bibService.getRecordById(record.ID);
+  //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
   return {
     ...record,
     ...addMissingIDs(result)
   };
-
-  function fetch(record) {
-    if (record?.leader) {
-      return record;
-    }
-    if (!record?.ID) {
-      return record;
-    }
-    return bibService.getRecordById(record.ID);
-  }
 }
 
 //-----------------------------------------------------------------------------
