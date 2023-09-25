@@ -15,8 +15,9 @@ import createRecordRoute from './record/recordRoute';
 import createMuuntajaRoute from './muuntaja/muuntajaRoute';
 import createViewerRoute from './viewer/viewerRoute';
 import createOntologyRoute from './ontologies/ontologyRoute';
-
+import createPingRoute from './utilRoute/statusRoute';
 import {handlePageNotFound} from './requestUtils/handlePageNotFound';
+
 
 //import fs from 'fs';
 import path from 'path';
@@ -85,6 +86,7 @@ export default async function ({
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRoute(sruUrl));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
+    app.use('/rest/ping', createPingRoute());
 
     // middleware 'handlePageNotFound' is used for catching all the requests for routes not handled by clients or rest api
     // app.all() handles all HTTP request methods and '*' matches all routes
