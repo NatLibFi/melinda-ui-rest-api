@@ -222,9 +222,10 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
+    min-height: 300px;
   }
 
-  .record-merge-panel .col {
+  #viewer .record-merge-panel .col {
     width: 32vw;
     display: flex;
     flex-direction: column;
@@ -236,9 +237,10 @@
   #viewer .record-merge-panel {
     display: flex;
     flex-direction: column;
+    min-height: 500px;
   }
 
-  .record-merge-panel .col {
+  #viewer .record-merge-panel .col {
     width: 99vw;
     display: flex;
     flex-direction: column;
@@ -246,11 +248,19 @@
   }
 }
 
-.col>* {
+#viewer .record-merge-panel {
+  margin-bottom: 50px;
+}
+
+#viewer .record-merge-panel .col .BoxShadow {
+  min-height: 75px;
+}
+
+#viewer .col>* {
   padding: 8pt;
 }
 
-.col .header {
+#viewer .col .header {
   height: 40px;
   text-transform: uppercase;
   font-family: var(--font-family-headline);
@@ -262,25 +272,25 @@
   display: flex;
 }
 
-.col .note {
+#viewer .col .note {
   font-family: var(--font-family-mono) !important;
   border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   display: none;
 }
 
-.col .header .title {
+#viewer .col .header .title {
   flex: 4;
 }
 
-.col .header .Select {
+#viewer .col .header .Select {
   flex: 1;
   visibility: hidden;
   display: flex;
   align-items: flex-end;
 }
 
-.col .header #match {
+#viewer .col .header #match {
   text-align: end;
   min-width: 8ch;
 }
@@ -421,7 +431,7 @@
   align-items: flex-start;
   justify-content: flex-end;
   overflow: hidden;
-  padding-top:5px;
+  padding-top: 5px;
 }
 
 .close-button {
