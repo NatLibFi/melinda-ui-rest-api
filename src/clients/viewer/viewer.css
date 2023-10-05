@@ -165,8 +165,8 @@
 /* Adding some color to make the search button pop in toolbar */
 .tools button.search-button {
   color: var(--color-primary-white);
-  background-color: var(--color-melinda-lightblue);
-  border-color: var(--color-melinda-lightblue);
+  background-color: var(--color-melinda-lightblue-custom);
+  border-color: var(--color-melinda-lightblue-custom);
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
@@ -200,8 +200,8 @@
 
 .tools button#exit {
   color: var(--color-primary-white);
-  background-color: var(--color-melinda-lightblue);
-  border-color: var(--color-melinda-lightblue);
+  background-color: var(--color-melinda-lightblue-custom);
+  border-color: var(--color-melinda-lightblue-custom);
   margin-left: 5px;
   margin-right: 5px;
 }

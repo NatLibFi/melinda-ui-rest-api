@@ -83,14 +83,14 @@ button {
   font-family: var(--font-family-button);
   font-size: var(--font-size-button-medium);
   font-weight: var(--font-weight-button);
-  background-color: var(--color-melinda-lightblue);
+  background-color: var(--color-melinda-lightblue-custom);
   color: var(--color-primary-white);
   padding-left: 16px;
   padding-right: 16px;
   height: 48px;
   align-items: center;
   justify-content: center;
-  border-color: var(--color-melinda-lightblue);
+  border-color: var(--color-melinda-lightblue-custom);
   border-radius: 6px;
   border-style: solid;
   border-width: 2px;
@@ -1173,7 +1173,7 @@ button.small.tooltip:hover:after {
 }
 
 .tools .highlight-border {
-  border: 2px solid var(--color-melinda-green);
+  border: 2px solid var(--color-melinda-green-custom);
   border-radius: 1em;
   padding-left: 1.5em;
   padding-right: 1em;

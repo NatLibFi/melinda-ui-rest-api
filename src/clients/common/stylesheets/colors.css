@@ -4,11 +4,14 @@
 
 :root {
 
-    /* MELINDA COLORS */
+    /* MELINDA COLORS ORIGINAL*/
     --color-melinda-green: #0DB14B;
     --color-melinda-darkblue: #00224F;
     --color-melinda-lightblue: #00B3F0;
-
+    
+    /* MELINDA CUSTOM COLORS (MUTED FOR APPLICAITON) */
+    --color-melinda-green-custom: #248f4d;
+    --color-melinda-lightblue-custom: #28a4cf;
 
     /* PRIMARY COLORS */
     /*  - blue: primary text colour, main brand colour */

@@ -131,7 +131,7 @@
   flex-direction: row;
   flex-grow: 1;
   color: var(--color-primary-white);
-  background-color: var(--color-melinda-green);
+  background-color: var(--color-melinda-green-custom);
   padding: 48px;
   gap: 25px;
 }
