@@ -180,10 +180,11 @@
 .logo-area {
   display: flex;
   align-items: center;
+  margin: 10px;
 }
 
 .logo-area img {
-  max-height: 70px;
+  max-height: 50px;
 }
 
 .logo-area:active {
