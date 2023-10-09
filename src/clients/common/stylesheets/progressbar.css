@@ -20,12 +20,12 @@
 }
 
 .progress-bar {
-  background-color: var(--color-melinda-green);
+  background-color: var(--color-melinda-green-custom);
   display: flex;
 }
 
 .progress-bar:before {
-  background-color: var(--color-melinda-lightblue);
+  background-color: var(--color-melinda-lightblue-custom);
   content: '';
   animation: running-progress 1s linear infinite;
 }
