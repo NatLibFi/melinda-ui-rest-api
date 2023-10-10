@@ -131,7 +131,7 @@
   flex-direction: row;
   flex-grow: 1;
   color: var(--color-primary-white);
-  background-color: var(--color-melinda-green);
+  background-color: var(--color-melinda-green-custom);
   padding: 48px;
   gap: 25px;
 }
@@ -173,8 +173,8 @@
 .melinda-banner a:hover .footer-link-text,
 .melinda-banner a:hover .footer-link-icon,
 .melinda-banner a:hover .footer-email {
-  color: var(--color-melinda-darkblue);
-  text-decoration-color: var(--color-melinda-darkblue);
+  color: var(--color-primary-blue);
+  text-decoration-color: var(--color-primary-blue);
 }
 
 .melinda-banner a:active .footer-link,
