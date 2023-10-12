@@ -44,9 +44,7 @@ export function createBase(source, options) {
     ...options,
     ...getSourceInfo(sourceRecord)
   };
-  logger.debug(`   ***   baseRecord: ${JSON.stringify(baseRecord, null, 2)}`);
-  logger.debug(`   ***   sourceRecord: ${JSON.stringify(sourceRecord, null, 2)}`);
-
+  
   //*
   return merger({
     base: baseRecord,
