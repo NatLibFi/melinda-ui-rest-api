@@ -120,11 +120,11 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
 
     const transformProfile = profiles[options.type];
 
-    //logger.debug(`Options: ${JSON.stringify(options, null, 2)}`);
-    //logger.debug(`sourceID: ${source.ID}`);
-    //logger.debug(`baseID: ${base.ID}`);
-    //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
-    //logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
+    logger.debug(`**Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
+    logger.debug(`**sourceID: ${source.ID}`);
+    logger.debug(`**baseID: ${base.ID}`);
+    logger.debug(`**Excluded: ${JSON.stringify(exclude, null, 2)}`);
+    logger.debug(`**Replaced: ${JSON.stringify(replace, null, 2)}`);
 
     //-------------------------------------------------------------------------
 
@@ -181,6 +181,7 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
       }
 
       function load() {
+        logger.debug(`   ***   source -> record [muuntajaRoute]: ${JSON.stringify(source)}`);
         if (source.ID.startsWith('/')) {
           return getUnitTestRecords(source.ID);
         }
@@ -193,7 +194,8 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
       function fetchRecord(record) {
         try {
           logger.debug('Fetching...');
-          //logger.debug(`Record: ${JSON.stringify(record)}`);
+          logger.debug(`**Record: ${JSON.stringify(record)}`);
+
           return getRecordWithIDs(bibService, record);
         } catch (e) {
           return {

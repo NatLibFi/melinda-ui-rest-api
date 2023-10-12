@@ -19,12 +19,10 @@ import {f008Split, f008Get} from '../../../marcUtils/marcUtils';
 import {updateLOW} from './updates';
 
 const logger = createLogger();
-
 //-----------------------------------------------------------------------------
 // Create base record from source and options
 
 export function createBase(source, options) {
-
   const baseValidators = {
     fields: false,
     subfieldValues: false
@@ -47,7 +45,6 @@ export function createBase(source, options) {
     ...options,
     ...getSourceInfo(sourceRecord)
   };
-
 
   //*
   return merger({
