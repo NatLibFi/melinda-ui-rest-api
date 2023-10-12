@@ -180,7 +180,7 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
         };
       }
 
-      function load() {      
+      function load() {
         if (source.ID.startsWith('/')) {
           return getUnitTestRecords(source.ID);
         }
