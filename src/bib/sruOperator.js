@@ -88,6 +88,7 @@ export function createSruOperator({sruUrl, recordSchema}) {
               return resolve(records);
             }
             reject(new SruError(404, 'No records found with search and retrieve'));
+
           } catch (error) {
             reject(error);
           }
