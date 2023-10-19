@@ -45,7 +45,6 @@ export function createBase(source, options) {
     ...getSourceInfo(sourceRecord)
   };
 
-
   //*
   return merger({
     base: baseRecord,

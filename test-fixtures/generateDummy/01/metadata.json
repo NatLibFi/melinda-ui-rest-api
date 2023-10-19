@@ -1,0 +1,9 @@
+{
+  "description": "First test case for Muuntaja (case dummy)",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

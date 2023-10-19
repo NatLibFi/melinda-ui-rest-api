@@ -1,0 +1,7 @@
+{
+  "description": "Second test case for Muuntaja; expected to fail",
+  "skip": false,
+  "only": false,
+  "expectToFail": true,
+  "expectedFailStatus": 400
+}

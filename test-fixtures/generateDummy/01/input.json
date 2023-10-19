@@ -1,0 +1,44 @@
+{
+ "options": {
+  "type": "p2e",
+  "profile": "KVP",
+  "format": "PDF"
+ },
+ "source": {
+  "ID": ""
+ },
+ "base": {
+  "ID": "123456789",
+  "fields": [
+   {
+    "tag": "20",
+    "ind1": "1",
+    "ind2": "2",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "aaa"
+     }
+    ],
+    "id": "8d940405-3396-4b80-a774-8e2edf0c72e5"
+   },
+   {
+    "tag": "100",
+    "ind1": "",
+    "ind2": "",
+    "subfields": [
+     {
+      "code": "b",
+      "value": "bbb"
+     }
+    ],
+    "id": "b9dd19f2-edce-4beb-ae29-3d2b6c922ccf"
+   }
+  ]
+ },
+ "transformed": {},
+ "result": {},
+ "exclude": {},
+ "replace": {},
+ "include": []
+}
