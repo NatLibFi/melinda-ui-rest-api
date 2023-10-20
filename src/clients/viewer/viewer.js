@@ -164,6 +164,28 @@ window.selectNext = function (event) {
   setNewSelect(select.selectedIndex + 1);
 };
 
+window.showLogInfo = function (event) {
+  eventHandled(event);
+  const logInfoPanel = document.querySelector(`#viewer #recordsInfo`);
+  const hideLogInfoButton = document.getElementById('hideLogInfo');
+  const showLogInfoButton = document.getElementById('showLogInfo');
+
+  logInfoPanel.style.display = 'flex';
+  showLogInfoButton.style.display = 'none';
+  hideLogInfoButton.style.display = 'flex';
+};
+
+window.hideLogInfo = function (event) {
+  eventHandled(event);
+  const logInfoPanel = document.querySelector(`#viewer #recordsInfo`);
+  const hideLogInfoButton = document.getElementById('hideLogInfo');
+  const showLogInfoButton = document.getElementById('showLogInfo');
+
+  logInfoPanel.style.display = 'none';
+  showLogInfoButton.style.display = 'flex';
+  hideLogInfoButton.style.display = 'none';
+};
+
 function setNewSelect(newIndex) {
   const select = document.querySelector(`#viewer #sequence`);
 
@@ -322,11 +344,12 @@ window.loadLog = (event) => {
 
   if (logType === 'MERGE_LOG') {
     idbGetLogs(event.target.value).then(data => {
+      addLogInfo([`<li>Luontiaika: ${data.creationTime}</li>`]);
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, 'record1', {}, 'viewer');
       setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.databaseRecord, 'record2', {}, 'viewer');
-      setRecordTopInfo('record3', 'Yhdistetty tietue', `<li>Luontiaika: ${data.creationTime}</li>`);
+      setRecordTopInfo('record3', 'Yhdistetty tietue');
       showRecord(data.mergedRecord, 'record3', {}, 'viewer');
     });
 
@@ -335,6 +358,8 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
+      addLogInfo([`<li>Luontiaika: ${data.creationTime}</li>`, `<li>Kaikki vastaavuusraportit: ${formatMatchReportList(data.matcherReports)}</li>`]);
+
       data.matchResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
       });
@@ -380,6 +405,15 @@ window.loadLog = (event) => {
       enableElement(nextButton);
     }
   }
+
+  function addLogInfo(logInfo) {
+    const infoList = document.querySelector(`#viewer #recordsInfo #panelContent #infoList`)
+    infoList.innerHTML = '';
+
+    logInfo.forEach(info => {
+      infoList.insertAdjacentHTML('beforeend', info)
+    })
+  }
 };
 
 window.loadMatch = (event) => {
@@ -418,7 +452,7 @@ function getMergeCandidateInfo(data) {
     <li>Yhdistämistapa: ${action}</li>
     <li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li>
     <li>Peruste: ${preference}</li>
-    <li>Vastavuusraportit: ${matcherReports.length > 0 ? formatMatchReportList(matcherReports) : 'Ei raportteja'}</li>
+    <li>Vastaavuusraportit: ${matcherReports.length > 0 ? formatMatchReportList(matcherReports) : 'Ei raportteja'}</li>
   `
   return {
     record,
@@ -495,7 +529,7 @@ window.hideNote = (event, record) => {
 
 export function setDataToIndexDB(logs, sequence) {
   const select = document.querySelector(`#viewer #sequence`);
-  // console.log(JSON.stringify(logs));
+  console.log(JSON.stringify(logs));
   const keys = Object.keys(logs);
 
   if (keys.length === 0) {
