@@ -426,23 +426,23 @@ function setRecordTopInfo(record, title, additional = false) {
   }
 
   if (additional !== false) {
-    document.querySelector(`#viewer #${record} .note`).style.display = 'block';
+    document.querySelector(`#viewer #${record} .note`).style.display = 'flex';
     document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
     document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
-    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
+    document.querySelector(`#viewer #${record} #hideNote`).style.display = 'flex';
   }
 }
 
 window.showNote = (event, record) => {
   eventHandled(event);
   document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
-  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'block';
-  document.querySelector(`#viewer #${record} .note`).style.display = 'block';
+  document.querySelector(`#viewer #${record} #hideNote`).style.display = 'flex';
+  document.querySelector(`#viewer #${record} .note`).style.display = 'flex';
 };
 
 window.hideNote = (event, record) => {
   eventHandled(event);
-  document.querySelector(`#viewer #${record} #showNote`).style.display = 'block';
+  document.querySelector(`#viewer #${record} #showNote`).style.display = 'flex';
   document.querySelector(`#viewer #${record} #hideNote`).style.display = 'none';
   document.querySelector(`#viewer #${record} .note`).style.display = 'none';
 };

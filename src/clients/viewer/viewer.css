@@ -292,16 +292,9 @@
 
 #viewer .col .header #match {
   text-align: end;
-  min-width: 8ch;
-}
-
-.show-hide-buttons {
-  font-size: 2em;
-  color: inherit;
-  border: 0;
-  background-color: transparent;
-  /*padding: 4px 16px;*/
-  cursor: pointer;
+  min-width: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .show-hide-buttons-wrap #showNote {
