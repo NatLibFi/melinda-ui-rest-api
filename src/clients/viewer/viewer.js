@@ -410,10 +410,56 @@ function getMergeCandidateInfo(data) {
   const action = data?.action !== false ? data.action : 'Ei yhdistetä';
   const preferenceRecord = data?.preference?.value;
   const preference = data?.preference !== false ? data.preference.name : data?.message;
+  const matcherReports = data?.matcherReports;
+
+  const note = `
+    <li>Melinda-ID: ${id}</li>
+    <li>Käypäisyys: ${probability * 100}%</li>
+    <li>Yhdistämistapa: ${action}</li>
+    <li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li>
+    <li>Peruste: ${preference}</li>
+    <li>Vastavuusraportit: ${matcherReports.length > 0 ? formatMatchReportList(matcherReports) : 'Ei raportteja'}</li>
+  `
   return {
     record,
-    note: `<li>Melinda-ID: ${id}</li><li>Käypäisyys: ${probability * 100}%</li><li>Yhdistämistapa: ${action}</li><li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li><li>Peruste: ${preference}</li>`
+    note
   };
+}
+
+
+function formatMatchReportList(matcherReportsArray) {
+  let matchReports = '';
+
+  matcherReportsArray.forEach(matchReport => {
+    matchReports = matchReports + `<li>${formatMatchReport(matchReport)}</li>`;
+  })
+
+  return `<ul>${matchReports}</ul>`;
+}
+
+function formatMatchReport(matchReportObject) {
+
+  const {
+    candidateCount,
+    conversionFailureCount,
+    matchAmount,
+    matcherError,
+    matcherErrored,
+    matcherName,
+    matcherSequence,
+    matchStatus,
+    matchIds
+  } = matchReportObject
+
+  const matchReport = `
+    ${matcherName} (${matcherSequence}): ${(matchAmount >= 0 && candidateCount >= 0) ? `${matchAmount}/${candidateCount} osumaa` : ''}
+    ${matchIds?.length > 0 ? `- ID:t ${matchIds} ` : ''}
+    ${matchStatus?.status === false ? `- Keskeytynyt: "${matchStatus?.stopReason}"` : ''}
+    ${conversionFailureCount > 0 ? `- Muunnosvirhelkm: ${conversionFailureCount}` : ''}
+    ${matcherErrored === true ? `- Virhe: "${matcherError}"` : ''}
+  `;
+
+  return matchReport;
 }
 
 function setRecordTopInfo(record, title, additional = false) {
