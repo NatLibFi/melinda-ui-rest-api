@@ -344,7 +344,14 @@ window.loadLog = (event) => {
 
   if (logType === 'MERGE_LOG') {
     idbGetLogs(event.target.value).then(data => {
-      addLogInfo([`<li>Luontiaika: ${data.creationTime}</li>`]);
+      addLogInfo([
+        `<li>Luontiaika: ${data.creationTime}</li>`,
+        `<li>Lokityyppi: ${data.logItemType}</li>`,
+        `<li>Luetteloija: ${data.cataloger}</li>`,
+        `<li>Nimike: ${data.title}</li>`,
+        `<li>Tunnisteet: ${data.standardIdentifiers}</li>`
+      ]);
+      
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, 'record1', {}, 'viewer');
       setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
@@ -358,7 +365,14 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
-      addLogInfo([`<li>Luontiaika: ${data.creationTime}</li>`, `<li>Kaikki vastaavuusraportit: ${formatMatchReportList(data.matcherReports)}</li>`]);
+      addLogInfo([
+        `<li>Luontiaika: ${data.creationTime}</li>`,
+        `<li>Lokityyppi: ${data.logItemType}</li>`,
+        `<li>Luetteloija: ${data.cataloger}</li>`,
+        `<li>Nimike: ${data.title}</li>`,
+        `<li>Tunnisteet: ${data.standardIdentifiers}</li>`,
+        `<li>Kaikki vastaavuusraportit: ${formatMatchReportList(data.matcherReports)}</li>`
+      ]);
 
       data.matchResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
