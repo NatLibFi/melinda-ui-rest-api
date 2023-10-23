@@ -193,7 +193,7 @@ export function editField(field, original = null) {
 
   // if field contains "value" and not "subfields"
   if (field.value) {
-    value.innerHTML = 'Value:';
+    value.innerHTML = 'Arvo:';
     value.appendChild(createInput('value', 'value', field.value));
 
   // if field contains "subfields" and not "value"
