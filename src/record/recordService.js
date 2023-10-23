@@ -22,11 +22,11 @@ export async function getRecordWithIDs(bibService, record) {
   //logger.debug(`Record: ${JSON.stringify(record, null, 2)}`);
 
   if (record?.leader) {
-    return [record];
+    return record;
   }
 
   if (!record?.ID) {
-    return [record];
+    return record;
   }
 
   const [result] = await bibService.getRecordById(record.ID);
