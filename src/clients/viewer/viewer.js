@@ -213,7 +213,6 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   disableElement(sequenceSelect);
   const downloadFileButton = document.getElementById('export');
   disableElement(downloadFileButton);
-  const col3 = document.querySelector('#viewer #record3').parentElement;
   const idInputField = document.querySelector(`#viewer #id`);
   console.log('Fetching...');
 
@@ -227,7 +226,6 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   updateInfoTextWithSearchedId();
 
   if (logType === 'MERGE_LOG') {
-    col3.style.display = 'block';
     enableElement(downloadFileButton);
 
     getMergeLog(id)
@@ -240,7 +238,6 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   }
 
   if (logType === 'MATCH_LOG') {
-    col3.style.display = 'none';
     enableElement(downloadFileButton);
 
     getMatchLog(id)
@@ -297,6 +294,10 @@ window.loadLog = (event) => {
   const protectButton = document.querySelector(`#viewer #protect`);
   const removeButton = document.querySelector(`#viewer #delete`);
 
+  const col2 = document.querySelector('#viewer #record2').parentElement;
+  const col3 = document.querySelector('#viewer #record3').parentElement;
+  const col4 = document.querySelector('#viewer #record4').parentElement;
+
   const matchSelectWrap = document.querySelector('.col .header .Select');
   matchSelectWrap.style.visibility = 'hidden';
 
@@ -308,10 +309,8 @@ window.loadLog = (event) => {
 
     const idInputField = document.querySelector(`#viewer #id`);
     const logTypeSelect = document.querySelector(`#viewer #logType`);
-    const col3 = document.querySelector('#viewer #record3').parentElement;
-    const settingsButton = document.getElementById('settings');
     const downloadButton = document.getElementById('export');
-
+    const infoList = document.querySelector(`#viewer #recordsInfo #panelContent #infoList`)
 
     idInputField.value = '';
     logTypeSelect.value = 'MERGE_LOG';
@@ -319,7 +318,9 @@ window.loadLog = (event) => {
     sequenceSelect.replaceChildren();
     sequenceSelect.value = '';
 
+    col2.style.display = 'block';
     col3.style.display = 'block';
+    col4.style.display = 'none';
     sequenceInputField.style.display = 'block';
     sequenceSelect.style.display = 'none';
 
@@ -328,7 +329,6 @@ window.loadLog = (event) => {
     disableElement(clearButton);
     disableElement(protectButton);
     disableElement(removeButton);
-    disableElement(settingsButton);
     disableElement(downloadButton);
 
     setRecordTopInfo('record1', `Sisääntuleva tietue`);
@@ -337,6 +337,9 @@ window.loadLog = (event) => {
     showRecord({}, 'record2', {}, 'viewer');
     setRecordTopInfo('record3', 'Yhdistetty tietue');
     showRecord({}, 'record3', {}, 'viewer');
+
+    infoList.innerHTML = '';
+
     return;
   }
 
@@ -347,13 +350,18 @@ window.loadLog = (event) => {
   if (logType === 'MERGE_LOG') {
     idbGetLogs(event.target.value).then(data => {
       addLogInfo([
-        `<li>Luontiaika: ${data.creationTime}</li>`,
-        `<li>Luetteloija: ${data.cataloger}</li>`,
-        `<li>LähdeID:t: ${data.sourceIds}</li>`,
-        `<li>Nimike: ${data.title}</li>`,
-        `<li>Tunnisteet: ${data.standardIdentifiers}</li>`,
-        `<li>Turvattu: ${data.protected ? 'Kyllä' : 'Ei'}</li>`,
+        `<li>Luontiaika: ${data.creationTime ? data.creationTime : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Luetteloija: ${data.cataloger ? data.cataloger : 'Tieto puuttuu lokista'}</li>`,
+        `<li>LähdeID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Nimike: ${data.title ? data.title: 'Tieto puuttuu lokista'}</li>`,
+        `<li>Tunnisteet: ${data.standardIdentifiers ? data.standardIdentifiers : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Turvattu: ${data.protected  === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
+        `<li>Muokkausaika: ${data.modificationTime ? data.modificationTime : 'Tieto puuttuu lokista'}</li>`
       ]);
+
+      col2.style.display = 'block';
+      col3.style.display = 'block';
+      col4.style.display = 'none';
 
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, 'record1', {}, 'viewer');
@@ -369,14 +377,19 @@ window.loadLog = (event) => {
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
       addLogInfo([
-        `<li>Luontiaika: ${data.creationTime}</li>`,
-        `<li>Luetteloija: ${data.cataloger}</li>`,
-        `<li>LähdeID:t: ${data.sourceIds}</li>`,
-        `<li>Nimike: ${data.title}</li>`,
-        `<li>Tunnisteet: ${data.standardIdentifiers}</li>`,
-        `<li>Turvattu: ${data.protected ? 'Kyllä' : 'Ei'}</li>`,
-        `<li>Kaikki vastaavuusraportit: ${formatMatchReportList(data.matcherReports)}</li>`
+        `<li>Luontiaika: ${data.creationTime ? data.creationTime : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Luetteloija: ${data.cataloger ? data.cataloger : 'Tieto puuttuu lokista'}</li>`,
+        `<li>LähdeID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Nimike: ${data.title ? data.title: 'Tieto puuttuu lokista'}</li>`,
+        `<li>Tunnisteet: ${data.standardIdentifiers ? data.standardIdentifiers : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Turvattu: ${data.protected  === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
+        `<li>Kaikki vastaavuusraportit:  ${data.matcherReports ? formatMatchReportList(data.matcherReports) : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Muokkausaika: ${data.modificationTime ? data.modificationTime : 'Tieto puuttuu lokista'}</li>`
       ]);
+
+      col2.style.display = 'none';
+      col3.style.display = 'none';
+      col4.style.display = 'block';
 
       data.matchResult.forEach((result, index) => {
         matchSelect.add(createOption(result.matchSequence, index));
@@ -438,20 +451,19 @@ window.loadMatch = (event) => {
   eventHandled(event);
   const sequenceSelect = document.querySelector(`#viewer #sequence`).value;
   const matchSelectWrap = document.querySelector(`.col .header .Select`);
-  showRecord({}, 'record3', {}, 'viewer');
 
   idbGetLogs(sequenceSelect).then(data => {
     matchSelectWrap.style.visibility = data.matchResult.length > 1 ? 'visible' : 'hidden';
     setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
     showRecord(data.incomingRecord, 'record1', {}, 'viewer');
     if (data.matchResult.length === 0) {
-      setRecordTopInfo('record2', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
-      showRecord({}, 'record2', {}, 'viewer');
+      setRecordTopInfo('record4', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
+      showRecord({}, 'record4', {}, 'viewer');
       return;
     }
     const {record, note} = getMergeCandidateInfo(data.matchResult[event.target.value]);
-    setRecordTopInfo('record2', 'Vastaava Melinda-tietue', note);
-    showRecord(record, 'record2', {}, 'viewer');
+    setRecordTopInfo('record4', 'Vastaava Melinda-tietue', note);
+    showRecord(record, 'record4', {}, 'viewer');
   });
 };
 

@@ -305,9 +305,12 @@
           </form>
         </dialog>
 
-
+        <!-- Two panels for viewing log and records: -->
+        <!-- Record info panel contains general info about the log -->
+        <!-- Record merge panel contains the actual records of the log -->
         <div class="record-and-info-panels">
 
+          <!-- Record info panel -->
           <div id="recordsInfo" class="records-info-panel BoxShadow">
             <div id="panelHeader" class="info-panel-header title">LOKIN LISÄTIEDOT</div>
             <div id="panelContent" class="info-panel-content">
@@ -315,7 +318,7 @@
             </div>
           </div>
 
-          <!-- Record Merge Panel -->
+          <!-- Record merge panel -->
           <div class="record-merge-panel">
 
             <div class="col">
@@ -345,10 +348,6 @@
               <div id="record2" class="BoxShadow">
                 <div class="header">
                   <p class="title">Melinda-tietue</p>
-                  <div class="VBox Select">
-                    <!-- <label>Match nro.</label> -->
-                    <select id="match" onchange="return loadMatch(event)"></select>
-                  </div>
                   <div class="show-hide-buttons-wrap">
                     <button id="showNote" class="material-icons tooltip icon-only small alternate-blue"
                       tooltip-text="Näytä" onclick="return showNote(event, 'record2')">expand_more</button>
@@ -377,6 +376,33 @@
                       tooltip-text="Näytä" onclick="return showNote(event, 'record3')">expand_more</button>
                     <button id="hideNote" class="material-icons tooltip icon-only small alternate-blue"
                       tooltip-text="Piilota" onclick="return hideNote(event, 'record3')">expand_less</button>
+                  </div>
+                </div>
+
+                <div class="note">
+                  <ul class="additional"></ul>
+                </div>
+
+                <div id="Record" class="marc-record">
+                </div>
+
+              </div>
+            </div>
+
+            <!-- MATCH LOG SPECIFIC COLUMN FOR RECORD-->
+            <div class="col" style="display: none">
+              <div id="record4" class="BoxShadow">
+                <div class="header">
+                  <p class="title">Vastaava Melinda-tietue</p>
+                  <div class="VBox Select">
+                    <!-- <label>Match nro.</label> -->
+                    <select id="match" onchange="return loadMatch(event)"></select>
+                  </div>
+                  <div class="show-hide-buttons-wrap">
+                    <button id="showNote" class="material-icons tooltip icon-only small alternate-blue"
+                      tooltip-text="Näytä" onclick="return showNote(event, 'record4')">expand_more</button>
+                    <button id="hideNote" class="material-icons tooltip icon-only small alternate-blue"
+                      tooltip-text="Piilota" onclick="return hideNote(event, 'record4')">expand_less</button>
                   </div>
                 </div>
 
