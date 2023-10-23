@@ -346,12 +346,13 @@ window.loadLog = (event) => {
     idbGetLogs(event.target.value).then(data => {
       addLogInfo([
         `<li>Luontiaika: ${data.creationTime}</li>`,
-        `<li>Lokityyppi: ${data.logItemType}</li>`,
         `<li>Luetteloija: ${data.cataloger}</li>`,
+        `<li>LähdeID:t: ${data.sourceIds}</li>`,
         `<li>Nimike: ${data.title}</li>`,
-        `<li>Tunnisteet: ${data.standardIdentifiers}</li>`
+        `<li>Tunnisteet: ${data.standardIdentifiers}</li>`,
+        `<li>Turvattu: ${data.protected ? 'Kyllä' : 'Ei'}</li>`,
       ]);
-      
+
       setRecordTopInfo('record1', `Sisääntuleva tietue${data.preference.recordName === 'incomingRecord' ? ' (Suositaan)' : ''}`, false);
       showRecord(data.incomingRecord, 'record1', {}, 'viewer');
       setRecordTopInfo('record2', `Melinda-tietue${data.preference.recordName === 'databaseRecord' ? ' (Suositaan)' : ''}`, false);
@@ -367,10 +368,11 @@ window.loadLog = (event) => {
     idbGetLogs(event.target.value).then(data => {
       addLogInfo([
         `<li>Luontiaika: ${data.creationTime}</li>`,
-        `<li>Lokityyppi: ${data.logItemType}</li>`,
         `<li>Luetteloija: ${data.cataloger}</li>`,
+        `<li>LähdeID:t: ${data.sourceIds}</li>`,
         `<li>Nimike: ${data.title}</li>`,
         `<li>Tunnisteet: ${data.standardIdentifiers}</li>`,
+        `<li>Turvattu: ${data.protected ? 'Kyllä' : 'Ei'}</li>`,
         `<li>Kaikki vastaavuusraportit: ${formatMatchReportList(data.matcherReports)}</li>`
       ]);
 
