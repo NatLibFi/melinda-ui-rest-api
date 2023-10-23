@@ -1,58 +1,37 @@
 /******************************************************************************
  *
- * Services for muuntaja
+ * muuntaja route
  *
  ******************************************************************************
  */
 
+/* eslint-disable no-unused-vars */
+
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-import merger from '@natlibfi/marc-record-merge';
-import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './recordService';
 import {createBibService} from '../bib/bibService';
-import {createMuuntajaService} from './muuntajaService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
+import {profiles} from './config/profiles';
+import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './muuntajaService';
+
 const appName = 'Muuntaja';
-
-//-----------------------------------------------------------------------------
-// Make this a list. Give the records names meant for menu. Add transform options to list.
-// Add handling those to UI
-
-import p2eProfile from './config/print-to-e';
-import e2pProfile from './config/e-to-print';
-
-const profiles = {
-  'p2e': p2eProfile,
-  'e2p': e2pProfile
-};
-
-/*
-export const printToE = {
-  mergeType: 'printToE',
-  baseRecord,
-  'defaults': defaultPreset,
-  'aleph': mergeProfiles,
-  'kvp': mergeProfiles,
-  'fenni': {
-    'default': mergeProfiles.default,
-    'fennica': mergeProfiles.fennica,
-    'legal_deposit': mergeProfiles.legal_deposit
-  },
-  'selma': defaultPreset,
-  'halti': defaultPreset
-};
-*/
 
 //-----------------------------------------------------------------------------
 
 export default async function (sruUrl) {
   const logger = createLogger();
   const bibService = await createBibService(sruUrl);
-  const muuntajaService = createMuuntajaService(); // eslint-disable-line no-unused-vars
+  const muuntajaService = createMuuntajaService();
+
+  const optDefaults = {
+    type: 'p2e',
+    profile: 'KVP',
+    format: ''
+  };
 
   //logger.debug('Creating muuntaja route');
 
@@ -70,14 +49,6 @@ export default async function (sruUrl) {
   // Get available transform profiles
   //---------------------------------------------------------------------------
 
-  function optDefaults() {
-    return {
-      type: 'p2e',
-      profile: 'KVP',
-      format: 'PDF'
-    };
-  }
-
   function getProfiles(req, res) {
     //logger.debug('Get profiles');
     res.json({
@@ -89,31 +60,30 @@ export default async function (sruUrl) {
         'KVP': 'Kirjastoverkkopalvelut',
         'FENNI': 'Fennica'
       },
-      defaults: optDefaults()
+      defaults: optDefaults
     });
   }
 
   //---------------------------------------------------------------------------
-  // Transform records
+  // Process user data for record transform
   //---------------------------------------------------------------------------
 
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, exclude, replace} = {
+    const {source, base, include, exclude, replace} = {
       source: null,
       base: null,
+      include: null,
       exclude: {},
       replace: {},
       ...req.body
     };
 
-    const include = generateMissingIDs(req.body.include);
-
     const options = (opts => ({
-      ...optDefaults(),
+      ...optDefaults,
       ...opts,
-      LOWTAG: opts?.profile ? opts.profile : 'XXX'
+      LOWTAG: opts?.profile ?? 'XXX'
     }))(req.body.options);
 
     const transformProfile = profiles[options.type];
@@ -129,19 +99,24 @@ export default async function (sruUrl) {
 
     //const include = generateMissingIDs(req.body.include ?? []);
 
-    const {sourceRecord, baseRecord, refRecord} = await loadRecords(source, base);
+    const {sourceRecord, baseRecord} = await loadRecords(source, base);
 
     //-------------------------------------------------------------------------
 
-    const resultRecord = getResultRecord(
-      sourceRecord,
-      baseRecord
-    );
+    const resultRecord = muuntajaService.getResultRecord({
+      profile: transformProfile,
+      source: sourceRecord,
+      base: baseRecord,
+      options,
+      exclude,
+      replace,
+      include: generateMissingIDs(include)
+    });
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
       options: req.body.options,
-      ...postProcess(sourceRecord, baseRecord, resultRecord, refRecord),
+      ...postProcess(sourceRecord, baseRecord, resultRecord),
       exclude,
       replace,
       include: []
@@ -201,35 +176,14 @@ export default async function (sruUrl) {
     }
 
     //-------------------------------------------------------------------------
-    // Get transformed result
-    //-------------------------------------------------------------------------
-
-    function getResultRecord(source, base) {
-      if (!source?.leader || !base?.leader) {
-        return {};
-      }
-      //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
-      //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
-
-      return merger({
-        ...transformProfile,
-        reducers: transformProfile.getReducers(options),
-        source: modifyRecord(source, null, exclude, null),
-        base: modifyRecord(base, null, exclude, null)
-      });
-    }
-
-    //-------------------------------------------------------------------------
     // Transform postprocess (apply user edits)
     //-------------------------------------------------------------------------
 
-    function postProcess(source, base, result, reference) {
+    function postProcess(source, base, result) {
       return {
         source: asMarcRecord(source),
         base: asMarcRecord(base),
-        transformed: result,
-        result: asMarcRecord(modifyRecord(result, null, null, replace)),
-        reference
+        result: asMarcRecord(modifyRecord(result, null, null, replace))
       };
     }
   }
