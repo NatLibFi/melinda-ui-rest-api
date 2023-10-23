@@ -13,18 +13,23 @@ export function getSubfieldValues(record, fieldTagRegexp, codes) {
 }
 
 export function checkRecordType(wantedType, record) {
+
+  if (!wantedType) {
+    return true;
+  }
+
   const {leader} = record;
   const c7 = getIndexOfString(leader, 7);
 
-  if (wantedType === 'journal' && ['s', 'i'].includes(c7)) {
-    return true;
+  if (wantedType === 'journal') {
+    return ['s', 'i'].includes(c7);
   }
 
-  if (wantedType === 'book' && c7 === 'm') {
-    return true;
+  if (wantedType === 'book') {
+    return c7 === 'm';
   }
 
-  return false;
+  return true;
 }
 
 export function getRecordType(record) {

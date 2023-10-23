@@ -9,8 +9,7 @@ import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
-import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from '../record/recordService';
-import {getUnitTestRecords} from './test/getrecords';
+import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './recordService';
 import {createBibService} from '../bib/bibService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
@@ -121,6 +120,7 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
     const transformProfile = profiles[options.type];
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
+    //logger.debug(`source: ${source}`);
     //logger.debug(`sourceID: ${source.ID}`);
     //logger.debug(`baseID: ${base.ID}`);
     //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
@@ -156,15 +156,14 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
     // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
 
     async function loadRecords(source, base) {
-      const [sourceRecord, baseRecord, refRecord] = await load();
+      const [sourceRecord, baseRecord] = await load();
 
       //logger.debug(`Loaded source: ${JSON.stringify(sourceRecord, null, 2)}`);
       //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
 
       return {
         sourceRecord,
-        baseRecord: modifyRecord(getBase(baseRecord, sourceRecord), include, null, null),
-        refRecord
+        baseRecord: modifyRecord(getBase(baseRecord, sourceRecord), include, null, null)
       };
 
       function getBase(base, source) { // eslint-disable-line no-unused-vars
@@ -181,9 +180,6 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
       }
 
       function load() {
-        if (source.ID.startsWith('/')) {
-          return getUnitTestRecords(source.ID);
-        }
         return Promise.all([
           fetchRecord(source),
           fetchRecord(base)
