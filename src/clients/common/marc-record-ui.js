@@ -59,7 +59,20 @@ function addField(div, field, decorator = null) {
   }
 
   addTag(row, field.tag);
-  addInd(row, field.ind1, field.ind2);
+
+  //empty indicator execption handling
+  var indicator1 = field.ind1;
+  var indicator2 = field.ind2;
+  const emptyIndicator = '_';
+  const eitherIsEmpty = indicator1 === ' ' || indicator2 === ' ';
+  const bothAreEmpty = indicator1 === ' ' && indicator2 === ' ';
+
+  if(!bothAreEmpty && eitherIsEmpty){
+    indicator1 = field.ind1 === ' ' ? emptyIndicator : field.ind1;
+    indicator2 = field.ind2 === ' ' ? emptyIndicator : field.ind2;
+  }
+
+  addInd(row, indicator1, indicator2);
 
   if (field.value) {
     addValue(row, field.value);
