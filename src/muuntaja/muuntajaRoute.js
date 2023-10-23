@@ -7,18 +7,16 @@
 
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
 import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './recordService';
 import {createBibService} from '../bib/bibService';
+import {createMuuntajaService} from './muuntajaService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
 const appName = 'Muuntaja';
-
-MarcRecord.setValidationOptions({subfieldValues: false});
 
 //-----------------------------------------------------------------------------
 // Make this a list. Give the records names meant for menu. Add transform options to list.
@@ -51,9 +49,10 @@ export const printToE = {
 
 //-----------------------------------------------------------------------------
 
-export default async function (sruUrl) { // eslint-disable-line no-unused-vars
+export default async function (sruUrl) {
   const logger = createLogger();
   const bibService = await createBibService(sruUrl);
+  const muuntajaService = createMuuntajaService(); // eslint-disable-line no-unused-vars
 
   //logger.debug('Creating muuntaja route');
 
