@@ -60,8 +60,8 @@ function addField(div, field, decorator = null) {
 
   addTag(row, field.tag);
   const emptyIndicator = '_'
-  const indicator1 = (field.ind1 === ' ') ? (emptyIndicator) : field.ind1;
-  const indicator2 = (field.ind2 === ' ') ? (emptyIndicator) : field.ind2;
+  const indicator1 = field.ind1 === ' ' ? emptyIndicator : field.ind1;
+  const indicator2 = field.ind2 === ' ' ? emptyIndicator : field.ind2;
   addInd(row, indicator1, indicator2);
 
   if (field.value) {
