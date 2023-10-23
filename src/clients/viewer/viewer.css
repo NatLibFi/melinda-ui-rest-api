@@ -55,7 +55,7 @@
 .Input>label,
 .Select>label,
 .sequence-container>label {
-  color: rgb(48, 93, 109);
+  color: var(--color-melinda-green-custom);
   font-family: var(--font-family-label);
   font-size: var(--font-size-label-medium);
   text-align: center;
@@ -77,12 +77,17 @@
   font-size: var(--font-size-content-medium);
 }
 
-.ToolBar button:not(.dialog-cancel-button) {
+.ToolBar button:not(.dialog-cancel-button, .inverse) {
   margin-left: 5px;
   margin-right: 5px;
   color: var(--color-blue-100);
   background-color: transparent;
   border-color: transparent;
+}
+
+.ToolBar button.inverse {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .ToolBar button:hover,
@@ -328,6 +333,10 @@
   min-width: 40px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.show-hide-buttons-wrap {
+  display: flex;
 }
 
 .show-hide-buttons-wrap #showNote {

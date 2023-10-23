@@ -198,9 +198,9 @@
               <button id="import" class="material-icons tooltip icon-only" tooltip-text="Avaa tiedosto"
                 onclick="return uploadFile(event)">file_upload</button>
               <button id="showLogInfo" class="material-icons tooltip icon-only" tooltip-text="Näytä lokin lisätiedot"
-                onclick="return showLogInfo(event)">visibility</button>
-              <button id="hideLogInfo" class="material-icons tooltip icon-only" tooltip-text="Piilota lokin lisätiedot"
-                style="display:none" onclick="return hideLogInfo(event)">visibility_off</button>
+                onclick="return showLogInfo(event)">info_outline</button>
+              <button id="hideLogInfo" class="material-icons tooltip icon-only inverse" tooltip-text="Piilota lokin lisätiedot"
+                style="display:none" onclick="return hideLogInfo(event)">info</button>
               <!-- <button id="settings" class="material-icons tooltip icon-only" tooltip-text="Asetukset"
                 disabled="true">settings</button> -->
 
@@ -305,12 +305,10 @@
           </form>
         </dialog>
 
-        <!-- Two panels for viewing log and records: -->
-        <!-- Record info panel contains general info about the log -->
-        <!-- Record merge panel contains the actual records of the log -->
+        <!-- Two panels for viewing log and records -->
         <div class="record-and-info-panels">
 
-          <!-- Record info panel -->
+          <!-- Record info panel contains general info about the log -->
           <div id="recordsInfo" class="records-info-panel BoxShadow">
             <div id="panelHeader" class="info-panel-header title">LOKIN LISÄTIEDOT</div>
             <div id="panelContent" class="info-panel-content">
@@ -318,7 +316,7 @@
             </div>
           </div>
 
-          <!-- Record merge panel -->
+          <!-- Record merge panel contains the marc records of the log -->
           <div class="record-merge-panel">
 
             <div class="col">
@@ -328,9 +326,9 @@
                   <p class="title">Sisääntuleva tietue</p>
                   <div class="show-hide-buttons-wrap">
                     <button id="showNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Näytä" onclick="return showNote(event, 'record1')">expand_more</button>
+                      tooltip-text="Näytä tietueinfo" onclick="return showNote(event, 'record1')">expand_more</button>
                     <button id="hideNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Piilota" onclick="return hideNote(event, 'record1')">expand_less</button>
+                      tooltip-text="Piilota tietueinfo" onclick="return hideNote(event, 'record1')">expand_less</button>
                   </div>
                 </div>
 
@@ -350,9 +348,9 @@
                   <p class="title">Melinda-tietue</p>
                   <div class="show-hide-buttons-wrap">
                     <button id="showNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Näytä" onclick="return showNote(event, 'record2')">expand_more</button>
+                      tooltip-text="Näytä tietuinfo" onclick="return showNote(event, 'record2')">expand_more</button>
                     <button id="hideNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Piilota" onclick="return hideNote(event, 'record2')">expand_less</button>
+                      tooltip-text="Piilota tietueinfo" onclick="return hideNote(event, 'record2')">expand_less</button>
                   </div>
                 </div>
 
@@ -373,9 +371,9 @@
                   <p class="title">Yhdistetty tietue</p>
                   <div class="show-hide-buttons-wrap">
                     <button id="showNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Näytä" onclick="return showNote(event, 'record3')">expand_more</button>
+                      tooltip-text="Näytä tietueinfo" onclick="return showNote(event, 'record3')">expand_more</button>
                     <button id="hideNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Piilota" onclick="return hideNote(event, 'record3')">expand_less</button>
+                      tooltip-text="Piilota tietuinfo" onclick="return hideNote(event, 'record3')">expand_less</button>
                   </div>
                 </div>
 
@@ -395,14 +393,13 @@
                 <div class="header">
                   <p class="title">Vastaava Melinda-tietue</p>
                   <div class="VBox Select">
-                    <!-- <label>Match nro.</label> -->
                     <select id="match" onchange="return loadMatch(event)"></select>
                   </div>
                   <div class="show-hide-buttons-wrap">
                     <button id="showNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Näytä" onclick="return showNote(event, 'record4')">expand_more</button>
+                      tooltip-text="Näytä tietueinfo" onclick="return showNote(event, 'record4')">expand_more</button>
                     <button id="hideNote" class="material-icons tooltip icon-only small alternate-blue"
-                      tooltip-text="Piilota" onclick="return hideNote(event, 'record4')">expand_less</button>
+                      tooltip-text="Piilota tietueinfo" onclick="return hideNote(event, 'record4')">expand_less</button>
                   </div>
                 </div>
 

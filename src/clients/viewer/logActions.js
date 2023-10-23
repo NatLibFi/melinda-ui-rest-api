@@ -71,22 +71,22 @@ export function setProtectButton(type) {
   const protectButton = document.querySelector(`#viewer #protect`);
 
   if (type === 'protected') {
-    setProtectButtonProperties('lock', 'Poista turvaus tästä sekvenssistä', 'Poista turvaus');
+    protectButton.innerHTML = 'lock';
+    protectButton.title = 'Poista turvaus tästä sekvenssistä';
+    protectButton.setAttribute('tooltip-text', 'Poista turvaus');
+    protectButton.classList.add('inverse');
     return;
   }
 
   if (type === 'not protected') {
-    setProtectButtonProperties('lock_open', 'Turvaa tämä sekvenssi', 'Turvaa');
+    protectButton.innerHTML = 'lock_open';
+    protectButton.title = 'Turvaa tämä sekvenssi';
+    protectButton.setAttribute('tooltip-text', 'Turvaa');
+    protectButton.classList.remove('inverse');
     return;
   }
 
   disableElement(protectButton);
-
-  function setProtectButtonProperties(icon, infoText, tooltipText) {
-    protectButton.innerHTML = icon;
-    protectButton.title = infoText;
-    protectButton.setAttribute('tooltip-text', tooltipText);
-  }
 }
 
 window.openRemoveDialog = function (event = undefined) {

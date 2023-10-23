@@ -284,7 +284,9 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
 window.loadLog = (event) => {
   eventHandled(event);
 
+  const logTypeSelect = document.querySelector(`#viewer #logType`);
   const logType = document.querySelector(`#viewer #logType`).value;
+  const idInputField = document.querySelector(`#viewer #id`);
   const sequenceInputField = document.querySelector(`#viewer #sequenceInput`);
   const sequenceSelect = document.querySelector(`#viewer #sequence`);
 
@@ -293,6 +295,7 @@ window.loadLog = (event) => {
   const clearButton = document.querySelector(`#viewer #clearLogs`);
   const protectButton = document.querySelector(`#viewer #protect`);
   const removeButton = document.querySelector(`#viewer #delete`);
+
 
   const col2 = document.querySelector('#viewer #record2').parentElement;
   const col3 = document.querySelector('#viewer #record3').parentElement;
@@ -307,8 +310,6 @@ window.loadLog = (event) => {
   if (logType === 'EMPTY_LOG') {
     console.log('Clearing record view');
 
-    const idInputField = document.querySelector(`#viewer #id`);
-    const logTypeSelect = document.querySelector(`#viewer #logType`);
     const downloadButton = document.getElementById('export');
     const infoList = document.querySelector(`#viewer #recordsInfo #panelContent #infoList`)
 
@@ -349,13 +350,22 @@ window.loadLog = (event) => {
 
   if (logType === 'MERGE_LOG') {
     idbGetLogs(event.target.value).then(data => {
+
+      if (data.logItemType !== 'MERGE_LOG') {
+        alertLogTypeChange();
+        return;
+      }
+
       addLogInfo([
+        `<li>Korrelaatio-ID: ${data.correlationId ? data.correlationId : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Sekvenssi: ${data.blobSequence ? data.blobSequence : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Lokityyppi: ${data.logItemType ? data.logItemType : 'Tieto puuttuu lokista'}</li>`,
         `<li>Luontiaika: ${data.creationTime ? data.creationTime : 'Tieto puuttuu lokista'}</li>`,
         `<li>Luetteloija: ${data.cataloger ? data.cataloger : 'Tieto puuttuu lokista'}</li>`,
-        `<li>LähdeID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Nimike: ${data.title ? data.title: 'Tieto puuttuu lokista'}</li>`,
+        `<li>Lähde-ID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Nimike: ${data.title ? data.title : 'Tieto puuttuu lokista'}</li>`,
         `<li>Tunnisteet: ${data.standardIdentifiers ? data.standardIdentifiers : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Turvattu: ${data.protected  === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
+        `<li>Turvattu: ${data.protected === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
         `<li>Muokkausaika: ${data.modificationTime ? data.modificationTime : 'Tieto puuttuu lokista'}</li>`
       ]);
 
@@ -376,13 +386,28 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
+
+      if (data.logItemType !== 'MATCH_LOG') {
+        alertLogTypeChange();
+        return;
+      }
+
+      if (!data.matchResult) {
+        showSnackbar({style: 'error', text: 'Valitettavasti vastaavan Melinda-tietueen lukeminen ei onnistunut, tarkista loki.'});
+        console.log('No property "matchResult" found in loaded log data.');
+        return;
+      }
+
       addLogInfo([
+        `<li>Korrelaatio-ID: ${data.correlationId ? data.correlationId : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Sekvenssi: ${data.blobSequence ? data.blobSequence : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Lokityyppi: ${data.logItemType ? data.logItemType : 'Tieto puuttuu lokista'}</li>`,
         `<li>Luontiaika: ${data.creationTime ? data.creationTime : 'Tieto puuttuu lokista'}</li>`,
         `<li>Luetteloija: ${data.cataloger ? data.cataloger : 'Tieto puuttuu lokista'}</li>`,
-        `<li>LähdeID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Nimike: ${data.title ? data.title: 'Tieto puuttuu lokista'}</li>`,
+        `<li>Lähde-ID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
+        `<li>Nimike: ${data.title ? data.title : 'Tieto puuttuu lokista'}</li>`,
         `<li>Tunnisteet: ${data.standardIdentifiers ? data.standardIdentifiers : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Turvattu: ${data.protected  === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
+        `<li>Turvattu: ${data.protected === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
         `<li>Kaikki vastaavuusraportit:  ${data.matcherReports ? formatMatchReportList(data.matcherReports) : 'Tieto puuttuu lokista'}</li>`,
         `<li>Muokkausaika: ${data.modificationTime ? data.modificationTime : 'Tieto puuttuu lokista'}</li>`
       ]);
@@ -437,6 +462,18 @@ window.loadLog = (event) => {
     }
   }
 
+  function alertLogTypeChange() {
+    const tempId = idInputField.value
+    const tempLogType = logTypeSelect.value;
+    const tempSequence = sequenceSelect.value
+    clearLogView();
+    showSnackbar({style: 'error', text: 'Valitettavasti lokin haku ei onnistunut, tarkista hakukentät ja hae uudelleen'});
+    console.log('The selected log type does not match the logItemType in the data: no records loaded for viewing.');
+    idInputField.value = tempId;
+    logTypeSelect.value = tempLogType;
+    sequenceInputField.value = tempSequence;
+  }
+
   function addLogInfo(logInfo) {
     const infoList = document.querySelector(`#viewer #recordsInfo #panelContent #infoList`)
     infoList.innerHTML = '';
@@ -457,7 +494,7 @@ window.loadMatch = (event) => {
     setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
     showRecord(data.incomingRecord, 'record1', {}, 'viewer');
     if (data.matchResult.length === 0) {
-      setRecordTopInfo('record4', 'Vastaava Melinda tietue', '<li>Ei löytynyt</li>');
+      setRecordTopInfo('record4', 'Vastaava Melinda-tietue', '<li>Ei löytynyt</li>');
       showRecord({}, 'record4', {}, 'viewer');
       return;
     }
