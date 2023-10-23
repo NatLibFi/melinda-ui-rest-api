@@ -26,6 +26,7 @@ window.downloadFile = function (event) {
 
   idbGetLogs(sequence)
     .then((data) => {
+      console.log('data: ', data)
 
       if (data.logItemType !== 'MERGE_LOG' && data.logItemType !== 'MATCH_LOG') {
         throw new Error('Wrong log item type (should be MERGE_LOG or MATCH_LOG)');
@@ -39,6 +40,11 @@ window.downloadFile = function (event) {
       setBlobSequence(data.blobSequence.toString());
       setLogItemType(data.logItemType);
       setCreationTime(data.creationTime);
+      setCataloger(data.cataloger);
+      setSourceIds(data.sourceIds);
+      setTitle(data.title);
+      setStandardIdentifiers(data.standardIdentifiers);
+      setProtectedStatus(data.protected);
       setIncomingRecord(data.incomingRecord);
 
       if (data.logItemType === 'MERGE_LOG') {
@@ -74,6 +80,26 @@ window.downloadFile = function (event) {
 
   function setCreationTime(time) {
     recordObject.creationTime = time;
+  }
+
+  function setTitle(title) {
+    recordObject.title = title;
+  }
+
+  function setSourceIds(sourceIds) {
+    recordObject.sourceIds = sourceIds;
+  }
+
+  function setCataloger(cataloger) {
+    recordObject.cataloger = cataloger;
+  }
+
+  function setStandardIdentifiers(standardIdentifiers) {
+    recordObject.standardIdentifiers = standardIdentifiers;
+  }
+
+  function setProtectedStatus(protectedStatus) {
+    recordObject.protected = protectedStatus;
   }
 
   function setPreferred(preference) {
@@ -272,6 +298,9 @@ function showReaderMode() {
 
   const uploadButton = document.getElementById('import');
   enableElement(uploadButton);
+
+  const showLogInfoButton = document.getElementById('showLogInfo');
+  enableElement(showLogInfoButton);
 
   const exitButton = document.getElementById('exit');
   exitButton.style.display = 'flex';

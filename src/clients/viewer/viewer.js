@@ -172,6 +172,7 @@ window.showLogInfo = function (event) {
 
   logInfoPanel.style.display = 'flex';
   showLogInfoButton.style.display = 'none';
+  enableElement(hideLogInfoButton);
   hideLogInfoButton.style.display = 'flex';
 };
 
@@ -182,6 +183,7 @@ window.hideLogInfo = function (event) {
   const showLogInfoButton = document.getElementById('showLogInfo');
 
   logInfoPanel.style.display = 'none';
+  enableElement(showLogInfoButton);
   showLogInfoButton.style.display = 'flex';
   hideLogInfoButton.style.display = 'none';
 };
