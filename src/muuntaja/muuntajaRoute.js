@@ -9,7 +9,7 @@ import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {MarcRecord} from '@natlibfi/marc-record';
 import merger from '@natlibfi/marc-record-merge';
-import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from '../record/recordService';
+import {getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './recordService';
 import {createBibService} from '../bib/bibService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
