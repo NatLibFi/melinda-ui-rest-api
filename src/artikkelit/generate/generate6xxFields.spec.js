@@ -5,7 +5,7 @@ import {generatef6xxs, generatef655reviews} from './generate6xxFields';
 
 generateTests({
   callback: testF6xx,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef6xx'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef6xx'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -33,7 +33,7 @@ async function testF6xx({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF655B,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef655B'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef655B'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

@@ -5,7 +5,7 @@ import {generatef856} from './generate8xxFields.js';
 
 generateTests({
   callback: testF856,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef856'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef856'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

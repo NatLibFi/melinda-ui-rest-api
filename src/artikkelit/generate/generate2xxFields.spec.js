@@ -5,7 +5,7 @@ import {generatef245} from './generate2xxFields.js';
 
 generateTests({
   callback: testF245,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef245'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef245'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

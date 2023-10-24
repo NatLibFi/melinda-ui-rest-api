@@ -5,7 +5,7 @@ import {generatef490} from './generate4xxFields.js';
 
 generateTests({
   callback: testF490,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef490'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef490'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
