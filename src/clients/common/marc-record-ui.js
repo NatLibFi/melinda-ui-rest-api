@@ -47,7 +47,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   function getHumanReadableErrorMessage(errorMessage){
     var humanReadableError = 'Tapahtui virhe';
     if(errorMessage.includes('Record is invalid')){
-      humanReadableError = 'Dokumentin validointi ei onnistunut. Tarkistathan merkatut kentät.';
+      humanReadableError = 'Tietueen validointi ei onnistunut. Tarkistathan merkatut kentät.';
     }
     return humanReadableError;
   }
