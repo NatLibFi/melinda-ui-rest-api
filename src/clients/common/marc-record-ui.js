@@ -21,7 +21,8 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   if (record.error) {
     const error = document.createElement('div');
     error.classList.add('error');
-    error.textContent = record.error;
+    error.textContent = getHumanReadableErrorMessage(record.error);
+    console.error(record.error);
     recordDiv.appendChild(error);
   }
 
@@ -41,6 +42,14 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
       const content = decorator?.getContent ? decorator.getContent(field) : field;
       addField(recordDiv, content, decorator);
     }
+  }
+
+  function getHumanReadableErrorMessage(errorMessage){
+    var humanReadableError = 'Tapahtui virhe';
+    if(errorMessage.includes('Record is invalid')){
+      humanReadableError = 'Tietueen validointi ei onnistunut. Tarkistathan merkatut kentät.';
+    }
+    return humanReadableError;
   }
 }
 
