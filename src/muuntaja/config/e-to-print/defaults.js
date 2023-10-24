@@ -23,7 +23,7 @@ const defaultFieldValues = {
   },
   '008': {
     // value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|   |^',
-    value: '^^^^^^s2018^^^^fi^||||^^^^^^^|0|^0|fin|c',
+    value: `^^^^^^s${new Date().getFullYear()}^^^^fi^||||^^^^^^^|0|^0|fin|c`,
     id: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
   },
   '020': (opts) => ({
