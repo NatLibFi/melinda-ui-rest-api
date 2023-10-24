@@ -115,7 +115,7 @@ function addField(div, field, decorator = null) {
   }
 
   function makeSubfieldCode(code) {
-    return makeSpan('code', `‡${code}`);
+    return makeSpan('code', code);
   }
 
   function makeSubfieldData(value) {
