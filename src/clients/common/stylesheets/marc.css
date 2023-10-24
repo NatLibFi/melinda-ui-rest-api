@@ -5,6 +5,7 @@
 .marc-record {
   font-family: var(--font-family-mono);
   font-size: 14.5px;
+  white-space: pre-wrap;
 }
 
 .marc-record > * {
