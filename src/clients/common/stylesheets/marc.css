@@ -71,6 +71,10 @@
   margin-right: 2px;
 }
 
+.marc-record .subfield .code:before {
+  content: "\2021";
+}
+
 /* ---------------------------------------------------------------------------- */
 /* Styles for MARC record field edit */
 
