@@ -9,6 +9,8 @@
 
 import moment from 'moment';
 
+const year = new Date().getFullYear().toString().substring(0, 4);
+
 const defaultFieldValues = {
   'LDR': {value: '00000cam^a22006134i^4500'},
   '001': {value: '<placeholder>'},
@@ -23,7 +25,7 @@ const defaultFieldValues = {
   },
   '008': {
     // value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|   |^',
-    value: `^^^^^^s${new Date().getFullYear()}^^^^fi^||||^^^^^^^|0|^0|fin|c`,
+    value: `^^^^^^s${year}^^^^fi^||||^^^^^^^|0|^0|fin|c`,
     id: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
   },
   '020': (opts) => ({
