@@ -7,7 +7,7 @@ import {getSourceTypeAsText} from './../artikkelitService.js';
 
 generateTests({
   callback: testF008,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef008'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef008'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

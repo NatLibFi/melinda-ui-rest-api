@@ -5,7 +5,7 @@ import {generatef100sf110sf700sf710s} from './generate1xxFields.js';
 
 generateTests({
   callback: testF100etc,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef100'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef100'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

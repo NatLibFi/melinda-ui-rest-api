@@ -5,7 +5,7 @@ import {generateDummyFunc} from './generateDummy.js';
 
 generateTests({
   callback: testDum,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generateDummy'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'muuntaja', 'generateDummy'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

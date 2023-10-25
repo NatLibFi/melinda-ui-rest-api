@@ -89,7 +89,6 @@ export default async function (sruUrl) {
     const transformProfile = profiles[options.type];
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
-    //logger.debug(`source: ${source}`);
     //logger.debug(`sourceID: ${source.ID}`);
     //logger.debug(`baseID: ${base.ID}`);
     //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
