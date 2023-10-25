@@ -22,9 +22,9 @@ const appName = 'Muuntaja';
 
 //-----------------------------------------------------------------------------
 
-export default async function (sruUrl) {
+export default function (sruUrl) {
   const logger = createLogger();
-  const bibService = await createBibService(sruUrl);
+  const bibService = createBibService(sruUrl);
   const muuntajaService = createMuuntajaService();
 
   const optDefaults = {
