@@ -120,10 +120,6 @@ export default async function (sruUrl) { // eslint-disable-line no-unused-vars
     const transformProfile = profiles[options.type];
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
-<<<<<<< HEAD
-=======
-    //logger.debug(`source: ${source}`);
->>>>>>> origin/next
     //logger.debug(`sourceID: ${source.ID}`);
     //logger.debug(`baseID: ${base.ID}`);
     //logger.debug(`Excluded: ${JSON.stringify(exclude, null, 2)}`);
