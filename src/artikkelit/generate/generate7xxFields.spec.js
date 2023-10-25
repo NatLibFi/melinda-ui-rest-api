@@ -7,7 +7,7 @@ import {getSourceTypeAsText, parseIncomingData} from './../artikkelitService.js'
 
 generateTests({
   callback: testF773,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef773'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef773'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -39,7 +39,7 @@ async function testF773({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF787,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef787'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef787'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

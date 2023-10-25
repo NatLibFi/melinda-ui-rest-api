@@ -5,7 +5,7 @@ import {generatef041, generatef080, generatef084} from './generate0xxFields.js';
 
 generateTests({
   callback: testF041,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef041'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef041'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -23,7 +23,7 @@ async function testF041({getFixture}) {
 
 generateTests({
   callback: testF080,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef080'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef080'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -41,7 +41,7 @@ async function testF080({getFixture}) {
 
 generateTests({
   callback: testF084,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef084'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef084'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

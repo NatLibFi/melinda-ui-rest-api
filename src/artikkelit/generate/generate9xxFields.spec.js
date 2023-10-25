@@ -5,7 +5,7 @@ import {generatef960} from './generate9xxFields.js';
 
 generateTests({
   callback: testF960,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef960'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef960'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

@@ -5,7 +5,7 @@ import {generatef500, generatef506, generatef520, generatef540, generatef567, ge
 
 generateTests({
   callback: testF500,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef500'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef500'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -33,7 +33,7 @@ async function testF500({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF506,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef506'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef506'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -61,7 +61,7 @@ async function testF506({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF520,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef520'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef520'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -89,7 +89,7 @@ async function testF520({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF540,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef540'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef540'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -117,7 +117,7 @@ async function testF540({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF567,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef567'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef567'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -145,7 +145,7 @@ async function testF567({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF591,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef591'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef591'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -173,7 +173,7 @@ async function testF591({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF598,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef598'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef598'],
   useMetadataFile: true,
   recurse: false,
   fixura: {
@@ -201,7 +201,7 @@ async function testF598({getFixture, expectToFail = false}) {
 
 generateTests({
   callback: testF599,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'generatef599'],
+  path: [__dirname, '..', '..', '..', 'test-fixtures', 'artikkelit', 'generatef599'],
   useMetadataFile: true,
   recurse: false,
   fixura: {

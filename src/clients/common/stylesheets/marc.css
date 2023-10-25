@@ -19,6 +19,7 @@
   padding-right: 4px;
   padding-top: 2px;
   padding-bottom: 2px;
+  white-space: pre-wrap;
 }
 
 .marc-record .row:hover {
@@ -69,6 +70,10 @@
 .marc-record .subfield .code {
   color: var(--color-melinda-lightblue-custom);
   margin-right: 2px;
+}
+
+.marc-record .subfield .code:before {
+  content: "\2021";
 }
 
 /* ---------------------------------------------------------------------------- */

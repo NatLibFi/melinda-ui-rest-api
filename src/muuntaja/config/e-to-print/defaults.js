@@ -9,6 +9,8 @@
 
 import moment from 'moment';
 
+const year = new Date().getFullYear().toString().substring(0, 4);
+
 const defaultFieldValues = {
   'LDR': {value: '00000cam^a22006134i^4500'},
   '001': {value: '<placeholder>'},
@@ -23,11 +25,11 @@ const defaultFieldValues = {
   },
   '008': {
     // value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|   |^',
-    value: '^^^^^^s2018^^^^fi^||||^^^^^^^|0|^0|fin|c',
+    value: `^^^^^^s${year}^^^^fi^||||^^^^^^^|0|^0|fin|c`,
     id: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
   },
   '020': (opts) => ({
-    ind1: '#', ind2: '#',
+    ind1: ' ', ind2: ' ',
     subfields: [
       {code: 'a', value: ''},
       {code: 'q', value: opts.format}
@@ -44,7 +46,7 @@ const defaultFieldValues = {
     id: '6f4d044c-28f4-4616-9edb-89ec47856cab'
   },
   '041': (opts) => ({
-    tag: '041', ind1: '0', ind2: '#',
+    tag: '041', ind1: '0', ind2: ' ',
     subfields: [{code: 'a', value: opts.language || ''}],
     id: 'ac44d08d-5532-49bc-b2b9-c863cf930b1a'
   }),
@@ -59,7 +61,7 @@ const defaultFieldValues = {
     id: '29b213aa-4cb5-44cf-83d5-a0042638f64f'
   },
   '337': {
-    ind1: '#', ind2: '#',
+    ind1: ' ', ind2: ' ',
     subfields: [
       {code: 'a', value: 'käytettävissä ilman laitetta'},
       {code: 'b', value: 'n'},

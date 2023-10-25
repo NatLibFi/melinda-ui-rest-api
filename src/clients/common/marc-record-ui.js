@@ -21,7 +21,8 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   if (record.error) {
     const error = document.createElement('div');
     error.classList.add('error');
-    error.textContent = record.error;
+    error.textContent = getHumanReadableErrorMessage(record.error);
+    console.error(record.error);
     recordDiv.appendChild(error);
   }
 
@@ -42,6 +43,14 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
       addField(recordDiv, content, decorator);
     }
   }
+
+  function getHumanReadableErrorMessage(errorMessage){
+    var humanReadableError = 'Tapahtui virhe';
+    if(errorMessage.includes('Record is invalid')){
+      humanReadableError = 'Tietueen validointi ei onnistunut. Tarkistathan merkatut kentät.';
+    }
+    return humanReadableError;
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -59,7 +68,20 @@ function addField(div, field, decorator = null) {
   }
 
   addTag(row, field.tag);
-  addInd(row, field.ind1, field.ind2);
+
+  //empty indicator execption handling
+  var indicator1 = field.ind1;
+  var indicator2 = field.ind2;
+  const emptyIndicator = '_';
+  const eitherIsEmpty = indicator1 === ' ' || indicator2 === ' ';
+  const bothAreEmpty = indicator1 === ' ' && indicator2 === ' ';
+
+  if(!bothAreEmpty && eitherIsEmpty){
+    indicator1 = field.ind1 === ' ' ? emptyIndicator : field.ind1;
+    indicator2 = field.ind2 === ' ' ? emptyIndicator : field.ind2;
+  }
+
+  addInd(row, indicator1, indicator2);
 
   if (field.value) {
     addValue(row, field.value);
@@ -102,7 +124,7 @@ function addField(div, field, decorator = null) {
   }
 
   function makeSubfieldCode(code) {
-    return makeSpan('code', `‡${code}`);
+    return makeSpan('code', code);
   }
 
   function makeSubfieldData(value) {
@@ -180,7 +202,7 @@ export function editField(field, original = null) {
 
   // if field contains "value" and not "subfields"
   if (field.value) {
-    value.innerHTML = 'Value:';
+    value.innerHTML = 'Arvo:';
     value.appendChild(createInput('value', 'value', field.value));
 
   // if field contains "subfields" and not "value"

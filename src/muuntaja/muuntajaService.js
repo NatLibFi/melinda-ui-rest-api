@@ -1,11 +1,13 @@
 /******************************************************************************
  *
- * Services for record fetching & modifying
+ * muuntaja service
  *
  ******************************************************************************
  */
 
 /* eslint-disable no-unused-vars */
+
+import merger from '@natlibfi/marc-record-merge';
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import {v4 as uuid} from 'uuid';
@@ -16,28 +18,70 @@ export {uuid};
 const logger = createLogger();
 
 //-----------------------------------------------------------------------------
+// muuntaja service
+//-----------------------------------------------------------------------------
+
+export function createMuuntajaService() {
+
+  return {
+    getResultRecord
+  };
+}
+
+/******************************************************************************
+ *
+ * Muuntaja service functions
+ *
+ ******************************************************************************
+ */
+
+function getResultRecord(data) {
+  const {profile, source, base, options, include, exclude, replace} = data;
+
+  if (!source?.leader || !base?.leader) {
+    return {};
+  }
+  //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
+  //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
+
+  return merger({
+    base: modifyRecord(base, null, exclude, null),
+    source: modifyRecord(source, null, exclude, null),
+    reducers: profile.getReducers(options)
+  });
+}
+
+/******************************************************************************
+ *
+ * Services for record fetching & modifying
+ *
+ ******************************************************************************
+ */
+
+//-----------------------------------------------------------------------------
 // Records with field IDs
 
 export async function getRecordWithIDs(bibService, record) {
   //logger.debug(`Record: ${JSON.stringify(record, null, 2)}`);
-  const result = await fetch(record);
-  //logger.debug(`Result: ${JSON.stringify(record, null, 2)}`);
+
+  if (record?.leader) {
+    return record;
+  }
+
+  if (!record?.ID) {
+    return record;
+  }
+
+  const [result] = await bibService.getRecordById(record.ID);
+  //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
   return {
     ...record,
     ...addMissingIDs(result)
   };
-
-  function fetch(record) {
-    if (record?.leader) {
-      return record;
-    }
-    if (!record?.ID) {
-      return record;
-    }
-    return bibService.getRecordById(record.ID);
-  }
 }
 
+//-----------------------------------------------------------------------------
+// Validate record and sort its fields
 //-----------------------------------------------------------------------------
 
 export function asMarcRecord(record, validationOptions = {}) {
@@ -60,6 +104,7 @@ export function asMarcRecord(record, validationOptions = {}) {
 
 //-----------------------------------------------------------------------------
 // Add IDs for tracing fields
+//-----------------------------------------------------------------------------
 
 export function addMissingIDs(record) {
   if (!record?.fields) {
@@ -80,12 +125,13 @@ export function generateMissingIDs(fields) {
 
 //-----------------------------------------------------------------------------
 // Record modify services
+//-----------------------------------------------------------------------------
 
-export function modifyRecord(source, include, exclude, replace) {
-  if (!source) {
+export function modifyRecord(record, include, exclude, replace) {
+  if (!record) {
     return null;
   }
-  const result = replaceFields(excludeFields(includeFields(source, include), exclude), replace);
+  const result = replaceFields(excludeFields(includeFields(record, include), exclude), replace);
 
   //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
   //logger.debug(`Result: ${JSON.stringify(result)}`);
@@ -128,7 +174,7 @@ export function excludeFields(record, exclude) {
 
 //-----------------------------------------------------------------------------
 
-export function replaceFields(record, replace) { // eslint-disable-line
+export function replaceFields(record, replace) {
   if (!replace) {
     return record;
   }
