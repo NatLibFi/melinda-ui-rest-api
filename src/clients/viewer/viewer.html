@@ -199,11 +199,9 @@
                 onclick="return uploadFile(event)">file_upload</button>
               <button id="showLogInfo" class="material-icons tooltip icon-only" tooltip-text="Näytä lokin lisätiedot"
                 onclick="return showLogInfo(event)">info_outline</button>
-              <button id="hideLogInfo" class="material-icons tooltip icon-only inverse" tooltip-text="Piilota lokin lisätiedot"
-                style="display:none" onclick="return hideLogInfo(event)">info</button>
-              <!-- <button id="settings" class="material-icons tooltip icon-only" tooltip-text="Asetukset"
-                disabled="true">settings</button> -->
-
+              <button id="hideLogInfo" class="material-icons tooltip icon-only inverse"
+                tooltip-text="Piilota lokin lisätiedot" style="display:none"
+                onclick="return hideLogInfo(event)">info</button>
             </div>
           </div>
 
@@ -312,7 +310,8 @@
           <div id="recordsInfo" class="records-info-panel BoxShadow">
             <div id="panelHeader" class="info-panel-header title">LOKIN LISÄTIEDOT</div>
             <div id="panelContent" class="info-panel-content">
-              <ul id="infoList"></ul>
+              <div id="infoCol1" class="panel-content-col"></div>
+              <div id="infoCol2" class="panel-content-col"></div>
             </div>
           </div>
 
@@ -332,9 +331,7 @@
                   </div>
                 </div>
 
-                <div class="note">
-                  <ul class="additional"></ul>
-                </div>
+                <div class="note"></div>
 
                 <div id="Record" class="marc-record">
                 </div>
@@ -354,9 +351,7 @@
                   </div>
                 </div>
 
-                <div class="note">
-                  <ul class="additional"></ul>
-                </div>
+                <div class="note"></div>
 
                 <div id="Record" class="marc-record">
                 </div>
@@ -377,9 +372,7 @@
                   </div>
                 </div>
 
-                <div class="note">
-                  <ul class="additional"></ul>
-                </div>
+                <div class="note"></div>
 
                 <div id="Record" class="marc-record">
                 </div>
@@ -403,9 +396,7 @@
                   </div>
                 </div>
 
-                <div class="note">
-                  <ul class="additional"></ul>
-                </div>
+                <div class="note"></div>
 
                 <div id="Record" class="marc-record">
                 </div>

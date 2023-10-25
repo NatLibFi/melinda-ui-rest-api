@@ -296,7 +296,6 @@ window.loadLog = (event) => {
   const protectButton = document.querySelector(`#viewer #protect`);
   const removeButton = document.querySelector(`#viewer #delete`);
 
-
   const col2 = document.querySelector('#viewer #record2').parentElement;
   const col3 = document.querySelector('#viewer #record3').parentElement;
   const col4 = document.querySelector('#viewer #record4').parentElement;
@@ -311,7 +310,8 @@ window.loadLog = (event) => {
     console.log('Clearing record view');
 
     const downloadButton = document.getElementById('export');
-    const infoList = document.querySelector(`#viewer #recordsInfo #panelContent #infoList`)
+    const infoCol1 = document.querySelector(`#viewer #recordsInfo #panelContent #infoCol1`);
+    const infoCol2 = document.querySelector(`#viewer #recordsInfo #panelContent #infoCol2`);
 
     idInputField.value = '';
     logTypeSelect.value = 'MERGE_LOG';
@@ -339,7 +339,8 @@ window.loadLog = (event) => {
     setRecordTopInfo('record3', 'Yhdistetty tietue');
     showRecord({}, 'record3', {}, 'viewer');
 
-    infoList.innerHTML = '';
+    infoCol1.innerHTML = '';
+    infoCol2.innerHTML = '';
 
     return;
   }
@@ -356,18 +357,7 @@ window.loadLog = (event) => {
         return;
       }
 
-      addLogInfo([
-        `<li>Korrelaatio-ID: ${data.correlationId ? data.correlationId : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Sekvenssi: ${data.blobSequence ? data.blobSequence : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Lokityyppi: ${data.logItemType ? data.logItemType : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Luontiaika: ${data.creationTime ? data.creationTime : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Luetteloija: ${data.cataloger ? data.cataloger : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Lähde-ID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Nimike: ${data.title ? data.title : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Tunnisteet: ${data.standardIdentifiers ? data.standardIdentifiers : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Turvattu: ${data.protected === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
-        `<li>Muokkausaika: ${data.modificationTime ? data.modificationTime : 'Tieto puuttuu lokista'}</li>`
-      ]);
+      addLogInfo(data);
 
       col2.style.display = 'block';
       col3.style.display = 'block';
@@ -398,19 +388,7 @@ window.loadLog = (event) => {
         return;
       }
 
-      addLogInfo([
-        `<li>Korrelaatio-ID: ${data.correlationId ? data.correlationId : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Sekvenssi: ${data.blobSequence ? data.blobSequence : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Lokityyppi: ${data.logItemType ? data.logItemType : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Luontiaika: ${data.creationTime ? data.creationTime : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Luetteloija: ${data.cataloger ? data.cataloger : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Lähde-ID:t: ${data.sourceIds ? data.sourceIds : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Nimike: ${data.title ? data.title : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Tunnisteet: ${data.standardIdentifiers ? data.standardIdentifiers : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Turvattu: ${data.protected === undefined ? 'Tieto puuttuu lokista' : (data.protected === true ? 'Kyllä' : 'Ei')}</li>`,
-        `<li>Kaikki vastaavuusraportit:  ${data.matcherReports ? formatMatchReportList(data.matcherReports) : 'Tieto puuttuu lokista'}</li>`,
-        `<li>Muokkausaika: ${data.modificationTime ? data.modificationTime : 'Tieto puuttuu lokista'}</li>`
-      ]);
+      addLogInfo(data);
 
       col2.style.display = 'none';
       col3.style.display = 'none';
@@ -474,15 +452,53 @@ window.loadLog = (event) => {
     sequenceInputField.value = tempSequence;
   }
 
-  function addLogInfo(logInfo) {
-    const infoList = document.querySelector(`#viewer #recordsInfo #panelContent #infoList`)
-    infoList.innerHTML = '';
+  function addLogInfo(data) {
+    const infoCol1 = document.querySelector(`#viewer #recordsInfo #panelContent #infoCol1`)
+    const infoCol2 = document.querySelector(`#viewer #recordsInfo #panelContent #infoCol2`)
 
-    logInfo.forEach(info => {
-      infoList.insertAdjacentHTML('beforeend', info)
-    })
+    const logInfo1 = [
+      createInfo('ID', data.correlationId),
+      createInfo('Sekvenssi', data.blobSequence),
+      createInfo('Lokityyppi', data.logItemType),
+      createInfo('Luontiaika', data.creationTime),
+      createInfo('Muokkausaika', data.modificationTime),
+      createInfo('Turvattu', (data.protected === undefined ? '' : (data.protected === true ? 'Kyllä' : 'Ei')))
+    ];
+
+    const logInfo2 = [
+      createInfo('Luetteloija', data.cataloger),
+      createInfo('Nimeke', data.title),
+      createInfo('Tunnisteet', createUlHtml(data.standardIdentifiers)),
+      createInfo('Lähde-ID:t', createUlHtml(data.sourceIds)),
+      createInfo('Vastaavuusraportit', createUlHtml(data.matcherReports, formatMatchReport))
+    ];
+
+    infoCol1.innerHTML = createUlHtml(logInfo1)
+    infoCol2.innerHTML = createUlHtml(logInfo2);
   }
 };
+
+function createInfo(infoName, infoData) {
+  return `<b>${infoName}:</b> ${infoData ? infoData : '<i>Tieto puuttuu lokista</i>'}`;
+}
+
+function createUlHtml(liHtmlArray, itemFormatter = undefined) {
+  if (liHtmlArray === undefined) {
+    return '';
+  }
+
+  let listContent = '';
+
+  liHtmlArray.forEach(arrayItem => {
+    listContent = listContent + createLiHtml(itemFormatter ? itemFormatter(arrayItem) : arrayItem);
+  })
+
+  return `<ul>${listContent}</ul>`;
+}
+
+function createLiHtml(listItem) {
+  return `<li>${listItem}</li>`;
+}
 
 window.loadMatch = (event) => {
   eventHandled(event);
@@ -494,7 +510,7 @@ window.loadMatch = (event) => {
     setRecordTopInfo('record1', 'Sisääntuleva tietue', false);
     showRecord(data.incomingRecord, 'record1', {}, 'viewer');
     if (data.matchResult.length === 0) {
-      setRecordTopInfo('record4', 'Vastaava Melinda-tietue', '<li>Ei löytynyt</li>');
+      setRecordTopInfo('record4', 'Vastaava Melinda-tietue', '<ul><li>Ei löytynyt</li></ul>');
       showRecord({}, 'record4', {}, 'viewer');
       return;
     }
@@ -513,29 +529,19 @@ function getMergeCandidateInfo(data) {
   const preference = data?.preference !== false ? data.preference.name : data?.message;
   const matcherReports = data?.matcherReports;
 
-  const note = `
-    <li>Melinda-ID: ${id}</li>
-    <li>Käypäisyys: ${probability * 100}%</li>
-    <li>Yhdistämistapa: ${action}</li>
-    <li>Yhdistäessä pohjana: ${preferenceRecord === undefined ? 'Ei yhdistetä' : preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue'}</li>
-    <li>Peruste: ${preference}</li>
-    <li>Vastaavuusraportit: ${matcherReports.length > 0 ? formatMatchReportList(matcherReports) : 'Ei raportteja'}</li>
-  `
+  const note = createUlHtml([
+    createInfo('Melinda-ID', id),
+    createInfo('Käypäisyys', probability * 100 + '%'),
+    createInfo('Yhdistämistapa', action),
+    createInfo('Yhdistäessä pohjana', preferenceRecord === undefined ? 'Ei yhdistetä' : (preferenceRecord === 'A' ? 'Sisääntuleva' : 'Melinda-tietue')),
+    createInfo('Peruste', preference),
+    createInfo('Vastaavuusraportit', matcherReports.length > 0 ? createUlHtml(matcherReports, formatMatchReport) : 'Ei raportteja')
+  ])
+
   return {
     record,
     note
   };
-}
-
-
-function formatMatchReportList(matcherReportsArray) {
-  let matchReports = '';
-
-  matcherReportsArray.forEach(matchReport => {
-    matchReports = matchReports + `<li>${formatMatchReport(matchReport)}</li>`;
-  })
-
-  return `<ul>${matchReports}</ul>`;
 }
 
 function formatMatchReport(matchReportObject) {
@@ -574,7 +580,7 @@ function setRecordTopInfo(record, title, additional = false) {
 
   if (additional !== false) {
     document.querySelector(`#viewer #${record} .note`).style.display = 'flex';
-    document.querySelector(`#viewer #${record} .additional`).innerHTML = `${additional}`;
+    document.querySelector(`#viewer #${record} .note`).innerHTML = `${additional}`;
     document.querySelector(`#viewer #${record} #showNote`).style.display = 'none';
     document.querySelector(`#viewer #${record} #hideNote`).style.display = 'flex';
   }

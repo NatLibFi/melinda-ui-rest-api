@@ -224,7 +224,7 @@ window.confirmUpload = function (event) {
       }
     };
 
-    reader.onerror = function (event) {
+    reader.onerror = function (error) {
       console.log('Error reading file ', error);
       showSnackbar({style: 'error', text: 'Valitettavasti tiedoston avaus ei onnistunut!'});
     };
@@ -258,7 +258,7 @@ window.confirmUpload = function (event) {
       }
 
       const log = {...data};
-      log.blobSequence = 0;
+      log.blobSequence = data.blobSequence || '0';
       log.creationTime = data.creationTime || 'Ei saatavilla';
 
       if (data.logItemType === 'MERGE_LOG') {
