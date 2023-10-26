@@ -102,13 +102,13 @@ function addField(div, field, decorator = null) {
 
   function addInd(row, ind1, ind2) {
     const span = makeSpan('inds');
-    add(span, ind1);
-    add(span, ind2);
+    add(span, ind1, 'ind1');
+    add(span, ind2, 'ind2');
     row.appendChild(span);
 
-    function add(span, ind) {
+    function add(span, ind, className = 'ind') {
       const value = ind && ind.trim() || '&nbsp;';
-      span.appendChild(makeSpan('ind', null, value));
+      span.appendChild(makeSpan(className, null, value));
     }
   }
 
@@ -158,7 +158,7 @@ function makeSpan(className, text, html) {
 
 let editing = null;
 
-export function editField(field, original = null) {
+export function editField(field, original = null, preActivatedEditSection = null) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
 
   editing = field;
@@ -184,15 +184,22 @@ export function editField(field, original = null) {
 
   const tag = document.querySelector('#fieldEditDlg #tag');
   tag.innerHTML = '';
-  tag.appendChild(createInput('tag', 'tag', field.tag));
+  const tagInput = createInput('tag', 'tag', field.tag);
+  tag.appendChild(tagInput);
+  preactivateEditIfRequested(preActivatedEditSection, 'tag', tagInput);
+  
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
-  ind1.appendChild(createInput('ind1', 'inds', field.ind1));
+  const ind1Input = createInput('ind1', 'inds', field.ind1);
+  ind1.appendChild(ind1Input);
+  preactivateEditIfRequested(preActivatedEditSection, 'ind1' ,ind1Input);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
-  ind2.appendChild(createInput('ind2', 'inds', field.ind2));
+  const ind2Input = createInput('ind2', 'inds', field.ind2);
+  ind2.appendChild(ind2Input);
+  preactivateEditIfRequested(preActivatedEditSection, 'ind2' ,ind2Input);
 
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   subfields.innerHTML = '';
@@ -203,7 +210,9 @@ export function editField(field, original = null) {
   // if field contains "value" and not "subfields"
   if (field.value) {
     value.innerHTML = 'Arvo:';
-    value.appendChild(createInput('value', 'value', field.value));
+    const valueInput = createInput('value', 'value', field.value);
+    value.appendChild(valueInput);
+    preactivateEditIfRequested(preActivatedEditSection, 'value' ,valueInput);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
@@ -218,6 +227,11 @@ export function editField(field, original = null) {
     });
 
     /**/
+  }
+  function preactivateEditIfRequested(preActivatedEditSection, inputClassName ,input){
+    if(preActivatedEditSection !== null && inputClassName === preActivatedEditSection){
+      input.focus();
+    }
   }
 }
 

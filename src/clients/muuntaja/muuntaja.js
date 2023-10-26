@@ -297,8 +297,22 @@ function decorateField(div, field) {
 
 function onFieldClick(event, field) {
   //console.log("Click", field)
+  
   if (editmode) {
-    editField(getContent(field), getOriginal(field));
+    //returns sub element clicked, if no specific subelement it returns just row row-fromBase
+    //span uses classname as class
+    var subElementRequested = event.originalTarget.attributes.class.nodeValue;
+    //make sure only certain values can be auto edit focus requested
+    //if not correct later expect null
+    if(!isSubFieldAcceptable(subElementRequested)){
+        console.log(`Sub element ${subElementRequested} is not acceptable`);
+        subElementRequested = null;
+      }
+      else{
+        console.log('Requesting specific field to edit automatically: ' + subElementRequested);
+      }
+
+    editField(getContent(field), getOriginal(field), subElementRequested);
   } else {
     toggleField(field);
   }
@@ -316,6 +330,18 @@ function onFieldClick(event, field) {
     }
 
     doTransform();
+  }
+  function isSubFieldAcceptable(elementRequested){
+    switch (elementRequested){
+      case 'tag':
+      case 'ind1':
+      case 'ind2':
+      case 'code':
+      case 'value':
+        return true;
+      default:
+        return false;
+    }
   }
 }
 
