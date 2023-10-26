@@ -86,8 +86,8 @@ function addField(div, field, decorator = null) {
   if (field.value) {
     addValue(row, field.value);
   } else if (field.subfields) {
-    for (const subfield of field.subfields) {
-      addSubfield(row, subfield);
+    for (const [index, subfield] of field.subfields.entries()) {
+      addSubfield(row, subfield, index);
     }
   }
 
@@ -116,19 +116,19 @@ function addField(div, field, decorator = null) {
     row.appendChild(makeSpan('value', value));
   }
 
-  function addSubfield(row, subfield) {
+  function addSubfield(row, subfield, index = 0) {
     const span = makeSpan('subfield');
-    span.appendChild(makeSubfieldCode(subfield.code));
-    span.appendChild(makeSubfieldData(subfield.value));
+    span.appendChild(makeSubfieldCode(subfield.code, index));
+    span.appendChild(makeSubfieldData(subfield.value, index));
     row.appendChild(span);
   }
 
-  function makeSubfieldCode(code) {
-    return makeSpan('code', code);
+  function makeSubfieldCode(code, index = 0) {
+    return makeSpan('code', code, null, index);
   }
 
-  function makeSubfieldData(value) {
-    return makeSpan('value', value);
+  function makeSubfieldData(value, index = 0) {
+    return makeSpan('value', value, null, index);
   }
 }
 
@@ -141,9 +141,10 @@ function makeDiv(className, value) {
   return div;
 }
 
-function makeSpan(className, text, html) {
+function makeSpan(className, text, html, index = 0) {
   const span = document.createElement('span');
   span.setAttribute('class', className);
+  span.setAttribute('index', index);
   if (text) {
     span.textContent = text;
   } else if (html) {
@@ -216,8 +217,8 @@ export function editField(field, original = null, preActivatedEditSection = null
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
-    for (const subfield of field.subfields) {
-      createSubfield(subfields, subfield);
+    for (const [index, subfield] of field.subfields.entries()) {
+      createSubfield(subfields, subfield, preActivatedEditSection, index);
     }
 
     //*
@@ -228,20 +229,37 @@ export function editField(field, original = null, preActivatedEditSection = null
 
     /**/
   }
-  function preactivateEditIfRequested(preActivatedEditSection, inputClassName ,input){
-    if(preActivatedEditSection !== null && inputClassName === preActivatedEditSection){
-      input.focus();
-    }
+  
+}
+
+function preactivateEditIfRequested(preActivatedEditSection, inputClassName , input, index = 0){
+  if(preActivatedEditSection !== null){
+    console.log('Comparing: '+inputClassName+' with ' +preActivatedEditSection.class);
+    console.log('Comparing: '+index + ' with '+ preActivatedEditSection.index);
+  }
+  
+  if(preActivatedEditSection !== null && inputClassName === preActivatedEditSection.class && index === preActivatedEditSection.index){
+    console.log('Found correct item at: '+preActivatedEditSection.class +' in index '+ preActivatedEditSection.index);
+    input.focus();
   }
 }
 
-function createSubfield(parent, subfield) {
+function createSubfield(parent, subfield, preActivatedEditSection, index = 0) {
   const row = document.createElement('div');
   row.classList.add('subfield');
   row.appendChild(removeButton());
-  row.appendChild(createInput('code', 'code', subfield.code));
-  row.appendChild(createInput('value', 'value', subfield.value));
+
+  const codeInput = createInput('code', 'code', subfield.code);
+  const valueInput = createInput('value', 'value', subfield.value);
+
+  row.appendChild(codeInput);
+  row.appendChild(valueInput);
+
   parent.appendChild(row);
+
+  preactivateEditIfRequested(preActivatedEditSection, 'code', codeInput, index);
+  preactivateEditIfRequested(preActivatedEditSection, 'value', valueInput, index);
+
   return row;
 
   function removeButton() {

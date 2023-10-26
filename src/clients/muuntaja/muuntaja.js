@@ -301,18 +301,25 @@ function onFieldClick(event, field) {
   if (editmode) {
     //returns sub element clicked, if no specific subelement it returns just row row-fromBase
     //span uses classname as class
-    var subElementRequested = event.originalTarget.attributes.class.nodeValue;
+    //var subElementRequested = event.originalTarget.attributes.class.nodeValue;
+    var subElement = {'class':'', 'index':0}
+    try {
+      subElement.class = event.originalTarget.attributes.class.nodeValue;
+      subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
+    } catch (error) {
+      console.error('Getting sub element encountered error: '+error);
+    }
     //make sure only certain values can be auto edit focus requested
     //if not correct later expect null
-    if(!isSubFieldAcceptable(subElementRequested)){
-        console.log(`Sub element ${subElementRequested} is not acceptable`);
-        subElementRequested = null;
+    if(!isSubFieldAcceptable(subElement.class)){
+        console.log(`Sub element ${subElement.class} is not acceptable`);
+        subElement = null;
       }
       else{
-        console.log('Requesting specific field to edit automatically: ' + subElementRequested);
+        console.log('Requesting specific field to edit automatically: ' + subElement.class + ' with index ' + subElement.index);
       }
 
-    editField(getContent(field), getOriginal(field), subElementRequested);
+    editField(getContent(field), getOriginal(field), subElement);
   } else {
     toggleField(field);
   }
