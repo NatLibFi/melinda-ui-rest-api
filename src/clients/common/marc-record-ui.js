@@ -159,7 +159,7 @@ function makeSpan(className, text, html, index = 0) {
 
 let editing = null;
 
-export function editField(field, original = null, preActivatedEditSection = null) {
+export function editField(field, original = null, elementToPreactivate = null) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
 
   editing = field;
@@ -187,20 +187,20 @@ export function editField(field, original = null, preActivatedEditSection = null
   tag.innerHTML = '';
   const tagInput = createInput('tag', 'tag', field.tag);
   tag.appendChild(tagInput);
-  preactivateEditIfRequested(preActivatedEditSection, 'tag', tagInput);
+  preactivateEdit(elementToPreactivate, 'tag', tagInput);
   
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
   const ind1Input = createInput('ind1', 'inds', field.ind1);
   ind1.appendChild(ind1Input);
-  preactivateEditIfRequested(preActivatedEditSection, 'ind1' ,ind1Input);
+  preactivateEdit(elementToPreactivate, 'ind1' ,ind1Input);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
   const ind2Input = createInput('ind2', 'inds', field.ind2);
   ind2.appendChild(ind2Input);
-  preactivateEditIfRequested(preActivatedEditSection, 'ind2' ,ind2Input);
+  preactivateEdit(elementToPreactivate, 'ind2' ,ind2Input);
 
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   subfields.innerHTML = '';
@@ -213,12 +213,12 @@ export function editField(field, original = null, preActivatedEditSection = null
     value.innerHTML = 'Arvo:';
     const valueInput = createInput('value', 'value', field.value);
     value.appendChild(valueInput);
-    preactivateEditIfRequested(preActivatedEditSection, 'value' ,valueInput);
+    preactivateEdit(elementToPreactivate, 'value' ,valueInput);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
     for (const [index, subfield] of field.subfields.entries()) {
-      createSubfield(subfields, subfield, preActivatedEditSection, index);
+      createSubfield(subfields, subfield, elementToPreactivate, index);
     }
 
     //*
@@ -232,19 +232,14 @@ export function editField(field, original = null, preActivatedEditSection = null
   
 }
 
-function preactivateEditIfRequested(preActivatedEditSection, inputClassName , input, index = 0){
-  if(preActivatedEditSection !== null){
-    console.log('Comparing: '+inputClassName+' with ' +preActivatedEditSection.class);
-    console.log('Comparing: '+index + ' with '+ preActivatedEditSection.index);
-  }
-  
-  if(preActivatedEditSection !== null && inputClassName === preActivatedEditSection.class && index === preActivatedEditSection.index){
-    console.log('Found correct item at: '+preActivatedEditSection.class +' in index '+ preActivatedEditSection.index);
+function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
+  if(elementToPreactivate && inputClassName && input && inputClassName === elementToPreactivate.class && index === elementToPreactivate.index){
+    //console.log(`Found correct item at: ${elementToPreactivate.class} in index ${elementToPreactivate.index}`);
     input.focus();
   }
 }
 
-function createSubfield(parent, subfield, preActivatedEditSection, index = 0) {
+function createSubfield(parent, subfield, elementToPreactivate, index = 0) {
   const row = document.createElement('div');
   row.classList.add('subfield');
   row.appendChild(removeButton());
@@ -257,8 +252,8 @@ function createSubfield(parent, subfield, preActivatedEditSection, index = 0) {
 
   parent.appendChild(row);
 
-  preactivateEditIfRequested(preActivatedEditSection, 'code', codeInput, index);
-  preactivateEditIfRequested(preActivatedEditSection, 'value', valueInput, index);
+  preactivateEdit(elementToPreactivate, 'code', codeInput, index);
+  preactivateEdit(elementToPreactivate, 'value', valueInput, index);
 
   return row;
 

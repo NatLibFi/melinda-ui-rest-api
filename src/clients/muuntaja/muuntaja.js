@@ -299,25 +299,24 @@ function onFieldClick(event, field) {
   //console.log("Click", field)
   
   if (editmode) {
-    //returns sub element clicked, if no specific subelement it returns just row row-fromBase
-    //span uses classname as class
-    //var subElementRequested = event.originalTarget.attributes.class.nodeValue;
-    var subElement = {'class':'', 'index':0}
+
+    //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
+    //span uses as class classname/id
+    var subElement = null;
     try {
+      subElement = {};
       subElement.class = event.originalTarget.attributes.class.nodeValue;
       subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
     } catch (error) {
-      console.error('Getting sub element encountered error: '+error);
+      console.error(`Getting field sub element encountered error: ${error}`);
+      subElement = null;
     }
     //make sure only certain values can be auto edit focus requested
-    //if not correct later expect null
-    if(!isSubFieldAcceptable(subElement.class)){
-        console.log(`Sub element ${subElement.class} is not acceptable`);
+    //if not correct later expects null and does nothing
+    if(subElement && !isSubElementAcceptable(subElement.class)){
+        console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
         subElement = null;
-      }
-      else{
-        console.log('Requesting specific field to edit automatically: ' + subElement.class + ' with index ' + subElement.index);
-      }
+    }
 
     editField(getContent(field), getOriginal(field), subElement);
   } else {
@@ -338,7 +337,7 @@ function onFieldClick(event, field) {
 
     doTransform();
   }
-  function isSubFieldAcceptable(elementRequested){
+  function isSubElementAcceptable(elementRequested){
     switch (elementRequested){
       case 'tag':
       case 'ind1':
