@@ -39,6 +39,12 @@ window.downloadFile = function (event) {
       setBlobSequence(data.blobSequence.toString());
       setLogItemType(data.logItemType);
       setCreationTime(data.creationTime);
+      setModificationTime(data.modificationTime);
+      setCataloger(data.cataloger);
+      setSourceIds(data.sourceIds);
+      setTitle(data.title);
+      setStandardIdentifiers(data.standardIdentifiers);
+      setProtectedStatus(data.protected);
       setIncomingRecord(data.incomingRecord);
 
       if (data.logItemType === 'MERGE_LOG') {
@@ -76,6 +82,30 @@ window.downloadFile = function (event) {
     recordObject.creationTime = time;
   }
 
+  function setModificationTime(time) {
+    recordObject.modificationTime = time;
+  }
+
+  function setTitle(title) {
+    recordObject.title = title;
+  }
+
+  function setSourceIds(sourceIds) {
+    recordObject.sourceIds = sourceIds;
+  }
+
+  function setCataloger(cataloger) {
+    recordObject.cataloger = cataloger;
+  }
+
+  function setStandardIdentifiers(standardIdentifiers) {
+    recordObject.standardIdentifiers = standardIdentifiers;
+  }
+
+  function setProtectedStatus(protectedStatus) {
+    recordObject.protected = protectedStatus;
+  }
+
   function setPreferred(preference) {
     if (preference.recordName === 'databaseRecord') {
       recordObject.preferred = 'melindaRecord';
@@ -103,7 +133,7 @@ window.downloadFile = function (event) {
       return;
     }
 
-    recordObject.matchResults = results;
+    recordObject.matchResult = results;
   }
 
   function setMatcherReports(reports) {
@@ -187,13 +217,14 @@ window.confirmUpload = function (event) {
 
       if (log) {
         console.log('Log parsed from file: ', log);
+        selectLogType(log.logItemType);
         setDataToIndexDB({0: log}, 0);
         showReaderMode();
         showSnackbar({style: 'info', text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.'});
       }
     };
 
-    reader.onerror = function (event) {
+    reader.onerror = function (error) {
       console.log('Error reading file ', error);
       showSnackbar({style: 'error', text: 'Valitettavasti tiedoston avaus ei onnistunut!'});
     };
@@ -227,14 +258,27 @@ window.confirmUpload = function (event) {
       }
 
       const log = {...data};
-      log.logItemType = 'MERGE_LOG';
-      log.blobSequence = 0;
+      log.blobSequence = data.blobSequence || '0';
       log.creationTime = data.creationTime || 'Ei saatavilla';
-      log.databaseRecord = data.melindaRecord || data.databaseRecord;
-      log.preference = {recordName: (data.preferred === 'melindaRecord' ? 'databaseRecord' : data.preferred) || ''};
-      delete log.melindaRecord;
-      delete log.preferred;
+
+      if (data.logItemType === 'MERGE_LOG') {
+        console.log('Uploading MERGE_LOG')
+        log.databaseRecord = data.melindaRecord || data.databaseRecord;
+        log.preference = {recordName: (data.preferred === 'melindaRecord' ? 'databaseRecord' : data.preferred) || ''};
+        delete log.melindaRecord;
+        delete log.preferred;
+      }
+
+      if (data.logItemType === 'MATCH_LOG') {
+        console.log('Uploading MATCH_LOG')
+      }
+
       return log;
+    }
+
+    function selectLogType(logItemType) {
+      const logType = document.querySelector(`#viewer #logType`);
+      logType.value = logItemType;
     }
   }
 };
@@ -272,6 +316,9 @@ function showReaderMode() {
 
   const uploadButton = document.getElementById('import');
   enableElement(uploadButton);
+
+  const showLogInfoButton = document.getElementById('showLogInfo');
+  enableElement(showLogInfoButton);
 
   const exitButton = document.getElementById('exit');
   exitButton.style.display = 'flex';
