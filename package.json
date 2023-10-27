@@ -48,7 +48,7 @@
     "@natlibfi/melinda-backend-commons": "^2.2.1",
     "@natlibfi/melinda-commons": "^13.0.4",
     "@natlibfi/melinda-marc-record-merge-reducers": "2.0.18",
-    "@natlibfi/melinda-rest-api-client": "3.0.2",
+    "@natlibfi/melinda-rest-api-client": "4.0.3",
     "@natlibfi/passport-melinda-aleph": "^2.0.4",
     "@natlibfi/passport-melinda-jwt": "^1.0.2",
     "@natlibfi/sru-client": "^5.0.4",
