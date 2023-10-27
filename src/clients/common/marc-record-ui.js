@@ -86,8 +86,8 @@ function addField(div, field, decorator = null) {
   if (field.value) {
     addValue(row, field.value);
   } else if (field.subfields) {
-    for (const subfield of field.subfields) {
-      addSubfield(row, subfield);
+    for (const [index, subfield] of field.subfields.entries()) {
+      addSubfield(row, subfield, index);
     }
   }
 
@@ -102,13 +102,13 @@ function addField(div, field, decorator = null) {
 
   function addInd(row, ind1, ind2) {
     const span = makeSpan('inds');
-    add(span, ind1);
-    add(span, ind2);
+    add(span, ind1, 'ind1');
+    add(span, ind2, 'ind2');
     row.appendChild(span);
 
-    function add(span, ind) {
+    function add(span, ind, className = 'ind') {
       const value = ind && ind.trim() || '&nbsp;';
-      span.appendChild(makeSpan('ind', null, value));
+      span.appendChild(makeSpan(className, null, value));
     }
   }
 
@@ -116,19 +116,19 @@ function addField(div, field, decorator = null) {
     row.appendChild(makeSpan('value', value));
   }
 
-  function addSubfield(row, subfield) {
+  function addSubfield(row, subfield, index = 0) {
     const span = makeSpan('subfield');
-    span.appendChild(makeSubfieldCode(subfield.code));
-    span.appendChild(makeSubfieldData(subfield.value));
+    span.appendChild(makeSubfieldCode(subfield.code, index));
+    span.appendChild(makeSubfieldData(subfield.value, index));
     row.appendChild(span);
   }
 
-  function makeSubfieldCode(code) {
-    return makeSpan('code', code);
+  function makeSubfieldCode(code, index = 0) {
+    return makeSpan('code', code, null, index);
   }
 
-  function makeSubfieldData(value) {
-    return makeSpan('value', value);
+  function makeSubfieldData(value, index = 0) {
+    return makeSpan('value', value, null, index);
   }
 }
 
@@ -141,9 +141,10 @@ function makeDiv(className, value) {
   return div;
 }
 
-function makeSpan(className, text, html) {
+function makeSpan(className, text, html, index = 0) {
   const span = document.createElement('span');
   span.setAttribute('class', className);
+  span.setAttribute('index', index);
   if (text) {
     span.textContent = text;
   } else if (html) {
@@ -158,7 +159,7 @@ function makeSpan(className, text, html) {
 
 let editing = null;
 
-export function editField(field, original = null) {
+export function editField(field, original = null, elementToPreactivate = null) {
   // Edit-ohje: https://marc21.kansalliskirjasto.fi/bib/05X-08X.htm#050
 
   editing = field;
@@ -184,15 +185,22 @@ export function editField(field, original = null) {
 
   const tag = document.querySelector('#fieldEditDlg #tag');
   tag.innerHTML = '';
-  tag.appendChild(createInput('tag', 'tag', field.tag));
+  const tagInput = createInput('tag', 'tag', field.tag);
+  tag.appendChild(tagInput);
+  preactivateEdit(elementToPreactivate, 'tag', tagInput);
+  
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
-  ind1.appendChild(createInput('ind1', 'inds', field.ind1));
+  const ind1Input = createInput('ind1', 'inds', field.ind1);
+  ind1.appendChild(ind1Input);
+  preactivateEdit(elementToPreactivate, 'ind1' ,ind1Input);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
-  ind2.appendChild(createInput('ind2', 'inds', field.ind2));
+  const ind2Input = createInput('ind2', 'inds', field.ind2);
+  ind2.appendChild(ind2Input);
+  preactivateEdit(elementToPreactivate, 'ind2' ,ind2Input);
 
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   subfields.innerHTML = '';
@@ -203,12 +211,14 @@ export function editField(field, original = null) {
   // if field contains "value" and not "subfields"
   if (field.value) {
     value.innerHTML = 'Arvo:';
-    value.appendChild(createInput('value', 'value', field.value));
+    const valueInput = createInput('value', 'value', field.value);
+    value.appendChild(valueInput);
+    preactivateEdit(elementToPreactivate, 'value' ,valueInput);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
-    for (const subfield of field.subfields) {
-      createSubfield(subfields, subfield);
+    for (const [index, subfield] of field.subfields.entries()) {
+      createSubfield(subfields, subfield, elementToPreactivate, index);
     }
 
     //*
@@ -219,15 +229,32 @@ export function editField(field, original = null) {
 
     /**/
   }
+  
 }
 
-function createSubfield(parent, subfield) {
+function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
+  if(elementToPreactivate && inputClassName && input && inputClassName === elementToPreactivate.class && index === elementToPreactivate.index){
+    //console.log(`Found correct item at: ${elementToPreactivate.class} in index ${elementToPreactivate.index}`);
+    input.focus();
+  }
+}
+
+function createSubfield(parent, subfield, elementToPreactivate, index = 0) {
   const row = document.createElement('div');
   row.classList.add('subfield');
   row.appendChild(removeButton());
-  row.appendChild(createInput('code', 'code', subfield.code));
-  row.appendChild(createInput('value', 'value', subfield.value));
+
+  const codeInput = createInput('code', 'code', subfield.code);
+  const valueInput = createInput('value', 'value', subfield.value);
+
+  row.appendChild(codeInput);
+  row.appendChild(valueInput);
+
   parent.appendChild(row);
+
+  preactivateEdit(elementToPreactivate, 'code', codeInput, index);
+  preactivateEdit(elementToPreactivate, 'value', valueInput, index);
+
   return row;
 
   function removeButton() {

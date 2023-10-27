@@ -297,8 +297,28 @@ function decorateField(div, field) {
 
 function onFieldClick(event, field) {
   //console.log("Click", field)
+  
   if (editmode) {
-    editField(getContent(field), getOriginal(field));
+
+    //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
+    //span uses as class classname/id
+    var subElement = null;
+    try {
+      subElement = {};
+      subElement.class = event.originalTarget.attributes.class.nodeValue;
+      subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
+    } catch (error) {
+      console.error(`Getting field sub element encountered error: ${error}`);
+      subElement = null;
+    }
+    //make sure only certain values can be auto edit focus requested
+    //if not correct later expects null and does nothing
+    if(subElement && !isSubElementAcceptable(subElement.class)){
+        console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
+        subElement = null;
+    }
+
+    editField(getContent(field), getOriginal(field), subElement);
   } else {
     toggleField(field);
   }
@@ -316,6 +336,18 @@ function onFieldClick(event, field) {
     }
 
     doTransform();
+  }
+  function isSubElementAcceptable(elementRequested){
+    switch (elementRequested){
+      case 'tag':
+      case 'ind1':
+      case 'ind2':
+      case 'code':
+      case 'value':
+        return true;
+      default:
+        return false;
+    }
   }
 }
 
