@@ -54,8 +54,13 @@ window.initialize = function () {
     transformed.options.profile = profile;
   }
 
-  document.querySelector('.record-merge-panel #source #ID').addEventListener('input', updateUrlParameters);
-  document.querySelector('.record-merge-panel #base #ID').addEventListener('input', updateUrlParameters);
+  document.querySelector('.record-merge-panel #source #ID').addEventListener('input', onMergePanelInputChange);
+  document.querySelector('.record-merge-panel #base #ID').addEventListener('input', onMergePanelInputChange);
+
+  function onMergePanelInputChange(e){
+    updateUrlParameters(e);
+    updateIdSwapButtonState();
+  }
 
   function updateUrlParameters(e) {
     const isOnPath = (id) => e.composedPath().some(element => element.id === id);
@@ -81,6 +86,13 @@ window.initialize = function () {
     if (window.location.search === '') {
       window.history.replaceState({}, '', '/muuntaja/');
     }
+  }
+
+  function updateIdSwapButtonState(){
+    const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+    const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+    document.getElementById('swap-button').disabled = !sourceID || !baseID;
   }
 };
 
