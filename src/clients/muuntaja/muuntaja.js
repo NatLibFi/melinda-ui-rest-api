@@ -59,7 +59,7 @@ window.initialize = function () {
 
   function onMergePanelInputChange(e){
     updateUrlParameters(e);
-    updateIdSwapButtonState();
+    updateRecordSwapButtonState();
   }
 
   function updateUrlParameters(e) {
@@ -88,13 +88,15 @@ window.initialize = function () {
     }
   }
 
-  function updateIdSwapButtonState(){
+  function updateRecordSwapButtonState(){
     const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
     const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
     document.getElementById('swap-button').disabled = !sourceID || !baseID;
   }
 };
+
+
 
 //-----------------------------------------------------------------------------
 
@@ -187,14 +189,31 @@ window.onSave = function (e) {
   return eventHandled(e);
 };
 
-window.onIdSwap = function(e){
-  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+window.onRecordSwap = function(e){
 
-  console.log('Swap:ing between source id and base id');
+  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
+  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
 
-  document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value = baseID;
-  document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value = sourceID;
+  console.log('Swap:ing between source and base');
+
+  //swap id:s
+  sourceInput.value = baseInput.value;
+  baseInput.value = sourceInput.value;
+
+  //trigger input event listener to update required values (ie. url parameters)
+  sourceInput.dispatchEvent(new Event('input'));
+  baseInput.dispatchEvent(new Event('input'));
+
+  //swap records around without any search
+  if(transformed){
+    const sourceData = transformed.source;
+    const baseData = transformed.base;
+
+    transformed.source = baseData;
+    transformed.base = sourceData;
+
+    showTransformed(transformed);
+  }
 
   return eventHandled(e);
 };
