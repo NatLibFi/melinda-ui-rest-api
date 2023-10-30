@@ -175,6 +175,18 @@ window.onSave = function (e) {
   return eventHandled(e);
 };
 
+window.onIdSwap = function(e){
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  console.log('Swap:ing between source id and base id');
+
+  document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value = baseID;
+  document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value = sourceID;
+
+  return eventHandled(e);
+};
+
 window.onSettings = function (e) {
   console.log('Settings:', e);
   return eventHandled(e);
