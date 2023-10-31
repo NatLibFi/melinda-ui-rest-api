@@ -297,8 +297,15 @@ function decorateField(div, field) {
 
 function onFieldClick(event, field) {
   //console.log("Click", field)
+
+  var recordDestination = '';
+  try {
+    recordDestination = event.currentTarget.attributes.recordDestination.nodeValue;
+  } catch (error) {
+    console.error(`Could not determine the main panel (record destination) where user clicked on: ${error}`);
+  }
   
-  if (editmode) {
+  if (editmode && recordDestination === 'result') {
 
     //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
     //span uses as class classname/id
