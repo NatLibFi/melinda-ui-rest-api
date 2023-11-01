@@ -54,8 +54,13 @@ window.initialize = function () {
     transformed.options.profile = profile;
   }
 
-  document.querySelector('.record-merge-panel #source #ID').addEventListener('input', updateUrlParameters);
-  document.querySelector('.record-merge-panel #base #ID').addEventListener('input', updateUrlParameters);
+  document.querySelector('.record-merge-panel #source #ID').addEventListener('input', onMergePanelInputChange);
+  document.querySelector('.record-merge-panel #base #ID').addEventListener('input', onMergePanelInputChange);
+
+  function onMergePanelInputChange(e){
+    updateUrlParameters(e);
+    updateRecordSwapButtonState();
+  }
 
   function updateUrlParameters(e) {
     const isOnPath = (id) => e.composedPath().some(element => element.id === id);
@@ -82,7 +87,16 @@ window.initialize = function () {
       window.history.replaceState({}, '', '/muuntaja/');
     }
   }
+
+  function updateRecordSwapButtonState(){
+    const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+    const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+    document.getElementById('swap-button').disabled = !sourceID || !baseID;
+  }
 };
+
+
 
 //-----------------------------------------------------------------------------
 
@@ -172,6 +186,35 @@ window.onSearch = function (e) {
 
 window.onSave = function (e) {
   console.log('Save:', e);
+  return eventHandled(e);
+};
+
+window.onRecordSwap = function(e){
+
+  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
+  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
+
+  console.log('Swap:ing between source and base');
+
+  //swap id:s
+  sourceInput.value = baseInput.value;
+  baseInput.value = sourceInput.value;
+
+  //trigger input event listener to update required values (ie. url parameters)
+  sourceInput.dispatchEvent(new Event('input'));
+  baseInput.dispatchEvent(new Event('input'));
+
+  //swap records around without any search
+  if(transformed){
+    const sourceData = transformed.source;
+    const baseData = transformed.base;
+
+    transformed.source = baseData;
+    transformed.base = sourceData;
+
+    showTransformed(transformed);
+  }
+
   return eventHandled(e);
 };
 
