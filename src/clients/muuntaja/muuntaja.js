@@ -151,8 +151,27 @@ window.onEdit = function (e) {
   } else {
     e.target.classList.remove('edit-mode');
   }
+  styleBasedOnEditState();
   showTransformed();
   return eventHandled(e);
+
+  function styleBasedOnEditState(){
+    const originalStyle = getComputedStyle(document.querySelector('.record-merge-panel'));
+    const borderStyleActive = "solid";
+    const borderColorActive = originalStyle.getPropertyValue('--color-melinda-green-custom');
+
+    //use .record-merge-panel #source/#base/#result #some-sub-id/.some-sub-class
+    const resultPanel = document.querySelector('.record-merge-panel #result ');
+
+    if(editmode){
+      resultPanel.style.borderStyle = borderStyleActive;
+      resultPanel.style.borderColor = borderColorActive;
+      resultPanel.style.borderWidth = "2px";
+    }
+    else{
+      resultPanel.style.borderStyle = "initial";
+    }
+  }
 };
 
 window.onNewField = function (e) {
