@@ -27,6 +27,7 @@ export function createBase(source, options) {
     subfieldValues: false
   };
   const sourceValidators = {
+    fields: false,
     subfieldValues: false
   };
 

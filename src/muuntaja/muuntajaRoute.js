@@ -85,8 +85,8 @@ export default function (sruUrl) {
       LOWTAG: opts?.profile ?? 'XXX'
     }))(req.body.options);
 
-   const transformProfile = profiles[options.type];
-//logger.debug(`transformProfile: ${transformProfile}`);
+    //const transformProfile = profiles[options.type];
+    //logger.debug(`transformProfile: ${transformProfile}`);
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
     //logger.debug(`sourceID: ${source.ID}`);
@@ -98,11 +98,12 @@ export default function (sruUrl) {
 
     //const include = generateMissingIDs(req.body.include ?? []);
 
+    //const [sourceRecord, baseRecord] = await load(source, base);
     const {sourceRecord, baseRecord} = await loadRecords(source, base);
 
     //-------------------------------------------------------------------------
 
-    const resultRecord = muuntajaService.getResultRecord({      
+    const resultRecord = muuntajaService.getResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
@@ -114,7 +115,9 @@ export default function (sruUrl) {
 
     res.json({
       options: req.body.options,
-      ...postProcess(sourceRecord, baseRecord, resultRecord),
+      source: sourceRecord,
+      base: baseRecord,
+      result: resultRecord,
       exclude,
       replace,
       include: []
@@ -124,64 +127,40 @@ export default function (sruUrl) {
     // Get source & base records
     //-------------------------------------------------------------------------
 
+    function load(source, base) {
+      return Promise.all([
+        fetchRecord(source),
+        fetchRecord(base)
+      ]);
+    }
+
+    function fetchRecord(record) {
+      try {
+        logger.debug('Fetching...');
+        //logger.debug(`Record: ${JSON.stringify(record)}`);
+
+        return getRecordWithIDs(bibService, record);
+      } catch (e) {
+        return {
+          ...record,
+          error: e.toString()
+        };
+      }
+    }
+
     // Make: Run "autoexcluder" for new source records.
     // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
 
     async function loadRecords(source, base) {
-      const [sourceRecord, baseRecord] = await load();
+
+      const [sourceRecord, baseRecord] = await load(source, base);
 
       //logger.debug(`Loaded source: ${JSON.stringify(sourceRecord, null, 2)}`);
       //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
 
       return {
         sourceRecord,
-        baseRecord: modifyRecord(getBase(baseRecord, sourceRecord), include, null, null)
-      };
-
-      function getBase(base, source) { // eslint-disable-line no-unused-vars
-        if (base?.leader) {
-          return base;
-        }
-        if (!source?.leader) {
-          return base;
-        }
-        return {
-          ...base,
-          ...transformProfile.createBase(source, options)
-        };
-      }
-
-      function load() {
-        return Promise.all([
-          fetchRecord(source),
-          fetchRecord(base)
-        ]);
-      }
-
-      function fetchRecord(record) {
-        try {
-          logger.debug('Fetching...');
-          //logger.debug(`Record: ${JSON.stringify(record)}`);
-
-          return getRecordWithIDs(bibService, record);
-        } catch (e) {
-          return {
-            ...record,
-            error: e.toString()
-          };
-        }
-      }
-    }
-
-    //-------------------------------------------------------------------------
-    // Transform postprocess (apply user edits)
-    //-------------------------------------------------------------------------
-
-    function postProcess(source, base, result) {
-      return {
-        source: asMarcRecord(source),
-        base: asMarcRecord(base),
-        result: asMarcRecord(modifyRecord(result, null, null, replace))
+        baseRecord: modifyRecord(muuntajaService.getBaseRecord(sourceRecord, baseRecord, options), include, null, null)
       };
     }
   }

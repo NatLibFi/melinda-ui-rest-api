@@ -25,6 +25,7 @@ const logger = createLogger();
 export function createMuuntajaService() {
 
   return {
+    getBaseRecord,
     getResultRecord
   };
 }
@@ -36,21 +37,30 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
- //function getResultRecord(data) { // ALKUP
- export function getResultRecord({source, base, options, include, exclude, replace}) { // added: export / 2.11
-  
-  //const {profile, source, base, options, include, exclude, replace} = data;
-  //const {options, source, base, include, exclude, replace} = data;
+function getBaseRecord(source, base, options) {
+  if (base?.leader) {
+    return base;
+  }
 
-    //logger.debug(`* now in getResultRecord`);
-    //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);    
-    //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
-    //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
-    //logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
+  const transformProfile = profiles[options.type];
+
+  return {
+    ...base,
+    ...transformProfile.createBase(source, options)
+  };
+}
+
+export function getResultRecord({source, base, options, include, exclude, replace}) {
+  //logger.debug(`* now in getResultRecord`);
+  //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
+  //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
+  //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
+  //logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
 
   if (!source?.leader || !base?.leader) {
     return {};
   }
+
   //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
   //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
   //logger.debug(`   ... to return/merger`);
@@ -58,19 +68,19 @@ export function createMuuntajaService() {
   const transformProfile = profiles[options.type];
   //logger.debug(`* transformProfile: ${JSON.stringify(transformProfile, null, 2)}`);
 
-  const reducers = transformProfile.getReducers(options) 
+  const reducers = transformProfile.getReducers(options);
   //const reducers = [];
   //logger.debug(`* reducers: ${JSON.stringify(reducers, null, 2)}`);
 
   const result = merger({
     base: modifyRecord(base, null, exclude, null),
     source: modifyRecord(source, null, exclude, null),
-    reducers    
+    reducers
   });
 
   //logger.debug(`* result: ${JSON.stringify(result, null, 2)}`);
 
-  return result;
+  return asMarcRecord(modifyRecord(result, null, null, replace));
 }
 
 /******************************************************************************
