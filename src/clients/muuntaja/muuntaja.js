@@ -165,8 +165,27 @@ window.onEdit = function (e) {
   } else {
     e.target.classList.remove('edit-mode');
   }
+  styleBasedOnEditState();
   showTransformed();
   return eventHandled(e);
+
+  function styleBasedOnEditState(){
+    const originalStyle = getComputedStyle(document.querySelector('.record-merge-panel'));
+    const borderStyleActive = "solid";
+    const borderColorActive = originalStyle.getPropertyValue('--color-melinda-green-custom');
+
+    //use .record-merge-panel #source/#base/#result #some-sub-id/.some-sub-class
+    const resultPanel = document.querySelector('.record-merge-panel #result ');
+
+    if(editmode){
+      resultPanel.style.borderStyle = borderStyleActive;
+      resultPanel.style.borderColor = borderColorActive;
+      resultPanel.style.borderWidth = "2px";
+    }
+    else{
+      resultPanel.style.borderStyle = "initial";
+    }
+  }
 };
 
 window.onNewField = function (e) {
@@ -197,14 +216,17 @@ window.onRecordSwap = function(e){
   console.log('Swap:ing between source and base');
 
   //swap id:s
-  sourceInput.value = baseInput.value;
-  baseInput.value = sourceInput.value;
+  const originalSourceId = sourceInput.value;
+  const originalBaseId = baseInput.value;
+
+  sourceInput.value = originalBaseId;
+  baseInput.value = originalSourceId;
 
   //trigger input event listener to update required values (ie. url parameters)
   sourceInput.dispatchEvent(new Event('input'));
   baseInput.dispatchEvent(new Event('input'));
 
-  //swap records around without any search
+  //swap records around
   if(transformed){
     const sourceData = transformed.source;
     const baseData = transformed.base;
@@ -212,7 +234,7 @@ window.onRecordSwap = function(e){
     transformed.source = baseData;
     transformed.base = sourceData;
 
-    showTransformed(transformed);
+    doTransform();
   }
 
   return eventHandled(e);
@@ -340,8 +362,15 @@ function decorateField(div, field) {
 
 function onFieldClick(event, field) {
   //console.log("Click", field)
+
+  var recordDestination = '';
+  try {
+    recordDestination = event.currentTarget.attributes.recordDestination.nodeValue;
+  } catch (error) {
+    console.error(`Could not determine the main panel (record destination) where user clicked on: ${error}`);
+  }
   
-  if (editmode) {
+  if (editmode && recordDestination === 'result') {
 
     //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
     //span uses as class classname/id
