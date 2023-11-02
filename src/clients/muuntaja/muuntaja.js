@@ -226,10 +226,13 @@ window.onRecordSwap = function(e){
   sourceInput.dispatchEvent(new Event('input'));
   baseInput.dispatchEvent(new Event('input'));
 
-  //swap records around without any search
+  //swap records around
   if(transformed){
-    transformed.source = {ID: originalBaseId}
-    transformed.base = {ID: originalSourceId}
+    const sourceData = transformed.source;
+    const baseData = transformed.base;
+
+    transformed.source = baseData;
+    transformed.base = sourceData;
 
     doTransform();
   }
