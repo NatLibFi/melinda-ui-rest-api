@@ -216,11 +216,14 @@ export function editField(field, original = null, elementToPreactivate = null) {
     const valueInput = createInput('value', 'value', field.value);
     value.appendChild(valueInput);
     preactivateEdit(elementToPreactivate, 'value' ,valueInput);
+    setEditSaveButtonActiveState(true);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
     for (const [index, subfield] of field.subfields.entries()) {
-      createSubfield(subfields, subfield, elementToPreactivate, index);
+      createSubfield(subfields, subfield, elementToPreactivate, index, ()=>{
+          setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+      });
     }
 
     //*
@@ -234,6 +237,25 @@ export function editField(field, original = null, elementToPreactivate = null) {
   
 }
 
+function hasActiveSubFields(subfields){
+  var containsActiveFields = false;
+  for (const subfieldElement of subfields.children) {
+    var isActive = true; 
+    try {
+      isActive = subfieldElement.attributes.disabled.nodeValue !== 'true';
+    } catch (error) {}
+
+    if(isActive){
+      containsActiveFields = true;
+      break;
+    }
+  }
+  return containsActiveFields;
+}
+function setEditSaveButtonActiveState(isActive){
+  document.getElementById('editSaveButton').disabled = !isActive;
+}
+
 function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
   if(elementToPreactivate && inputClassName && input && inputClassName === elementToPreactivate.class && index === elementToPreactivate.index){
     //console.log(`Found correct item at: ${elementToPreactivate.class} in index ${elementToPreactivate.index}`);
@@ -241,10 +263,10 @@ function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0
   }
 }
 
-function createSubfield(parent, subfield, elementToPreactivate, index = 0) {
+function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRemovedCallback = null) {
   const row = document.createElement('div');
   row.classList.add('subfield');
-  row.appendChild(removeButton());
+  row.appendChild(removeButton(onRemovedCallback));
 
   const codeInput = createInput('code', 'code', subfield.code);
   const valueInput = createInput('value', 'value', subfield.value);
@@ -259,20 +281,28 @@ function createSubfield(parent, subfield, elementToPreactivate, index = 0) {
 
   return row;
 
-  function removeButton() {
+  function removeButton(onRemovedCallback = null) {
     const btn = document.createElement('button');
     btn.classList.add('material-icons');
     btn.innerHTML = 'close';
     btn.addEventListener('click', event => {
+      handleRemovedIndicator();
+      if(onRemovedCallback){
+        onRemovedCallback();
+      }
+      return true;
+    });
+    return btn;
+
+    function handleRemovedIndicator(){
       const state = row.getAttribute('disabled');
       if (state) {
         row.removeAttribute('disabled');
       } else {
         row.setAttribute('disabled', true);
       }
-      return true;
-    });
-    return btn;
+    }
+
   }
 }
 
@@ -290,7 +320,12 @@ function createInput(name, className, value, editable = true) {
 
 window.onAddField = function (event) {
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
-  createSubfield(subfields, {code: '?', value: '?'});
+  const newIndex = subfields.children.length;
+  createSubfield(subfields, {code: '?', value: '?'}, null, newIndex, () => {
+    setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+  });
+  setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+
   return eventHandled(event);
 };
 
