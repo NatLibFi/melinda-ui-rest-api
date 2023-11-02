@@ -321,11 +321,15 @@ function createInput(name, className, value, editable = true) {
 window.onAddField = function (event) {
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   const newIndex = subfields.children.length;
+  const isFixedField = document.querySelector('#fieldEditDlg #value').innerHTML !== '';
   createSubfield(subfields, {code: '?', value: '?'}, null, newIndex, () => {
-    setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+    if(!isFixedField){
+      setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+    }
   });
-  setEditSaveButtonActiveState(hasActiveSubFields(subfields));
-
+  if(!isFixedField){
+    setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+  }
   return eventHandled(event);
 };
 
