@@ -216,8 +216,11 @@ window.onRecordSwap = function(e){
   console.log('Swap:ing between source and base');
 
   //swap id:s
-  sourceInput.value = baseInput.value;
-  baseInput.value = sourceInput.value;
+  const originalSourceId = sourceInput.value;
+  const originalBaseId = baseInput.value;
+
+  sourceInput.value = originalBaseId;
+  baseInput.value = originalSourceId;
 
   //trigger input event listener to update required values (ie. url parameters)
   sourceInput.dispatchEvent(new Event('input'));
