@@ -2,16 +2,23 @@
  "options": {
   "type": "p2e",
   "profile": "KVP",
-  "format": "PDF"
+  "format": "PDF",
+  "LOWTAG":"KVP"
  },
  "source": {
-  "ID": ""
+  "leader": "1111111111",
+  "fields": [
+    {
+        "tag":"001",        
+        "value": "12345"
+    }
+  ]
  },
  "base": {
-  "ID": "123456789",
+  "leader": "222222222",
   "fields": [
    {
-    "tag": "20",
+    "tag": "020",
     "ind1": "1",
     "ind2": "2",
     "subfields": [
@@ -36,8 +43,6 @@
    }
   ]
  },
- "transformed": {},
- "result": {},
  "exclude": {},
  "replace": {},
  "include": []

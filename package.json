@@ -29,7 +29,7 @@
     "test": "npm run lint && npm run test:base",
     "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/**/*.spec.js",
     "test:artikkelit": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/artikkelit/generate/*.spec.js",
-    "test:muuntaja": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/muuntaja/generate/*.spec.js",
+    "test:muuntaja": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/muuntaja/*.spec.js",
     "test:dev": "clear && npm run lint:dev && npm run test:base && npm run coverage",
     "coverage": "npm run coverage:unit && npm run coverage:report",
     "coverage:unit": "nyc --silent npm run test:base",

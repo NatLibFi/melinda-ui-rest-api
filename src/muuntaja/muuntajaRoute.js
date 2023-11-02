@@ -15,7 +15,6 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-import {profiles} from './config/profiles';
 import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './muuntajaService';
 
 const appName = 'Muuntaja';
@@ -86,7 +85,8 @@ export default function (sruUrl) {
       LOWTAG: opts?.profile ?? 'XXX'
     }))(req.body.options);
 
-    const transformProfile = profiles[options.type];
+   const transformProfile = profiles[options.type];
+//logger.debug(`transformProfile: ${transformProfile}`);
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
     //logger.debug(`sourceID: ${source.ID}`);
@@ -102,8 +102,7 @@ export default function (sruUrl) {
 
     //-------------------------------------------------------------------------
 
-    const resultRecord = muuntajaService.getResultRecord({
-      profile: transformProfile,
+    const resultRecord = muuntajaService.getResultRecord({      
       source: sourceRecord,
       base: baseRecord,
       options,
