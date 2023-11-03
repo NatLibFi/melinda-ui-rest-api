@@ -265,7 +265,7 @@ function setElementState(elementId, isActive){
   document.getElementById(elementId).disabled = !isActive;
 }
 function setElementVisibility(elementId, isVisible){
-  document.getElementById(elementId).style.visibility = isVisible ? "visible" : "hidden";
+  document.getElementById(elementId).style.visibility = isVisible ? "visible" : "collapse";
 }
 
 function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
