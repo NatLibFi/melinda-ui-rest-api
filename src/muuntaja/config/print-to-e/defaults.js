@@ -28,7 +28,7 @@ const defaultFieldValues = {
     ind1: ' ', ind2: ' ',
     subfields: [
       {code: 'a', value: ''},
-      {code: 'q', value: opts.format}
+      {code: 'q', value: opts.format ?? ''}
     ],
     id: '1ed797e0-1026-425b-9ef4-fc4d3771914a'
   }),

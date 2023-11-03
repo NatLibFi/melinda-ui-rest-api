@@ -12,6 +12,7 @@ import merger from '@natlibfi/marc-record-merge';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {v4 as uuid} from 'uuid';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
+import {profiles} from './config/profiles';
 
 export {uuid};
 
@@ -35,20 +36,47 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function getResultRecord(data) {
-  const {profile, source, base, options, include, exclude, replace} = data;
+function stripRecord({ID, leader, fields}) {
+  if (ID) {
+    return {ID, leader, fields};
+  }
+  return {leader, fields};
+}
+
+export function getResultRecord({source, base: baseRecord, options, include, exclude, replace}) {
+  //logger.debug(`* now in getResultRecord`);
+  //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
+  //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
+  //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
+  //logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
+
+  const transformProfile = profiles[options.type];
+
+  const base = baseRecord?.leader ? baseRecord : transformProfile.createBase(options);
 
   if (!source?.leader || !base?.leader) {
-    return {};
+    return {
+      source: stripRecord(source),
+      base: stripRecord(base),
+      result: {}
+    };
   }
-  //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
-  //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
 
-  return merger({
+  const reducers = transformProfile.getReducers(options);
+
+  const result = merger({
     base: modifyRecord(base, null, exclude, null),
     source: modifyRecord(source, null, exclude, null),
-    reducers: profile.getReducers(options)
+    reducers
   });
+
+  //logger.debug(`* result: ${JSON.stringify(result, null, 2)}`);
+
+  return {
+    source: stripRecord(source),
+    base: stripRecord(base),
+    result: stripRecord(asMarcRecord(modifyRecord(result, null, null, replace)))
+  };
 }
 
 /******************************************************************************

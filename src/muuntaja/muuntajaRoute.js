@@ -15,8 +15,7 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-import {profiles} from './config/profiles';
-import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './muuntajaService';
+import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord} from './muuntajaService';
 
 const appName = 'Muuntaja';
 
@@ -68,6 +67,9 @@ export default function (sruUrl) {
   // Process user data for record transform
   //---------------------------------------------------------------------------
 
+  // Make: Run "autoexcluder" for new source records.
+  // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
+
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
@@ -86,7 +88,8 @@ export default function (sruUrl) {
       LOWTAG: opts?.profile ?? 'XXX'
     }))(req.body.options);
 
-    const transformProfile = profiles[options.type];
+    //const transformProfile = profiles[options.type];
+    //logger.debug(`transformProfile: ${transformProfile}`);
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
     //logger.debug(`sourceID: ${source.ID}`);
@@ -98,12 +101,12 @@ export default function (sruUrl) {
 
     //const include = generateMissingIDs(req.body.include ?? []);
 
-    const {sourceRecord, baseRecord} = await loadRecords(source, base);
+    const [sourceRecord, baseRecord] = await load(source, base);
+    //const {sourceRecord, baseRecord} = await loadRecords(source, base);
 
     //-------------------------------------------------------------------------
 
-    const resultRecord = muuntajaService.getResultRecord({
-      profile: transformProfile,
+    const result = muuntajaService.getResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
@@ -114,8 +117,8 @@ export default function (sruUrl) {
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
+      ...result,
       options: req.body.options,
-      ...postProcess(sourceRecord, baseRecord, resultRecord),
       exclude,
       replace,
       include: []
@@ -125,65 +128,25 @@ export default function (sruUrl) {
     // Get source & base records
     //-------------------------------------------------------------------------
 
-    // Make: Run "autoexcluder" for new source records.
-    // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
-
-    async function loadRecords(source, base) {
-      const [sourceRecord, baseRecord] = await load();
-
-      //logger.debug(`Loaded source: ${JSON.stringify(sourceRecord, null, 2)}`);
-      //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
-
-      return {
-        sourceRecord,
-        baseRecord: modifyRecord(getBase(baseRecord, sourceRecord), include, null, null)
-      };
-
-      function getBase(base, source) { // eslint-disable-line no-unused-vars
-        if (base?.leader) {
-          return base;
-        }
-        if (!source?.leader) {
-          return base;
-        }
-        return {
-          ...base,
-          ...transformProfile.createBase(source, options)
-        };
-      }
-
-      function load() {
-        return Promise.all([
-          fetchRecord(source),
-          fetchRecord(base)
-        ]);
-      }
-
-      function fetchRecord(record) {
-        try {
-          logger.debug('Fetching...');
-          //logger.debug(`Record: ${JSON.stringify(record)}`);
-
-          return getRecordWithIDs(bibService, record);
-        } catch (e) {
-          return {
-            ...record,
-            error: e.toString()
-          };
-        }
-      }
+    function load(source, base) {
+      return Promise.all([
+        fetchRecord(source),
+        fetchRecord(base)
+      ]);
     }
 
-    //-------------------------------------------------------------------------
-    // Transform postprocess (apply user edits)
-    //-------------------------------------------------------------------------
+    function fetchRecord(record) {
+      try {
+        logger.debug('Fetching...');
+        //logger.debug(`Record: ${JSON.stringify(record)}`);
 
-    function postProcess(source, base, result) {
-      return {
-        source: asMarcRecord(source),
-        base: asMarcRecord(base),
-        result: asMarcRecord(modifyRecord(result, null, null, replace))
-      };
+        return getRecordWithIDs(bibService, record);
+      } catch (e) {
+        return {
+          ...record,
+          error: e.toString()
+        };
+      }
     }
   }
 }

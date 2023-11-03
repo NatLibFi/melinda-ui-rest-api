@@ -1,9 +1,10 @@
 {
-  "description": "First test case for Muuntaja (case dummy)",
+  "description": "Print2e: Base record",
   "skip": false,
   "only": false,
   "succesRecords": 2,
   "failedRecords": 0,
+  "testBase": true,
   "expectedError": false,
   "expectedErrorStatus": "200"
 }

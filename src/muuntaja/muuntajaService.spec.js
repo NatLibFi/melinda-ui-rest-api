@@ -1,25 +1,27 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {generateDummyFunc} from './generateDummy.js';
+
+import {getResultRecord} from './muuntajaService.js';
 
 generateTests({
-  callback: testDum,
-  path: [__dirname, '..', '..', '..', 'test-fixtures', 'muuntaja', 'generateDummy'],
+  callback: testTransform,
+  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja'],
   useMetadataFile: true,
-  recurse: false,
+  recurse: true,
   fixura: {
     reader: READERS.JSON
   }
 });
 
-async function testDum({getFixture, expectToFail = false}) {
+function testTransform({getFixture, testBase = false, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
-    const expectedResults = getFixture('output.json');
-    const result = await generateDummyFunc(input.base.ID);
+    const expectedResult = getFixture('output.json');
 
-    expect(result).to.deep.equal(expectedResults);
+    const {base, result} = getResultRecord(input);
+
+    expect(testBase ? base : result).to.deep.equal(expectedResult);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
   } catch (error) {
