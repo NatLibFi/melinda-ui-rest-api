@@ -34,13 +34,13 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   }
 
   if (record.leader) {
-    addField(recordDiv, {tag: 'LDR', value: record.leader});
+    addField(recordDiv, {tag: 'LDR', value: record.leader}, null, dest);
   }
 
   if (record.fields) {
     for (const field of record.fields) {
       const content = decorator?.getContent ? decorator.getContent(field) : field;
-      addField(recordDiv, content, decorator);
+      addField(recordDiv, content, decorator, dest);
     }
   }
 
@@ -56,9 +56,11 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-function addField(div, field, decorator = null) {
+function addField(div, field, decorator = null, recordDestination = '') {
   //console.log(field)
   const row = document.createElement('div');
+  row.setAttribute('recordDestination', recordDestination);
+
   row.classList.add('row');
   if (decorator?.decorateField) {
     decorator.decorateField(row, field);
