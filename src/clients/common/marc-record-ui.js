@@ -217,9 +217,12 @@ export function editField(field, original = null, elementToPreactivate = null) {
     value.appendChild(valueInput);
     preactivateEdit(elementToPreactivate, 'value' ,valueInput);
     setEditSaveButtonActiveState(true);
+    setEditNewSubfieldButtonVisibility(false)
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
+    setEditNewSubfieldButtonVisibility(true)
+
     for (const [index, subfield] of field.subfields.entries()) {
       createSubfield(subfields, subfield, elementToPreactivate, index, ()=>{
           setEditSaveButtonActiveState(hasActiveSubFields(subfields));
@@ -253,7 +256,16 @@ function hasActiveSubFields(subfields){
   return containsActiveFields;
 }
 function setEditSaveButtonActiveState(isActive){
-  document.getElementById('editSaveButton').disabled = !isActive;
+  setElementState('editSaveButton', isActive);
+}
+function setEditNewSubfieldButtonVisibility(isVisible){
+  setElementVisibility('editAddFieldButton', isVisible);
+}
+function setElementState(elementId, isActive){
+  document.getElementById(elementId).disabled = !isActive;
+}
+function setElementVisibility(elementId, isVisible){
+  document.getElementById(elementId).style.visibility = isVisible ? "visible" : "hidden";
 }
 
 function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
@@ -321,15 +333,10 @@ function createInput(name, className, value, editable = true) {
 window.onAddField = function (event) {
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   const newIndex = subfields.children.length;
-  const isFixedField = document.querySelector('#fieldEditDlg #value').innerHTML !== '';
   createSubfield(subfields, {code: '?', value: '?'}, null, newIndex, () => {
-    if(!isFixedField){
       setEditSaveButtonActiveState(hasActiveSubFields(subfields));
-    }
   });
-  if(!isFixedField){
     setEditSaveButtonActiveState(hasActiveSubFields(subfields));
-  }
   return eventHandled(event);
 };
 
