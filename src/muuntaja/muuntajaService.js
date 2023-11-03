@@ -58,7 +58,6 @@ export function getResultRecord({source, base, options, include, exclude, replac
 
   const transformProfile = profiles[options.type];
   const reducers = transformProfile.getReducers(options);
-  
   const result = merger({
     base: modifyRecord(base, null, exclude, null),
     source: modifyRecord(source, null, exclude, null),
