@@ -9,7 +9,7 @@
   "leader": "1111111111",
   "fields": [
     {
-        "tag":"001",        
+        "tag":"001",
         "value": "12345"
     }
   ]
@@ -26,20 +26,16 @@
       "code": "a",
       "value": "aaa"
      }
-    ],
-    "id": "8d940405-3396-4b80-a774-8e2edf0c72e5"
+    ]
    },
    {
     "tag": "100",
-    "ind1": "",
-    "ind2": "",
     "subfields": [
      {
       "code": "b",
       "value": "bbb"
      }
-    ],
-    "id": "b9dd19f2-edce-4beb-ae29-3d2b6c922ccf"
+    ]
    }
   ]
  },

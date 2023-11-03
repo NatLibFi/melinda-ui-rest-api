@@ -20,13 +20,9 @@ const logger = createLogger();
 //-----------------------------------------------------------------------------
 // Create base record from source and options
 
-export function createBase(source, options) {
+export function createBase(options) {
 
   const baseValidators = {
-    fields: false,
-    subfieldValues: false
-  };
-  const sourceValidators = {
     fields: false,
     subfieldValues: false
   };
@@ -39,18 +35,19 @@ export function createBase(source, options) {
     baseValidators
   );
 
-  const sourceRecord = new MarcRecord(source, sourceValidators);
-
+  //const sourceRecord = new MarcRecord(source, sourceValidators);
+  /*
   const opts = {
     ...options,
     ...getSourceInfo(sourceRecord)
   };
+  */
 
   //*
   return merger({
     base: baseRecord,
-    source: sourceRecord,
-    reducers: getReducers(opts)
+    source: {},
+    reducers: getReducers(options)
   }).sortFields();
 
   /*/

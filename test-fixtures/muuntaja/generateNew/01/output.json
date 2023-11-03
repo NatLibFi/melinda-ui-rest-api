@@ -1,42 +1,39 @@
 {
-    "_validationOptions": {},
-    "fields": [
-      {
-        "id": "8d940405-3396-4b80-a774-8e2edf0c72e5",
-        "ind1": "1",
-        "ind2": "2",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "aaa"
-          }
-        ],
-        "tag": "020"
-      },
-      {
-        "id": "b9dd19f2-edce-4beb-ae29-3d2b6c922ccf",
-        "ind1": " ",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "b",
-            "value": "bbb"
-          }
-        ],
-        "tag": "100"
-      },
-      {
-        "id": "98e21f26-9908-4419-8afa-83f56172b801",
-        "ind1": " ",
-        "ind2": " ",
-        "subfields": [
-          {
-            "code": "a",
-            "value": "KVP"
-          }
-        ],
-        "tag": "LOW"
-      }
-    ],
-    "leader": "222222222"
-  }
+  "leader": "222222222",
+  "fields": [
+    {
+      "ind1": "1",
+      "ind2": "2",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "aaa"
+        }
+      ],
+      "tag": "020"
+    },
+    {
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "b",
+          "value": "bbb"
+        }
+      ],
+      "tag": "100"
+    },
+    {
+      "id": "98e21f26-9908-4419-8afa-83f56172b801",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "KVP"
+        }
+      ],
+      "tag": "LOW"
+    }
+  ]
+}

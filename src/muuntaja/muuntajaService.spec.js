@@ -14,13 +14,14 @@ generateTests({
   }
 });
 
-function testTransform({getFixture, expectToFail = false}) {
+function testTransform({getFixture, testBase = false, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
-    const expectedResults = getFixture('output.json');
+    const expectedResult = getFixture('output.json');
 
-    const result = getResultRecord(input);
-    expect(result).to.deep.equal(expectedResults);
+    const {base, result} = getResultRecord(input);
+
+    expect(testBase ? base : result).to.deep.equal(expectedResult);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
   } catch (error) {

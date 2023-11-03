@@ -25,7 +25,6 @@ const logger = createLogger();
 export function createMuuntajaService() {
 
   return {
-    getBaseRecord,
     getResultRecord
   };
 }
@@ -37,36 +36,37 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function getBaseRecord(source, base, options) {
-  if (base?.leader) {
-    return base;
+function stripRecord({ID, leader, fields}) {
+  if (ID) {
+    return {ID, leader, fields};
   }
-
-  const transformProfile = profiles[options.type];
-
-  return {
-    ...base,
-    ...transformProfile.createBase(source, options)
-  };
+  return {leader, fields};
 }
 
-export function getResultRecord({source, base, options, include, exclude, replace}) {
+export function getResultRecord({source, base: baseRecord, options, include, exclude, replace}) {
   //logger.debug(`* now in getResultRecord`);
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
   //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
   //logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
 
+  const transformProfile = profiles[options.type];
+
+  const base = baseRecord?.leader ? baseRecord : transformProfile.createBase(options);
+
+  //logger.debug(`* transformProfile: ${JSON.stringify(transformProfile, null, 2)}`);
+
   if (!source?.leader || !base?.leader) {
-    return {};
+    return {
+      source: stripRecord(source),
+      base: stripRecord(base),
+      result: {}
+    };
   }
 
   //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
   //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
   //logger.debug(`   ... to return/merger`);
-
-  const transformProfile = profiles[options.type];
-  //logger.debug(`* transformProfile: ${JSON.stringify(transformProfile, null, 2)}`);
 
   const reducers = transformProfile.getReducers(options);
   //const reducers = [];
@@ -80,7 +80,11 @@ export function getResultRecord({source, base, options, include, exclude, replac
 
   //logger.debug(`* result: ${JSON.stringify(result, null, 2)}`);
 
-  return asMarcRecord(modifyRecord(result, null, null, replace));
+  return {
+    source: stripRecord(source),
+    base: stripRecord(base),
+    result: stripRecord(asMarcRecord(modifyRecord(result, null, null, replace)))
+  };
 }
 
 /******************************************************************************

@@ -15,7 +15,7 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, asMarcRecord} from './muuntajaService';
+import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord} from './muuntajaService';
 
 const appName = 'Muuntaja';
 
@@ -67,6 +67,9 @@ export default function (sruUrl) {
   // Process user data for record transform
   //---------------------------------------------------------------------------
 
+  // Make: Run "autoexcluder" for new source records.
+  // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
+
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
@@ -98,12 +101,12 @@ export default function (sruUrl) {
 
     //const include = generateMissingIDs(req.body.include ?? []);
 
-    //const [sourceRecord, baseRecord] = await load(source, base);
-    const {sourceRecord, baseRecord} = await loadRecords(source, base);
+    const [sourceRecord, baseRecord] = await load(source, base);
+    //const {sourceRecord, baseRecord} = await loadRecords(source, base);
 
     //-------------------------------------------------------------------------
 
-    const resultRecord = muuntajaService.getResultRecord({
+    const result = muuntajaService.getResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
@@ -114,10 +117,8 @@ export default function (sruUrl) {
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
     res.json({
+      ...result,
       options: req.body.options,
-      source: sourceRecord,
-      base: baseRecord,
-      result: resultRecord,
       exclude,
       replace,
       include: []
@@ -146,22 +147,6 @@ export default function (sruUrl) {
           error: e.toString()
         };
       }
-    }
-
-    // Make: Run "autoexcluder" for new source records.
-    // Make: Autoexcluder: run rules to automatically exclude fields, which can be added by user
-
-    async function loadRecords(source, base) {
-
-      const [sourceRecord, baseRecord] = await load(source, base);
-
-      //logger.debug(`Loaded source: ${JSON.stringify(sourceRecord, null, 2)}`);
-      //logger.debug(`Loaded base: ${JSON.stringify(baseRecord, null, 2)}`);
-
-      return {
-        sourceRecord,
-        baseRecord: modifyRecord(muuntajaService.getBaseRecord(sourceRecord, baseRecord, options), include, null, null)
-      };
     }
   }
 }
