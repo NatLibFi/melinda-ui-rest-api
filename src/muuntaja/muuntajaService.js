@@ -54,8 +54,6 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
 
   const base = baseRecord?.leader ? baseRecord : transformProfile.createBase(options);
 
-  //logger.debug(`* transformProfile: ${JSON.stringify(transformProfile, null, 2)}`);
-
   if (!source?.leader || !base?.leader) {
     return {
       source: stripRecord(source),
@@ -64,13 +62,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
     };
   }
 
-  //logger.debug(`Source: ${JSON.stringify(source, null, 2)}`);
-  //logger.debug(`Base: ${JSON.stringify(base, null, 2)}`);
-  //logger.debug(`   ... to return/merger`);
-
   const reducers = transformProfile.getReducers(options);
-  //const reducers = [];
-  //logger.debug(`* reducers: ${JSON.stringify(reducers, null, 2)}`);
 
   const result = merger({
     base: modifyRecord(base, null, exclude, null),
