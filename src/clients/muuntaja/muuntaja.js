@@ -457,11 +457,11 @@ function showTransformed(update = undefined) {
     transformed = update;
   }
 
-  if (update.source.status == 404) {
+  if (update?.source?.status == 404) {
     notFoundDlgOpen('Lähde');
   }
 
-  if (update.base.status == 404) {
+  if (update?.base?.status == 404) {
     notFoundDlgOpen('Pohja');
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
