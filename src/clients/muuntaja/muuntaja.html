@@ -163,7 +163,7 @@
               <button class="material-icons tooltip icon-only" tooltip-text="Hae"
                 onclick="doTransform(event)">search</button>
               <button class="material-icons tooltip icon-only" tooltip-text="Lisää kenttä"
-                onClick="onNewField(event)">add</button>
+                onClick="onNewField(event)" style="visibility:collapse;">add</button>
             </form>
             <div id="Record" class="marc-record">
             </div>
@@ -204,14 +204,14 @@
               <hr />
               <div id="fieldlist" width="100%">
               </div>
-              <button onclick="return onAddField(event)">Uusi osakenttä</button>
+              <button id="editAddFieldButton" onclick="return onAddField(event)">Uusi osakenttä</button>
             </div>
 
             <hr />
 
             <div style="display: flex; justify-content: right;">
-              <button onclick="return editDlgClose(event)">Peru muutokset</button>
-              <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
+              <button id="editCloseButton" onclick="return editDlgClose(event)">Peru muutokset</button>
+              <button id="editSaveButton" onclick="return editDlgOK(event)">Tallenna muutokset</button>
             </div>
 
           </div>
