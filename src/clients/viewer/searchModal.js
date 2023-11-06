@@ -200,11 +200,12 @@ function clearListView() {
 
 function fetchCorrelationIdList() {
   const expanded = '1';
+  const logItemTypes = ['MATCH_LOG', 'MERGE_LOG'];
 
   startProcess();
   idbClearList();
 
-  getCorrelationIdList(expanded)
+  getCorrelationIdList(expanded, logItemTypes)
     .then((data) => {
       testIfObjects(data);
       setCorrelationIdListDataToIndexDB(data);
