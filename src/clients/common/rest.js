@@ -158,8 +158,8 @@ export function getMergeLog(id, sequence) {
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getCorrelationIdList(expanded) {
-  const url = `${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}`;
+export function getCorrelationIdList(expanded, logItemTypes) {
+  const url = `${RESTurl}/viewer/correlation-id-list${expanded ? `?expanded=${expanded}` : `?expanded=0`}${logItemTypes ? `&logItemTypes=${logItemTypes}` : ``}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
