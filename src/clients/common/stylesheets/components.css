@@ -1516,6 +1516,12 @@ dialog:modal {
   margin-left: 0px;
 }
 
+/* Segmented buttons containing just one segment */
+/* are rendered with all round button edges */
+.segmented-button:only-child {
+  border-radius: 6px 6px 6px 6px;
+}
+
 
 /* ---------------------------------------------------------------------------- */
 /* Select buttons */

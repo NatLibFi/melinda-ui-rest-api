@@ -91,17 +91,45 @@ export function handleFailedQueryParams(appName) {
       return [];
     }
 
-    const {sequence, force, expanded} = queryParams;
+    const {sequence, force, expanded, logItemTypes} = queryParams;
 
     logger.verbose(sequence === undefined ? `No query parameter 'sequence'` : `Query parameter 'sequence' is ${sequence}`);
     logger.verbose(force === undefined ? `No query parameter 'force'` : `Query parameter 'force' is ${force}`);
     logger.verbose(expanded === undefined ? `No query parameter 'expanded'` : `Query parameter 'expanded' is ${expanded}`);
+    logger.verbose(logItemTypes === undefined ? `No query parameter 'logItemTypes'` : `Query parameter 'logItemTypes' is ${logItemTypes}`);
+
+
+    const validLogItemTypes = ['MATCH_LOG', 'MERGE_LOG'];
 
     return [
       {name: 'sequence', value: sequence ? (/^(?:[0-9]{1,3})$/u).test(sequence) : true},
       {name: 'force', value: force ? (/^(?:1|0|true|false)$/ui).test(force) : true},
-      {name: 'expanded', value: expanded ? (/^(?:1|0|true|false)$/ui).test(expanded) : true}
+      {name: 'expanded', value: expanded ? (/^(?:1|0|true|false)$/ui).test(expanded) : true},
+      {name: 'logItemTypes', value: logItemTypes ? testQueryParameter(logItemTypes, validLogItemTypes) : true}
     ];
   }
 
+  function testQueryParameter(queryParameter, validValues) {
+    // eslint-disable-next-line functional/no-let
+    let allValid = true;
+    const queryParameterValuesAsArray = queryParameter.split(',');
+
+    function isValid(valueToTest) {
+      return validValues.some((validValue) => valueToTest === validValue);
+    }
+
+    queryParameterValuesAsArray.forEach(queryParameterValue => {
+      // eslint-disable-next-line functional/no-conditional-statements
+      if (!isValid(queryParameterValue)) {
+        logger.debug(`Not a valid query parameter value: ${queryParameterValue}`);
+        allValid = false;
+      }
+    });
+
+    return allValid;
+  }
+
+
 }
+
+

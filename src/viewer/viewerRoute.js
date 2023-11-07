@@ -109,14 +109,18 @@ export default function (melindaApiOptions) {
   async function getCorrelationIdList(req, res, next) {
     logger.info('GET getCorrelationIdList');
 
-    const {expanded} = req.query;
+    const {expanded, logItemTypes} = req.query;
 
     const params = {
       expanded,
+      ...logItemTypes ? {logItemTypes} : {},
       limit: 0
     };
 
     logger.verbose(`Getting correlation id list with expanded value: ${JSON.stringify(params.expanded)}`);
+    logger.verbose(logItemTypes
+      ? `Log item types selected for fetching: ${JSON.stringify(params.logItemTypes)}`
+      : `No log item types selected, getting default log item type`);
 
     try {
       const result = await logService.getCorrelationIdList(params);
