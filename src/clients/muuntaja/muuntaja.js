@@ -166,7 +166,7 @@ window.onEdit = function (e) {
     e.target.classList.remove('edit-mode');
   }
   styleBasedOnEditState();
-  showTransformed();
+  showTransformed(null, getDecorators(editmode));
   return eventHandled(e);
 
   function styleBasedOnEditState(){
@@ -293,6 +293,12 @@ var transformed = {
   include: []
 };
 
+const keys = {
+  source: 'source',
+  base: 'base',
+  result: 'result'
+};
+
 window.editmode = false;
 
 //-----------------------------------------------------------------------------
@@ -327,7 +333,7 @@ window.doTransform = function (event = undefined) {
     .then(records => {
       stopProcess();
       console.log('Transformed:', records);
-      showTransformed(records);
+      showTransformed(records, getDecorators(editmode));
     });
 };
 
@@ -359,18 +365,25 @@ function decorateField(div, field) {
     div.classList.add('row-fromBase');
   }
 }
+function getDecorators(isInEditMode){
+  //configurate default decorator into different decorators for each individual panel
+  const decorators = getDeepCopyOfObject(destDecorators);
+  decorators.source = getCustomDecorator(keys.source, decorator, isInEditMode);
+  decorators.base = getCustomDecorator(keys.base, decorator, isInEditMode);
+  decorators.result = getCustomDecorator(keys.result, decorator, isInEditMode);
+  return decorators;
+};
 
-function onFieldClick(event, field) {
-  //console.log("Click", field)
-
+function onEditClick(event, field){
+  const {id} = field;
+  console.log(`Edit Click on ${id}`);
   var recordDestination = '';
   try {
     recordDestination = event.currentTarget.attributes.recordDestination.nodeValue;
   } catch (error) {
-    console.error(`Could not determine the main panel (record destination) where user clicked on: ${error}`);
+    console.log(`Could not determine the main panel (record destination) where user clicked on: ${error}`);
   }
-  
-  if (editmode && recordDestination === 'result') {
+  if (editmode && recordDestination === keys.result) {
 
     //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
     //span uses as class classname/id
@@ -380,7 +393,8 @@ function onFieldClick(event, field) {
       subElement.class = event.originalTarget.attributes.class.nodeValue;
       subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
     } catch (error) {
-      console.error(`Getting field sub element encountered error: ${error}`);
+      console.log(`Getting field sub element encountered error: ${error}.`);
+      console.log('Or maybe user clicked on some parent element without required attributes. Skipping preactivation for a spesific value.');
       subElement = null;
     }
     //make sure only certain values can be auto edit focus requested
@@ -392,23 +406,10 @@ function onFieldClick(event, field) {
 
     editField(getContent(field), getOriginal(field), subElement);
   } else {
-    toggleField(field);
+    onToggleClick(event,field);
   }
   return eventHandled(event);
 
-  function toggleField(field) {
-    const {id} = field;
-
-    console.log('Toggle:', id);
-
-    if (!transformed.exclude[id]) {
-      transformed.exclude[id] = true;
-    } else {
-      delete transformed.exclude[id];
-    }
-
-    doTransform();
-  }
   function isSubElementAcceptable(elementRequested){
     switch (elementRequested){
       case 'tag':
@@ -421,6 +422,18 @@ function onFieldClick(event, field) {
         return false;
     }
   }
+}
+function onToggleClick(event, field){
+  const {id} = field;
+  console.log(`Toggle Click on ${id}`);
+
+    if (!transformed.exclude[id]) {
+      transformed.exclude[id] = true;
+    } else {
+      delete transformed.exclude[id];
+    }
+
+    doTransform();
 }
 
 window.editSaveField = function (field) {
@@ -444,14 +457,19 @@ const decorator = {
   getOriginal,
   decorateField,
 
-  onClick: onFieldClick
+  onClick: onToggleClick
+};
+const destDecorators = {
+  source: null,
+  base: null,
+  result: null
 };
 
 //-----------------------------------------------------------------------------
 // Show transformation results
 //-----------------------------------------------------------------------------
 
-function showTransformed(update = undefined) {
+function showTransformed(update = undefined, decorators = undefined) {
   //updateTransformed(update);
   if (update) {
     transformed = update;
@@ -478,8 +496,8 @@ function showTransformed(update = undefined) {
   const includedBaseIDs = baseFields.map(f => f.id).filter(id => resultIDs.includes(id));
 
   lookup.from = {
-    ...includedSourceIDs.reduce((a, id) => ({...a, [id]: 'source'}), {}),
-    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: 'base'}), {})
+    ...includedSourceIDs.reduce((a, id) => ({...a, [id]: keys.source}), {}),
+    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {})
   };
 
   lookup.original = getLookup(sourceFields.concat(baseFields));
@@ -487,9 +505,9 @@ function showTransformed(update = undefined) {
   //console.log(transformed.from)
 
   // Show records
-  showRecord(source, 'source', decorator);
-  showRecord(base, 'base', decorator);
-  showRecord(result, 'result', decorator);
+  showRecord(source, keys.source, decorators?.source);
+  showRecord(base, keys.base, decorators?.base);
+  showRecord(result, keys.result, decorators?.result);
 
   function getFields(record) {
     return record?.fields ?? [];
@@ -498,7 +516,29 @@ function showTransformed(update = undefined) {
   function getLookup(fields) {
     return fields.reduce((a, field) => ({...a, [field.id]: field}), {});
   }
+}
 
+function getCustomDecorator(dest, originalDecorator, isEditModeActive = false){
+  //get deep copies to prevent crossreference connections (might be overkill...)
+  const copiedDecorator = getDeepCopyOfObject(originalDecorator);
+  //edit decorators for each as required based on dest
+  switch (dest) {
+    case keys.source:
+      //customise here
+      copiedDecorator.onClick = onToggleClick;
+      break;
+    case keys.base:
+      //customise here
+      copiedDecorator.onClick = onToggleClick;
+      break;
+    case keys.result:
+      copiedDecorator.onClick = isEditModeActive ? onEditClick : onToggleClick;
+      break;
+    default:
+      //use original setup
+      break;
+  }
+  return copiedDecorator;
 }
 
 function notFoundDlgOpen(recordType) {
@@ -563,3 +603,7 @@ window.saveJson = function (event) {
   document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
   jsonDlgClose(event);
 };
+
+function getDeepCopyOfObject(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
