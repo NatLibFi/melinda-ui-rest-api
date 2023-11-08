@@ -43,10 +43,6 @@
     <div id="root">
 
       <!-- ---------------------------------------------------------------------- -->
-      <!-- Loading "screen" -->
-      <div id="loading"></div>
-
-      <!-- ---------------------------------------------------------------------- -->
       <!-- Login tab -->
       <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
       <form id="login" class="VBox BoxShadow form-modal" style="display: none;">
@@ -859,44 +855,6 @@
           </div>
 
         </div>
-
-        <!-- ---------------------------------------------------------------------- -->
-        <!-- Field edit dialog -->
-        <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
-          <div class="modal-content BoxShadow" onclick="return ignore(event)">
-            <span id="field" class="marc-record"></span><br />
-            <div style="display: flex; justify-content: right;">
-              <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
-            </div>
-            <hr />
-            <div class="fieldedit marc-record">
-              <div style="display: flex;">
-                Tag: <div id="tag"></div>
-                Ind1: <div id="ind1"></div>
-                Ind2: <div id="ind2"></div>
-              </div>
-              <hr />
-              <div id="fieldlist" width="100%">
-              </div>
-              <button onclick="return onAddField(event)">Uusi osakenttä</button>
-            </div>
-            <hr />
-            <div style="display: flex; justify-content: right;">
-              <button onclick="return editDlgClose(event)">Peru muutokset</button>
-              <button onclick="return editDlgOK(event)">Tallenna muutokset</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ---------------------------------------------------------------------- -->
-        <!-- Search dialog -->
-        <dialog id="searchDlg">
-          Testi
-        </dialog>
-
-        <!-- ---------------------------------------------------------------------- -->
-        <!-- Tab for server side notes -->
-        <div id="server-note" hidden></div>
 
         <!-- ---------------------------------------------------------------------- -->
         <!-- Snackbars -->
