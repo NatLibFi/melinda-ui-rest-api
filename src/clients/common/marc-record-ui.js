@@ -280,7 +280,7 @@ function addCharacterCountLimiter(element, characterLimit){
         oldValue = element.innerHTML;
       }else{
         //key down but value is set ? user doing long press on key I suppose
-        //should correct itself upon key up but to prevent visual bug call checking limit
+        //should correct itself upon key up but to prevent visual bug set old value
         //ignore if using left right arrow keys
         if(e.keyCode !== 37 && e.keyCode !== 39){
           element.innerHTML = oldValue;
