@@ -190,19 +190,21 @@ export function editField(field, original = null, elementToPreactivate = null) {
   const tagInput = createInput('tag', 'tag', field.tag);
   tag.appendChild(tagInput);
   preactivateEdit(elementToPreactivate, 'tag', tagInput);
-  
+  addCharacterCountLimiter(tagInput, 3);
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
   const ind1Input = createInput('ind1', 'inds', field.ind1);
   ind1.appendChild(ind1Input);
   preactivateEdit(elementToPreactivate, 'ind1' ,ind1Input);
+  addCharacterCountLimiter(ind1Input, 1);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
   const ind2Input = createInput('ind2', 'inds', field.ind2);
   ind2.appendChild(ind2Input);
   preactivateEdit(elementToPreactivate, 'ind2' ,ind2Input);
+  addCharacterCountLimiter(ind2Input, 1);
 
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   subfields.innerHTML = '';
@@ -267,6 +269,35 @@ function setElementState(elementId, isActive){
 function setElementVisibility(elementId, isVisible){
   document.getElementById(elementId).style.visibility = isVisible ? "visible" : "collapse";
 }
+function addCharacterCountLimiter(element, characterLimit){
+    var oldValue = '';
+    var newValue = '';
+
+    var valueSet = false; //value set flag used to detect user pressing long some value
+    element.onkeydown = function(e){
+      if(!valueSet){
+        valueSet = true;
+        oldValue = element.innerHTML;
+      }else{
+        //key down but value is set ? user doing long press on key I suppose
+        //should correct itself upon key up but to prevent visual bug call checking limit
+        //ignore if using left right arrow keys
+        if(e.keyCode !== 37 && e.keyCode !== 39){
+          element.innerHTML = oldValue;
+        }
+      }
+    };
+    element.onkeyup = function(e){
+      valueSet = false;
+      newValue = element.innerHTML;
+      checkLimit();
+    };
+    function checkLimit(){
+      if(newValue.length > characterLimit){
+        element.innerHTML = oldValue;
+      }
+    }
+};
 
 function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
   if(elementToPreactivate && inputClassName && input && inputClassName === elementToPreactivate.class && index === elementToPreactivate.index){
@@ -290,6 +321,8 @@ function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRem
 
   preactivateEdit(elementToPreactivate, 'code', codeInput, index);
   preactivateEdit(elementToPreactivate, 'value', valueInput, index);
+
+  addCharacterCountLimiter(codeInput, 1);
 
   return row;
 
