@@ -219,11 +219,13 @@ export function editField(field, original = null, elementToPreactivate = null) {
     value.appendChild(valueInput);
     preactivateEdit(elementToPreactivate, 'value' ,valueInput);
     setEditSaveButtonActiveState(true);
-    setEditNewSubfieldButtonVisibility(false)
+    setEditNewSubfieldButtonVisibility(false);
+    setEditIndicatorsVisibility(false);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
-    setEditNewSubfieldButtonVisibility(true)
+    setEditNewSubfieldButtonVisibility(true);
+    setEditIndicatorsVisibility(true);
 
     for (const [index, subfield] of field.subfields.entries()) {
       createSubfield(subfields, subfield, elementToPreactivate, index, ()=>{
@@ -259,6 +261,9 @@ function hasActiveSubFields(subfields){
 }
 function setEditSaveButtonActiveState(isActive){
   setElementState('editSaveButton', isActive);
+}
+function setEditIndicatorsVisibility(isVisible){
+  setElementVisibility('indicators', isVisible);
 }
 function setEditNewSubfieldButtonVisibility(isVisible){
   setElementVisibility('editAddFieldButton', isVisible);
