@@ -64,6 +64,7 @@ export function resetAuthor(event) {
 }
 
 export function refreshAuthorsList() {
+  console.log('refresh authors')
   const authorList = document.getElementById('tekija-list');
   authorList.innerHTML = '';
 
@@ -118,6 +119,8 @@ export function refreshAuthorsList() {
       document.getElementById('tyhjenna-tekijat-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearAuthors(event) {

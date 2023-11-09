@@ -93,6 +93,8 @@ export function refreshSciencesList() {
       document.getElementById('tyhjenna-tieteenalat-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearSciences(event) {
@@ -126,6 +128,8 @@ export function refreshMetodologysList() {
       document.getElementById('tyhjenna-metodologiat-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function addArticleLink(event) {

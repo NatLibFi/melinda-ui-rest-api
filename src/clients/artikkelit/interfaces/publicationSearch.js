@@ -62,6 +62,8 @@ export function searchResultChange(event) {
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
     });
   }
+
+  doUpdate()
 }
 
 export function resetSearchResultSelect(searching) {

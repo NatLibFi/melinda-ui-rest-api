@@ -40,6 +40,7 @@ window.initialize = function () {
     initAbstracts();
     initOntologyWords();
     initAdditionalFields();
+    addFormChangeListeners();
   }
 };
 
@@ -47,6 +48,22 @@ function initTypeChanges() {
   document.getElementById('kuvailtava-kohde').addEventListener('change', sourceTypeChange);
   document.getElementById('asiasana-ontologia').addEventListener('change', ontologyTypeChange);
   document.getElementById('kuvailtava-kohde').dispatchEvent(new Event('change'));
+}
+
+function addFormChangeListeners() {
+  const form = document.getElementById('articleForm');
+  const buttons = document.querySelectorAll('#articleForm button');
+
+  form.addEventListener('input', function () {
+    doUpdate();
+  });
+
+  buttons.forEach(button => {
+    button.addEventListener('click', function () {
+      doUpdate();
+    });
+  })
+
 }
 
 function sourceTypeChange(event) {
@@ -83,6 +100,8 @@ function sourceTypeChange(event) {
     optionIssn.setAttribute('hidden', 'hidden');
     optionIsbn.removeAttribute('hidden')
   }
+
+  doUpdate();
 }
 
 window.articleTypeChange = (event) => {
@@ -139,7 +158,7 @@ function ontologyTypeChange(event) {
 }
 
 window.doUpdate = (event) => {
-  event.preventDefault();
+  event?.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
   collectReviewsCheck();

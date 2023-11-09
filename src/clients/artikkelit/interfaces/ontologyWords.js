@@ -124,6 +124,8 @@ export function refreshOntologyWordList() {
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }
+
+  doUpdate();
 }
 
 export function clearOntologyWords(event) {

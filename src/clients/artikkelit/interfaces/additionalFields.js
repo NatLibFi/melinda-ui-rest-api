@@ -70,6 +70,8 @@ export function refreshNotesList() {
       document.getElementById('tyhjenna-yleiset-huomautukset-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearNotes(event) {
@@ -128,6 +130,8 @@ export function refreshOtherTitlesList() {
       document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearOtherTitles(event) {
@@ -194,6 +198,8 @@ export function refreshUDKsList() {
       document.getElementById('tyhjenna-udk-kentat-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearUDKs(event) {
@@ -256,6 +262,8 @@ export function refreshOtherRatingsList() {
       document.getElementById('tyhjenna-muut-luokitukset-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearOtherRatings(event) {
