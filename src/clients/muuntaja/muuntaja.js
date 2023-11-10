@@ -316,11 +316,8 @@ window.doTransform = function (event = undefined) {
   //console.log('Base ID:', baseID);
   console.log('Transforming:', transformed);
 
-  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
-  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
-
-  const sourceID = sourceInput.value;
-  const baseID = baseInput.value;
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
   //exception, if source and base ids are the same inform user
   if(sourceID === baseID){
