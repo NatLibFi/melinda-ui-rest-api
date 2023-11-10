@@ -353,7 +353,7 @@ window.loadLog = (event) => {
     idbGetLogs(event.target.value).then(data => {
 
       if (data.logItemType !== 'MERGE_LOG') {
-        alertLogTypeChange();
+        alertLogTypeChange(data.logItemType);
         return;
       }
 
@@ -378,7 +378,7 @@ window.loadLog = (event) => {
     idbGetLogs(event.target.value).then(data => {
 
       if (data.logItemType !== 'MATCH_LOG') {
-        alertLogTypeChange();
+        alertLogTypeChange(data.logItemType);
         return;
       }
 
@@ -440,7 +440,11 @@ window.loadLog = (event) => {
     }
   }
 
-  function alertLogTypeChange() {
+  function alertLogTypeChange(dataLogType) {
+    if (dataLogType === undefined) {
+      return;
+    }
+
     const tempId = idInputField.value
     const tempLogType = logTypeSelect.value;
     const tempSequence = sequenceSelect.value
@@ -450,6 +454,7 @@ window.loadLog = (event) => {
     idInputField.value = tempId;
     logTypeSelect.value = tempLogType;
     sequenceInputField.value = tempSequence;
+    enableElement(clearButton);
   }
 
   function addLogInfo(data) {
