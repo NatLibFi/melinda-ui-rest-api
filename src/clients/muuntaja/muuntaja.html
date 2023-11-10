@@ -201,12 +201,16 @@
                   1. indikaattori: <div id="ind1"></div>
                   2. indikaattori: <div id="ind2"></div>
                 </div>
-                <div id="value"></div>
               </div>
               <hr />
-              <div id="fieldlist" width="100%">
+              <div id="fixedFields">
+                <div style="margin-bottom: 5px;">Arvo:</div>
+                <div id="value"></div>
               </div>
-              <button id="editAddFieldButton" onclick="return onAddField(event)">Uusi osakenttä</button>
+              <div id="flexFields">
+                <div id="fieldlist" width="100%"></div>
+                <button id="editAddSubFieldButton" onclick="return onAddField(event)">Uusi osakenttä</button>
+              </div>
             </div>
 
             <hr />
