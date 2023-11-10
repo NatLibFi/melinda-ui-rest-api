@@ -210,18 +210,18 @@ export function editField(field, original = null, elementToPreactivate = null) {
   const value = document.querySelector('#fieldEditDlg #value');
   value.innerHTML = '';
 
+  const isFixed = field.value !== null && field.value !== undefined;
+  toggleFieldTypeVisibility(isFixed);
+
   // if field contains "value" and not "subfields"
   if (field.value) {
-    value.innerHTML = 'Arvo:';
     const valueInput = createInput('value', 'value', field.value);
     value.appendChild(valueInput);
     preactivateEdit(elementToPreactivate, 'value' ,valueInput);
     setEditSaveButtonActiveState(true);
-    setEditNewSubfieldButtonVisibility(false)
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
-    setEditNewSubfieldButtonVisibility(true)
 
     for (const [index, subfield] of field.subfields.entries()) {
       createSubfield(subfields, subfield, elementToPreactivate, index, ()=>{
@@ -255,11 +255,15 @@ function hasActiveSubFields(subfields){
   }
   return containsActiveFields;
 }
+function toggleFieldTypeVisibility(isFixedField){
+  setElementVisibility('fixedFields', isFixedField);
+  setElementVisibility('flexFields', !isFixedField);
+}
 function setEditSaveButtonActiveState(isActive){
   setElementState('editSaveButton', isActive);
 }
 function setEditNewSubfieldButtonVisibility(isVisible){
-  setElementVisibility('editAddFieldButton', isVisible);
+  setElementVisibility('editAddSubFieldButton', isVisible);
 }
 function setElementState(elementId, isActive){
   document.getElementById(elementId).disabled = !isActive;
