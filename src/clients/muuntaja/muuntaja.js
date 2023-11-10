@@ -322,7 +322,7 @@ window.doTransform = function (event = undefined) {
   const sourceID = sourceInput.value;
   const baseID = baseInput.value;
 
-  //exception, if source and base ids are the same clear the base id and leave source
+  //exception, if source and base ids are the same inform user
   if(sourceID === baseID){
     console.log('Source and base ID:s match. This is not permitted');
     alert('Lähde ja Pohja tietueet eivät voi olla samat');
