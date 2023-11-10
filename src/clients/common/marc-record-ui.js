@@ -190,19 +190,21 @@ export function editField(field, original = null, elementToPreactivate = null) {
   const tagInput = createInput('tag', 'tag', field.tag);
   tag.appendChild(tagInput);
   preactivateEdit(elementToPreactivate, 'tag', tagInput);
-  
+  addInputLimiter(tagInput, 3, ['number', 'upper'], null);
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
   const ind1Input = createInput('ind1', 'inds', field.ind1);
   ind1.appendChild(ind1Input);
   preactivateEdit(elementToPreactivate, 'ind1' ,ind1Input);
+  addInputLimiter(ind1Input, 1, ['lower', 'number', 'special'], [' ']);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
   const ind2Input = createInput('ind2', 'inds', field.ind2);
   ind2.appendChild(ind2Input);
   preactivateEdit(elementToPreactivate, 'ind2' ,ind2Input);
+  addInputLimiter(ind2Input, 1, ['lower', 'number', 'special'], [' ']);
 
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   subfields.innerHTML = '';
@@ -258,9 +260,14 @@ function hasActiveSubFields(subfields){
 function toggleFieldTypeVisibility(isFixedField){
   setElementVisibility('fixedFields', isFixedField);
   setElementVisibility('flexFields', !isFixedField);
+
+  setEditIndicatorsVisibility(!isFixedField);
 }
 function setEditSaveButtonActiveState(isActive){
   setElementState('editSaveButton', isActive);
+}
+function setEditIndicatorsVisibility(isVisible){
+  setElementVisibility('indicators', isVisible);
 }
 function setEditNewSubfieldButtonVisibility(isVisible){
   setElementVisibility('editAddSubFieldButton', isVisible);
@@ -270,6 +277,143 @@ function setElementState(elementId, isActive){
 }
 function setElementVisibility(elementId, isVisible){
   document.getElementById(elementId).style.visibility = isVisible ? "visible" : "collapse";
+}
+
+/**
+ * 
+ * @param {*} element - input element most likely editable div - cant be empty
+ * @param {int} characterLimit - number of characters max, null if dont use
+ * @param {[string]} allowedList - allowed character types list (lower/upper/number/speacial) -ie. ['lower', 'upper', 'special']s - null if dont use
+ * @param {[string]} specialCharactersAllowed - only acceptable special characters - null if dont use, to work requires allowedlist['speacial']
+ * @param {boolean} useDebug - some usefull console logs automatically to be used if true, defaults to false
+ * 
+ * Check with on key down and up what mark is placed into editable div.
+ * With key down get the original value and check if key was recordable. Also detect if user long presses key.
+ * On key up check any limitations on the new value set.
+ * If at any point if bad thing is detected set value back to normal recorded in the onkeydown
+ */
+function addInputLimiter(element, characterLimit = null, allowedList = null, specialCharactersAllowed = null, useDebug = false){
+    var oldValue = '';
+    var newValue = '';
+
+    const keysToIgnore = [37, 39, 8, 46];//ignore if using left, right arrow keys, backspace, delete
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const charModeKeys = {
+      lower: 'lower',
+      upper: 'upper',
+      number: 'number',
+      special: 'special'
+    };
+
+    var valueSet = false; //value set flag used to detect user pressing long some value
+    element.onkeydown = function(e){
+      if(!keysToIgnore.includes(e.keyCode)){
+        if(!valueSet){
+          valueSet = true;
+          oldValue = element.innerHTML;
+        }else{
+          //key down but value is set ? user doing long press on key I suppose
+          //should correct itself upon key up but to prevent visual bug set old value
+          fallBackToOldValue();
+        }
+      }
+    };
+    element.onkeyup = function(e){
+      if(!keysToIgnore.includes(e.keyCode) && valueSet){
+        valueSet = false;
+        newValue = element.innerHTML;
+        //checks if certain conditions are met, if not using the recorded old value
+        if(characterLimit)
+          checkLimit(characterLimit, useDebug);
+        if(allowedList)
+          checkIfInputHasForbiddenItems(newValue, allowedList, useDebug);
+        //here only test only the pressed character
+        if(specialCharactersAllowed && hasSpecialCharacters(newValue))
+          checkSpecialCharacterExceptions(e.key, specialCharactersAllowed, useDebug);
+      }
+    };
+    function fallBackToOldValue(){
+      element.innerHTML = oldValue;
+    }
+
+    function checkLimit(limitCount, useDebug = false){
+      if(newValue.length > limitCount){
+        if(useDebug){
+          console.log(`Input was limited by set character limit ${limitCount}`);
+        }
+        fallBackToOldValue();
+      }
+    }
+    function checkIfInputHasForbiddenItems(value, allowedList = [], useDebug = false){
+      if(useDebug){
+        if(hasLowerCase(value)){
+          console.log('Has lowercase');
+        }
+        if(hasUpperCase(value)){
+          console.log('Has uppercase');
+        }
+        if(hasNumeric(value)){
+          console.log('Has numbers');
+        }
+        if(hasSpecialCharacters(value)){
+          console.log('Has special characters');
+        }
+      }
+
+      //ok, function takes items that are allowed but for the check we need what is not allowed
+      //firstly turn allowed list to forbidden list, aka whats not in the allowed list
+      const availableList = Object.values(charModeKeys);
+      var forbiddenList = availableList.filter(item => !allowedList.includes(item));
+      
+      var hasForbiddenItems = false;
+      for (const mode of forbiddenList) {
+        switch (mode) {
+          case charModeKeys.lower:
+              hasForbiddenItems = hasLowerCase(value);
+            break;
+          case charModeKeys.upper:
+              hasForbiddenItems = hasUpperCase(value);
+            break;
+          case charModeKeys.number:
+              hasForbiddenItems = hasNumeric(value);
+            break;
+          case charModeKeys.special:
+            hasForbiddenItems = hasSpecialCharacters(value);
+            break;
+          default:
+              console.log('Specified restriction item was not found');
+            break;
+        }
+      }
+      //if new value has items that are not permitted use old one
+      if(hasForbiddenItems){
+        if(useDebug){
+          console.log('Found forbidden items');
+        }
+        fallBackToOldValue();
+      }
+    }
+    function checkSpecialCharacterExceptions(newKey, specialCharactersAllowed, useDebug = false){
+      if(!specialCharactersAllowed.includes(newKey)){
+        if(useDebug){
+          console.log('Character was forbidden');
+        }
+        fallBackToOldValue();
+      }
+    }
+
+    function hasLowerCase(value){
+      return value.toUpperCase() !== value;
+    }
+    function hasUpperCase(value){
+      return value.toLowerCase() !== value;
+    }
+    function hasNumeric(value){
+      return /\d/.test(value);
+    }
+    function hasSpecialCharacters(value){
+      return specialChars.test(value);
+    }
 }
 
 function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0){
@@ -294,6 +438,8 @@ function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRem
 
   preactivateEdit(elementToPreactivate, 'code', codeInput, index);
   preactivateEdit(elementToPreactivate, 'value', valueInput, index);
+
+  addInputLimiter(codeInput, 1, ['lower', 'number', 'special'], [' ']);
 
   return row;
 
