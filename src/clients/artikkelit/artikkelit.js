@@ -115,6 +115,9 @@ window.articleTypeChange = (event) => {
   if (['A1', 'A2', 'A3'].some(str => selectedType.includes(str))) {
     reviewFieldset.style.display = 'none';
     addedReviews.style.display = 'none';
+    idbClear('artoReviews');
+    resetReview();
+    refreshReviewsList();
   }
 };
 
@@ -226,10 +229,10 @@ window.resetReview = (event) => {
 
 function collectReviewsCheck() {
   const articleType = document.getElementById('artikkelin-tyyppi').value;
-  const includeReviews = ['B1', 'B2', 'D1', 'E1'].some(str => articleType.includes(str));
-
-  if (!includeReviews) {
-    idbClear('artoReviews').then(() => refreshReviewsList());
+  const excludeReviews = ['A1', 'A2', 'A3'].some(str => articleType.includes(str));
+  
+  if (excludeReviews) {
+    idbClear('artoReviews');
   }
 }
 

@@ -104,6 +104,8 @@ export function refreshReviewsList() {
       document.getElementById('tyhjenna-arvostelut-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearReviews(event) {
@@ -242,7 +244,7 @@ function refreshSearchResultSelect() {
 }
 
 export function resetReview(event) {
-  event.preventDefault();
+  event?.preventDefault();
   idbClear('artoTempReviews').then(() => {
     document.getElementById('arvosteltu-teos-haku-title-form').reset();
     document.getElementById('arvosteltu-teos-haku-melinda-form').reset();
