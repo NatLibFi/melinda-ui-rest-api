@@ -88,14 +88,15 @@ window.initialize = function () {
     }
   }
 
-  function updateRecordSwapButtonState(){
-    const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-    const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
-
-    document.getElementById('swap-button').disabled = !sourceID || !baseID;
-  }
+  
 };
 
+function updateRecordSwapButtonState(){
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  document.getElementById('swap-button').disabled = !sourceID || !baseID;
+};
 
 
 //-----------------------------------------------------------------------------
@@ -333,6 +334,7 @@ window.doTransform = function (event = undefined) {
     .then(records => {
       stopProcess();
       console.log('Transformed:', records);
+      updateRecordSwapButtonState();
       showTransformed(records, getDecorators(editmode));
     });
 };
