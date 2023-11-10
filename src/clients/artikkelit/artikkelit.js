@@ -17,8 +17,8 @@ import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAut
 import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
 import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
-import {initPublicationSearch, resetSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
-import {initReviewSearch, resetReview, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
+import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
+import {initReviewSearch, resetReview, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 
 window.initialize = function () {
   console.log('Initializing');
@@ -373,7 +373,8 @@ window.onAccount = function (e) {
 window.clearAllFields = function () {
   idbClearAllTables();
   refreshAllLists();
-  resetSearchResultSelect();
+  resetPublicationSearchResultSelect();
+  resetReviewSearchResultSelect();
   resetInputFields();
   resetTextareaFields();
   resetSelectFields();
