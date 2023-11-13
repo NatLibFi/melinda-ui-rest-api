@@ -292,13 +292,13 @@ function onEditInputChange(e){
 
 function hasDataChanged(originalData){
   const isFixed = isFieldFixedSized(originalData);
-  const currentField = getCurrentField();
+  const currentField = JSON.parse(JSON.stringify(getCurrentField()));
 
   if(
     (currentField.tag !== originalData.tag) ||
     (isFixed && currentField.value !== originalData.value) ||
-    (!isFixed && currentField.ind1 !== originalData.ind1) ||
-    (!isFixed && currentField.ind2 !== originalData.ind2) ||
+    (!isFixed && currentField.ind1.trim() !== originalData.ind1.trim()) ||
+    (!isFixed && currentField.ind2.trim() !== originalData.ind2.trim()) ||
     (!isFixed && currentField.subfields.length !== originalData.subfields.length) ||
     (!isFixed && currentField.subfields.length === originalData.subfields.length && hasSubfieldsValuesChanged())
     ){
@@ -553,7 +553,7 @@ window.onAddField = function (event) {
 
 window.editDlgOK = function (event) {
 
-  const field = getCurrentFieldValues();
+  const field = getCurrentField();
   editSaveField(field);
   return editDlgClose(event);
 };
