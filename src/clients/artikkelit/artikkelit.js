@@ -6,6 +6,7 @@ import {
   idbClear, idbDel, idbGet,
   idbGetStoredValues, getTableNames
 } from '/artikkelit/indexDB.js';
+import {} from './articleActions.js';
 
 import {initAbstracts, refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
 import {

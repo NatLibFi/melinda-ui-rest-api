@@ -65,7 +65,7 @@
   padding: 8pt;
 }
 
-.header {
+.main-header {
   display: flex;
   color: var(--color-blue-100);
   font-family: var(--font-family-headline);
@@ -265,4 +265,89 @@
 #artikkelit Input,
 #artikkelit Select {
   height: 30px;
+}
+
+
+
+
+#artikkelit .record-merge-panel .col .BoxShadow {
+  min-height: 75px;
+  display: flex;
+  flex-direction: column;
+}
+
+#artikkelit .col>* {
+  padding: 8pt;
+}
+
+#artikkelit .col .header {
+  height: 40px;
+  text-transform: uppercase;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-medium);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-headline-medium);
+  border-bottom: 1px solid var(--color-grey-60);
+  align-items: center;
+  display: flex;
+}
+
+#artikkelit .col .note {
+  display: flex;
+  border-bottom: 1px solid var(--color-grey-60);
+  align-items: center;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-list-small);
+  line-height: var(--font-line-height-list-medium);
+  font-weight: var(--font-weight-content);
+  margin-bottom: 5px;
+}
+
+#artikkelit .col .note li {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-list-small);
+  line-height: var(--font-line-height-list-medium);
+  font-weight: var(--font-weight-content);
+  margin-bottom: 5px;
+}
+
+#artikkelit .col .header .title {
+  flex: 4;
+}
+
+#artikkelit .col .header .Select {
+  flex: 1;
+  visibility: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+#artikkelit .article-actions {
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+}
+
+#artikkelit .article-actions .action-check {
+  display: flex;
+  flex-grow: 1;
+}
+
+#artikkelit .article-actions .action-save {
+  display: flex;
+}
+
+.header .material-icons {
+  padding: 8px;
+  font-size: 32px;
+}
+
+.header label {
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+  line-height: var(--font-line-height-label-medium);
 }
