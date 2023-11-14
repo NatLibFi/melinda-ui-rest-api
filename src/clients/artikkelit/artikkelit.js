@@ -1,6 +1,6 @@
-import {disableElement, showTab} from '/common/ui-utils.js';
+import {showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {getArtikkeliRecord} from '/common/rest.js';
+import {generateArticleRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
 import {
   idbClear, idbDel, idbGet,
@@ -205,7 +205,7 @@ window.doUpdate = (event) => {
     reviews
   ]) => {
     const formData = collectFormData();
-    getArtikkeliRecord({
+    generateArticleRecord({
       source,
       ...formData,
       sciences,

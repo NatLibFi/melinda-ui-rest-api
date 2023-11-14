@@ -12,8 +12,9 @@ import createArtikkelitRoute from './artikkelit/artikkelitRoute';
 import createAuthRoute from './auth/authRoute';
 import createBibRoute from './bib/bibRoute';
 import createMuuntajaRoute from './muuntaja/muuntajaRoute';
-import createViewerRoute from './viewer/viewerRoute';
 import createOntologyRoute from './ontologies/ontologyRoute';
+import createRecordRouter from './record/recordRouter';
+import createViewerRoute from './viewer/viewerRoute';
 import createPingRoute from './utilRoute/statusRoute';
 import {handlePageNotFound} from './requestUtils/handlePageNotFound';
 
@@ -83,6 +84,7 @@ export default async function ({
     app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
     app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), await createMuuntajaRoute(sruUrl));
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
+    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRouter(melindaApiOptions));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
     app.use('/rest/ping', createPingRoute());
 

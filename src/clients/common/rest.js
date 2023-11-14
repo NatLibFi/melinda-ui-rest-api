@@ -126,7 +126,7 @@ export function getPublicationByTitle(title, {arto, fennica, melinda}, type = 'j
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
 
-export function getArtikkeliRecord(data) {
+export function generateArticleRecord(data) {
   const url = `${RESTurl}/artikkelit/`;
   const body = JSON.stringify(data);
   return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
@@ -136,6 +136,23 @@ export function getOntologyWords(ontology, query) {
   const {searchVocab, language} = getOntologyOptions(ontology);
   const url = `${RESTurl}/ontologies/${language}/${searchVocab}/${query}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
+}
+
+
+//*****************************************************************************
+// RECORDS (artikkelit)
+//*****************************************************************************
+
+export function addArticleRecord(data) {
+  const url = `${RESTurl}/record/add`;
+  const body = JSON.stringify(data);
+  return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
+}
+
+export function validateArticleRecord(data) {
+  const url = `${RESTurl}/record/validate`;
+  const body = JSON.stringify(data);
+  return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
 }
 
 

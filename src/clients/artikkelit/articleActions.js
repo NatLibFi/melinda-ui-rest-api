@@ -1,5 +1,5 @@
 import {disableElement, enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
-
+import {validateArticleRecord, addArticleRecord} from '/common/rest.js';
 
 
 export function resetCheckAndSave() {
