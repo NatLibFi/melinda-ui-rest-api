@@ -841,22 +841,43 @@
           <!-- Article preview -->
           <div class="record-merge-panel">
             <div id="articlePreview" class="col">
-              <div id="record1" class="BoxShadow">
+              <div id="previewRecord" class="BoxShadow">
 
                 <div class="header">
                   <p class="title">Tarkista ja tallenna tietue</p>
                 </div>
 
                 <div class="article-actions">
+
                   <div class="action-check">
-                    <button class="alternate-blue" onclick="return checkArticleRecord(event)">Tarkista</button>
+<!--                     <button class="icon-on-left icon-on-right alternate-blue" onclick="return checkArticleRecord(event)">
+                      <span class="material-icons">rule</span>
+                      Tarkista
+                      <span class="material-icons">check_circle</span>
+                    </button> -->
+
+                    <button class="icon-on-left alternate-blue" onclick="return checkArticleRecord(event)">
+                      <span class="material-icons">description</span>
+                      Tarkista
+                    </button>
+
                   </div>
+
+                  <div class="action-forward">
+                    <span class="material-icons">east</span>
+                  </div>
+
                   <div class="action-save">
-                    <button id="saveArticleRecord" class="" onclick="return openSaveArticleRecordDialog(event)" disabled="true">Tallenna</button>
+                    <button id="saveArticleRecord" class="icon-on-left"
+                      onclick="return openSaveArticleRecordDialog(event)" disabled="true">
+                      <span class="material-icons">note_add</span>
+                      Tallenna
+                    </button>
                   </div>
+
                 </div>
 
-                <div id="articleRecordNotes" class="note">Tietueen tarkistuksessa ei löytynyt virheitä.</div>
+                <div id="articleRecordNotes" class="note">Tarkista tietue ennen tallentamista.</div>
 
                 <!--                 
                   <form class="ToolBar HBox header">
@@ -884,7 +905,36 @@
               </div>
 
               <div class="dialog-supporting-text">
-                <p>Seuraava tietue tallennetaan ARTO-kokoelmaan:</p>
+
+                <!-- Accordion with article record preview -->
+                <div class="accordion">
+
+                  <div id="dialogPreviewAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
+                    <div class="accordion-heading-icon collapsed">
+                      <span class="material-icons">
+                        <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
+                      </span>
+                    </div>
+                    <div class="accordion-heading-text">
+                      ARTO-kokoelmaan tallennettava artikkelitietue
+                    </div>
+                  </div>
+
+                  <div class="accordion-content ">
+                    <div class="record-merge-panel">
+                      <div class="col">
+                        <div id="dialogRecord" class="BoxShadow">
+                          <div id="Record" class="marc-record"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+
+                </div>
+
               </div>
 
               <div class="dialog-actions">

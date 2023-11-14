@@ -20,7 +20,7 @@
   margin-bottom: 5px;
   margin-left: 5px;
 }
- 
+
 
 /* ---------------------------------------------------------------------------- */
 
@@ -99,7 +99,7 @@
   line-height: var(--font-line-height-label-medium);
 }
 
-#artikkelit  .half-width {
+#artikkelit .half-width {
   width: 50%;
 }
 
@@ -121,7 +121,7 @@
   text-overflow: ellipsis;
 }
 
-#artikkelit  .full-width select option {
+#artikkelit .full-width select option {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -304,7 +304,19 @@
   font-size: var(--font-size-list-small);
   line-height: var(--font-line-height-list-medium);
   font-weight: var(--font-weight-content);
+  font-style: italic;
+  color: var(--color-grey-100);
   margin-bottom: 5px;
+}
+
+#artikkelit .note.record-success {
+  color: var(--color-primary-blue);
+  font-style: normal;
+}
+
+#artikkelit .note.record-error {
+  color: var(--color-functional-red);
+  font-style: normal;
 }
 
 #artikkelit .col .note li {
@@ -330,24 +342,65 @@
   display: flex;
   flex-direction: row;
   padding-top: 20px;
+  justify-content: center;
+  gap: 20px;
 }
 
 #artikkelit .article-actions .action-check {
   display: flex;
-  flex-grow: 1;
 }
+
+#artikkelit .article-actions .action-forward {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#artikkelit .article-actions .action-forward .material-icons {
+  font-size: 25px;
+}
+
 
 #artikkelit .article-actions .action-save {
   display: flex;
 }
 
-.header .material-icons {
+#artikkelit .article-actions .action-save button {
+}
+
+#artikkelit .header .material-icons {
   padding: 8px;
   font-size: 32px;
 }
 
-.header label {
+#artikkelit .header label {
   font-size: var(--font-size-label-medium);
   font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-medium);
+}
+
+#dialogForSave {}
+
+#dialogForSave .dialog-supporting-text .accordion-heading-text {
+  padding-right: 64px;
+}
+
+#dialogForSave .col {
+  width: 1500px;
+}
+
+#dialogForSave .record-merge-panel {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+/* accordion default icon is  when accordion can be opened */
+#dialogForSave .accordion .accordion-heading .accordion-heading-icon span:before {
+  content: 'expand_more';
+}
+
+/* accordion icon is ^ when accordion can be closed */
+#dialogForSave .accordion .accordion-heading.expanded .accordion-heading-icon span:before {
+  content: 'expand_less';
 }

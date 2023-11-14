@@ -1477,6 +1477,21 @@ dialog:modal {
 }
 
 
+/* ---------------------------------------------------------------------------- */
+/* Highlighting elements */
+/* ---------------------------------------------------------------------------- */
+
+.highlight {
+  animation: highlight 5s ease-out 0s 1;
+}
+
+@keyframes highlight {
+  50% {
+    background-color: var(--highlightcolor, var(--color-yellow-60));
+    border-radius: 1em;
+  }
+}
+
 
 /* ---------------------------------------------------------------------------- */
 /* Segmented buttons */

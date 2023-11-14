@@ -1,4 +1,4 @@
-import {showTab} from '/common/ui-utils.js';
+import {disableElement, showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
 import {getArtikkeliRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
@@ -20,6 +20,7 @@ import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/art
 import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
 import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {initReviewSearch, resetReview, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
+import {resetCheckAndSave} from './articleActions.js';
 
 window.initialize = function () {
   console.log('Initializing');
@@ -216,7 +217,11 @@ window.doUpdate = (event) => {
       udks,
       otherRatings,
       reviews
-    }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit'));
+    }).then(({record}) => {
+      showRecord(record, 'previewRecord', {}, 'artikkelit');
+      showRecord(record, 'dialogRecord', {}, 'artikkelit');
+      resetCheckAndSave();
+    });
   });
 };
 
@@ -231,7 +236,7 @@ window.resetReview = (event) => {
 function collectReviewsCheck() {
   const articleType = document.getElementById('artikkelin-tyyppi').value;
   const excludeReviews = ['A1', 'A2', 'A3'].some(str => articleType.includes(str));
-  
+
   if (excludeReviews) {
     idbClear('artoReviews');
   }
