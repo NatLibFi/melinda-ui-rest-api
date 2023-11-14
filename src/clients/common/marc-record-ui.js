@@ -10,6 +10,8 @@
 export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja') {
   console.log('Show Record:', record);
 
+  const {replace} = decorator;
+
   // Get div to fill in the fields
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
   recordDiv.innerHTML = '';
@@ -39,7 +41,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
 
   if (record.fields) {
     for (const field of record.fields) {
-      const content = decorator?.getContent ? decorator.getContent(field) : field;
+      const content = getContent(field);
       addField(recordDiv, content, decorator, dest);
     }
   }
@@ -51,6 +53,10 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
     }
     return humanReadableError;
   }
+  function getContent(field) {
+    return (replace && replace[field.id]) ?? field;
+  }
+  
 }
 
 //-----------------------------------------------------------------------------
@@ -62,11 +68,12 @@ function addField(div, field, decorator = null, recordDestination = '') {
   row.setAttribute('recordDestination', recordDestination);
 
   row.classList.add('row');
-  if (decorator?.decorateField) {
-    decorator.decorateField(row, field);
-  }
-  if (decorator?.onClick) {
-    row.addEventListener('click', event => decorator.onClick(event, field));
+
+  const {from, original, replace, exclude, onClick} = decorator ?? {};
+  decorateField(row, field);
+
+  if (onClick) {
+    row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? field));
   }
 
   addTag(row, field.tag);
@@ -131,6 +138,22 @@ function addField(div, field, decorator = null, recordDestination = '') {
 
   function makeSubfieldData(value, index = 0) {
     return makeSpan('value', value, null, index);
+  }
+  function decorateField(div, field) {
+    if (exclude && exclude[field.id]) {
+      div.classList.add('row-excluded');
+    }
+    if (replace && replace[field.id]) {
+      div.classList.add('row-replaced');
+      return;
+    }
+    const source = from && from[field.id];
+    if (source == 'source') {
+      div.classList.add('row-fromSource');
+    }
+    if (source == 'base') {
+      div.classList.add('row-fromBase');
+    }
   }
 }
 
