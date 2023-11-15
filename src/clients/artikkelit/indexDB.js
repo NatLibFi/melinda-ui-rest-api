@@ -3,19 +3,20 @@
 import {openDB} from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
 
 const tableNames = [
-  'artoSources',
-  'artoAuthors',
-  'artoOntologyWords',
   'artoAbstracts',
+  'artoAuthors',
   'artoAuthorTempOrg',
-  'artoSciences',
   'artoMetodologys',
-  'artoUDKs',
   'artoNotes',
+  'artoOntologyWords',
   'artoOtherTitles',
   'artoOtherRatings',
+  'artoRecord',
   'artoReviews',
-  'artoTempReviews'
+  'artoSciences',
+  'artoSources',
+  'artoTempReviews',
+  'artoUDKs',
 ];
 
 const dbPromise = openDB('melinda-arto', 1, {

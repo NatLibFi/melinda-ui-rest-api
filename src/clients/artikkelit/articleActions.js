@@ -1,5 +1,6 @@
 import {disableElement, enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
 import {validateArticleRecord, addArticleRecord} from '/common/rest.js';
+import {idbGet} from '/artikkelit/indexDB.js';
 
 
 export function resetCheckAndSave() {
@@ -24,7 +25,16 @@ window.checkArticleRecord = function (event = undefined) {
 
   //doUpdate();
 
-  const recordValid =true; //noop fetch from rest
+  //get record
+  idbGet('artoRecord', 'record')
+    .then((data) => {
+      console.log('Record from IDB: ', data);
+    })
+    .catch((error) => {
+      console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
+    })
+
+  const recordValid = true; //noop fetch from rest
   const errors = ['Duplicate title', 'Field 772 incorrect', 'Field 960 missing character'];
 
   if (!recordValid) {

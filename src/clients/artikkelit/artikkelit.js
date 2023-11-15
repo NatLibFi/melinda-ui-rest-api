@@ -3,7 +3,7 @@ import {Account, doLogin, logout} from '/common/auth.js';
 import {generateArticleRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
 import {
-  idbClear, idbDel, idbGet,
+  idbClear, idbDel, idbGet, idbSet,
   idbGetStoredValues, getTableNames
 } from '/artikkelit/indexDB.js';
 import {} from './articleActions.js';
@@ -166,6 +166,7 @@ window.doUpdate = (event) => {
   event?.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
+  idbClear('artoRecord');
   collectReviewsCheck();
 
   const promises = [
@@ -217,11 +218,14 @@ window.doUpdate = (event) => {
       udks,
       otherRatings,
       reviews
-    }).then(({record}) => {
-      showRecord(record, 'previewRecord', {}, 'artikkelit');
-      showRecord(record, 'dialogRecord', {}, 'artikkelit');
-      resetCheckAndSave();
-    });
+    })
+      .then(({record}) => {
+        setRecordToIndexDB(record);
+        updateRecordPreview(record);
+      })
+      .catch((error) => {
+        console.log('Error while generating article record: ', error);
+      });
   });
 };
 
@@ -232,6 +236,16 @@ window.resetAuthor = (event) => {
 window.resetReview = (event) => {
   resetReview(event);
 };
+
+function setRecordToIndexDB(record) {
+  idbSet('artoRecord', 'record', record);
+}
+
+function updateRecordPreview(record) {
+  showRecord(record, 'previewRecord', {}, 'artikkelit');
+  showRecord(record, 'dialogRecord', {}, 'artikkelit');
+  resetCheckAndSave();
+}
 
 function collectReviewsCheck() {
   const articleType = document.getElementById('artikkelin-tyyppi').value;
