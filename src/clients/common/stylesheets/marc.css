@@ -26,6 +26,10 @@
   border: 1px dashed var(--color-grey-80)
 }
 
+.marc-record .row.clickable:hover{
+  cursor: pointer;
+}
+
 .marc-record .error {
   background-color: #eba0a060;
   padding: 8px;
