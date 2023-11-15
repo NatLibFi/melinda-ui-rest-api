@@ -73,6 +73,7 @@ function addField(div, field, decorator = null, recordDestination = '') {
   decorateField(row, field);
 
   if (onClick) {
+    row.classList.add('clickable');
     row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? field));
   }
 
