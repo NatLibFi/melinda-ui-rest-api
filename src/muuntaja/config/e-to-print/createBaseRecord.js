@@ -22,7 +22,7 @@ const logger = createLogger();
 //-----------------------------------------------------------------------------
 // Create base record from source and options
 
-export function createBase(source, options) {
+export function createBase(options, source) { // WAS: source, options
   const baseValidators = {
     fields: false,
     subfieldValues: false
