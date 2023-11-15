@@ -187,21 +187,21 @@ export function editField(field, original = null, elementToPreactivate = null) {
 
   const tag = document.querySelector('#fieldEditDlg #tag');
   tag.innerHTML = '';
-  const tagInput = createInput('tag', 'tag', field.tag);
+  const tagInput = createInput('tag', 'tag', field.tag, undefined, undefined, onEditInputChange);
   tag.appendChild(tagInput);
   preactivateEdit(elementToPreactivate, 'tag', tagInput);
   addInputLimiter(tagInput, 3, ['number', 'upper'], null);
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
-  const ind1Input = createInput('ind1', 'inds', field.ind1);
+  const ind1Input = createInput('ind1', 'inds', field.ind1, undefined, undefined, onEditInputChange);
   ind1.appendChild(ind1Input);
   preactivateEdit(elementToPreactivate, 'ind1' ,ind1Input);
   addInputLimiter(ind1Input, 1, ['lower', 'number', 'special'], [' ']);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
-  const ind2Input = createInput('ind2', 'inds', field.ind2);
+  const ind2Input = createInput('ind2', 'inds', field.ind2, undefined, undefined, onEditInputChange);
   ind2.appendChild(ind2Input);
   preactivateEdit(elementToPreactivate, 'ind2' ,ind2Input);
   addInputLimiter(ind2Input, 1, ['lower', 'number', 'special'], [' ']);
@@ -212,23 +212,23 @@ export function editField(field, original = null, elementToPreactivate = null) {
   const value = document.querySelector('#fieldEditDlg #value');
   value.innerHTML = '';
 
-  const isFixed = field.value !== null && field.value !== undefined;
+  const isFixed = isFieldFixedSized(field);
   toggleFieldTypeVisibility(isFixed);
+  setEditSaveButtonActiveState(false);
 
   // if field contains "value" and not "subfields"
   if (field.value) {
-    const valueInput = createInput('value', 'value', field.value);
+    const valueInput = createInput('value', 'value', field.value, undefined, undefined, onEditInputChange);
     value.appendChild(valueInput);
     preactivateEdit(elementToPreactivate, 'value' ,valueInput);
-    setEditSaveButtonActiveState(true);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
 
     for (const [index, subfield] of field.subfields.entries()) {
       createSubfield(subfields, subfield, elementToPreactivate, index, ()=>{
-          setEditSaveButtonActiveState(hasActiveSubFields(subfields));
-      });
+          setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
+      }, onEditInputChange);
     }
 
     //*
@@ -240,7 +240,7 @@ export function editField(field, original = null, elementToPreactivate = null) {
     /**/
   }
   
-}
+};
 
 function hasActiveSubFields(subfields){
   var containsActiveFields = false;
@@ -278,6 +278,62 @@ function setElementState(elementId, isActive){
 function setElementVisibility(elementId, isVisible){
   document.getElementById(elementId).style.visibility = isVisible ? "visible" : "collapse";
 }
+function setElementText(elementId, text){
+  document.getElementById(elementId).textContent = text;
+}
+function onEditInputChange(e){
+  console.log(`Edit updated`);
+  
+  const hasChanged = hasDataChanged(editing);
+  hasChanged ? console.log('Data Changed') : console.log('Data did not change');
+  setElementState('editSaveButton', hasChanged);
+  setElementText('editCloseButton', hasChanged ? 'Peru muutokset' : 'Sulje');
+}
+
+function hasDataChanged(originalData){
+  const isFixed = isFieldFixedSized(originalData);
+  const currentField = JSON.parse(JSON.stringify(getCurrentField()));
+
+  if(
+    (currentField.tag !== originalData.tag) ||
+    (isFixed && currentField.value !== originalData.value) ||
+    (!isFixed && currentField.ind1.trim() !== originalData.ind1.trim()) ||
+    (!isFixed && currentField.ind2.trim() !== originalData.ind2.trim()) ||
+    (!isFixed && currentField.subfields.length !== originalData.subfields.length) ||
+    (!isFixed && currentField.subfields.length === originalData.subfields.length && hasSubfieldsValuesChanged())
+    ){
+      console.log('Editing view detected changes to original data');
+      return true;
+    }
+  
+  console.log('Editing view detected no changes to original data');
+  return false;
+
+  //called upon if arrays same length but some value might have changed
+  function hasSubfieldsValuesChanged(){
+    var hasChanged = false;
+    for (const [originalIndex, originalSubfield] of originalData.subfields.entries()) {
+      for (const [editedIndex ,currentSubfield] of currentField.subfields.entries()) {
+        //console.log(originalSubfield);
+        //console.log(currentSubfield);
+        if(
+          (originalSubfield.code === currentSubfield.code && originalSubfield.value !== currentSubfield.value) ||
+          (originalIndex === editedIndex && originalSubfield.code !== currentSubfield.code)
+          ){
+            console.log(`Subfield ${originalSubfield.code} value has changed`);
+            hasChanged = true;
+            break;
+        }
+      }
+    }
+    return hasChanged;
+  }
+}
+
+function isFieldFixedSized(fieldObj){
+  return fieldObj.value !== null && fieldObj.value !== undefined;
+}
+
 
 /**
  * 
@@ -423,13 +479,13 @@ function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0
   }
 }
 
-function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRemovedCallback = null) {
+function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRemovedCallback = null, onInputChangeCallback = null) {
   const row = document.createElement('div');
   row.classList.add('subfield');
   row.appendChild(removeButton(onRemovedCallback));
 
-  const codeInput = createInput('code', 'code', subfield.code);
-  const valueInput = createInput('value', 'value', subfield.value);
+  const codeInput = createInput('code', 'code', subfield.code, undefined, index, onInputChangeCallback);
+  const valueInput = createInput('value', 'value', subfield.value, undefined, index, onInputChangeCallback);
 
   row.appendChild(codeInput);
   row.appendChild(valueInput);
@@ -468,12 +524,16 @@ function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRem
   }
 }
 
-function createInput(name, className, value, editable = true) {
+function createInput(name, className, value, editable = true, index = 0 ,onInputValueChanged = null) {
   const input = document.createElement('span');
   input.setAttribute('id', name);
+  input.setAttribute('index', index);
   input.classList.add(className);
   if (editable) {
     input.classList.add('editable');
+    if(onInputValueChanged){
+      input.addEventListener('input', onInputValueChanged);
+    }
   }
   input.textContent = value;
   input.contentEditable = editable;
@@ -484,14 +544,21 @@ window.onAddField = function (event) {
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   const newIndex = subfields.children.length;
   createSubfield(subfields, {code: '?', value: '?'}, null, newIndex, () => {
-      setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+    setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
   });
-    setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+
+  setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
   return eventHandled(event);
 };
 
 window.editDlgOK = function (event) {
 
+  const field = getCurrentField();
+  editSaveField(field);
+  return editDlgClose(event);
+};
+
+function getCurrentField(){
   const query = (p) => document.querySelector(p);
 
   const field = {
@@ -515,9 +582,7 @@ window.editDlgOK = function (event) {
         value: elem.getElementsByClassName('value')[0].textContent
       }));
   }
-
-  editSaveField(field);
-  return editDlgClose(event);
+  return field;
 };
 
 window.editDlgUseOriginal = function (event) {
