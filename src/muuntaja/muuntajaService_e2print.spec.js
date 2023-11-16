@@ -1,9 +1,7 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {getResultRecord} from './muuntajaService.js';
-const logger = createLogger();
 
 generateTests({
   callback: testTransform,

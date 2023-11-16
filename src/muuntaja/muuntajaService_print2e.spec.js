@@ -1,9 +1,7 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {getResultRecord} from './muuntajaService.js';
-const logger = createLogger();
 
 generateTests({
   callback: testTransform,
@@ -15,7 +13,7 @@ generateTests({
   }
 });
 
-function testTransform({getFixture, testBase = false, expectToFail = false}) {  
+function testTransform({getFixture, testBase = false, expectToFail = false}) {
   try {    
     const input = getFixture('input.json');
     const expectedResult = getFixture('output.json');
