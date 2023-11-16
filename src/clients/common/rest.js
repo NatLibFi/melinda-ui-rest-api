@@ -144,15 +144,15 @@ export function getOntologyWords(ontology, query) {
 //*****************************************************************************
 
 export function addArticleRecord(data) {
-  const url = `${RESTurl}/record/add`;
+  const url = `${RESTurl}/record/add/`;
   const body = JSON.stringify(data);
-  return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
+  return doRestCall({url: url, method: 'POST', body: body, contentType: 'application/json', resultAsJson: false});
 }
 
 export function validateArticleRecord(data) {
-  const url = `${RESTurl}/record/validate`;
+  const url = `${RESTurl}/record/validate/`;
   const body = JSON.stringify(data);
-  return doRestCall({url: url, method: 'POST', body: body, resultAsJson: true});
+  return doRestCall({url: url, method: 'POST', body: body, contentType: 'application/json', resultAsJson: false});
 }
 
 

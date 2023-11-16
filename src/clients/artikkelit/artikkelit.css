@@ -309,9 +309,14 @@
   margin-bottom: 5px;
 }
 
-#artikkelit .note.record-success {
+#artikkelit .note.record-valid {
   color: var(--color-primary-blue);
   font-style: normal;
+}
+
+#artikkelit .note.record-success {
+  color: var(--color-functional-green);
+  font-style: italic;
 }
 
 #artikkelit .note.record-error {
@@ -354,10 +359,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-blue-60);
 }
 
 #artikkelit .article-actions .action-forward .material-icons {
   font-size: 25px;
+}
+
+#artikkelit .article-actions .action-forward.proceed {
+  color: var(--color-primary-blue);
 }
 
 

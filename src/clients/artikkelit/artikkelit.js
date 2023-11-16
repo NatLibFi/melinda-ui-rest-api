@@ -242,8 +242,8 @@ function setRecordToIndexDB(record) {
 }
 
 function updateRecordPreview(record) {
-  showRecord(record, 'previewRecord', {}, 'artikkelit');
-  showRecord(record, 'dialogRecord', {}, 'artikkelit');
+  showRecord(record, 'previewRecord', {}, 'artikkelit', false);
+  showRecord(record, 'dialogRecord', {}, 'artikkelit', false);
   resetCheckAndSave();
 }
 

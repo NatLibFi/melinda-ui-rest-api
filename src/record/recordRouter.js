@@ -1,17 +1,20 @@
 /* eslint-disable prefer-destructuring */
 /*****************************************************************************/
 /*                                                                           */
-/* Record addition and validation for UI                                                */
+/* Record addition and validation for UI                                     */
 /*                                                                           */
 /*****************************************************************************/
+
 import httpStatus from 'http-status';
-import {Router} from 'express';
+
+import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import {createRecordOperator} from './recordService.js';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams.js';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams.js';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound.js';
 import {handleError} from '../requestUtils/handleError.js';
+
 
 export default function (melindaApiOptions) {
   const logger = createLogger();
@@ -20,9 +23,10 @@ export default function (melindaApiOptions) {
 
   return new Router(melindaApiOptions)
     .use(handleFailedQueryParams(appName))
-    .use(handleRouteNotFound(appName))
+    .use(express.json())
     .post('/add', handleFailedRouteParams(appName), addArticleRecord)
     .post('/validate', handleFailedRouteParams(appName), validateArticleRecord)
+    .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
 
@@ -53,6 +57,7 @@ export default function (melindaApiOptions) {
     try {
       //const result = await recordOperator.validateRecord(record);
       //res.json(result);
+      //await res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
       await res.sendStatus(httpStatus.OK);
     } catch (error) {
       return next(error);

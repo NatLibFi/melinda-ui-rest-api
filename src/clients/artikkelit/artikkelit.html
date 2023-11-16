@@ -850,25 +850,19 @@
                 <div class="article-actions">
 
                   <div class="action-check">
-<!--                     <button class="icon-on-left icon-on-right alternate-blue" onclick="return checkArticleRecord(event)">
-                      <span class="material-icons">rule</span>
-                      Tarkista
-                      <span class="material-icons">check_circle</span>
-                    </button> -->
-
-                    <button class="icon-on-left alternate-blue" onclick="return checkArticleRecord(event)">
+                    <button id="actionCheckArticleRecord" class="icon-on-left alternate-blue" onclick="return checkArticleRecord(event)">
                       <span class="material-icons">description</span>
                       Tarkista
                     </button>
 
                   </div>
 
-                  <div class="action-forward">
+                  <div id="actionForward" class="action-forward">
                     <span class="material-icons">east</span>
                   </div>
 
                   <div class="action-save">
-                    <button id="saveArticleRecord" class="icon-on-left"
+                    <button id="actionSaveArticleRecord" class="icon-on-left"
                       onclick="return openSaveArticleRecordDialog(event)" disabled="true">
                       <span class="material-icons">note_add</span>
                       Tallenna
