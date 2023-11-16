@@ -18,7 +18,7 @@ function testTransform({getFixture, testBase = false, expectToFail = false}) {
     const input = getFixture('input.json');
     const expectedResult = getFixture('output.json');
     const {base, result} = getResultRecord(input);
-    
+
     expect(testBase ? base : result).to.deep.equal(expectedResult);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
