@@ -4,7 +4,7 @@ import generateTests from '@natlibfi/fixugen';
 import {getResultRecord} from './muuntajaService.js';
 
 generateTests({
-  callback: testTransform_e2print,
+  callback: testTransformFore2print,
   path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'e2print'],
   useMetadataFile: true,
   recurse: true,
@@ -13,12 +13,12 @@ generateTests({
   }
 });
 
-function testTransform_e2print({getFixture, testBase = false, expectToFail = false}) {
+function testTransformFore2print({getFixture, testBase = false, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
     const expectedResult = getFixture('output.json');
     const {base, result} = getResultRecord(input);
-    
+
     expect(testBase ? base : result).to.deep.equal(expectedResult);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
@@ -32,7 +32,7 @@ function testTransform_e2print({getFixture, testBase = false, expectToFail = fal
 }
 
 generateTests({
-  callback: testTransform_print2e,
+  callback: testTransformForprint2e,
   path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'print2e'],
   useMetadataFile: true,
   recurse: true,
@@ -41,7 +41,7 @@ generateTests({
   }
 });
 
-function testTransform_print2e({getFixture, testBase = false, expectToFail = false}) {
+function testTransformForprint2e({getFixture, testBase = false, expectToFail = false}) {
   try {
     const input = getFixture('input.json');
     const expectedResult = getFixture('output.json');
