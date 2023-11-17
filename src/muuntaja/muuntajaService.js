@@ -48,7 +48,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
   //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
-  //logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
+  // logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
 
   const transformProfile = profiles[options.type];
 
@@ -70,7 +70,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
     reducers
   });
 
-  //logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
+  // logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
 
   return {
     source: stripRecord(source),
@@ -162,7 +162,6 @@ export function modifyRecord(record, include, exclude, replace) {
   const result = replaceFields(excludeFields(includeFields(record, include), exclude), replace);
 
   //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
-  //logger.debug(`Result: ${JSON.stringify(result)}`);
 
   return result;
 }

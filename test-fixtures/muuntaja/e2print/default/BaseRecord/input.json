@@ -1,6 +1,6 @@
 {
  "options": {
-  "type": "p2e",
+  "type": "e2p",
   "profile": "KVP",
   "LOWTAG":"KVP"
  },

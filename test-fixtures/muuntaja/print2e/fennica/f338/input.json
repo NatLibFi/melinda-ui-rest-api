@@ -1,0 +1,12 @@
+{
+  "options": {
+   "type": "p2e",
+   "profile": "FENNICA",
+   "LOWTAG":"FENNICA"
+  },
+  "source": {},
+  "base": {},
+  "exclude": {},
+  "replace": {},
+  "include": []
+ }
