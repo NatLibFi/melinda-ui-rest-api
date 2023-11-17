@@ -149,6 +149,10 @@
   border-color: var(--color-blue-100);
 }
 
+#artikkelit .fieldset-preview {
+/*   flex-direction: column; */
+}
+
 #artikkelit fieldset legend {
   color: var(--color-blue-100);
   font-size: var(--font-size-headline-small);
@@ -317,6 +321,7 @@
 #artikkelit .note.record-success {
   color: var(--color-functional-green);
   font-style: italic;
+  font-weight: var(--font-weight-label);
 }
 
 #artikkelit .note.record-error {

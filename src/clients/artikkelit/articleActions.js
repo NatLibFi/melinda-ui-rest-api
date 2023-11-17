@@ -4,9 +4,13 @@
 /*                                                                           */
 /*****************************************************************************/
 
-import {disableElement, enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
+import {
+  disableElement, enableElement, getAllDescendants, highlightElement, isHidden,
+  isVisible, showSnackbar, startProcess, stopProcess
+} from '/common/ui-utils.js';
 import {validateArticleRecord, addArticleRecord} from '/common/rest.js';
 import {idbGet} from '/artikkelit/indexDB.js';
+import {collectFormData} from '/artikkelit/artikkelit.js';
 
 
 /*****************************************************************************/
@@ -141,6 +145,12 @@ function saveArticleRecord() {
     })
 }
 
+//---------------------------------------------------------------------------//
+// Function for creating record data
+//    - send record to rest api for addition
+//    - check response status
+//        * if status is 201, creation ok
+//        * other statuses, handle as error
 function addRecord(data) {
 
   addArticleRecord(data)
@@ -173,6 +183,8 @@ function addRecord(data) {
     const checkArticleRecordButton = document.getElementById('actionCheckArticleRecord');
     const saveArticleRecordButton = document.getElementById('actionSaveArticleRecord');
     const forwardIcon = document.getElementById('actionForward');
+    const showEditModeButton = document.getElementById('formEditMode');
+
 
     const notes = document.getElementById('articleRecordNotes');
 
@@ -187,6 +199,8 @@ function addRecord(data) {
     notes.classList.add('record-success');
 
     //TODO: should the user be able to choose to use same template for next article?
+    showArticleFormReadMode();
+    disableElement(showEditModeButton);
   }
 }
 
@@ -212,6 +226,143 @@ export function resetCheckAndSave() {
   disableElement(saveArticleRecordButton);
   enableElement(checkArticleRecordButton);
   forwardIcon.classList.remove('proceed');
+}
+
+
+//---------------------------------------------------------------------------//
+// Function for displaying form in read mode
+// Hides all edit fields and buttons from view
+window.showArticleFormReadMode = function (event = undefined) {
+  console.log('Showing article form in read mode');
+  eventHandled(event);
+
+  const fieldsets = document.querySelectorAll('#artikkelit #articleForm #fieldsets fieldset');
+  const showReadModeButton = document.getElementById('formReadMode');
+  const showEditModeButton = document.getElementById('formEditMode');
+  const clearFormButton = document.getElementById('formClear');
+  const formData = collectFormData();
+  const notes = document.getElementById('articleFormNotes');
+
+
+  fillPreview(formData);
+  enableElement(showEditModeButton);
+  disableElement(showReadModeButton);
+  disableElement(clearFormButton);
+  notes.innerHTML = 'Lomakkeella näytetään ne kentät, joihin olet lisännyt tietoja.';
+
+  fieldsets.forEach((fieldset) => {
+    for (const child of fieldset.children) {
+
+      if (isVisible(child)) {
+        handleVisible(child);
+      }
+
+      if (isHidden(child)) {
+        handleHidden(child);
+
+      }
+    }
+  })
+
+  function fillPreview(formData) {
+    fill(formData.journalNumber?.publishingYear, 'yearPreview');
+    fill(formData.journalNumber?.volume, 'volPreview');
+    fill(formData.journalNumber?.number, 'numberPreview');
+    fill(formData.journalNumber?.pages, 'pagesPreview');
+    fill(formData.article?.title, 'titlePreview');
+    fill(formData.article?.language.ui, 'languagePreview');
+    fill(formData.article?.link, 'linkPreview');
+    fill(formData.article?.type, 'typePreview');
+    fill(formData.article?.sectionOrColumn, 'sectionPreview');
+    fill(formData.article?.ccLicense, 'licensePreview');
+    fill(formData.collecting?.f589a, 'f589aPreview');
+    fill(formData.collecting?.f599a, 'f599aPreview');
+    fill(formData.collecting?.f599x, 'f599xPreview');
+
+    function fill(data, elementId) {
+      document.getElementById(elementId).innerHTML = data ? data : '';
+    }
+
+  }
+
+  function handleVisible(element) {
+    if (element.classList.contains('fieldset-preview')) {
+      hideButtons(element);
+      return;
+    }
+
+    element.style.display = 'none';
+    element.classList.add('hidden-in-read-mode');
+
+    function hideButtons(element) {
+      getAllDescendants(element).forEach((descendant) => {
+        if (descendant.tagName === 'BUTTON') {
+          descendant.style.visibility = 'hidden';
+          descendant.classList.add('hidden-in-read-mode');
+        }
+      });
+    }
+  }
+
+  function handleHidden(element) {
+    if (element.classList.contains('hidden-in-edit-mode')) {
+
+      if (element.classList.contains('fieldset-sub-heading')) {
+        element.style.display = 'flex';
+      }
+
+      for (const child of element.children) {
+        if (child.classList.contains('preview-value') && child.innerHTML !== '') {
+          element.style.display = 'flex';
+        }
+      }
+    }
+  }
+
+}
+
+//---------------------------------------------------------------------------//
+// Function for displaying form edit mode
+// makes the elements that were hidden on read mode visible
+window.showArticleFormEditMode = function (event = undefined) {
+  console.log('Showing article form in edit mode');
+  eventHandled(event);
+
+  const fieldsets = document.querySelectorAll('#artikkelit #articleForm #fieldsets fieldset');
+  const showReadModeButton = document.getElementById('formReadMode');
+  const showEditModeButton = document.getElementById('formEditMode');
+  const clearFormButton = document.getElementById('formClear');
+  const notes = document.getElementById('articleFormNotes');
+
+  enableElement(showReadModeButton);
+  disableElement(showEditModeButton);
+  enableElement(clearFormButton);
+  notes.innerHTML = 'Lomakkeelle lisäämäsi tiedot päivittyvät myös tietueen esikatseluun.';
+
+  fieldsets.forEach((fieldset) => {
+    for (const child of fieldset.children) {
+
+      showButtons(child);
+
+      if (child.classList.contains('hidden-in-read-mode')) {
+        child.style.display = 'flex';
+        child.classList.remove('hidden-in-read-mode')
+      }
+
+      if (child.classList.contains('hidden-in-edit-mode')) {
+        child.style.display = 'none';
+      }
+    }
+
+    function showButtons(element) {
+      getAllDescendants(element).forEach((descendant) => {
+        if (descendant.tagName === 'BUTTON' && descendant.classList.contains('hidden-in-read-mode')) {
+          descendant.style.visibility = 'visible';
+          descendant.classList.remove('hidden-in-read-mode')
+        }
+      })
+    }
+  })
 }
 
 

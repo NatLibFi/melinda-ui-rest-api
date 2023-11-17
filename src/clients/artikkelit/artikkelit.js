@@ -77,6 +77,11 @@ function sourceTypeChange(event) {
   const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
   const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
 
+  const sourceTypeSelect = document.querySelector('select#kuvailtava-kohde');
+  const sourceTypePreview = document.getElementById('sourceTypePreview');
+
+  sourceTypePreview.innerHTML = sourceTypeSelect.options[sourceTypeSelect.selectedIndex].text
+
   if (sourceType === 'journal') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
@@ -85,7 +90,7 @@ function sourceTypeChange(event) {
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
     document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
     optionIsbn.setAttribute('hidden', 'hidden');
-    optionIssn.removeAttribute('hidden')
+    optionIssn.removeAttribute('hidden');
   }
 
   if (sourceType === 'book') {
@@ -102,7 +107,7 @@ function sourceTypeChange(event) {
     optionIssn.setAttribute('hidden', 'hidden');
     optionIsbn.removeAttribute('hidden')
   }
-
+  document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
   doUpdate();
 }
 
@@ -256,7 +261,7 @@ function collectReviewsCheck() {
   }
 }
 
-function collectFormData() {
+export function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
   const links = [];
   document.getElementsByName('artikkelin-linkki').forEach(el => links.push(el.value));

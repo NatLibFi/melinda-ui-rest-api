@@ -40,6 +40,7 @@ export default function (melindaApiOptions) {
     try {
       //const result = await recordOperator.addRecord(record);
       //res.json(result);
+      //await res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
       await res.sendStatus(httpStatus.CREATED);
     } catch (error) {
       return next(error);

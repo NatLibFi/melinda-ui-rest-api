@@ -25,9 +25,6 @@ function showAndHideSearchInputs(event) {
   document.getElementById(`julkaisu-haku-issn-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-isbn-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-melinda-form`).style.display = 'none';
-
-  //console.log('Valittu hakutyyppi (nimeke, melinda, isbn, issn): ', event.target.value);
-
   document.getElementById(`julkaisu-haku-${event.target.value}-form`).style.display = 'block';
 }
 
@@ -60,6 +57,14 @@ function searchResultChange(event) {
         : (document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = 'Ei', resetAndHideCcLicense())
 
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
+
+      if (data.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') && sourceType !== 'journal') {
+        showSnackbar({style: 'alert', text: 'Kuvailun kohteena on artikkeli kokoomateoksessa, mutta valitsemasi julkaisu on kausijulkaisu tai päivittyvä julkaisu'});
+      }
+
+      if (data.recordType === ('Monografia') && sourceType !== 'book') {
+        showSnackbar({style: 'alert', text: 'Kuvailun kohteena on lehtiartikkeli, mutta valitsemasi julkaisu on monografia'});
+      }
     });
   }
 
