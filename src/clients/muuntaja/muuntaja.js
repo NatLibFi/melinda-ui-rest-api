@@ -197,6 +197,23 @@ window.onNewField = function (e) {
   return eventHandled(e);
 };
 
+window.onNewInstance = function(e){
+
+  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
+  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
+
+  //clear inputs
+  sourceInput.value = '';
+  baseInput.value = '';
+
+  //trigger input event listener to update required values (ie. url parameters)
+  sourceInput.dispatchEvent(new Event('input'));
+  baseInput.dispatchEvent(new Event('input'));
+
+  //set content
+  doTransform();
+};
+
 window.onSearch = function (e) {
   console.log('Search:', e);
   //const dialog = document.getElementById('searchDlg');
@@ -314,8 +331,8 @@ window.doTransform = function (event = undefined) {
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
-  //exception, if source and base ids are the same inform user
-  if(sourceID === baseID){
+  //exception, if source and base ids are the same inform user, ignore empty searches
+  if(sourceID && baseID && sourceID === baseID){
     console.log('Source and base ID:s match. This is not permitted');
     alert('Lähde ja Pohja tietueet eivät voi olla samat');
     return;
