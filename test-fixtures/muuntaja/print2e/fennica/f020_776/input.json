@@ -1,7 +1,7 @@
 {
  "options": {
   "type": "p2e",
-  "profile": "KVP",
+  "profile": "FENNI",
   "format": "PDF",
   "LOWTAG":"KVP"
  },
@@ -9,7 +9,7 @@
   "leader": "1111111111",
   "fields": [
     {
-        "tag":"001",
+        "tag":"001",        
         "value": "12345"
     }
   ]
@@ -24,18 +24,14 @@
     "subfields": [
      {
       "code": "a",
-      "value": "aaa"
-     }
-    ]
-   },
-   {
-    "tag": "100",
-    "subfields": [
+      "value": "978-1-62872-805-7"
+     },
      {
-      "code": "b",
-      "value": "bbb"
-     }
-    ]
+      "code": "q",
+      "value": "sidottu"
+     }     
+    ],
+    "id": "8d940405-3396-4b80-a774-8e2edf0c72e5"
    }
   ]
  },

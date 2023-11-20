@@ -162,6 +162,22 @@
       }
      ],
      "id": "39858a85-ef1e-4946-ba32-0daa8ee52381"
-    }
+    },
+    {
+      "id": "d046fbea-5c5c-4f1f-84de-c8ae5bd19043",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {
+          "code": "a",
+          "value": "Julkaistu myös painettuna."
+        },
+        {
+          "code": "9",
+          "value": "FENNI<KEEP>"
+        }
+      ],
+      "tag": "530"
+    }    
    ]
   }

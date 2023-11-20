@@ -36,11 +36,21 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function stripRecord({ID, leader, fields}) {
-  if (ID) {
-    return {ID, leader, fields};
-  }
-  return {leader, fields};
+function withID(ID, record) {
+  return ID ? {ID, ...record} : record;
+}
+
+function withError(error, record) {
+  return error ? {error, ...record} : record;
+}
+
+function withNotes(notes, record) {
+  return notes ? {notes, ...record} : record;
+}
+
+function stripRecord({leader, fields, ID, error, notes}) {
+
+  return withID(ID, withError(error, withNotes(notes, {leader, fields})));
 }
 
 export function getResultRecord({source, base: baseRecord, options, include, exclude, replace}) {
@@ -48,35 +58,46 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
   //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
-  //logger.debug(`* Base: ${JSON.stringify(base, null, 2)}`);
+  logger.debug(`* Base: ${JSON.stringify(baseRecord, null, 2)}`);
 
-  const transformProfile = profiles[options.type];
+  try {
 
-  const base = baseRecord?.leader ? baseRecord : transformProfile.createBase(options);
+    const transformProfile = profiles[options.type];
 
-  if (!source?.leader || !base?.leader) {
+    const base = baseRecord?.leader ? baseRecord : transformProfile.createBase(options);
+
+    if (!source?.leader || !base?.leader) {
+      return {
+        source: stripRecord(source),
+        base: stripRecord(base),
+        result: {}
+      };
+    }
+
+    const reducers = transformProfile.getReducers(options);
+
+    const result = merger({
+      base: modifyRecord(base, null, exclude, null),
+      source: modifyRecord(source, null, exclude, null),
+      reducers
+    });
+
+    // logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
+
     return {
       source: stripRecord(source),
       base: stripRecord(base),
-      result: {}
+      result: stripRecord(asMarcRecord(modifyRecord(result, null, null, replace)))
+    };
+  } catch (err) {
+    return {
+      source,
+      base: baseRecord,
+      result: {
+        error: String(err)
+      }
     };
   }
-
-  const reducers = transformProfile.getReducers(options);
-
-  const result = merger({
-    base: modifyRecord(base, null, exclude, null),
-    source: modifyRecord(source, null, exclude, null),
-    reducers
-  });
-
-  //logger.debug(`* result: ${JSON.stringify(result, null, 2)}`);
-
-  return {
-    source: stripRecord(source),
-    base: stripRecord(base),
-    result: stripRecord(asMarcRecord(modifyRecord(result, null, null, replace)))
-  };
 }
 
 /******************************************************************************
@@ -162,7 +183,6 @@ export function modifyRecord(record, include, exclude, replace) {
   const result = replaceFields(excludeFields(includeFields(record, include), exclude), replace);
 
   //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
-  //logger.debug(`Result: ${JSON.stringify(result)}`);
 
   return result;
 }

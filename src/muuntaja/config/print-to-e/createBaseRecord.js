@@ -14,6 +14,7 @@ import {getDefaultValue} from './defaults';
 
 import {f008Split, f008Get} from '../../../marcUtils/marcUtils';
 import {updateLOW} from './updates';
+import {validationOff} from '../common';
 
 const logger = createLogger();
 
@@ -22,31 +23,17 @@ const logger = createLogger();
 
 export function createBase(options) {
 
-  const baseValidators = {
-    fields: false,
-    subfieldValues: false
-  };
-
   const baseRecord = new MarcRecord(
     {
       leader: getDefaultValue('LDR').value,
       fields: []
     },
-    baseValidators
+    validationOff
   );
-
-  //const sourceRecord = new MarcRecord(source, sourceValidators);
-  /*
-  const opts = {
-    ...options,
-    ...getSourceInfo(sourceRecord)
-  };
-  */
 
   //*
   return merger({
     base: baseRecord,
-    source: {},
     reducers: getReducers(options)
   }).sortFields();
 
@@ -106,7 +93,7 @@ function getReducers(options) {
   ];
 
   function fillDefault(tag) {
-    return (base, source) => {
+    return (base) => {
       const field = getDefaultValue(tag, options);
       base.insertField(field);
       return base;
