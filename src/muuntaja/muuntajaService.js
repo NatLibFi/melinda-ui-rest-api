@@ -36,11 +36,21 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function stripRecord({ID, leader, fields}) {
-  if (ID) {
-    return {ID, leader, fields};
-  }
-  return {leader, fields};
+function withID(ID, record) {
+  return ID ? {ID, ...record} : record;
+}
+
+function withError(error, record) {
+  return error ? {error, ...record} : record;
+}
+
+function withNotes(notes, record) {
+  return notes ? {notes, ...record} : record;
+}
+
+function stripRecord({leader, fields, ID, error, notes}) {
+
+  return withID(ID, withError(error, withNotes(notes, {leader, fields})));
 }
 
 export function getResultRecord({source, base: baseRecord, options, include, exclude, replace}) {
