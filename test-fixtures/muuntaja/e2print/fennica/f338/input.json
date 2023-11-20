@@ -1,0 +1,12 @@
+{
+  "options": {
+   "type": "e2p",
+   "profile": "FENNICA",
+   "LOWTAG":"FENNICA"
+  },
+  "source": {},
+  "base": {},
+  "exclude": {},
+  "replace": {},
+  "include": []
+ }

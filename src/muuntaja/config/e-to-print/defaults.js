@@ -73,7 +73,7 @@ const defaultFieldValues = {
     ind1: ' ', ind2: ' ',
     subfields: [
       {code: 'a', value: 'nide'},
-      {code: 'b', value: 'n'},
+      {code: 'b', value: 'nc'},
       {code: '2', value: 'rdacarrier'}
     ],
     id: '55e6067b-8eba-44c1-a53c-293641a40729'

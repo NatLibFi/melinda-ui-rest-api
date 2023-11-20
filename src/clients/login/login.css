@@ -2,7 +2,7 @@
 /* Styles for login page                                                        */
 /* ---------------------------------------------------------------------------- */
 
-@import "/common/stylesheets/common.css";
+@import "/common/stylesheets/main.css";
 
 #homePage {
     background-color: var(--color-grey-20);

@@ -88,14 +88,15 @@ window.initialize = function () {
     }
   }
 
-  function updateRecordSwapButtonState(){
-    const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-    const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
-
-    document.getElementById('swap-button').disabled = !sourceID || !baseID;
-  }
+  
 };
 
+function updateRecordSwapButtonState(){
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  document.getElementById('swap-button').disabled = !sourceID || !baseID;
+};
 
 
 //-----------------------------------------------------------------------------
@@ -166,7 +167,7 @@ window.onEdit = function (e) {
     e.target.classList.remove('edit-mode');
   }
   styleBasedOnEditState();
-  showTransformed();
+  showTransformed(null);
   return eventHandled(e);
 
   function styleBasedOnEditState(){
@@ -194,6 +195,23 @@ window.onNewField = function (e) {
     subfields: []
   });
   return eventHandled(e);
+};
+
+window.onNewInstance = function(e){
+
+  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
+  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
+
+  //clear inputs
+  sourceInput.value = '';
+  baseInput.value = '';
+
+  //trigger input event listener to update required values (ie. url parameters)
+  sourceInput.dispatchEvent(new Event('input'));
+  baseInput.dispatchEvent(new Event('input'));
+
+  //set content
+  doTransform();
 };
 
 window.onSearch = function (e) {
@@ -279,11 +297,6 @@ window.copyLink = function (e) {
 // - User edits
 //-----------------------------------------------------------------------------
 
-const lookup = {
-  original: {},
-  from: {}
-};
-
 var transformed = {
   options: {},
   source: null,
@@ -291,6 +304,12 @@ var transformed = {
   exclude: {},
   replace: {},
   include: []
+};
+
+const keys = {
+  source: 'source',
+  base: 'base',
+  result: 'result'
 };
 
 window.editmode = false;
@@ -312,6 +331,13 @@ window.doTransform = function (event = undefined) {
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
+  //exception, if source and base ids are the same inform user, ignore empty searches
+  if(sourceID && baseID && sourceID === baseID){
+    console.log('Source and base ID:s match. This is not permitted');
+    alert('Lähde ja Pohja tietueet eivät voi olla samat');
+    return;
+  }
+
   if (!transformed.source || sourceID != transformed.source.ID) {
     transformed.source = {ID: sourceID};
   }
@@ -327,6 +353,7 @@ window.doTransform = function (event = undefined) {
     .then(records => {
       stopProcess();
       console.log('Transformed:', records);
+      updateRecordSwapButtonState();
       showTransformed(records);
     });
 };
@@ -335,80 +362,33 @@ window.doTransform = function (event = undefined) {
 // Field view decorator
 //-----------------------------------------------------------------------------
 
-function getContent(field) {
-  return transformed.replace[field.id] ?? field;
-}
-
-function getOriginal(field) {
-  return lookup.original[field.id] ?? field;
-}
-
-function decorateField(div, field) {
-  if (transformed.exclude[field.id]) {
-    div.classList.add('row-excluded');
-  }
-  if (transformed.replace[field.id]) {
-    div.classList.add('row-replaced');
-    return;
-  }
-  const from = lookup.from[field.id];
-  if (from == 'source') {
-    div.classList.add('row-fromSource');
-  }
-  if (from == 'base') {
-    div.classList.add('row-fromBase');
-  }
-}
-
-function onFieldClick(event, field) {
-  //console.log("Click", field)
-
-  var recordDestination = '';
-  try {
-    recordDestination = event.currentTarget.attributes.recordDestination.nodeValue;
-  } catch (error) {
-    console.error(`Could not determine the main panel (record destination) where user clicked on: ${error}`);
-  }
+function onEditClick(event, field, original){
+  const {id} = field;
+  console.log(`Edit Click on ${id}`);
   
-  if (editmode && recordDestination === 'result') {
-
-    //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
-    //span uses as class classname/id
-    var subElement = null;
-    try {
-      subElement = {};
-      subElement.class = event.originalTarget.attributes.class.nodeValue;
-      subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
-    } catch (error) {
-      console.error(`Getting field sub element encountered error: ${error}`);
-      subElement = null;
-    }
-    //make sure only certain values can be auto edit focus requested
-    //if not correct later expects null and does nothing
-    if(subElement && !isSubElementAcceptable(subElement.class)){
-        console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
-        subElement = null;
-    }
-
-    editField(getContent(field), getOriginal(field), subElement);
-  } else {
-    toggleField(field);
+  //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
+  //span uses as class classname/id
+  var subElement = null;
+  try {
+    subElement = {};
+    subElement.class = event.originalTarget.attributes.class.nodeValue;
+    subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
+  } catch (error) {
+    console.log(`Getting field sub element encountered error: ${error}.`);
+    console.log('Or maybe user clicked on some parent element without required attributes. Skipping preactivation for a spesific value.');
+    subElement = null;
   }
+  //make sure only certain values can be auto edit focus requested
+  //if not correct later expects null and does nothing
+  if(subElement && !isSubElementAcceptable(subElement.class)){
+      console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
+      subElement = null;
+  }
+
+  editField(field, original, subElement);
+  
   return eventHandled(event);
 
-  function toggleField(field) {
-    const {id} = field;
-
-    console.log('Toggle:', id);
-
-    if (!transformed.exclude[id]) {
-      transformed.exclude[id] = true;
-    } else {
-      delete transformed.exclude[id];
-    }
-
-    doTransform();
-  }
   function isSubElementAcceptable(elementRequested){
     switch (elementRequested){
       case 'tag':
@@ -421,6 +401,18 @@ function onFieldClick(event, field) {
         return false;
     }
   }
+}
+function onToggleClick(event, field){
+  const {id} = field;
+  console.log(`Toggle Click on ${id}`);
+
+    if (!transformed.exclude[id]) {
+      transformed.exclude[id] = true;
+    } else {
+      delete transformed.exclude[id];
+    }
+
+    doTransform();
 }
 
 window.editSaveField = function (field) {
@@ -439,14 +431,6 @@ window.editUseOriginal = function (field) {
   doTransform();
 };
 
-const decorator = {
-  getContent,
-  getOriginal,
-  decorateField,
-
-  onClick: onFieldClick
-};
-
 //-----------------------------------------------------------------------------
 // Show transformation results
 //-----------------------------------------------------------------------------
@@ -457,11 +441,11 @@ function showTransformed(update = undefined) {
     transformed = update;
   }
 
-  if (update.source.status == 404) {
+  if (update?.source?.status == 404) {
     notFoundDlgOpen('Lähde');
   }
 
-  if (update.base.status == 404) {
+  if (update?.base?.status == 404) {
     notFoundDlgOpen('Pohja');
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
@@ -477,19 +461,33 @@ function showTransformed(update = undefined) {
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id));
   const includedBaseIDs = baseFields.map(f => f.id).filter(id => resultIDs.includes(id));
 
-  lookup.from = {
-    ...includedSourceIDs.reduce((a, id) => ({...a, [id]: 'source'}), {}),
-    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: 'base'}), {})
+  const from = {
+    ...includedSourceIDs.reduce((a, id) => ({...a, [id]: keys.source}), {}),
+    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {})
   };
 
-  lookup.original = getLookup(sourceFields.concat(baseFields));
+  const original = getLookup(sourceFields.concat(baseFields));
 
   //console.log(transformed.from)
 
   // Show records
-  showRecord(source, 'source', decorator);
-  showRecord(base, 'base', decorator);
-  showRecord(result, 'result', decorator);
+  showRecord(source, keys.source, {
+    onClick: onToggleClick,
+    from,
+    exclude: transformed.exclude
+  });
+  showRecord(base, keys.base, {
+    onClick: onToggleClick,
+    from,
+    exclude: transformed.exclude
+  });
+  showRecord(result, keys.result, {
+    onClick: editmode ? onEditClick : onToggleClick,
+    from,
+    original,
+    exclude: transformed.exclude,
+    replace: transformed.replace
+  });
 
   function getFields(record) {
     return record?.fields ?? [];
@@ -498,7 +496,29 @@ function showTransformed(update = undefined) {
   function getLookup(fields) {
     return fields.reduce((a, field) => ({...a, [field.id]: field}), {});
   }
+}
 
+function getCustomDecorator(dest, originalDecorator, isEditModeActive = false){
+  //get deep copies to prevent crossreference connections (might be overkill...)
+  const copiedDecorator = getDeepCopyOfObject(originalDecorator);
+  //edit decorators for each as required based on dest
+  switch (dest) {
+    case keys.source:
+      //customise here
+      copiedDecorator.onClick = onToggleClick;
+      break;
+    case keys.base:
+      //customise here
+      copiedDecorator.onClick = onToggleClick;
+      break;
+    case keys.result:
+      copiedDecorator.onClick = isEditModeActive ? onEditClick : onToggleClick;
+      break;
+    default:
+      //use original setup
+      break;
+  }
+  return copiedDecorator;
 }
 
 function notFoundDlgOpen(recordType) {
@@ -563,3 +583,7 @@ window.saveJson = function (event) {
   document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
   jsonDlgClose(event);
 };
+
+function getDeepCopyOfObject(obj){
+  return JSON.parse(JSON.stringify(obj));
+}

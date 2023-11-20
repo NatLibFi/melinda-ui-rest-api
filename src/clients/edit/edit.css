@@ -3,7 +3,7 @@
 /* ---------------------------------------------------------------------------- */
 
 
-@import "/common/stylesheets/common.css";
+@import "/common/stylesheets/main.css";
 
 #muuntaja {
   background-color: var(--color-primary-white);

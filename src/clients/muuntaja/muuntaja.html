@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="muuntaja.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="/common/sortable.min.js"></script>
   <script type="module" src="muuntaja.js"></script>
   <script type="module" src="/common/navbar.js"></script>
   <script type="module" src="/common/footer.js"></script>
@@ -133,6 +133,8 @@
               onClick="copyLink(event)">share</button>
             <button class="material-icons tooltip icon-only" tooltip-text="Tietue"
               onclick="jsonDlgOpen(event)">edit_note</button>
+            <button class="material-icons tooltip icon-only" tooltip-text="Uusi"
+              onClick="onNewInstance(event)">add</button>
           </div>
         </div>
 
@@ -147,7 +149,7 @@
               </div>
               <button class="material-icons tooltip icon-only" tooltip-text="Hae"
                 onclick="return doTransform(event)">search</button>
-              <button class="material-icons tooltip icon-only" id="swap-button" tooltip-text="Vaihda"
+              <button class="material-icons tooltip icon-only" id="swap-button" tooltip-text="Vaihda" style="visibility:collapse;"
                 onclick="return onRecordSwap(event)" disabled>swap_horiz</button>
             </form>
             <div id="Record" class="marc-record">
@@ -197,21 +199,27 @@
             <div class="fieldedit marc-record">
               <div style="display: flex;">
                 Kenttä: <div id="tag"></div>
-                1. indikaattori: <div id="ind1"></div>
-                2. indikaattori: <div id="ind2"></div>
-                <div id="value"></div>
+                <div id="indicators" style="display: flex;">
+                  1. indikaattori: <div id="ind1"></div>
+                  2. indikaattori: <div id="ind2"></div>
+                </div>
               </div>
               <hr />
-              <div id="fieldlist" width="100%">
+              <div id="fixedFields">
+                <div style="margin-bottom: 5px;">Arvo:</div>
+                <div id="value"></div>
               </div>
-              <button id="editAddFieldButton" onclick="return onAddField(event)">Uusi osakenttä</button>
+              <div id="flexFields">
+                <div id="fieldlist" width="100%"></div>
+                <button id="editAddSubFieldButton" onclick="return onAddField(event)">Uusi osakenttä</button>
+              </div>
             </div>
 
             <hr />
 
             <div style="display: flex; justify-content: right;">
-              <button id="editCloseButton" onclick="return editDlgClose(event)">Peru muutokset</button>
-              <button id="editSaveButton" onclick="return editDlgOK(event)">Tallenna muutokset</button>
+              <button id="editCloseButton" onclick="return editDlgClose(event)">Sulje</button>
+              <button id="editSaveButton" onclick="return editDlgOK(event)" disabled>Tallenna muutokset</button>
             </div>
 
           </div>
