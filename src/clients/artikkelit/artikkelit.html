@@ -136,14 +136,14 @@
               </div> 
               -->
 
-              <div class="article-actions">
+              <div id="actionsOnEdit" class="article-actions">
 
                 <!-- Näytä lomakekenttien esikatselu -->
                 <div id="actionRead">
                   <button id="formReadMode" class="alternate-blue icon-on-left tooltip"
-                    tooltip-text="Näytä lomakkeen esikatselu" onclick="return showArticleFormReadMode(event)">
-                    <span class="material-icons">preview</span>
-                    Esikatsele
+                    tooltip-text="Lukitse lomakkeen muokkaus" onclick="return showArticleFormReadMode(event)">
+                    <span class="material-icons">edit_off</span>
+                    Lukitse
                   </button>
                 </div>
 
@@ -167,6 +167,30 @@
                 </div>
 
               </div>
+
+              <div id="actionsAfterSave" class="article-actions" style="display: none">
+
+                <!-- Aloita uusi kuvailu tyhjältä pohjalta -->
+                <div id="actionNewEmpty">
+                  <button id="emptyRecord" class="alternate-blue icon-on-left tooltip"
+                    tooltip-text="Aloita kuvailu tyhjältä lomakkeelta"
+                    onclick="return startNewEmptyForm(event)">
+                    <span class="material-icons">content_copy</span>
+                    Tyhjä lomake
+                  </button>
+                </div>
+
+                <!-- Aloita uusi kuvailu samalta pohjalta -->
+                <div id="actionNewCopy">
+                  <button id="copyRecord" class="alternate-blue icon-on-left tooltip"
+                    tooltip-text="Aloita kuvailu kopioimalla lomake" disabled="true">
+                    <span class="material-icons">file_copy</span>
+                    Kopioi pohjaksi
+                  </button>
+                </div>
+
+              </div>
+
 
               <div id="articleFormNotes" class="note">
                 Lomakkeelle lisäämäsi tiedot päivittyvät myös tietueen esikatseluun.

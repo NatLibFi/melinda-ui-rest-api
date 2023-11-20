@@ -1,4 +1,4 @@
-import {showTab} from '/common/ui-utils.js';
+import {showSnackbar, showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
 import {generateArticleRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
@@ -404,4 +404,5 @@ window.clearAllFields = function () {
   resetTextareaFields();
   resetSelectFields();
   resetAndHideCcLicense();
+  showSnackbar({style: 'info', text: 'Lomake tyhjennetty'});
 };

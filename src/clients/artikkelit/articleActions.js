@@ -184,26 +184,62 @@ function addRecord(data) {
     const saveArticleRecordButton = document.getElementById('actionSaveArticleRecord');
     const forwardIcon = document.getElementById('actionForward');
     const showEditModeButton = document.getElementById('formEditMode');
+    const newEmptyRecordButton = document.getElementById('actionNewEmpty');
+    const newCopyRecordButton = document.getElementById('actionNewEmpty');
+    const divActionsOnEdit = document.getElementById('actionsOnEdit');
+    const divActionsAfterSave = document.getElementById('actionsAfterSave');
 
+    const recordNotes = document.getElementById('articleRecordNotes');
+    const formNotes = document.getElementById('articleFormNotes');
 
-    const notes = document.getElementById('articleRecordNotes');
 
     disableElement(checkArticleRecordButton);
     disableElement(saveArticleRecordButton);
     forwardIcon.classList.remove('proceed');
+    recordNotes.innerHTML = 'Kuvailtu artikkeli tallennettiin ARTO-kokoelmaan'
+    recordNotes.classList.remove('record-error');
+    recordNotes.classList.remove('record-valid');
+    recordNotes.classList.add('record-success');
 
-
-    notes.innerHTML = 'Kuvailtu artikkeli tallennettiin ARTO-kokoelmaan'
-    notes.classList.remove('record-error');
-    notes.classList.remove('record-valid');
-    notes.classList.add('record-success');
-
-    //TODO: should the user be able to choose to use same template for next article?
     showArticleFormReadMode();
     disableElement(showEditModeButton);
+    divActionsOnEdit.style.display = 'none';
+    divActionsAfterSave.style.display = 'flex';
+   
+    enableElement(newEmptyRecordButton);
+    //TODO: should the user be able to choose to use same template for next article?
+    // disable the copy button for now
+    disableElement(newCopyRecordButton);
+
+    formNotes.innerHTML = 'Aloita uusi kuvailu tyhjältä lomakkeelta tai käytä nykyistä lomaketta pohjana.'; 
+    formNotes.classList.add('record-valid');
   }
 }
 
+
+
+/*****************************************************************************/
+/* START NEW RECORD ACTIONS                                                  */
+/*****************************************************************************/
+
+//---------------------------------------------------------------------------//
+// Function for clearing all form fields and 
+window.startNewEmptyForm = function(event=undefined) {
+  console.log('Start new record with empty form')
+  eventHandled(event);
+  
+  const divActionsOnEdit = document.getElementById('actionsOnEdit');
+  const divActionsAfterSave = document.getElementById('actionsAfterSave');
+  const formNotes = document.getElementById('articleFormNotes');
+
+  divActionsOnEdit.style.display = 'flex';
+  divActionsAfterSave.style.display = 'none';
+  showArticleFormEditMode();
+  clearAllFields();
+  formNotes.classList.remove('record-valid');
+
+  showSnackbar({style: 'info', text: 'Aloitetaan uusi kuvailu tyhjältä pohjalta'})
+}
 
 
 /*****************************************************************************/
@@ -248,7 +284,7 @@ window.showArticleFormReadMode = function (event = undefined) {
   enableElement(showEditModeButton);
   disableElement(showReadModeButton);
   disableElement(clearFormButton);
-  notes.innerHTML = 'Lomakkeella näytetään ne kentät, joihin olet lisännyt tietoja.';
+  notes.innerHTML = 'Lomakkeella näytetään nyt kentät, joihin olet lisännyt tietoja.';
 
   fieldsets.forEach((fieldset) => {
     for (const child of fieldset.children) {
