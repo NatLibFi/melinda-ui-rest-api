@@ -2,7 +2,6 @@
  "options": {
   "type": "e2p",
   "profile": "KVP",
-  "format": "PDF",
   "LOWTAG":"KVP"
  },
  "source": {

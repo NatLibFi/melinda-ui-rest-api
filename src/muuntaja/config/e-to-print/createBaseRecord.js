@@ -59,6 +59,7 @@ export function createBase(options) {
 function getReducers(options) {
 
   const fenniFields = [
+    fillDefault('042'),
     // finnDefault('506/FENNI'),
     fillDefault('530/FENNI')
     // fillDefault('540/FENNI'),

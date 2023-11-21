@@ -34,6 +34,18 @@
     "id": "ac44d08d-5532-49bc-b2b9-c863cf930b1a"
    },
    {
+    "tag": "042",
+    "id": "f23d6e0c-5ccd-46b6-8170-4b8ad9f6ba64",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+      {
+        "code": "a",
+        "value": "finb"
+      }
+    ]
+  },
+   {
     "tag": "337",
     "ind1": " ",
     "ind2": " ",
@@ -72,6 +84,22 @@
      }
     ],
     "id": "55e6067b-8eba-44c1-a53c-293641a40729"
-   }
+   },
+   {
+    "id": "d046fbea-5c5c-4f1f-84de-c8ae5bd19043",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+      {
+        "code": "a",
+        "value": "Julkaistu myös painettuna."
+      },
+      {
+        "code": "9",
+        "value": "FENNI<KEEP>"
+      }
+    ],
+    "tag": "530"
+  }    
   ]
  }

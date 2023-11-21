@@ -1,8 +1,8 @@
 {
  "options": {
-  "type": "e2p",
-  "profile": "FENNI",
-  "LOWTAG":"FENNI"
+  "type": "p2e",
+  "profile": "KVP",
+  "LOWTAG":"KVP"
  },
  "source": {},
  "base": {},
