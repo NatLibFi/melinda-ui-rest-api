@@ -397,8 +397,8 @@ window.onAccount = function (e) {
 
 window.clearAllFields = function () {
   idbClearAllTables();
-  refreshAllLists();
   resetPublicationSearchResultSelect();
+  refreshAllLists();
   resetReviewSearchResultSelect();
   resetInputFields();
   resetTextareaFields();

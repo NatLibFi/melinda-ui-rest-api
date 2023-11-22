@@ -130,12 +130,7 @@
                 <p class="title">Kuvaile artikkeli lomakkeelle</p>
               </div>
 
-              <!--               
-              <div class="main-header">
-                Kuvailtavan artikkelin tiedot
-              </div> 
-              -->
-
+              <!-- Painikkeet lomakkeen muokkausvaiheessa -->
               <div id="actionsOnEdit" class="article-actions">
 
                 <!-- Näytä lomakekenttien esikatselu -->
@@ -168,13 +163,13 @@
 
               </div>
 
+              <!-- Painikkeet tietueen tallentamisen jälkeen -->
               <div id="actionsAfterSave" class="article-actions" style="display: none">
 
                 <!-- Aloita uusi kuvailu tyhjältä pohjalta -->
                 <div id="actionNewEmpty">
                   <button id="emptyRecord" class="alternate-blue icon-on-left tooltip"
-                    tooltip-text="Aloita kuvailu tyhjältä lomakkeelta"
-                    onclick="return startNewEmptyForm(event)">
+                    tooltip-text="Aloita kuvailu tyhjältä lomakkeelta" onclick="return startNewEmptyForm(event)">
                     <span class="material-icons">content_copy</span>
                     Tyhjä lomake
                   </button>
@@ -183,7 +178,7 @@
                 <!-- Aloita uusi kuvailu samalta pohjalta -->
                 <div id="actionNewCopy">
                   <button id="copyRecord" class="alternate-blue icon-on-left tooltip"
-                    tooltip-text="Aloita kuvailu kopioimalla lomake" disabled="true">
+                    tooltip-text="Aloita kuvailu kopioimalla lomake"  onclick="return startNewCopyForm(event)" disabled="true">
                     <span class="material-icons">file_copy</span>
                     Kopioi pohjaksi
                   </button>
