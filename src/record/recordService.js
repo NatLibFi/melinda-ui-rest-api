@@ -1,4 +1,4 @@
-import {createLogger} from '@natlibfi/melinda-backend-common';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiRecordClient} from '@natlibfi/melinda-rest-api-client';
 
 export default function (melindaApiOptions) {

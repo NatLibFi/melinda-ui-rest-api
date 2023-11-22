@@ -9,7 +9,7 @@
 
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-import {createRecordOperator} from './recordService.js';
+import createRecordOperator from './recordService.js';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams.js';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams.js';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound.js';
