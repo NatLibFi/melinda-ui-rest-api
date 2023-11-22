@@ -70,6 +70,8 @@ export function refreshAbstractList() {
       document.getElementById('tyhjenna-tiivistelmat-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
 export function clearAbstracts(event) {

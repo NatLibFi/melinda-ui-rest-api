@@ -1,11 +1,12 @@
-import {showTab} from '/common/ui-utils.js';
+import {showSnackbar, showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {getArtikkeliRecord} from '/common/rest.js';
+import {generateArticleRecord} from '/common/rest.js';
 import {showRecord} from '/common/marc-record-ui.js';
 import {
-  idbClear, idbDel, idbGet,
+  idbClear, idbDel, idbGet, idbSet,
   idbGetStoredValues, getTableNames
 } from '/artikkelit/indexDB.js';
+import {} from './articleActions.js';
 
 import {initAbstracts, refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
 import {
@@ -17,8 +18,9 @@ import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAut
 import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
 import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
-import {initPublicationSearch, resetSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
-import {initReviewSearch, resetReview, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
+import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
+import {initReviewSearch, resetReview, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
+import {resetCheckAndSave} from './articleActions.js';
 
 window.initialize = function () {
   console.log('Initializing');
@@ -40,6 +42,7 @@ window.initialize = function () {
     initAbstracts();
     initOntologyWords();
     initAdditionalFields();
+    addFormChangeListeners();
   }
 };
 
@@ -47,6 +50,22 @@ function initTypeChanges() {
   document.getElementById('kuvailtava-kohde').addEventListener('change', sourceTypeChange);
   document.getElementById('asiasana-ontologia').addEventListener('change', ontologyTypeChange);
   document.getElementById('kuvailtava-kohde').dispatchEvent(new Event('change'));
+}
+
+function addFormChangeListeners() {
+  const form = document.getElementById('articleForm');
+  const buttons = document.querySelectorAll('#articleForm button');
+
+  form.addEventListener('input', function () {
+    doUpdate();
+  });
+
+  buttons.forEach(button => {
+    button.addEventListener('click', function () {
+      doUpdate();
+    });
+  })
+
 }
 
 function sourceTypeChange(event) {
@@ -58,6 +77,11 @@ function sourceTypeChange(event) {
   const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
   const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
 
+  const sourceTypeSelect = document.querySelector('select#kuvailtava-kohde');
+  const sourceTypePreview = document.getElementById('sourceTypePreview');
+
+  sourceTypePreview.innerHTML = sourceTypeSelect.options[sourceTypeSelect.selectedIndex].text
+
   if (sourceType === 'journal') {
     document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
@@ -66,7 +90,7 @@ function sourceTypeChange(event) {
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
     document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
     optionIsbn.setAttribute('hidden', 'hidden');
-    optionIssn.removeAttribute('hidden')
+    optionIssn.removeAttribute('hidden');
   }
 
   if (sourceType === 'book') {
@@ -83,6 +107,8 @@ function sourceTypeChange(event) {
     optionIssn.setAttribute('hidden', 'hidden');
     optionIsbn.removeAttribute('hidden')
   }
+  document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
+  doUpdate();
 }
 
 window.articleTypeChange = (event) => {
@@ -96,6 +122,9 @@ window.articleTypeChange = (event) => {
   if (['A1', 'A2', 'A3'].some(str => selectedType.includes(str))) {
     reviewFieldset.style.display = 'none';
     addedReviews.style.display = 'none';
+    idbClear('artoReviews');
+    resetReview();
+    refreshReviewsList();
   }
 };
 
@@ -139,9 +168,10 @@ function ontologyTypeChange(event) {
 }
 
 window.doUpdate = (event) => {
-  event.preventDefault();
+  event?.preventDefault();
   const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
+  idbClear('artoRecord');
   collectReviewsCheck();
 
   const promises = [
@@ -181,7 +211,7 @@ window.doUpdate = (event) => {
     reviews
   ]) => {
     const formData = collectFormData();
-    getArtikkeliRecord({
+    generateArticleRecord({
       source,
       ...formData,
       sciences,
@@ -193,7 +223,14 @@ window.doUpdate = (event) => {
       udks,
       otherRatings,
       reviews
-    }).then(({record}) => showRecord(record, 'record1', {}, 'artikkelit'));
+    })
+      .then(({record}) => {
+        setRecordToIndexDB(record);
+        updateRecordPreview(record);
+      })
+      .catch((error) => {
+        console.log('Error while generating article record: ', error);
+      });
   });
 };
 
@@ -205,16 +242,26 @@ window.resetReview = (event) => {
   resetReview(event);
 };
 
+function setRecordToIndexDB(record) {
+  idbSet('artoRecord', 'record', record);
+}
+
+function updateRecordPreview(record) {
+  showRecord(record, 'previewRecord', {}, 'artikkelit', false);
+  showRecord(record, 'dialogRecord', {}, 'artikkelit', false);
+  resetCheckAndSave();
+}
+
 function collectReviewsCheck() {
   const articleType = document.getElementById('artikkelin-tyyppi').value;
-  const includeReviews = ['B1', 'B2', 'D1', 'E1'].some(str => articleType.includes(str));
+  const excludeReviews = ['A1', 'A2', 'A3'].some(str => articleType.includes(str));
 
-  if (!includeReviews) {
-    idbClear('artoReviews').then(() => refreshReviewsList());
+  if (excludeReviews) {
+    idbClear('artoReviews');
   }
 }
 
-function collectFormData() {
+export function collectFormData() {
   const [iso6391, iso6392b, ui] = document.getElementById('artikkelin-kieli').value.split(';');
   const links = [];
   document.getElementsByName('artikkelin-linkki').forEach(el => links.push(el.value));
@@ -350,10 +397,12 @@ window.onAccount = function (e) {
 
 window.clearAllFields = function () {
   idbClearAllTables();
+  resetPublicationSearchResultSelect();
   refreshAllLists();
-  resetSearchResultSelect();
+  resetReviewSearchResultSelect();
   resetInputFields();
   resetTextareaFields();
   resetSelectFields();
   resetAndHideCcLicense();
+  showSnackbar({style: 'info', text: 'Lomake tyhjennetty'});
 };

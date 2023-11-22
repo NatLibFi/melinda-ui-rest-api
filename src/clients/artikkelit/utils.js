@@ -66,9 +66,6 @@ export function sortRecordData(searchString, data) {
     rest.push(record);
   })
 
-  console.log('startsWith: ', startsWith)
-  console.log('rest: ', rest)
-
   const sortedRecordData = startsWith.sort(compareRecordTitles).concat(rest.sort(compareRecordTitles));
   return sortedRecordData;
 

@@ -17,21 +17,18 @@ export function initPublicationSearch(event) {
   document.getElementById('julkaisu-haku-isbn-form').addEventListener('submit', searchPublications);
   document.getElementById('julkaisu-haku-issn-form').addEventListener('submit', searchPublications);
 
-  resetSearchResultSelect();
+  resetPublicationSearchResultSelect();
 }
 
-export function showAndHideSearchInputs(event) {
+function showAndHideSearchInputs(event) {
   document.getElementById(`julkaisu-haku-title-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-issn-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-isbn-form`).style.display = 'none';
   document.getElementById(`julkaisu-haku-melinda-form`).style.display = 'none';
-
-  //console.log('Valittu hakutyyppi (nimeke, melinda, isbn, issn): ', event.target.value);
-
   document.getElementById(`julkaisu-haku-${event.target.value}-form`).style.display = 'block';
 }
 
-export function searchResultChange(event) {
+function searchResultChange(event) {
   const sourceType = document.getElementById(`kuvailtava-kohde`).value;
 
   if (event.target.value !== '') {
@@ -60,11 +57,21 @@ export function searchResultChange(event) {
         : (document.getElementById(`lehden-elektroninen-julkaisu`).innerHTML = 'Ei', resetAndHideCcLicense())
 
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
+
+      if (data.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') && sourceType !== 'journal') {
+        showSnackbar({style: 'alert', text: 'Kuvailun kohteena on artikkeli kokoomateoksessa, mutta valitsemasi julkaisu on kausijulkaisu tai päivittyvä julkaisu'});
+      }
+
+      if (data.recordType === ('Monografia') && sourceType !== 'book') {
+        showSnackbar({style: 'alert', text: 'Kuvailun kohteena on lehtiartikkeli, mutta valitsemasi julkaisu on monografia'});
+      }
     });
   }
+
+  doUpdate()
 }
 
-export function resetSearchResultSelect(searching) {
+export function resetPublicationSearchResultSelect(searching) {
   const select = document.getElementById('julkaisu-haku-tulos-lista');
   select.innerHTML = '';
   document.getElementById(`lehden-nimi`).innerHTML = '';
@@ -88,7 +95,7 @@ function searchPublications(event) {
 
   event.preventDefault();
   idbClear('artoSources').then(() => {
-    resetSearchResultSelect(true);
+    resetPublicationSearchResultSelect(true);
   });
 
   const hakuTyyppi = document.getElementById(`julkaisu-haku-tyyppi`).value;
@@ -109,7 +116,7 @@ function searchPublications(event) {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetPublicationSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by title', error);
       })
@@ -122,7 +129,7 @@ function searchPublications(event) {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetPublicationSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by Melinda ID', error);
       })
@@ -135,7 +142,7 @@ function searchPublications(event) {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetPublicationSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by ISBN', error);
       })
@@ -148,7 +155,7 @@ function searchPublications(event) {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetPublicationSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by ISSN', error);
       })
@@ -160,7 +167,7 @@ function searchPublications(event) {
 
 function setRecordsToSearch(records) {
   if (records.length === 0) {
-    return resetSearchResultSelect();
+    return resetPublicationSearchResultSelect();
   }
 
   const promises = records.map((record, index) => {

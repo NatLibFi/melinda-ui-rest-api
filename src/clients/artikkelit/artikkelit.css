@@ -20,7 +20,7 @@
   margin-bottom: 5px;
   margin-left: 5px;
 }
- 
+
 
 /* ---------------------------------------------------------------------------- */
 
@@ -65,7 +65,7 @@
   padding: 8pt;
 }
 
-.header {
+.main-header {
   display: flex;
   color: var(--color-blue-100);
   font-family: var(--font-family-headline);
@@ -99,7 +99,7 @@
   line-height: var(--font-line-height-label-medium);
 }
 
-#artikkelit  .half-width {
+#artikkelit .half-width {
   width: 50%;
 }
 
@@ -121,7 +121,7 @@
   text-overflow: ellipsis;
 }
 
-#artikkelit  .full-width select option {
+#artikkelit .full-width select option {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -147,6 +147,10 @@
   margin-bottom: 20px;
   border-radius: 8px;
   border-color: var(--color-blue-100);
+}
+
+#artikkelit .fieldset-preview {
+/*   flex-direction: column; */
 }
 
 #artikkelit fieldset legend {
@@ -265,4 +269,153 @@
 #artikkelit Input,
 #artikkelit Select {
   height: 30px;
+}
+
+
+
+
+#artikkelit .record-merge-panel .col .BoxShadow {
+  min-height: 75px;
+  display: flex;
+  flex-direction: column;
+}
+
+#artikkelit .col>* {
+  padding: 8pt;
+}
+
+#artikkelit .col .header {
+  height: 40px;
+  text-transform: uppercase;
+  font-family: var(--font-family-headline);
+  font-size: var(--font-size-headline-medium);
+  font-weight: var(--font-weight-headline);
+  line-height: var(--font-line-height-headline-medium);
+  border-bottom: 1px solid var(--color-grey-60);
+  align-items: center;
+  display: flex;
+}
+
+#artikkelit .col .note {
+  display: flex;
+  border-bottom: 1px solid var(--color-grey-60);
+  align-items: center;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-list-small);
+  line-height: var(--font-line-height-list-medium);
+  font-weight: var(--font-weight-content);
+  font-style: italic;
+  color: var(--color-grey-100);
+  margin-bottom: 5px;
+}
+
+#artikkelit .note.record-valid {
+  color: var(--color-primary-blue);
+  font-style: normal;
+}
+
+#artikkelit .note.record-success {
+  color: var(--color-functional-green);
+  font-style: italic;
+  font-weight: var(--font-weight-label);
+}
+
+#artikkelit .note.record-error {
+  color: var(--color-functional-red);
+  font-style: normal;
+}
+
+#artikkelit .col .note li {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-list-small);
+  line-height: var(--font-line-height-list-medium);
+  font-weight: var(--font-weight-content);
+  margin-bottom: 5px;
+}
+
+#artikkelit .col .header .title {
+  flex: 4;
+}
+
+#artikkelit .col .header .Select {
+  flex: 1;
+  visibility: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+#artikkelit .article-actions {
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+  justify-content: center;
+  gap: 20px;
+}
+
+#artikkelit .article-actions .action-check {
+  display: flex;
+}
+
+#artikkelit .article-actions .action-forward {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-blue-60);
+}
+
+#artikkelit .article-actions .action-forward .material-icons {
+  font-size: 25px;
+}
+
+#artikkelit .article-actions .action-forward.proceed {
+  color: var(--color-primary-blue);
+}
+
+
+#artikkelit .article-actions .action-save {
+  display: flex;
+}
+
+#artikkelit .article-actions .action-save button {
+}
+
+#artikkelit .header .material-icons {
+  padding: 8px;
+  font-size: 32px;
+}
+
+#artikkelit .header label {
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+  line-height: var(--font-line-height-label-medium);
+}
+
+#dialogForSave {}
+
+#dialogForSave .dialog-supporting-text .accordion-heading-text {
+  padding-right: 64px;
+}
+
+#dialogForSave .col {
+  width: 1500px;
+}
+
+#dialogForSave .record-merge-panel {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+/* accordion default icon is  when accordion can be opened */
+#dialogForSave .accordion .accordion-heading .accordion-heading-icon span:before {
+  content: 'expand_more';
+}
+
+/* accordion icon is ^ when accordion can be closed */
+#dialogForSave .accordion .accordion-heading.expanded .accordion-heading-icon span:before {
+  content: 'expand_less';
 }
