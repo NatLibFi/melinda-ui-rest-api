@@ -100,7 +100,7 @@ function validateRecord(data) {
 
     recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi virheitä. <br> <br> Tietuetta ei voi tallentaa.'
     recordNotes.classList.add('record-error');
-    highlightElement(notes);
+    highlightElement(recordNotes);
     showSnackbar({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
   }
 
