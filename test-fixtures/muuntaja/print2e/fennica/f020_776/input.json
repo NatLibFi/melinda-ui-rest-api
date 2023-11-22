@@ -2,7 +2,6 @@
  "options": {
   "type": "p2e",
   "profile": "FENNI",
-  "format": "PDF",
   "LOWTAG":"KVP"
  },
  "source": {

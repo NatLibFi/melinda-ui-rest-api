@@ -58,7 +58,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
   //logger.debug(`* Source: ${JSON.stringify(source, null, 2)}`);
-  logger.debug(`* Base: ${JSON.stringify(baseRecord, null, 2)}`);
+  //   logger.debug(`* Base: ${JSON.stringify(baseRecord, null, 2)}`);
 
   try {
 
