@@ -20,7 +20,7 @@ const defaultFieldValues = {
     value: 'cr^||^||||||||',
     id: '7e290cd1-6bed-4447-8fc3-c1f7e41b760a'
   },
-  '008': (opts) => ( {
+  '008': (opts) => ({
     value: `^^^^^^s${year}^^^^fi^||||^o^^^^^|0|^0|   |${getLastChar(opts.LOWTAG)}`,
     id: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
   }),
@@ -195,6 +195,6 @@ export function getFieldOrDefault(record, tag) {
 }
 
 function getLastChar(data) {
-  const give = data === 'KVP' ? "c" : "^"
+  const give = data === 'KVP' ? 'c' : '^';
   return give;
 }
