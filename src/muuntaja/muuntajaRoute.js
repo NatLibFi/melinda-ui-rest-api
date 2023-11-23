@@ -137,7 +137,7 @@ export default function (sruUrl) {
 
     function fetchRecord(record) {
       try {
-        logger.debug('Fetching...');
+        logger.debug(`Fetching: ID=${record?.ID}`);
         //logger.debug(`Record: ${JSON.stringify(record)}`);
 
         return getRecordWithIDs(bibService, record);

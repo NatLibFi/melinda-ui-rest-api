@@ -12,8 +12,8 @@
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import {Reducers} from '@natlibfi/marc-record-merge';
-//import copy from '@natlibfi/marc-record-merge/dist/reducers/copy';
-//import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
+import {muuntajaReducers} from '@natlibfi/melinda-marc-record-merge-reducers/dist/reducers';
+import {MelindaReducers, MelindaCopyReducerConfigs} from '@natlibfi/melinda-marc-record-merge-reducers';
 //import {MelindaMuuntajaFennicaReducers} from '@natlibfi/melinda-marc-record-muuntaja-reducers'
 import {update008, update020, update530, updateLOW} from './updates';
 import {getDefaultValue, getFieldOrDefault} from './defaults';
@@ -304,9 +304,13 @@ function mergeFields(opts) {
 
 function getReducers(opts) {
   return [
-    Reducers.copy({tagPattern: fieldsToMerge}),
+    //...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)),
+    ...muuntajaReducers,
+    //...MelindaReducers,
+    //Reducers.copy({tagPattern: fieldsToMerge}),
     //...mergeFields(opts)
     //log()
+    (base, source) => base, // Dummy
     (base, source) => base // Dummy
   ];
 
