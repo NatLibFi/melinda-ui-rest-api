@@ -7,13 +7,15 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
+let onDeleteField = null;
 export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
 
   if (logRecord) {
     console.log('Show Record:', record);
   }
 
-  const {replace} = decorator;
+  const {replace, onDelete} = decorator;
+  onDeleteField = onDelete;
 
   // Get div to fill in the fields
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
@@ -576,6 +578,13 @@ window.onAddField = function (event) {
 
   setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
   return eventHandled(event);
+};
+
+window.onDeleteField = function(event){
+  if(confirm(`Haluatko varmasti poistaa kentän ?`) === true){
+    onDeleteField(event, editing);
+    return editDlgClose(event);
+  }
 };
 
 window.editDlgOK = function (event) {
