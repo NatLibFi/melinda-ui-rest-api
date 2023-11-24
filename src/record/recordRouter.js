@@ -61,6 +61,8 @@ export default function (melindaApiOptions) {
       //placeholders for testing:
       //await res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
       //await res.sendStatus(httpStatus.OK);
+      //await res.sendStatus(httpStatus.CONFLICT);
+
 
       const result = await recordOperator.validateRecord(record);
       res.json(result);
