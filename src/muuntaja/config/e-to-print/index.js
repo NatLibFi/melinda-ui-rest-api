@@ -174,7 +174,7 @@ function mergeFields(opts) {
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     //copy(/^5\d\d$/u), // previous version
     // off: 506 & 540 (MUU-378)
-    copy(/^50[0-5]$/u),
+    copy(/^50[1-5]$/u), // was: copy(/^50[0-5]$/u) // MUU-379
     copy(/^50[7-9]$/u),
     copy(/^51\d$/u),
     copy(/^52\d$/u),
