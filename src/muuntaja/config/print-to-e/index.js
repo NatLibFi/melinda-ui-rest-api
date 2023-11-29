@@ -169,9 +169,12 @@ function mergeFields(opts) {
     //-------------------------------------------------------------------------
     // Huomautuskentät 5xx:
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
-    copy(/^5\d\d$/u),
-    //update530(),
+    // 59X pois <- MUU-380
+    copy(/^5[0-7]\d$/u),
+    copy(/^58[0-2]$/u), // exclude only 583
+    copy(/^58[4-9]$/u),
 
+    //update530(),
     //copy(/^5\d\d$/u),
 
     //-------------------------------------------------------------------------

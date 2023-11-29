@@ -172,7 +172,19 @@ function mergeFields(opts) {
     //-------------------------------------------------------------------------
     // Huomautuskentät 5xx:
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
-    copy(/^5\d\d$/u),
+    copy(/^50[1-5]$/u), // was: copy(/^50[0-5]$/u) // MUU-379
+    copy(/^50[7-9]$/u),
+    copy(/^51\d$/u),
+    copy(/^52\d$/u),
+    copy(/^53\d$/u),
+    copy(/^54[1-9]$/u),
+    copy(/^55\d$/u),
+    copy(/^56\d$/u),
+    copy(/^57\d$/u),
+    //copy(/^58\d$/u), ->
+    copy(/^58[0-7]$/u), // MUU-377
+    copy(/^589$/u), // MUU-377
+    // copy(/^59\d$/u), // excludes: MUU-380
     //update530(),
 
     //copy(/^5\d\d$/u),
