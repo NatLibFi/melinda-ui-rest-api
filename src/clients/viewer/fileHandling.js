@@ -1,6 +1,6 @@
 import {
   enableElement, disableElement, highlightElement,
-  getAllDescendants, showSnackbar
+  getAllDescendants, showNotificationBanner
 } from '/common/ui-utils.js';
 
 import {idbGetLogs} from '/viewer/indexDB.js';
@@ -59,11 +59,11 @@ window.downloadFile = function (event) {
       }
 
       doDownload(JSON.stringify(recordObject));
-      showSnackbar({style: 'success', text: 'Tiedosto ladattiin onnistuneesti laitteellesi!'});
+      showNotificationBanner({style: 'success', text: 'Tiedosto ladattiin onnistuneesti laitteellesi!'});
     })
     .catch((error) => {
       console.log('Problem getting or setting log data while creating record object: ', error);
-      showSnackbar({style: 'error', text: 'Tiedostoa ei valitettavasti pystytty lataamaan'});
+      showNotificationBanner({style: 'error', text: 'Tiedostoa ei valitettavasti pystytty lataamaan'});
     });
 
   function setCorrelationId(id) {
@@ -197,7 +197,7 @@ window.clearSelectedFile = function (event) {
 
 window.cancelUpload = function (event) {
   console.log('File upload cancelled');
-  showSnackbar({style: 'status', text: 'Tiedoston avaaminen peruttu'});
+  showNotificationBanner({style: 'status', text: 'Tiedoston avaaminen peruttu'});
 };
 
 window.confirmUpload = function (event) {
@@ -220,13 +220,13 @@ window.confirmUpload = function (event) {
         selectLogType(log.logItemType);
         setDataToIndexDB({0: log}, 0);
         showReaderMode();
-        showSnackbar({style: 'info', text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.'});
+        showNotificationBanner({style: 'info', text: 'Jos tietueissa on puutteita, tarkista aina myös lataamasi tiedoston laatu.'});
       }
     };
 
     reader.onerror = function (error) {
       console.log('Error reading file ', error);
-      showSnackbar({style: 'error', text: 'Valitettavasti tiedoston avaus ei onnistunut!'});
+      showNotificationBanner({style: 'error', text: 'Valitettavasti tiedoston avaus ei onnistunut!'});
     };
 
     function parseJson(text) {
@@ -237,7 +237,7 @@ window.confirmUpload = function (event) {
           data = JSON.parse(text);
         } catch (error) {
           console.log('Error while parsing file content to JSON: ', error);
-          showSnackbar({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
+          showNotificationBanner({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
         }
       }
 
@@ -247,13 +247,13 @@ window.confirmUpload = function (event) {
     function parseLog(data) {
       if (data === null) {
         console.log('No json data for parsing log');
-        showSnackbar({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
+        showNotificationBanner({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
         return;
       }
 
       if (data.melindaRecord === undefined && data.databaseRecord === undefined && data.mergedRecord === undefined && data.incomingRecord === undefined) {
         console.log('Records are undefined, invalid json data for parsing log');
-        showSnackbar({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
+        showNotificationBanner({style: 'error', text: 'Tietueita ei voitu avata lukunäkymään, tarkista tiedosto'});
         return;
       }
 
@@ -343,7 +343,7 @@ export function checkFile(file) {
     console.log('File is empty!');
     disableElement(confirmUploadButton);
     highlightElement(fileNameDiv, 'var(--color-functional-red)');
-    showSnackbar({style: 'alert', text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!'});
+    showNotificationBanner({style: 'alert', text: 'Tyhjää tiedostoa ei voi avata, tarkista tiedoston sisältö!'});
     return;
   }
 
@@ -352,7 +352,7 @@ export function checkFile(file) {
     confirmUploadButton.title = 'Valitse ensin .json- tai .txt-päätteinen tiedosto';
     disableElement(confirmUploadButton);
     highlightElement(fileNameDiv, 'var(--color-functional-red)');
-    showSnackbar({style: 'alert', text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!'});
+    showNotificationBanner({style: 'alert', text: 'Vain .json- tai .txt-tiedostot hyväksytään, tarkista tiedoston tyyppi!'});
     return;
   }
 

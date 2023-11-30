@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
+import {formToJson, createIconButton, createP, showNotificationBanner} from '/common/ui-utils.js';
 
 export function initAdditionalFields() {
   console.log('initializing additional fields...');
@@ -28,13 +28,13 @@ export function addNote(event) {
   };
 
   if (data.value === '') {
-    showSnackbar({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
+    showNotificationBanner({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoNotes').then(notes => {
     if (notes.some(note => note.value === data.value)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
+      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
       return;
     }
 
@@ -88,13 +88,13 @@ export function addOtherTitle(event) {
   };
 
   if (data.value === '') {
-    showSnackbar({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
+    showNotificationBanner({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOtherTitles').then(otherTitles => {
     if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
+      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
       return;
     }
 
@@ -150,13 +150,13 @@ export function addUDK(event) {
   };
 
   if (data.a080 === '') {
-    showSnackbar({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
+    showNotificationBanner({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoUDKs').then(udks => {
     if (udks.some(udk => udk.a080 === data.a080)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
+      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
       return;
     }
 
@@ -217,13 +217,13 @@ export function addOtherRating(event) {
   };
 
   if (data.a084 === '' || data.two084 === '') {
-    showSnackbar({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
+    showNotificationBanner({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
     return;
   }
 
   idbGetStoredValues('artoOtherRatings').then(otherRatings => {
     if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
+      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
       return;
     }
 

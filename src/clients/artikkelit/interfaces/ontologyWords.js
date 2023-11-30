@@ -1,6 +1,6 @@
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from '/artikkelit/sessionStorageManager.js';
 import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, setOptions, showSnackbar} from '/common/ui-utils.js';
+import {formToJson, createIconButton, createP, setOptions, showNotificationBanner} from '/common/ui-utils.js';
 import {getOntologyWords} from '/common/rest.js';
 
 
@@ -65,13 +65,13 @@ export function addOntologyWord(event) {
       vocab: document.getElementById('asiasana-ontologia').value
     };
   } else {
-    showSnackbar({style: 'alert', text: 'Asia-/avainsana ei voi olla tyhjä'});
+    showNotificationBanner({style: 'alert', text: 'Asia-/avainsana ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOntologyWords').then(words => {
     if (words.some(word => data.localname ? word.localname === data.localname : word.prefLabel === data.prefLabel)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
+      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
       return;
     }
 

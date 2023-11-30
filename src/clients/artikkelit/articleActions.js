@@ -8,7 +8,7 @@ import {collectFormData} from '/artikkelit/artikkelit.js';
 import {idbGet} from '/artikkelit/indexDB.js';
 import {
   disableElement, enableElement, getAllDescendants, highlightElement, isHidden,
-  isVisible, showSnackbar, startProcess, stopProcess
+  isVisible, showNotificationBanner, startProcess, stopProcess
 } from '/common/ui-utils.js';
 import {addArticleRecord, validateArticleRecord} from '/common/rest.js';
 
@@ -33,7 +33,7 @@ window.checkArticleRecord = function (event = undefined) {
     })
     .catch((error) => {
       console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'})
+      showNotificationBanner({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'})
     })
 }
 
@@ -76,7 +76,7 @@ function validateRecord(data) {
     })
     .catch((error) => {
       console.log('Error validating record: ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
+      showNotificationBanner({style: 'alert', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
     })
     .finally(() => {
       stopProcess();
@@ -92,7 +92,7 @@ function validateRecord(data) {
     recordNotes.classList.add('record-valid');
     enableElement(saveArticleRecordButton);
     forwardIcon.classList.add('proceed');
-    showSnackbar({style: 'info', text: 'Voit nyt tallentaa tietueen'});
+    showNotificationBanner({style: 'info', text: 'Voit nyt tallentaa tietueen'});
   }
 
   function validationFailed() {
@@ -101,7 +101,7 @@ function validateRecord(data) {
     recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi virheitä. <br> <br> Tietuetta ei voi tallentaa.'
     recordNotes.classList.add('record-error');
     highlightElement(notes);
-    showSnackbar({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
+    showNotificationBanner({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
   }
 
 }
@@ -126,7 +126,7 @@ window.openSaveArticleRecordDialog = function (event = undefined) {
 window.cancelSave = function (event = undefined) {
   console.log('Nothing saved');
 
-  showSnackbar({status: 'info', text: 'Toiminto peruttu!'});
+  showNotificationBanner({status: 'info', text: 'Toiminto peruttu!'});
 };
 
 //---------------------------------------------------------------------------//
@@ -150,7 +150,7 @@ function saveArticleRecord() {
     })
     .catch((error) => {
       console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'});
+      showNotificationBanner({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'});
     })
 }
 
@@ -181,7 +181,7 @@ function addRecord(data) {
     })
     .catch((error) => {
       console.log('Article record save failed, error: ', error);
-      showSnackbar({style: 'error', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
+      showNotificationBanner({style: 'error', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
     })
     .finally(() => {
       stopProcess();
@@ -193,7 +193,7 @@ function addRecord(data) {
     showRecordActionsAfterSave();
     showArticleFormReadMode();
     showFormActionsAfterSave();
-    showSnackbar({style: 'success', text: 'Tietueen tallennus onnistui'});
+    showNotificationBanner({style: 'success', text: 'Tietueen tallennus onnistui'});
   }
 }
 
@@ -213,7 +213,7 @@ window.startNewEmptyForm = function (event = undefined) {
   showFormActionsOnEdit();
   showArticleFormEditMode();
   clearAllFields();
-  showSnackbar({style: 'info', text: 'Aloitetaan uusi kuvailu tyhjältä pohjalta'})
+  showNotificationBanner({style: 'info', text: 'Aloitetaan uusi kuvailu tyhjältä pohjalta'})
 }
 
 //---------------------------------------------------------------------------//

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+
+  <!-- template for a notificationBanner container -->
+  <!-- all notificationBanners are rendered in "notificationBanners" container div -->
+  <template id="notificationBannerTemplate">
+
+    <!-- base for one notificationBanner -->
+    <!-- one notificationBanner has always text, the message for user -->
+    <!-- notificationBanner has optionally link button for additional action -->
+    <!-- and always a close button for dismissing the notificationBanner -->
+
+    <div id="notificationBanner" class="notificationBanner-container">
+      <div class="notificationBanner-icon">
+        <span class="material-icons">error_outline</span>
+      </div>
+      <div class="notificationBanner-text"></div>
+      <div class="notificationBanner-link"></div>
+      <div class="notificationBanner-close">
+        <div class="notificationBanner-close-text">
+          Sulje
+        </div>
+        <span class="material-icons notificationBanner-close-icon">close</span>
+      </div>
+    </div>
+
+  </template>
+
+</body>
+
+</html>

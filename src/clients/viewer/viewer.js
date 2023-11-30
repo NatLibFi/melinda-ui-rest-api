@@ -5,7 +5,7 @@
 //*****************************************************************************
 
 import {
-  showTab, startProcess, stopProcess, showSnackbar,
+  showTab, startProcess, stopProcess, showNotificationBanner,
   createOption, enableElement, disableElement, highlightElement
 } from '/common/ui-utils.js';
 
@@ -64,7 +64,7 @@ window.initialize = function () {
 
     if (id !== '') {
       doSearchPress();
-      showSnackbar({style: 'info', text: 'Haetaan linkin tietuetta...'});
+      showNotificationBanner({style: 'info', text: 'Haetaan linkin tietuetta...'});
     }
   }
 
@@ -217,7 +217,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
   console.log('Fetching...');
 
   if (id === '') {
-    showSnackbar({style: 'alert', text: 'Lisää ID haun aloittamista varten'});
+    showNotificationBanner({style: 'alert', text: 'Lisää ID haun aloittamista varten'});
     highlightElement(idInputField);
     console.log('Nothing to fetch...');
     return stopProcess();
@@ -261,7 +261,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     const removeButton = document.querySelector(`#viewer #delete`);
 
     const button = createClearViewButton();
-    showSnackbar({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, linkButton: button});
+    showNotificationBanner({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, linkButton: button});
     highlightElement(idInputField);
     enableElement(clearButton);
     disableElement(protectButton);
@@ -383,7 +383,7 @@ window.loadLog = (event) => {
       }
 
       if (!data.matchResult) {
-        showSnackbar({style: 'error', text: 'Valitettavasti vastaavan Melinda-tietueen lukeminen ei onnistunut, tarkista loki.'});
+        showNotificationBanner({style: 'error', text: 'Valitettavasti vastaavan Melinda-tietueen lukeminen ei onnistunut, tarkista loki.'});
         console.log('No property "matchResult" found in loaded log data.');
         return;
       }
@@ -449,7 +449,7 @@ window.loadLog = (event) => {
     const tempLogType = logTypeSelect.value;
     const tempSequence = sequenceSelect.value
     clearLogView();
-    showSnackbar({style: 'error', text: 'Valitettavasti lokin haku ei onnistunut, tarkista hakukentät ja hae uudelleen'});
+    showNotificationBanner({style: 'error', text: 'Valitettavasti lokin haku ei onnistunut, tarkista hakukentät ja hae uudelleen'});
     console.log('The selected log type does not match the logItemType in the data: no records loaded for viewing.');
     idInputField.value = tempId;
     logTypeSelect.value = tempLogType;
@@ -616,7 +616,7 @@ export function setDataToIndexDB(logs, sequence) {
     idbSetLogs('0', {incomingRecord: {}, databaseRecord: {}, mergedRecord: {}});
     select.value = 0;
     disableElement(protectButton);
-    showSnackbar({style: 'alert', text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta'});
+    showNotificationBanner({style: 'alert', text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta'});
     stopProcess();
     return select.dispatchEvent(new Event('change'));
   }
@@ -637,7 +637,7 @@ export function setDataToIndexDB(logs, sequence) {
   const sequenceInputField = document.getElementById('sequenceInput');
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
-    showSnackbar({style: 'alert', text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`});
+    showNotificationBanner({style: 'alert', text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`});
     highlightElement(select);
   }
 

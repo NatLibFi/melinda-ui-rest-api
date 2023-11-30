@@ -1,5 +1,5 @@
 import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
+import {formToJson, createIconButton, createP, showNotificationBanner} from '/common/ui-utils.js';
 
 export function initAuthors() {
   console.log('initializing authors...');
@@ -27,17 +27,17 @@ export function addAuthor(event) {
     };
 
     if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
-      showSnackbar({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
+      showNotificationBanner({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
     if (data.relator === 'yhteisö' && data.corporateName === '') {
-      showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
+      showNotificationBanner({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
     if(data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
-      showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
+      showNotificationBanner({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
       return;
     }
 
@@ -135,7 +135,7 @@ export function addOrganizationForAuthor(event) {
   const organizationInputValue = formJson['tekija-organisaatio'];
 
   if (organizationInputValue === '') {
-    showSnackbar({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
+    showNotificationBanner({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
     return;
   }
 
@@ -146,7 +146,7 @@ export function addOrganizationForAuthor(event) {
 
   idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
     if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
-      showSnackbar({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
+      showNotificationBanner({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
       return;
     }
 

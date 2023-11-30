@@ -5,9 +5,9 @@
 //*****************************************************************************
 
 import {startProcess, stopProcess} from './progressbar.js';
-import {showSnackbar} from './snackbar.js';
+import {showNotificationBanner} from './notificationBanner.js';
 
-export {startProcess, stopProcess, showSnackbar};
+export {startProcess, stopProcess, showNotificationBanner};
 
 //-----------------------------------------------------------------------------
 
