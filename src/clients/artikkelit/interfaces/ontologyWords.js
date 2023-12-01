@@ -50,23 +50,32 @@ export function resetOntologySelect(searching) {
   setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
 }
 
-
 export function addOntologyWord(event) {
   event.preventDefault();
+
   const formJson = formToJson(event);
   const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
   const ontologyWordOther = formJson['asiasana-muu'];
 
+  if (!ontologyWord && !ontologyWordOther) {
+    showSnackbar({style: 'alert', text: 'Asiasana tai avainsana ei voi olla tyhjä'});
+    return;
+  }
+
   if (ontologyWord) {
     var data = ontologyWord;
-  } else if (ontologyWordOther) {
+  }
+
+  if (ontologyWordOther) {
+    const select = document.getElementById("asiasana-ontologia");
+    const ontologySelectValue = select.value;
+    const ontologySelectText = select.options[select.selectedIndex].text;
+
     var data = {
       prefLabel: ontologyWordOther,
-      vocab: document.getElementById('asiasana-ontologia').value
+      vocab: ontologySelectValue,
+      text: ontologySelectText
     };
-  } else {
-    showSnackbar({style: 'alert', text: 'Asia-/avainsana ei voi olla tyhjä'});
-    return;
   }
 
   idbGetStoredValues('artoOntologyWords').then(words => {
@@ -120,7 +129,7 @@ export function refreshOntologyWordList() {
       return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
     }
     if ((/other/).test(word.vocab)) {
-      return createP(`${word.vocab}`, '&nbsp;-&nbsp;');
+      return createP(`${word.text}`, '&nbsp;-&nbsp;');
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }
