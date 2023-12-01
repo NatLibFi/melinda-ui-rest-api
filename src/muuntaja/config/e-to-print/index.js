@@ -100,9 +100,9 @@ function fieldsFennica(opts) {
     return [];
   }
   return [
-    fillDefault('506/FENNI'),
+    //fillDefault('506/FENNI'), // excluded, MUU-382
     // fillDefault('530/FENNI'),
-    fillDefault('540/FENNI'),
+    //fillDefault('540/FENNI'),
     fillDefault('856/FENNI'),
     fillDefault('901/FENNI')
   ];
@@ -172,19 +172,21 @@ function mergeFields(opts) {
     //-------------------------------------------------------------------------
     // Huomautuskentät 5xx:
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
-    copy(/^50[1-5]$/u), // was: copy(/^50[0-5]$/u) // MUU-379
-    copy(/^50[7-9]$/u),
-    copy(/^51\d$/u),
+    copy(/^50[1-5]$/u), // 50x, exclude 500 (MUU-379)
+    copy(/^50[7-9]$/u), // 50x, exclude 506 (MUU-382)
+
+    copy(/^51[1,2,3,4,5,7,8,9,0]$/u), // exclude 516 (MUU-383)
     copy(/^52\d$/u),
-    copy(/^53\d$/u),
-    copy(/^54[1-9]$/u),
+    
+    opts.profile == 'KVP' ? copy(/^53[0,1,2,4,5,6,7,9,0]$/u) : copy(/^53\d$/u), // exclude 583 only for KVP/p2e (MUU-408)
+    
+    copy(/^54[1-9]$/u), // exclude 540 (MUU-378)
     copy(/^55\d$/u),
     copy(/^56\d$/u),
     copy(/^57\d$/u),
-    //copy(/^58\d$/u), ->
-    copy(/^58[0-7]$/u), // MUU-377
-    copy(/^589$/u), // MUU-377
-    // copy(/^59\d$/u), // excludes: MUU-380
+    copy(/^58[0,1,2,3,4,5,6,7,9,0]$/u), // exclude 588 (MUU-377)
+    
+    // copy(/^59\d$/u), // excludes all 59x (MUU-380)
     //update530(),
 
     //copy(/^5\d\d$/u),
