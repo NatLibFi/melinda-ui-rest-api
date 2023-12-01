@@ -6,7 +6,7 @@
 /* Container for notificationBanners */
 /* Several notificationBanners are stacked*/
 /* User can click other elements under notificationBanner */
-.notificationBanners {
+.notificationbanners {
   position: fixed;
   top: 5px;
   display: flex;
@@ -23,7 +23,7 @@
 /*    - text */
 /*    - link button */
 /*    - close button*/
-.notificationBanner-container {
+.notificationbanner-container {
   display: none;
   align-items: center;
   background-color: var(--style-background-color, var(--color-blue-60));
@@ -37,21 +37,21 @@
 
 
 /* NotificationBanner icon is container for a message style icon */
-.notificationBanner-icon {
+.notificationbanner-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--style-icon-color, var(--color-blue-100));
 }
 
-.notificationBanner-icon span.material-icons {
+.notificationbanner-icon span.material-icons {
   font-size: var(--font-size-icon-extra-large);
   align-items: center;
 }
 
 
 /* NotificationBanner text is the message in notificationBanner */
-.notificationBanner-text {
+.notificationbanner-text {
   display: flex;
   flex-direction: column;
   padding-left: 12px;
@@ -64,12 +64,12 @@
 }
 
 /* NotificationBanner link is container for an link button  */
-.notificationBanner-link {
+.notificationbanner-link {
   display: none;
   padding-right: 16px;
 }
 
-.notificationBanner-link button {
+.notificationbanner-link button {
   border: none;
   background-color: transparent;
   color: var(--color-functional-blue);
@@ -82,7 +82,7 @@
   height: 24px;
 }
 
-.notificationBanner-close {
+.notificationbanner-close {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
@@ -95,41 +95,41 @@
   letter-spacing: 1px;
 }
 
-.notificationBanner-close span.material-icons {
+.notificationbanner-close span.material-icons {
   font-size: var(--font-size-icon-small);
   padding-left: 4px;
 }
 
-.notificationBanner-link button:hover,
-.notificationBanner-close:hover {
+.notificationbanner-link button:hover,
+.notificationbanner-close:hover {
   cursor: pointer;
 }
 
-.notificationBanner-link button:hover {
+.notificationbanner-link button:hover {
   color: var(--color-primary-blue);
   text-decoration: underline solid var(--color-primary-blue) 0.1rem;
 }
 
-.notificationBanner-close:hover {
+.notificationbanner-close:hover {
   color: var(--color-functional-blue);
 }
 
-.notificationBanner-close:hover .notificationBanner-close-text {
+.notificationbanner-close:hover .notificationbanner-close-text {
   text-decoration: underline solid var(--color-functional-blue) 0.1rem;
 }
 
-.notificationBanner-close:active,
-.notificationBanner-link button:active {
+.notificationbanner-close:active,
+.notificationbanner-link button:active {
   color: var(--color-primary-blue);
 }
 
-.notificationBanner-link button:active,
-.notificationBanner-close:active .notificationBanner-close-text {
+.notificationbanner-link button:active,
+.notificationbanner-close:active .notificationbanner-close-text {
   text-decoration: underline solid var(--color-primary-blue) 0.1rem;
 }
 
 /* NotificationBanner is shown with animations */
-.notificationBanner-container.show-and-hide {
+.notificationbanner-container.show-and-hide {
   display: inline-flex;
   animation: fadein 1s, fadeout 1s 5s forwards;
 }

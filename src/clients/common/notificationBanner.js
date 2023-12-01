@@ -89,7 +89,7 @@ function createNotificationBanner(notificationBannerContent, html) {
       return;
   }
 
-  const text = notificationBannerElement.querySelector(`.notificationBanner-text`).innerHTML;
+  const text = notificationBannerElement.querySelector(`.notificationbanner-text`).innerHTML;
   if (text === 'undefined' || text === '') {
     console.log('NotificationBanner is missing text and is not displayed!');
     return;
@@ -170,25 +170,25 @@ function createNotificationBanner(notificationBannerContent, html) {
 
       notificationBannerElement.style.setProperty(`--style-background-color`, backgroundColor);
       notificationBannerElement.style.setProperty(`--style-icon-color`, iconColor);
-      notificationBannerElement.querySelector(`.notificationBanner-icon .material-icons`).innerHTML = icon;
+      notificationBannerElement.querySelector(`.notificationbanner-icon .material-icons`).innerHTML = icon;
 
     }
 
     function addLinkButton() {
       if (linkButton !== undefined && linkButton.nodeName === 'BUTTON') {
-        notificationBannerElement.querySelector(`.notificationBanner-link`).style.display = 'flex';
-        notificationBannerElement.querySelector(`.notificationBanner-link`).append(linkButton);
+        notificationBannerElement.querySelector(`.notificationbanner-link`).style.display = 'flex';
+        notificationBannerElement.querySelector(`.notificationbanner-link`).append(linkButton);
       }
     }
 
   }
 
   function addTextToNotificationBanner(text) {
-    notificationBannerElement.querySelector(`.notificationBanner-text`).innerHTML = text;
+    notificationBannerElement.querySelector(`.notificationbanner-text`).innerHTML = text;
   }
 
   function addCloseButton() {
-    notificationBannerElement.querySelector(`.notificationBanner-close`).addEventListener('click', (event) => {
+    notificationBannerElement.querySelector(`.notificationbanner-close`).addEventListener('click', (event) => {
       eventHandled(event);
       notificationBannerElement.style.visibility = 'hidden';
     });
