@@ -6,8 +6,9 @@
 
 import {startProcess, stopProcess} from './progressbar.js';
 import {showNotificationBanner} from './notificationBanner.js';
+import {showNotificationDialog} from './notificationDialog.js';
 
-export {startProcess, stopProcess, showNotificationBanner};
+export {startProcess, stopProcess, showNotificationBanner, showNotificationDialog};
 
 //-----------------------------------------------------------------------------
 
