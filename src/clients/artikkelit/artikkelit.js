@@ -17,7 +17,7 @@ import {initArticle, refreshSciencesList, refreshMetodologysList, resetAndHideCc
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/loadData.js';
-import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
+import {initOntologyWords, ontologyTypeChange, refreshOntologyWordList} from '/artikkelit/interfaces/ontologyWords.js';
 import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {initReviewSearch, resetReview, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 import {resetCheckAndSave} from './articleActions.js';
@@ -146,26 +146,6 @@ window.articleAuthorRoleChange = (event) => {
     authorCorporateName.style.display = 'flex';
   }
 };
-
-function ontologyTypeChange(event) {
-  event.preventDefault();
-  const ontologyType = event.target.value;
-
-  if ((/other/).test(ontologyType)) {
-    document.getElementById('haku-osio').style.display = 'none';
-    document.getElementById('asiasana-lisaa-select').style.display = 'none';
-    document.getElementById('asiasana-lisaa-input').style.display = 'flex';
-    const opts = event.target.options;
-    document.getElementById('asiasana-muu-label').innerHTML = `${opts[opts.selectedIndex].text}:`;
-    resetOntologySelect();
-  } else {
-    document.getElementById('haku-osio').style.display = 'flex';
-    document.getElementById('asiasana-lisaa-select').style.display = 'flex';
-    document.getElementById('asiasana-lisaa-input').style.display = 'none';
-    document.getElementById('asiasana-muu-label').innerHTML = '';
-    document.getElementById('asiasana-muu').value = '';
-  }
-}
 
 window.doUpdate = (event) => {
   event?.preventDefault();
@@ -362,11 +342,6 @@ window.removeOrgForAuthor = (event, key) => {
 window.removeAbstract = (event, key) => {
   event.preventDefault();
   idbDel('artoAbstracts', key).then(() => refreshAbstractList());
-};
-
-window.removeOntologyWord = (event, key) => {
-  event.preventDefault();
-  idbDel('artoOntologyWords', key).then(() => refreshOntologyWordList());
 };
 
 window.removeNote = (event, key) => {
