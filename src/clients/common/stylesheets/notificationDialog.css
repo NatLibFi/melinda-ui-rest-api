@@ -133,6 +133,14 @@
     display: inline-flex;
     animation: fadein 1s, fadeout 1s 5s forwards;
   }
+  .notificationdialog-container.show {
+    display: inline-flex;
+    animation: fadein 1s;
+  }
+  .notificationdialog-container.hide {
+    display: inline-flex;
+    animation: fadeout 1s 5s forwards;
+  }
   
   @keyframes fadein {
     from {

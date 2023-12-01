@@ -34,7 +34,7 @@
 //                  => example: myLinkButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
 
 
-export function showNotificationDialog(notificationDialogContent) {
+export function showNotificationDialog(notificationDialogContent, isStatic = true) {
 
   if (arguments.length === 0 || notificationDialogContent === null) {
     console.log('NotificationDialog needs arguments');
@@ -42,7 +42,7 @@ export function showNotificationDialog(notificationDialogContent) {
   }
 
   getNotificationDialogHtml()
-    .then(html => createNotificationDialog(notificationDialogContent, html))
+    .then(html => createNotificationDialog(notificationDialogContent, html, isStatic))
     .catch(error => console.log('Error while fetching notificationDialog html: ', error));
 }
 
@@ -72,7 +72,7 @@ async function getNotificationDialogHtml() {
 
 let timeoutId = null;
 
-function createNotificationDialog(notificationDialogContent, html) {
+function createNotificationDialog(notificationDialogContent, html, isStatic = true) {
   const notificationDialogElement = getNewNotificationDialog(html);
 
   const notificationDialogType = checkNotificationDialogType(notificationDialogContent);
@@ -96,8 +96,9 @@ function createNotificationDialog(notificationDialogContent, html) {
   }
 
   addNotificationDialog();
-  displayNotificationDialog();
-  clearNotificationDialogs();
+  displayNotificationDialog(isStatic);
+  if(!isStatic)
+    clearNotificationDialogs();
 
 
   //************************************************************************************** */
@@ -190,7 +191,7 @@ function createNotificationDialog(notificationDialogContent, html) {
   function addCloseButton() {
     notificationDialogElement.querySelector(`.notificationdialog-close`).addEventListener('click', (event) => {
       eventHandled(event);
-      notificationDialogElement.style.visibility = 'hidden';
+    notificationDialogElement.style.visibility = 'hidden';
     });
   }
 
@@ -199,13 +200,16 @@ function createNotificationDialog(notificationDialogContent, html) {
     notificationDialogsContainer.prepend(notificationDialogElement);
   }
 
-  function displayNotificationDialog() {
+  function displayNotificationDialog(isStatic = true) {
     const notificationDialog = document.querySelector('#notificationDialog');
 
     listenToNotificationDialogAnimationStart();
     listenToNotificationDialogAnimationEnd();
-
-    notificationDialog.classList.add('show-and-hide');
+    if(isStatic){
+        notificationDialog.classList.add('show');
+    }else{
+        notificationDialog.classList.add('show-and-hide');
+    }
 
     function listenToNotificationDialogAnimationStart() {
       notificationDialog.onanimationstart = (event) => {
