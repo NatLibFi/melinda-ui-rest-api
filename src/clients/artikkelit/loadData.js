@@ -2,7 +2,7 @@ import {
   articleTypesBooks, articleTypesJournal, authorRelators, ccLicenses,
   languages, ontologyTypes, organizations, sciences,
   searchFilters, searchTypes, sourceTypes, sectionOrColumnList
-} from '/artikkelit/interfaces/constants.js';
+} from '/artikkelit/constants/index.js';
 
 import {setOptions} from '/common/ui-utils.js';
 

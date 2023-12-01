@@ -15,8 +15,8 @@ import {
 } from '/artikkelit/interfaces/additionalFields.js';
 import {initArticle, refreshSciencesList, refreshMetodologysList, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
-import {journalTemplate, bookTemplate} from '/artikkelit/interfaces/constants.js';
-import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/interfaces/loadData.js';
+import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
+import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/loadData.js';
 import {initOntologyWords, refreshOntologyWordList, resetOntologySelect} from '/artikkelit/interfaces/ontologyWords.js';
 import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {initReviewSearch, resetReview, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
