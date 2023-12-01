@@ -50,46 +50,71 @@ export function resetOntologySelect(searching) {
   setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
 }
 
+function resetOntologyOtherInput() {
+  const otherInputField = document.getElementById('asiasana-muu');
+  otherInputField.value = '';
+}
+
 export function addOntologyWord(event) {
   event.preventDefault();
 
   const formJson = formToJson(event);
-  const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
-  const ontologyWordOther = formJson['asiasana-muu'];
+  const ontologyWord = getOntologyWord();
+  const ontologyWordOther = getOntologyWordOther();
 
   if (!ontologyWord && !ontologyWordOther) {
     showSnackbar({style: 'alert', text: 'Asiasana tai avainsana ei voi olla tyhjä'});
     return;
   }
 
-  if (ontologyWord) {
-    var data = ontologyWord;
+  addOntologyWordToIndexedDb(ontologyWord ?? ontologyWordOther);
+
+  function getOntologyWord() {
+    return getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
   }
 
-  if (ontologyWordOther) {
+  function getOntologyWordOther() {
     const select = document.getElementById("asiasana-ontologia");
+    const ontologySelectLabel = formJson['asiasana-muu'];
     const ontologySelectValue = select.value;
     const ontologySelectText = select.options[select.selectedIndex].text;
 
-    var data = {
-      prefLabel: ontologyWordOther,
+    return {
+      prefLabel: ontologySelectLabel,
       vocab: ontologySelectValue,
       text: ontologySelectText
-    };
+    }
+  };
+
+}
+
+function addOntologyWordToIndexedDb(newWord) {
+
+  if (duplicate(newWord)) {
+    showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
+    return;
   }
 
-  idbGetStoredValues('artoOntologyWords').then(words => {
-    if (words.some(word => data.localname ? word.localname === data.localname : word.prefLabel === data.prefLabel)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoOntologyWords', data).then(() => {
-      document.getElementById('asiasana-muu').value = '';
+  idbAddValueToLastIndex('artoOntologyWords', newWord)
+    .then(() => {
+      resetOntologyOtherInput();
       resetOntologySelect();
       refreshOntologyWordList();
     });
-  });
+
+  function duplicate(newWord) {
+    idbGetStoredValues('artoOntologyWords')
+      .then((words) => {
+        return words.some(match);
+      })
+
+    function match(word) {
+      return newWord.localname
+        ? word.localname === newWord.localname
+        : word.prefLabel === newWord.prefLabel
+    }
+  }
+
 }
 
 export function refreshOntologyWordList() {
