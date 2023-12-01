@@ -177,15 +177,15 @@ function mergeFields(opts) {
 
     copy(/^51[1,2,3,4,5,7,8,9,0]$/u), // exclude 516 (MUU-383)
     copy(/^52\d$/u),
-    
-    opts.profile == 'KVP' ? copy(/^53[0,1,2,4,5,6,7,9,0]$/u) : copy(/^53\d$/u), // exclude 583 only for KVP/p2e (MUU-408)
-    
+
+    opts.profile === 'KVP' ? copy(/^53[0,1,2,4,5,6,7,9,0]$/u) : copy(/^53\d$/u), // exclude 583 only for KVP/p2e (MUU-408)
+
     copy(/^54[1-9]$/u), // exclude 540 (MUU-378)
     copy(/^55\d$/u),
     copy(/^56\d$/u),
     copy(/^57\d$/u),
     copy(/^58[0,1,2,3,4,5,6,7,9,0]$/u), // exclude 588 (MUU-377)
-    
+
     // copy(/^59\d$/u), // excludes all 59x (MUU-380)
     //update530(),
 
