@@ -1,17 +1,17 @@
-import {showSnackbar, showTab} from '/common/ui-utils.js';
+import {showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {idbClear, getTableNames} from '/artikkelit/indexDB.js';
 import {} from './articleActions.js';
 import {initAbstracts} from '/artikkelit/interfaces/abstracts.js';
 import {initAdditionalFields} from '/artikkelit/interfaces/additionalFields.js';
-import {initArticle, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
+import {initArticle} from '/artikkelit/interfaces/article.js';
 import {initSciencesAndMethodologies} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
 import {initAuthors} from '/artikkelit/interfaces/authors.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/loadData.js';
 import {initOntologyWords, ontologyTypeChange} from '/artikkelit/interfaces/ontologyWords.js';
-import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
-import {initReviewSearch, resetReviewSearchResultSelect} from '/artikkelit/interfaces/reviewSearch.js';
-import {refreshAllLists} from '/artikkelit/articleUpdate.js';
+import {initPublicationSearch} from '/artikkelit/interfaces/publicationSearch.js';
+import {initReviewSearch} from '/artikkelit/interfaces/reviewSearch.js';
+import {} from '/artikkelit/articleUpdate.js';
+import {idbClearAllTables} from '/artikkelit/articleReset.js'
 
 
 /*****************************************************************************/
@@ -112,45 +112,3 @@ function sourceTypeChange(event) {
   document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
   doUpdate();
 }
-
-
-/*****************************************************************************/
-//RESET
-
-function idbClearAllTables() {
-  for (const tableName of getTableNames()) {
-    idbClear(tableName);
-  }
-}
-
-
-function resetInputFields() {
-  for (const inputField of document.getElementsByTagName('input')) {
-    inputField.value = '';
-  }
-}
-
-function resetTextareaFields() {
-  for (const textarea of document.getElementsByTagName('textarea')) {
-    textarea.value = '';
-  }
-}
-
-function resetSelectFields() {
-  for (const selectField of document.getElementsByTagName('select')) {
-    selectField.selectedIndex = 0;
-    selectField.dispatchEvent(new Event('change'));
-  }
-}
-
-window.clearAllFields = function () {
-  idbClearAllTables();
-  resetPublicationSearchResultSelect();
-  refreshAllLists();
-  resetReviewSearchResultSelect();
-  resetInputFields();
-  resetTextareaFields();
-  resetSelectFields();
-  resetAndHideCcLicense();
-  showSnackbar({style: 'info', text: 'Lomake tyhjennetty'});
-};
