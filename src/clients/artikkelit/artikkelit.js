@@ -17,7 +17,7 @@ import {
 import {initArticle, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 import {initSciencesAndMethodologies, refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
 
-import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
+import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList} from '/artikkelit/interfaces/authors.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/loadData.js';
 import {initOntologyWords, ontologyTypeChange, refreshOntologyWordList} from '/artikkelit/interfaces/ontologyWords.js';
@@ -300,41 +300,4 @@ window.clearAllFields = function () {
   resetSelectFields();
   resetAndHideCcLicense();
   showSnackbar({style: 'info', text: 'Lomake tyhjennetty'});
-};
-
-
-/*****************************************************************************/
-//AUTHOR
-
-window.resetAuthor = (event) => {
-  resetAuthor(event);
-};
-
-window.removeAuthor = (event, key) => {
-  event.preventDefault();
-  idbDel('artoAuthors', key).then(() => refreshAuthorsList());
-};
-
-window.removeOrgForAuthor = (event, key) => {
-  event.preventDefault();
-  idbDel('artoAuthorTempOrg', key).then(() => refreshAuthorOrganizationList());
-};
-
-window.articleAuthorRoleChange = (event) => {
-  const authorFirstName = document.getElementById('input-tekija-etunimi');
-  const authorLastName = document.getElementById('input-tekija-sukunimi');
-  const authorCorporateName = document.getElementById('input-tekija-yhteison-nimi');
-
-  const selectedRole = event.target.value;
-
-  authorFirstName.style.display = 'flex';
-  authorLastName.style.display = 'flex';
-  authorCorporateName.style.display = 'none';
-
-
-  if (selectedRole === 'yhteisö') {
-    authorFirstName.style.display = 'none';
-    authorLastName.style.display = 'none';
-    authorCorporateName.style.display = 'flex';
-  }
 };

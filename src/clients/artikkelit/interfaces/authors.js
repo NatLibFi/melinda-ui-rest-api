@@ -1,66 +1,16 @@
-import {idbClear, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
+
 
 export function initAuthors() {
   console.log('initializing authors...');
+  
   document.getElementById('tekija-lisaa-form').addEventListener('submit', addAuthor);
   document.getElementById('tekija-lisaa-organisaatio').addEventListener('submit', addOrganizationForAuthor);
-
   document.getElementById('tyhjenna-tekijat-form').addEventListener('submit', clearAuthors);
 
   refreshAuthorsList();
   refreshAuthorOrganizationList();
-}
-
-export function addAuthor(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-  idbGetStoredValues('artoAuthorTempOrg').then(authorsTempOrganizations => {
-    console.log(authorsTempOrganizations);
-
-    const data = {
-      firstName: formJson['tekija-etunimi'],
-      lastName: formJson['tekija-sukunimi'],
-      corporateName: formJson['tekija-yhteison-nimi'],
-      relator: formJson['tekija-rooli'],
-      authorsTempOrganizations
-    };
-
-    if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
-      showSnackbar({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
-      return;
-    }
-
-    if (data.relator === 'yhteisö' && data.corporateName === '') {
-      showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
-      return;
-    }
-
-    if(data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
-      showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoAuthors', data).then(() => {
-      resetAuthor(event);
-      refreshAuthorsList();
-    });
-  });
-}
-
-export function resetAuthor(event) {
-  event.preventDefault();
-  idbClear('artoAuthorTempOrg').then(() => {
-    const organizationList = document.getElementById('tekija-organisaatiot-list');
-    const authorRoleSelect = document.getElementById('tekija-rooli');
-    organizationList.innerHTML = '';
-    document.getElementById('tekija-etunimi').value = '';
-    document.getElementById('tekija-sukunimi').value = '';
-    document.getElementById('tekija-yhteison-nimi').value = '';
-    document.getElementById('tekija-organisaatio').value = '';
-    document.getElementById('tekija-rooli').value = 'kirjoittaja';
-    return authorRoleSelect.dispatchEvent(new Event('change'));
-  });
 }
 
 export function refreshAuthorsList() {
@@ -123,40 +73,6 @@ export function refreshAuthorsList() {
   doUpdate();
 }
 
-export function clearAuthors(event) {
-  event.preventDefault();
-  idbClear('artoAuthors').then(() => refreshAuthorsList());
-}
-
-// artoAuthorTempOrg
-export function addOrganizationForAuthor(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-  const organizationInputValue = formJson['tekija-organisaatio'];
-
-  if (organizationInputValue === '') {
-    showSnackbar({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
-    return;
-  }
-
-  // See if this can be simplified or optimized (e.g. by utilizing event.target etc)
-  const {code} = document.querySelector(`#tekija-organisaatio-lista [value="${organizationInputValue}"]`).dataset;
-
-  const [organizationName = false, note = false] = organizationInputValue.replace(' (uusi)', '').replace(' (vanha)', '').split(' - ');
-
-  idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
-    if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
-      showSnackbar({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoAuthorTempOrg', {organizationName, code, note}).then(() => {
-      document.getElementById('tekija-organisaatio').value = '';
-      refreshAuthorOrganizationList();
-    });
-  });
-}
-
 export function refreshAuthorOrganizationList() {
   const organizationList = document.getElementById('tekija-organisaatiot-list');
   organizationList.innerHTML = '';
@@ -186,4 +102,118 @@ export function refreshAuthorOrganizationList() {
       organizationList.appendChild(form);
     });
   });
+}
+
+window.articleAuthorRoleChange = (event) => {
+  const authorFirstName = document.getElementById('input-tekija-etunimi');
+  const authorLastName = document.getElementById('input-tekija-sukunimi');
+  const authorCorporateName = document.getElementById('input-tekija-yhteison-nimi');
+
+  const selectedRole = event.target.value;
+
+  authorFirstName.style.display = 'flex';
+  authorLastName.style.display = 'flex';
+  authorCorporateName.style.display = 'none';
+
+
+  if (selectedRole === 'yhteisö') {
+    authorFirstName.style.display = 'none';
+    authorLastName.style.display = 'none';
+    authorCorporateName.style.display = 'flex';
+  }
+}
+
+window.resetAuthor = (event) => {
+  event.preventDefault();
+  idbClear('artoAuthorTempOrg').then(() => {
+    const organizationList = document.getElementById('tekija-organisaatiot-list');
+    const authorRoleSelect = document.getElementById('tekija-rooli');
+    organizationList.innerHTML = '';
+    document.getElementById('tekija-etunimi').value = '';
+    document.getElementById('tekija-sukunimi').value = '';
+    document.getElementById('tekija-yhteison-nimi').value = '';
+    document.getElementById('tekija-organisaatio').value = '';
+    document.getElementById('tekija-rooli').value = 'kirjoittaja';
+    return authorRoleSelect.dispatchEvent(new Event('change'));
+  });
+};
+
+window.removeAuthor = (event, key) => {
+  event.preventDefault();
+  idbDel('artoAuthors', key).then(() => refreshAuthorsList());
+};
+
+window.removeOrgForAuthor = (event, key) => {
+  event.preventDefault();
+  idbDel('artoAuthorTempOrg', key).then(() => refreshAuthorOrganizationList());
+};
+
+function addAuthor(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+  idbGetStoredValues('artoAuthorTempOrg').then(authorsTempOrganizations => {
+    console.log(authorsTempOrganizations);
+
+    const data = {
+      firstName: formJson['tekija-etunimi'],
+      lastName: formJson['tekija-sukunimi'],
+      corporateName: formJson['tekija-yhteison-nimi'],
+      relator: formJson['tekija-rooli'],
+      authorsTempOrganizations
+    };
+
+    if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
+      showSnackbar({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
+      return;
+    }
+
+    if (data.relator === 'yhteisö' && data.corporateName === '') {
+      showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
+      return;
+    }
+
+    if (data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
+      showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoAuthors', data).then(() => {
+      resetAuthor(event);
+      refreshAuthorsList();
+    });
+  });
+}
+
+// artoAuthorTempOrg
+function addOrganizationForAuthor(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+  const organizationInputValue = formJson['tekija-organisaatio'];
+
+  if (organizationInputValue === '') {
+    showSnackbar({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
+    return;
+  }
+
+  // See if this can be simplified or optimized (e.g. by utilizing event.target etc)
+  const {code} = document.querySelector(`#tekija-organisaatio-lista [value="${organizationInputValue}"]`).dataset;
+
+  const [organizationName = false, note = false] = organizationInputValue.replace(' (uusi)', '').replace(' (vanha)', '').split(' - ');
+
+  idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
+    if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
+      showSnackbar({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoAuthorTempOrg', {organizationName, code, note}).then(() => {
+      document.getElementById('tekija-organisaatio').value = '';
+      refreshAuthorOrganizationList();
+    });
+  });
+}
+
+function clearAuthors(event) {
+  event.preventDefault();
+  idbClear('artoAuthors').then(() => refreshAuthorsList());
 }
