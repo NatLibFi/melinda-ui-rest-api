@@ -8,7 +8,7 @@ import {refreshAuthorsList, refreshAuthorOrganizationList} from '/artikkelit/int
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
 import {refreshOntologyWordList} from '/artikkelit/interfaces/ontologyWords.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
-import {resetCheckAndSave} from '/artikkelit/articleActions.js';
+import {resetCheckAndSave} from '/artikkelit/actions/articleActions.js';
 
 
 export function collectFormData() {

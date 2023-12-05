@@ -1,17 +1,17 @@
 import {showTab} from '/common/ui-utils.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {} from './articleActions.js';
+import {} from './actions/articleActions.js';
 import {initAbstracts} from '/artikkelit/interfaces/abstracts.js';
 import {initAdditionalFields} from '/artikkelit/interfaces/additionalFields.js';
 import {initArticle} from '/artikkelit/interfaces/article.js';
 import {initSciencesAndMethodologies} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
 import {initAuthors} from '/artikkelit/interfaces/authors.js';
-import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/loadData.js';
+import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/actions/loadData.js';
 import {initOntologyWords, ontologyTypeChange} from '/artikkelit/interfaces/ontologyWords.js';
 import {initPublicationSearch} from '/artikkelit/interfaces/publicationSearch.js';
 import {initReviewSearch} from '/artikkelit/interfaces/reviewSearch.js';
-import {} from '/artikkelit/articleUpdate.js';
-import {idbClearAllTables} from '/artikkelit/articleReset.js'
+import {} from '/artikkelit/actions/articleUpdate.js';
+import {idbClearAllTables} from '/artikkelit/actions/articleReset.js'
 
 
 /*****************************************************************************/

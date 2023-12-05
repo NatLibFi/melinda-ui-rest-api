@@ -3,7 +3,7 @@ import {idbClear, getTableNames} from '/artikkelit/indexDB.js';
 import {resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
 import {resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {resetReviewSearchResultSelect} from '/artikkelit/interfaces/reviewSearch.js';
-import {refreshAllLists} from '/artikkelit/articleUpdate.js';
+import {refreshAllLists} from '/artikkelit/actions/articleUpdate.js';
 
 
 export function idbClearAllTables() {

@@ -4,7 +4,7 @@
 /*                                                                           */
 /*****************************************************************************/
 
-import {collectFormData} from '/artikkelit/articleUpdate.js';
+import {collectFormData} from '/artikkelit/actions/articleUpdate.js';
 import {idbGet} from '/artikkelit/indexDB.js';
 import {
   disableElement, enableElement, getAllDescendants, highlightElement, isHidden,
