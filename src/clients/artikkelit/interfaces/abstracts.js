@@ -1,4 +1,4 @@
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
+import {idbAddValueToLastIndex, idbDel, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
 import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
 
 export function initAbstracts() {
@@ -102,3 +102,10 @@ export function resetCharacterCounter(event) {
   warning.innerHTML = '';
   warning.style.padding = '';
 }
+
+
+window.removeAbstract = (event, key) => {
+  event.preventDefault();
+  idbDel('artoAbstracts', key).then(() => refreshAbstractList());
+};
+

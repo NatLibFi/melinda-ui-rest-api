@@ -1,4 +1,4 @@
-import {idbGet, idbClear, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {idbGet, idbClear, idbDel, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
 import {formToJson, setOptions, createIconButton, createP, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
 import {getPublicationByTitle, getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN} from '/common/rest.js';
 import {sortRecordData} from '/artikkelit/utils.js';
@@ -256,3 +256,13 @@ export function resetReview(event) {
     resetReviewSearchResultSelect();
   });
 }
+
+window.resetReview = (event) => {
+  resetReview(event);
+};
+
+
+window.removeReviewedBook = (event, key) => {
+  event.preventDefault();
+  idbDel('artoReviews', key).then(() => refreshReviewsList());
+};

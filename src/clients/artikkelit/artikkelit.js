@@ -13,13 +13,16 @@ import {
   initAdditionalFields, refreshNotesList, refreshOtherTitlesList,
   refreshUDKsList, refreshOtherRatingsList
 } from '/artikkelit/interfaces/additionalFields.js';
-import {initArticle, refreshSciencesList, refreshMetodologysList, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
+
+import {initArticle, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
+import {initSciencesAndMethodologies, refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
+
 import {initAuthors, refreshAuthorsList, refreshAuthorOrganizationList, resetAuthor} from '/artikkelit/interfaces/authors.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
 import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/loadData.js';
 import {initOntologyWords, ontologyTypeChange, refreshOntologyWordList} from '/artikkelit/interfaces/ontologyWords.js';
 import {initPublicationSearch, resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
-import {initReviewSearch, resetReview, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
+import {initReviewSearch, resetReviewSearchResultSelect, refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 import {resetCheckAndSave} from './articleActions.js';
 
 
@@ -41,6 +44,7 @@ window.initialize = function () {
     initTypeChanges();
     initPublicationSearch();
     initArticle();
+    initSciencesAndMethodologies();
     initReviewSearch();
     initAuthors();
     initAbstracts();
@@ -78,6 +82,48 @@ function addFormChangeListeners() {
 
 }
 
+function sourceTypeChange(event) {
+  event.preventDefault();
+  fillDatalistOptions();
+  fillArticleTypeOptions();
+
+  const sourceType = event.target.value;
+  const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
+  const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
+
+  const sourceTypeSelect = document.querySelector('select#kuvailtava-kohde');
+  const sourceTypePreview = document.getElementById('sourceTypePreview');
+
+  sourceTypePreview.innerHTML = sourceTypeSelect.options[sourceTypeSelect.selectedIndex].text
+
+  if (sourceType === 'journal') {
+    document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
+    document.getElementById(`numeron-vol-wrap`).style.display = 'block';
+    document.getElementById(`numeron-numero-wrap`).style.display = 'block';
+    document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
+    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
+    optionIsbn.setAttribute('hidden', 'hidden');
+    optionIssn.removeAttribute('hidden');
+  }
+
+  if (sourceType === 'book') {
+    document.getElementById(`numeron-vuosi-wrap`).style.display = 'none';
+    document.getElementById(`numeron-vuosi`).value = '';
+    document.getElementById(`numeron-vol-wrap`).style.display = 'none';
+    document.getElementById(`numeron-vol`).value = '';
+    document.getElementById(`numeron-numero-wrap`).style.display = 'none';
+    document.getElementById(`numeron-numero`).value = '';
+    document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
+    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
+    document.getElementById('artikkelin-osasto-toistuva').value = '';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi:';
+    optionIssn.setAttribute('hidden', 'hidden');
+    optionIsbn.removeAttribute('hidden')
+  }
+  document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
+  doUpdate();
+}
 
 /*****************************************************************************/
 //UPDATE
@@ -258,15 +304,6 @@ window.clearAllFields = function () {
 
 
 /*****************************************************************************/
-//ABSTRACT
-
-window.removeAbstract = (event, key) => {
-  event.preventDefault();
-  idbDel('artoAbstracts', key).then(() => refreshAbstractList());
-};
-
-
-/*****************************************************************************/
 //ADDITIONAL FIELDS
 
 window.removeNote = (event, key) => {
@@ -287,75 +324,6 @@ window.removeUDK = (event, key) => {
 window.removeotherRating = (event, key) => {
   event.preventDefault();
   idbDel('artoOtherRatings', key).then(() => refreshOtherRatingsList());
-};
-
-
-/*****************************************************************************/
-//ARTICLE
-
-function sourceTypeChange(event) {
-  event.preventDefault();
-  fillDatalistOptions();
-  fillArticleTypeOptions();
-
-  const sourceType = event.target.value;
-  const optionIsbn = document.querySelector(`select#julkaisu-haku-tyyppi option[value='isbn']`);
-  const optionIssn = document.querySelector(`select#julkaisu-haku-tyyppi option[value="issn"]`);
-
-  const sourceTypeSelect = document.querySelector('select#kuvailtava-kohde');
-  const sourceTypePreview = document.getElementById('sourceTypePreview');
-
-  sourceTypePreview.innerHTML = sourceTypeSelect.options[sourceTypeSelect.selectedIndex].text
-
-  if (sourceType === 'journal') {
-    document.getElementById(`numeron-vuosi-wrap`).style.display = 'block';
-    document.getElementById(`numeron-vol-wrap`).style.display = 'block';
-    document.getElementById(`numeron-numero-wrap`).style.display = 'block';
-    document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
-    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
-    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
-    optionIsbn.setAttribute('hidden', 'hidden');
-    optionIssn.removeAttribute('hidden');
-  }
-
-  if (sourceType === 'book') {
-    document.getElementById(`numeron-vuosi-wrap`).style.display = 'none';
-    document.getElementById(`numeron-vuosi`).value = '';
-    document.getElementById(`numeron-vol-wrap`).style.display = 'none';
-    document.getElementById(`numeron-vol`).value = '';
-    document.getElementById(`numeron-numero-wrap`).style.display = 'none';
-    document.getElementById(`numeron-numero`).value = '';
-    document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
-    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
-    document.getElementById('artikkelin-osasto-toistuva').value = '';
-    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi:';
-    optionIssn.setAttribute('hidden', 'hidden');
-    optionIsbn.removeAttribute('hidden')
-  }
-  document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
-  doUpdate();
-}
-
-window.articleTypeChange = (event) => {
-  const reviewFieldset = document.getElementById('arvostellun-teoksen-tiedot');
-  const addedReviews = document.getElementById('arvostellut-teokset');
-  const selectedType = event.target.value;
-
-  reviewFieldset.style.display = 'flex';
-  addedReviews.style.display = 'flex';
-
-  if (['A1', 'A2', 'A3'].some(str => selectedType.includes(str))) {
-    reviewFieldset.style.display = 'none';
-    addedReviews.style.display = 'none';
-    idbClear('artoReviews');
-    resetReview();
-    refreshReviewsList();
-  }
-};
-
-window.removeArticleLink = (event) => {
-  event.preventDefault();
-  event.target.parentElement.remove();
 };
 
 
@@ -393,35 +361,4 @@ window.articleAuthorRoleChange = (event) => {
     authorLastName.style.display = 'none';
     authorCorporateName.style.display = 'flex';
   }
-};
-
-
-/*****************************************************************************/
-//REVIEW
-
-window.resetReview = (event) => {
-  resetReview(event);
-};
-
-
-/*****************************************************************************/
-//REVIEW
-
-window.removeReviewedBook = (event, key) => {
-  event.preventDefault();
-  idbDel('artoReviews', key).then(() => refreshReviewsList());
-};
-
-
-/*****************************************************************************/
-//SCIENCE + METODOLOGY
-
-window.removeScience = (event, key) => {
-  event.preventDefault();
-  idbDel('artoSciences', key).then(() => refreshSciencesList());
-};
-
-window.removeMetodology = (event, key) => {
-  event.preventDefault();
-  idbDel('artoMetodologys', key).then(() => refreshMetodologysList());
 };
