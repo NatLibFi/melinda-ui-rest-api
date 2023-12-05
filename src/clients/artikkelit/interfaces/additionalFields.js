@@ -1,5 +1,5 @@
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
 
 export function initAdditionalFields() {
   console.log('initializing additional fields...');
@@ -17,32 +17,6 @@ export function initAdditionalFields() {
   refreshOtherTitlesList();
   refreshUDKsList();
   refreshOtherRatingsList();
-}
-
-export function addNote(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-
-  const data = {
-    value: formJson['lisakentat-yleinen-huomautus']
-  };
-
-  if (data.value === '') {
-    showSnackbar({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
-    return;
-  }
-
-  idbGetStoredValues('artoNotes').then(notes => {
-    if (notes.some(note => note.value === data.value)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoNotes', data).then(() => {
-      document.getElementById('lisakentat-yleinen-huomautus').value = '';
-      refreshNotesList();
-    });
-  });
 }
 
 export function refreshNotesList() {
@@ -72,101 +46,6 @@ export function refreshNotesList() {
   });
 
   doUpdate();
-}
-
-export function clearNotes(event) {
-  event.preventDefault();
-  idbClear('artoNotes').then(() => refreshNotesList());
-}
-
-export function addOtherTitle(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-
-  const data = {
-    value: formJson['artikkelin-muu-nimeke']
-  };
-
-  if (data.value === '') {
-    showSnackbar({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
-    return;
-  }
-
-  idbGetStoredValues('artoOtherTitles').then(otherTitles => {
-    if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoOtherTitles', data).then(() => {
-      document.getElementById('artikkelin-muu-nimeke').value = '';
-      refreshOtherTitlesList();
-    });
-  });
-}
-
-export function refreshOtherTitlesList() {
-  const otherTitlesList = document.getElementById('muut-nimekkeet-list');
-  otherTitlesList.innerHTML = '';
-
-  idbGetStoredValues('artoOtherTitles').then(otherTitles => {
-    otherTitles.forEach(otherTitleData => {
-      const form = document.createElement('form');
-      const div = document.createElement('div');
-      div.classList.add('full-width');
-      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
-      div.appendChild(createP('Muu nimeke', '', '&nbsp;-&nbsp;', ['label-text']));
-      div.appendChild(createP(otherTitleData.value));
-      div.appendChild(removeButton);
-      form.appendChild(div);
-      otherTitlesList.appendChild(form);
-    });
-
-    if (otherTitles.length > 1) {
-      document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'block';
-    }
-
-    if (otherTitles.length < 2) {
-      document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'none';
-    }
-  });
-
-  doUpdate();
-}
-
-export function clearOtherTitles(event) {
-  event.preventDefault();
-  idbClear('artoOtherTitles').then(() => refreshOtherTitlesList());
-}
-
-export function addUDK(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-
-  const data = {
-    a080: formJson['lisakentat-UDK080a'],
-    x080: formJson['lisakentat-UDK080x'],
-    two080: formJson['lisakentat-UDK0802']
-  };
-
-  if (data.a080 === '') {
-    showSnackbar({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
-    return;
-  }
-
-  idbGetStoredValues('artoUDKs').then(udks => {
-    if (udks.some(udk => udk.a080 === data.a080)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoUDKs', data).then(() => {
-      document.getElementById('lisakentat-UDK080a').value = '';
-      document.getElementById('lisakentat-UDK080x').value = '';
-      document.getElementById('lisakentat-UDK0802').value = '';
-      refreshUDKsList();
-    });
-  });
 }
 
 export function refreshUDKsList() {
@@ -202,37 +81,33 @@ export function refreshUDKsList() {
   doUpdate();
 }
 
-export function clearUDKs(event) {
-  event.preventDefault();
-  idbClear('artoUDKs').then(() => refreshUDKsList());
-}
+export function refreshOtherTitlesList() {
+  const otherTitlesList = document.getElementById('muut-nimekkeet-list');
+  otherTitlesList.innerHTML = '';
 
-export function addOtherRating(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
+  idbGetStoredValues('artoOtherTitles').then(otherTitles => {
+    otherTitles.forEach(otherTitleData => {
+      const form = document.createElement('form');
+      const div = document.createElement('div');
+      div.classList.add('full-width');
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeOtherTitle(event, ${otherTitleData.key})`, 'Poista');
+      div.appendChild(createP('Muu nimeke', '', '&nbsp;-&nbsp;', ['label-text']));
+      div.appendChild(createP(otherTitleData.value));
+      div.appendChild(removeButton);
+      form.appendChild(div);
+      otherTitlesList.appendChild(form);
+    });
 
-  const data = {
-    a084: formJson['lisakentat-muu-luokitus-084a'],
-    two084: formJson['lisakentat-luokituksen-lahde-0842']
-  };
-
-  if (data.a084 === '' || data.two084 === '') {
-    showSnackbar({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
-    return;
-  }
-
-  idbGetStoredValues('artoOtherRatings').then(otherRatings => {
-    if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
-      return;
+    if (otherTitles.length > 1) {
+      document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'block';
     }
 
-    idbAddValueToLastIndex('artoOtherRatings', data).then(() => {
-      document.getElementById('lisakentat-muu-luokitus-084a').value = '';
-      document.getElementById('lisakentat-luokituksen-lahde-0842').value = '';
-      refreshOtherRatingsList();
-    });
+    if (otherTitles.length < 2) {
+      document.getElementById('tyhjenna-muut-nimekkeet-form').style.display = 'none';
+    }
   });
+
+  doUpdate();
 }
 
 export function refreshOtherRatingsList() {
@@ -266,7 +141,152 @@ export function refreshOtherRatingsList() {
   doUpdate();
 }
 
-export function clearOtherRatings(event) {
+window.removeNote = (event, key) => {
+  event.preventDefault();
+  idbDel('artoNotes', key).then(() => refreshNotesList());
+};
+
+window.removeotherRating = (event, key) => {
+  event.preventDefault();
+  idbDel('artoOtherRatings', key).then(() => refreshOtherRatingsList());
+};
+
+window.removeOtherTitle = (event, key) => {
+  event.preventDefault();
+  idbDel('artoOtherTitles', key).then(() => refreshOtherTitlesList());
+};
+
+window.removeUDK = (event, key) => {
+  event.preventDefault();
+  idbDel('artoUDKs', key).then(() => refreshUDKsList());
+};
+
+function addNote(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+
+  const data = {
+    value: formJson['lisakentat-yleinen-huomautus']
+  };
+
+  if (data.value === '') {
+    showSnackbar({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
+    return;
+  }
+
+  idbGetStoredValues('artoNotes').then(notes => {
+    if (notes.some(note => note.value === data.value)) {
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoNotes', data).then(() => {
+      document.getElementById('lisakentat-yleinen-huomautus').value = '';
+      refreshNotesList();
+    });
+  });
+}
+
+function addOtherRating(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+
+  const data = {
+    a084: formJson['lisakentat-muu-luokitus-084a'],
+    two084: formJson['lisakentat-luokituksen-lahde-0842']
+  };
+
+  if (data.a084 === '' || data.two084 === '') {
+    showSnackbar({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
+    return;
+  }
+
+  idbGetStoredValues('artoOtherRatings').then(otherRatings => {
+    if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoOtherRatings', data).then(() => {
+      document.getElementById('lisakentat-muu-luokitus-084a').value = '';
+      document.getElementById('lisakentat-luokituksen-lahde-0842').value = '';
+      refreshOtherRatingsList();
+    });
+  });
+}
+
+function addOtherTitle(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+
+  const data = {
+    value: formJson['artikkelin-muu-nimeke']
+  };
+
+  if (data.value === '') {
+    showSnackbar({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
+    return;
+  }
+
+  idbGetStoredValues('artoOtherTitles').then(otherTitles => {
+    if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoOtherTitles', data).then(() => {
+      document.getElementById('artikkelin-muu-nimeke').value = '';
+      refreshOtherTitlesList();
+    });
+  });
+}
+
+function addUDK(event) {
+  event.preventDefault();
+  const formJson = formToJson(event);
+
+  const data = {
+    a080: formJson['lisakentat-UDK080a'],
+    x080: formJson['lisakentat-UDK080x'],
+    two080: formJson['lisakentat-UDK0802']
+  };
+
+  if (data.a080 === '') {
+    showSnackbar({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
+    return;
+  }
+
+  idbGetStoredValues('artoUDKs').then(udks => {
+    if (udks.some(udk => udk.a080 === data.a080)) {
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoUDKs', data).then(() => {
+      document.getElementById('lisakentat-UDK080a').value = '';
+      document.getElementById('lisakentat-UDK080x').value = '';
+      document.getElementById('lisakentat-UDK0802').value = '';
+      refreshUDKsList();
+    });
+  });
+}
+
+function clearNotes(event) {
+  event.preventDefault();
+  idbClear('artoNotes').then(() => refreshNotesList());
+}
+
+function clearOtherRatings(event) {
   event.preventDefault();
   idbClear('artoOtherRatings').then(() => refreshOtherRatingsList());
+}
+
+function clearOtherTitles(event) {
+  event.preventDefault();
+  idbClear('artoOtherTitles').then(() => refreshOtherTitlesList());
+}
+
+function clearUDKs(event) {
+  event.preventDefault();
+  idbClear('artoUDKs').then(() => refreshUDKsList());
 }

@@ -304,30 +304,6 @@ window.clearAllFields = function () {
 
 
 /*****************************************************************************/
-//ADDITIONAL FIELDS
-
-window.removeNote = (event, key) => {
-  event.preventDefault();
-  idbDel('artoNotes', key).then(() => refreshNotesList());
-};
-
-window.removeOtherTitle = (event, key) => {
-  event.preventDefault();
-  idbDel('artoOtherTitles', key).then(() => refreshOtherTitlesList());
-};
-
-window.removeUDK = (event, key) => {
-  event.preventDefault();
-  idbDel('artoUDKs', key).then(() => refreshUDKsList());
-};
-
-window.removeotherRating = (event, key) => {
-  event.preventDefault();
-  idbDel('artoOtherRatings', key).then(() => refreshOtherRatingsList());
-};
-
-
-/*****************************************************************************/
 //AUTHOR
 
 window.resetAuthor = (event) => {
