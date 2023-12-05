@@ -1,4 +1,4 @@
-import {idbAddValueToLastIndex, idbDel, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
+import {idbAddValueToLastIndex, idbDel, idbGetStoredValues, idbClear} from '/artikkelit/utils/indexDB.js';
 import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
 
 export function initAbstracts() {

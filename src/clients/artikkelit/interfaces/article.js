@@ -1,4 +1,4 @@
-import {idbClear} from '/artikkelit/indexDB.js';
+import {idbClear} from '/artikkelit/utils/indexDB.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 import {createIconButton} from '/common/ui-utils.js';
 

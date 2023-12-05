@@ -1,8 +1,8 @@
 import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelindaId} from '/common/rest.js';
-import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
 import {formToJson, setOptions, startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';
 import {showCcLicense, resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
-import {sortRecordData} from '/artikkelit/utils.js';
+import {sortRecordData} from '/artikkelit/utils/utils.js';
 
 export function initPublicationSearch(event) {
   console.log('initializing publication search...');

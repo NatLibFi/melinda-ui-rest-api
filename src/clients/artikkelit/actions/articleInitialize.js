@@ -3,7 +3,7 @@ import {initAdditionalFields} from '/artikkelit/interfaces/additionalFields.js';
 import {initArticle} from '/artikkelit/interfaces/article.js';
 import {initSciencesAndMethodologies} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
 import {initAuthors} from '/artikkelit/interfaces/authors.js';
-import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/actions/loadData.js';
+import {fillFormOptions, fillDatalistOptions, fillArticleTypeOptions} from '/artikkelit/actions/articleFillOptions.js';
 import {initOntologyWords, ontologyTypeChange} from '/artikkelit/interfaces/ontologyWords.js';
 import {initPublicationSearch} from '/artikkelit/interfaces/publicationSearch.js';
 import {initReviewSearch} from '/artikkelit/interfaces/reviewSearch.js';

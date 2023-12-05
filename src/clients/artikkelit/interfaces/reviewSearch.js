@@ -1,7 +1,7 @@
-import {idbGet, idbClear, idbDel, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
+import {idbGet, idbClear, idbDel, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
 import {formToJson, setOptions, createIconButton, createP, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
 import {getPublicationByTitle, getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN} from '/common/rest.js';
-import {sortRecordData} from '/artikkelit/utils.js';
+import {sortRecordData} from '/artikkelit/utils/utils.js';
 
 export function initReviewSearch() {
   console.log('initializing review search...');

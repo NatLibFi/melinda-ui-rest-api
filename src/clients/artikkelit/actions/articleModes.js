@@ -1,230 +1,5 @@
-/*****************************************************************************/
-/*                                                                           */
-/* Functions for article record actions: check record and save record        */
-/*                                                                           */
-/*****************************************************************************/
-
 import {collectFormData} from '/artikkelit/actions/articleUpdate.js';
-import {idbGet} from '/artikkelit/indexDB.js';
-import {
-  disableElement, enableElement, getAllDescendants, highlightElement, isHidden,
-  isVisible, showSnackbar, startProcess, stopProcess
-} from '/common/ui-utils.js';
-import {addArticleRecord, validateArticleRecord} from '/common/rest.js';
-
-
-
-/*****************************************************************************/
-/* CHECK (VALIDATE) RECORD                                                   */
-/*****************************************************************************/
-
-//---------------------------------------------------------------------------//
-// Function for checking article record
-//   - get record from indexedDB  
-//   - then call function validateRecord and pass the record as parameter
-window.checkArticleRecord = function (event = undefined) {
-  console.log('Checking article record...');
-  eventHandled(event);
-  startProcess();
-
-  idbGet('artoRecord', 'record')
-    .then((data) => {
-      validateRecord(data);
-    })
-    .catch((error) => {
-      console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'})
-    })
-}
-
-
-//---------------------------------------------------------------------------//
-// Function for validating record data
-//    - send record to rest api for validation
-//    - check response status
-//        * if status is 200, validation passed
-//        * if status is 422, validation failed
-//        * other statuses, handle as error
-function validateRecord(data) {
-  const recordNotes = document.getElementById('articleRecordNotes');
-
-  validateArticleRecord(data)
-    .then((result) => {
-      console.log('Validation result: ', result);
-
-      //response ok status is true (status code range 200-299)
-      if (result.ok) {
-        //status code is 200 OK => validation passed
-        if (result.status === 200) {
-          validationPassed();
-          return;
-        }
-        //status code is 2?? => general error
-        throw new Error(`Validation responded with ok status ${result.status}`);
-      }
-
-      //response ok status is false
-      if (!result.ok) {
-        //code is 422 Unprocessable content => validation failed
-        if (result.status === 422) {
-          validationFailed();
-          return;
-        }
-        //the status code is something else => general error
-        throw new Error(`Validation responded with error status ${result.status}`);
-      }
-    })
-    .catch((error) => {
-      console.log('Error validating record: ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
-    })
-    .finally(() => {
-      stopProcess();
-    });
-
-  function validationPassed() {
-    console.log('Article record passed check!')
-
-    const saveArticleRecordButton = document.getElementById('actionSaveArticleRecord');
-    const forwardIcon = document.getElementById('actionForward');
-
-    recordNotes.innerHTML = 'Tietueen tarkistuksessa ei löytynyt virheitä.'
-    recordNotes.classList.add('record-valid');
-    enableElement(saveArticleRecordButton);
-    forwardIcon.classList.add('proceed');
-    showSnackbar({style: 'info', text: 'Voit nyt tallentaa tietueen'});
-  }
-
-  function validationFailed() {
-    console.log('Article record failed check!')
-
-    recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi virheitä. <br> <br> Tietuetta ei voi tallentaa.'
-    recordNotes.classList.add('record-error');
-    highlightElement(notes);
-    showSnackbar({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
-  }
-
-}
-
-
-
-/*****************************************************************************/
-/* SAVE RECORD                                                               */
-/*****************************************************************************/
-
-//---------------------------------------------------------------------------//
-// Function for opening dialog window
-window.openSaveArticleRecordDialog = function (event = undefined) {
-  eventHandled(event);
-  const dialog = document.getElementById('dialogForSave');
-
-  dialog.showModal();
-};
-
-//---------------------------------------------------------------------------//
-// Discard action in dialog window
-window.cancelSave = function (event = undefined) {
-  console.log('Nothing saved');
-
-  showSnackbar({status: 'info', text: 'Toiminto peruttu!'});
-};
-
-//---------------------------------------------------------------------------//
-// Confirm action in dialog window
-window.confirmSave = function (event = undefined) {
-  console.log('Saving article record...');
-
-  startProcess();
-  saveArticleRecord();
-};
-
-//---------------------------------------------------------------------------//
-// Function to save the article
-//    -get the article from idb
-//    -then pass the record as parameter to function addRecord
-function saveArticleRecord() {
-
-  idbGet('artoRecord', 'record')
-    .then((data) => {
-      addRecord(data);
-    })
-    .catch((error) => {
-      console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'});
-    })
-}
-
-//---------------------------------------------------------------------------//
-// Function for creating record data
-//    - send record to rest api for addition
-//    - check response status
-//        * if status is 201, creation ok
-//            => call function addRecordSuccess and pass the result as parameter
-//        * other statuses, handle as error
-function addRecord(data) {
-
-  addArticleRecord(data)
-    .then((result) => {
-      console.log('Adding record to ARTO collection, result: ', result);
-
-      if (result.ok) {
-        if (result.status === 201) {
-          recordAdditionSuccess(result);
-          return;
-        }
-        throw new Error(`Adding record responded with ok status ${result.status}`);
-      }
-
-      if (!result.ok) {
-        throw new Error(`Adding record responded with not ok status ${result.status}`);
-      }
-    })
-    .catch((error) => {
-      console.log('Article record save failed, error: ', error);
-      showSnackbar({style: 'error', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
-    })
-    .finally(() => {
-      stopProcess();
-    });
-
-  function recordAdditionSuccess(result) {
-    console.log('Article record saved with statustext: ', result.statusText);
-
-    showRecordActionsAfterSave();
-    showArticleFormReadMode();
-    showFormActionsAfterSave();
-    showSnackbar({style: 'success', text: 'Tietueen tallennus onnistui'});
-  }
-}
-
-
-
-/*****************************************************************************/
-/* START NEW RECORD ACTIONS                                                  */
-/*****************************************************************************/
-
-//---------------------------------------------------------------------------//
-// Function for clearing all form fields
-// and starting new article record from an empty form
-window.startNewEmptyForm = function (event = undefined) {
-  console.log('Start new record with empty form')
-  eventHandled(event);
-
-  showFormActionsOnEdit();
-  showArticleFormEditMode();
-  clearAllFields();
-  showSnackbar({style: 'info', text: 'Aloitetaan uusi kuvailu tyhjältä pohjalta'})
-}
-
-//---------------------------------------------------------------------------//
-// Function for copying the saved record
-// and starting new article record with prefilled form fields
-window.startNewCopyForm = function (event = undefined) {
-  console.log('Start new record with copied form')
-  eventHandled(event);
-
-  //TODO
-}
+import {disableElement, enableElement, getAllDescendants, isHidden, isVisible} from '/common/ui-utils.js';
 
 
 
@@ -379,7 +154,6 @@ window.showArticleFormEditMode = function (event = undefined) {
 
 
 
-
 /*****************************************************************************/
 /* HELPER FUNCTIONS FOR ARTICLE ACTIONS                                      */
 /*****************************************************************************/
@@ -405,7 +179,7 @@ export function resetCheckAndSave() {
 //---------------------------------------------------------------------------//
 // Function for making set of buttons in form toolbar visible,
 // when form is still editable
-function showFormActionsOnEdit() {
+export function showFormActionsOnEdit() {
   const divActionsAfterSave = document.getElementById('actionsAfterSave');
   const newEmptyRecordButton = document.getElementById('emptyRecord');
   //const newCopyRecordButton = document.getElementById('copyRecord');
@@ -432,7 +206,7 @@ function showFormActionsOnEdit() {
 //---------------------------------------------------------------------------//
 // Function for making set of buttons in form toolbar visible
 // when form is locked and the record is saved
-function showFormActionsAfterSave() {
+export function showFormActionsAfterSave() {
   const divActionsOnEdit = document.getElementById('actionsOnEdit');
   const showEditModeButton = document.getElementById('formEditMode');
   const showReadModeButton = document.getElementById('formReadMode');
@@ -460,7 +234,7 @@ function showFormActionsAfterSave() {
 //---------------------------------------------------------------------------//
 // Function for making set of buttons in form toolbar disabled
 // when form is locked and the record is saved
-function showRecordActionsAfterSave() {
+export function showRecordActionsAfterSave() {
   const checkArticleRecordButton = document.getElementById('actionCheckArticleRecord');
   const saveArticleRecordButton = document.getElementById('actionSaveArticleRecord');
   const forwardIcon = document.getElementById('actionForward');

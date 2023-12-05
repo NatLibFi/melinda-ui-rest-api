@@ -1,7 +1,9 @@
-import {showTab} from '/common/ui-utils.js';
-import {Account, doLogin, logout} from '/common/auth.js';
 import {idbClearAllTables} from '/artikkelit/actions/articleReset.js'
-import {initArticleFormAndRecord} from '/artikkelit/actions/initArticleFormAndRecord.js';
+import {initArticleFormAndRecord} from '/artikkelit/actions/articleInitialize.js';
+import {Account, doLogin, logout} from '/common/auth.js';
+import {showTab} from '/common/ui-utils.js';
+import {} from '/artikkelit/actions/articleCheck.js';
+
 
 window.initialize = function () {
   console.log('Initializing');
