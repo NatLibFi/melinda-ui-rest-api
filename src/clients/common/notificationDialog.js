@@ -33,8 +33,16 @@
 //            3. add listener for 'click' events to include the chosen action for snacbar
 //                  => example: myLinkButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
 
-
-export function showNotificationDialog(notificationDialogContent, isStatic = true) {
+/**
+ * 
+ * @param {*} notificationDialogContent object
+ * @param {*} notificationDialogContent.type info/success/alert/error
+ * @param {*} notificationDialogContent.message given message
+ * @param {*} isStatic should dialog fade out ?
+ * @param {*} blockInteractions show close dialog ?
+ * @returns 
+ */
+export function showNotificationDialog(notificationDialogContent, isStatic = true, blockInteractions = false) {
 
   if (arguments.length === 0 || notificationDialogContent === null) {
     console.log('NotificationDialog needs arguments');
@@ -42,7 +50,7 @@ export function showNotificationDialog(notificationDialogContent, isStatic = tru
   }
 
   getNotificationDialogHtml()
-    .then(html => createNotificationDialog(notificationDialogContent, html, isStatic))
+    .then(html => createNotificationDialog(notificationDialogContent, html, isStatic, blockInteractions))
     .catch(error => console.log('Error while fetching notificationDialog html: ', error));
 }
 
@@ -72,7 +80,7 @@ async function getNotificationDialogHtml() {
 
 let timeoutId = null;
 
-function createNotificationDialog(notificationDialogContent, html, isStatic = true) {
+function createNotificationDialog(notificationDialogContent, html, isStatic = true, blockInteractions = false) {
   const notificationDialogElement = getNewNotificationDialog(html);
 
   const notificationDialogType = checkNotificationDialogType(notificationDialogContent);
@@ -140,7 +148,13 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
     setNotificationDialogStyle();
     addTextToNotificationDialog(text);
     addLinkButton();
-    addCloseButton();
+
+    if(blockInteractions){
+      notificationDialogElement.querySelector(`.notificationdialog-close`).style.visibility = 'hidden';
+    }
+    else{
+      addCloseButton();
+    }
 
     function setNotificationDialogStyle() {
 
