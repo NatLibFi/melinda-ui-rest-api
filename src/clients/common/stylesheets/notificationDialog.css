@@ -20,6 +20,7 @@
   /* Container for one notificationDialog */
   /* NotificationDialog contains: */
   /*    - icon */
+  /*    - title */
   /*    - text */
   /*    - link button */
   /*    - close button*/
@@ -27,14 +28,36 @@
     display: none;
     align-items: center;
     background-color: var(--style-background-color, var(--color-blue-60));
-    min-width: 550px;
-    max-height: 68px;
+    min-width: 500px;
+    max-width: 800px;
+    max-height: 800px;
     overflow: auto;
     margin: 0.5em;
     pointer-events: all;
     padding: 14px
   }
-  
+
+  /*
+    Header contains:
+    - icon
+    - title
+    - close button
+  */
+  .notificationdialog-header{
+    display: inline-flex;
+    width: 100%;
+  }
+  /*
+    Body contains:
+    - text
+    - link button
+
+  */
+  .notificationdialog-body{
+    display: block;
+    width: 100%;
+    padding-left: 5px;
+  }
   
   /* NotificationDialog icon is container for a message style icon */
   .notificationdialog-icon {
@@ -49,14 +72,27 @@
     align-items: center;
   }
   
-  
-  /* NotificationDialog text is the message in notificationDialog */
-  .notificationdialog-text {
+  /* NotificationDialog title is the message in notificationDialog */
+  .notificationdialog-title {
     display: flex;
     flex-direction: column;
     padding-left: 12px;
     letter-spacing: 1px;
     align-items: center;
+    font-family: var(--font-family-label);
+    font-size: var(--font-size-label-large);
+    color: var(--color-primary-blue);
+    padding-right: 16px;
+    font-weight: bold;
+    justify-content: center;
+  }
+  
+  /* NotificationDialog text is the message in notificationDialog */
+  .notificationdialog-text {
+    display: flex;
+    flex-direction: column;
+    letter-spacing: 1px;
+    align-items: left;
     font-family: var(--font-family-label);
     font-size: var(--font-size-label-large);
     color: var(--color-primary-blue);
@@ -134,7 +170,7 @@
     animation: fadein 1s, fadeout 1s 5s forwards;
   }
   .notificationdialog-container.show {
-    display: inline-flex;
+    display: inline-block;
     animation: fadein 1s;
   }
   .notificationdialog-container.hide {

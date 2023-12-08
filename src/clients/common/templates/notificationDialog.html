@@ -15,17 +15,25 @@
     <!-- and always a close button for dismissing the notificationDialog -->
 
     <div id="notificationDialog" class="notificationdialog-container">
-      <div class="notificationdialog-icon">
-        <span class="material-icons">error_outline</span>
-      </div>
-      <div class="notificationdialog-text"></div>
-      <div class="notificationdialog-link"></div>
-      <div class="notificationdialog-close">
-        <div class="notificationdialog-close-text">
-          Sulje
+      <div class="notificationdialog-header">
+        <div class="notificationdialog-icon">
+          <span class="material-icons">error_outline</span>
         </div>
-        <span class="material-icons notificationdialog-close-icon">close</span>
+        <div class="notificationdialog-title"></div>
+        
+        <div class="notificationdialog-close">
+          <div class="notificationdialog-close-text">
+            Sulje
+          </div>
+          <span class="material-icons notificationdialog-close-icon">close</span>
+        </div>
       </div>
+
+      <div class="notificationdialog-body">
+        <div class="notificationdialog-text"></div>
+        <div class="notificationdialog-link"></div>
+      </div>
+
     </div>
 
   </template>

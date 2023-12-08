@@ -143,12 +143,18 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
   }
 
   function createCustomNotificationDialog(notificationDialogObject) {
-    const {style, text, linkButton} = notificationDialogObject;
+    const {style, text, linkButton, title} = notificationDialogObject;
 
     setNotificationDialogStyle();
     addTextToNotificationDialog(text);
     addLinkButton();
 
+    //if title is provided use that but if not use default
+    if(title){notificationDialogElement.querySelector(`.notificationdialog-title`).innerHTML = titleText;}
+    else{
+      addDefaultStyleBasedTitle();
+    }
+    //close button can be optional
     if(blockInteractions){
       notificationDialogElement.querySelector(`.notificationdialog-close`).style.visibility = 'hidden';
     }
@@ -196,6 +202,25 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       }
     }
 
+    function addDefaultStyleBasedTitle(){
+      let titleText = '';
+      switch (style) {
+        default:
+        case 'info':
+          titleText = 'Huomasithan';
+          break;
+        case 'success':
+          titleText = 'Onnistui';
+        break;
+        case 'alert':
+          titleText = 'Huomio';
+        break;
+        case 'error':
+          titleText = 'Virhe';
+        break;
+      }
+      notificationDialogElement.querySelector(`.notificationdialog-title`).innerHTML = titleText;
+    }
   }
 
   function addTextToNotificationDialog(text) {
