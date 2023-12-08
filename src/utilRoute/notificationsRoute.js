@@ -11,19 +11,26 @@ export default function createNotificationsRoute() {
   function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
 
+    //Placeholder data // eslint-disable-line
+    // types that client side understands // eslint-disable-line
     //info/success/alert/error/ // eslint-disable-line
     try {
       logger.verbose('Getting notifications ...');
       const notifications = [
         {
           type: 'info',
-          isBlocking: true,
+          isBlocking: false,
           message: 'THis is a test data from server'
         },
         {
           type: 'alert',
-          isBlocking: true,
+          isBlocking: false,
           message: 'THis is a second test data from server'
+        },
+        {
+          type: 'error',
+          isBlocking: true,
+          message: 'THis is a third test data from server'
         }
       ];
 

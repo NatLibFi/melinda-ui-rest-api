@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload, showNotificationBanner,
+  showTab, resetForms, reload, showNotificationBanner, showNotificationDialogs,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
@@ -14,6 +14,8 @@ import {
 import {Account, doLogin, logout} from '/common/auth.js';
 import {profileRequest, transformRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
+import {getNotifications} from '../common/notification.js';
+
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -22,8 +24,19 @@ import {showRecord, editField} from '/common/marc-record-ui.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  doLogin(authSuccess);
+  
+  getNotifications(notificationsSuccess);
 
+  function notificationsSuccess(notificationObject){
+    //generate appropriate dialogs
+    if(notificationObject.hasBlocks){
+      showNotificationDialogs(notificationObject.blocking, true, true);
+    }
+    else{
+      showNotificationDialogs(notificationObject.notBlocking, true, false);
+      doLogin(authSuccess);
+    }
+  }
   function authSuccess(user) {
 
     profileRequest()

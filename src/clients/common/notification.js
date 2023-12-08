@@ -11,7 +11,14 @@ export function getNotifications(onSuccess){
             //include blocking notifications, maybe at the end of the list ?
             let showTheseNotifications = [];
 
-            return notifications;
+            //Filter out those that are nice to know and those that are blocking ones
+            const notificationObject = {};
+            notificationObject.blocking = notifications.filter(obj =>{return obj.isBlocking === true});
+            notificationObject.notBlocking = notifications.filter(obj =>{return obj.isBlocking === false});
+            notificationObject.all = notifications;
+            notificationObject.hasBlocks = notificationObject.blocking.length > 0;
+
+            return notificationObject;
         }
     })
     .catch((err) => {

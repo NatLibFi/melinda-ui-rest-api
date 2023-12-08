@@ -35,6 +35,18 @@
 
 /**
  * 
+ * @param {*} notifiations array of notifications
+ * @param {*} isStatic should dialog fade out
+ * @param {*} isBlocking can user close the dialog
+ */
+export function showNotificationDialogs(notifiations, isStatic = true, isBlocking = false){
+  for (const notification of notifiations) {
+    showNotificationDialog({style: notification.type, text: notification.message}, isStatic, isBlocking);
+  }
+}
+
+/**
+ * 
  * @param {*} notificationDialogContent object
  * @param {*} notificationDialogContent.type info/success/alert/error
  * @param {*} notificationDialogContent.message given message
