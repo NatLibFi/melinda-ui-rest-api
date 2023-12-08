@@ -56,61 +56,98 @@ export function refreshAllLists() {
 
 window.doUpdate = (event) => {
   event?.preventDefault();
-  const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
 
   idbClear('artoRecord');
-  collectReviewsCheck();
 
-  const promises = [
-    idbGetStoredValues('artoSciences'),
-    idbGetStoredValues('artoMetodologys'),
-    idbGetStoredValues('artoAuthors'),
-    idbGetStoredValues('artoOntologyWords'),
-    idbGetStoredValues('artoAbstracts'),
-    idbGetStoredValues('artoNotes'),
-    idbGetStoredValues('artoUDKs'),
-    idbGetStoredValues('artoOtherRatings'),
-    idbGetStoredValues('artoReviews')
-  ];
+  const storedData = getStoredData();
+  const formData = collectFormData();
 
-  if (tietueIndex === '') {
-    const sourceType = document.getElementById('kuvailtava-kohde').value;
-    if (sourceType == 'journal') {
-      promises.unshift(journalTemplate);
+  Promise.all(storedData)
+    .then(([
+      abstracts,
+      authors,
+      metodologys,
+      notes,
+      ontologyWords,
+      otherRatings,
+      reviews,
+      sciences,
+      source,
+      udks
+    ]) => {
+      updateRecord({
+        ...formData,
+        abstracts,
+        authors,
+        metodologys,
+        notes,
+        ontologyWords,
+        otherRatings,
+        reviews,
+        sciences,
+        source,
+        udks
+      })
+    })
+    .catch((error) => {
+      console.log('Error resolving promises: ', error);
+    })
+
+
+  function getStoredData() {
+    
+    return [
+      idbGetStoredValues('artoAbstracts'),
+      idbGetStoredValues('artoAuthors'),
+      idbGetStoredValues('artoMetodologys'),
+      idbGetStoredValues('artoNotes'),
+      idbGetStoredValues('artoOntologyWords'),
+      idbGetStoredValues('artoOtherRatings'),
+      getReviews(),
+      idbGetStoredValues('artoSciences'),
+      getSource(),
+      idbGetStoredValues('artoUDKs'),
+    ];
+
+
+    function getReviews() {
+      collectReviewsCheck();
+
+      return idbGetStoredValues('artoReviews');
+
+      function collectReviewsCheck() {
+        const articleType = document.getElementById('artikkelin-tyyppi').value;
+        const excludeReviews = ['A1', 'A2', 'A3'].some(str => articleType.includes(str));
+
+        if (excludeReviews) {
+          idbClear('artoReviews');
+        }
+      }
     }
-    if (sourceType == 'book') {
-      promises.unshift(bookTemplate);
+
+    function getSource() {
+      const tietueIndex = document.getElementById('julkaisu-haku-tulos-lista').value;
+      const sourceType = document.getElementById('kuvailtava-kohde').value;
+
+      if (tietueIndex !== '') {
+        return idbGet('artoSources', parseInt(tietueIndex));
+      }
+
+      if (sourceType == 'journal') {
+        return journalTemplate;
+      }
+
+      if (sourceType == 'book') {
+        return bookTemplate;
+      }
     }
-  } else {
-    promises.unshift(idbGet('artoSources', parseInt(tietueIndex)));
+
   }
 
-  Promise.all(promises).then(([
-    source,
-    sciences,
-    metodologys,
-    authors,
-    ontologyWords,
-    abstracts,
-    notes,
-    udks,
-    otherRatings,
-    reviews
-  ]) => {
-    const formData = collectFormData();
-    generateArticleRecord({
-      source,
-      ...formData,
-      sciences,
-      metodologys,
-      authors,
-      ontologyWords,
-      abstracts,
-      notes,
-      udks,
-      otherRatings,
-      reviews
-    })
+  
+  function updateRecord(articleData) {
+    
+    generateArticleRecord(articleData)
       .then(({record}) => {
         setRecordToIndexedDb(record);
         updateRecordPreview(record);
@@ -118,25 +155,17 @@ window.doUpdate = (event) => {
       .catch((error) => {
         console.log('Error while generating article record: ', error);
       });
-  });
 
-  function collectReviewsCheck() {
-    const articleType = document.getElementById('artikkelin-tyyppi').value;
-    const excludeReviews = ['A1', 'A2', 'A3'].some(str => articleType.includes(str));
 
-    if (excludeReviews) {
-      idbClear('artoReviews');
+    function setRecordToIndexedDb(record) {
+      idbSet('artoRecord', 'record', record);
+    }
+
+    function updateRecordPreview(record) {
+      showRecord(record, 'previewRecord', {}, 'artikkelit', false);
+      showRecord(record, 'dialogRecord', {}, 'artikkelit', false);
+      resetCheckAndSave();
     }
   }
 
-};
-
-function setRecordToIndexedDb(record) {
-  idbSet('artoRecord', 'record', record);
-}
-
-function updateRecordPreview(record) {
-  showRecord(record, 'previewRecord', {}, 'artikkelit', false);
-  showRecord(record, 'dialogRecord', {}, 'artikkelit', false);
-  resetCheckAndSave();
 }
