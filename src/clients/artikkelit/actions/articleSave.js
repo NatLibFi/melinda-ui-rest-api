@@ -1,7 +1,8 @@
+import {showFormActionsAfterSave, showRecordActionsAfterSave} from '/artikkelit/actions/articleModes.js'
 import {idbGet} from '/artikkelit/utils/indexDB.js';
+import {addArticleRecord} from '/common/rest.js';
 import {showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
-import {addArticleRecord,} from '/common/rest.js';
-import {showRecordActionsAfterSave, showArticleFormReadMode, showFormActionsAfterSave} from '/artikkelit/actions/articleModes.js'
+
 
 
 /*****************************************************************************/

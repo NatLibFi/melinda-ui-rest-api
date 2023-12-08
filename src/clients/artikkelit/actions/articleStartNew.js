@@ -1,6 +1,5 @@
+import {showArticleFormEditMode, showFormActionsOnEdit} from '/artikkelit/actions/articleModes.js';
 import {showSnackbar} from '/common/ui-utils.js';
-import {showFormActionsOnEdit, showArticleFormEditMode} from '/artikkelit/actions/articleModes.js';
-
 
 
 /*****************************************************************************/

@@ -1,9 +1,9 @@
-import {showSnackbar} from '/common/ui-utils.js';
-import {idbClear, getTableNames} from '/artikkelit/utils/indexDB.js';
-import {resetAndHideCcLicense} from '/artikkelit/interfaces/article.js';
+import {refreshAllLists} from '/artikkelit/actions/articleUpdate.js';
+import {resetAndHideCcLicense} from '/artikkelit/interfaces/articleBasic.js';
 import {resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {resetReviewSearchResultSelect} from '/artikkelit/interfaces/reviewSearch.js';
-import {refreshAllLists} from '/artikkelit/actions/articleUpdate.js';
+import {idbClear, getTableNames} from '/artikkelit/utils/indexDB.js';
+import {showSnackbar} from '/common/ui-utils.js';
 
 
 export function idbClearAllTables() {

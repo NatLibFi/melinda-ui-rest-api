@@ -1,8 +1,9 @@
 import {idbClearAllTables} from '/artikkelit/actions/articleReset.js'
-import {initArticleFormAndRecord} from '/artikkelit/actions/articleInitialize.js';
+import {initArticleForm} from '/artikkelit/actions/articleInitialize.js';
 import {Account, doLogin, logout} from '/common/auth.js';
 import {showTab} from '/common/ui-utils.js';
 import {} from '/artikkelit/actions/articleCheck.js';
+import {} from '/artikkelit/actions/articleSave.js';
 
 
 window.initialize = function () {
@@ -16,7 +17,7 @@ window.initialize = function () {
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
     showTab('artikkelit');
-    initArticleFormAndRecord();
+    initArticleForm();
   }
 };
 

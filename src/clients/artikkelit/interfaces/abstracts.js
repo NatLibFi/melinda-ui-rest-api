@@ -1,5 +1,5 @@
-import {idbAddValueToLastIndex, idbDel, idbGetStoredValues, idbClear} from '/artikkelit/utils/indexDB.js';
-import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
 
 export function initAbstracts() {
   console.log('initializing abstracts...');

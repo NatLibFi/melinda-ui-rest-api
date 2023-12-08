@@ -1,14 +1,14 @@
-import {generateArticleRecord} from '/common/rest.js';
-import {showRecord} from '/common/marc-record-ui.js';
-import {idbClear, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
-import {refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
-import {refreshNotesList, refreshOtherTitlesList, refreshUDKsList, refreshOtherRatingsList} from '/artikkelit/interfaces/additionalFields.js';
-import {refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
-import {refreshAuthorsList, refreshAuthorOrganizationList} from '/artikkelit/interfaces/authors.js';
+import {resetCheckAndSave} from '/artikkelit/actions/articleModes.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
+import {refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
+import {refreshNotesList, refreshOtherRatingsList, refreshOtherTitlesList, refreshUDKsList} from '/artikkelit/interfaces/additionalFields.js';
+import {refreshAuthorsList, refreshAuthorOrganizationList} from '/artikkelit/interfaces/authors.js';
 import {refreshOntologyWordList} from '/artikkelit/interfaces/ontologyWords.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
-import {resetCheckAndSave} from '/artikkelit/actions/articleModes.js';
+import {refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
+import {idbClear, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {showRecord} from '/common/marc-record-ui.js';
+import {generateArticleRecord} from '/common/rest.js';
 
 
 export function collectFormData() {

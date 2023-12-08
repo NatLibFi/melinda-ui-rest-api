@@ -10,6 +10,7 @@ export function initOntologyWords() {
   document.getElementById('asiasana-lisaa-form').addEventListener('submit', addOntologyWord);
   document.getElementById('tyhjenna-asiasanat-form').addEventListener('submit', clearOntologyWords);
   document.getElementById('asiasana-haku-yso-form').addEventListener('submit', searchOntologyWords);
+  document.getElementById('asiasana-ontologia').addEventListener('change', ontologyTypeChange);
 
   resetOntologySelect();
   refreshOntologyWordList();

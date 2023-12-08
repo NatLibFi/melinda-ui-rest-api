@@ -3,8 +3,8 @@ import {
   languages, ontologyTypes, organizations, sciences,
   searchFilters, searchTypes, sourceTypes, sectionOrColumnList
 } from '/artikkelit/constants/index.js';
-
 import {setOptions} from '/common/ui-utils.js';
+
 
 export function fillFormOptions() {
   fillSelectOptions();
