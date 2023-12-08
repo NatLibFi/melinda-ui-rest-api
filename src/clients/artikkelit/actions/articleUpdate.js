@@ -6,7 +6,7 @@ import {refreshAuthorsList, refreshAuthorOrganizationList} from '/artikkelit/int
 import {refreshOntologyWordList} from '/artikkelit/interfaces/ontologyWords.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 import {refreshSciencesList, refreshMetodologysList} from '/artikkelit/interfaces/sciencesAndMethodologies.js';
-import {idbClear, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {idbClear, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {showRecord} from '/common/marc-record-ui.js';
 import {generateArticleRecord} from '/common/rest.js';
 
@@ -112,7 +112,7 @@ window.doUpdate = (event) => {
       reviews
     })
       .then(({record}) => {
-        setRecordToIndexDB(record);
+        setRecordToIndexedDb(record);
         updateRecordPreview(record);
       })
       .catch((error) => {
@@ -131,7 +131,7 @@ window.doUpdate = (event) => {
 
 };
 
-function setRecordToIndexDB(record) {
+function setRecordToIndexedDb(record) {
   idbSet('artoRecord', 'record', record);
 }
 

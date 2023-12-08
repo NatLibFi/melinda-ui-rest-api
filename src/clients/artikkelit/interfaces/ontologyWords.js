@@ -1,4 +1,4 @@
-import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from '/artikkelit/utils/sessionStorageManager.js';
 import {getOntologyWords} from '/common/rest.js';
 import {formToJson, createIconButton, createP, setOptions, showSnackbar} from '/common/ui-utils.js';

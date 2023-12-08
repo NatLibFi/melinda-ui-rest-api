@@ -1,4 +1,4 @@
-import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
 
 export function initAdditionalFields() {

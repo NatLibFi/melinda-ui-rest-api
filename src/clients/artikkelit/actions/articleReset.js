@@ -2,7 +2,7 @@ import {refreshAllLists} from '/artikkelit/actions/articleUpdate.js';
 import {resetAndHideCcLicense} from '/artikkelit/interfaces/articleBasic.js';
 import {resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {resetReviewSearchResultSelect} from '/artikkelit/interfaces/reviewSearch.js';
-import {idbClear, getTableNames} from '/artikkelit/utils/indexDB.js';
+import {idbClear, getTableNames} from '/artikkelit/utils/indexedDB.js';
 import {showSnackbar} from '/common/ui-utils.js';
 
 

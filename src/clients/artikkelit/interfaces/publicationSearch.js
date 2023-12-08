@@ -1,5 +1,5 @@
 import {resetAndHideCcLicense, showCcLicense} from '/artikkelit/interfaces/articleBasic.js';
-import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {sortRecordData} from '/artikkelit/utils/utils.js';
 import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelindaId} from '/common/rest.js';
 import {formToJson, setOptions, startProcess, stopProcess, showSnackbar} from '/common/ui-utils.js';

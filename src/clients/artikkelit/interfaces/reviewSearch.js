@@ -1,4 +1,4 @@
-import {idbAddValueToLastIndex, idbClear, idbDel, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexDB.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {sortRecordData} from '/artikkelit/utils/utils.js';
 import {getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN, getPublicationByTitle} from '/common/rest.js';
 import {createIconButton, createP, formToJson, setOptions, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';

@@ -1,6 +1,6 @@
 import {fillArticleTypeOptions, fillDatalistOptions} from '/artikkelit/actions/articleFillOptions.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
-import {idbClear} from '/artikkelit/utils/indexDB.js';
+import {idbClear} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton} from '/common/ui-utils.js';
 
 

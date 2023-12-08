@@ -1,4 +1,4 @@
-import {idbGet} from '/artikkelit/utils/indexDB.js';
+import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {validateArticleRecord} from '/common/rest.js';
 import {enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
 
