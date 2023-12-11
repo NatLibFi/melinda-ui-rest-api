@@ -159,8 +159,8 @@ function mergeFields(opts) {
 
     //-------------------------------------------------------------------------
     // Fyysisen kuvailun kentät 3xx:
-    //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},
-    //copy('300'),
+    //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},  
+    opts.profile === 'KVP' ? copy('300') : copy(/^39\d$/u) , // add 300 when KVP/e2p; 39x is nonexistent; used as a placeholder
     copy('336'), // compare tags only
 
     //-------------------------------------------------------------------------
@@ -174,19 +174,14 @@ function mergeFields(opts) {
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     copy(/^50[1-5]$/u), // 50x, exclude 500 (MUU-379)
     copy(/^50[7-9]$/u), // 50x, exclude 506 (MUU-382)
-
     copy(/^51[1,2,3,4,5,7,8,9,0]$/u), // exclude 516 (MUU-383)
     copy(/^52\d$/u),
-
-    opts.profile === 'KVP' ? copy(/^53[0,1,2,4,5,6,7,9,0]$/u) : copy(/^53\d$/u), // exclude 583 only for KVP/p2e (MUU-408)
-
+    opts.profile === 'KVP' ? copy(/^53[0,1,2,4,5,6,7,9]$/u) : copy(/^53\d$/u), // exclude 538 when KVP/p2e (MUU-408)
     copy(/^54[1-9]$/u), // exclude 540 (MUU-378)
     copy(/^55\d$/u),
     copy(/^56\d$/u),
-
-    opts.profile === 'KVP' ? copy(/^57[1,2,3,4,5,6,7,8,0]$/u) : copy(/^57\d$/u), // MUU-409
-
-    copy(/^58[0,1,2,3,4,5,6,7,9,0]$/u), // exclude 588 (MUU-377)
+    opts.profile === 'KVP' ? copy(/^57[0,1,2,3,4,5,6,7,8]$/u) : copy(/^57\d$/u), // exclude 579 when KVP/e2p (MUU-409)
+    copy(/^58[0,1,2,3,4,5,6,7,9]$/u), // exclude 588 (MUU-377)
 
     // copy(/^59\d$/u), // excludes all 59x (MUU-380 & MUU-410)
     //update530(),
