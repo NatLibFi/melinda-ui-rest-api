@@ -159,8 +159,8 @@ function mergeFields(opts) {
 
     //-------------------------------------------------------------------------
     // Fyysisen kuvailun kentät 3xx:
-    //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},  
-    opts.profile === 'KVP' ? copy('300') : copy(/^39\d$/u) , // add 300 when KVP/e2p; 39x is nonexistent; used as a placeholder
+    //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},
+    opts.profile === 'KVP' ? copy('300') : copy(/^39\d$/u), // add 300 when KVP/e2p; 39x is nonexistent; used as a placeholder
     copy('336'), // compare tags only
 
     //-------------------------------------------------------------------------
