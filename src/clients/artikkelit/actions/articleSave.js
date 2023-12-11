@@ -73,6 +73,10 @@ function addRecord(data) {
       }
 
       if (!result.ok) {
+        if (result.status === 409) {
+          recordAdditionFailed(result);
+          return;
+        }
         throw new Error(`Adding record responded with not ok status ${result.status}`);
       }
     })
@@ -84,6 +88,7 @@ function addRecord(data) {
       stopProcess();
     });
 
+
   function recordAdditionSuccess(result) {
     console.log('Article record saved with statustext: ', result.statusText);
 
@@ -91,6 +96,18 @@ function addRecord(data) {
     showArticleFormReadMode();
     showFormActionsAfterSave();
     showSnackbar({style: 'success', text: 'Tietueen tallennus onnistui'});
+  }
+
+
+  function recordAdditionFailed(result) {
+    console.log('Article record was not saved, statustext: ', result.statusText);
+
+    const recordNotes = document.getElementById('articleRecordNotes');
+
+    recordNotes.innerHTML = 'Tietuetta tallentaessa löytyi mahdollinen duplikaatti. <br> <br> Tietuetta ei voitu tallentaa.'
+    recordNotes.classList.add('record-error');
+    highlightElement(recordNotes);
+    showSnackbar({style: 'alert', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
   }
 }
 

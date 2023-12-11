@@ -152,7 +152,6 @@ function addAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);
   idbGetStoredValues('artoAuthorTempOrg').then(authorsTempOrganizations => {
-    console.log(authorsTempOrganizations);
 
     const data = {
       firstName: formJson['tekija-etunimi'],
@@ -184,7 +183,7 @@ function addAuthor(event) {
   });
 }
 
-// artoAuthorTempOrg
+
 function addOrganizationForAuthor(event) {
   event.preventDefault();
   const formJson = formToJson(event);

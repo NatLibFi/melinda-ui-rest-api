@@ -9,13 +9,13 @@ export default function (melindaApiOptions) {
 
   async function addRecord(record) {
     logger.info('RECORD SERVICE: addRecord');
-    const result = await restApiRecordClient.create({record, noop: false});
+    const result = await restApiRecordClient.create(record, {noop: 0});
     return result;
   }
 
   async function validateRecord(record) {
     logger.info('RECORD SERVICE: validateRecord');
-    const result = await restApiRecordClient.create({record, noop: true});
+    const result = await restApiRecordClient.create(record, {noop: 1});
     return result;
   }
 

@@ -162,7 +162,7 @@ window.doUpdate = (event) => {
       });
 
     function isValid(articleData) {
-      console.log('Article data is :', articleData);
+      //console.log('Article data is :', articleData);
       //todo: validate the data here before sending to record generation
       //or validate immediately when user adds data to form inputs
       //or validate whole form fieldsets after user has added data to one form section
