@@ -70,13 +70,17 @@ function validateRecord(data) {
           validationFailed();
           return;
         }
+        if (result.status === 409) {
+          validationConflict();
+          return;
+        }
         //the status code is something else => general error
         throw new Error(`Validation responded with error status ${result.status}`);
       }
     })
     .catch((error) => {
       console.log('Error validating record: ', error);
-      showNotificationBanner({style: 'alert', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
+      showNotificationBanner({style: 'error', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
     })
     .finally(() => {
       stopProcess();
@@ -90,6 +94,8 @@ function validateRecord(data) {
 
     recordNotes.innerHTML = 'Tietueen tarkistuksessa ei löytynyt virheitä.'
     recordNotes.classList.add('record-valid');
+    recordNotes.classList.remove('record-error');
+
     enableElement(saveArticleRecordButton);
     forwardIcon.classList.add('proceed');
     showNotificationBanner({style: 'info', text: 'Voit nyt tallentaa tietueen'});
@@ -100,8 +106,19 @@ function validateRecord(data) {
 
     recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi virheitä. <br> <br> Tietuetta ei voi tallentaa.'
     recordNotes.classList.add('record-error');
-    highlightElement(notes);
+    recordNotes.classList.remove('record-valid');
+    highlightElement(recordNotes);
     showNotificationBanner({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
+  }
+
+  function validationConflict() {
+    console.log('Article record has possible duplicate!')
+
+    recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi mahdollinen kaksoiskappale <br> <br> Tietuetta ei voi tallentaa.'
+    recordNotes.classList.add('record-error');
+    recordNotes.classList.remove('record-valid');
+    highlightElement(recordNotes);
+    showSnackbar({style: 'alert', text: 'Tarkista onko vastaava tietue jo luotu aiemmin.'});
   }
 
 }
@@ -176,6 +193,10 @@ function addRecord(data) {
       }
 
       if (!result.ok) {
+        if (result.status === 409) {
+          recordAdditionFailed(result);
+          return;
+        }
         throw new Error(`Adding record responded with not ok status ${result.status}`);
       }
     })
@@ -194,6 +215,17 @@ function addRecord(data) {
     showArticleFormReadMode();
     showFormActionsAfterSave();
     showNotificationBanner({style: 'success', text: 'Tietueen tallennus onnistui'});
+  }
+
+  function recordAdditionFailed(result) {
+    console.log('Article record was not saved, statustext: ', result.statusText);
+
+    const recordNotes = document.getElementById('articleRecordNotes');
+
+    recordNotes.innerHTML = 'Tietuetta tallentaessa löytyi mahdollinen duplikaatti. <br> <br> Tietuetta ei voitu tallentaa.'
+    recordNotes.classList.add('record-error');
+    highlightElement(recordNotes);
+    showSnackbar({style: 'alert', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
   }
 }
 
