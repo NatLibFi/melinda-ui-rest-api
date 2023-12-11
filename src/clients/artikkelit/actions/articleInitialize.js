@@ -18,17 +18,10 @@ export function initArticleForm() {
 
 function addFormChangeListeners() {
   const form = document.getElementById('articleForm');
-  const buttons = document.querySelectorAll('#articleForm button');
 
   form.addEventListener('input', function () {
     doUpdate();
   });
-
-  buttons.forEach(button => {
-    button.addEventListener('click', function () {
-      doUpdate();
-    });
-  })
 
 }
 

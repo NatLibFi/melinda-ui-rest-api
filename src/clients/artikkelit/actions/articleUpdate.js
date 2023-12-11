@@ -95,7 +95,7 @@ window.doUpdate = (event) => {
 
 
   function getStoredData() {
-    
+
     return [
       idbGetStoredValues('artoAbstracts'),
       idbGetStoredValues('artoAuthors'),
@@ -146,7 +146,12 @@ window.doUpdate = (event) => {
 
   
   function updateRecord(articleData) {
-    
+
+    if (!isValid(articleData)) {
+      console.log('Article data is not valid for record generation!');
+      return;
+    }
+
     generateArticleRecord(articleData)
       .then(({record}) => {
         setRecordToIndexedDb(record);
@@ -156,6 +161,13 @@ window.doUpdate = (event) => {
         console.log('Error while generating article record: ', error);
       });
 
+    function isValid(articleData) {
+      console.log('Article data is :', articleData);
+      //todo: validate the data here before sending to record generation
+      //or validate immediately when user adds data to form inputs
+      //or validate whole form fieldsets after user has added data to one form section
+      return true;
+    }
 
     function setRecordToIndexedDb(record) {
       idbSet('artoRecord', 'record', record);
