@@ -5,7 +5,7 @@ import {disableElement, enableElement, getAllDescendants, isHidden, isVisible} f
 
 
 /*****************************************************************************/
-/* READ MODE (EDIT OFF) AND EDIT MODE                                        */
+/* MODES FOR ARTICLE FORM                                                    */
 /*****************************************************************************/
 // TODO: after article form's html structure update is finished, 
 // refactor and update these temporary functions 
@@ -157,36 +157,6 @@ window.showArticleFormEditMode = function (event = undefined) {
   checkArticleForm();
 }
 
-
-
-/*****************************************************************************/
-/* HELPER FUNCTIONS FOR ARTICLE ACTIONS                                      */
-/*****************************************************************************/
-
-//---------------------------------------------------------------------------//
-// Function for resetting check and save buttons and record preview
-export function resetCheckAndSave() {
-  const formNotes = document.getElementById('articleFormNotes');
-  const recordNotes = document.getElementById('articleRecordNotes');
-  const checkArticleRecordButton = document.getElementById('actionCheckArticleRecord');
-  const saveArticleRecordButton = document.getElementById('actionSaveArticleRecord');
-  const forwardIcon = document.getElementById('actionForward');
-
-  formNotes.classList.remove('record-error');
-  formNotes.classList.remove('record-valid');
-  formNotes.classList.remove('record-success');
-  formNotes.innerHTML = '';
-
-  recordNotes.classList.remove('record-error');
-  recordNotes.classList.remove('record-valid');
-  recordNotes.classList.remove('record-success');
-  recordNotes.innerHTML = 'Tarkista tietue ennen tallentamista.';
-
-  disableElement(saveArticleRecordButton);
-  enableElement(checkArticleRecordButton);
-  forwardIcon.classList.remove('proceed');
-}
-
 //---------------------------------------------------------------------------//
 // Function for making set of buttons in form toolbar visible,
 // when form is still editable
@@ -245,6 +215,12 @@ export function showFormActionsAfterSave() {
   formNotes.classList.add('record-valid');
 }
 
+
+
+/*****************************************************************************/
+/* MODES FOR ARTICLE RECORD                                                  */
+/*****************************************************************************/
+
 //---------------------------------------------------------------------------//
 // Function for making set of buttons in form toolbar disabled
 // when form is locked and the record is saved
@@ -262,4 +238,3 @@ export function showRecordActionsAfterSave() {
   recordNotes.classList.remove('record-valid');
   recordNotes.classList.add('record-success');
 }
-

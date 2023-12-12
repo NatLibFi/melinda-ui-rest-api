@@ -1,5 +1,5 @@
 import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
-import {resetCheckAndSave} from '/artikkelit/actions/articleModes.js';
+import {resetCheckAndSave} from '/artikkelit/actions/articleReset.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
 import {refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
 import {refreshNotesList, refreshOtherRatingsList, refreshOtherTitlesList, refreshUDKsList} from '/artikkelit/interfaces/additionalFields.js';
