@@ -4,7 +4,7 @@
 //
 //*****************************************************************************
 
-import {getOntologyOptions} from '../artikkelit/utils.js';
+import {getOntologyOptions} from '../artikkelit/utils/utils.js';
 import {Account} from '../common/auth.js';
 
 
