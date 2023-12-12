@@ -128,6 +128,10 @@
 
               <div class="header">
                 <p class="title">Kuvaile artikkeli lomakkeelle</p>
+
+                <!-- Preferred: large tooltip-->
+                <span id="formInfo" class="material-icons"
+                  title="Lomakkeelle lisäämäsi tiedot päivittyvät samalla myös tietueen esikatseluun.">info_outline</span>
               </div>
 
               <!-- Painikkeet lomakkeen muokkausvaiheessa -->
@@ -178,7 +182,8 @@
                 <!-- Aloita uusi kuvailu samalta pohjalta -->
                 <div id="actionNewCopy">
                   <button id="copyRecord" class="alternate-blue icon-on-left tooltip"
-                    tooltip-text="Aloita kuvailu kopioimalla lomake"  onclick="return startNewCopyForm(event)" disabled="true">
+                    tooltip-text="Aloita kuvailu kopioimalla lomake" onclick="return startNewCopyForm(event)"
+                    disabled="true">
                     <span class="material-icons">file_copy</span>
                     Kopioi pohjaksi
                   </button>
@@ -186,10 +191,7 @@
 
               </div>
 
-
-              <div id="articleFormNotes" class="note">
-                Lomakkeelle lisäämäsi tiedot päivittyvät myös tietueen esikatseluun.
-              </div>
+              <div id="articleFormNotes" class="note"></div>
 
               <div id="fieldsets">
 
@@ -269,7 +271,7 @@
                   </form>
                   <div id="julkaisu-haku-tulos-lista-wrap" class="Select full-width">
                     <label class="bold-text" for="julkaisu-haku-tulos-lista">Tulokset:</label>
-                    <select id="julkaisu-haku-tulos-lista" class="full-width" required="true" title="">
+                    <select id="julkaisu-haku-tulos-lista" class="full-width" title="">
                     </select>
                   </div>
 
@@ -976,44 +978,47 @@
             <div id="articlePreview" class="col">
               <div id="previewRecord" class="BoxShadow">
 
-                <div class="header">
-                  <p class="title">Tarkista ja tallenna tietue</p>
-                </div>
+                <div class="record-top">
 
-                <div class="article-actions">
+                  <div class="header">
+                    <p class="title">Tarkista ja tallenna tietue</p>
+                  </div>
 
-                  <div class="action-check">
-                    <button id="actionCheckArticleRecord" class="icon-on-left alternate-blue tooltip"
-                      tooltip-text="Lähetä tietue tarkistettavaksi" onclick="return checkArticleRecord(event)">
-                      <span class="material-icons">description</span>
-                      Tarkista
-                    </button>
+                  <div class="article-actions">
+
+                    <div class="action-check">
+                      <button id="actionCheckArticleRecord" class="icon-on-left alternate-blue tooltip"
+                        tooltip-text="Lähetä tietue tarkistettavaksi" onclick="return checkArticle(event)">
+                        <span class="material-icons">description</span>
+                        Tarkista
+                      </button>
+
+                    </div>
+
+                    <div id="actionForward" class="action-forward">
+                      <span class="material-icons">east</span>
+                    </div>
+
+                    <div class="action-save">
+                      <button id="actionSaveArticleRecord" class="icon-on-left tooltip"
+                        tooltip-text="Tallenna tietue Arto-kokoelmaan"
+                        onclick="return openSaveArticleRecordDialog(event)" disabled="true">
+                        <span class="material-icons">note_add</span>
+                        Tallenna
+                      </button>
+                    </div>
 
                   </div>
 
-                  <div id="actionForward" class="action-forward">
-                    <span class="material-icons">east</span>
-                  </div>
+                  <div id="articleRecordNotes" class="note">Tarkista tietue ennen tallentamista.</div>
 
-                  <div class="action-save">
-                    <button id="actionSaveArticleRecord" class="icon-on-left tooltip"
-                      tooltip-text="Tallenna tietue Arto-kokoelmaan" onclick="return openSaveArticleRecordDialog(event)"
-                      disabled="true">
-                      <span class="material-icons">note_add</span>
-                      Tallenna
-                    </button>
-                  </div>
-
-                </div>
-
-                <div id="articleRecordNotes" class="note">Tarkista tietue ennen tallentamista.</div>
-
-                <!--                 
+                  <!--                 
                   <form class="ToolBar HBox header">
                   <button class="material-icons tooltip icon-only small" tooltip-text="Päivitä"
                     onclick="return doUpdate(event)">sync</button>
                 </form>
                  -->
+                </div>
 
                 <div id="Record" class="marc-record"></div>
 

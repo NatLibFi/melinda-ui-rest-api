@@ -149,10 +149,6 @@
   border-color: var(--color-blue-100);
 }
 
-#artikkelit .fieldset-preview {
-/*   flex-direction: column; */
-}
-
 #artikkelit fieldset legend {
   color: var(--color-blue-100);
   font-size: var(--font-size-headline-small);
@@ -271,9 +267,6 @@
   height: 30px;
 }
 
-
-
-
 #artikkelit .record-merge-panel .col .BoxShadow {
   min-height: 75px;
   display: flex;
@@ -298,7 +291,6 @@
 
 #artikkelit .col .note {
   display: flex;
-  border-bottom: 1px solid var(--color-grey-60);
   align-items: center;
   padding-bottom: 20px;
   padding-top: 20px;
@@ -310,7 +302,13 @@
   font-weight: var(--font-weight-content);
   font-style: italic;
   color: var(--color-grey-100);
+}
+
+#artikkelit .col .note#articleFormNotes,
+#artikkelit .col .note#articleRecordNotes {
+  border-bottom: 1px solid var(--color-grey-60);
   margin-bottom: 5px;
+  min-height: 16px;
 }
 
 #artikkelit .note.record-valid {
@@ -380,12 +378,11 @@
   display: flex;
 }
 
-#artikkelit .article-actions .action-save button {
-}
-
 #artikkelit .header .material-icons {
+  display: flex;
   padding: 8px;
-  font-size: 32px;
+  font-size: 24px;
+  cursor: help;
 }
 
 #artikkelit .header label {
@@ -393,8 +390,6 @@
   font-weight: var(--font-weight-label);
   line-height: var(--font-line-height-label-medium);
 }
-
-#dialogForSave {}
 
 #dialogForSave .dialog-supporting-text .accordion-heading-text {
   padding-right: 64px;

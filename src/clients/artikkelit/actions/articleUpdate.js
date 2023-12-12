@@ -1,3 +1,4 @@
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {resetCheckAndSave} from '/artikkelit/actions/articleModes.js';
 import {journalTemplate, bookTemplate} from '/artikkelit/constants/index.js';
 import {refreshAbstractList} from '/artikkelit/interfaces/abstracts.js';
@@ -156,6 +157,7 @@ window.doUpdate = (event) => {
       .then(({record}) => {
         setRecordToIndexedDb(record);
         updateRecordPreview(record);
+        checkArticleForm();
       })
       .catch((error) => {
         console.log('Error while generating article record: ', error);

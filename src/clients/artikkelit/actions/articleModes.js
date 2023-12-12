@@ -1,3 +1,4 @@
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {collectFormData} from '/artikkelit/actions/articleUpdate.js';
 import {disableElement, enableElement, getAllDescendants, isHidden, isVisible} from '/common/ui-utils.js';
 
@@ -21,14 +22,16 @@ window.showArticleFormReadMode = function (event = undefined) {
   const showReadModeButton = document.getElementById('formReadMode');
   const showEditModeButton = document.getElementById('formEditMode');
   const clearFormButton = document.getElementById('formClear');
+  const formInfo = document.getElementById('formInfo');
+
   const formData = collectFormData();
-  const formNotes = document.getElementById('articleFormNotes');
 
   fillPreview(formData);
   enableElement(showEditModeButton);
   disableElement(showReadModeButton);
   disableElement(clearFormButton);
-  formNotes.innerHTML = 'Lomakkeella näytetään nyt kentät, joihin olet lisännyt tietoja.';
+
+  formInfo.setAttribute('title', 'Lomakkeella näytetään nyt kentät, joihin olet lisännyt tietoja.')
 
   fieldsets.forEach((fieldset) => {
     for (const child of fieldset.children) {
@@ -119,12 +122,12 @@ window.showArticleFormEditMode = function (event = undefined) {
   const showReadModeButton = document.getElementById('formReadMode');
   const showEditModeButton = document.getElementById('formEditMode');
   const clearFormButton = document.getElementById('formClear');
-  const formNotes = document.getElementById('articleFormNotes');
+  const formInfo = document.getElementById('formInfo');
 
   enableElement(showReadModeButton);
   disableElement(showEditModeButton);
   enableElement(clearFormButton);
-  formNotes.innerHTML = 'Lomakkeelle lisäämäsi tiedot päivittyvät myös tietueen esikatseluun.';
+  formInfo.setAttribute('title', 'Lomakkeelle lisäämäsi tiedot päivittyvät samalla myös tietueen esikatseluun.')
 
   fieldsets.forEach((fieldset) => {
     for (const child of fieldset.children) {
@@ -150,6 +153,8 @@ window.showArticleFormEditMode = function (event = undefined) {
       })
     }
   })
+
+  checkArticleForm();
 }
 
 
@@ -161,10 +166,16 @@ window.showArticleFormEditMode = function (event = undefined) {
 //---------------------------------------------------------------------------//
 // Function for resetting check and save buttons and record preview
 export function resetCheckAndSave() {
+  const formNotes = document.getElementById('articleFormNotes');
   const recordNotes = document.getElementById('articleRecordNotes');
   const checkArticleRecordButton = document.getElementById('actionCheckArticleRecord');
   const saveArticleRecordButton = document.getElementById('actionSaveArticleRecord');
   const forwardIcon = document.getElementById('actionForward');
+
+  formNotes.classList.remove('record-error');
+  formNotes.classList.remove('record-valid');
+  formNotes.classList.remove('record-success');
+  formNotes.innerHTML = '';
 
   recordNotes.classList.remove('record-error');
   recordNotes.classList.remove('record-valid');
@@ -211,6 +222,7 @@ export function showFormActionsAfterSave() {
   const showEditModeButton = document.getElementById('formEditMode');
   const showReadModeButton = document.getElementById('formReadMode');
   const clearFormButton = document.getElementById('formClear');
+  const formInfo = document.getElementById('formInfo');
 
   const divActionsAfterSave = document.getElementById('actionsAfterSave');
   const newEmptyRecordButton = document.getElementById('emptyRecord');
@@ -221,6 +233,8 @@ export function showFormActionsAfterSave() {
   disableElement(showEditModeButton);
   disableElement(showReadModeButton);
   disableElement(clearFormButton);
+  formInfo.setAttribute('title', 'Lomakkeen ja tietueen esikatselussa näytetään tallennettu artikkeli.')
+
   divActionsOnEdit.style.display = 'none';
 
   enableElement(newEmptyRecordButton);
