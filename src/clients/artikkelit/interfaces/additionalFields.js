@@ -177,15 +177,30 @@ export function refreshUDKsList() {
     udks.forEach(udkData => {
       const form = document.createElement('form');
       const div = document.createElement('div');
-      div.classList.add('full-width');
-      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeUDK(event, ${udkData.key})`, 'Poista');
+
+      if (!udkData.a080) {
+        //x080 or two080 can be displayed only if also a080 is displayed
+        return;
+      }
+
       div.appendChild(createP('UDK-luokitus (080 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(udkData.a080));
-      div.appendChild(createP('Lisäluokka (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
-      div.appendChild(createP(udkData.x080));
-      div.appendChild(createP('Luokituksen lähde (080 $2)', '&nbsp;', '&nbsp;', ['label-text']));
-      div.appendChild(createP(udkData.two080));
+
+      if (udkData.x080) {
+        div.appendChild(createP('Lisäluokka (080 $x)', '&nbsp;', '&nbsp;', ['label-text']));
+        div.appendChild(createP(udkData.x080));
+      }
+
+      if (udkData.two080) {
+        div.appendChild(createP('Luokituksen lähde (080 $2)', '&nbsp;', '&nbsp;', ['label-text']));
+        div.appendChild(createP(udkData.two080));
+      }
+
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeUDK(event, ${udkData.key})`, 'Poista');
       div.appendChild(removeButton);
+
+      div.classList.add('full-width');
+
       form.appendChild(div);
       udksList.appendChild(form);
     });
