@@ -258,13 +258,25 @@ export function refreshOtherRatingsList() {
     otherRatings.forEach(otherRatingData => {
       const form = document.createElement('form');
       const div = document.createElement('div');
-      div.classList.add('full-width');
-      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
+
+      if (!otherRatingData.a084) {
+        //a084 is required field, two084 can not be displayed without a084
+        return;
+      }
+
       div.appendChild(createP('Muu luokitus (084 $a)', '', '&nbsp;', ['label-text']));
       div.appendChild(createP(otherRatingData.a084));
-      div.appendChild(createP('Luokituksen lähde ($2)', '&nbsp;', '&nbsp;', ['label-text']));
-      div.appendChild(createP(otherRatingData.two084));
+
+      if (otherRatingData.two084) {
+        div.appendChild(createP('Luokituksen lähde ($2)', '&nbsp;', '&nbsp;', ['label-text']));
+        div.appendChild(createP(otherRatingData.two084));
+      }
+
+      const removeButton = createIconButton('delete_outline', ['alternate-red', 'small'], `return removeotherRating(event, ${otherRatingData.key})`, 'Poista');
       div.appendChild(removeButton);
+
+      div.classList.add('full-width');
+
       form.appendChild(div);
       otherRatingsList.appendChild(form);
     });
