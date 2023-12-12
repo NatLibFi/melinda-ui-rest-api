@@ -17,6 +17,8 @@ export default function createNotificationsRoute() {
     try {
       logger.verbose('Getting notifications ...');
       const notifications = [
+
+        /*
         {
           type: 'info',
           isBlocking: false,
@@ -29,9 +31,10 @@ export default function createNotificationsRoute() {
         },
         {
           type: 'error',
-          isBlocking: true,
+          isBlocking: false,
           message: 'THis is a third test data from server'
         }
+        */
       ];
 
       res.json({notifications});
