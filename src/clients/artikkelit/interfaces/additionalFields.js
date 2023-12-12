@@ -231,8 +231,8 @@ export function addOtherRating(event) {
     two084: formJson['lisakentat-luokituksen-lahde-0842']
   };
 
-  if (data.a084 === '' || data.two084 === '') {
-    showSnackbar({style: 'alert', text: 'Muun luokituksen tiedot eivät voi olla tyhjiä'});
+  if (data.a084 === '') {
+    showSnackbar({style: 'alert', text: 'Muu luokitus (084 $a) -arvo ei voi olla tyhjä'});
     return;
   }
 
