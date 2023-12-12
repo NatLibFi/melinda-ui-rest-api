@@ -193,7 +193,9 @@ function mergeFields(opts) {
     //"6..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
     //copy({tagPattern: new RegExp(/^6\d\d$/u, 'u')})
     // FENNI = kopioidaan vain ne, joissa on FENNI<KEEP>
-    copy(/^6\d\d$/u),
+    opts.profile === 'KVP' ? copy(/^6[0,1,2,4]\d$/u) : copy(/^6\d\d$/u), // exclude 653 when KVP/p2e (MUU-412)
+    opts.profile === 'KVP' ? copy(/^65[0,1,2,4,5,6,7,8,9]$/u) : copy(/^6\d\d$/u), // exclude 653 when KVP/p2e (MUU-412)
+    opts.profile === 'KVP' ? copy(/^6[6,7,8,9]\d$/u) : copy(/^6\d\d$/u), // exclude 653 when KVP/p2e (MUU-412)
 
     //-------------------------------------------------------------------------
     // Lisäkirjauskentät 70x - 75x:
