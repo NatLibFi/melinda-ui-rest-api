@@ -1,3 +1,4 @@
+import {getAllUnfilledRequiredFields} from '/artikkelit/actions/articleValidateForm.js';
 import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {validateArticleRecord} from '/common/rest.js';
 import {enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
@@ -55,13 +56,6 @@ export function checkArticleForm() {
     return true;
   }
 
-}
-
-function getAllUnfilledRequiredFields() {
-  const articleForm = document.getElementById('articleForm');
-  const requiredFields = [...articleForm.querySelectorAll('[required]')];
-
-  return requiredFields.filter((field) => field.value === '');
 }
 
 

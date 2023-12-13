@@ -1,4 +1,5 @@
 import {fillArticleTypeOptions, fillDatalistOptions} from '/artikkelit/actions/articleFillOptions.js';
+import {setRequiredFields} from '/artikkelit/actions/articleValidateForm.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 import {idbClear} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton} from '/common/ui-utils.js';
@@ -62,6 +63,8 @@ export function sourceTypeChange(event) {
     optionIssn.setAttribute('hidden', 'hidden');
     optionIsbn.removeAttribute('hidden')
   }
+
+  setRequiredFields();
   document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
   doUpdate();
 }
