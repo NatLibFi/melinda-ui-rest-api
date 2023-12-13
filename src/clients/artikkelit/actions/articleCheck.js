@@ -1,4 +1,4 @@
-import {getAllUnfilledRequiredFields} from '/artikkelit/actions/articleValidateForm.js';
+import {getAllUnfilledRequiredFields, validateForm} from '/artikkelit/actions/articleValidateForm.js';
 import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {validateArticleRecord} from '/common/rest.js';
 import {enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
@@ -18,8 +18,8 @@ window.checkArticle = function (event = undefined) {
   const articleFormValid = checkArticleForm();
 
   if (!articleFormValid) {
-    showSnackbar({style: 'alert', text: 'Täytä ensin kaikki lomakkeen pakolliset kentät.'});
-    highlightUnfilledAndRequiredFields();
+    showSnackbar({style: 'alert', text: 'Korjaa ensin lomakkeen virheet.'});
+    highlightUnvalidFormElements();
     return;
   }
 
@@ -36,12 +36,13 @@ export function checkArticleForm() {
   console.log('Checking article form...');
 
   const formNotes = document.getElementById('articleFormNotes');
-  const unfilledRequiredFields = getAllUnfilledRequiredFields();
+  const formErrors = validateForm();
 
-  return unfilledRequiredFields.length ? formCheckFailed() : formCheckPassed();
+  return formErrors.length ? formCheckFailed(formErrors) : formCheckPassed();
+
 
   function formCheckFailed() {
-    formNotes.innerHTML = `Täydennä lomakkeen vaaditut kentät (jäljellä ${unfilledRequiredFields.length} kpl).`;
+    formNotes.innerHTML = `Tarkista lomakkeen virheet (${formErrors.length} kpl).`;
     formNotes.classList.remove('record-valid');
     formNotes.classList.add('record-error');
 
@@ -49,7 +50,7 @@ export function checkArticleForm() {
   }
 
   function formCheckPassed() {
-    formNotes.innerHTML = 'Kaikki lomakkeen vaaditut kentät on täydennetty.';
+    formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
     formNotes.classList.remove('record-error');
     formNotes.classList.add('record-valid');
 
@@ -59,13 +60,12 @@ export function checkArticleForm() {
 }
 
 
-function highlightUnfilledAndRequiredFields() {
-  const unfilledRequiredFields = getAllUnfilledRequiredFields();
+function highlightUnvalidFormElements() {
+  const formErrors = validateForm();
 
-  unfilledRequiredFields.forEach((field) => {
+  formErrors.forEach((field) => {
     highlightElement(field);
   })
-
 }
 
 
