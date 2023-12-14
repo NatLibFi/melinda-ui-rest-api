@@ -1,10 +1,11 @@
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
 
 
 export function initAuthors() {
-  console.log('initializing authors...');
-  
+  //console.log('initializing authors...');
+
   document.getElementById('tekija-lisaa-form').addEventListener('submit', addAuthor);
   document.getElementById('tekija-lisaa-organisaatio').addEventListener('submit', addOrganizationForAuthor);
   document.getElementById('tyhjenna-tekijat-form').addEventListener('submit', clearAuthors);
@@ -14,7 +15,6 @@ export function initAuthors() {
 }
 
 export function refreshAuthorsList() {
-  console.log('refresh authors')
   const authorList = document.getElementById('tekija-list');
   authorList.innerHTML = '';
 
@@ -134,6 +134,7 @@ window.resetAuthor = (event) => {
     document.getElementById('tekija-yhteison-nimi').value = '';
     document.getElementById('tekija-organisaatio').value = '';
     document.getElementById('tekija-rooli').value = 'kirjoittaja';
+    checkArticleForm();
     return authorRoleSelect.dispatchEvent(new Event('change'));
   });
 };

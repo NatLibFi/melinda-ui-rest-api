@@ -1,4 +1,4 @@
-import {getAllUnfilledRequiredFields, validateForm} from '/artikkelit/actions/articleValidateForm.js';
+import {validateForm} from '/artikkelit/actions/articleValidateForm.js';
 import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {validateArticleRecord} from '/common/rest.js';
 import {enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
@@ -18,8 +18,7 @@ window.checkArticle = function (event = undefined) {
   const articleFormValid = checkArticleForm();
 
   if (!articleFormValid) {
-    showSnackbar({style: 'alert', text: 'Korjaa ensin lomakkeen virheet.'});
-    highlightUnvalidFormElements();
+    showSnackbar({style: 'alert', text: 'Korjaa ensin virheet lomakkeen täytössä.'});
     return;
   }
 
@@ -33,24 +32,46 @@ window.checkArticle = function (event = undefined) {
 //      - if such fields exist, form check fails
 //      - otherwise check is passed
 export function checkArticleForm() {
-  console.log('Checking article form...');
+  //console.log('Checking article form...');
 
   const formNotes = document.getElementById('articleFormNotes');
   const formErrors = validateForm();
 
-  return formErrors.length ? formCheckFailed(formErrors) : formCheckPassed();
+  return formErrors.length > 0 ? formCheckFailed() : formCheckPassed();
 
 
   function formCheckFailed() {
-    formNotes.innerHTML = `Tarkista lomakkeen virheet (${formErrors.length} kpl).`;
+    formNotes.innerHTML = getErrorNote();
     formNotes.classList.remove('record-valid');
     formNotes.classList.add('record-error');
 
     return false;
+
+    function getErrorNote() {
+      const highlightButton = `<button class="alternate-blue minimal small" onclick="return highlightUnvalidFormElements()">Korosta virheet</button>`;
+      const numberOfErrors = `Tarkista virheet lomakkeen täytössä (yhteensä ${formErrors.length} kpl).`
+
+      let formattedErrors = '';
+
+      formErrors.forEach((error) => {
+        if (error.errorType === 'unfilledRequiredField') {
+          formattedErrors = formattedErrors + `<li>Vaadittu tieto puuttuu => osiossa <b>${error.fieldsetLegend}</b> => kenttä <b>${error.label}</b> tyhjä</li>`;
+        }
+
+        if (error.errorType === 'unsubmittedField') {
+          formattedErrors = formattedErrors + `<li>Tietojen lisäys kesken => osiossa <b>${error.fieldsetLegend}</b> => kenttä <b>${error.label}</b> muutettu</li>`;
+        }
+
+      })
+
+
+      return numberOfErrors + '<ul>' + formattedErrors + '</ul>' + highlightButton;
+    }
   }
 
   function formCheckPassed() {
-    formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
+    //formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
+    formNotes.innerHTML = '';
     formNotes.classList.remove('record-error');
     formNotes.classList.add('record-valid');
 
@@ -60,11 +81,11 @@ export function checkArticleForm() {
 }
 
 
-function highlightUnvalidFormElements() {
+window.highlightUnvalidFormElements = function () {
   const formErrors = validateForm();
 
-  formErrors.forEach((field) => {
-    highlightElement(field);
+  formErrors.forEach((error) => {
+    highlightElement(error.element);
   })
 }
 
@@ -163,7 +184,7 @@ function validateRecord(data) {
 
     highlightElement(recordNotes);
     highlightElement(recordNotes);
-    showSnackbar({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
+    showSnackbar({style: 'alert', text: 'Korjaa tietue ja yritä sitten tarkistusta uudelleen.'});
   }
 
 

@@ -2,7 +2,7 @@ import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/art
 import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
 
 export function initAdditionalFields() {
-  console.log('initializing additional fields...');
+  //console.log('initializing additional fields...');
   document.getElementById('yleinen-huomautus-lisaa-form').addEventListener('submit', addNote);
   document.getElementById('artikkelin-muu-nimeke-lisaa-form').addEventListener('submit', addOtherTitle);
   document.getElementById('UDK-lisaa-form').addEventListener('submit', addUDK);

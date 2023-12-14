@@ -206,6 +206,10 @@
   margin-right: 8px;
 }
 
+#artikkelit label:after {
+ content: ':';
+}
+
 .title-text {
   color: var(--color-blue-100);
   font-family: var(--font-family-title);
@@ -309,6 +313,11 @@
   border-bottom: 1px solid var(--color-grey-60);
   margin-bottom: 5px;
   min-height: 16px;
+}
+
+#artikkelit .col .note#articleFormNotes {
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #artikkelit .note.record-valid {

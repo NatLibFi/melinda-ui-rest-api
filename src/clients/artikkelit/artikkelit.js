@@ -8,7 +8,7 @@ import {} from '/artikkelit/actions/articleStartNew.js';
 
 
 window.initialize = function () {
-  console.log('Initializing');
+  console.log('Initializing artikkelit');
 
   doLogin(authSuccess);
 

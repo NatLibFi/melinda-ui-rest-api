@@ -10,31 +10,27 @@ import {subforms} from '/artikkelit/constants/subforms.js';
 
 export function validateForm() {
   const unfilledRequiredFields = getAllUnfilledRequiredFields();
-  const incompleteSubforms = getAllIncompleteSubforms();
+  const unsubmittedFields = getAllUnsubmittedFields();
 
-  const formErrors = [
-    ...unfilledRequiredFields,
-    ...incompleteSubforms
-  ]
-
-  console.log('formErrors: ', formErrors)
-
-  subforms.forEach(formId => {
-    getFieldsetLegend(formId);
-  })
+  const formErrors = [...unfilledRequiredFields, ...unsubmittedFields];
 
   return formErrors;
 }
 
 
 export function getAllUnfilledRequiredFields() {
-  const requiredFields = getAllRequiredFields();
-  return requiredFields.filter(fieldIsEmpty);
+  const articleForm = document.getElementById('articleForm');
+
+  const requiredFields = getAllRequiredFields(articleForm);
+  const unfilledRequiredFields = requiredFields.filter(fieldIsEmpty);
+
+  return unfilledRequiredFields.map((field) => createFieldErrorObject(field, 'unfilledRequiredField'));
 }
 
-export function getAllIncompleteSubforms() {
-  const subforms = getAllSubforms();
-  return subforms.filter(formIsIncomplete);
+function getAllUnsubmittedFields() {
+  const unsubmittedFields = subforms.flatMap((subform) => getChangedFieldsInForm(subform))
+
+  return unsubmittedFields.map((field) => createFieldErrorObject(field, 'unsubmittedField'));
 }
 
 
@@ -42,32 +38,30 @@ export function getAllIncompleteSubforms() {
 /* SUBFORMS                                                                  */
 /*****************************************************************************/
 
-export function getAllSubforms() {
-  return subforms.map((formId) => document.getElementById(formId));
-}
+function getChangedFieldsInForm(formId) {
+  const form = document.getElementById(formId);
 
-function formIsIncomplete(form) {
   const formInputs = getInputs(form);
-  return formInputs.filter(fieldIsFilled).length > 0;
+  const formTextareas = getTextareas(form);
+  const formSelects = getSelects(form);
+
+  const filledFields = [...formInputs, ...formTextareas].filter(fieldIsFilled);
+  const changedSelects = formSelects.filter(selectIsChanged);
+
+  return [...filledFields, ...changedSelects];
 }
 
-function getInputs(form) {
-  const inputs = form.querySelectorAll('input');
-  return [...inputs];
-}
 
 /*****************************************************************************/
 /* REQUIRED FIELDS                                                           */
 /*****************************************************************************/
 
-export function getAllRequiredFields() {
-  const articleForm = document.getElementById('articleForm');
-
-  return [...articleForm.querySelectorAll('[required]')];
+export function getAllRequiredFields(form) {
+  return [...form.querySelectorAll('[required]')];
 }
 
-function resetRequiredFields() {
-  const requiredFields = getAllRequiredFields();
+function resetRequiredFields(form) {
+  const requiredFields = getAllRequiredFields(form);
 
   requiredFields.forEach((field) => {
     field.removeAttribute('required');
@@ -76,9 +70,10 @@ function resetRequiredFields() {
 }
 
 export function setRequiredFields() {
+  const articleForm = document.getElementById('articleForm');
   const sourceType = document.querySelector('#kuvailtava-kohde').value;
 
-  resetRequiredFields();
+  resetRequiredFields(articleForm);
 
   if (sourceType === 'book') {
     setAsRequiredFields(requiredFieldsForBook);
@@ -110,9 +105,43 @@ function fieldIsFilled(field) {
   return field.value !== '';
 }
 
-function getFieldsetLegend(formId) {
-  const form = document.getElementById(formId);
-  const fieldset = form.closest('fieldset');
+function selectIsChanged(select) {
+  return select.selectedIndex !== 0
+}
+
+function getInputs(form) {
+  const inputs = form.querySelectorAll('input');
+  return [...inputs];
+}
+
+function getTextareas(form) {
+  const textareas = form.querySelectorAll('textarea');
+  return [...textareas];
+}
+
+function getSelects(form) {
+  const selects = form.querySelectorAll('select');
+  return [...selects];
+}
+
+function getFieldsetLegend(elementId) {
+  const element = document.getElementById(elementId);
+  const fieldset = element.closest('fieldset');
   const legend = fieldset.querySelector('legend')
   return legend.innerHTML;
+}
+
+function getLabel(elementId) {
+  const label = document.querySelector(`label[for=${elementId}]`);
+  return label.innerHTML;
+}
+
+function createFieldErrorObject(element, type) {
+  return {
+    'errorType': type,
+    'elementId': element.id,
+    'element': element,
+    'label': getLabel(element.id),
+    'fieldsetLegend': getFieldsetLegend(element.id)
+  };
 }
