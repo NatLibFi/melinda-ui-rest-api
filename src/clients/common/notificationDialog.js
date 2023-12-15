@@ -39,9 +39,16 @@
  * @param {*} isStatic should dialog fade out
  * @param {*} isBlocking can user close the dialog
  */
-export function showNotificationDialogs(notifiations, isStatic = true, isBlocking = false){
+export function showNotificationDialogs(notifiations, isStatic = true, isBlocking = false, showBackground = false){
+  setBackground(showBackground, isBlocking);
   for (const notification of notifiations) {
     showNotificationDialog({style: notification.type, text: notification.message}, isStatic, isBlocking);
+  }
+
+  function setBackground(showBackground = true, blockInteractions = false){
+    const backgroundElement = document.getElementById('notificationDialogsBg');
+    backgroundElement.style.visibility = showBackground ? 'visible' : 'hidden';
+    backgroundElement.style.pointerEvents = blockInteractions ? 'unset' : 'auto';
   }
 }
 

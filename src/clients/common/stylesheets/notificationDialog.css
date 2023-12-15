@@ -2,6 +2,21 @@
 /* Styles for notificationDialog component                                                */
 /* ---------------------------------------------------------------------------- */
 
+/*
+Top element
+Mainly used for background styles
+*/
+.notificationDialogsBg{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  background-color: var(--color-primary-white);
+  opacity: 75%;
+  pointer-events: unset;
+  display: flex;
+  align-items: start;
+}
 
 /* Container for notificationDialogs */
 /* Several notificationDialogs are stacked*/

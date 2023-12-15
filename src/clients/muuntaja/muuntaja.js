@@ -30,10 +30,10 @@ window.initialize = function () {
   function notificationsSuccess(notificationObject){
     //generate appropriate dialogs
     if(notificationObject.hasBlocks){
-      showNotificationDialogs(notificationObject.blocking, true, true);
+      showNotificationDialogs(notificationObject.blocking, true, true, true);
     }
     else{
-      showNotificationDialogs(notificationObject.notBlocking, true, false);
+      showNotificationDialogs(notificationObject.notBlocking, true, false, false);
       doLogin(authSuccess);
     }
   }
