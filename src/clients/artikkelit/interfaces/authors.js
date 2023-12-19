@@ -7,7 +7,7 @@ export function initAuthors() {
   //console.log('initializing authors...');
 
   document.getElementById('tekija-lisaa-form').addEventListener('submit', addAuthor);
-  document.getElementById('tekija-lisaa-organisaatio').addEventListener('submit', addOrganizationForAuthor);
+  document.getElementById('tekija-lisaa-organisaatio-form').addEventListener('submit', addOrganizationForAuthor);
   document.getElementById('tyhjenna-tekijat-form').addEventListener('submit', clearAuthors);
 
   refreshAuthorsList();
