@@ -40,7 +40,7 @@
  * @param {*} isBlocking can user close the dialog
  */
 export function showNotificationDialogs(notifiations, isStatic = true, isBlocking = false, showBackground = false){
-  setBackground(showBackground, isBlocking);
+  setBackground(showBackground, showBackground);
   for (const notification of notifiations) {
     showNotificationDialog({style: notification.type, text: notification.message}, isStatic, isBlocking);
   }
@@ -249,7 +249,28 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
   function addCloseButton() {
     notificationDialogElement.querySelector(`.notificationdialog-close`).addEventListener('click', (event) => {
       eventHandled(event);
-    notificationDialogElement.style.visibility = 'hidden';
+      notificationDialogElement.style.visibility = 'hidden';
+
+      //in case there are blocking dialogs that have userinteraction enabled
+      //check if there is any visible dialogs after closing one return the background normal
+      if(!hasActiveChildren()){
+        hideBackground();
+      }
+      
+      function hasActiveChildren(){
+        const notificationDialogsContainer = document.getElementById('notificationDialogs');
+        const children = notificationDialogsContainer.children;
+        for (const child of children) {
+          if(child.style.visibility === 'visible'){
+            return true;
+          }
+        }
+        return false;
+      }
+      function hideBackground(){
+        const backgroundElement = document.getElementById('notificationDialogsBg');
+      backgroundElement.style.visibility = 'hidden';
+      }
     });
   }
 

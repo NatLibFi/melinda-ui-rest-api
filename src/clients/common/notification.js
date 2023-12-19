@@ -13,8 +13,8 @@ export function getNotifications(onSuccess){
 
             //Filter out those that are nice to know and those that are blocking ones
             const notificationObject = {};
-            notificationObject.blocking = notifications.filter(obj =>{return obj.isBlocking === true});
-            notificationObject.notBlocking = notifications.filter(obj =>{return obj.isBlocking === false});
+            notificationObject.blocking = notifications.filter(obj =>{return obj.preventOperation === true});
+            notificationObject.notBlocking = notifications.filter(obj =>{return obj.preventOperation === false});
             notificationObject.all = notifications;
             notificationObject.hasBlocks = notificationObject.blocking.length > 0;
 

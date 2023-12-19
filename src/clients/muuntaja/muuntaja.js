@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload, showNotificationBanner, showNotificationDialogs,
+  showTab, resetForms, reload,  showNotifications, showNotificationBanner,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
@@ -24,16 +24,15 @@ import {getNotifications} from '../common/notification.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  
   getNotifications(notificationsSuccess);
 
   function notificationsSuccess(notificationObject){
     //generate appropriate dialogs
     if(notificationObject.hasBlocks){
-      showNotificationDialogs(notificationObject.blocking, true, true, true);
+      showNotifications(notificationObject.blocking);
     }
     else{
-      showNotificationDialogs(notificationObject.notBlocking, true, false, false);
+      showNotifications(notificationObject.notBlocking);
       doLogin(authSuccess);
     }
   }

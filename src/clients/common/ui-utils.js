@@ -7,8 +7,9 @@
 import {startProcess, stopProcess} from './progressbar.js';
 import {showNotificationBanner} from './notificationBanner.js';
 import {showNotificationDialogs} from './notificationDialog.js';
+import {showNotificationBannerStatic} from './notificationBannerStatic.js';
 
-export {startProcess, stopProcess, showNotificationBanner, showNotificationDialogs};
+export {startProcess, stopProcess, showNotificationBanner};
 
 //-----------------------------------------------------------------------------
 
@@ -143,6 +144,49 @@ export function resetForms(...elems) {
 export function reload() {
   // Programmatically reload page and reset forms
   location.reload();
+}
+//-----------------------------------------------------------------------------
+
+//type: dialog, banner, static_banner in a string
+//notification object
+
+/**
+ * This is a wrapper function to handle passing forward what type of show function call we want to use
+ * Can be used with single notification or array of them
+ * NOTE! each notification object or array object is required to have style determined (banner/static_banner/dialog)
+ * @param {object} notificationObject contains the notification type, style, message etc., can be used as array of objects
+ */
+export function showNotifications(notificationObject){
+  if(notificationObject.constructor === Array){
+    for (const obj of notificationObject) {
+      showSingleOne(obj);
+    }
+  }
+  else{
+    showSingleOne(obj);
+  }
+
+  function showSingleOne(notification){
+    const type = notification.style;
+    switch (type) {
+      case 'banner':
+          //convert notification object to old banner object
+          //TODO: update notification banner to understand notification object
+          const bannerObject = {style: notification.type, text: notification.message};
+          showNotificationBanner(bannerObject);
+        break;
+      case 'static_banner':
+          showNotificationBannerStatic(notification);
+        break;
+      case 'dialog':
+          showNotificationDialogs([notification], true, !notification.hidable, notification.preventOperation);
+        break;
+      default:
+          console.log('No proper type defined for showNotification');
+        break;
+    }
+  }
+  
 }
 
 //-----------------------------------------------------------------------------
