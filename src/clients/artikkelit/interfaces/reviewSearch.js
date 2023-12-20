@@ -71,6 +71,7 @@ function addReview(event) {
       }
 
       idbAddValueToLastIndex('artoReviews', tempReview).then(() => {
+        resetReview();
         refreshReviewsList();
       });
     });

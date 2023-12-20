@@ -1,6 +1,4 @@
-import {requiredFieldsForBook, requiredFieldsForJournal} from '/artikkelit/constants/requiredFields.js';
-import {subforms} from '/artikkelit/constants/subforms.js';
-
+import {requiredFieldsForBook, requiredFieldsForJournal, subforms} from '/artikkelit/constants/index.js';
 
 
 /*****************************************************************************/
@@ -12,25 +10,30 @@ export function validateForm() {
   const unfilledRequiredFields = getAllUnfilledRequiredFields();
   const unsubmittedFields = getAllUnsubmittedFields();
 
-  const formErrors = [...unfilledRequiredFields, ...unsubmittedFields];
+  const formErrors = [
+    ...unfilledRequiredFields.map((field) => createFieldErrorObject(field, 'unfilledRequiredField')),
+    ...unsubmittedFields.map((field) => createFieldErrorObject(field, 'unsubmittedField'))
+  ];
+
+  console.log('formErrors: ', formErrors)
 
   return formErrors;
 }
 
 
-export function getAllUnfilledRequiredFields() {
+function getAllUnfilledRequiredFields() {
   const articleForm = document.getElementById('articleForm');
 
   const requiredFields = getAllRequiredFields(articleForm);
   const unfilledRequiredFields = requiredFields.filter(fieldIsEmpty);
 
-  return unfilledRequiredFields.map((field) => createFieldErrorObject(field, 'unfilledRequiredField'));
+  return unfilledRequiredFields;
 }
 
 function getAllUnsubmittedFields() {
   const unsubmittedFields = subforms.flatMap((subform) => getChangedFieldsInForm(subform))
 
-  return unsubmittedFields.map((field) => createFieldErrorObject(field, 'unsubmittedField'));
+  return unsubmittedFields;
 }
 
 

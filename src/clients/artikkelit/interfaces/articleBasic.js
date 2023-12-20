@@ -59,7 +59,7 @@ export function sourceTypeChange(event) {
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
     document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
-    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi:';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi';
     optionIssn.setAttribute('hidden', 'hidden');
     optionIsbn.removeAttribute('hidden')
   }
