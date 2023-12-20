@@ -1,5 +1,5 @@
 import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
-import {collectFormData} from '/artikkelit/actions/articleUpdate.js';
+import {collectRawFormData} from '/artikkelit/actions/articleCollectFormData.js';
 import {disableElement, enableElement, getAllDescendants, isHidden, isVisible} from '/common/ui-utils.js';
 
 
@@ -24,7 +24,7 @@ window.showArticleFormReadMode = function (event = undefined) {
   const clearFormButton = document.getElementById('formClear');
   const formInfo = document.getElementById('formInfo');
 
-  const formData = collectFormData();
+  const formData = collectRawFormData();
 
   fillPreview(formData);
   enableElement(showEditModeButton);
