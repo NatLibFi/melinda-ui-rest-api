@@ -167,8 +167,7 @@ export function showNotifications(notificationObject){
   }
 
   function showSingleOne(notification){
-    const type = notification.style;
-    switch (type) {
+    switch (notification.componentStyle) {
       case 'banner':
           //convert notification object to old banner object
           //TODO: update notification banner to understand notification object
