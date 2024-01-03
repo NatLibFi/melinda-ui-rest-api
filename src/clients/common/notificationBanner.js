@@ -139,7 +139,7 @@ function createNotificationBanner(notificationBannerContent, html) {
     setNotificationBannerStyle();
     addTextToNotificationBanner(text);
     addLinkButton();
-    addCloseButton();
+    addCloseButton(notificationBannerObject);
 
     function setNotificationBannerStyle() {
 
@@ -187,10 +187,16 @@ function createNotificationBanner(notificationBannerContent, html) {
     notificationBannerElement.querySelector(`.notificationbanner-text`).innerHTML = text;
   }
 
-  function addCloseButton() {
+  function addCloseButton(notificationData) {
     notificationBannerElement.querySelector(`.notificationbanner-close`).addEventListener('click', (event) => {
       eventHandled(event);
       notificationBannerElement.style.visibility = 'hidden';
+
+       //TODO: update what to specify unique data instance
+       if(notificationData._id){
+        const idString = `notification_${notificationData._id}`;
+        localStorage.setItem(idString, '1');
+      }
     });
   }
 

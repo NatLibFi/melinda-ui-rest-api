@@ -7,17 +7,13 @@ export function getNotifications(onSuccess){
         onSuccess(pruneSeenNotifications(result.notifications));
 
         function pruneSeenNotifications(notifications){
-            //TODO: check from local system what are seen and prune those if server does not check them out
-            //include blocking notifications, maybe at the end of the list ?
-            let showTheseNotifications = [];
-
+            //filter out any possibly user hidden notifications
+            let notHiddenNotifications = notifications.filter(obj =>{return !obj._id || (obj._id && localStorage.getItem(`notification_${obj._id}`) === null)});
             //Filter out those that are nice to know and those that are blocking ones
             const notificationObject = {};
-            notificationObject.blocking = notifications.filter(obj =>{return obj.preventOperation === true});
-            notificationObject.notBlocking = notifications.filter(obj =>{return obj.preventOperation === false});
-            notificationObject.all = notifications;
+            notificationObject.blocking = notHiddenNotifications.filter(obj =>{return obj.preventOperation === true});
+            notificationObject.notBlocking = notHiddenNotifications.filter(obj =>{return obj.preventOperation === false});
             notificationObject.hasBlocks = notificationObject.blocking.length > 0;
-
             return notificationObject;
         }
     })

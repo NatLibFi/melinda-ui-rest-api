@@ -23,52 +23,58 @@ export default function createNotificationsRoute() {
         /*
         //test dialogs
         {
+          _id: '65805a34d500f6a4ff2eccc4',
           type: 'info',
           message: 'Tiesitkö että tämä on sinulle inffo.',
-          style: 'dialog',
+          componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
           removeDate: new Date('2023-12-30T12:30:15.002')
         },
         {
+          _id: '65805a34d500f6a4ff2eccc5',
           type: 'alert',
           message: 'Hei. Huomaathan että.',
-          style: 'dialog',
+          componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
           removeDate: new Date('2023-12-30T12:30:15.002')
         },
         {
+          _id: '65805a34d500f6a4ff2eccc6',
           type: 'error',
           message: 'Tapahtui virhe',
-          style: 'dialog',
+          componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
           removeDate: new Date('2023-12-30T12:30:15.002')
         },
         //Success wont be needed in notifications, use it here to test clients UI
         {
+          _id: '65805a34d500f6a4ff2eccc7',
           type: 'success',
           message: 'Kaikki Onnistui',
-          style: 'dialog',
+          componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
           removeDate: new Date('2023-12-30T12:30:15.002')
         },
         //test static banner
         {
+          _id: '65805a34d500f6a4ff2eccc8',
           type: 'info',
           message: 'Seuraavassa lähitulevaisuudessa tapahtuu asioita ja homma ei toimi x aikaan',
-          style: 'static_banner',
+          componentStyle: 'static_banner',
           preventOperation: false,
           hidable: false,
           removeDate: new Date('2023-12-30T12:30:15.002')
         },
         //throw single banner
         {
+          _id: '65805a34d500f6a4ff2eccc9',
           type: 'success',
           message: 'Kaikki Onnistui',
-          style: 'banner',
+          componentStyle: 'banner',
           preventOperation: false,
           hidable: false,
           removeDate: new Date('2023-12-30T12:30:15.002')

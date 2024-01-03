@@ -171,7 +171,7 @@ export function showNotifications(notificationObject){
       case 'banner':
           //convert notification object to old banner object
           //TODO: update notification banner to understand notification object
-          const bannerObject = {style: notification.type, text: notification.message};
+          const bannerObject = {_id: notification._id ,style: notification.type, text: notification.message};
           showNotificationBanner(bannerObject);
         break;
       case 'static_banner':

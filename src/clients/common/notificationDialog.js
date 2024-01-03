@@ -42,7 +42,7 @@
 export function showNotificationDialogs(notifiations, isStatic = true, isBlocking = false, showBackground = false){
   setBackground(showBackground, showBackground);
   for (const notification of notifiations) {
-    showNotificationDialog({style: notification.type, text: notification.message}, isStatic, isBlocking);
+    showNotificationDialog({_id:notification._id ,style: notification.type, text: notification.message}, isStatic, isBlocking);
   }
 
   function setBackground(showBackground = true, blockInteractions = false){
@@ -55,6 +55,7 @@ export function showNotificationDialogs(notifiations, isStatic = true, isBlockin
 /**
  * 
  * @param {*} notificationDialogContent object
+ * @param {*} notificationDialogContent._id id of dataobject if any
  * @param {*} notificationDialogContent.type info/success/alert/error
  * @param {*} notificationDialogContent.message given message
  * @param {*} isStatic should dialog fade out ?
@@ -178,7 +179,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       notificationDialogElement.querySelector(`.notificationdialog-close`).style.visibility = 'hidden';
     }
     else{
-      addCloseButton();
+      addCloseButton(notificationDialogObject);
     }
 
     function setNotificationDialogStyle() {
@@ -246,10 +247,16 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
     notificationDialogElement.querySelector(`.notificationdialog-text`).innerHTML = text;
   }
 
-  function addCloseButton() {
+  function addCloseButton(notificationData) {
     notificationDialogElement.querySelector(`.notificationdialog-close`).addEventListener('click', (event) => {
       eventHandled(event);
       notificationDialogElement.style.visibility = 'hidden';
+
+      //TODO: update what to specify unique data instance
+      if(notificationData._id){
+        const idString = `notification_${notificationData._id}`;
+        localStorage.setItem(idString, '1');
+      }
 
       //in case there are blocking dialogs that have userinteraction enabled
       //check if there is any visible dialogs after closing one return the background normal
