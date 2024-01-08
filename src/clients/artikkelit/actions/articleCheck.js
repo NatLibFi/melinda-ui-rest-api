@@ -34,17 +34,19 @@ window.checkArticle = function (event = undefined) {
 export function checkArticleForm() {
   //console.log('Checking article form...');
 
-  const highightErrorsButton = document.getElementById('formShowErrors');
   const formNotes = document.getElementById('articleFormNotes');
+  const highlightErrorsButton = document.getElementById('formShowErrors');
+  const highlightErrorsButtonTextSpan = document.getElementById('formErrorNumber');
+
   const formErrors = validateForm();
+  highlightErrorsButtonTextSpan.textContent = formErrors.length;
 
   return formErrors.length > 0 ? formCheckFailed() : formCheckPassed();
 
 
   function formCheckFailed() {
-    highightErrorsButton.removeAttribute('disabled');
-    highightErrorsButton.classList.remove('checkPassed');
-    highightErrorsButton.classList.add('checkFailed');
+    highlightErrorsButton.classList.remove('checkPassed');
+    highlightErrorsButton.classList.add('checkFailed');
 
     formNotes.innerHTML = getErrorNote();
     formNotes.classList.remove('record-valid');
@@ -73,12 +75,10 @@ export function checkArticleForm() {
   }
 
   function formCheckPassed() {
-    //formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
-    highightErrorsButton.setAttribute('disabled', true);
-    highightErrorsButton.classList.remove('checkFailed');
-    highightErrorsButton.classList.add('checkPassed');
+    highlightErrorsButton.classList.remove('checkFailed');
+    highlightErrorsButton.classList.add('checkPassed');
 
-    formNotes.innerHTML = '';
+    formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
     formNotes.classList.remove('record-error');
     formNotes.classList.add('record-valid');
 

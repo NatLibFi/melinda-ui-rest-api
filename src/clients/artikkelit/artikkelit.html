@@ -142,7 +142,7 @@
                   <button id="formShowErrors" class="alternate-blue icon-on-left tooltip"
                     tooltip-text="Korosta lomakkeen virheet" onclick="return highlightUnvalidFormElements()">
                     <span class="material-icons"></span>
-                    Korosta
+                    Korosta (<span id="formErrorNumber"></span>)
                   </button>
                 </div>
 
@@ -156,10 +156,9 @@
                 </div>
 
                 <!-- Näytä lomakekentät muokkauksessa -->
-                <div id="actionEdit">
+                <div id="actionEdit" style="display:none">
                   <button id="formEditMode" class="alternate-blue icon-on-left tooltip"
-                    tooltip-text="Palaa lomakkeen muokkaukseen" onclick="return showArticleFormEditMode(event)"
-                    disabled="true">
+                    tooltip-text="Palaa lomakkeen muokkaukseen" onclick="return showArticleFormEditMode(event)">
                     <span class="material-icons">mode_edit</span>
                     Muokkaa
                   </button>

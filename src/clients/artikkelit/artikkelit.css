@@ -363,6 +363,10 @@
   gap: 20px;
 }
 
+#artikkelit .article-actions button {
+  width: 170px;
+}
+
 #artikkelit .article-actions .action-check {
   display: flex;
 }
@@ -382,11 +386,11 @@
   color: var(--color-primary-blue);
 }
 
-#artikkelit #actionError button#formShowErrors.checkFailed span:after {
+#artikkelit #actionError button#formShowErrors.checkFailed span.material-icons:after {
   content: 'rule'
 }
 
-#artikkelit #actionError button#formShowErrors.checkPassed span:after {
+#artikkelit #actionError button#formShowErrors.checkPassed span.material-icons:after {
   content: 'checklist_rtl'
 }
 

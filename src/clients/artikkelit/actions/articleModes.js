@@ -19,6 +19,8 @@ window.showArticleFormReadMode = function (event = undefined) {
   eventHandled(event);
 
   const fieldsets = document.querySelectorAll('#artikkelit #articleForm #fieldsets fieldset');
+  const actionReadDiv = document.getElementById('actionRead');
+  const actionEditDiv = document.getElementById('actionEdit');
   const showReadModeButton = document.getElementById('formReadMode');
   const showEditModeButton = document.getElementById('formEditMode');
   const clearFormButton = document.getElementById('formClear');
@@ -28,6 +30,10 @@ window.showArticleFormReadMode = function (event = undefined) {
   const formData = collectRawFormData();
 
   fillPreview(formData);
+
+  actionReadDiv.style.display = 'none';
+  actionEditDiv.style.display = 'flex';
+
   enableElement(showEditModeButton);
   disableElement(showReadModeButton);
   disableElement(clearFormButton);
@@ -121,11 +127,16 @@ window.showArticleFormEditMode = function (event = undefined) {
   eventHandled(event);
 
   const fieldsets = document.querySelectorAll('#artikkelit #articleForm #fieldsets fieldset');
+  const actionReadDiv = document.getElementById('actionRead');
+  const actionEditDiv = document.getElementById('actionEdit');
   const showReadModeButton = document.getElementById('formReadMode');
   const showEditModeButton = document.getElementById('formEditMode');
   const clearFormButton = document.getElementById('formClear');
   const highightErrorsButton = document.getElementById('formShowErrors');
   const formInfo = document.getElementById('formInfo');
+
+  actionEditDiv.style.display = 'none';
+  actionReadDiv.style.display = 'flex';
 
   enableElement(showReadModeButton);
   disableElement(showEditModeButton);
@@ -218,7 +229,6 @@ export function showFormActionsAfterSave() {
   formNotes.innerHTML = 'Aloita uusi kuvailu tyhjältä lomakkeelta tai käytä nykyistä lomaketta pohjana.';
   formNotes.classList.add('record-valid');
 }
-
 
 
 /*****************************************************************************/
