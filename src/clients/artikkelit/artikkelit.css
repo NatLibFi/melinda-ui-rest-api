@@ -382,6 +382,13 @@
   color: var(--color-primary-blue);
 }
 
+#artikkelit #actionError button#formShowErrors.checkFailed span:after {
+  content: 'rule'
+}
+
+#artikkelit #actionError button#formShowErrors.checkPassed span:after {
+  content: 'checklist_rtl'
+}
 
 #artikkelit .article-actions .action-save {
   display: flex;

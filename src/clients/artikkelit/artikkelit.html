@@ -137,6 +137,15 @@
               <!-- Painikkeet lomakkeen muokkausvaiheessa -->
               <div id="actionsOnEdit" class="article-actions">
 
+                <!-- Näytä lomakkeen validoinnin virheet -->
+                <div id="actionError">
+                  <button id="formShowErrors" class="alternate-blue icon-on-left tooltip"
+                    tooltip-text="Korosta lomakkeen virheet" onclick="return highlightUnvalidFormElements()">
+                    <span class="material-icons"></span>
+                    Korosta
+                  </button>
+                </div>
+
                 <!-- Näytä lomakekenttien esikatselu -->
                 <div id="actionRead">
                   <button id="formReadMode" class="alternate-blue icon-on-left tooltip"
@@ -555,8 +564,8 @@
                     <div class="full-width">
                       <div class="Input full-width">
                         <label class="bold-text" for="arvosteltu-teos-haku-melinda">Haku</label>
-                        <input type="text" id="arvosteltu-teos-haku-melinda" name="arvosteltu-teos-haku-melinda" pattern="^[\p{N}]+$"
-                          maxlength="9">
+                        <input type="text" id="arvosteltu-teos-haku-melinda" name="arvosteltu-teos-haku-melinda"
+                          pattern="^[\p{N}]+$" maxlength="9">
                       </div>
                       <button type="submit" class="material-icons tooltip icon-only small alternate-blue"
                         tooltip-text="Hae">search</button>
@@ -750,7 +759,8 @@
                         onclick="return resetAbstract(event)">Tyhjennä</button>
                     </div>
                     <div class="Button">
-                      <button class="alternate-green" type="submit" form="tiivistelma-lisaa-form">Lisää tiivistelmä</button>
+                      <button class="alternate-green" type="submit" form="tiivistelma-lisaa-form">Lisää
+                        tiivistelmä</button>
                     </div>
                   </div>
 

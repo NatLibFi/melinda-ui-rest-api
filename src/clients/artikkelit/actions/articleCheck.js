@@ -34,6 +34,7 @@ window.checkArticle = function (event = undefined) {
 export function checkArticleForm() {
   //console.log('Checking article form...');
 
+  const highightErrorsButton = document.getElementById('formShowErrors');
   const formNotes = document.getElementById('articleFormNotes');
   const formErrors = validateForm();
 
@@ -41,6 +42,10 @@ export function checkArticleForm() {
 
 
   function formCheckFailed() {
+    highightErrorsButton.removeAttribute('disabled');
+    highightErrorsButton.classList.remove('checkPassed');
+    highightErrorsButton.classList.add('checkFailed');
+
     formNotes.innerHTML = getErrorNote();
     formNotes.classList.remove('record-valid');
     formNotes.classList.add('record-error');
@@ -48,7 +53,6 @@ export function checkArticleForm() {
     return false;
 
     function getErrorNote() {
-      const highlightButton = `<button class="alternate-blue minimal small" onclick="return highlightUnvalidFormElements()">Korosta virheet</button>`;
       const numberOfErrors = `Tarkista virheet lomakkeen täytössä (yhteensä ${formErrors.length} kpl).`
 
       let formattedErrors = '';
@@ -64,13 +68,16 @@ export function checkArticleForm() {
 
       })
 
-
-      return numberOfErrors + '<ul>' + formattedErrors + '</ul>' + highlightButton;
+      return numberOfErrors + '<ul>' + formattedErrors + '</ul>';
     }
   }
 
   function formCheckPassed() {
     //formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
+    highightErrorsButton.setAttribute('disabled', true);
+    highightErrorsButton.classList.remove('checkFailed');
+    highightErrorsButton.classList.add('checkPassed');
+
     formNotes.innerHTML = '';
     formNotes.classList.remove('record-error');
     formNotes.classList.add('record-valid');

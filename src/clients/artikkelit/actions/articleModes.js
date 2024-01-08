@@ -22,6 +22,7 @@ window.showArticleFormReadMode = function (event = undefined) {
   const showReadModeButton = document.getElementById('formReadMode');
   const showEditModeButton = document.getElementById('formEditMode');
   const clearFormButton = document.getElementById('formClear');
+  const highightErrorsButton = document.getElementById('formShowErrors');
   const formInfo = document.getElementById('formInfo');
 
   const formData = collectRawFormData();
@@ -30,6 +31,7 @@ window.showArticleFormReadMode = function (event = undefined) {
   enableElement(showEditModeButton);
   disableElement(showReadModeButton);
   disableElement(clearFormButton);
+  disableElement(highightErrorsButton);
 
   formInfo.setAttribute('title', 'Lomakkeella näytetään nyt kentät, joihin olet lisännyt tietoja.')
 
@@ -122,11 +124,13 @@ window.showArticleFormEditMode = function (event = undefined) {
   const showReadModeButton = document.getElementById('formReadMode');
   const showEditModeButton = document.getElementById('formEditMode');
   const clearFormButton = document.getElementById('formClear');
+  const highightErrorsButton = document.getElementById('formShowErrors');
   const formInfo = document.getElementById('formInfo');
 
   enableElement(showReadModeButton);
   disableElement(showEditModeButton);
   enableElement(clearFormButton);
+  enableElement(highightErrorsButton);
   formInfo.setAttribute('title', 'Lomakkeelle lisäämäsi tiedot päivittyvät samalla myös tietueen esikatseluun.')
 
   fieldsets.forEach((fieldset) => {

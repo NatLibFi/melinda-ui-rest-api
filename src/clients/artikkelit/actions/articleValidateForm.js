@@ -127,6 +127,12 @@ function getSelects(form) {
   return [...selects];
 }
 
+function getFieldsetId(elementId) {
+  const element = document.getElementById(elementId);
+  const fieldset = element.closest('fieldset');
+  return fieldset.id;
+}
+
 function getFieldsetLegend(elementId) {
   const element = document.getElementById(elementId);
   const fieldset = element.closest('fieldset');
@@ -145,6 +151,7 @@ function createFieldErrorObject(element, type) {
     'elementId': element.id,
     'element': element,
     'label': getLabel(element.id),
+    'fieldsetId': getFieldsetId(element.id),
     'fieldsetLegend': getFieldsetLegend(element.id)
   };
 }
