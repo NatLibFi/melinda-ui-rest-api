@@ -78,7 +78,7 @@ export function checkArticleForm() {
     highlightErrorsButton.classList.remove('checkFailed');
     highlightErrorsButton.classList.add('checkPassed');
 
-    formNotes.innerHTML = 'Lomakkeesta ei löydy virheitä.';
+    formNotes.innerHTML = 'Lomakkeen täytöstä ei löydy virheitä.';
     formNotes.classList.remove('record-error');
     formNotes.classList.add('record-valid');
 
