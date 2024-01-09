@@ -6,7 +6,7 @@ export default function createNotificationsRoute() {
   const logger = createLogger();
 
   return new Router()
-    .use('/', getNotifications);
+    .use('/:client', getNotifications);
 
   function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
@@ -29,7 +29,10 @@ export default function createNotificationsRoute() {
           componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
-          removeDate: new Date('2023-12-30T12:30:15.002')
+          removeDate: new Date('2023-12-30T12:30:15.002'),
+          context: {
+            app: ['muuntaja']
+          }
         },
         {
           _id: '65805a34d500f6a4ff2eccc5',
@@ -38,7 +41,10 @@ export default function createNotificationsRoute() {
           componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
-          removeDate: new Date('2023-12-30T12:30:15.002')
+          removeDate: new Date('2023-12-30T12:30:15.002'),
+          context: {
+            app: ['muuntaja', 'merge']
+          }
         },
         {
           _id: '65805a34d500f6a4ff2eccc6',
@@ -47,7 +53,10 @@ export default function createNotificationsRoute() {
           componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
-          removeDate: new Date('2023-12-30T12:30:15.002')
+          removeDate: new Date('2023-12-30T12:30:15.002'),
+          context: {
+            app: ['viewer']
+          }
         },
         //Success wont be needed in notifications, use it here to test clients UI
         {
@@ -57,7 +66,10 @@ export default function createNotificationsRoute() {
           componentStyle: 'dialog',
           preventOperation: false,
           hidable: true,
-          removeDate: new Date('2023-12-30T12:30:15.002')
+          removeDate: new Date('2023-12-30T12:30:15.002'),
+          context: {
+            app: ['all']
+          }
         },
         //test static banner
         {
@@ -67,7 +79,10 @@ export default function createNotificationsRoute() {
           componentStyle: 'static_banner',
           preventOperation: false,
           hidable: false,
-          removeDate: new Date('2023-12-30T12:30:15.002')
+          removeDate: new Date('2023-12-30T12:30:15.002'),
+          context: {
+            app: ['muuntaja']
+          }
         },
         //throw single banner
         {
@@ -77,14 +92,19 @@ export default function createNotificationsRoute() {
           componentStyle: 'banner',
           preventOperation: false,
           hidable: false,
-          removeDate: new Date('2023-12-30T12:30:15.002')
+          removeDate: new Date('2023-12-30T12:30:15.002'),
+          context: {
+            app: ['muuntaja']
+          }
         }
         */
       ];
-
-      res.json({notifications});
+      //proper backend fetch here// eslint-disable-line
+      const clientRequested = req.params.client;
+      const filteredItems = notifications.filter(obj => obj.context && (obj.context.app.includes(clientRequested) || obj.context.app.includes('all')));
+      res.json({'notifications': filteredItems});
     } catch (error) {
-        console.log(error); // eslint-disable-line
+      console.log(error); // eslint-disable-line
       return next(error);
     }
   }

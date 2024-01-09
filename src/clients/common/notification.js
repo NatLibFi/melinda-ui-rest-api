@@ -1,9 +1,15 @@
 
 import {getServerNotifications} from './rest.js';
 
-export function getNotifications(onSuccess){
-    return getServerNotifications().then((result) => {
-         
+export function getNotifications(client, onSuccess){
+
+    //if client is not set (or valid) assume we want notifications for all 
+    if(!client || !isClientValid(client)){
+        client = 'all';
+    }
+
+    return getServerNotifications(client).then((result) => { 
+
         onSuccess(pruneSeenNotifications(result.notifications));
 
         function pruneSeenNotifications(notifications){
@@ -21,4 +27,8 @@ export function getNotifications(onSuccess){
         console.log('Notifications failed to fetch');
         console.log(err);
     });
+}
+function isClientValid(client){
+    //TODO: update clients fetching notifications
+    return client.toLowerCase() === 'artikkelit' || client.toLowerCase() === 'viewer' || client.toLowerCase() === 'muuntaja';
 }

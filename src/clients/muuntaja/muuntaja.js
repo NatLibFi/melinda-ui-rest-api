@@ -24,7 +24,7 @@ import {getNotifications} from '../common/notification.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  getNotifications(notificationsSuccess);
+  getNotifications('muuntaja', notificationsSuccess);
 
   function notificationsSuccess(notificationObject){
     //generate appropriate dialogs

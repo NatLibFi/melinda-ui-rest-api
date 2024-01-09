@@ -195,7 +195,7 @@ export function removeLog(id, force) {
 // Notifications
 //*****************************************************************************
 
-export function getServerNotifications(){
-  const url = `${RESTurl}/notification`;
+export function getServerNotifications(client){
+  const url = `${RESTurl}/notification/${client}`;
   return doRestCall({url: url, method: 'GET', resultAsJson: true});
 }
