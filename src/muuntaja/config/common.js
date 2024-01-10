@@ -1,10 +1,10 @@
+/* eslint-disable no-console */
 //******************************************************************************
 //
 // Common for transforms
 //
 // *****************************************************************************
 
-import {readEnvironmentVariable} from '@natlibfi/melinda-backend-commons';
 import moment from 'moment';
 
 
@@ -21,30 +21,18 @@ export const validationOff = {
 };
 
 
-// if environment is test
-//   - returns the year that is given as options property 'year'
-// otherwise returns the current year in format YYYY as integer
-export function getYear(options) {
-  const environment = readEnvironmentVariable('NODE_ENV');
+// if function getDate is called with 'dateFormat' parameter value 'test':
+//   - returns string '20380119'
+//   - this date is used in test-fixtures
+// otherwise:
+//    - returns the current date as string
+//    - the requested formatting is given as parameter
+//    - default formatting is 'YYYYMMDD'
+export function getDate(dateFormat = 'YYYYMMDD') {
 
-  // only used for tests
-  if (environment === 'test') {
-    return options.year;
+  if (dateFormat === 'test') {
+    return '20380119';
   }
 
-  return moment().format('YYYY');
-}
-
-// if environment is test
-//   - returns the year month and day that is given as options property 'yearMonthDay'
-// otherwise returns the current year, month and day in format YYYYMMDD as integer
-export function getYearMonthDay(options) {
-  const environment = readEnvironmentVariable('NODE_ENV');
-
-  // only used for tests
-  if (environment === 'test') {
-    return options.yearMonthDay;
-  }
-
-  return moment().format('YYYYMMDD');
+  return moment().format(dateFormat).toString();
 }

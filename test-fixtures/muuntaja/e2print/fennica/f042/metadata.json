@@ -5,7 +5,6 @@
   "succesRecords": 2,
   "failedRecords": 0,
   "testBase": true,
-  "mockYear": "2038",
   "expectedError": false,
   "expectedErrorStatus": "200"
 }

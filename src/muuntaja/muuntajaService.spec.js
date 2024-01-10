@@ -32,19 +32,15 @@ generateTests({
 // Test function
 //-----------------------------------------------------------------------------
 
-function testTransform({getFixture, testBase = false, mockYear = undefined, expectToFail = false}) {
+function testTransform({getFixture, testBase = false, expectToFail = false}) {
   try {
 
     const input = getFixture('input.json');
 
-    //'mockYear' is used only in testing
-    // and only for those default field values in record generation
-    // which would otherwise automatically use the current year.
-    // Variable 'mockYear' is defined in test's metadata.json
-    // and passed as input's options property 'year'
-    if (mockYear) { // eslint-disable-line functional/no-conditional-statements
-      input.options.year = mockYear; // eslint-disable-line functional/immutable-data
-    }
+    // When setting options' property 'dateFormat' with value 'test'
+    //   - default field value generating functions do not use current date
+    //   - instead mock date '20380119' will be used for record default field generation
+    input.options.dateFormat = 'test'; // eslint-disable-line functional/immutable-data
 
     const expectedResult = getFixture('output.json');
     const {base, result} = getResultRecord(input);
