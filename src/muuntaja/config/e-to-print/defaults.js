@@ -7,9 +7,7 @@
 //
 //*****************************************************************************
 
-import moment from 'moment';
-
-const year = new Date().getFullYear().toString().substring(0, 4);
+import {getDate} from '../common.js';
 
 const defaultFieldValues = {
   'LDR': {value: '00000cam^a22006134i^4500'},
@@ -23,11 +21,10 @@ const defaultFieldValues = {
     value: 'cr^||^||||||||',
     id: '7e290cd1-6bed-4447-8fc3-c1f7e41b760a'
   },
-  '008': {
-    // value: '^^^^^^s2018^^^^fi^||||^o^^^^^|0|^0|   |^',
-    value: `^^^^^^s${year}^^^^fi^||||^^^^^^^|0|^0|fin|c`,
+  '008': (opts) => ({
+    value: `^^^^^^s${getDate(opts.dateFormat).substring(0, 4)}^^^^fi^||||^^^^^^^|0|^0|fin|c`,
     id: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
-  },
+  }),
   '020': (opts) => ({
     ind1: ' ', ind2: ' ',
     subfields: [
@@ -155,7 +152,7 @@ const defaultFieldValues = {
   '901/FENNI': (opts) => ({ // eslint-disable-line no-unused-vars
     tag: '901', ind1: ' ', ind2: ' ',
     subfields: [
-      {code: 'a', value: `SU${moment().format('YYYMMDD')}`},
+      {code: 'a', value: `SU${getDate(opts.dateFormat)}`},
       {code: '5', value: 'FENNI'}
     ],
     id: '5b0d0d41-0975-4677-ab9b-314771f95fcb'
