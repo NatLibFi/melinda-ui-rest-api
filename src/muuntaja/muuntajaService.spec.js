@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
@@ -33,7 +34,14 @@ generateTests({
 
 function testTransform({getFixture, testBase = false, expectToFail = false}) {
   try {
+
     const input = getFixture('input.json');
+
+    // When setting options' property 'dateFormat' with value 'test'
+    //   - default field value generating functions do not use current date
+    //   - instead mock date '20380119' will be used for record default field generation
+    input.options.dateFormat = 'test'; // eslint-disable-line functional/immutable-data
+
     const expectedResult = getFixture('output.json');
     const {base, result} = getResultRecord(input);
 
