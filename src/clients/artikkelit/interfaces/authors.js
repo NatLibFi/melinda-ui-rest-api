@@ -1,12 +1,13 @@
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton, createP, formToJson, showNotificationBanner} from '/common/ui-utils.js';
 
 
 export function initAuthors() {
-  console.log('initializing authors...');
-  
+  //console.log('initializing authors...');
+
   document.getElementById('tekija-lisaa-form').addEventListener('submit', addAuthor);
-  document.getElementById('tekija-lisaa-organisaatio').addEventListener('submit', addOrganizationForAuthor);
+  document.getElementById('tekija-lisaa-organisaatio-form').addEventListener('submit', addOrganizationForAuthor);
   document.getElementById('tyhjenna-tekijat-form').addEventListener('submit', clearAuthors);
 
   refreshAuthorsList();
@@ -14,7 +15,6 @@ export function initAuthors() {
 }
 
 export function refreshAuthorsList() {
-  console.log('refresh authors')
   const authorList = document.getElementById('tekija-list');
   authorList.innerHTML = '';
 
@@ -102,6 +102,8 @@ export function refreshAuthorOrganizationList() {
       organizationList.appendChild(form);
     });
   });
+
+  doUpdate();
 }
 
 window.articleAuthorRoleChange = (event) => {
@@ -134,6 +136,7 @@ window.resetAuthor = (event) => {
     document.getElementById('tekija-yhteison-nimi').value = '';
     document.getElementById('tekija-organisaatio').value = '';
     document.getElementById('tekija-rooli').value = 'kirjoittaja';
+    checkArticleForm();
     return authorRoleSelect.dispatchEvent(new Event('change'));
   });
 };
@@ -161,6 +164,8 @@ function addAuthor(event) {
       authorsTempOrganizations
     };
 
+    const organizationInputField = document.getElementById('tekija-organisaatio');
+
     if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
       showNotificationBanner({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
       return;
@@ -173,6 +178,11 @@ function addAuthor(event) {
 
     if (data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
       showNotificationBanner({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
+      return;
+    }
+
+    if (organizationInputField.value !== '') {
+      showSnackbar({style: 'alert', text: 'Organisaation lisääminen tekijälle on kesken', closeButton: 'true'});
       return;
     }
 
@@ -195,7 +205,12 @@ function addOrganizationForAuthor(event) {
   }
 
   // See if this can be simplified or optimized (e.g. by utilizing event.target etc)
-  const {code} = document.querySelector(`#tekija-organisaatio-lista [value="${organizationInputValue}"]`).dataset;
+  const code = document.querySelector(`#tekija-organisaatio-lista [value="${organizationInputValue}"]`)?.dataset.code
+
+  if (!code) {
+    showSnackbar({style: 'alert', text: 'Valitse organisaatio listasta'});
+    return;
+  }
 
   const [organizationName = false, note = false] = organizationInputValue.replace(' (uusi)', '').replace(' (vanha)', '').split(' - ');
 

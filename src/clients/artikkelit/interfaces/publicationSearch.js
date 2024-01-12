@@ -6,7 +6,7 @@ import {formToJson, setOptions, startProcess, stopProcess, showNotificationBanne
 
 
 export function initPublicationSearch(event) {
-  console.log('initializing publication search...');
+  //console.log('initializing publication search...');
 
   document.getElementById('julkaisu-haku-tyyppi').addEventListener('change', showAndHideSearchInputs);
   document.getElementById('julkaisu-haku-tulos-lista').addEventListener('change', searchResultChange);

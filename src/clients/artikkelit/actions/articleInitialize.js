@@ -1,3 +1,4 @@
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {fillFormOptions} from '/artikkelit/actions/articleFillOptions.js';
 import {initAbstracts} from '/artikkelit/interfaces/abstracts.js';
 import {initAdditionalFields} from '/artikkelit/interfaces/additionalFields.js';
@@ -20,6 +21,10 @@ function addFormChangeListeners() {
   const form = document.getElementById('articleForm');
 
   form.addEventListener('input', function () {
+    doUpdate();
+  });
+
+  form.addEventListener('textarea', function () {
     doUpdate();
   });
 

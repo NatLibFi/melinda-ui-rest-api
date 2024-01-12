@@ -1,4 +1,4 @@
-import {showArticleFormEditMode, showFormActionsOnEdit} from '/artikkelit/actions/articleModes.js';
+import {showFormActionsOnEdit} from '/artikkelit/actions/articleModes.js';
 import {showNotificationBanner} from '/common/ui-utils.js';
 
 

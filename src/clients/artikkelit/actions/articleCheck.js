@@ -1,19 +1,107 @@
+import {validateForm} from '/artikkelit/actions/articleValidateForm.js';
 import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {validateArticleRecord} from '/common/rest.js';
 import {enableElement, highlightElement, showNotificationBanner, startProcess, stopProcess} from '/common/ui-utils.js';
 
 
 
+/*****************************************************************************/
+/* CHECK FORM AND CHECK RECORD                                               */
+/*****************************************************************************/
 
-/*****************************************************************************/
-/* CHECK (VALIDATE) RECORD                                                   */
-/*****************************************************************************/
+
+// Function for checking both article form and article record
+// Record is checked only after the form passes check
+window.checkArticle = function (event = undefined) {
+  eventHandled(event);
+
+  const articleFormValid = checkArticleForm();
+
+  if (!articleFormValid) {
+    showSnackbar({style: 'alert', text: 'Korjaa ensin virheet lomakkeen täytössä.'});
+    return;
+  }
+
+  checkArticleRecord();
+}
+
+
+//---------------------------------------------------------------------------//
+// Function for checking article form
+//   - gets all required fields in the form that are still unfilled  
+//      - if such fields exist, form check fails
+//      - otherwise check is passed
+export function checkArticleForm() {
+  //console.log('Checking article form...');
+
+  const formNotes = document.getElementById('articleFormNotes');
+  const highlightErrorsButton = document.getElementById('formShowErrors');
+  const highlightErrorsButtonTextSpan = document.getElementById('formErrorNumber');
+
+  const formErrors = validateForm();
+  highlightErrorsButtonTextSpan.textContent = formErrors.length;
+
+  return formErrors.length > 0 ? formCheckFailed() : formCheckPassed();
+
+
+  function formCheckFailed() {
+    highlightErrorsButton.classList.remove('checkPassed');
+    highlightErrorsButton.classList.add('checkFailed');
+
+    formNotes.innerHTML = getErrorNote();
+    formNotes.classList.remove('record-valid');
+    formNotes.classList.add('record-error');
+
+    return false;
+
+    function getErrorNote() {
+      const numberOfErrors = `Tarkista virheet lomakkeen täytössä (yhteensä ${formErrors.length} kpl).`
+
+      let formattedErrors = '';
+
+      formErrors.forEach((error) => {
+        if (error.errorType === 'unfilledRequiredField') {
+          formattedErrors = formattedErrors + `<li>Vaadittu tieto puuttuu => osiossa <b>${error.fieldsetLegend}</b> => kenttä <b>${error.label}</b> tyhjä</li>`;
+        }
+
+        if (error.errorType === 'unsubmittedField') {
+          formattedErrors = formattedErrors + `<li>Tietojen lisäys kesken => osiossa <b>${error.fieldsetLegend}</b> => kenttä <b>${error.label}</b> muutettu</li>`;
+        }
+
+      })
+
+      return numberOfErrors + '<ul>' + formattedErrors + '</ul>';
+    }
+  }
+
+  function formCheckPassed() {
+    highlightErrorsButton.classList.remove('checkFailed');
+    highlightErrorsButton.classList.add('checkPassed');
+
+    formNotes.innerHTML = 'Lomakkeen täytöstä ei löydy virheitä.';
+    formNotes.classList.remove('record-error');
+    formNotes.classList.add('record-valid');
+
+    return true;
+  }
+
+}
+
+
+window.highlightUnvalidFormElements = function () {
+  const formErrors = validateForm();
+
+  formErrors.forEach((error) => {
+    highlightElement(error.element);
+  })
+}
+
 
 //---------------------------------------------------------------------------//
 // Function for checking article record
 //   - get record from indexedDB  
 //   - then call function validateRecord and pass the record as parameter
-window.checkArticleRecord = function (event = undefined) {
+function checkArticleRecord(event = undefined) {
   console.log('Checking article record...');
   eventHandled(event);
   startProcess();
@@ -97,20 +185,20 @@ function validateRecord(data) {
   function validationFailed() {
     console.log('Article record failed check!')
 
-    recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi virheitä. <br> <br> Tietuetta ei voi tallentaa.'
+    recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi virheitä.'
     recordNotes.classList.add('record-error');
     recordNotes.classList.remove('record-valid');
 
     highlightElement(recordNotes);
     highlightElement(recordNotes);
-    showNotificationBanner({style: 'alert', text: 'Korjaa lomakkeen tiedot ja tarkista sitten tietue uudelleen.'});
+    showNotificationBanner({style: 'alert', text: 'Korjaa tietue ja yritä sitten tarkistusta uudelleen.'});
   }
 
 
   function validationConflict() {
     console.log('Article record has possible duplicate!')
 
-    recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi mahdollinen kaksoiskappale <br> <br> Tietuetta ei voi tallentaa.'
+    recordNotes.innerHTML = 'Tietueen tarkistuksessa löytyi mahdollinen kaksoiskappale.'
     recordNotes.classList.add('record-error');
     recordNotes.classList.remove('record-valid');
     highlightElement(recordNotes);

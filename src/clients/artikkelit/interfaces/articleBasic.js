@@ -1,11 +1,12 @@
 import {fillArticleTypeOptions, fillDatalistOptions} from '/artikkelit/actions/articleFillOptions.js';
+import {setRequiredFields} from '/artikkelit/actions/articleValidateForm.js';
 import {refreshReviewsList} from '/artikkelit/interfaces/reviewSearch.js';
 import {idbClear} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton} from '/common/ui-utils.js';
 
 
 export function initArticleBasicDetails() {
-  console.log('initializing article...');
+  //console.log('initializing article...');
   document.getElementById('lisaa-linkki').addEventListener('click', addArticleLink);
   resetAndHideCcLicense();
 }
@@ -42,8 +43,8 @@ export function sourceTypeChange(event) {
     document.getElementById(`numeron-vol-wrap`).style.display = 'block';
     document.getElementById(`numeron-numero-wrap`).style.display = 'block';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'block';
-    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN:';
-    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet:';
+    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISSN';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuodet';
     optionIsbn.setAttribute('hidden', 'hidden');
     optionIssn.removeAttribute('hidden');
   }
@@ -56,12 +57,14 @@ export function sourceTypeChange(event) {
     document.getElementById(`numeron-numero-wrap`).style.display = 'none';
     document.getElementById(`numeron-numero`).value = '';
     document.getElementById(`artikkelin-osasto-toistuva-wrap`).style.display = 'none';
-    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN:';
+    document.getElementById(`lehden-tunniste-label`).innerHTML = 'ISBN';
     document.getElementById('artikkelin-osasto-toistuva').value = '';
-    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi:';
+    document.getElementById('lehden-vuodet-label').innerHTML = 'Julkaisuvuosi';
     optionIssn.setAttribute('hidden', 'hidden');
     optionIsbn.removeAttribute('hidden')
   }
+
+  setRequiredFields();
   document.getElementById('julkaisu-haku-tulos-lista').dispatchEvent(new Event('change'));
   doUpdate();
 }

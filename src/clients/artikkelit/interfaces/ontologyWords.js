@@ -5,7 +5,7 @@ import {formToJson, createIconButton, createP, setOptions, showNotificationBanne
 
 
 export function initOntologyWords() {
-  console.log('initializing ontology...');
+  //console.log('initializing ontology...');
 
   document.getElementById('asiasana-lisaa-form').addEventListener('submit', addOntologyWord);
   document.getElementById('tyhjenna-asiasanat-form').addEventListener('submit', clearOntologyWords);
@@ -129,8 +129,8 @@ function searchOntologyWords(event) {
   resetOntologySelect(true);
   const formJson = formToJson(event);
 
-  // Added an asterisk (*) after formJson['haku-arvo'] in order to find more matches/options with the search feature
-  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo']}*`)
+  // Added an asterisk (*) after formJson['haku-arvo-yso'] in order to find more matches/options with the search feature
+  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo-yso']}*`)
     .then((data) => {
       setOntologyWords(data.results)
     });

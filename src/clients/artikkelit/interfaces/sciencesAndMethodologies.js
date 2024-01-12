@@ -3,7 +3,8 @@ import {createIconButton, createP, formToJson, showNotificationBanner} from '/co
 
 
 export function initSciencesAndMethodologies() {
-  console.log('initializing sciences and methodologies...');
+  //console.log('initializing sciences and methodologies...');
+  
   document.getElementById('lisa-tiedot-lisaa-tieteenala').addEventListener('submit', addScience);
   document.getElementById('lisa-tiedot-lisaa-metodologia').addEventListener('submit', addMetodology);
 
@@ -15,7 +16,6 @@ export function initSciencesAndMethodologies() {
 }
 
 export function refreshMetodologysList() {
-  console.log('refresh metodologyList');
   const metodologyList = document.getElementById('metodologiat-list');
   metodologyList.innerHTML = '';
 
@@ -45,7 +45,6 @@ export function refreshMetodologysList() {
 }
 
 export function refreshSciencesList() {
-  console.log('refresh scienceList');
   const scienceList = document.getElementById('tieteenalat-list');
   scienceList.innerHTML = '';
 

@@ -1,8 +1,9 @@
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {createIconButton, createP, formToJson, showNotificationBanner} from '/common/ui-utils.js';
 
 export function initAbstracts() {
-  console.log('initializing abstracts...');
+  //console.log('initializing abstracts...');
   document.getElementById('tiivistelma-lisaa-form').addEventListener('submit', addAbstract);
 
   document.getElementById('tyhjenna-tiivistelmat-form').addEventListener('submit', clearAbstracts);
@@ -109,3 +110,12 @@ window.removeAbstract = (event, key) => {
   idbDel('artoAbstracts', key).then(() => refreshAbstractList());
 };
 
+window.resetAbstract = (event) => {
+  event.preventDefault();
+  const textbox = document.getElementById('tiivistelma-abstrakti');
+  const languageSelect = document.getElementById('tiivistelma-kieli');
+
+  textbox.value= '';
+  languageSelect.selectedIndex = 0;
+  checkArticleForm();
+}
