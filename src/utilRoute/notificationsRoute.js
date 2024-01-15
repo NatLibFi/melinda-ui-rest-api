@@ -1,12 +1,20 @@
 import httpStatus from 'http-status';
 import {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
+import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
+import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
+import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
+import {handleError} from '../requestUtils/handleError';
 
-export default function createNotificationsRoute() {
+export default function () {
   const logger = createLogger();
+  const appName = 'Notifications';
 
   return new Router()
-    .use('/:client', getNotifications);
+    .use(handleFailedQueryParams(appName))
+    .get('/:client', handleFailedRouteParams(appName), getNotifications)
+    .use(handleRouteNotFound(appName))
+    .use(handleError(appName));
 
   function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
