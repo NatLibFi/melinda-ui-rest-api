@@ -190,7 +190,7 @@ function createNotificationBanner(notificationBannerContent, html) {
   function addCloseButton(notificationData) {
     notificationBannerElement.querySelector(`.notificationbanner-close`).addEventListener('click', (event) => {
       eventHandled(event);
-      notificationBannerElement.style.visibility = 'hidden';
+      notificationBannerElement.style.visibility = 'collapse';
 
        //TODO: update what to specify unique data instance
        if(notificationData._id){
@@ -224,7 +224,7 @@ function createNotificationBanner(notificationBannerContent, html) {
     function listenToNotificationBannerAnimationEnd() {
       notificationBanner.onanimationend = (event) => {
         if (event.animationName === 'fadeout') {
-          notificationBanner.style.visibility = 'hidden';
+          notificationBanner.style.visibility = 'collapse';
         }
       };
     }

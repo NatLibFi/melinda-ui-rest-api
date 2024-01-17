@@ -276,7 +276,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       }
       function hideBackground(){
         const backgroundElement = document.getElementById('notificationDialogsBg');
-      backgroundElement.style.visibility = 'hidden';
+        backgroundElement.style.visibility = 'hidden';
       }
     });
   }
@@ -308,7 +308,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
     function listenToNotificationDialogAnimationEnd() {
       notificationDialog.onanimationend = (event) => {
         if (event.animationName === 'fadeout') {
-          notificationDialog.style.visibility = 'hidden';
+          notificationDialog.style.visibility = 'collapse';
         }
       };
     }
