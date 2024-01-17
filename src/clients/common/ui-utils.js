@@ -163,7 +163,7 @@ export function showNotifications(notificationObject){
     }
   }
   else{
-    showSingleOne(obj);
+    showSingleOne(notificationObject);
   }
 
   function showSingleOne(notification){

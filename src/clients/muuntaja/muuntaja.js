@@ -24,7 +24,7 @@ import {getNotifications} from '../common/notification.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  getNotifications('muuntaja', notificationsSuccess);
+  getNotifications('muuntaja', notificationsSuccess, notificationFailure);
 
   function notificationsSuccess(notificationObject){
     //generate appropriate dialogs
@@ -35,6 +35,10 @@ window.initialize = function () {
       showNotifications(notificationObject.notBlocking);
       doLogin(authSuccess);
     }
+  }
+  function notificationFailure(){
+    //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', hidable: true});
+    doLogin(authSuccess);
   }
   function authSuccess(user) {
 

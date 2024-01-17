@@ -1,7 +1,7 @@
 
 import {getServerNotifications} from './rest.js';
 
-export function getNotifications(client, onSuccess){
+export function getNotifications(client, onSuccess, onError = null){
 
     //if client is not set (or valid) assume we want notifications for all 
     if(!client || !isClientValid(client)){
@@ -26,6 +26,9 @@ export function getNotifications(client, onSuccess){
     .catch((err) => {
         console.log('Notifications failed to fetch');
         console.log(err);
+        if(onError){
+            onError();
+        }
     });
 }
 function isClientValid(client){
