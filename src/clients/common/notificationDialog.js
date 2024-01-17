@@ -250,7 +250,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
   function addCloseButton(notificationData) {
     notificationDialogElement.querySelector(`.notificationdialog-close`).addEventListener('click', (event) => {
       eventHandled(event);
-      notificationDialogElement.style.visibility = 'hidden';
+      notificationDialogElement.style.visibility = 'collapse';
 
       //TODO: update what to specify unique data instance
       if(notificationData._id){
