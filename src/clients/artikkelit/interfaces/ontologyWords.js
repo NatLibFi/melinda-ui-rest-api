@@ -129,8 +129,8 @@ function searchOntologyWords(event) {
   resetOntologySelect(true);
   const formJson = formToJson(event);
 
-  // Added an asterisk (*) after formJson['haku-arvo-yso'] in order to find more matches/options with the search feature
-  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo-yso']}*`)
+  // Added an asterisk (*) after formJson['haku-arvo'] in order to find more matches/options with the search feature
+  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo']}*`)
     .then((data) => {
       setOntologyWords(data.results)
     });
