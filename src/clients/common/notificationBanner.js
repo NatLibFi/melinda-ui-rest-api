@@ -193,8 +193,8 @@ function createNotificationBanner(notificationBannerContent, html) {
       notificationBannerElement.style.visibility = 'collapse';
 
        //TODO: update what to specify unique data instance
-       if(notificationData._id){
-        const idString = `notification_${notificationData._id}`;
+       if(notificationData.id){
+        const idString = `notification_${notificationData.id}`;
         localStorage.setItem(idString, '1');
       }
     });

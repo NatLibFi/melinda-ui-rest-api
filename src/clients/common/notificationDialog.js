@@ -35,43 +35,39 @@
 
 /**
  * 
- * @param {*} notifiations array of notifications
- * @param {*} isStatic should dialog fade out
- * @param {*} isBlocking can user close the dialog
- */
-export function showNotificationDialogs(notifiations, isStatic = true, isBlocking = false, showBackground = false){
-  setBackground(showBackground, showBackground);
-  for (const notification of notifiations) {
-    showNotificationDialog({_id:notification._id ,style: notification.type, text: notification.message}, isStatic, isBlocking);
-  }
-
-  function setBackground(showBackground = true, blockInteractions = false){
-    const backgroundElement = document.getElementById('notificationDialogsBg');
-    backgroundElement.style.visibility = showBackground ? 'visible' : 'hidden';
-    backgroundElement.style.pointerEvents = blockInteractions ? 'unset' : 'auto';
-  }
-}
-
-/**
- * 
  * @param {*} notificationDialogContent object
- * @param {*} notificationDialogContent._id id of dataobject if any
- * @param {*} notificationDialogContent.type info/success/alert/error
- * @param {*} notificationDialogContent.message given message
+ * @param {*} notificationDialogContent.id id of dataobject if any
+ * @param {*} notificationDialogContent.style info/success/alert/error
+ * @param {*} notificationDialogContent.text given text
  * @param {*} isStatic should dialog fade out ?
- * @param {*} blockInteractions show close dialog ?
+ * @param {*} canDismiss show close dialog button ?
+ * @param {*} showBackground show semi transparent backgroudn blocking layer
  * @returns 
  */
-export function showNotificationDialog(notificationDialogContent, isStatic = true, blockInteractions = false) {
+export function showNotificationDialog(notificationDialogContent, isStatic = true, canDismiss = false, showBackground = false) {
 
   if (arguments.length === 0 || notificationDialogContent === null) {
     console.log('NotificationDialog needs arguments');
     return;
   }
+  
+  //for now if we enable the background expect it to be needed to blocking elements under it also
+  setNotificationDialogListBackground(showBackground, showBackground);
 
   getNotificationDialogHtml()
-    .then(html => createNotificationDialog(notificationDialogContent, html, isStatic, blockInteractions))
+    .then(html => createNotificationDialog(notificationDialogContent, html, isStatic, canDismiss))
     .catch(error => console.log('Error while fetching notificationDialog html: ', error));
+}
+
+/**
+ * 
+ * @param {*} showBackground should the background element be visible
+ * @param {*} blockBackground should the background element prevent actions through it
+ */
+function setNotificationDialogListBackground(showBackground = true, blockBackground = false){
+  const backgroundElement = document.getElementById('notificationDialogsBg');
+  backgroundElement.style.visibility = showBackground ? 'visible' : 'hidden';
+  backgroundElement.style.pointerEvents = blockBackground ? 'unset' : 'auto';
 }
 
 
@@ -100,7 +96,7 @@ async function getNotificationDialogHtml() {
 
 let timeoutId = null;
 
-function createNotificationDialog(notificationDialogContent, html, isStatic = true, blockInteractions = false) {
+function createNotificationDialog(notificationDialogContent, html, isStatic = true, canDismiss = false) {
   const notificationDialogElement = getNewNotificationDialog(html);
 
   const notificationDialogType = checkNotificationDialogType(notificationDialogContent);
@@ -175,7 +171,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       addDefaultStyleBasedTitle();
     }
     //close button can be optional
-    if(blockInteractions){
+    if(canDismiss){
       notificationDialogElement.querySelector(`.notificationdialog-close`).style.visibility = 'hidden';
     }
     else{
@@ -253,8 +249,8 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       notificationDialogElement.style.visibility = 'collapse';
 
       //TODO: update what to specify unique data instance
-      if(notificationData._id){
-        const idString = `notification_${notificationData._id}`;
+      if(notificationData.id){
+        const idString = `notification_${notificationData.id}`;
         localStorage.setItem(idString, '1');
       }
 

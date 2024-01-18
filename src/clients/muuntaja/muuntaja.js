@@ -37,7 +37,7 @@ window.initialize = function () {
     }
   }
   function notificationFailure(){
-    //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', hidable: true});
+    //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', isDismissible: true});
     doLogin(authSuccess);
   }
   function authSuccess(user) {

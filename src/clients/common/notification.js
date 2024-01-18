@@ -14,11 +14,11 @@ export function getNotifications(client, onSuccess, onError = null){
 
         function pruneSeenNotifications(notifications){
             //filter out any possibly user hidden notifications
-            let notHiddenNotifications = notifications.filter(obj =>{return !obj._id || (obj._id && localStorage.getItem(`notification_${obj._id}`) === null)});
+            let notHiddenNotifications = notifications.filter(obj =>{return !obj.id || (obj.id && localStorage.getItem(`notification_${obj.id}`) === null)});
             //Filter out those that are nice to know and those that are blocking ones
             const notificationObject = {};
-            notificationObject.blocking = notHiddenNotifications.filter(obj =>{return obj.preventOperation === true});
-            notificationObject.notBlocking = notHiddenNotifications.filter(obj =>{return obj.preventOperation === false});
+            notificationObject.blocking = notHiddenNotifications.filter(obj =>{return obj.blocksInteraction === true});
+            notificationObject.notBlocking = notHiddenNotifications.filter(obj =>{return obj.blocksInteraction === false});
             notificationObject.hasBlocks = notificationObject.blocking.length > 0;
             return notificationObject;
         }

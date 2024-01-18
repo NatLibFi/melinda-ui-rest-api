@@ -4,7 +4,7 @@
  */
 /**
  * 
- * @param {*} content we are expecting object with a "type" and "message"
+ * @param {*} content we are expecting object with a "style" and "message"
  * @returns 
  */
 export function showNotificationBannerStatic(content) {
@@ -13,7 +13,7 @@ export function showNotificationBannerStatic(content) {
     console.log('NotificationBannerStatic needs arguments');
     return;
   }
-  if(!content || !content.type || !content.message){
+  if(!content || !content.style || !content.text){
     console.log('showNotificationBannerStatic argument needs to have object with correct fields, see JSDoc comment');
     return;
   }
@@ -59,7 +59,7 @@ function createNotificationBannerStatic(content, html) {
     let iconColor = '';
     let icon = '';
 
-    switch (content.type) {
+    switch (content.style) {
       case 'success':
         backgroundColor = 'var(--color-green-80)';
         iconColor = 'var(--color-green-100)';
@@ -90,7 +90,7 @@ function createNotificationBannerStatic(content, html) {
     templateElement.querySelector(`.notificationbannerstatic-icon .material-icons`).innerHTML = icon;
   }
   function addTextToElement(){
-    templateElement.querySelector(`.notificationbannerstatic-text`).innerHTML = content.message;
+    templateElement.querySelector(`.notificationbannerstatic-text`).innerHTML = content.text;
   }
 
   //keep single child element
