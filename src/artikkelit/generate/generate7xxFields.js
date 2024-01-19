@@ -1,3 +1,5 @@
+/* eslint-disable max-params */
+
 export function generatef773(sourceType, {publishingYear, volume, number, pages}, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t) {
 
   return [

@@ -1,3 +1,5 @@
+/* eslint-disable max-params */
+
 export function generatef6xxs(terms) {
 
   if (!terms) {

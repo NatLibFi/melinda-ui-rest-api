@@ -15,7 +15,7 @@ export function validateForm() {
     ...unsubmittedFields.map((field) => createFieldErrorObject(field, 'unsubmittedField'))
   ];
 
-  console.log('formErrors: ', formErrors)
+  //console.log('formErrors: ', formErrors)
 
   return formErrors;
 }
