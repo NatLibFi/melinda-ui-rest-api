@@ -10,7 +10,7 @@ export function generatef245(articleTitle, authors, artLang) {
       {tag: '245',
         ind1: ind1Value(),
         ind2: ind2Value(),
-        subfields: [{code: 'a', value: articleTitle + addDotIfNeeded(articleTitle)}]}
+        subfields: [{code: 'a', value: articleTitle}]}
     ];
   }
 
@@ -64,18 +64,6 @@ export function generatef245(articleTitle, authors, artLang) {
 
     }
     return '0';
-  }
-
-  function addDotIfNeeded(checkThis) {
-    const string = checkThis.trim();
-    const stringLength = string.length;
-    const lastChar = string.charAt(stringLength - 1);
-
-    if (lastChar === '.' || lastChar === '?' || lastChar === '!') {
-      return '';
-    }
-
-    return '.';
   }
 
 }
