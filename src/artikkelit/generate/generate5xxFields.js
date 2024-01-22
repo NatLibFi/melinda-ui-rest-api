@@ -1,4 +1,4 @@
-//import {localReducers} from "@natlibfi/melinda-marc-record-merge-reducers/dist/reducers";
+import {addDotIfNeeded} from './generateUtils.js';
 
 export function generatef500(notes = false) {
 
@@ -7,7 +7,7 @@ export function generatef500(notes = false) {
       tag: '500',
       ind1: ' ',
       ind2: ' ',
-      subfields: [{code: 'a', value: notes.value}]
+      subfields: [{code: 'a', value: notes.value + addDotIfNeeded(notes.value)}]
     }));
   }
 
@@ -41,7 +41,7 @@ export function generatef520(abstracts) {
         tag: '520',
         ind1: ' ',
         ind2: ' ',
-        subfields: [{code: 'a', value: elem.abstract}]
+        subfields: [{code: 'a', value: elem.abstract + addDotIfNeeded(elem.abstract)}]
       }
     ]);
   }
@@ -73,7 +73,7 @@ export function generatef540(article) {
 
   return [];
 
-  function uField (article) {
+  function uField(article) {
 
     if (article.ccLicense === 'CC BY 4.0') {
       return 'https://creativecommons.org/licenses/by/4.0/deed.fi';
@@ -163,10 +163,12 @@ export function generatef598(f598) {
 export function generatef599(f599a, f599x) {
   if (f599a || f599x) {
     return [
-      {tag: '599',
+      {
+        tag: '599',
         ind1: ' ',
         ind2: ' ',
-        subfields: [{code: 'a', value: f599a}, {code: 'x', value: f599x}, {code: '5', value: 'ARTO'}]}
+        subfields: [{code: 'a', value: f599a}, {code: 'x', value: f599x}, {code: '5', value: 'ARTO'}]
+      }
     ];
   }
   return [];
