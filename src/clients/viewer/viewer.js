@@ -261,7 +261,10 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     const removeButton = document.querySelector(`#viewer #delete`);
 
     const button = createClearViewButton();
+    
+    console.log('An error occurred while fetching the log: probably the correlation id was malformatted.')
     showSnackbar({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, linkButton: button});
+
     highlightElement(idInputField);
     enableElement(clearButton);
     disableElement(protectButton);
@@ -617,6 +620,7 @@ export function setDataToIndexDB(logs, sequence) {
     select.value = 0;
     disableElement(protectButton);
     showSnackbar({style: 'alert', text: 'Valitettavasti tälle ID:lle ei löytynyt vastaavaa tietuetta'});
+    console.log('This correlation was not found in API/database');
     stopProcess();
     return select.dispatchEvent(new Event('change'));
   }
@@ -638,6 +642,7 @@ export function setDataToIndexDB(logs, sequence) {
 
   if (sequenceInputField.value !== '' && !refactoredKeys.includes(sequenceInputField.value)) {
     showSnackbar({style: 'alert', text: `Ei hakutuloksia sekvenssille '${sequenceInputField.value}', näytetään sekvenssi ${select.value}`});
+    console.log('The correlation id exists, but the sequence that was inputted for search does not exist.')
     highlightElement(select);
   }
 
