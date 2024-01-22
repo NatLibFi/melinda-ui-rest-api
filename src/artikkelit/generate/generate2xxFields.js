@@ -1,3 +1,4 @@
+import {addDotIfNeeded} from './generateUtils.js';
 
 export function generatef245(articleTitle, authors, artLang) {
 
@@ -7,16 +8,18 @@ export function generatef245(articleTitle, authors, artLang) {
 
   if (articleTitle) {
     return [
-      {tag: '245',
+      {
+        tag: '245',
         ind1: ind1Value(),
         ind2: ind2Value(),
-        subfields: [{code: 'a', value: articleTitle}]}
+        subfields: [{code: 'a', value: articleTitle + addDotIfNeeded(articleTitle)}]
+      }
     ];
   }
 
   return [];
 
-  function ind1Value () {
+  function ind1Value() {
 
     if (authors.length === 0) {
       return '0';
@@ -44,7 +47,7 @@ export function generatef245(articleTitle, authors, artLang) {
     return '1';
   }
 
-  function ind2Value () {
+  function ind2Value() {
 
     if (articleTitle && artLang === 'eng') {
       const titleSplitted = articleTitle.split(' ');
