@@ -33,7 +33,7 @@ export function addAbstract(event) {
   const lastChar = data.abstract.charAt(data.abstract.length - 1);
 
   if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
-    showSnackbar({style: 'alert', text: 'Tiivistelmän täytyy päätty pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
+    showSnackbar({style: 'alert', text: 'Tiivistelmän täytyy päättyä pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
     return;
   }
 

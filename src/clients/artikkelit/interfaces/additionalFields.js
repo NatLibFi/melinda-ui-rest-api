@@ -204,7 +204,7 @@ function addNote(event) {
   const lastChar = data.value.charAt(data.value.length - 1);
 
   if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
-    showSnackbar({style: 'alert', text: 'Yleisen huomatuksen täytyy päätty pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
+    showSnackbar({style: 'alert', text: 'Yleisen huomatuksen täytyy päättyä pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
     return;
   }
 
