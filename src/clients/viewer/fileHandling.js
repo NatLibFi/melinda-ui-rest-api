@@ -318,7 +318,9 @@ function showReaderMode() {
   enableElement(uploadButton);
 
   const showLogInfoButton = document.getElementById('showLogInfo');
+  const hideLogInfoButton = document.getElementById('hideLogInfo');
   enableElement(showLogInfoButton);
+  enableElement(hideLogInfoButton);
 
   const exitButton = document.getElementById('exit');
   exitButton.style.display = 'flex';
