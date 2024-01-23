@@ -101,16 +101,20 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
 
   const notificationDialogType = checkNotificationDialogType(notificationDialogContent);
 
-  switch (true) {
-    case notificationDialogType === 'string':
-      createDefaultNotificationDialog(notificationDialogContent);
-      break;
-    case notificationDialogType === 'object':
-      createCustomNotificationDialog(notificationDialogContent);
-      break;
-    default:
-      console.log('NotificationDialog argument type should be string or object');
-      return;
+  const isString = notificationBannerType === 'string';
+  const isObject = notificationBannerType === 'object';
+  const isValidType = isString || isObject;
+
+  if(!isValidType){
+    console.log('NotificationDialog argument type should be string or object');
+    return;
+  }  
+  
+  if(isString){
+    createDefaultNotificationDialog(notificationBannerContent);
+  }
+  else if(isObject){
+    createCustomNotificationDialog(notificationBannerContent);
   }
 
   const text = notificationDialogElement.querySelector(`.notificationdialog-text`).innerHTML;

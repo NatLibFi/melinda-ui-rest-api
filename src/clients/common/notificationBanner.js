@@ -77,16 +77,20 @@ function createNotificationBanner(notificationBannerContent, html) {
 
   const notificationBannerType = checkNotificationBannerType(notificationBannerContent);
 
-  switch (true) {
-    case notificationBannerType === 'string':
-      createDefaultNotificationBanner(notificationBannerContent);
-      break;
-    case notificationBannerType === 'object':
-      createCustomNotificationBanner(notificationBannerContent);
-      break;
-    default:
-      console.log('NotificationBanner argument type should be string or object');
-      return;
+  const isString = notificationBannerType === 'string';
+  const isObject = notificationBannerType === 'object';
+  const isValidType = isString || isObject;
+
+  if(!isValidType){
+    console.log('NotificationBanner argument type should be string or object');
+    return;
+  }  
+  
+  if(isString){
+    createDefaultNotificationBanner(notificationBannerContent);
+  }
+  else if(isObject){
+    createCustomNotificationBanner(notificationBannerContent);
   }
 
   const text = notificationBannerElement.querySelector(`.notificationbanner-text`).innerHTML;
