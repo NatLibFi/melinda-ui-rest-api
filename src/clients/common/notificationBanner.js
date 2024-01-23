@@ -146,36 +146,44 @@ function createNotificationBanner(notificationBannerContent, html) {
     addCloseButton(notificationBannerObject);
 
     function setNotificationBannerStyle() {
+      const styleObj = getColorsAndIconWithStyle(style);
+
+      notificationBannerElement.style.setProperty(`--style-background-color`, styleObj.bg);
+      notificationBannerElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
+      notificationBannerElement.querySelector(`.notificationbanner-icon .material-icons`).innerHTML = styleObj.icon;
+    }
+
+    function getColorsAndIconWithStyle(style){
+
+      if(style === 'success'){
+        return {
+          bg: 'var(--color-green-80)',
+          iconBg: 'var(--color-green-100)',
+          icon: 'check_circle_outline'
+        };
+      }
+      else if(style === 'alert'){
+        return {
+          bg: 'var(--color-yellow-80)',
+          iconBg: 'var(--color-blue-100)',
+          icon: 'warning_amber'
+        };
+      }
+      else if(style === 'error'){
+        return {
+          bg: 'var(--color-red-80)',
+          iconBg: 'var(--color-red-100)',
+          icon: 'report_gmailerrorred'
+        };
+      }
 
       // style 'info' is the default status message
       // notificationBanner has blue background with info icon
-      let backgroundColor = 'var(--color-blue-60)';
-      let iconColor = 'var(--color-blue-100)';
-      let icon = 'error_outline';
-
-
-      if (style === 'success') {
-        backgroundColor = 'var(--color-green-80)';
-        iconColor = 'var(--color-green-100)';
-        icon = 'check_circle_outline';
-      }
-
-      if (style === 'alert') {
-        backgroundColor = 'var(--color-yellow-80)';
-        iconColor = 'var(--color-blue-100)';
-        icon = 'warning_amber';
-      }
-
-      if (style === 'error') {
-        backgroundColor = 'var(--color-red-80)';
-        iconColor = 'var(--color-red-100)';
-        icon = 'report_gmailerrorred';
-      }
-
-      notificationBannerElement.style.setProperty(`--style-background-color`, backgroundColor);
-      notificationBannerElement.style.setProperty(`--style-icon-color`, iconColor);
-      notificationBannerElement.querySelector(`.notificationbanner-icon .material-icons`).innerHTML = icon;
-
+      return {
+        bg: 'var(--color-blue-60)',
+        iconBg: 'var(--color-blue-100)',
+        icon: 'error_outline'
+      };
     }
 
     function addLinkButton() {

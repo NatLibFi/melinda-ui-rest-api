@@ -183,36 +183,45 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
     }
 
     function setNotificationDialogStyle() {
+      const styleObj = getColorsAndIconWithStyle(style);
+
+      notificationDialogElement.style.setProperty(`--style-background-color`, styleObj.bg);
+      notificationDialogElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
+      notificationDialogElement.querySelector(`.notificationdialog-icon .material-icons`).innerHTML = styleObj.icon;
+
+    }
+    
+    function getColorsAndIconWithStyle(style){
+
+      if(style === 'success'){
+        return {
+          bg: 'var(--color-green-80)',
+          iconBg: 'var(--color-green-100)',
+          icon: 'check_circle_outline'
+        };
+      }
+      else if(style === 'alert'){
+        return {
+          bg: 'var(--color-yellow-80)',
+          iconBg: 'var(--color-blue-100)',
+          icon: 'warning_amber'
+        };
+      }
+      else if(style === 'error'){
+        return {
+          bg: 'var(--color-red-80)',
+          iconBg: 'var(--color-red-100)',
+          icon: 'report_gmailerrorred'
+        };
+      }
 
       // style 'info' is the default status message
-      // notificationDialog has blue background with info icon
-      let backgroundColor = 'var(--color-blue-60)';
-      let iconColor = 'var(--color-blue-100)';
-      let icon = 'error_outline';
-
-
-      if (style === 'success') {
-        backgroundColor = 'var(--color-green-80)';
-        iconColor = 'var(--color-green-100)';
-        icon = 'check_circle_outline';
-      }
-
-      if (style === 'alert') {
-        backgroundColor = 'var(--color-yellow-80)';
-        iconColor = 'var(--color-blue-100)';
-        icon = 'warning_amber';
-      }
-
-      if (style === 'error') {
-        backgroundColor = 'var(--color-red-80)';
-        iconColor = 'var(--color-red-100)';
-        icon = 'report_gmailerrorred';
-      }
-
-      notificationDialogElement.style.setProperty(`--style-background-color`, backgroundColor);
-      notificationDialogElement.style.setProperty(`--style-icon-color`, iconColor);
-      notificationDialogElement.querySelector(`.notificationdialog-icon .material-icons`).innerHTML = icon;
-
+      // notificationBanner has blue background with info icon
+      return {
+        bg: 'var(--color-blue-60)',
+        iconBg: 'var(--color-blue-100)',
+        icon: 'error_outline'
+      };
     }
 
     function addLinkButton() {
