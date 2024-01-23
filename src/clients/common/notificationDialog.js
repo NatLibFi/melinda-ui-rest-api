@@ -35,13 +35,13 @@
 
 /**
  * 
- * @param {*} notificationDialogContent object
- * @param {*} notificationDialogContent.id id of dataobject if any
- * @param {*} notificationDialogContent.style info/success/alert/error
- * @param {*} notificationDialogContent.text given text
- * @param {*} isStatic should dialog fade out ?
- * @param {*} canDismiss show close dialog button ?
- * @param {*} showBackground show semi transparent backgroudn blocking layer
+ * @param {object} notificationDialogContent object
+ * @param {String} notificationDialogContent.id id of dataobject if any
+ * @param {String} notificationDialogContent.style info/success/alert/error
+ * @param {String} notificationDialogContent.text given text
+ * @param {boolean} isStatic should dialog fade out ?
+ * @param {boolean} canDismiss show close dialog button ?
+ * @param {boolean} showBackground show semi transparent backgroudn blocking layer
  * @returns 
  */
 export function showNotificationDialog(notificationDialogContent, isStatic = true, canDismiss = false, showBackground = false) {
@@ -168,18 +168,23 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
     setNotificationDialogStyle();
     addTextToNotificationDialog(text);
     addLinkButton();
-
-    //if title is provided use that but if not use default
-    if(title){notificationDialogElement.querySelector(`.notificationdialog-title`).innerHTML = titleText;}
-    else{
-      addDefaultStyleBasedTitle();
-    }
+    setTitle(title);
+    
     //close button can be optional
     if(canDismiss){
       notificationDialogElement.querySelector(`.notificationdialog-close`).style.visibility = 'hidden';
     }
     else{
       addCloseButton(notificationDialogObject);
+    }
+
+    function setTitle(title){
+      if(!title){
+        notificationDialogElement.querySelector(`.notificationdialog-title`).innerHTML = getDefaultTitleText(style);
+        return;
+      }
+      
+      notificationDialogElement.querySelector(`.notificationdialog-title`).innerHTML = title;
     }
 
     function setNotificationDialogStyle() {
@@ -190,7 +195,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       notificationDialogElement.querySelector(`.notificationdialog-icon .material-icons`).innerHTML = styleObj.icon;
 
     }
-    
+
     function getColorsAndIconWithStyle(style){
 
       if(style === 'success'){
@@ -231,24 +236,13 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       }
     }
 
-    function addDefaultStyleBasedTitle(){
-      let titleText = '';
-      switch (style) {
-        default:
-        case 'info':
-          titleText = 'Huomasithan';
-          break;
-        case 'success':
-          titleText = 'Onnistui';
-        break;
-        case 'alert':
-          titleText = 'Huomio';
-        break;
-        case 'error':
-          titleText = 'Virhe';
-        break;
-      }
-      notificationDialogElement.querySelector(`.notificationdialog-title`).innerHTML = titleText;
+    function getDefaultTitleText(style){
+      if(style === 'info'){return 'Huomasithan';}
+      else if(style === 'success'){return 'Onnistui';}
+      else if(style === 'alert'){return 'Huomio';}
+      else if(style === 'error'){return 'Virhe';}
+
+      return 'Tuntematon';
     }
   }
 
@@ -276,11 +270,13 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       function hasActiveChildren(){
         const notificationDialogsContainer = document.getElementById('notificationDialogs');
         const children = notificationDialogsContainer.children;
-        for (const child of children) {
+
+        children.forEach(child => {
           if(child.style.visibility === 'visible'){
             return true;
           }
-        }
+        });
+
         return false;
       }
       function hideBackground(){
@@ -300,10 +296,16 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
 
     listenToNotificationDialogAnimationStart();
     listenToNotificationDialogAnimationEnd();
-    if(isStatic){
-        notificationDialog.classList.add('show');
-    }else{
+
+    setClassListItem();
+
+    function setClassListItem(){
+      if(!isStatic){
         notificationDialog.classList.add('show-and-hide');
+        return;
+      }
+
+      notificationDialog.classList.add('show');
     }
 
     function listenToNotificationDialogAnimationStart() {

@@ -54,41 +54,47 @@ function createNotificationBannerStatic(content, html) {
 
   }
   function styleBasedOnType(){
-    
-    let backgroundColor = '';
-    let iconColor = '';
-    let icon = '';
+    const styleObj = getColorsAndIconWithStyle(style);
 
-    switch (content.style) {
-      case 'success':
-        backgroundColor = 'var(--color-green-80)';
-        iconColor = 'var(--color-green-100)';
-        icon = 'check_circle_outline';
-        break;
-      case 'alert':
-        backgroundColor = 'var(--color-yellow-80)';
-        iconColor = 'var(--color-blue-100)';
-        icon = 'warning_amber';
-      break;
-      case 'error':
-        backgroundColor = 'var(--color-red-80)';
-        iconColor = 'var(--color-red-100)';
-        icon = 'report_gmailerrorred';
-      break;
-    
-      default:
-        // style 'info' is the default status message
-        // notificationDialog has blue background with info icon
-        backgroundColor = 'var(--color-blue-60)';
-        iconColor = 'var(--color-blue-100)';
-        icon = 'error_outline';
-        break;
-    }
     const container = document.getElementById('notificationStaticBanner');
-    container.style.setProperty(`--style-background-color`, backgroundColor);
-    templateElement.style.setProperty(`--style-icon-color`, iconColor);
-    templateElement.querySelector(`.notificationbannerstatic-icon .material-icons`).innerHTML = icon;
+    container.style.setProperty(`--style-background-color`, styleObj.bg);
+    templateElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
+    templateElement.querySelector(`.notificationbannerstatic-icon .material-icons`).innerHTML = styleObj.icon;
   }
+
+  function getColorsAndIconWithStyle(style){
+
+    if(style === 'success'){
+      return {
+        bg: 'var(--color-green-80)',
+        iconBg: 'var(--color-green-100)',
+        icon: 'check_circle_outline'
+      };
+    }
+    else if(style === 'alert'){
+      return {
+        bg: 'var(--color-yellow-80)',
+        iconBg: 'var(--color-blue-100)',
+        icon: 'warning_amber'
+      };
+    }
+    else if(style === 'error'){
+      return {
+        bg: 'var(--color-red-80)',
+        iconBg: 'var(--color-red-100)',
+        icon: 'report_gmailerrorred'
+      };
+    }
+
+    // style 'info' is the default status message
+    // notificationBanner has blue background with info icon
+    return {
+      bg: 'var(--color-blue-60)',
+      iconBg: 'var(--color-blue-100)',
+      icon: 'error_outline'
+    };
+  }
+
   function addTextToElement(){
     templateElement.querySelector(`.notificationbannerstatic-text`).innerHTML = content.text;
   }
