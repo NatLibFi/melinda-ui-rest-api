@@ -54,7 +54,7 @@ function createNotificationBannerStatic(content, html) {
 
   }
   function styleBasedOnType(){
-    const styleObj = getColorsAndIconWithStyle(style);
+    const styleObj = getColorsAndIconWithStyle(content.style);
 
     const container = document.getElementById('notificationStaticBanner');
     container.style.setProperty(`--style-background-color`, styleObj.bg);

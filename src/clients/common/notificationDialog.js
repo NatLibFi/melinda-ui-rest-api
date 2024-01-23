@@ -101,8 +101,8 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
 
   const notificationDialogType = checkNotificationDialogType(notificationDialogContent);
 
-  const isString = notificationBannerType === 'string';
-  const isObject = notificationBannerType === 'object';
+  const isString = notificationDialogType === 'string';
+  const isObject = notificationDialogType === 'object';
   const isValidType = isString || isObject;
 
   if(!isValidType){
@@ -111,10 +111,10 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
   }  
   
   if(isString){
-    createDefaultNotificationDialog(notificationBannerContent);
+    createDefaultNotificationDialog(notificationDialogContent);
   }
   else if(isObject){
-    createCustomNotificationDialog(notificationBannerContent);
+    createCustomNotificationDialog(notificationDialogContent);
   }
 
   const text = notificationDialogElement.querySelector(`.notificationdialog-text`).innerHTML;
@@ -221,7 +221,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       }
 
       // style 'info' is the default status message
-      // notificationBanner has blue background with info icon
+      // notificationDialog has blue background with info icon
       return {
         bg: 'var(--color-blue-60)',
         iconBg: 'var(--color-blue-100)',
