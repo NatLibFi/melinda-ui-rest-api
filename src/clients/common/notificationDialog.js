@@ -269,7 +269,7 @@ function createNotificationDialog(notificationDialogContent, html, isStatic = tr
       
       function hasActiveChildren(){
         const notificationDialogsContainer = document.getElementById('notificationDialogs');
-        const children = notificationDialogsContainer.children;
+        const children = Array.from(notificationDialogsContainer.children);
 
         children.forEach(child => {
           if(child.style.visibility === 'visible'){
