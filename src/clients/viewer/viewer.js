@@ -261,7 +261,7 @@ window.doFetch = function (event = undefined, id = '', sequence = 0, logType = '
     const removeButton = document.querySelector(`#viewer #delete`);
 
     const button = createClearViewButton();
-    
+
     console.log('An error occurred while fetching the log: probably the correlation id was malformatted.')
     showSnackbar({style: 'error', text: `ID:tä '${id}' lokityypillä '${logType}' ei valitettavasti pystytty hakemaan!`, linkButton: button});
 
@@ -349,11 +349,12 @@ window.loadLog = (event) => {
   }
 
   enableElement(clearButton);
-  checkLogProtection();
   updateSequenceView();
 
   if (logType === 'MERGE_LOG') {
     idbGetLogs(event.target.value).then(data => {
+
+      checkLogProtection(data);
 
       if (data.logItemType !== 'MERGE_LOG') {
         alertLogTypeChange(data.logItemType);
@@ -379,6 +380,8 @@ window.loadLog = (event) => {
 
   if (logType === 'MATCH_LOG') {
     idbGetLogs(event.target.value).then(data => {
+
+      checkLogProtection(data);
 
       if (data.logItemType !== 'MATCH_LOG') {
         alertLogTypeChange(data.logItemType);
@@ -411,15 +414,14 @@ window.loadLog = (event) => {
     return;
   }
 
-  function checkLogProtection() {
+  function checkLogProtection(log) {
     disableElement(removeButton);
 
-    idbGetLogs(event.target.value)
-      .then(
-        log => log.protected === true ? (setProtectButton('protected'), toggleRemoveButtonByLogAge(log.creationTime)) : setProtectButton('not protected'),
-        enableElement(protectButton)
-      )
-      .catch(error => console.log(`Sorry, the protection status for log with sequence ${event.target.value} could not be checked: `, error));
+    log.protected === true
+      ? (setProtectButton('protected'), toggleRemoveButtonByLogAge(log.creationTime), showSnackbar({style: 'info', text: 'Tämä sekvenssi on turvattu.'}))
+      : (setProtectButton('not protected'));
+
+    enableElement(protectButton)
 
     function toggleRemoveButtonByLogAge(logCreationTime) {
       const isOverWeekOld = Date.parse(logCreationTime) < Date.now() - 7 * oneDayInMs;

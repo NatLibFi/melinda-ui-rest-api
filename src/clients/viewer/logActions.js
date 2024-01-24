@@ -42,7 +42,6 @@ window.protect = function (event = undefined) {
 
   const id = document.querySelector(`#viewer #id`).value || '';
   const sequence = document.querySelector(`#viewer #sequence`).value || 1;
-  const protectButton = document.querySelector(`#viewer #protect`);
 
   if (id === '') {
     showSnackbar({style: 'alert', text: 'ID:tä ei turvattu, koska ID-kenttä on tyhjä. Hae ID vielä uudelleen ennen turvaamista!'});
@@ -56,9 +55,8 @@ window.protect = function (event = undefined) {
       if (!response.ok) {
         throw new Error('Response status ok:false');
       }
-      protectButton.innerHTML === 'lock_open'
-        ? (setProtectButton('protected'), showSnackbar({style: 'success', text: `Turvattu sekvenssi ${sequence} ID:lle <span class="correlation-id-font">${id}</span>`}))
-        : (setProtectButton('not protected'), showSnackbar({style: 'success', text: `Turvaus poistettu ID:n <span class="correlation-id-font">${id}</span> sekvenssistä ${sequence}`}));
+      doSearchPress();
+      showSnackbar({style: 'success', text: `Sekvenssin ${sequence} turvausta on muutettu. Päivitetään ID <span class="correlation-id-font">${id}</span>`});
     })
     .catch(error => {
       showSnackbar({style: 'error', text: 'Valitettavasti tämän ID:n ja sekvenssin turvausta ei pystytty muuttamaan!'});
