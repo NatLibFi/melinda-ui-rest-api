@@ -8,6 +8,7 @@ import {startProcess, stopProcess} from './progressbar.js';
 import {showNotificationBanner} from './notificationBanner.js';
 import {showNotificationDialog} from './notificationDialog.js';
 import {showNotificationBannerStatic} from './notificationBannerStatic.js';
+import {showNotification} from './notificationUi.js'
 
 export {startProcess, stopProcess, showNotificationBanner};
 
@@ -147,42 +148,22 @@ export function reload() {
 }
 //-----------------------------------------------------------------------------
 
-//type: dialog, banner, static_banner in a string
-//notification object
 
 /**
  * This is a wrapper function to handle passing forward what type of show function call we want to use
  * Can be used with single notification or array of them
- * NOTE! each notification object or array object is required to have style determined (banner/static_banner/dialog)
- * @param {object} notificationObject contains the notification type, style, messageText etc., can be used as array of objects
+ * NOTE! each notification object or array object is required to have componentStyle determined (banner/static_banner/dialog)
+ * see notificationUi.showNotification JSDoc for full info about data object
+ * @param {Object} notificationObject contains the notification type, style, messageText etc., can be used as array of objects, 
  */
 export function showNotifications(notificationObject){
   if(notificationObject.constructor === Array){
     for (const obj of notificationObject) {
-      showSingleOne(obj);
+      showNotification(obj);
     }
+    return;
   }
-  else{
-    showSingleOne(notificationObject);
-  }
-
-  function showSingleOne(notification){
-    switch (notification.componentStyle) {
-      case 'banner':
-          showNotificationBanner({id: notification.id ,style: notification.messageStyle, text: notification.messageText});
-        break;
-      case 'banner_static':
-          showNotificationBannerStatic({id: notification.id, style: notification.messageStyle, text: notification.messageText});
-        break;
-      case 'dialog':
-          showNotificationDialog({id: notification.id, style: notification.messageStyle, text: notification.messageText}, true, !notification.isDismissible, notification.blocksInteraction);
-        break;
-      default:
-          console.log('No proper type defined for showNotification');
-        break;
-    }
-  }
-  
+  showNotification(notificationObject);
 }
 
 //-----------------------------------------------------------------------------
