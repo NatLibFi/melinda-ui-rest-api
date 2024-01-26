@@ -26,8 +26,11 @@
  * @param {*} [data.linkButton] optional - button element to forward to some link address, available on componentStyle banner and dialog
  */
 export function showNotification(data){
-    //find componentStyle aka what kind of notification type is thrown
-    //based on component selected select the root where to put those items
+    /**
+     * Check data validity (theres data and in general is it in ok form)
+     * String and Object based data have separation, string has default values while object
+     * expects to use provided data (some data optional, check in actual use case) 
+     */
 
     //data available check
     if (arguments.length === 0 || !data) {
@@ -37,7 +40,7 @@ export function showNotification(data){
 
     //test if data is in acceptable format
     const dataStatusObj = isInputDataFormatGood(data);
-    if(!dataStatusObj.valid){
+    if(!dataStatusObj.isValid){
         console.log('showNotification data type is not valid');
         return;
     }
@@ -69,7 +72,7 @@ export function showNotification(data){
         text: isDataFromServer ?  data.messageText : data.text,
         linkButton: data.linkButton,
         isDismissible: data.isDismissible,
-        blocksInteraction: blocksInteraction
+        blocksInteraction: data.blocksInteraction
     });
 }
 
@@ -79,20 +82,22 @@ export function showNotification(data){
 /**
  * Banner
  * 
- * @param {html} document template html document for said notification style 
+ * @param {html} container container within document to hold shown notifications
+ * @param {html} noteDocument template html document for said notification style 
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {*} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
  */
-function showBanner(document, dataForUi){
-    console.log(dataForUi);
+function showBanner(container, noteDocument, dataForUi){
+    console.log('showBanner');
 }
 
 /**
  * Banner Static
  * 
- * @param {html} document template html document for said notification style 
+ * @param {html} container container within document to hold shown notifications
+ * @param {html} noteDocument template html document for said notification style 
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
@@ -100,13 +105,14 @@ function showBanner(document, dataForUi){
  * @param {*} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
  */
 
-function showBannerStatic(document, dataForUi){
-    console.log(dataForUi);
+function showBannerStatic(container, noteDocument, dataForUi){
+    console.log('showBannerStatic');
 }
 /**
  * Dialog
  * 
- * @param {html} document template html document for said notification style 
+ * @param {html} container container within document to hold shown notifications
+ * @param {html} noteDocument template html document for said notification style 
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
@@ -117,8 +123,8 @@ function showBannerStatic(document, dataForUi){
  * @param {Boolean} canDismiss can user press some closing mechanism ie. close button
  * @param {Boolean} showBackground show semitransparent background behind dialogs that blocks users interaction with ui
  */
-function showDialog(document, dataForUi){
-    console.log(dataForUi);
+function showDialog(container, noteDocument, dataForUi){
+    console.log('showDialog');
 }
 
 //************************************************************************************** */
@@ -132,7 +138,7 @@ function showDialog(document, dataForUi){
 function isInputDataFormatGood(data){
     const type = getInputDataType(data);
     return {
-        valid: type !== 'invalid',
+        isValid: type !== 'invalid',
         type: type
     }
 }; 
@@ -155,105 +161,162 @@ function getInputDataType(data){
 }
 
 /**
- *  Check what component style should apply
+ * Check what component style should apply, 
+ * get required additional style spesific data and pass it to correct show function
  * 
  * @param {object} data notification dataobject
  */
 function showCorrectStyleNotification(data){
     if(data.componentStyle === 'banner'){
-        const htmlPath = '/../common/templates/notificationBanner.html';
-        const templateId = 'notificationBannerTemplate';
-        const elementId = 'notificationBanner';
-        getNotificationDocument(htmlPath, templateId, elementId)
-        .then(document => {
-            showBanner(document, {
+        const componentInquiryData = {
+            componentStyle: data.componentStyle,
+            templateId: 'bannerTemplate',
+            elementId: 'banner',
+            containerId: 'banners'
+        };
+        getRequiredComponentData(componentInquiryData)
+        .then(([container, noteDocument]) => {
+            showBanner(container, noteDocument, {
                 id: data.id,
                 style: data.style, 
                 text: data.text, 
                 linkButton: data.linkButton
             });
-            return;
         })
-        .catch(error => {console.log(`Error from setting ${data.componentStyle}`); return;});
+        .catch(error =>{console.log(error);});
+        return;
     }
     else if(data.componentStyle === 'banner_static'){
-        const htmlPath = '/../common/templates/notificationBannerStatic.html';
-        const templateId = 'notificationBannerStaticTemplate';
-        const elementId = 'notificationBannerStatic';
-        getNotificationDocument(htmlPath, templateId, elementId)
-        .then(document => {
-            showBannerStatic(document, {
+        const componentInquiryData = {
+            componentStyle: data.componentStyle,
+            templateId: 'bannerStaticTemplate',
+            elementId: 'bannerStatic',
+            containerId: 'bannner_statics'
+        };
+        getRequiredComponentData(componentInquiryData)
+        .then(([container, noteDocument]) => {
+            showBannerStatic(container, noteDocument, {
                 id: data.id, 
                 style: data.style, 
                 text: data.text, 
                 linkButton: data.linkButton
             });
-            return;
         })
-        .catch(error => {console.log(`Error from setting ${data.componentStyle}`); return;});
+        .catch(error =>{console.log(error);});
+        return;
     }
     else if(data.componentStyle === 'dialog'){
-        const htmlPath = '/../common/templates/notificationDialog.html';
-        const templateId = 'notificationDialogTemplate';
-        const elementId = 'notificationDialog';
-        getNotificationDocument(htmlPath, templateId, elementId)
-        .then(document => {
-            showDialog(document, {
+        const componentInquiryData = {
+            componentStyle: data.componentStyle,
+            templateId: 'dialogTemplate',
+            elementId: 'dialog',
+            containerId: 'dialogs'
+        };
+        getRequiredComponentData(componentInquiryData)
+        .then(([container, noteDocument]) => {
+            showDialog(container, noteDocument, {
                 id: data.id, 
                 style: data.style, 
                 text: data.text, 
                 title: data.title
             }, true, !data.isDismissible, data.blocksInteraction);
-            return;
         })
-        .catch(error => {console.log(`Error from setting ${data.componentStyle}`); return;});
+        .catch(error =>{console.log(error);});
+        return;
     }
 
 
     console.log('No proper componentStyle defined for showNotification');
 }
 
+
+/**
+ * Function for loading container (where to put notifications) and notification document (what to put) data
+ * 
+ * @param {object} componentInquiryData to simplify functioncall
+ * @param {String} componentInquiryData.componentStyle notifications component style, for logging
+ * @param {String} componentInquiryData.templateId html files template to fetch
+ * @param {String} componentInquiryData.elementId element withing template
+ * @param {String} componentInquiryData.containerId container within document to put elements into
+ * @returns {Promise}
+ */
+async function getRequiredComponentData(componentInquiryData){
+    const {componentStyle, templateId, elementId, containerId} = componentInquiryData;
+    return getNotificationDocument(templateId, elementId)
+    .then(noteDocument => {
+        const container = getContainerForNotifications(containerId);
+        return [container, noteDocument];
+    })
+    .catch(error => {
+        console.log(`Error in getting component data for ${componentStyle}`); 
+        throw new Error(error);
+    });
+}
+
 /**
  * 
- * Get notification html document to modify from
+ * Get notification html element from html files correct template
  * 
- * @param {String} htmlPath path to html tempalte file
  * @param {String} templateId to get template with id from html file
  * @param {String} elementId to get element with id from template 
- * @returns {html|Error} returns html document and if no html found throws error
+ * @returns {Promise} returns html document and if no html found throws error
  */
-async function getNotificationDocument(htmlPath, templateId, elementId){
+async function getNotificationDocument(templateId, elementId){
 
-    getHtml(htmlPath)
+    return getHtml('/../common/templates/notification.html')
     .then(html => {
-        const document = getElementRootDocument(html, templateId, elementId);
-        if(document){
-            return document;
+        const doc = getElementRootDocument(html, templateId, elementId);
+        if(doc){
+            return doc;
         }
-        
-        //Promise.reject(new Error('No document from html'));
         throw new Error('No document from html');
     })
     .catch(error => {
         console.log('Error while fetching html: ', error);
-        return error;
+        throw new Error(error);
     });
 
     async function getHtml(path){
         //TODO: fetch might be not the best option for lond run so this might need revisioning
         const response = await fetch(path);
         const html = await response.text();
-        return html;
+        if(html){
+            return html;
+        }
+
+        throw new Error('No html file fetched');
     }
     //get template from document, and from template get spesific element root div
     function getElementRootDocument(html, templateId, elementId){
         const parser = new DOMParser();
-        const document = parser.parseFromString(html, 'text/html');
+        const doc = parser.parseFromString(html, 'text/html');
     
-        const template = document.getElementById(templateId);
+        const template = doc.getElementById(templateId);
         const fragment = template.content.cloneNode(true);
         const element = fragment.getElementById(elementId);
     
-        return element;
+        if(element){
+            return element;
+        }
+
+        throw new Error('No element found from html');
     }
+}
+
+/**
+ * Get container where to put new htlm element to, add/look for "notifications"
+ * 
+ * If no container is found throw error since usage should be within getNotificationDocument implementation and its error catcher should pick it up
+ * 
+ * @param {String} containerId if for container holding all notification elements
+ * @returns {html}
+ */
+function getContainerForNotifications(containerId){
+    
+    const container = document.getElementById(containerId);
+    if(container){
+        return container;
+    }
+
+    throw new Error(`No container for notification ${containerId}`);
 }
