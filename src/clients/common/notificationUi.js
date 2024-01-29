@@ -23,7 +23,7 @@
  * @param {String} [data.messageText] optional - server data, will be automatically moved to text field
  * @param {String} [data.isDismissible] optional - server data, also supply self, used in dialog, can user close notification
  * @param {String} [data.blocksInteraction] optional - server data, also supply self, used in dialog, does notification have overlay behind it that blocks UI usage
- * @param {*} [data.linkButton] optional - button element to forward to some link address, available on componentStyle banner and dialog
+ * @param {html} [data.linkButton] optional - button element to forward to some link address, available on componentStyle banner and dialog
  */
 export function showNotification(data){
     /**
@@ -77,7 +77,7 @@ export function showNotification(data){
 }
 
 //************************************************************************************** */
-// Constructor functions:
+// Constructor/Show functions:
 
 /**
  * Banner
@@ -87,10 +87,41 @@ export function showNotification(data){
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
- * @param {*} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
+ * @param {String} [dataForUi.id] optional - id provided from server data, use for recording close action
+ * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
  */
 function showBanner(container, noteDocument, dataForUi){
     console.log('showBanner');
+    const {style, text, linkButton, id} = dataForUi;
+
+    createBanner();
+    addBanner();
+    displayBannerWithAnimation();
+
+    /**
+     * using noteDocument, style it and add to it
+     * set data to ui
+     */
+    function createBanner(){
+        setStylings(noteDocument, style, 'notificationbanner-icon');
+        addText(noteDocument, 'notificationbanner-text', text);
+        addLinkButton(noteDocument, linkButton, 'notificationbanner-link');
+        addCloseButton(container, noteDocument, 'notificationbanner-close', id);
+    }
+    /**
+     * Add noteDocument to container
+     */
+    function addBanner(){
+        container.prepend(noteDocument);
+    }
+    /**
+     * Handles animation start/end and listeners for them,
+     * call displayNotificationWithAnimation, you can provide override/update object to modify behaviour
+     * if not given using default settings from the 
+     */
+    function displayBannerWithAnimation(){
+        displayNotificationWithAnimation(container, noteDocument);
+    }
 }
 
 /**
@@ -101,12 +132,32 @@ function showBanner(container, noteDocument, dataForUi){
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
- * @param {String} [dataForUi.id] optional string identification for data object, used to mark notification to hidden upon hide
- * @param {*} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
  */
 
 function showBannerStatic(container, noteDocument, dataForUi){
     console.log('showBannerStatic');
+    const {style, text} = dataForUi;
+
+    createBannerStatic();
+    addBannerStatic();
+
+    /**
+     * using noteDocument, style it and add to it
+     * set data to ui
+     */
+    function createBannerStatic(){
+        setStylings(noteDocument, style, 'notificationbannerstatic-icon');
+        addText(noteDocument, 'notificationbannerstatic-text', text);
+    }
+    /**
+     * Add noteDocument to container
+     */
+    function addBannerStatic(){
+        //TODO: currently can have multiple static banners but should we ?
+        //hackish solution would be just clear the old ones before setting so last one to set would be visible...
+        //for now just add all and let data handle how many are active at the same time
+        container.prepend(noteDocument);
+    }
 }
 /**
  * Dialog
@@ -329,4 +380,176 @@ function getContainerForNotifications(containerId){
     }
 
     throw new Error(`No container for notification ${containerId}`);
+}
+
+
+/**
+ * 
+ * @param {html} noteDocument root element for visible notification item
+ * @param {String} style what style is the element suppose to be
+ * @param {String} iconId element id for icon
+ */
+function setStylings(noteDocument, style, iconId){
+    const styleObj = getNotificationColoursAndIconsWithStyle(style);
+
+    noteDocument.style.setProperty(`--style-background-color`, styleObj.bg);
+    noteDocument.style.setProperty(`--style-icon-color`, styleObj.iconBg);
+    noteDocument.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
+}
+/**
+ * 
+ * @param {String} style notification style (info/alert etc.) based visible stylings 
+ */
+function getNotificationColoursAndIconsWithStyle(style){
+    if(style === 'success'){
+        return {
+          bg: 'var(--color-green-80)',
+          iconBg: 'var(--color-green-100)',
+          icon: 'check_circle_outline'
+        };
+      }
+      else if(style === 'alert'){
+        return {
+          bg: 'var(--color-yellow-80)',
+          iconBg: 'var(--color-blue-100)',
+          icon: 'warning_amber'
+        };
+      }
+      else if(style === 'error'){
+        return {
+          bg: 'var(--color-red-80)',
+          iconBg: 'var(--color-red-100)',
+          icon: 'report_gmailerrorred'
+        };
+      }
+
+      // style 'info' is the default status message
+      return {
+        bg: 'var(--color-blue-60)',
+        iconBg: 'var(--color-blue-100)',
+        icon: 'error_outline'
+      };
+}
+/**
+ * 
+ * @param {*} noteDocument root element for visible notification item
+ * @param {*} textId text element id
+ * @param {*} text visible text
+ */
+function addText(noteDocument, textId, text){
+    noteDocument.querySelector(`.${textId}`).innerHTML = text;
+}
+/**
+ * @param {*} noteDocument root element for visible notification item
+ * @param {html} [linkButton] optional - possible link button to ui
+ * @param {String} linkButtonId id for linkbutton
+ * @returns 
+ */
+function addLinkButton(noteDocument, linkButton, linkButtonId){
+    if(!linkButton || linkButton.nodeName !== 'BUTTON'){
+        console.log('No linkButton set skipping');
+        return;
+    }
+
+    noteDocument.querySelector(`.${linkButtonId}`).style.display = 'flex';
+    noteDocument.querySelector(`.${linkButtonId}`).append(linkButton);
+}
+
+/**
+ * 
+ * @param {html} container root element holding noteDocuments
+ * @param {html} noteDocument root element for visible notification item
+ * @param {String} closeButtonId element id for close button
+ * @param {String} [notificationId] optional - notification id if provided to record close action
+ * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ */
+function addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose = true){
+    noteDocument.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
+        eventHandled(event);
+        noteDocument.style.visibility = 'collapse';
+  
+         if(notificationId){
+          const idString = `notification_${notificationId}`;
+          localStorage.setItem(idString, '1');
+        }
+
+        if(removeElementOnClose){
+            container.removeChild(noteDocument);
+        }
+      });
+}
+
+/**
+ * Show and hide (or just show) automatically with css animation the element
+ *  
+ * @param {html} container root element holding noteDocuments
+ * @param {html} noteDocument root element for visible notification item
+ * @param {object} [animationInfoObj] optional - object to hold additional information of animation
+ * @param {String} [animationInfoObj.classIdForAnimationElement] optional - css class for animation, use "show-and-hide" for normal usage and if listenAnimationToEnd: false then only use "show" class
+ * @param {boolean} [animationInfoObj.listenAnimationToEnd] optional - should we expect to have end animation, use proper class element for setting css animation
+ * @param {String} [animationInfoObj.animationStartName] optional - animation name for start listener to check up on
+ * @param {String} [animationInfoObj.animationEndName] optional - animation name for end listener to check up on
+ * @param {String} [animationInfoObj.animationEndVisibilityStyle] optional - how we hide element after animation ends
+ * @param {boolean} [animationInfoObj.removeElementOnClose] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ * @param {String} [animationInfoObj.onAnimationStart] optional - what to do after animation start
+ * @param {String} [animationInfoObj.onAnimationEnd] optional - what to do after animation end (by default before this call hides element visibility)
+ * 
+ */
+function displayNotificationWithAnimation(container , noteDocument, animationInfoObj){
+    //default settings
+    const defaultAnimationSettings = {
+        'classIdForAnimationElement': 'show-and-hide',
+        'listenAnimationToEnd': true,
+        'animationStartName': 'fadein',
+        'animationEndName': 'fadeout',
+        'animationEndVisibilityStyle': 'collapse',
+        'removeElementOnClose': true
+
+        //'onAnimationStart': someFunctionCall(),
+        //'onAnimationEnd': someFunctionCall(),
+    };
+    //use default values
+    let animationSettingsObject = defaultAnimationSettings;
+    //if update objet provided update with it the object
+    if(animationInfoObj){
+        animationSettingsObject = {...defaultAnimationSettings, ...animationInfoObj};
+    }
+    const {classIdForAnimationElement, listenAnimationToEnd, animationStartName, animationEndName, animationEndVisibilityStyle, removeElementOnClose, onAnimationStart, onAnimationEnd} = animationSettingsObject;
+    
+
+    //set listeners
+    setAnimationStartListener();
+    if(listenAnimationToEnd){
+        setAnimationEndListener();
+    }
+
+    //add class to autostart required animations
+    noteDocument.classList.add(classIdForAnimationElement);
+
+
+    //functions
+    function setAnimationStartListener(){
+        noteDocument.onanimationstart = (event) =>{
+            if(event.animationName === animationStartName){
+                if(onAnimationStart){
+                    onAnimationStart();
+                }
+            }
+        };
+    }
+    function setAnimationEndListener(){
+        noteDocument.onanimationend = (event) => {
+            if (event.animationName === animationEndName) {
+                noteDocument.style.visibility = animationEndVisibilityStyle;
+
+                if(onAnimationEnd){
+                    onAnimationEnd();
+                }
+
+                if(removeElementOnClose){
+                    container.removeChild(noteDocument);
+                }
+            }
+        };
+    }
 }
