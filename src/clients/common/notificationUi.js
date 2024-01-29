@@ -277,17 +277,27 @@ async function getNotificationDocument(templateId, elementId){
     });
 
     async function getHtml(path){
-        //TODO: fetch might be not the best option for lond run so this might need revisioning
-        const response = await fetch(path);
-        const html = await response.text();
-        if(html){
-            return html;
-        }
+        //TODO: fetch might be not the best option for long run so this might need revisioning
+        //however its the most recommended way of handling it
+        return fetch(path)
+        .then(response => response.text())
+        .then(html => {
+            if(html){
+                return html;
+            }
 
-        throw new Error('No html file fetched');
+            throw new Error('No html file found');
+        })
+        .catch(error => {throw new Error(error);});
+
     }
     //get template from document, and from template get spesific element root div
     function getElementRootDocument(html, templateId, elementId){
+
+        if (arguments.length === 0 || !html || !templateId || !elementId) {
+            throw new Error('getElementRootDocument needs arguments');
+        }
+
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
     
