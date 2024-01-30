@@ -181,7 +181,7 @@ Mainly used for background styles
   
   /* NotificationDialog is shown with animations */
   .notificationdialog-container.show-and-hide {
-    display: inline-flex;
+    display: inline-block;
     animation: fadein 1s, fadeout 1s 5s forwards;
   }
   .notificationdialog-container.show {

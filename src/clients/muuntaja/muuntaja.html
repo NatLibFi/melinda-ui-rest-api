@@ -34,10 +34,14 @@
     <!-- ---------------------------------------------------------------------- -->
     <!-- Notifications-->
     <div id="notifications">
-      <div id="banners" class="notificationbanners"></div>
+      <!--Take note of the order these lists are set-->
       <div id="bannner_statics" class="notificationstaticbannerstatics"></div>
-      <!--TODO: dialogs structure and new id needs fixing with new ui handler-->
-      <div id="dialogs" class="notificationDialogs"></div>
+      <div id="dialogs">
+        <div id="notificationDialogsBg" class="notificationDialogsBg" style="visibility: hidden;"></div>
+        <div id="notificationDialogs" class="notificationdialogs"></div>
+      </div>
+      <div id="banners" class="notificationbanners"></div>
+      
     </div>
 
     <!-- ---------------------------------------------------------------------- -->
