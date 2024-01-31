@@ -132,9 +132,10 @@ export function showNotification(data){
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - id provided from server data, use for recording close action
  * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
+ * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification 
  */
 function showBanner(container, noteDocument, dataForUi){
-    const {style, text, linkButton, id} = dataForUi;
+    const {style, text, linkButton, id, isDismissible} = dataForUi;
 
     createBanner();
     addBanner();
@@ -148,7 +149,7 @@ function showBanner(container, noteDocument, dataForUi){
         setStylings(noteDocument, style, 'notificationbanner-icon');
         addText(noteDocument, 'notificationbanner-text', text);
         addLinkButton(noteDocument, linkButton, 'notificationbanner-link');
-        addCloseButton(container, noteDocument, 'notificationbanner-close', id);
+        handleCloseButton(container, noteDocument, 'notificationbanner-close', isDismissible, id);
     }
     /**
      * Add noteDocument to container
@@ -213,19 +214,17 @@ function showBannerStatic(container, noteDocument, dataForUi){
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
  * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
- * @param {String} [dataForUi.title] optional - visible title text 
- * @param {String} [dataForUi.isDismissible] optional - can user close the notification 
- * @param {String} [dataForUi.blocksInteraction] optional - use extra background to block interaction
+ * @param {String} [dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
+ * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification 
+ * @param {String} [dataForUi.blocksInteraction=false] optional - use extra background to block interaction
+ * @param {boolean} isStatic - should the notificaiton remain on screen waiting for input or using animation go away
  */
-function showDialog(container, noteDocument, dataForUi){
-    const {style, text, linkButton, id, title} = dataForUi;
+function showDialog(container, noteDocument, dataForUi, isStatic){
+    const {style, text, linkButton, id, title, isDismissible, blocksInteraction} = dataForUi;
     const backgroundElement = container.querySelector(`#notificationDialogsBg`);
     const contentContainerElement = container.querySelector(`#notificationDialogs`);
-    const isStatic = true;//update this ? dialogs are by default static ?
-    const canDismiss = dataForUi.isDismissible ?? true;
-    const showBackground = dataForUi.blocksInteraction ?? false ;
 
-    setNotificationListBackground(backgroundElement, showBackground);
+    setNotificationListBackground(backgroundElement, blocksInteraction);
     createDialog();
     addDialog();
     displayDialog();
@@ -235,7 +234,7 @@ function showDialog(container, noteDocument, dataForUi){
         addTitle(noteDocument, 'notificationdialog-title', style, title);
         addText(noteDocument, 'notificationdialog-text', text);
         addLinkButton(noteDocument, linkButton, 'notificationdialog-link');
-        handleCloseButton(contentContainerElement, noteDocument, 'notificationdialog-close', canDismiss, id);
+        handleCloseButton(contentContainerElement, noteDocument, 'notificationdialog-close', isDismissible, id, true, backgroundElement);
     }
     function addDialog(){
         contentContainerElement.prepend(noteDocument);
@@ -307,7 +306,8 @@ function showCorrectStyleNotification(data){
                 id: data.id,
                 style: data.style, 
                 text: data.text, 
-                linkButton: data.linkButton
+                linkButton: data.linkButton,
+                isDismissible: data.isDismissible,
             });
         })
         .catch(error =>{console.log(error);});
@@ -345,8 +345,10 @@ function showCorrectStyleNotification(data){
                 id: data.id, 
                 style: data.style, 
                 text: data.text, 
-                title: data.title
-            }, true, !data.isDismissible, data.blocksInteraction);
+                title: data.title,
+                isDismissible: data.isDismissible,
+                blocksInteraction: data.blocksInteraction,
+            }, true);
         })
         .catch(error =>{console.log(error);});
         return;
@@ -569,14 +571,15 @@ function addLinkButton(noteDocument, linkButton, linkButtonId){
  * @param {boolean} canDismiss can user close the notification
  * @param {String} [notificationId] optional - notification id if provided to record close action
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @returns 
  */
-function handleCloseButton(container, noteDocument, closeButtonId, canDismiss, notificationId, removeElementOnClose = true){
+function handleCloseButton(container, noteDocument, closeButtonId, canDismiss, notificationId, removeElementOnClose = true, backgroundElement){
     if(canDismiss){
-        addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose);
+        addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose, backgroundElement);
         return;
     }
-    hideCloseButton(closeButtonId);
+    hideCloseButton(noteDocument, closeButtonId);
 }
 
 /**
@@ -586,8 +589,9 @@ function handleCloseButton(container, noteDocument, closeButtonId, canDismiss, n
  * @param {String} closeButtonId element id for close button
  * @param {String} [notificationId] optional - notification id if provided to record close action
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  */
-function addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose = true){
+function addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement){
     noteDocument.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
         eventHandled(event);
         noteDocument.style.visibility = 'collapse';
@@ -598,9 +602,49 @@ function addCloseButton(container, noteDocument, closeButtonId, notificationId, 
         }
 
         if(removeElementOnClose){
-            container.removeChild(noteDocument);
+            removeItemFromContainer(container, noteDocument, backgroundElement);
         }
       });
+}
+
+/**
+ * Hide notification list background element if no active notifications on the list
+ * Show with "setNotificationListBackground" within notification styles show function
+ * 
+ * @param {HTMLDivElement} container root element holding noteDocuments
+ * @param {HTMLDivElement} backgroundElement separate background element for content container to be hidden if last element was removed
+ */
+function hideBackgroundIfNoActiveChildren(container, backgroundElement){
+
+    //if no element provided ignore this
+    if(!container || !backgroundElement){
+        return;
+    }
+    
+    //if has children visible ignore this
+    if(hasActiveChildren()){
+        return;
+    }
+
+    setNotificationListBackground(backgroundElement, false);
+
+    function hasActiveChildren(){
+        const children = Array.from(container.children);
+        let isActive = false;
+
+        //theres no breaking out of the foreach... so using helper variable
+        //personally I would have preferred for...of
+        children.forEach(child => {
+            const computedStyle = window.getComputedStyle(child);
+            const visibility = computedStyle.getPropertyValue('visibility');
+
+            if(visibility === 'visible'){
+              isActive = true;
+            }
+          });
+  
+          return isActive;
+    }
 }
 
 /**
@@ -625,6 +669,7 @@ function setNotificationListBackground(backgroundElement, showBackground = false
 
 /**
  * Show and hide (or just show) automatically with css animation the element
+ * Can autoremove elements upon animation end
  *  
  * @param {HTMLDivElement} container root element holding noteDocuments
  * @param {HTMLDivElement} noteDocument root element for visible notification item
@@ -637,6 +682,7 @@ function setNotificationListBackground(backgroundElement, showBackground = false
  * @param {boolean} [animationInfoObj.removeElementOnClose] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  * @param {String} [animationInfoObj.onAnimationStart] optional - what to do after animation start
  * @param {String} [animationInfoObj.onAnimationEnd] optional - what to do after animation end (by default before this call hides element visibility)
+ * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * 
  */
 function displayNotificationWithAnimation(container , noteDocument, animationInfoObj){
@@ -691,9 +737,22 @@ function displayNotificationWithAnimation(container , noteDocument, animationInf
                 }
 
                 if(removeElementOnClose){
-                    container.removeChild(noteDocument);
+                    removeItemFromContainer(container, noteDocument, backgroundElement);
                 }
             }
         };
     }
+}
+
+/**
+ * Remove notification item from container holding them, if theres a background element for that container check should it be hidden
+ * Closing notificaiton or if timed animation closes it this should be called
+ * 
+ * @param {HTMLDivElement} container root element holding noteDocuments
+ * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} [backgroundElement]  optional - separate background element for content container to be hidden if last element was removed
+ */
+function removeItemFromContainer(container, noteDocument, backgroundElement){
+    container.removeChild(noteDocument);
+    hideBackgroundIfNoActiveChildren(container, backgroundElement);
 }
