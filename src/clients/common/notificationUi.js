@@ -249,7 +249,7 @@ function showDialog(container, noteElement, dataForUi, isStatic){
             };
         }
         //standard behaviour with auto close
-        displayNotificationWithAnimation(contentContainerElement, noteElement, animationUpdateObject);
+        displayNotificationWithAnimation(contentContainerElement, noteElement, animationUpdateObject, backgroundElement);
     }
 }
 
@@ -685,7 +685,7 @@ function setNotificationListBackground(backgroundElement, showBackground = false
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * 
  */
-function displayNotificationWithAnimation(container , noteElement, animationInfoObj){
+function displayNotificationWithAnimation(container , noteElement, animationInfoObj, backgroundElement){
     //default settings
     const defaultAnimationSettings = {
         'classIdForAnimationElement': 'show-and-hide',
