@@ -126,7 +126,7 @@ export function showNotification(data){
  * Banner
  * 
  * @param {HTMLDivElement} container container within document to hold shown notifications
- * @param {HTMLDivElement} noteDocument template html document for said notification style 
+ * @param {HTMLDivElement} noteElement template html document for said notification style 
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
@@ -134,7 +134,7 @@ export function showNotification(data){
  * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
  * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification 
  */
-function showBanner(container, noteDocument, dataForUi){
+function showBanner(container, noteElement, dataForUi){
     const {style, text, linkButton, id, isDismissible} = dataForUi;
 
     createBanner();
@@ -142,20 +142,20 @@ function showBanner(container, noteDocument, dataForUi){
     displayBannerWithAnimation();
 
     /**
-     * using noteDocument, style it and add to it
+     * using noteElement, style it and add to it
      * set data to ui
      */
     function createBanner(){
-        setStylings(noteDocument, style, 'notificationbanner-icon');
-        addText(noteDocument, 'notificationbanner-text', text);
-        addLinkButton(noteDocument, linkButton, 'notificationbanner-link');
-        handleCloseButton(container, noteDocument, 'notificationbanner-close', isDismissible, id);
+        setStylings(noteElement, style, 'notificationbanner-icon');
+        addText(noteElement, 'notificationbanner-text', text);
+        addLinkButton(noteElement, linkButton, 'notificationbanner-link');
+        handleCloseButton(container, noteElement, 'notificationbanner-close', isDismissible, id);
     }
     /**
-     * Add noteDocument to container
+     * Add noteElement to container
      */
     function addBanner(){
-        container.prepend(noteDocument);
+        container.prepend(noteElement);
     }
     /**
      * Handles animation start/end and listeners for them,
@@ -163,7 +163,7 @@ function showBanner(container, noteDocument, dataForUi){
      * if not given using default settings from the 
      */
     function displayBannerWithAnimation(){
-        displayNotificationWithAnimation(container, noteDocument);
+        displayNotificationWithAnimation(container, noteElement);
     }
 }
 
@@ -171,34 +171,34 @@ function showBanner(container, noteDocument, dataForUi){
  * Banner Static
  * 
  * @param {HTMLDivElement} container container within document to hold shown notifications
- * @param {HTMLDivElement} noteDocument template html document for said notification style 
+ * @param {HTMLDivElement} noteElement template html document for said notification style 
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  */
 
-function showBannerStatic(container, noteDocument, dataForUi){
+function showBannerStatic(container, noteElement, dataForUi){
     const {style, text} = dataForUi;
 
     createBannerStatic();
     addBannerStatic();
 
     /**
-     * using noteDocument, style it and add to it
+     * using noteElement, style it and add to it
      * set data to ui
      */
     function createBannerStatic(){
-        setStylings(noteDocument, style, 'notificationbannerstatic-icon');
-        addText(noteDocument, 'notificationbannerstatic-text', text);
+        setStylings(noteElement, style, 'notificationbannerstatic-icon');
+        addText(noteElement, 'notificationbannerstatic-text', text);
     }
     /**
-     * Add noteDocument to container
+     * Add noteElement to container
      */
     function addBannerStatic(){
         //TODO: currently can have multiple static banners but should we ?
         //hackish solution would be just clear the old ones before setting so last one to set would be visible...
         //for now just add all and let data handle how many are active at the same time
-        container.prepend(noteDocument);
+        container.prepend(noteElement);
     }
 }
 /**
@@ -208,7 +208,7 @@ function showBannerStatic(container, noteDocument, dataForUi){
  * This div structure should be visible from within each apps that supports notification html
  * 
  * @param {HTMLDivElement} container container that holds background and content container for notifications
- * @param {HTMLDivElement} noteDocument template html document for said notification style 
+ * @param {HTMLDivElement} noteElement template html document for said notification style 
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
@@ -219,7 +219,7 @@ function showBannerStatic(container, noteDocument, dataForUi){
  * @param {String} [dataForUi.blocksInteraction=false] optional - use extra background to block interaction
  * @param {boolean} isStatic - should the notificaiton remain on screen waiting for input or using animation go away
  */
-function showDialog(container, noteDocument, dataForUi, isStatic){
+function showDialog(container, noteElement, dataForUi, isStatic){
     const {style, text, linkButton, id, title, isDismissible, blocksInteraction} = dataForUi;
     const backgroundElement = container.querySelector(`#notificationDialogsBg`);
     const contentContainerElement = container.querySelector(`#notificationDialogs`);
@@ -230,14 +230,14 @@ function showDialog(container, noteDocument, dataForUi, isStatic){
     displayDialog();
 
     function createDialog(){
-        setStylings(noteDocument, style, 'notificationdialog-icon');
-        addTitle(noteDocument, 'notificationdialog-title', style, title);
-        addText(noteDocument, 'notificationdialog-text', text);
-        addLinkButton(noteDocument, linkButton, 'notificationdialog-link');
-        handleCloseButton(contentContainerElement, noteDocument, 'notificationdialog-close', isDismissible, id, true, backgroundElement);
+        setStylings(noteElement, style, 'notificationdialog-icon');
+        addTitle(noteElement, 'notificationdialog-title', style, title);
+        addText(noteElement, 'notificationdialog-text', text);
+        addLinkButton(noteElement, linkButton, 'notificationdialog-link');
+        handleCloseButton(contentContainerElement, noteElement, 'notificationdialog-close', isDismissible, id, true, backgroundElement);
     }
     function addDialog(){
-        contentContainerElement.prepend(noteDocument);
+        contentContainerElement.prepend(noteElement);
     }
     function displayDialog(){
         let animationUpdateObject = undefined;
@@ -249,7 +249,7 @@ function showDialog(container, noteDocument, dataForUi, isStatic){
             };
         }
         //standard behaviour with auto close
-        displayNotificationWithAnimation(contentContainerElement, noteDocument, animationUpdateObject);
+        displayNotificationWithAnimation(contentContainerElement, noteElement, animationUpdateObject);
     }
 }
 
@@ -301,8 +301,8 @@ function showCorrectStyleNotification(data){
             containerId: 'banners'
         };
         getRequiredComponentData(componentInquiryData)
-        .then(([container, noteDocument]) => {
-            showBanner(container, noteDocument, {
+        .then(([container, noteElement]) => {
+            showBanner(container, noteElement, {
                 id: data.id,
                 style: data.style, 
                 text: data.text, 
@@ -321,8 +321,8 @@ function showCorrectStyleNotification(data){
             containerId: 'bannner_statics'
         };
         getRequiredComponentData(componentInquiryData)
-        .then(([container, noteDocument]) => {
-            showBannerStatic(container, noteDocument, {
+        .then(([container, noteElement]) => {
+            showBannerStatic(container, noteElement, {
                 id: data.id, 
                 style: data.style, 
                 text: data.text, 
@@ -340,8 +340,8 @@ function showCorrectStyleNotification(data){
             containerId: 'dialogs'
         };
         getRequiredComponentData(componentInquiryData)
-        .then(([container, noteDocument]) => {
-            showDialog(container, noteDocument, {
+        .then(([container, noteElement]) => {
+            showDialog(container, noteElement, {
                 id: data.id, 
                 style: data.style, 
                 text: data.text, 
@@ -371,10 +371,10 @@ function showCorrectStyleNotification(data){
  */
 async function getRequiredComponentData(componentInquiryData){
     const {componentStyle, templateId, elementId, containerId} = componentInquiryData;
-    return getNotificationDocument(templateId, elementId)
-    .then(noteDocument => {
+    return getNotificationElement(templateId, elementId)
+    .then(noteElement => {
         const container = getContainerForNotifications(containerId);
-        return [container, noteDocument];
+        return [container, noteElement];
     })
     .catch(error => {
         console.log(`Error in getting component data for ${componentStyle}`); 
@@ -390,7 +390,7 @@ async function getRequiredComponentData(componentInquiryData){
  * @param {String} elementId to get element with id from template 
  * @returns {Promise} returns html document and if no html found throws error
  */
-async function getNotificationDocument(templateId, elementId){
+async function getNotificationElement(templateId, elementId){
 
     return getHtml('/../common/templates/notification.html')
     .then(html => {
@@ -445,7 +445,7 @@ async function getNotificationDocument(templateId, elementId){
 /**
  * Get container where to put new htlm element to, add/look for "notifications"
  * 
- * If no container is found throw error since usage should be within getNotificationDocument implementation and its error catcher should pick it up
+ * If no container is found throw error since usage should be within getNotificationElement implementation and its error catcher should pick it up
  * 
  * @param {String} containerId if for container holding all notification elements
  * @returns {HTMLDivElement}
@@ -463,16 +463,16 @@ function getContainerForNotifications(containerId){
 
 /**
  * 
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} style what style is the element suppose to be
  * @param {String} iconId element id for icon
  */
-function setStylings(noteDocument, style, iconId){
+function setStylings(noteElement, style, iconId){
     const styleObj = getNotificationColoursAndIconsWithStyle(style);
 
-    noteDocument.style.setProperty(`--style-background-color`, styleObj.bg);
-    noteDocument.style.setProperty(`--style-icon-color`, styleObj.iconBg);
-    noteDocument.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
+    noteElement.style.setProperty(`--style-background-color`, styleObj.bg);
+    noteElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
+    noteElement.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
 }
 /**
  * 
@@ -510,19 +510,19 @@ function getNotificationColoursAndIconsWithStyle(style){
 }
 /**
  * Sets title, if not given sets default one
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} titleTextId titles text id
  * @param {String} style notification style
  * @param {String} [title] optional - title text to show
  * @returns 
  */
-function addTitle(noteDocument, titleTextId, style, title){
+function addTitle(noteElement, titleTextId, style, title){
     if(!title){
-        addText(noteDocument, titleTextId, getDefaultTitleText(style));
+        addText(noteElement, titleTextId, getDefaultTitleText(style));
         return;
     }
 
-    addText(noteDocument, titleTextId, getDefaultTitleText(style));
+    addText(noteElement, titleTextId, getDefaultTitleText(style));
 }
 /**
  * 
@@ -540,33 +540,33 @@ function getDefaultTitleText(style){
 
 /**
  * 
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} textId text element id
  * @param {String} text visible text
  */
-function addText(noteDocument, textId, text){
-    noteDocument.querySelector(`.${textId}`).innerHTML = text;
+function addText(noteElement, textId, text){
+    noteElement.querySelector(`.${textId}`).innerHTML = text;
 }
 /**
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {html} [linkButton] optional - possible link button to ui
  * @param {String} linkButtonId id for linkbutton
  * @returns 
  */
-function addLinkButton(noteDocument, linkButton, linkButtonId){
+function addLinkButton(noteElement, linkButton, linkButtonId){
     if(!linkButton || linkButton.nodeName !== 'BUTTON'){
         console.log('No linkButton set skipping');
         return;
     }
 
-    noteDocument.querySelector(`.${linkButtonId}`).style.display = 'flex';
-    noteDocument.querySelector(`.${linkButtonId}`).append(linkButton);
+    noteElement.querySelector(`.${linkButtonId}`).style.display = 'flex';
+    noteElement.querySelector(`.${linkButtonId}`).append(linkButton);
 }
 
 /**
  * 
- * @param {HTMLDivElement} container root element holding noteDocuments
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} container root element holding noteElements
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
  * @param {boolean} canDismiss can user close the notification
  * @param {String} [notificationId] optional - notification id if provided to record close action
@@ -574,27 +574,27 @@ function addLinkButton(noteDocument, linkButton, linkButtonId){
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @returns 
  */
-function handleCloseButton(container, noteDocument, closeButtonId, canDismiss, notificationId, removeElementOnClose = true, backgroundElement){
+function handleCloseButton(container, noteElement, closeButtonId, canDismiss, notificationId, removeElementOnClose = true, backgroundElement){
     if(canDismiss){
-        addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose, backgroundElement);
+        addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose, backgroundElement);
         return;
     }
-    hideCloseButton(noteDocument, closeButtonId);
+    hideCloseButton(noteElement, closeButtonId);
 }
 
 /**
  * 
- * @param {HTMLDivElement} container root element holding noteDocuments
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} container root element holding noteElements
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
  * @param {String} [notificationId] optional - notification id if provided to record close action
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  */
-function addCloseButton(container, noteDocument, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement){
-    noteDocument.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
+function addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement){
+    noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
         eventHandled(event);
-        noteDocument.style.visibility = 'collapse';
+        noteElement.style.visibility = 'collapse';
   
          if(notificationId){
           const idString = `notification_${notificationId}`;
@@ -602,7 +602,7 @@ function addCloseButton(container, noteDocument, closeButtonId, notificationId, 
         }
 
         if(removeElementOnClose){
-            removeItemFromContainer(container, noteDocument, backgroundElement);
+            removeItemFromContainer(container, noteElement, backgroundElement);
         }
       });
 }
@@ -611,7 +611,7 @@ function addCloseButton(container, noteDocument, closeButtonId, notificationId, 
  * Hide notification list background element if no active notifications on the list
  * Show with "setNotificationListBackground" within notification styles show function
  * 
- * @param {HTMLDivElement} container root element holding noteDocuments
+ * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} backgroundElement separate background element for content container to be hidden if last element was removed
  */
 function hideBackgroundIfNoActiveChildren(container, backgroundElement){
@@ -649,11 +649,11 @@ function hideBackgroundIfNoActiveChildren(container, backgroundElement){
 
 /**
  * 
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
  */
-function hideCloseButton(noteDocument, closeButtonId){
-    noteDocument.querySelector(`.${closeButtonId}`).style.visibility = 'hidden';
+function hideCloseButton(noteElement, closeButtonId){
+    noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'hidden';
 }
 
 /**
@@ -671,8 +671,8 @@ function setNotificationListBackground(backgroundElement, showBackground = false
  * Show and hide (or just show) automatically with css animation the element
  * Can autoremove elements upon animation end
  *  
- * @param {HTMLDivElement} container root element holding noteDocuments
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} container root element holding noteElements
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {object} [animationInfoObj] optional - object to hold additional information of animation
  * @param {String} [animationInfoObj.classIdForAnimationElement] optional - css class for animation, use "show-and-hide" for normal usage and if listenAnimationToEnd: false then only use "show" class
  * @param {boolean} [animationInfoObj.listenAnimationToEnd] optional - should we expect to have end animation, use proper class element for setting css animation
@@ -685,7 +685,7 @@ function setNotificationListBackground(backgroundElement, showBackground = false
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * 
  */
-function displayNotificationWithAnimation(container , noteDocument, animationInfoObj){
+function displayNotificationWithAnimation(container , noteElement, animationInfoObj){
     //default settings
     const defaultAnimationSettings = {
         'classIdForAnimationElement': 'show-and-hide',
@@ -714,12 +714,12 @@ function displayNotificationWithAnimation(container , noteDocument, animationInf
     }
 
     //add class to autostart required animations
-    noteDocument.classList.add(classIdForAnimationElement);
+    noteElement.classList.add(classIdForAnimationElement);
 
 
     //functions
     function setAnimationStartListener(){
-        noteDocument.onanimationstart = (event) =>{
+        noteElement.onanimationstart = (event) =>{
             if(event.animationName === animationStartName){
                 if(onAnimationStart){
                     onAnimationStart();
@@ -728,16 +728,16 @@ function displayNotificationWithAnimation(container , noteDocument, animationInf
         };
     }
     function setAnimationEndListener(){
-        noteDocument.onanimationend = (event) => {
+        noteElement.onanimationend = (event) => {
             if (event.animationName === animationEndName) {
-                noteDocument.style.visibility = animationEndVisibilityStyle;
+                noteElement.style.visibility = animationEndVisibilityStyle;
 
                 if(onAnimationEnd){
                     onAnimationEnd();
                 }
 
                 if(removeElementOnClose){
-                    removeItemFromContainer(container, noteDocument, backgroundElement);
+                    removeItemFromContainer(container, noteElement, backgroundElement);
                 }
             }
         };
@@ -748,11 +748,11 @@ function displayNotificationWithAnimation(container , noteDocument, animationInf
  * Remove notification item from container holding them, if theres a background element for that container check should it be hidden
  * Closing notificaiton or if timed animation closes it this should be called
  * 
- * @param {HTMLDivElement} container root element holding noteDocuments
- * @param {HTMLDivElement} noteDocument root element for visible notification item
+ * @param {HTMLDivElement} container root element holding noteElements
+ * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {HTMLDivElement} [backgroundElement]  optional - separate background element for content container to be hidden if last element was removed
  */
-function removeItemFromContainer(container, noteDocument, backgroundElement){
-    container.removeChild(noteDocument);
+function removeItemFromContainer(container, noteElement, backgroundElement){
+    container.removeChild(noteElement);
     hideBackgroundIfNoActiveChildren(container, backgroundElement);
 }
