@@ -24,10 +24,9 @@ import {getNotifications} from '../common/notification.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  getNotifications('muuntaja', notificationsSuccess, notificationFailure);
-
-  function notificationsSuccess(notificationObject){
-    //generate appropriate dialogs
+  getNotifications('muuntaja')
+  .then(notificationObject => {
+    //generate appropriate ui items
     if(notificationObject.hasBlocks){
       showNotifications(notificationObject.blocking);
     }
@@ -35,11 +34,13 @@ window.initialize = function () {
       showNotifications(notificationObject.notBlocking);
       doLogin(authSuccess);
     }
-  }
-  function notificationFailure(){
+  })
+  .catch(err => {
+    console.log('Notification fetch failed');
     //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', isDismissible: true});
     doLogin(authSuccess);
-  }
+  });
+
   function authSuccess(user) {
 
     profileRequest()
