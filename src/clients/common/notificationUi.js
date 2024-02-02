@@ -109,7 +109,7 @@ export function showNotification(notificationData){
  *          > add to notification to container
  * 
  * @param {object} data dataobject either from server or set by hand
- * @param {String} data.componentStyle server data, also supply self, in what format do we show the notification banner/dialog ... ?
+ * @param {String} data.componentStyle server data, also supply self, in what format do we show the notification banner/dialog ... ? default to banner if not set
  * @param {String} data.style what kind of info notification show inffo/error etc. ?
  * @param {String} data.text visible text to show
  * @param {String} [data.title] optional - visible title text, used for dialog, if not given sets one
@@ -154,7 +154,7 @@ function showSingleNotification(data){
     const isDataFromServer = data.id !== undefined;
     showCorrectStyleNotification({
         id: data.id,
-        componentStyle: data.componentStyle,
+        componentStyle: data.componentStyle ?? 'banner',
         title: data.title,
         style: isDataFromServer ?  data.messageStyle : data.style,
         text: isDataFromServer ?  data.messageText : data.text,
