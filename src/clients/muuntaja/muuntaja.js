@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload,  showNotifications, showNotificationBanner,
+  showTab, resetForms, reload,  showNotification, showNotificationBanner,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
@@ -32,11 +32,11 @@ window.initialize = function () {
       //generate appropriate ui items
       //blocking should not do login (?), in case for example login service is offline
       if(notificationObject.hasBlocks){
-        showNotifications(notificationObject.blocking);
+        showNotification(notificationObject.blocking);
         return;
       }
 
-      showNotifications(notificationObject.notBlocking);
+      showNotification(notificationObject.notBlocking);
       doLogin(authSuccess);
     })
     .catch(err => {

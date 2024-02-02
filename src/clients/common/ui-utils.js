@@ -10,7 +10,7 @@ import {showNotificationDialog} from './notificationDialog.js';
 import {showNotificationBannerStatic} from './notificationBannerStatic.js';
 import {showNotification} from './notificationUi.js'
 
-export {startProcess, stopProcess, showNotificationBanner};
+export {startProcess, stopProcess, showNotificationBanner, showNotification};
 
 //-----------------------------------------------------------------------------
 
@@ -145,25 +145,6 @@ export function resetForms(...elems) {
 export function reload() {
   // Programmatically reload page and reset forms
   location.reload();
-}
-//-----------------------------------------------------------------------------
-
-
-/**
- * This is a wrapper function to handle passing forward what type of show function call we want to use
- * Can be used with single notification or array of them
- * NOTE! each notification object or array object is required to have componentStyle determined (banner/static_banner/dialog)
- * see notificationUi.showNotification JSDoc for full info about data object
- * @param {Object} notificationObject contains the notification type, style, messageText etc., can be used as array of objects, 
- */
-export function showNotifications(notificationObject){
-  if(notificationObject.constructor === Array){
-    for (const obj of notificationObject) {
-      showNotification(obj);
-    }
-    return;
-  }
-  showNotification(notificationObject);
 }
 
 //-----------------------------------------------------------------------------

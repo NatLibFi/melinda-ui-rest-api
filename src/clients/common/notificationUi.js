@@ -34,6 +34,53 @@
  */
 
 /**
+ * Show visible notification with single data or array of data
+ * - in array each data object is validated so it could be either object or string
+ * - if not array data can be object or string
+ * - any string based data gets default values in data formatting before show
+ * 
+ * @param {object|object[]|String|String[]} notificationData 
+ * 
+ * @example
+ * //some example cases
+ * 
+ * //fast easy string, defaults to info banner with animation out and close button, stacks
+ * showNotification('This is a test info');
+ * 
+ * //more spesific handling
+ * //dialog with alert style. Remains on screen and can be closed. Does not block UI interaction
+ * showNotification({componentStyle: 'dialog', style:'alert', text: 'This is a bit more space needing information'});
+ * 
+ * //mass data handling, for example data array from server, array of objects
+ * showNotification(dataArrayFromServer);
+ */
+export function showNotification(notificationData){
+    if(!notificationData){
+        console.log('No data for showNotification');
+        return;
+    }
+
+    //if not valid type of data fail fast
+    if(!isDataValidType(notificationData, ['array', 'object', 'string'])){
+        console.log('Data for showNotification not correct type');
+        return;
+    }
+
+    //if data is in array show individual items
+    if(Array.isArray(notificationData)){
+        for (const obj of notificationData) {
+            if(isDataValidType(notificationData, ['object', 'string'])){
+                showSingleNotification(obj);
+            }
+        }
+        return;
+    }
+
+    //object or string style data passed along, data formatted accordingly later
+    showSingleNotification(notificationData);
+}
+
+/**
  * Script info 
  * 
  * This is a catch all function to take in either user thrown notification data or server formed data
@@ -64,24 +111,17 @@
  * @param {String} [data.id] optional - identification for data object, used for hiding/showing server message
  * @param {String} [data.messageStyle] optional - server data, will be automatically moved to style field
  * @param {String} [data.messageText] optional - server data, will be automatically moved to text field
- * @param {String} [data.isDismissible] optional - server data, also supply self, used in dialog, can user close notification
+ * @param {String} [data.isDismissible] optional - server data, also supply self, used in dialog, can user close notification, if not given defaults to true
  * @param {String} [data.blocksInteraction] optional - server data, also supply self, used in dialog, does notification have overlay behind it that blocks UI usage
  * @param {html} [data.linkButton] optional - button element to forward to some link address, available on componentStyle banner and dialog
  */
-export function showNotification(data){
+function showSingleNotification(data){
     /**
-     * Check data validity (theres data and in general is it in ok form)
-     * String and Object based data have separation, string has default values while object
-     * expects to use provided data (some data optional, check in actual use case) 
+     * Check data validity (is it in ok form)
+     * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case) 
      */
 
-    //data available check
-    if (arguments.length === 0 || !data) {
-        console.log('showNotification needs arguments');
-        return;
-    }
-
-    //test if data is in acceptable format
+    //test if data is in acceptable format, additional checks not only surface typeof
     const dataStatusObj = isInputDataFormatGood(data);
     if(!dataStatusObj.isValid){
         console.log('showNotification data type is not valid');
@@ -574,7 +614,7 @@ function addLinkButton(noteElement, linkButton, linkButtonId){
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @returns 
  */
-function handleCloseButton(container, noteElement, closeButtonId, canDismiss, notificationId, removeElementOnClose = true, backgroundElement){
+function handleCloseButton(container, noteElement, closeButtonId, canDismiss=true, notificationId, removeElementOnClose = true, backgroundElement){
     if(canDismiss){
         addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose, backgroundElement);
         return;
@@ -755,4 +795,30 @@ function displayNotificationWithAnimation(container , noteElement, animationInfo
 function removeItemFromContainer(container, noteElement, backgroundElement){
     container.removeChild(noteElement);
     hideBackgroundIfNoActiveChildren(container, backgroundElement);
+}
+
+/**
+ * Check is single datapoint is acceptable
+ * @param {*} data uncertain data type
+ * @param {String[]} validTypeArray different types of data, see typeof documentation, self build support for 'array' type
+ * @throws {Error} if validtype array is not array
+ * @returns {boolean} true if data type is found from array
+ */
+function isDataValidType(data, validTypeArray){
+    if(!Array.isArray(validTypeArray)){
+        throw new Error('isDataValidType valid array parameter should be array of acceptable types');
+    }
+    const dataType = typeof data; 
+    //typeof lists arrays as types of objects so exaception handler here for easier support for array in validTypeArray
+    return validTypeArray.includes(dataType) || (validTypeArray.includes('array') && isDataTypeOf(data, 'array'));
+}
+/**
+ * 
+ * @param {*} data uncertain data
+ * @param {String} expectedType what type should the data be ?
+ * @returns {boolean} is the data expected type
+ */
+function isDataTypeOf(data, expectedType){
+    const dataType = typeof data;
+    return expectedType === dataType || (dataType === 'object' && expectedType === 'array' && Array.isArray(data));
 }
