@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload,  showNotification, showNotification,
+  showTab, resetForms, reload, showNotification,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
