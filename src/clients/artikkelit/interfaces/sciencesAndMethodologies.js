@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues, } from '/artikkelit/utils/indexedDB.js';
-import {createIconButton, createP, formToJson, showNotificationBanner} from '/common/ui-utils.js';
+import {createIconButton, createP, formToJson, showNotification} from '/common/ui-utils.js';
 
 
 export function initSciencesAndMethodologies() {
@@ -91,13 +91,13 @@ function addMetodology(event) {
   const metodology = formJson['lisa-tiedot-metodologia'];
 
   if (metodology === '') {
-    showNotificationBanner({style: 'alert', text: 'Metodologia ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Metodologia ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoMetodologys').then(metodologies => {
     if (metodologies.some(met => met.value === metodology)) {
-      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä metodologia'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä metodologia'});
       return;
     }
 
@@ -115,7 +115,7 @@ function addScience(event) {
   const science = formJson['lisa-tiedot-tieteenala'];
 
   if (science === '') {
-    showNotificationBanner({style: 'alert', text: 'Tieteenala ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Tieteenala ei voi olla tyhjä'});
     return;
 
   }
@@ -123,7 +123,7 @@ function addScience(event) {
 
   idbGetStoredValues('artoSciences').then(sciences => {
     if (sciences.some(sci => sci.subject === subject || sci.subCategory === subCategory)) {
-      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä tieteenala'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä tieteenala'});
       return;
     }
 

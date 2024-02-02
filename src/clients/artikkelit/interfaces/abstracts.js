@@ -1,6 +1,6 @@
 import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
-import {createIconButton, createP, formToJson, showNotificationBanner} from '/common/ui-utils.js';
+import {createIconButton, createP, formToJson, showNotification} from '/common/ui-utils.js';
 
 export function initAbstracts() {
   //console.log('initializing abstracts...');
@@ -26,13 +26,13 @@ export function addAbstract(event) {
   };
 
   if (data.abstract === '') {
-    showNotificationBanner({style: 'alert', text: 'Tiivistelmä ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Tiivistelmä ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoAbstracts').then(abstracts => {
     if (abstracts.some(abs => abs.abstract === data.abstract)) {
-      showNotificationBanner({style: 'alert', text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Tiivistelmä ei voi olla identtinen aiemmin lisätyn tiivistelmän kanssa'});
       return;
     }
 

@@ -1,4 +1,4 @@
-import {showNotificationBanner, showTab} from '/./common/ui-utils.js';
+import {showNotification, showTab} from '/./common/ui-utils.js';
 import {Account, doLogin, logout} from '/./common/auth.js';
 
 window.initialize = function () {
@@ -6,7 +6,7 @@ window.initialize = function () {
 
   function authSuccess(user) {
     showTab('pageNotFound');
-    showNotificationBanner({style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
     showAppName(window.location.href);
     const accountMenu = document.getElementById('accountMenu');
     accountMenu.classList.add('show');

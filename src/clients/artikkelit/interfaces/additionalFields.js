@@ -1,5 +1,5 @@
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
-import {createIconButton, createP, formToJson, showNotificationBanner} from '/common/ui-utils.js';
+import {createIconButton, createP, formToJson, showNotification} from '/common/ui-utils.js';
 
 export function initAdditionalFields() {
   //console.log('initializing additional fields...');
@@ -197,13 +197,13 @@ function addNote(event) {
   };
 
   if (data.value === '') {
-    showNotificationBanner({style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Yleinen huomautus ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoNotes').then(notes => {
     if (notes.some(note => note.value === data.value)) {
-      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});
       return;
     }
 
@@ -224,13 +224,13 @@ export function addOtherRating(event) {
   };
 
   if (data.a084 === '') {
-    showNotificationBanner({style: 'alert', text: 'Muu luokitus (084 $a) -arvo ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Muu luokitus (084 $a) -arvo ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOtherRatings').then(otherRatings => {
     if (otherRatings.some(otherRating => otherRating.a084 === data.a084)) {
-      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä muu luokitus (084 $a)'});
       return;
     }
 
@@ -251,13 +251,13 @@ function addOtherTitle(event) {
   };
 
   if (data.value === '') {
-    showNotificationBanner({style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Muu nimeke ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoOtherTitles').then(otherTitles => {
     if (otherTitles.some(otherTitle => otherTitle.value === data.value)) {
-      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä muu nimeke'});
       return;
     }
 
@@ -279,13 +279,13 @@ function addUDK(event) {
   };
 
   if (data.a080 === '') {
-    showNotificationBanner({style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'UDK-luokitus (080 $a) -arvo ei voi olla tyhjä'});
     return;
   }
 
   idbGetStoredValues('artoUDKs').then(udks => {
     if (udks.some(udk => udk.a080 === data.a080)) {
-      showNotificationBanner({style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä UDK-luokitus (080 $a)'});
       return;
     }
 

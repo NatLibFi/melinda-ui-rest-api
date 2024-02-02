@@ -2,7 +2,7 @@ import {resetAndHideCcLicense, showCcLicense} from '/artikkelit/interfaces/artic
 import {idbGet, idbClear, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {sortRecordData} from '/artikkelit/utils/utils.js';
 import {getPublicationByISSN, getPublicationByISBN, getPublicationByTitle, getPublicationByMelindaId} from '/common/rest.js';
-import {formToJson, setOptions, startProcess, stopProcess, showNotificationBanner} from '/common/ui-utils.js';
+import {formToJson, setOptions, startProcess, stopProcess, showNotification} from '/common/ui-utils.js';
 
 
 export function initPublicationSearch(event) {
@@ -60,11 +60,11 @@ function searchResultChange(event) {
       document.getElementById(`lehden-paikka`).innerHTML = data.publisherInfo.publisherLocation;
 
       if (data.recordType === ('Kausijulkaisu' || 'Päivittyvä julkaisu') && sourceType !== 'journal') {
-        showNotificationBanner({style: 'alert', text: 'Kuvailun kohteena on artikkeli kokoomateoksessa, mutta valitsemasi julkaisu on kausijulkaisu tai päivittyvä julkaisu'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Kuvailun kohteena on artikkeli kokoomateoksessa, mutta valitsemasi julkaisu on kausijulkaisu tai päivittyvä julkaisu'});
       }
 
       if (data.recordType === ('Monografia') && sourceType !== 'book') {
-        showNotificationBanner({style: 'alert', text: 'Kuvailun kohteena on lehtiartikkeli, mutta valitsemasi julkaisu on monografia'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Kuvailun kohteena on lehtiartikkeli, mutta valitsemasi julkaisu on monografia'});
       }
     });
   }
@@ -118,7 +118,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetPublicationSearchResultSelect();
-        showNotificationBanner({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt tietueita!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by title', error);
       })
       .finally(() => stopProcess());
@@ -131,7 +131,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetPublicationSearchResultSelect();
-        showNotificationBanner({style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt tietueita!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by Melinda ID', error);
       })
       .finally(() => stopProcess());
@@ -144,7 +144,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetPublicationSearchResultSelect();
-        showNotificationBanner({style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt tietueita!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by ISBN', error);
       })
       .finally(() => stopProcess());
@@ -157,7 +157,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetPublicationSearchResultSelect();
-        showNotificationBanner({style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt tietueita!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt tietueita!'});
         console.log('Error while trying to get publication by ISSN', error);
       })
       .finally(() => stopProcess());

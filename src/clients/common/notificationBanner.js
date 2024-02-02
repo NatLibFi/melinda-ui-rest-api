@@ -6,7 +6,7 @@
 // Function for showing messages for user
 //
 // Use:
-// - import showNotificationBanner to your app js from ui-utils
+// - import showNotification to your app js from ui-utils
 // - add empty div element to your app html with id 'notificationBanners' and class "notificationBanners"
 // - call function with a string to create default notificationBanner or with a object parameter to create custom notificationBanner
 //
@@ -14,8 +14,8 @@
 //    * notification banner that is shown on top of the page to the user
 //    * contains just your message as string with default style 'info' and button for closing notificationBanner.
 //    * if your message text is long, you can use <br> to create line breaks.
-//    => showNotificationBanner(string)
-//    => example: showNotificationBanner('This is my message')
+//    => showNotification(string)
+//    => example: showNotification('This is my message')
 //
 // B: Custom notificationBanner
 //    * notification banner that is shown on top of the page to the user
@@ -23,8 +23,8 @@
 //       - style (as string) => the style of messagge, one of the following: info, success, alert, error
 //       - text (as string) => the message for user
 //       - linkButton (as <button> element) => if the user can do some extra action
-//    => showNotificationBanner({style: string, text: string, linkButton: <button>})
-//    => example: showNotificationBanner({style: 'alert', text: 'This is my warning message', linkButton: myLinkButton})
+//    => showNotification({componentStyle: 'banner', style: string, text: string, linkButton: <button>})
+//    => example: showNotification({componentStyle: 'banner', style: 'alert', text: 'This is my warning message', linkButton: myLinkButton})
 //        - note for linkButton:
 //            1. create a button element in app
 //                  => example: const myLinkButton = document.createElement('button')
@@ -34,7 +34,7 @@
 //                  => example: myLinkButton.addEventListener('click', function (event) {eventHandled(event); ...my action code here... });
 
 
-export function showNotificationBanner(notificationBannerContent) {
+export function showNotification(notificationBannerContent) {
 
   if (arguments.length === 0 || notificationBannerContent === null) {
     console.log('NotificationBanner needs arguments');

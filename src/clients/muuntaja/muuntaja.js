@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload,  showNotification, showNotificationBanner,
+  showTab, resetForms, reload,  showNotification, showNotification,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
@@ -306,7 +306,7 @@ window.copyLink = function (e) {
 
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
 
-  showNotificationBanner({style: 'success', text: 'Linkki kopioitu!'});
+  showNotification({componentStyle: 'banner', style: 'success', text: 'Linkki kopioitu!'});
 };
 
 //-----------------------------------------------------------------------------

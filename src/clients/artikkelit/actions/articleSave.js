@@ -1,7 +1,7 @@
 import {showFormActionsAfterSave, showRecordActionsAfterSave} from '/artikkelit/actions/articleModes.js'
 import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {addArticleRecord} from '/common/rest.js';
-import {showNotificationBanner, startProcess, stopProcess} from '/common/ui-utils.js';
+import {showNotification, startProcess, stopProcess} from '/common/ui-utils.js';
 
 
 
@@ -23,7 +23,7 @@ window.openSaveArticleRecordDialog = function (event = undefined) {
 window.cancelSave = function (event = undefined) {
   console.log('Nothing saved');
 
-  showNotificationBanner({status: 'info', text: 'Toiminto peruttu!'});
+  showNotification({componentStyle: 'banner', status: 'info', text: 'Toiminto peruttu!'});
 };
 
 //---------------------------------------------------------------------------//
@@ -47,7 +47,7 @@ function saveArticleRecord() {
     })
     .catch((error) => {
       console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
-      showNotificationBanner({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'});
     })
 }
 
@@ -82,7 +82,7 @@ function addRecord(data) {
     })
     .catch((error) => {
       console.log('Article record save failed, error: ', error);
-      showNotificationBanner({style: 'error', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
+      showNotification({componentStyle: 'banner', style: 'error', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
     })
     .finally(() => {
       stopProcess();
@@ -95,7 +95,7 @@ function addRecord(data) {
     showRecordActionsAfterSave();
     showArticleFormReadMode();
     showFormActionsAfterSave();
-    showNotificationBanner({style: 'success', text: 'Tietueen tallennus onnistui'});
+    showNotification({componentStyle: 'banner', style: 'success', text: 'Tietueen tallennus onnistui'});
   }
 
 
@@ -107,7 +107,7 @@ function addRecord(data) {
     recordNotes.innerHTML = 'Tietuetta tallentaessa löytyi mahdollinen duplikaatti. <br> <br> Tietuetta ei voitu tallentaa.'
     recordNotes.classList.add('record-error');
     highlightElement(recordNotes);
-    showNotificationBanner({style: 'alert', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti artikkelia ei pystytty tallentamaan ARTO-kokoelmaan'});
   }
 }
 
