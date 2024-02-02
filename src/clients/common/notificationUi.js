@@ -44,15 +44,20 @@
  * @example
  * //some example cases
  * 
- * //fast easy string, defaults to info banner with animation out and close button, stacks
+ * //Fast easy string, defaults to info banner with animation out and close button, can stack
  * showNotification('This is a test info');
  * 
- * //more spesific handling
- * //dialog with alert style. Remains on screen and can be closed. Does not block UI interaction
+ * //Using object. Dialog with alert style. Remains on screen and can be closed. Does not block UI interaction, can stack
  * showNotification({componentStyle: 'dialog', style:'alert', text: 'This is a bit more space needing information'});
  * 
- * //mass data handling, for example data array from server, array of objects
+ * //Mass data handling, for example data array from server, array of objects
  * showNotification(dataArrayFromServer);
+ * 
+ * //Can even throw multiple quick ones if so needed
+ * showNotification(['One Test', 'Second test']);
+ * 
+ * //Static reminder on top of the page. Supports multiple ones but in normal usercase we might want to have just one, use it sparingly
+ * showNotification({componentStyle: 'banner_static', style: 'info', text: 'Did you know that...'});
  */
 export function showNotification(notificationData){
     if(!notificationData){
