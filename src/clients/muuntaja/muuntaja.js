@@ -24,23 +24,28 @@ import {getNotifications} from '../common/notification.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  getNotifications('muuntaja')
-  .then(notificationObject => {
-    //generate appropriate ui items
-    if(notificationObject.hasBlocks){
-      showNotifications(notificationObject.blocking);
-    }
-    else{
+  checkNotificationsAndDoLogin();
+  
+  function checkNotificationsAndDoLogin(){
+    getNotifications('muuntaja')
+    .then(notificationObject => {
+      //generate appropriate ui items
+      //blocking should not do login (?), in case for example login service is offline
+      if(notificationObject.hasBlocks){
+        showNotifications(notificationObject.blocking);
+        return;
+      }
+
       showNotifications(notificationObject.notBlocking);
       doLogin(authSuccess);
-    }
-  })
-  .catch(err => {
-    console.log('Notification fetch failed');
-    //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', isDismissible: true});
-    doLogin(authSuccess);
-  });
-
+    })
+    .catch(err => {
+      console.log('Notification fetch failed');
+      //TODO: show notification about error ?
+      //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+      doLogin(authSuccess);
+    });
+  }
   function authSuccess(user) {
 
     profileRequest()
@@ -55,7 +60,6 @@ window.initialize = function () {
         doTransform();
       });
   }
-
   function parseUrlParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const sourceId = urlParams.get('sourceId') || '';
