@@ -1,7 +1,7 @@
 
 /**
  * Different notifications:
- * 
+ *
  * banner:
  *      can:
  *          - can animate
@@ -24,9 +24,9 @@
  *          - can animate
  *          - can remain on screen
  *          - can have interface blocking background
- *          - can be dismissed 
+ *          - can be dismissed
  *          - can autoremove itself
- *      does: 
+ *      does:
  *          - animates (in)
  *          - if data uses blocking background
  *          - if data sets linkbutton
@@ -38,24 +38,24 @@
  * - in array each data object is validated so it could be either object or string
  * - if not array data can be object or string
  * - any string based data gets default values in data formatting before show
- * 
- * @param {object|object[]|String|String[]} notificationData 
- * 
+ *
+ * @param {object|object[]|String|String[]} notificationData
+ *
  * @example
  * //some example cases
- * 
+ *
  * //Fast easy string, defaults to info banner with animation out and close button, can stack
  * showNotification('This is a test info');
- * 
+ *
  * //Using object. Dialog with alert style. Remains on screen and can be closed. Does not block UI interaction, can stack
  * showNotification({componentStyle: 'dialog', style:'alert', text: 'This is a bit more space needing information'});
- * 
+ *
  * //Mass data handling, for example data array from server, array of objects
  * showNotification(dataArrayFromServer);
- * 
+ *
  * //Can even throw multiple quick ones if so needed
  * showNotification(['One Test', 'Second test']);
- * 
+ *
  * //Static reminder on top of the page. Supports multiple ones but in normal usercase we might want to have just one, use it sparingly
  * showNotification({componentStyle: 'banner_static', style: 'info', text: 'Did you know that...'});
  */
@@ -86,13 +86,13 @@ export function showNotification(notificationData){
 }
 
 /**
- * Script info 
- * 
+ * Script info
+ *
  * This is a catch all function to take in either user thrown notification data or server formed data
  * If id field is present expect it to be from server so convert the data to format we want here
- * 
+ *
  * Theres a bunch of fields that are optional andor are present in different name in server data than set by hand
- * 
+ *
  * If unsure and you are throwing one notification by hand use only required ones (componentStyle, style, text)
  * or for quick info usage just pass your message as string instead of object, then system defaults to:
  * {
@@ -100,14 +100,14 @@ export function showNotification(notificationData){
  *  style: info
  *  text: you_passed_string_here
  * }
- * 
+ *
  * General logic structure:
  * > check data type generally and defaults
  *   > check style and formulate style dependent data, get container and elment/document, add to other data
  *      > show/create style spesific notification
- *          > set element stylings, add functionalities and missing elements, 
+ *          > set element stylings, add functionalities and missing elements,
  *          > add to notification to container
- * 
+ *
  * @param {object} data dataobject either from server or set by hand
  * @param {String} data.componentStyle server data, also supply self, in what format do we show the notification banner/dialog ... ? default to banner if not set
  * @param {String} data.style what kind of info notification show inffo/error etc. ?
@@ -123,7 +123,7 @@ export function showNotification(notificationData){
 function showSingleNotification(data){
     /**
      * Check data validity (is it in ok form)
-     * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case) 
+     * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case)
      */
 
     //test if data is in acceptable format, additional checks not only surface typeof
@@ -145,7 +145,7 @@ function showSingleNotification(data){
 
     /**
      * if data is object, as its expected to be:
-     * 
+     *
      * Format data for later usage, makes sure later we can expect same naming schema
      * some optional data can be undefined if data hand set (like id)
      * some optional data is for certain component style notification, (ie. isDismissible)
@@ -169,15 +169,15 @@ function showSingleNotification(data){
 
 /**
  * Banner
- * 
+ *
  * @param {HTMLDivElement} container container within document to hold shown notifications
- * @param {HTMLDivElement} noteElement template html document for said notification style 
+ * @param {HTMLDivElement} noteElement template html document for said notification style
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - id provided from server data, use for recording close action
- * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
- * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification 
+ * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it
+ * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
  */
 function showBanner(container, noteElement, dataForUi){
     const {style, text, linkButton, id, isDismissible} = dataForUi;
@@ -205,7 +205,7 @@ function showBanner(container, noteElement, dataForUi){
     /**
      * Handles animation start/end and listeners for them,
      * call displayNotificationWithAnimation, you can provide override/update object to modify behaviour
-     * if not given using default settings from the 
+     * if not given using default settings from the
      */
     function displayBannerWithAnimation(){
         displayNotificationWithAnimation(container, noteElement);
@@ -214,9 +214,9 @@ function showBanner(container, noteElement, dataForUi){
 
 /**
  * Banner Static
- * 
+ *
  * @param {HTMLDivElement} container container within document to hold shown notifications
- * @param {HTMLDivElement} noteElement template html document for said notification style 
+ * @param {HTMLDivElement} noteElement template html document for said notification style
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
@@ -248,19 +248,19 @@ function showBannerStatic(container, noteElement, dataForUi){
 }
 /**
  * Dialog
- * 
+ *
  * Dialog has a bit different setup where content is separated to background and content container
  * This div structure should be visible from within each apps that supports notification html
- * 
+ *
  * @param {HTMLDivElement} container container that holds background and content container for notifications
- * @param {HTMLDivElement} noteElement template html document for said notification style 
+ * @param {HTMLDivElement} noteElement template html document for said notification style
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
- * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it 
+ * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it
  * @param {String} [dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
- * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification 
+ * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
  * @param {String} [dataForUi.blocksInteraction=false] optional - use extra background to block interaction
  * @param {boolean} isStatic - should the notificaiton remain on screen waiting for input or using animation go away
  */
@@ -303,7 +303,7 @@ function showDialog(container, noteElement, dataForUi, isStatic){
 
 /**
  * tests if notification data is acceptable format
- * @param {String|object} data 
+ * @param {String|object} data
  * @returns {object} with valid and type fields
  */
 function isInputDataFormatGood(data){
@@ -312,18 +312,18 @@ function isInputDataFormatGood(data){
         isValid: type !== 'invalid',
         type: type
     }
-}; 
+};
 
 /**
- * 
- * @param {String|object} data data inputted to the showNotification function 
+ *
+ * @param {String|object} data data inputted to the showNotification function
  * @returns {String} object type as a string
  */
 function getInputDataType(data){
     if (typeof data === 'string' || data instanceof String) {
         return 'string';
     }
-  
+
     if (typeof data === 'object' && Object.keys(data).length !== 0 && Object.getPrototypeOf(data) === Object.prototype) {
         return 'object';
     }
@@ -332,9 +332,9 @@ function getInputDataType(data){
 }
 
 /**
- * Check what component style should apply, 
+ * Check what component style should apply,
  * get required additional style spesific data and pass it to correct show function
- * 
+ *
  * @param {object} data notification dataobject
  */
 function showCorrectStyleNotification(data){
@@ -349,8 +349,8 @@ function showCorrectStyleNotification(data){
         .then(([container, noteElement]) => {
             showBanner(container, noteElement, {
                 id: data.id,
-                style: data.style, 
-                text: data.text, 
+                style: data.style,
+                text: data.text,
                 linkButton: data.linkButton,
                 isDismissible: data.isDismissible,
             });
@@ -368,9 +368,9 @@ function showCorrectStyleNotification(data){
         getRequiredComponentData(componentInquiryData)
         .then(([container, noteElement]) => {
             showBannerStatic(container, noteElement, {
-                id: data.id, 
-                style: data.style, 
-                text: data.text, 
+                id: data.id,
+                style: data.style,
+                text: data.text,
                 linkButton: data.linkButton
             });
         })
@@ -387,9 +387,9 @@ function showCorrectStyleNotification(data){
         getRequiredComponentData(componentInquiryData)
         .then(([container, noteElement]) => {
             showDialog(container, noteElement, {
-                id: data.id, 
-                style: data.style, 
-                text: data.text, 
+                id: data.id,
+                style: data.style,
+                text: data.text,
                 title: data.title,
                 isDismissible: data.isDismissible,
                 blocksInteraction: data.blocksInteraction,
@@ -406,12 +406,13 @@ function showCorrectStyleNotification(data){
 
 /**
  * Function for loading container (where to put notifications) and notification document (what to put) data
- * 
+ *
  * @param {object} componentInquiryData to simplify functioncall
  * @param {String} componentInquiryData.componentStyle notifications component style, for logging
  * @param {String} componentInquiryData.templateId html files template to fetch
  * @param {String} componentInquiryData.elementId element withing template
  * @param {String} componentInquiryData.containerId container within document to put elements into
+ * @throws {Error} if at any point getting container and noteElement throws error
  * @returns {Promise}
  */
 async function getRequiredComponentData(componentInquiryData){
@@ -422,17 +423,18 @@ async function getRequiredComponentData(componentInquiryData){
         return [container, noteElement];
     })
     .catch(error => {
-        console.log(`Error in getting component data for ${componentStyle}`); 
+        console.log(`Error in getting component data for ${componentStyle}`);
         throw new Error(error);
     });
 }
 
 /**
- * 
+ *
  * Get notification html element from html files correct template
- * 
+ *
  * @param {String} templateId to get template with id from html file
- * @param {String} elementId to get element with id from template 
+ * @param {String} elementId to get element with id from template
+ * @throws {Error} if no html document or root element is found, also if rootelement does not get argumens or error happens on the process
  * @returns {Promise} returns html document and if no html found throws error
  */
 async function getNotificationElement(templateId, elementId){
@@ -474,11 +476,11 @@ async function getNotificationElement(templateId, elementId){
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-    
+
         const template = doc.getElementById(templateId);
         const fragment = template.content.cloneNode(true);
         const element = fragment.getElementById(elementId);
-    
+
         if(element){
             return element;
         }
@@ -489,14 +491,15 @@ async function getNotificationElement(templateId, elementId){
 
 /**
  * Get container where to put new htlm element to, add/look for "notifications"
- * 
+ *
  * If no container is found throw error since usage should be within getNotificationElement implementation and its error catcher should pick it up
- * 
+ *
  * @param {String} containerId if for container holding all notification elements
+ * @throws {Error} of we did not find container where to put notifications
  * @returns {HTMLDivElement}
  */
 function getContainerForNotifications(containerId){
-    
+
     const container = document.getElementById(containerId);
     if(container){
         return container;
@@ -507,7 +510,7 @@ function getContainerForNotifications(containerId){
 
 
 /**
- * 
+ *
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} style what style is the element suppose to be
  * @param {String} iconId element id for icon
@@ -520,8 +523,8 @@ function setStylings(noteElement, style, iconId){
     noteElement.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
 }
 /**
- * 
- * @param {String} style notification style (info/alert etc.) based visible stylings 
+ *
+ * @param {String} style notification style (info/alert etc.) based visible stylings
  */
 function getNotificationColoursAndIconsWithStyle(style){
     if(style === 'success'){
@@ -559,7 +562,7 @@ function getNotificationColoursAndIconsWithStyle(style){
  * @param {String} titleTextId titles text id
  * @param {String} style notification style
  * @param {String} [title] optional - title text to show
- * @returns 
+ * @returns
  */
 function addTitle(noteElement, titleTextId, style, title){
     if(!title){
@@ -570,7 +573,7 @@ function addTitle(noteElement, titleTextId, style, title){
     addText(noteElement, titleTextId, getDefaultTitleText(style));
 }
 /**
- * 
+ *
  * @param {String} style notification style
  * @returns {String} default title conttent
  */
@@ -584,7 +587,7 @@ function getDefaultTitleText(style){
   }
 
 /**
- * 
+ *
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} textId text element id
  * @param {String} text visible text
@@ -596,7 +599,7 @@ function addText(noteElement, textId, text){
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {html} [linkButton] optional - possible link button to ui
  * @param {String} linkButtonId id for linkbutton
- * @returns 
+ * @returns
  */
 function addLinkButton(noteElement, linkButton, linkButtonId){
     if(!linkButton || linkButton.nodeName !== 'BUTTON'){
@@ -609,7 +612,7 @@ function addLinkButton(noteElement, linkButton, linkButtonId){
 }
 
 /**
- * 
+ *
  * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
@@ -617,7 +620,7 @@ function addLinkButton(noteElement, linkButton, linkButtonId){
  * @param {String} [notificationId] optional - notification id if provided to record close action
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
- * @returns 
+ * @returns
  */
 function handleCloseButton(container, noteElement, closeButtonId, canDismiss=true, notificationId, removeElementOnClose = true, backgroundElement){
     if(canDismiss){
@@ -628,7 +631,7 @@ function handleCloseButton(container, noteElement, closeButtonId, canDismiss=tru
 }
 
 /**
- * 
+ *
  * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
@@ -640,7 +643,7 @@ function addCloseButton(container, noteElement, closeButtonId, notificationId, r
     noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
         eventHandled(event);
         noteElement.style.visibility = 'collapse';
-  
+
          if(notificationId){
           const idString = `notification_${notificationId}`;
           localStorage.setItem(idString, '1');
@@ -655,7 +658,7 @@ function addCloseButton(container, noteElement, closeButtonId, notificationId, r
 /**
  * Hide notification list background element if no active notifications on the list
  * Show with "setNotificationListBackground" within notification styles show function
- * 
+ *
  * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} backgroundElement separate background element for content container to be hidden if last element was removed
  */
@@ -665,7 +668,7 @@ function hideBackgroundIfNoActiveChildren(container, backgroundElement){
     if(!container || !backgroundElement){
         return;
     }
-    
+
     //if has children visible ignore this
     if(hasActiveChildren()){
         return;
@@ -687,13 +690,13 @@ function hideBackgroundIfNoActiveChildren(container, backgroundElement){
               isActive = true;
             }
           });
-  
+
           return isActive;
     }
 }
 
 /**
- * 
+ *
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
  */
@@ -703,8 +706,8 @@ function hideCloseButton(noteElement, closeButtonId){
 
 /**
  * NOTE! currently only supported by dialog
- * 
- * @param {HTMLDivElement} backgroundElement element that works as background 
+ *
+ * @param {HTMLDivElement} backgroundElement element that works as background
  * @param {boolean} showBackground should the element be visible and blocking interface
  */
 function setNotificationListBackground(backgroundElement, showBackground = false){
@@ -715,7 +718,7 @@ function setNotificationListBackground(backgroundElement, showBackground = false
 /**
  * Show and hide (or just show) automatically with css animation the element
  * Can autoremove elements upon animation end
- *  
+ *
  * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {object} [animationInfoObj] optional - object to hold additional information of animation
@@ -728,7 +731,7 @@ function setNotificationListBackground(backgroundElement, showBackground = false
  * @param {String} [animationInfoObj.onAnimationStart] optional - what to do after animation start
  * @param {String} [animationInfoObj.onAnimationEnd] optional - what to do after animation end (by default before this call hides element visibility)
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
- * 
+ *
  */
 function displayNotificationWithAnimation(container , noteElement, animationInfoObj, backgroundElement){
     //default settings
@@ -750,7 +753,7 @@ function displayNotificationWithAnimation(container , noteElement, animationInfo
         animationSettingsObject = {...defaultAnimationSettings, ...animationInfoObj};
     }
     const {classIdForAnimationElement, listenAnimationToEnd, animationStartName, animationEndName, animationEndVisibilityStyle, removeElementOnClose, onAnimationStart, onAnimationEnd} = animationSettingsObject;
-    
+
 
     //set listeners
     setAnimationStartListener();
@@ -792,7 +795,7 @@ function displayNotificationWithAnimation(container , noteElement, animationInfo
 /**
  * Remove notification item from container holding them, if theres a background element for that container check should it be hidden
  * Closing notificaiton or if timed animation closes it this should be called
- * 
+ *
  * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {HTMLDivElement} [backgroundElement]  optional - separate background element for content container to be hidden if last element was removed
@@ -813,12 +816,12 @@ function isDataValidType(data, validTypeArray){
     if(!Array.isArray(validTypeArray)){
         throw new Error('isDataValidType valid array parameter should be array of acceptable types');
     }
-    const dataType = typeof data; 
+    const dataType = typeof data;
     //typeof lists arrays as types of objects so exaception handler here for easier support for array in validTypeArray
     return validTypeArray.includes(dataType) || (validTypeArray.includes('array') && isDataTypeOf(data, 'array'));
 }
 /**
- * 
+ *
  * @param {*} data uncertain data
  * @param {String} expectedType what type should the data be ?
  * @returns {boolean} is the data expected type
