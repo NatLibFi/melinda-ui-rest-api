@@ -191,7 +191,7 @@ function showBanner(container, noteElement, dataForUi){
      * set data to ui
      */
     function createBanner(){
-        setStylings(noteElement, style, 'notificationbanner-icon');
+        setStylings(noteElement, noteElement, style, 'notificationbanner-icon');
         addText(noteElement, 'notificationbanner-text', text);
         addLinkButton(noteElement, linkButton, 'notificationbanner-link');
         handleCloseButton(container, noteElement, 'notificationbanner-close', isDismissible, id);
@@ -233,7 +233,9 @@ function showBannerStatic(container, noteElement, dataForUi){
      * set data to ui
      */
     function createBannerStatic(){
-        setStylings(noteElement, style, 'notificationbannerstatic-icon');
+        //static banner has it background in separate element in the background
+        const bgLevelElement = noteElement.querySelector(`.notificationbannerstatic-bg`);
+        setStylings(bgLevelElement, noteElement, style, 'notificationbannerstatic-icon')
         addText(noteElement, 'notificationbannerstatic-text', text);
     }
     /**
@@ -275,7 +277,7 @@ function showDialog(container, noteElement, dataForUi, isStatic){
     displayDialog();
 
     function createDialog(){
-        setStylings(noteElement, style, 'notificationdialog-icon');
+        setStylings(noteElement, noteElement, style, 'notificationdialog-icon');
         addTitle(noteElement, 'notificationdialog-title', style, title);
         addText(noteElement, 'notificationdialog-text', text);
         addLinkButton(noteElement, linkButton, 'notificationdialog-link');
@@ -510,17 +512,20 @@ function getContainerForNotifications(containerId){
 
 
 /**
+ * Handle elements visual style based on notification style setting. What kind of background color alert has etc.
  *
- * @param {HTMLDivElement} noteElement root element for visible notification item
+ * @param {HTMLDivElement} backgroundToStyleElement element thats background colos should be changed with style
+ * @param {HTMLDivElement} iconContainerElement element that holds within the icon
  * @param {String} style what style is the element suppose to be
  * @param {String} iconId element id for icon
  */
-function setStylings(noteElement, style, iconId){
+function setStylings(backgroundToStyleElement, iconContainerElement, style, iconId){
     const styleObj = getNotificationColoursAndIconsWithStyle(style);
 
-    noteElement.style.setProperty(`--style-background-color`, styleObj.bg);
-    noteElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
-    noteElement.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
+    backgroundToStyleElement.style.setProperty(`--style-background-color`, styleObj.bg);
+
+    iconContainerElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
+    iconContainerElement.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
 }
 /**
  *
