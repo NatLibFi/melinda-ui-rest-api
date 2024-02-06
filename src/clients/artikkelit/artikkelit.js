@@ -1,17 +1,36 @@
 import {idbClearAllTables} from '/artikkelit/actions/articleReset.js'
 import {initArticleForm} from '/artikkelit/actions/articleInitialize.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {showTab} from '/common/ui-utils.js';
+import {showTab, showNotification} from '/common/ui-utils.js';
 import {} from '/artikkelit/actions/articleCheck.js';
 import {} from '/artikkelit/actions/articleSave.js';
 import {} from '/artikkelit/actions/articleStartNew.js';
+import {getNotifications} from '../common/notification.js';
 
 
 window.initialize = function () {
   console.log('Initializing artikkelit');
 
-  doLogin(authSuccess);
+  checkNotificationsAndDoLogin();
 
+  function checkNotificationsAndDoLogin(){
+    getNotifications('artikkelit')
+    .then(notificationObject => {
+      //generate appropriate ui items
+      if(notificationObject.hasBlocks){
+        showNotification(notificationObject.blocking);
+        return;
+      }
+
+      showNotification(notificationObject.notBlocking);
+      doLogin(authSuccess);
+    })
+    .catch(err => {
+      console.log('Notification fetch failed');
+      showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+      doLogin(authSuccess);
+    });
+  }
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');
     accountMenu.classList.add('show');

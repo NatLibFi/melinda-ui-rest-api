@@ -6,11 +6,12 @@
 
 import {startProcess, stopProcess} from '/common/ui-utils.js';
 import {showTab, resetForms, reload} from '/common/ui-utils.js';
-import {createMenuBreak, createMenuItem, createMenuSelection} from '../common/ui-utils.js';
+import {createMenuBreak, createMenuItem, createMenuSelection, showNotification} from '../common/ui-utils.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
 import {modifyRecord} from '../common/rest.js';
+import {getNotifications} from '../common/notification.js';
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -19,7 +20,26 @@ import {modifyRecord} from '../common/rest.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  doLogin(authSuccess);
+  checkNotificationsAndDoLogin();
+
+  function checkNotificationsAndDoLogin(){
+    getNotifications('edit')
+    .then(notificationObject => {
+      //generate appropriate ui items
+      if(notificationObject.hasBlocks){
+        showNotification(notificationObject.blocking);
+        return;
+      }
+
+      showNotification(notificationObject.notBlocking);
+      doLogin(authSuccess);
+    })
+    .catch(err => {
+      console.log('Notification fetch failed');
+      showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+      doLogin(authSuccess);
+    });
+  }
 
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');

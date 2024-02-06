@@ -25,12 +25,11 @@ window.initialize = function () {
   console.log('Initializing');
 
   checkNotificationsAndDoLogin();
-  
+
   function checkNotificationsAndDoLogin(){
     getNotifications('muuntaja')
     .then(notificationObject => {
       //generate appropriate ui items
-      //blocking should not do login (?), in case for example login service is offline
       if(notificationObject.hasBlocks){
         showNotification(notificationObject.blocking);
         return;
@@ -41,8 +40,7 @@ window.initialize = function () {
     })
     .catch(err => {
       console.log('Notification fetch failed');
-      //TODO: show notification about error ?
-      //showNotifications({componentStyle: 'dialog', type: 'alert', message: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+      showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
       doLogin(authSuccess);
     });
   }
