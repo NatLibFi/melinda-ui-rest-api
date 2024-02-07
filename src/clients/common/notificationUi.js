@@ -19,6 +19,7 @@
  *      does:
  *          - statically visible
  *          - supports multiple static banners, if theres data for it, but you might want to make sure theres only data for one
+ *          - if data sets linkbutton
  * dialog:
  *      can:
  *          - can animate
@@ -118,7 +119,10 @@ export function showNotification(notificationData){
  * @param {String} [data.messageText] optional - server data, will be automatically moved to text field
  * @param {String} [data.isDismissible] optional - server data, also supply self, used in dialog, can user close notification, if not given defaults to true
  * @param {String} [data.blocksInteraction] optional - server data, also supply self, used in dialog, does notification have overlay behind it that blocks UI usage
- * @param {html} [data.linkButton] optional - button element to forward to some link address, available on componentStyle banner and dialog
+ * @param {object} [data.linkButtonData] optional - object for holding data for creating link button, overriden by url if present
+ * @param {object} [data.linkButtonData.text] optional - visible text for link button
+ * @param {object} [data.linkButtonData.url] optional - url to open
+ * @param {Element} [data.url] optional - can be server data, url to open with link button with, can be used for quick setting linkButton with default value for visible text
  */
 function showSingleNotification(data){
     /**
@@ -132,6 +136,7 @@ function showSingleNotification(data){
         console.log('showNotification data type is not valid');
         return;
     }
+
     //if data a string, use quick default values
     if(dataStatusObj.type === 'string'){
         //data is string so using default values and setting data as text
@@ -152,13 +157,14 @@ function showSingleNotification(data){
      * some optional data is provided by server data but in another field so move it into corrrect format (ie. messageText to text)
      */
     const isDataFromServer = data.id !== undefined;
+    const linkButtonCreationData = data.url ? {text:'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
     showCorrectStyleNotification({
         id: data.id,
         componentStyle: data.componentStyle ?? 'banner',
         title: data.title,
         style: isDataFromServer ?  data.messageStyle : data.style,
         text: isDataFromServer ?  data.messageText : data.text,
-        linkButton: data.linkButton,
+        linkButton: linkButtonCreationData ? createLinkButton(linkButtonCreationData) : undefined,
         isDismissible: data.isDismissible,
         blocksInteraction: data.blocksInteraction
     });
@@ -176,7 +182,7 @@ function showSingleNotification(data){
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - id provided from server data, use for recording close action
- * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it
+ * @param {Element} [dataForUi.linkButton] optional - button element with its own handlers, just append it
  * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
  */
 function showBanner(container, noteElement, dataForUi){
@@ -220,10 +226,11 @@ function showBanner(container, noteElement, dataForUi){
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
+ * @param {Element} [dataForUi.linkButton] optional - button element with its own handlers, just append it
  */
 
 function showBannerStatic(container, noteElement, dataForUi){
-    const {style, text} = dataForUi;
+    const {style, text, linkButton} = dataForUi;
 
     createBannerStatic();
     addBannerStatic();
@@ -237,6 +244,7 @@ function showBannerStatic(container, noteElement, dataForUi){
         const bgLevelElement = noteElement.querySelector(`.notificationbannerstatic-bg`);
         setStylings(bgLevelElement, noteElement, style, 'notificationbannerstatic-icon')
         addText(noteElement, 'notificationbannerstatic-text', text);
+        addLinkButton(noteElement, linkButton, 'notificationbannerstatic-link');
     }
     /**
      * Add noteElement to container
@@ -260,7 +268,7 @@ function showBannerStatic(container, noteElement, dataForUi){
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
- * @param {html} [dataForUi.linkButton] optional - button element with its own handlers, just append it
+ * @param {Element} [dataForUi.linkButton] optional - button element with its own handlers, just append it
  * @param {String} [dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
  * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
  * @param {String} [dataForUi.blocksInteraction=false] optional - use extra background to block interaction
@@ -395,6 +403,7 @@ function showCorrectStyleNotification(data){
                 title: data.title,
                 isDismissible: data.isDismissible,
                 blocksInteraction: data.blocksInteraction,
+                linkButton: data.linkButton,
             }, true);
         })
         .catch(error =>{console.log(error);});
@@ -602,7 +611,7 @@ function addText(noteElement, textId, text){
 }
 /**
  * @param {HTMLDivElement} noteElement root element for visible notification item
- * @param {html} [linkButton] optional - possible link button to ui
+ * @param {Element} [linkButton] optional - possible link button to ui
  * @param {String} linkButtonId id for linkbutton
  * @returns
  */
@@ -834,4 +843,64 @@ function isDataValidType(data, validTypeArray){
 function isDataTypeOf(data, expectedType){
     const dataType = typeof data;
     return expectedType === dataType || (dataType === 'object' && expectedType === 'array' && Array.isArray(data));
+}
+
+/**
+ * Creates clickable link button element.
+ * In order to open external url correctly its format is checked and only absolute format is accepted.
+ * IF relative path is required please update
+ *
+ * @param {object} dataObject data object for holding
+ * @param {String} dataObject.text visible text for link
+ * @param {String} dataObject.url link to open
+ * @returns {undefined|Element} return undefined if could not create button return button element with url click
+ */
+function createLinkButton(dataObject){
+    if(!dataObject){
+        console.log('Dataobject not set for linkbutton. Skipping');
+        return undefined;
+    }
+    const {text, url} = dataObject;
+    if(!text || !url){
+        console.log('Missing data when creating link button');
+        return undefined;
+    }
+    //see if url given is relative or absolute
+    //relative ones try to open with pages baseURI. We most likely want here to open external site so we want absolute
+    //essentially we want url with http: or https:
+    if(!isAbsoluteURL(url)){
+        console.log('Link button url set to relative please check url format');
+        return undefined;
+    }
+
+    const linkBtn = document.createElement('button');
+    linkBtn.innerHTML = text;
+    linkBtn.title = url;
+    linkBtn.addEventListener('click', () => {
+        //Note. If opened tab is baseURI + url provided then url came with relative url
+        //in order to correctly open new tab with url use absolute url, check data
+        window.open(url);
+    });
+    return linkBtn;
+
+    /**
+     * Test function to check format of the url
+     * @param {String} testUrl url to test if its relative or not
+     * @returns {boolean} if url is constructed successfully its absolute path
+     */
+    function isAbsoluteURL(testUrl){
+        try {
+            //try to construct URL with test string
+            new URL(testUrl);
+            return true;//absolute
+        } catch (error) {
+            if (error instanceof TypeError) {
+                return false;//relative
+            }
+
+            //other error, default to it being relative because it fails out
+            console.log(error);
+            return false;
+        }
+    }
 }
