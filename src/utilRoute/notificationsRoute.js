@@ -37,6 +37,7 @@ export default function () {
       //     blocksInteraction: false,
       //     isDismissible: true,
       //     endDate: new Date('2023-12-30T12:30:15.002'),
+      //     url: 'https://www.google.com',
       //     context: ['muuntaja']
       //   },
       //   {
@@ -91,8 +92,8 @@ export default function () {
       //     isDismissible: false,
       //     endDate: new Date('2023-12-30T12:30:15.002'),
       //     context: ['muuntaja']
-      //   },
-      //   //couple of blocking dialogs that take priority
+      //   }
+      //   ////couple of blocking dialogs that take priority
       //   // {
       //   //   id: '65805a34d500f6a4ff2eccc10',
       //   //   messageStyle: 'alert',
