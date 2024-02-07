@@ -19,6 +19,7 @@ window.initialize = function () {
     })
     .catch(err => {
       console.log('Notification fetch failed');
+      console.log(err);
       showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
       doLogin(authSuccess);
     });
