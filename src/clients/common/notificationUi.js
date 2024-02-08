@@ -186,7 +186,7 @@ function showSingleNotification(data){
  * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
  */
 function showBanner(container, noteElement, dataForUi){
-    const {style, text, linkButton, id, isDismissible} = dataForUi;
+    const {style, text, linkButton, id, isDismissible=true} = dataForUi;
 
     createBanner();
     addBanner();
@@ -275,7 +275,7 @@ function showBannerStatic(container, noteElement, dataForUi){
  * @param {boolean} isStatic - should the notificaiton remain on screen waiting for input or using animation go away
  */
 function showDialog(container, noteElement, dataForUi, isStatic){
-    const {style, text, linkButton, id, title, isDismissible, blocksInteraction} = dataForUi;
+    const {style, text, linkButton, id, title, isDismissible=true, blocksInteraction} = dataForUi;
     const backgroundElement = container.querySelector(`#notificationDialogsBg`);
     const contentContainerElement = container.querySelector(`#notificationDialogs`);
 
