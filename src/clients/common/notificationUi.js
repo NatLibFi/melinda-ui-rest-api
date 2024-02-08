@@ -9,11 +9,13 @@
  *          - can be dismissed manually
  *          - autoremoves itself
  *          - have linkbutton
+ *          - have action button
  *      does:
  *          - animates (in and out)
  *          - be dismissed manually
  *          - autoremoves itself
  *          - if data sets linkbutton
+ *          - if data sets action button (and automatically closes notification after action)
  *          - autoremove on close and animation out
  * banner_static:
  *      does:
@@ -27,11 +29,15 @@
  *          - can have interface blocking background
  *          - can be dismissed
  *          - can autoremove itself
+ *          - have linkbutton
+ *          - have linkbutton
  *      does:
  *          - animates (in)
  *          - if data uses blocking background
  *          - if data sets linkbutton
+ *          - if data sets action button (and automatically closes notification after action)
  *          - autoremove on close
+ *
  */
 
 /**
@@ -44,6 +50,9 @@
  *
  * @example
  * //some example cases
+ * In general you want to either pass string or object (or array with said data)
+ * String with simple text
+ * With object you want to set at least componentStyle, style and text
  *
  * //Fast easy string, defaults to info banner with animation out and close button, can stack
  * showNotification('This is a test info');
@@ -123,6 +132,9 @@ export function showNotification(notificationData){
  * @param {object} [data.linkButtonData.text] optional - visible text for link button
  * @param {object} [data.linkButtonData.url] optional - url to open
  * @param {Element} [data.url] optional - can be server data, url to open with link button with, can be used for quick setting linkButton with default value for visible text
+ * @param {object} [data.actionButtonData] optional - data object for setting action button
+ * @param {String} [data.actionButtonData.text] optional - visible text
+ * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
 function showSingleNotification(data){
     /**
@@ -157,14 +169,17 @@ function showSingleNotification(data){
      * some optional data is provided by server data but in another field so move it into corrrect format (ie. messageText to text)
      */
     const isDataFromServer = data.id !== undefined;
+    const style = isDataFromServer ?  data.messageStyle : data.style;
     const linkButtonCreationData = data.url ? {text:'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
+
     showCorrectStyleNotification({
         id: data.id,
         componentStyle: data.componentStyle ?? 'banner',
         title: data.title,
-        style: isDataFromServer ?  data.messageStyle : data.style,
+        style: style,
         text: isDataFromServer ?  data.messageText : data.text,
-        linkButton: linkButtonCreationData ? createLinkButton(linkButtonCreationData) : undefined,
+        linkButtonData: linkButtonCreationData,
+        actionButtonData:  data.actionButtonData,
         isDismissible: data.isDismissible,
         blocksInteraction: data.blocksInteraction
     });
@@ -182,11 +197,16 @@ function showSingleNotification(data){
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - id provided from server data, use for recording close action
- * @param {Element} [dataForUi.linkButton] optional - button element with its own handlers, just append it
  * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
+ * @param {object} [dataForUi.linkButtonData] optional - object holding data for creating link button
+ * @param {String} [dataForUi.linkButtonData.text] optional - visible text
+ * @param {String} [dataForUi.linkButtonData.url] optional - visible text
+ * @param {object} [dataForUi.actionButtonData] optional - object holding data for creating action button
+ * @param {object} [dataForUi.actionButtonData.text] optional - visible text
+ * @param {CallableFunction} [dataForUi.actionButtonData.onClick] optional - action upon press
  */
 function showBanner(container, noteElement, dataForUi){
-    const {style, text, linkButton, id, isDismissible=true} = dataForUi;
+    const {style, text, linkButtonData, actionButtonData, id, isDismissible=true} = dataForUi;
 
     createBanner();
     addBanner();
@@ -199,7 +219,14 @@ function showBanner(container, noteElement, dataForUi){
     function createBanner(){
         setStylings(noteElement, noteElement, style, 'notificationbanner-icon');
         addText(noteElement, 'notificationbanner-text', text);
-        addLinkButton(noteElement, linkButton, 'notificationbanner-link');
+        const linkButton = createLinkButton(linkButtonData);
+        const actionButton = createActionButton(style, actionButtonData, ()=>{closeNotification(container, noteElement, id);});
+        //if theres no close button and there is action button style actionbutton to right corner
+        if(!isDismissible && actionButton){
+            noteElement.querySelector(`.notificationbanner-action`).style.marginLeft = 'auto';
+        }
+        addButton(noteElement, linkButton, 'notificationbanner-link');
+        addButton(noteElement, actionButton, 'notificationbanner-action');
         handleCloseButton(container, noteElement, 'notificationbanner-close', isDismissible, id);
     }
     /**
@@ -214,7 +241,7 @@ function showBanner(container, noteElement, dataForUi){
      * if not given using default settings from the
      */
     function displayBannerWithAnimation(){
-        displayNotificationWithAnimation(container, noteElement);
+        displayNotificationWithAnimation(container, noteElement, undefined, undefined, id);
     }
 }
 
@@ -226,11 +253,13 @@ function showBanner(container, noteElement, dataForUi){
  * @param {object} dataForUi object for holding required data to show on ui
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
- * @param {Element} [dataForUi.linkButton] optional - button element with its own handlers, just append it
+ * @param {object} [dataForUi.linkButtonData] optional - object holding data for creating link button
+ * @param {String} [dataForUi.linkButtonData.text] optional - visible text
+ * @param {String} [dataForUi.linkButtonData.url] optional - visible text
  */
 
 function showBannerStatic(container, noteElement, dataForUi){
-    const {style, text, linkButton} = dataForUi;
+    const {style, text, linkButtonData} = dataForUi;
 
     createBannerStatic();
     addBannerStatic();
@@ -244,7 +273,8 @@ function showBannerStatic(container, noteElement, dataForUi){
         const bgLevelElement = noteElement.querySelector(`.notificationbannerstatic-bg`);
         setStylings(bgLevelElement, noteElement, style, 'notificationbannerstatic-icon')
         addText(noteElement, 'notificationbannerstatic-text', text);
-        addLinkButton(noteElement, linkButton, 'notificationbannerstatic-link');
+        const linkButton = createLinkButton(linkButtonData);
+        addButton(noteElement, linkButton, 'notificationbannerstatic-link');
     }
     /**
      * Add noteElement to container
@@ -268,14 +298,19 @@ function showBannerStatic(container, noteElement, dataForUi){
  * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} dataForUi.text visible text
  * @param {String} [dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
- * @param {Element} [dataForUi.linkButton] optional - button element with its own handlers, just append it
  * @param {String} [dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
  * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
  * @param {String} [dataForUi.blocksInteraction=false] optional - use extra background to block interaction
  * @param {boolean} isStatic - should the notificaiton remain on screen waiting for input or using animation go away
+ * @param {object} [dataForUi.linkButtonData] optional - object holding data for creating link button
+ * @param {String} [dataForUi.linkButtonData.text] optional - visible text
+ * @param {String} [dataForUi.linkButtonData.url] optional - visible text
+ * @param {object} [dataForUi.actionButtonData] optional - object holding data for creating action button
+ * @param {object} [dataForUi.actionButtonData.text] optional - visible text
+ * @param {CallableFunction} [dataForUi.actionButtonData.onClick] optional - action upon press
  */
 function showDialog(container, noteElement, dataForUi, isStatic){
-    const {style, text, linkButton, id, title, isDismissible=true, blocksInteraction=false} = dataForUi;
+    const {style, text, linkButtonData, actionButtonData, id, title, isDismissible=true, blocksInteraction=false} = dataForUi;
     const backgroundElement = container.querySelector(`#notificationDialogsBg`);
     const contentContainerElement = container.querySelector(`#notificationDialogs`);
 
@@ -288,7 +323,10 @@ function showDialog(container, noteElement, dataForUi, isStatic){
         setStylings(noteElement, noteElement, style, 'notificationdialog-icon');
         addTitle(noteElement, 'notificationdialog-title', style, title);
         addText(noteElement, 'notificationdialog-text', text);
-        addLinkButton(noteElement, linkButton, 'notificationdialog-link');
+        const linkButton = createLinkButton(linkButtonData);
+        const actionButton = createActionButton(style, actionButtonData, ()=>{closeNotification(contentContainerElement, noteElement, id, backgroundElement);});
+        addButton(noteElement, linkButton, 'notificationdialog-link');
+        addButton(noteElement, actionButton, 'notificationdialog-action');
         handleCloseButton(contentContainerElement, noteElement, 'notificationdialog-close', isDismissible, id, true, backgroundElement);
     }
     function addDialog(){
@@ -304,7 +342,7 @@ function showDialog(container, noteElement, dataForUi, isStatic){
             };
         }
         //standard behaviour with auto close
-        displayNotificationWithAnimation(contentContainerElement, noteElement, animationUpdateObject, backgroundElement);
+        displayNotificationWithAnimation(contentContainerElement, noteElement, animationUpdateObject, backgroundElement, id);
     }
 }
 
@@ -361,7 +399,8 @@ function showCorrectStyleNotification(data){
                 id: data.id,
                 style: data.style,
                 text: data.text,
-                linkButton: data.linkButton,
+                linkButtonData: data.linkButtonData,
+                actionButtonData: data.actionButtonData,
                 isDismissible: data.isDismissible,
             });
         })
@@ -381,7 +420,7 @@ function showCorrectStyleNotification(data){
                 id: data.id,
                 style: data.style,
                 text: data.text,
-                linkButton: data.linkButton
+                linkButtonData: data.linkButtonData
             });
         })
         .catch(error =>{console.log(error);});
@@ -403,7 +442,8 @@ function showCorrectStyleNotification(data){
                 title: data.title,
                 isDismissible: data.isDismissible,
                 blocksInteraction: data.blocksInteraction,
-                linkButton: data.linkButton,
+                linkButtonData: data.linkButtonData,
+                actionButtonData: data.actionButtonData,
             }, true);
         })
         .catch(error =>{console.log(error);});
@@ -609,20 +649,22 @@ function getDefaultTitleText(style){
 function addText(noteElement, textId, text){
     noteElement.querySelector(`.${textId}`).innerHTML = text;
 }
+
 /**
- * @param {HTMLDivElement} noteElement root element for visible notification item
- * @param {Element} [linkButton] optional - possible link button to ui
- * @param {String} linkButtonId id for linkbutton
- * @returns
+ * Add button element to div
+ * @param {HTMLDivElement} noteElement notification element
+ * @param {Element} buttonElement button element to add
+ * @param {String} buttonContainerId identification for where to place button
+ * @returns when data is not correct to set up button
  */
-function addLinkButton(noteElement, linkButton, linkButtonId){
-    if(!linkButton || linkButton.nodeName !== 'BUTTON'){
-        console.log('No linkButton set skipping');
+function addButton(noteElement, buttonElement, buttonContainerId){
+    if(!buttonElement || buttonElement.nodeName !== 'BUTTON'){
+        console.log('No button set skipping');
         return;
     }
 
-    noteElement.querySelector(`.${linkButtonId}`).style.display = 'flex';
-    noteElement.querySelector(`.${linkButtonId}`).append(linkButton);
+    noteElement.querySelector(`.${buttonContainerId}`).style.display = 'flex';
+    noteElement.querySelector(`.${buttonContainerId}`).append(buttonElement);
 }
 
 /**
@@ -656,17 +698,30 @@ function handleCloseButton(container, noteElement, closeButtonId, canDismiss=tru
 function addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement){
     noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
         eventHandled(event);
-        noteElement.style.visibility = 'collapse';
+        closeNotification(container, noteElement, backgroundElement, notificationId, removeElementOnClose);
+    });
+}
 
-         if(notificationId){
-          const idString = `notification_${notificationId}`;
-          localStorage.setItem(idString, '1');
-        }
+/**
+ * Closes notification, removes element (and background if needed) and marks notification as seen (if id given)
+ *
+ * @param {HTMLDivElement} container root element holding noteElements
+ * @param {HTMLDivElement} noteElement root element for visible notification item
+ * @param {String} [notificationId] optional - notification id if provided to record close action
+ * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
+ * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ */
+function closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose = true){
+    noteElement.style.visibility = 'collapse';
 
-        if(removeElementOnClose){
-            removeItemFromContainer(container, noteElement, backgroundElement);
-        }
-      });
+    if(notificationId){
+        const idString = `notification_${notificationId}`;
+        localStorage.setItem(idString, '1');
+    }
+
+    if(removeElementOnClose){
+        removeItemFromContainer(container, noteElement, backgroundElement);
+    }
 }
 
 /**
@@ -715,7 +770,7 @@ function hideBackgroundIfNoActiveChildren(container, backgroundElement){
  * @param {String} closeButtonId element id for close button
  */
 function hideCloseButton(noteElement, closeButtonId){
-    noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'hidden';
+    noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'collapse';
 }
 
 /**
@@ -745,9 +800,10 @@ function setNotificationListBackground(backgroundElement, showBackground = false
  * @param {String} [animationInfoObj.onAnimationStart] optional - what to do after animation start
  * @param {String} [animationInfoObj.onAnimationEnd] optional - what to do after animation end (by default before this call hides element visibility)
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
+ * @param {String} [notificationId] optional - notification id if provided to record close action
  *
  */
-function displayNotificationWithAnimation(container , noteElement, animationInfoObj, backgroundElement){
+function displayNotificationWithAnimation(container, noteElement, animationInfoObj, backgroundElement, notificationId){
     //default settings
     const defaultAnimationSettings = {
         'classIdForAnimationElement': 'show-and-hide',
@@ -799,7 +855,7 @@ function displayNotificationWithAnimation(container , noteElement, animationInfo
                 }
 
                 if(removeElementOnClose){
-                    removeItemFromContainer(container, noteElement, backgroundElement);
+                    closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
                 }
             }
         };
@@ -903,4 +959,62 @@ function createLinkButton(dataObject){
             return false;
         }
     }
+}
+
+/**
+ * Construct styled action button to given style
+ *
+ * @param {String} style What style of notificaiton are we talking about
+ * @param {object} buttonData data object for holding
+ * @param {String} buttonData.text visible text
+ * @param {CallableFunction} buttonData.onClick action on press
+ * @param {CallableFunction} afterClick any cleanup work after click?
+ * @returns {undefined|Element} get button or nothing
+ */
+function createActionButton(style, buttonData, afterClick){
+
+    //check priamry data
+    if(!style || !buttonData){
+        console.log('Action Button misses some data');
+        return undefined;
+    }
+
+    //deconstruct and check data again
+    const {text,onClick} = buttonData;
+
+    if(!text || !onClick){
+        console.log('Action buttons data object is lacking');
+        return undefined;
+    }
+
+    //create element
+    const actionBtn = document.createElement('button');
+    //add data to element and return it
+    actionBtn.innerHTML = text;
+    //actionBtn.classList.add(getClassForButton(style));
+    actionBtn.addEventListener('click', () => {
+        onClick();
+
+        //WIP: kinda meant to include closing the element if possible after the click
+        //kinda cleanup job within this script, should not be expected from outside
+        if(afterClick){
+            afterClick();
+        }
+    });
+    return actionBtn;
+
+    /**
+     * Get class to style the button
+     * @param {String} style whats the notification visual style
+     * @returns {String} if style is found return corresponding css class for it
+     */
+    function getClassForButton(style){
+        //TODO: update classnames
+        if(style === 'success'){return '';}
+        else if(style === 'alert'){return '';}
+        else if(style === 'error'){return '';}
+
+        //default to info style
+        return "";
+    };
 }
