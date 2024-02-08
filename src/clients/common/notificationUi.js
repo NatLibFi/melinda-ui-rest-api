@@ -1039,12 +1039,11 @@ function createActionButton(style, buttonData, afterClick){
     const actionBtn = document.createElement('button');
     //add data to element and return it
     actionBtn.innerHTML = text;
-    //actionBtn.classList.add(getClassForButton(style));
+    setClassesForButton(style, actionBtn);
     actionBtn.addEventListener('click', () => {
         onClick();
 
-        //WIP: kinda meant to include closing the element if possible after the click
-        //kinda cleanup job within this script, should not be expected from outside
+        //mosatly for cleanup job within this script, should not be expected from outside
         if(afterClick){
             afterClick();
         }
@@ -1052,17 +1051,46 @@ function createActionButton(style, buttonData, afterClick){
     return actionBtn;
 
     /**
-     * Get class to style the button
+     * Gets defined css classes for button and sets them in order
+     * @param {String} style notification style
+     * @param {Element} button action buttons element
+     */
+    function setClassesForButton(style, button){
+        const classArray = getClassesForButton(style);
+        for (const className of classArray) {
+            button.classList.add(className);
+        }
+    }
+    /**
+     * Get class to style the button each .className in css should be here defined as own element to array, they will be run in order to button element so note the order you push to array
+     * ie. in css .button.red.inverse should be here in array as ['button', 'red', 'inverse']
      * @param {String} style whats the notification visual style
      * @returns {String} if style is found return corresponding css class for it
      */
-    function getClassForButton(style){
+    function getClassesForButton(style){
+        let classArray = ['button'];
         //TODO: update classnames
-        if(style === 'success'){return '';}
-        else if(style === 'alert'){return '';}
-        else if(style === 'error'){return '';}
+        //TODO: theres simple colord ones like info button defined already, but as design document pointed, this so now using only two types of color code for buttons
+        // if(style === 'success'){
+        //     classArray.push('green');
+        //     return classArray;
+        // }
+        // else if(style === 'alert'){
+        //     classArray.push('yellow');
+        //     return classArray;
+        // }
+        // else if(style === 'error'){
+        //     classArray.push('red');
+        //     return classArray;
+        // }
+
+        if(style === 'error'){
+            classArray.push('alternate-red');
+            return classArray;
+        }
 
         //default to info style
-        return "";
+        classArray.push('blue');
+        return classArray;
     };
 }
