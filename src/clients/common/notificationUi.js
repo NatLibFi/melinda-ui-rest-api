@@ -248,13 +248,15 @@ function showBanner(container, noteElement, dataForUi){
         addText(noteElement, 'notificationbanner-text', text);
         const linkButton = createLinkButton(linkButtonData);
         const actionButton = createActionButton(style, actionButtonData, ()=>{closeNotification(container, noteElement, id);});
+        const linkId = 'notificationbanner-link';
+        const acationId = 'notificationbanner-action';
         //if theres no close button and there is action button style actionbutton to right corner
         if(!isDismissible && actionButton){
-            noteElement.querySelector(`.notificationbanner-action`).style.marginLeft = 'auto';
+            noteElement.querySelector(`.${acationId}`).style.marginLeft = 'auto';
         }
         //if only link with text move link to right
         else if(!isDismissible && !actionButton && linkButton){
-            noteElement.querySelector(`.notificationbanner-link`).style.marginLeft = 'auto';
+            noteElement.querySelector(`.${linkId}`).style.marginLeft = 'auto';
         }
         addButton(noteElement, linkButton, 'notificationbanner-link');
         addButton(noteElement, actionButton, 'notificationbanner-action');
@@ -686,11 +688,22 @@ function addText(noteElement, textId, text){
  * @param {HTMLDivElement} noteElement notification element
  * @param {Element} buttonElement button element to add
  * @param {String} buttonContainerId identification for where to place button
+ * @param {boolean} [removeContainer=true] if given button element is not available remove the container where its suppose to be set
  * @returns when data is not correct to set up button
  */
-function addButton(noteElement, buttonElement, buttonContainerId){
-    if(!buttonElement || buttonElement.nodeName !== 'BUTTON'){
-        console.log('No button set skipping');
+function addButton(noteElement, buttonElement, buttonContainerId, removeContainer=true){
+    if(!buttonElement){
+        //console.log('No button data to set. Skipping');
+
+        if(removeContainer){
+            //console.log('Removing button container');
+            noteElement.removeChild(noteElement.querySelector(`.${buttonContainerId}`));
+        }
+
+        return;
+    }
+    if(buttonElement.nodeName !== 'BUTTON'){
+        console.log('Trying to set none button');
         return;
     }
 
@@ -799,9 +812,13 @@ function hideBackgroundIfNoActiveChildren(container, backgroundElement){
  *
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
+ * @param {boolean} [removeContainer=true] should remove whole container
  */
-function hideCloseButton(noteElement, closeButtonId){
+function hideCloseButton(noteElement, closeButtonId, removeContainer=true){
     noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'collapse';
+    if(removeContainer){
+        noteElement.removeChild(noteElement.querySelector(`.${closeButtonId}`));
+    }
 }
 
 /**
@@ -886,7 +903,7 @@ function displayNotificationWithAnimation(container, noteElement, animationInfoO
                 }
 
                 if(removeElementOnClose){
-                    closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
+                    //closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
                 }
             }
         };
