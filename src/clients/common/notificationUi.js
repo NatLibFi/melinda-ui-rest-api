@@ -68,6 +68,33 @@
  *
  * //Static reminder on top of the page. Supports multiple ones but in normal usercase we might want to have just one, use it sparingly
  * showNotification({componentStyle: 'banner_static', style: 'info', text: 'Did you know that...'});
+ *
+ * //action and link buttons are enabled in banner and dialog componentStyle:s
+ * //they work independently, meaning they can be enabled at the same time (tho in banner if theres no close button action button moves right, and if thres no action button or close the link button moves to right - to save space)
+ *
+ * //heres basic example usage (note that current show functions iteration uses after action to close notification, after your onClick has been dealt with)
+ * //show banner with close button, link and action button
+ * showNotification({
+ *      componentStyle: 'banner', style: 'info', text:'Simple test',
+ *      linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
+ *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
+ * });
+ * //show banner with link and action button
+ * showNotification({
+ *      componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
+ *      linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
+ *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
+ * });
+ * //show banner with link button
+ * showNotification({
+ *      componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
+ *      linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
+ * });
+ * //show banner with action button
+ * showNotification({
+ *      componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
+ *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
+ * });
  */
 export function showNotification(notificationData){
     if(!notificationData){
@@ -224,6 +251,10 @@ function showBanner(container, noteElement, dataForUi){
         //if theres no close button and there is action button style actionbutton to right corner
         if(!isDismissible && actionButton){
             noteElement.querySelector(`.notificationbanner-action`).style.marginLeft = 'auto';
+        }
+        //if only link with text move link to right
+        else if(!isDismissible && !actionButton && linkButton){
+            noteElement.querySelector(`.notificationbanner-link`).style.marginLeft = 'auto';
         }
         addButton(noteElement, linkButton, 'notificationbanner-link');
         addButton(noteElement, actionButton, 'notificationbanner-action');
