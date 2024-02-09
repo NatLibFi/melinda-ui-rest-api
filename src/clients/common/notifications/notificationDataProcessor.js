@@ -1,5 +1,9 @@
 
-import {getServerNotifications} from './rest.js';
+import {getServerNotifications} from '../rest.js';
+import * as dataUtils from './notificationDataUtils.js';
+
+//re-export so they are available on manager
+export {dataUtils};
 
 /**
  * @param {String} clientName name of the client doing the request, if not correct shows notifications for all clients

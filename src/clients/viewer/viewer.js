@@ -5,7 +5,7 @@
 //*****************************************************************************
 
 import {
-  showTab, startProcess, stopProcess, showNotification,
+  showTab, startProcess, stopProcess, showNotification, showServerNotifications,
   createOption, enableElement, disableElement, highlightElement
 } from '/common/ui-utils.js';
 
@@ -20,7 +20,6 @@ import {getMatchLog, getMergeLog} from '/common/rest.js';
 import {unselectDateButtons, oneDayInMs} from './searchModal.js';
 import {checkFile} from './fileHandling.js';
 import {setProtectButton} from './logActions.js';
-import {getNotifications} from '../common/notification.js';
 
 //-----------------------------------------------------------------------------------------
 // Initialize on page load
@@ -33,27 +32,7 @@ window.initialize = function () {
   select.innerHTML = '';
   disableElement(select);
 
-  checkNotificationsAndDoLogin();
-
-  function checkNotificationsAndDoLogin(){
-    getNotifications('viewer')
-    .then(notificationObject => {
-      //generate appropriate ui items
-      if(notificationObject.hasBlocks){
-        showNotification(notificationObject.blocking);
-        return;
-      }
-
-      showNotification(notificationObject.notBlocking);
-      doLogin(authSuccess);
-    })
-    .catch(err => {
-      console.log('Notification fetch failed');
-      console.log(err);
-      showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
-      doLogin(authSuccess);
-    });
-  }
+  showServerNotifications('viewer', doLogin(authSuccess));
 
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');

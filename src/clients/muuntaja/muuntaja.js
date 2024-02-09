@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload, showNotification,
+  showTab, resetForms, reload, showNotification, showServerNotifications,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
@@ -14,7 +14,6 @@ import {
 import {Account, doLogin, logout} from '/common/auth.js';
 import {profileRequest, transformRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
-import {getNotifications} from '../common/notification.js';
 
 
 //-----------------------------------------------------------------------------
@@ -24,27 +23,8 @@ import {getNotifications} from '../common/notification.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  checkNotificationsAndDoLogin();
+  showServerNotifications('muuntaja', doLogin(authSuccess));
 
-  function checkNotificationsAndDoLogin(){
-    getNotifications('muuntaja')
-    .then(notificationObject => {
-      //generate appropriate ui items
-      if(notificationObject.hasBlocks){
-        showNotification(notificationObject.blocking);
-        return;
-      }
-
-      showNotification(notificationObject.notBlocking);
-      doLogin(authSuccess);
-    })
-    .catch(err => {
-      console.log('Notification fetch failed');
-      console.log(err);
-      showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
-      doLogin(authSuccess);
-    });
-  }
   function authSuccess(user) {
 
     profileRequest()

@@ -1,3 +1,55 @@
+//import {showBanner, showBannerStatic, showDialog} from './notificationUi.js';
+import {getNotifications, dataUtils} from './notificationDataProcessor.js';
+
+
+/**
+ * Wrapper function for showing server notifications keeping other scripts a bit cleaner
+ * Loads notifications from server and in certain cases triggers functions
+ *
+ * @param {CallableFunction} clientName client/page that requests server notifications
+ * @param {CallableFunction} [onSuccess] optional -triggers when loaded notification without blocks
+ * @param {CallableFunction} [onFailure] optional -triggers when error is thrown in process of loading or showing notification
+ * @param {CallableFunction} [onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
+ */
+export function showServerNotifications(clientName, onSuccess, onFailure, onBlock){
+    getNotifications(clientName)
+    .then(notificationObject => {
+      //generate appropriate ui items
+      if(notificationObject.hasBlocks){
+        showNotification(notificationObject.blocking);
+        if(onBlock){
+            onBlock();
+        }
+        return;
+      }
+
+      showNotification(notificationObject.notBlocking);
+
+      if(onSuccess){
+        onSuccess();
+        return;
+      }
+    })
+    .catch(err => {
+      console.log('Notification fetch failed');
+      console.log(err);
+
+      //failure/error could also indicate showing error so try to show error message but try catch it?
+      try {
+        showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+      } catch (error) {
+        console.log('Issue on showing failure notificaiton');
+        console.log(error);
+      }
+
+      if(onFailure){
+        onFailure();
+        return;
+      }
+
+      console.log('On failure parameter missing');
+    });
+}
 
 /**
  * Different notifications:
@@ -694,10 +746,8 @@ function addText(noteElement, textId, text){
 function addButton(noteElement, buttonElement, buttonContainerId, removeContainer=true){
     if(!buttonElement){
         //console.log('No button data to set. Skipping');
-
         if(removeContainer){
-            //console.log('Removing button container');
-            noteElement.removeChild(noteElement.querySelector(`.${buttonContainerId}`));
+            removeElementFromContainer(noteElement, buttonContainerId);
         }
 
         return;
@@ -742,7 +792,7 @@ function handleCloseButton(container, noteElement, closeButtonId, canDismiss=tru
 function addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement){
     noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
         eventHandled(event);
-        closeNotification(container, noteElement, backgroundElement, notificationId, removeElementOnClose);
+        closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
     });
 }
 
@@ -817,7 +867,7 @@ function hideBackgroundIfNoActiveChildren(container, backgroundElement){
 function hideCloseButton(noteElement, closeButtonId, removeContainer=true){
     noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'collapse';
     if(removeContainer){
-        noteElement.removeChild(noteElement.querySelector(`.${closeButtonId}`));
+        removeElementFromContainer(noteElement, closeButtonId);
     }
 }
 
@@ -828,6 +878,11 @@ function hideCloseButton(noteElement, closeButtonId, removeContainer=true){
  * @param {boolean} showBackground should the element be visible and blocking interface
  */
 function setNotificationListBackground(backgroundElement, showBackground = false){
+    if(!backgroundElement || !backgroundElement.style){
+        //console.log('Background element missing');
+        return;
+    }
+
     backgroundElement.style.visibility = showBackground ? 'visible' : 'hidden';
     backgroundElement.style.pointerEvents = showBackground ? 'unset' : 'auto';
 }
@@ -903,7 +958,7 @@ function displayNotificationWithAnimation(container, noteElement, animationInfoO
                 }
 
                 if(removeElementOnClose){
-                    //closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
+                    closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
                 }
             }
         };
@@ -921,6 +976,40 @@ function displayNotificationWithAnimation(container, noteElement, animationInfoO
 function removeItemFromContainer(container, noteElement, backgroundElement){
     container.removeChild(noteElement);
     hideBackgroundIfNoActiveChildren(container, backgroundElement);
+}
+
+/**
+ * General remove function for easier removing some element from container
+ * @param {HTMLDivElement} container upper element thats suppose to hold element thats required to remove
+ * @param {String} idOrClassName either class name or element id to seach
+ * @param {boolean} [useQuery=true] query based on class if false try to find with id
+ */
+function removeElementFromContainer(container, idOrClassName, useQuery=true){
+    if(!container || !idOrClassName){
+        console.log('removeElementFromContainer missing parameters');
+        return;
+    }
+    let element = fetchElement(container, idOrClassName, useQuery);
+    if(!element){
+        //console.log('No element to remove');
+        return;
+    }
+    //since element can be nested more deeply within container element just get the elements parent and with that remove child
+    const parent = element.parentNode;
+    if(!parent){
+        //console.log('Did not find element parent node to remove element');
+        return;
+    }
+    //remove sub element
+    parent.removeChild(element);
+
+    function fetchElement(container, idOrClassName, useQuery){
+        if(useQuery){
+            return container.querySelector(`.${idOrClassName}`);
+        }
+
+        return container.getElementById(idOrClassName);
+    }
 }
 
 /**
@@ -961,7 +1050,7 @@ function isDataTypeOf(data, expectedType){
  */
 function createLinkButton(dataObject){
     if(!dataObject){
-        console.log('Dataobject not set for linkbutton. Skipping');
+        //console.log('Dataobject not set for linkbutton. Skipping');
         return undefined;
     }
     const {text, url} = dataObject;
@@ -1023,7 +1112,7 @@ function createActionButton(style, buttonData, afterClick){
 
     //check priamry data
     if(!style || !buttonData){
-        console.log('Action Button misses some data');
+        //console.log('Action Button misses some data');
         return undefined;
     }
 

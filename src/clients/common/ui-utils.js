@@ -5,9 +5,9 @@
 //*****************************************************************************
 
 import {startProcess, stopProcess} from './progressbar.js';
-import {showNotification} from './notificationUi.js'
+import {showNotification, showServerNotifications} from './notifications/notificationManager.js'
 
-export {startProcess, stopProcess, showNotification};
+export {startProcess, stopProcess, showNotification, showServerNotifications};
 
 //-----------------------------------------------------------------------------
 

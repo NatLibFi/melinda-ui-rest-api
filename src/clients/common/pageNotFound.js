@@ -1,29 +1,8 @@
-import {showNotification, showTab} from '/./common/ui-utils.js';
+import {showNotification, showServerNotifications, showTab} from '/./common/ui-utils.js';
 import {Account, doLogin, logout} from '/./common/auth.js';
-import {getNotifications} from '/./common/notification.js';
 
 window.initialize = function () {
-  checkNotificationsAndDoLogin();
-
-  function checkNotificationsAndDoLogin(){
-    getNotifications('pageNotFound')
-    .then(notificationObject => {
-      //generate appropriate ui items
-      if(notificationObject.hasBlocks){
-        showNotification(notificationObject.blocking);
-        return;
-      }
-
-      showNotification(notificationObject.notBlocking);
-      doLogin(authSuccess);
-    })
-    .catch(err => {
-      console.log('Notification fetch failed');
-      console.log(err);
-      showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
-      doLogin(authSuccess);
-    });
-  }
+  showServerNotifications('pageNotFound', doLogin(authSuccess));
 
   function authSuccess(user) {
     showTab('pageNotFound');
