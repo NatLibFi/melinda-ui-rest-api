@@ -1,19 +1,19 @@
-import * as ui from './notificationUi.js';
 import {getNotifications, dataUtils} from './notificationDataProcessor.js';
 import * as resouceUtils from './notificationResourceUtils.js';
 
 
 /**
  * Wrapper function for showing server notifications keeping other scripts a bit cleaner
- * Loads notifications from server and in certain cases triggers functions
+ * Loads notifications from server and in certain cases triggers functions,
  *
  * @param {CallableFunction} clientName client/page that requests server notifications
  * @param {CallableFunction} [onSuccess] optional -triggers when loaded notification without blocks
  * @param {CallableFunction} [onFailure] optional -triggers when error is thrown in process of loading or showing notification
  * @param {CallableFunction} [onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
+ * @param {CallableFunction} [debug=false] optional - should debug features apply, for now if enabled on every reload clears data marks for notification read
  */
-export function showServerNotifications(clientName, onSuccess, onFailure, onBlock){
-    getNotifications(clientName)
+export function showServerNotifications(clientName, onSuccess, onFailure, onBlock, debug=false){
+    getNotifications(clientName, debug)
     .then(notificationObject => {
       //generate appropriate ui items
       if(notificationObject.hasBlocks){
@@ -216,7 +216,7 @@ export function showNotification(notificationData){
  * @param {String} [data.actionButtonData.text] optional - visible text
  * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
-function showSingleNotification(data){
+async function showSingleNotification(data){
     /**
      * Check data validity (is it in ok form)
      * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case)
@@ -232,10 +232,10 @@ function showSingleNotification(data){
     //if data a string, use quick default values
     if(dataStatusObj.type === 'string'){
         //data is string so using default values and setting data as text
-        showCorrectStyleNotification({
+        getComponentsAndShowUi({
             componentStyle: 'banner',
             style: 'info',
-            text: data
+            text: data,
         });
         return;
     }
@@ -251,8 +251,8 @@ function showSingleNotification(data){
     const isDataFromServer = data.id !== undefined;
     const style = isDataFromServer ?  data.messageStyle : data.style;
     const linkButtonCreationData = data.url ? {text:'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
-
-    showCorrectStyleNotification({
+    const closePrefixKey = await dataUtils.getNotificationConfigKeyValue('localstorePrefixKey');
+    getComponentsAndShowUi({
         id: data.id,
         componentStyle: data.componentStyle ?? 'banner',
         title: data.title,
@@ -261,7 +261,8 @@ function showSingleNotification(data){
         linkButtonData: linkButtonCreationData,
         actionButtonData:  data.actionButtonData,
         isDismissible: data.isDismissible,
-        blocksInteraction: data.blocksInteraction
+        blocksInteraction: data.blocksInteraction,
+        closePrefix: closePrefixKey
     });
 }
 
@@ -269,77 +270,25 @@ function showSingleNotification(data){
 // Helper functions
 
 /**
- * Check what component style should apply,
- * get required additional style spesific data and pass it to correct show function
+ * Using componentStyle get correct config data for getting correct components and pass all that for showing correct ui
  *
- * @param {object} data notification dataobject
+ * @param {*} data all notificaiton relevant data
+ * @returns {void}
  */
-function showCorrectStyleNotification(data){
-    if(data.componentStyle === 'banner'){
-        const componentInquiryData = {
-            componentStyle: data.componentStyle,
-            templateId: 'bannerTemplate',
-            elementId: 'banner',
-            containerId: 'banners'
-        };
-        resouceUtils.getRequiredComponentData(componentInquiryData)
-        .then(([container, noteElement]) => {
-            ui.showBanner(container, noteElement, {
-                id: data.id,
-                style: data.style,
-                text: data.text,
-                linkButtonData: data.linkButtonData,
-                actionButtonData: data.actionButtonData,
-                isDismissible: data.isDismissible,
-            });
-        })
-        .catch(error =>{console.log(error);});
-        return;
-    }
-    else if(data.componentStyle === 'banner_static'){
-        const componentInquiryData = {
-            componentStyle: data.componentStyle,
-            templateId: 'bannerStaticTemplate',
-            elementId: 'bannerStatic',
-            containerId: 'bannner_statics'
-        };
-        resouceUtils.getRequiredComponentData(componentInquiryData)
-        .then(([container, noteElement]) => {
-            ui.showBannerStatic(container, noteElement, {
-                id: data.id,
-                style: data.style,
-                text: data.text,
-                linkButtonData: data.linkButtonData
-            });
-        })
-        .catch(error =>{console.log(error);});
-        return;
-    }
-    else if(data.componentStyle === 'dialog'){
-        const componentInquiryData = {
-            componentStyle: data.componentStyle,
-            templateId: 'dialogTemplate',
-            elementId: 'dialog',
-            containerId: 'dialogs'
-        };
-        resouceUtils.getRequiredComponentData(componentInquiryData)
-        .then(([container, noteElement]) => {
-            ui.showDialog(container, noteElement, {
-                id: data.id,
-                style: data.style,
-                text: data.text,
-                title: data.title,
-                isDismissible: data.isDismissible,
-                blocksInteraction: data.blocksInteraction,
-                linkButtonData: data.linkButtonData,
-                actionButtonData: data.actionButtonData,
-            }, true);
-        })
-        .catch(error =>{console.log(error);});
+async function getComponentsAndShowUi(data){
+    //get config with resource info and show function
+    const showConfig = await dataUtils.getShowConfigData(data.componentStyle);
+    if(!showConfig || !showConfig.inquiryData){
+        console.log('showConfig or inquiry data not available');
         return;
     }
 
-
-    console.log('No proper componentStyle defined for showNotification');
+    //get component data and using matched show function pass relevant data
+    //failed or null fetches should trigger catch
+    resouceUtils.getRequiredComponentData(showConfig.inquiryData)
+    .then(([container, noteElement])=>{
+        showConfig.callUiToShow(container, noteElement, data);
+    })
+    .catch(error => {console.log(error);});
 }
 

@@ -1,0 +1,23 @@
+{
+    "localstorePrefixKey": "melinda_notification",
+    "resourceConfigs": [
+        {
+            "componentStyle": "banner",
+            "templateId": "bannerTemplate",
+            "elementId": "banner",
+            "containerId": "banners"
+        },
+        {
+            "componentStyle": "banner_static",
+            "templateId": "bannerStaticTemplate",
+            "elementId": "bannerStatic",
+            "containerId": "bannner_statics"
+        },
+        {
+            "componentStyle": "dialog",
+            "templateId": "dialogTemplate",
+            "elementId": "dialog",
+            "containerId": "dialogs"
+        }
+    ]
+}

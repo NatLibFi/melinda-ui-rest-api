@@ -53,7 +53,13 @@ export async function getNotificationElement(templateId, elementId){
         //TODO: fetch might be not the best option for long run so this might need revisioning
         //however its the most recommended way of handling it
         return fetch(path)
-        .then(response => response.text())
+        .then(response => {
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return response.text();
+        })
         .then(html => {
             if(html){
                 return html;

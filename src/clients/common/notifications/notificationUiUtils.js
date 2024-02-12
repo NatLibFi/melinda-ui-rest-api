@@ -125,13 +125,14 @@ export function addButton(noteElement, buttonElement, buttonContainerId, removeC
  * @param {String} closeButtonId element id for close button
  * @param {boolean} canDismiss can user close the notification
  * @param {String} [notificationId] optional - notification id if provided to record close action
+ * @param {String} [closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @returns
  */
-export function handleCloseButton(container, noteElement, closeButtonId, canDismiss=true, notificationId, removeElementOnClose = true, backgroundElement){
+export function handleCloseButton(container, noteElement, closeButtonId, canDismiss=true, notificationId, closePrefix, removeElementOnClose = true, backgroundElement){
     if(canDismiss){
-        addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose, backgroundElement);
+        addCloseButton(container, noteElement, closeButtonId, notificationId, closePrefix, removeElementOnClose, backgroundElement);
         return;
     }
     hideCloseButton(noteElement, closeButtonId);
@@ -143,13 +144,14 @@ export function handleCloseButton(container, noteElement, closeButtonId, canDism
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} closeButtonId element id for close button
  * @param {String} [notificationId] optional - notification id if provided to record close action
+ * @param {String} [closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  */
-export function addCloseButton(container, noteElement, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement){
+export function addCloseButton(container, noteElement, closeButtonId,  notificationId, closePrefix, removeElementOnClose = true, backgroundElement){
     noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
         eventHandled(event);
-        closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
+        closeNotification(container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose);
     });
 }
 
@@ -159,14 +161,15 @@ export function addCloseButton(container, noteElement, closeButtonId, notificati
  * @param {HTMLDivElement} container root element holding noteElements
  * @param {HTMLDivElement} noteElement root element for visible notification item
  * @param {String} [notificationId] optional - notification id if provided to record close action
+ * @param {String} [closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @param {boolean} [removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  */
-export function closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose = true){
+export function closeNotification(container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose = true){
     noteElement.style.visibility = 'collapse';
 
-    if(notificationId){
-        const idString = `notification_${notificationId}`;
+    if(notificationId && closePrefix){
+        const idString = `${closePrefix}_${notificationId}`;
         localStorage.setItem(idString, '1');
     }
 
@@ -261,9 +264,10 @@ export function setNotificationListBackground(backgroundElement, showBackground 
  * @param {String} [animationInfoObj.onAnimationEnd] optional - what to do after animation end (by default before this call hides element visibility)
  * @param {HTMLDivElement} [backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @param {String} [notificationId] optional - notification id if provided to record close action
+ * @param {String} [closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  *
  */
-export function displayNotificationWithAnimation(container, noteElement, animationInfoObj, backgroundElement, notificationId){
+export function displayNotificationWithAnimation(container, noteElement, animationInfoObj, backgroundElement, notificationId, closePrefix){
     //default settings
     const defaultAnimationSettings = {
         'classIdForAnimationElement': 'show-and-hide',
@@ -315,7 +319,7 @@ export function displayNotificationWithAnimation(container, noteElement, animati
                 }
 
                 if(removeElementOnClose){
-                    closeNotification(container, noteElement, notificationId, backgroundElement, removeElementOnClose);
+                    closeNotification(container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose);
                 }
             }
         };
