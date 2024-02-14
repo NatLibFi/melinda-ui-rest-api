@@ -35,7 +35,7 @@ export default function () {
           blocksInteraction: false,
           isDismissible: true,
           endDate: new Date('2023-12-30T12:30:15.002'),
-          url: 'https://www.google.com',
+          url: 'https://www.kansalliskirjasto.fi/',
           context: ['muuntaja']
         },
         {

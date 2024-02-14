@@ -9,22 +9,27 @@ import * as uiUtils from './notificationUiUtils.js';
 /**
  * Banner
  *
- * @param {HTMLDivElement} container container within document to hold shown notifications
- * @param {HTMLDivElement} noteElement template html document for said notification style
- * @param {object} dataForUi object for holding required data to show on ui
- * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
- * @param {String} dataForUi.text visible text
- * @param {String} dataForUi.closePrefix prefix for closing, used to save to local storage, comes from config, used only if id present
- * @param {String} [dataForUi.id] optional - id provided from server data, use for recording close action
- * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
- * @param {object} [dataForUi.linkButtonData] optional - object holding data for creating link button
- * @param {String} [dataForUi.linkButtonData.text] optional - visible text
- * @param {String} [dataForUi.linkButtonData.url] optional - visible text
- * @param {object} [dataForUi.actionButtonData] optional - object holding data for creating action button
- * @param {object} [dataForUi.actionButtonData.text] optional - visible text
- * @param {CallableFunction} [dataForUi.actionButtonData.onClick] optional - action upon press
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container container within document to hold shown notifications
+ * @param {HTMLDivElement} paramObj.noteElement template html document for said notification style
+ * @param {object} paramObj.dataForUi object for holding required data to show on ui
+ * @param {String} paramObj.dataForUi.style how does the notification itself should look like info/error etc.
+ * @param {String} paramObj.dataForUi.text visible text
+ * @param {String} paramObj.dataForUi.closePrefix prefix for closing, used to save to local storage, comes from config, used only if id present
+ * @param {String} [paramObj.dataForUi.id] optional - id provided from server data, use for recording close action
+ * @param {String} [paramObj.dataForUi.isDismissible=true] optional - can user close the notification
+ * @param {object} [paramObj.dataForUi.linkButtonData] optional - object holding data for creating link button
+ * @param {String} [paramObj.dataForUi.linkButtonData.text] optional - visible text
+ * @param {String} [paramObj.dataForUi.linkButtonData.url] optional - visible text
+ * @param {object} [paramObj.dataForUi.actionButtonData] optional - object holding data for creating action button
+ * @param {object} [paramObj.dataForUi.actionButtonData.text] optional - visible text
+ * @param {CallableFunction} [paramObj.dataForUi.actionButtonData.onClick] optional - action upon press
  */
-export function showBanner(container, noteElement, dataForUi){
+export function showBanner(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, noteElement, dataForUi} = paramObj;
     const {style, text, linkButtonData, actionButtonData, id, closePrefix, isDismissible=true} = dataForUi;
 
     createBanner();
@@ -73,17 +78,22 @@ export function showBanner(container, noteElement, dataForUi){
 /**
  * Banner Static
  *
- * @param {HTMLDivElement} container container within document to hold shown notifications
- * @param {HTMLDivElement} noteElement template html document for said notification style
- * @param {object} dataForUi object for holding required data to show on ui
- * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
- * @param {String} dataForUi.text visible text
- * @param {object} [dataForUi.linkButtonData] optional - object holding data for creating link button
- * @param {String} [dataForUi.linkButtonData.text] optional - visible text
- * @param {String} [dataForUi.linkButtonData.url] optional - visible text
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container container within document to hold shown notifications
+ * @param {HTMLDivElement} paramObj.noteElement template html document for said notification style
+ * @param {object} paramObj.dataForUi object for holding required data to show on ui
+ * @param {String} paramObj.dataForUi.style how does the notification itself should look like info/error etc.
+ * @param {String} paramObj.dataForUi.text visible text
+ * @param {object} [paramObj.dataForUi.linkButtonData] optional - object holding data for creating link button
+ * @param {String} [paramObj.dataForUi.linkButtonData.text] optional - visible text
+ * @param {String} [paramObj.dataForUi.linkButtonData.url] optional - visible text
  */
 
-export function showBannerStatic(container, noteElement, dataForUi){
+export function showBannerStatic(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, noteElement, dataForUi} = paramObj;
     const {style, text, linkButtonData} = dataForUi;
 
     createBannerStatic();
@@ -117,26 +127,32 @@ export function showBannerStatic(container, noteElement, dataForUi){
  * Dialog has a bit different setup where content is separated to background and content container
  * This div structure should be visible from within each apps that supports notification html
  *
- * @param {HTMLDivElement} container container that holds background and content container for notifications
- * @param {HTMLDivElement} noteElement template html document for said notification style
- * @param {object} dataForUi object for holding required data to show on ui
- * @param {String} dataForUi.style how does the notification itself should look like info/error etc.
- * @param {String} dataForUi.text visible text
- * @param {String} dataForUi.closePrefix prefix for closing, used to save to local storage, comes from config, used only if id present
- * @param {String} [dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
- * @param {String} [dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
- * @param {String} [dataForUi.isDismissible=true] optional - can user close the notification
- * @param {String} [dataForUi.blocksInteraction=false] optional - use extra background to block interaction
- * @param {object} [dataForUi.linkButtonData] optional - object holding data for creating link button
- * @param {String} [dataForUi.linkButtonData.text] optional - visible text
- * @param {String} [dataForUi.linkButtonData.url] optional - visible text
- * @param {object} [dataForUi.actionButtonData] optional - object holding data for creating action button
- * @param {object} [dataForUi.actionButtonData.text] optional - visible text
- * @param {CallableFunction} [dataForUi.actionButtonData.onClick] optional - action upon press
- * @param {boolean} [isStatic=true] optional - should the notificaiton remain on screen waiting for input or using animation go away
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container container that holds background and content container for notifications
+ * @param {HTMLDivElement} paramObj.noteElement template html document for said notification style
+ * @param {object} paramObj.dataForUi object for holding required data to show on ui
+ * @param {String} paramObj.dataForUi.style how does the notification itself should look like info/error etc.
+ * @param {String} paramObj.dataForUi.text visible text
+ * @param {String} paramObj.dataForUi.closePrefix prefix for closing, used to save to local storage, comes from config, used only if id present
+ * @param {String} [paramObj.dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
+ * @param {String} [paramObj.dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
+ * @param {String} [paramObj.dataForUi.isDismissible=true] optional - can user close the notification
+ * @param {String} [paramObj.dataForUi.blocksInteraction=false] optional - use extra background to block interaction
+ * @param {object} [paramObj.dataForUi.linkButtonData] optional - object holding data for creating link button
+ * @param {String} [paramObj.dataForUi.linkButtonData.text] optional - visible text
+ * @param {String} [paramObj.dataForUi.linkButtonData.url] optional - visible text
+ * @param {object} [paramObj.dataForUi.actionButtonData] optional - object holding data for creating action button
+ * @param {object} [paramObj.dataForUi.actionButtonData.text] optional - visible text
+ * @param {CallableFunction} [paramObj.dataForUi.actionButtonData.onClick] optional - action upon press
+ * @param {boolean} [paramObj.isStatic=true] optional - should the notificaiton remain on screen waiting for input or using animation go away
  */
-export function showDialog(container, noteElement, dataForUi, isStatic=true){
+export function showDialog(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, noteElement, dataForUi, isStatic=true} = paramObj;
     const {style, text, linkButtonData, actionButtonData, closePrefix, id, title, isDismissible=true, blocksInteraction=false} = dataForUi;
+    
     const backgroundElement = container.querySelector(`#notificationDialogsBg`);
     const contentContainerElement = container.querySelector(`#notificationDialogs`);
 

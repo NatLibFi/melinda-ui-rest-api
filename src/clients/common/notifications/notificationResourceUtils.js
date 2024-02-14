@@ -4,16 +4,22 @@
 /**
  * Function for loading container (where to put notifications) and notification document (what to put) data
  *
- * @param {object} componentInquiryData to simplify functioncall
- * @param {String} componentInquiryData.componentStyle notifications component style, for logging
- * @param {String} componentInquiryData.templateId html files template to fetch
- * @param {String} componentInquiryData.elementId element withing template
- * @param {String} componentInquiryData.containerId container within document to put elements into
+ * @param {object} paramObj object delivery for function
+ * @param {object} paramObj.componentInquiryData to simplify functioncall
+ * @param {String} paramObj.componentInquiryData.componentStyle notifications component style, for logging
+ * @param {String} paramObj.componentInquiryData.templateId html files template to fetch
+ * @param {String} paramObj.componentInquiryData.elementId element withing template
+ * @param {String} paramObj.componentInquiryData.containerId container within document to put elements into
  * @throws {Error} if at any point getting container and noteElement throws error
  * @returns {Promise}
  */
-export async function getRequiredComponentData(componentInquiryData){
+export async function getRequiredComponentData(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {componentInquiryData} = paramObj;
     const {componentStyle, templateId, elementId, containerId} = componentInquiryData;
+
     return getNotificationElement(templateId, elementId)
     .then(noteElement => {
         const container = getContainerForNotifications(containerId);
@@ -29,12 +35,17 @@ export async function getRequiredComponentData(componentInquiryData){
  *
  * Get notification html element from html files correct template
  *
- * @param {String} templateId to get template with id from html file
- * @param {String} elementId to get element with id from template
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.templateId to get template with id from html file
+ * @param {String} paramObj.elementId to get element with id from template
  * @throws {Error} if no html document or root element is found, also if rootelement does not get argumens or error happens on the process
  * @returns {Promise} returns html document and if no html found throws error
  */
-export async function getNotificationElement(templateId, elementId){
+export async function getNotificationElement(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {templateId, elementId} = paramObj;
 
     return getHtml('/../common/templates/notification.html')
     .then(html => {
@@ -97,11 +108,16 @@ export async function getNotificationElement(templateId, elementId){
  *
  * If no container is found throw error since usage should be within getNotificationElement implementation and its error catcher should pick it up
  *
- * @param {String} containerId if for container holding all notification elements
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.containerId if for container holding all notification elements
  * @throws {Error} of we did not find container where to put notifications
  * @returns {HTMLDivElement}
  */
-export function getContainerForNotifications(containerId){
+export function getContainerForNotifications(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {containerId} = paramObj;
 
     const container = document.getElementById(containerId);
     if(container){

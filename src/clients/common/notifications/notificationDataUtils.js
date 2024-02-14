@@ -5,10 +5,17 @@ import * as ui from './notificationUi.js';
 
 /**
  * tests if notification data is acceptable format
- * @param {String|object} data
+ * 
+ * @param {object} paramObj object delivery for function
+ * @param {String|object} paramObj.data
  * @returns {object} with valid and type fields
  */
-export function isInputDataFormatGood(data){
+export function isInputDataFormatGood(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {data} = paramObj;
+
     const type = getInputDataType(data);
     return {
         isValid: type !== 'invalid',
@@ -18,10 +25,16 @@ export function isInputDataFormatGood(data){
 
 /**
  *
- * @param {String|object} data data inputted to the showNotification function
+ * @param {object} paramObj object delivery for function
+ * @param {String|object} paramObj.data data inputted to the showNotification function
  * @returns {String} object type as a string
  */
-export function getInputDataType(data){
+export function getInputDataType(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {data} = paramObj;
+
     if (typeof data === 'string' || data instanceof String) {
         return 'string';
     }
@@ -35,12 +48,19 @@ export function getInputDataType(data){
 
 /**
  * Check is single datapoint is acceptable
- * @param {*} data uncertain data type
- * @param {String[]} validTypeArray different types of data, see typeof documentation, self build support for 'array' type
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {*} paramObj.data uncertain data type
+ * @param {String[]} paramObj.validTypeArray different types of data, see typeof documentation, self build support for 'array' type
  * @throws {Error} if validtype array is not array
  * @returns {boolean} true if data type is found from array
  */
-export function isDataValidType(data, validTypeArray){
+export function isDataValidType(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {data, validTypeArray} = paramObj;
+
     if(!Array.isArray(validTypeArray)){
         throw new Error('isDataValidType valid array parameter should be array of acceptable types');
     }
@@ -51,11 +71,17 @@ export function isDataValidType(data, validTypeArray){
 
 /**
  *
- * @param {*} data uncertain data
- * @param {String} expectedType what type should the data be ?
+ * @param {object} paramObj object delivery for function
+ * @param {*} paramObj.data uncertain data
+ * @param {String} paramObj.expectedType what type should the data be ?
  * @returns {boolean} is the data expected type
  */
-export function isDataTypeOf(data, expectedType){
+export function isDataTypeOf(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {data, expectedType} = paramObj;
+
     const dataType = typeof data;
     return expectedType === dataType || (dataType === 'object' && expectedType === 'array' && Array.isArray(data));
 }
@@ -79,22 +105,36 @@ export async function clearNotificationLocalStorage(){
 
 /**
  * Get value from config json with key
- * @param {String} key with configs key get value for it
+ * 
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.key with configs key get value for it
  * @returns {*|undefined} whatever value the key holds in json or if key does not exist undefined
  * @throws {Error} if process fails
  */
-export async function getNotificationConfigKeyValue(key){
+export async function getNotificationConfigKeyValue(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {key} = paramObj;
+
     const path = '/../common/notifications/notificationConfig.json';
     return getConfigKeyValue(path, key)
 }
 
 /**
  * Get config data from config json
- * @param {String} path path to config file
+ * 
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.path path to config file
  * @returns {object} get object from config file
  * @throws {Error} if theres issue with getting config
  */
-async function getConfig(path){
+async function getConfig(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {path} = paramObj;
+
     return fetch(path)
     .then(response => {
         if(!response.ok){
@@ -113,11 +153,17 @@ async function getConfig(path){
 /**
  * Get field value from config file
  *
- * @param {String} path path to config file
- * @param {String} key fields key
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.path path to config file
+ * @param {String} paramObj.key fields key
  * @returns {*|undefined} returns value of the key or undefined if key not found
  */
-async function getConfigKeyValue(path, key){
+async function getConfigKeyValue(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {path, key} = paramObj;
+
     return getConfig(path)
     .then(configData => {
         return configData?.[key];
@@ -132,10 +178,17 @@ async function getConfigKeyValue(path, key){
 
 /**
  * Get data required for getting and showing component (with ui data)
- * @param {String} componentStyle
+ * 
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.componentStyle
  * @returns {object|undefined} with
  */
-export async function getShowConfigData(componentStyle){
+export async function getShowConfigData(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {componentStyle} = paramObj;
+
     if(!componentStyle){
         console.log('Missing param on getShowConfigData');
         return undefined;
