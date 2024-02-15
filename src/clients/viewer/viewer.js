@@ -32,7 +32,7 @@ window.initialize = function () {
   select.innerHTML = '';
   disableElement(select);
 
-  showServerNotifications('viewer', doLogin(authSuccess));
+  showServerNotifications({clientName: 'viewer', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');

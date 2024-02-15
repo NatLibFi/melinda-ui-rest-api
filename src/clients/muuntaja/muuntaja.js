@@ -23,7 +23,7 @@ import {showRecord, editField} from '/common/marc-record-ui.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  showServerNotifications('muuntaja', doLogin(authSuccess));
+  showServerNotifications({clientName: 'muuntaja', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
 

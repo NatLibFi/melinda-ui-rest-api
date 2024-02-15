@@ -20,9 +20,9 @@ export async function getRequiredComponentData(paramObj){
     const {componentInquiryData} = paramObj;
     const {componentStyle, templateId, elementId, containerId} = componentInquiryData;
 
-    return getNotificationElement(templateId, elementId)
+    return getNotificationElement({templateId: templateId, elementId: elementId})
     .then(noteElement => {
-        const container = getContainerForNotifications(containerId);
+        const container = getContainerForNotifications({containerId: containerId});
         return [container, noteElement];
     })
     .catch(error => {
@@ -30,6 +30,9 @@ export async function getRequiredComponentData(paramObj){
         throw new Error(error);
     });
 }
+
+//************************************************************************************** */
+// Helper functions
 
 /**
  *
@@ -41,7 +44,7 @@ export async function getRequiredComponentData(paramObj){
  * @throws {Error} if no html document or root element is found, also if rootelement does not get argumens or error happens on the process
  * @returns {Promise} returns html document and if no html found throws error
  */
-export async function getNotificationElement(paramObj){
+async function getNotificationElement(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
     }
@@ -113,7 +116,7 @@ export async function getNotificationElement(paramObj){
  * @throws {Error} of we did not find container where to put notifications
  * @returns {HTMLDivElement}
  */
-export function getContainerForNotifications(paramObj){
+function getContainerForNotifications(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
     }

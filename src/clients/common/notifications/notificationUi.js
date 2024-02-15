@@ -41,12 +41,12 @@ export function showBanner(paramObj){
      * set data to ui
      */
     function createBanner(){
-        uiUtils.setStylings(noteElement, noteElement, style, 'notificationbanner-icon');
-        uiUtils.addText(noteElement, 'notificationbanner-text', text);
-        const linkButton = uiUtils.createLinkButton(linkButtonData);
-        const actionButton = uiUtils.createActionButton(style, actionButtonData, ()=>{closeNotification(container, noteElement, id);});
+
+        const linkButton = uiUtils.createLinkButton({dataObject: linkButtonData});
+        const actionButton = uiUtils.createActionButton({style:style, buttonData: actionButtonData, afterClick: ()=>{uiUtils.closeNotification({container: container, noteElement: noteElement, notificationId: id, closePrefix: closePrefix});}});
         const linkId = 'notificationbanner-link';
         const acationId = 'notificationbanner-action';
+
         //if theres no close button and there is action button style actionbutton to right corner
         if(!isDismissible && actionButton){
             noteElement.querySelector(`.${acationId}`).style.marginLeft = 'auto';
@@ -55,9 +55,12 @@ export function showBanner(paramObj){
         else if(!isDismissible && !actionButton && linkButton){
             noteElement.querySelector(`.${linkId}`).style.marginLeft = 'auto';
         }
-        uiUtils.addButton(noteElement, linkButton, 'notificationbanner-link');
-        uiUtils.addButton(noteElement, actionButton, 'notificationbanner-action');
-        uiUtils.handleCloseButton(container, noteElement, 'notificationbanner-close', isDismissible, id, closePrefix);
+
+        uiUtils.setStylings({backgroundToStyleElement: noteElement, iconContainerElement: noteElement, style: style, iconId: 'notificationbanner-icon'})
+        uiUtils.addText({noteElement: noteElement, textId: 'notificationbanner-text', text: text})
+        uiUtils.addButton({noteElement: noteElement, buttonElement: linkButton, buttonContainerId: 'notificationbanner-link'});
+        uiUtils.addButton({noteElement: noteElement, buttonElement: actionButton, buttonContainerId: 'notificationbanner-action'});
+        uiUtils.handleCloseButton({container: container, noteElement: noteElement, closeButtonId: 'notificationbanner-close', canDismiss: isDismissible, notificationId: id, closePrefix: closePrefix});
     }
     /**
      * Add noteElement to container
@@ -71,10 +74,9 @@ export function showBanner(paramObj){
      * if not given using default settings from the
      */
     function displayBannerWithAnimation(){
-        uiUtils.displayNotificationWithAnimation(container, noteElement, undefined, undefined, id, closePrefix);
+        uiUtils.displayNotificationWithAnimation({container: container, noteElement: noteElement, notificationId: id, closePrefix: closePrefix});
     }
 }
-
 /**
  * Banner Static
  *
@@ -88,7 +90,6 @@ export function showBanner(paramObj){
  * @param {String} [paramObj.dataForUi.linkButtonData.text] optional - visible text
  * @param {String} [paramObj.dataForUi.linkButtonData.url] optional - visible text
  */
-
 export function showBannerStatic(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
@@ -106,10 +107,11 @@ export function showBannerStatic(paramObj){
     function createBannerStatic(){
         //static banner has it background in separate element in the background
         const bgLevelElement = noteElement.querySelector(`.notificationbannerstatic-bg`);
-        uiUtils.setStylings(bgLevelElement, noteElement, style, 'notificationbannerstatic-icon')
-        uiUtils.addText(noteElement, 'notificationbannerstatic-text', text);
-        const linkButton = uiUtils.createLinkButton(linkButtonData);
-        uiUtils.addButton(noteElement, linkButton, 'notificationbannerstatic-link');
+        const linkButton = uiUtils.createLinkButton({dataObject: linkButtonData});
+
+        uiUtils.setStylings({backgroundToStyleElement: bgLevelElement, iconContainerElement: noteElement, style: style, iconId: 'notificationbannerstatic-icon'});
+        uiUtils.addText({noteElement: noteElement, textId:'notificationbannerstatic-text', text: text});
+        uiUtils.addButton({noteElement: noteElement, buttonElement: linkButton, buttonContainerId: 'notificationbannerstatic-link'});
     }
     /**
      * Add noteElement to container
@@ -152,24 +154,25 @@ export function showDialog(paramObj){
     }
     const {container, noteElement, dataForUi, isStatic=true} = paramObj;
     const {style, text, linkButtonData, actionButtonData, closePrefix, id, title, isDismissible=true, blocksInteraction=false} = dataForUi;
-    
+
     const backgroundElement = container.querySelector(`#notificationDialogsBg`);
     const contentContainerElement = container.querySelector(`#notificationDialogs`);
 
-    uiUtils.setNotificationListBackground(backgroundElement, blocksInteraction);
     createDialog();
     addDialog();
     displayDialog();
 
     function createDialog(){
-        uiUtils.setStylings(noteElement, noteElement, style, 'notificationdialog-icon');
-        uiUtils.addTitle(noteElement, 'notificationdialog-title', style, title);
-        uiUtils.addText(noteElement, 'notificationdialog-text', text);
-        const linkButton = uiUtils.createLinkButton(linkButtonData);
-        const actionButton = uiUtils.createActionButton(style, actionButtonData, ()=>{closeNotification(contentContainerElement, noteElement, id, backgroundElement);});
-        uiUtils.addButton(noteElement, linkButton, 'notificationdialog-link');
-        uiUtils.addButton(noteElement, actionButton, 'notificationdialog-action');
-        uiUtils.handleCloseButton(contentContainerElement, noteElement, 'notificationdialog-close', isDismissible, id, closePrefix, true, backgroundElement);
+        const linkButton = uiUtils.createLinkButton({dataObject: linkButtonData});
+        const actionButton = uiUtils.createActionButton({style: style, buttonData: actionButtonData, afterClick: ()=>{uiUtils.closeNotification({container: contentContainerElement, noteElement: noteElement, notificationId: id, closePrefix: closePrefix, backgroundElement: backgroundElement});}});
+
+        uiUtils.setNotificationListBackground({backgroundElement: backgroundElement, showBackground: blocksInteraction});
+        uiUtils.setStylings({backgroundToStyleElement:noteElement, iconContainerElement: noteElement, style: style, iconId: 'notificationdialog-icon'});
+        uiUtils.addTitle({noteElement: noteElement, titleTextId: 'notificationdialog-title', style: style, title: title});
+        uiUtils.addText({noteElement: noteElement, textId:'notificationdialog-text', text: text});
+        uiUtils.addButton({noteElement: noteElement, buttonElement: linkButton, buttonContainerId: 'notificationdialog-link'});
+        uiUtils.addButton({noteElement: noteElement, buttonElement: actionButton, buttonContainerId: 'notificationdialog-action'});
+        uiUtils.handleCloseButton({container: contentContainerElement, noteElement: noteElement, closeButtonId: 'notificationdialog-close', canDismiss: isDismissible, notificationId: id, closePrefix: closePrefix, backgroundElement: backgroundElement});
     }
     function addDialog(){
         contentContainerElement.prepend(noteElement);
@@ -184,6 +187,6 @@ export function showDialog(paramObj){
             };
         }
         //standard behaviour with auto close
-        uiUtils.displayNotificationWithAnimation(contentContainerElement, noteElement, animationUpdateObject, backgroundElement, id, closePrefix);
+        uiUtils.displayNotificationWithAnimation({container: contentContainerElement, noteElement:noteElement, animationInfoObj: animationUpdateObject, backgroundElement: backgroundElement, notificationId: id, closePrefix: closePrefix});
     }
 }

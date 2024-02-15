@@ -16,35 +16,12 @@ export function isInputDataFormatGood(paramObj){
     }
     const {data} = paramObj;
 
-    const type = getInputDataType(data);
+    const type = getInputDataType({data: data});
     return {
         isValid: type !== 'invalid',
         type: type
     }
 };
-
-/**
- *
- * @param {object} paramObj object delivery for function
- * @param {String|object} paramObj.data data inputted to the showNotification function
- * @returns {String} object type as a string
- */
-export function getInputDataType(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {data} = paramObj;
-
-    if (typeof data === 'string' || data instanceof String) {
-        return 'string';
-    }
-
-    if (typeof data === 'object' && Object.keys(data).length !== 0 && Object.getPrototypeOf(data) === Object.prototype) {
-        return 'object';
-    }
-
-    return 'invalid';
-}
 
 /**
  * Check is single datapoint is acceptable
@@ -66,24 +43,7 @@ export function isDataValidType(paramObj){
     }
     const dataType = typeof data;
     //typeof lists arrays as types of objects so exaception handler here for easier support for array in validTypeArray
-    return validTypeArray.includes(dataType) || (validTypeArray.includes('array') && isDataTypeOf(data, 'array'));
-}
-
-/**
- *
- * @param {object} paramObj object delivery for function
- * @param {*} paramObj.data uncertain data
- * @param {String} paramObj.expectedType what type should the data be ?
- * @returns {boolean} is the data expected type
- */
-export function isDataTypeOf(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {data, expectedType} = paramObj;
-
-    const dataType = typeof data;
-    return expectedType === dataType || (dataType === 'object' && expectedType === 'array' && Array.isArray(data));
+    return validTypeArray.includes(dataType) || (validTypeArray.includes('array') && isDataTypeOf({data: data, expectedType:'array'}));
 }
 
 /**
@@ -92,7 +52,7 @@ export function isDataTypeOf(paramObj){
 export async function clearNotificationLocalStorage(){
     //see what key was used in close (notificationUiUtils.closeNotification)
     //TODO: instead having multiple places with keys requiring to be matched make some config ?
-    const notificationKey = await getNotificationConfigKeyValue('localstorePrefixKey');
+    const notificationKey = await getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
     if(!notificationKey){
         return;
     }
@@ -118,8 +78,66 @@ export async function getNotificationConfigKeyValue(paramObj){
     const {key} = paramObj;
 
     const path = '/../common/notifications/notificationConfig.json';
-    return getConfigKeyValue(path, key)
+    return getConfigKeyValue({path: path, key: key});
 }
+
+/**
+ * Get data required for getting and showing component (with ui data)
+ * 
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.componentStyle
+ * @returns {object|undefined} with
+ */
+export async function getShowConfigData(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {componentStyle} = paramObj;
+
+    if(!componentStyle){
+        console.log('Missing param on getShowConfigData');
+        return undefined;
+    }
+
+    //try to find resource config for style
+    const resourceConfigs = await getNotificationConfigKeyValue({key: 'resourceConfigs'});
+    if(!resourceConfigs || !Array.isArray(resourceConfigs) || resourceConfigs.length <= 0){
+        console.log('Resource configs missing from json');
+        return undefined;
+    }
+
+    let resourceConfig = resourceConfigs.find(obj => obj.componentStyle === componentStyle);
+    if(!resourceConfig){
+        console.log(`Did not find resource configuration for ${componentStyle}`);
+        return undefined;
+    }
+
+    //format return data and add correct show function
+    if(componentStyle === 'banner'){
+        return {
+            inquiryData :resourceConfig,
+            callUiToShow: ui.showBanner
+        };
+    }
+    else if(componentStyle === 'banner_static'){
+        return {
+            inquiryData :resourceConfig,
+            callUiToShow: ui.showBannerStatic
+        };
+    }
+    else if(componentStyle === 'dialog'){
+        return {
+            inquiryData :resourceConfig,
+            callUiToShow: ui.showDialog
+        };
+    }
+
+    console.log('Did not get component inquiry data, no proper componentStyle found');
+    return undefined;
+}
+
+//************************************************************************************** */
+// Helper function
 
 /**
  * Get config data from config json
@@ -164,7 +182,7 @@ async function getConfigKeyValue(paramObj){
     }
     const {path, key} = paramObj;
 
-    return getConfig(path)
+    return getConfig({path: path})
     .then(configData => {
         return configData?.[key];
     })
@@ -177,56 +195,41 @@ async function getConfigKeyValue(paramObj){
 }
 
 /**
- * Get data required for getting and showing component (with ui data)
- * 
+ *
  * @param {object} paramObj object delivery for function
- * @param {String} paramObj.componentStyle
- * @returns {object|undefined} with
+ * @param {*} paramObj.data uncertain data
+ * @param {String} paramObj.expectedType what type should the data be ?
+ * @returns {boolean} is the data expected type
  */
-export async function getShowConfigData(paramObj){
+function isDataTypeOf(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
     }
-    const {componentStyle} = paramObj;
+    const {data, expectedType} = paramObj;
 
-    if(!componentStyle){
-        console.log('Missing param on getShowConfigData');
-        return undefined;
-    }
+    const dataType = typeof data;
+    return expectedType === dataType || (dataType === 'object' && expectedType === 'array' && Array.isArray(data));
+}
 
-    //try to find resource config for style
-    const resourceConfigs = await getNotificationConfigKeyValue('resourceConfigs');
-    if(!resourceConfigs || !Array.isArray(resourceConfigs) || resourceConfigs.length <= 0){
-        console.log('Resource configs missing from json');
-        return undefined;
+/**
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {String|object} paramObj.data data inputted to the showNotification function
+ * @returns {String} object type as a string
+ */
+function getInputDataType(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
     }
+    const {data} = paramObj;
 
-    let resourceConfig = resourceConfigs.find(obj => obj.componentStyle === componentStyle);
-    if(!resourceConfig){
-        console.log(`Did not find resource configuration for ${componentStyle}`);
-        return undefined;
-    }
-
-    //format return data and add correct show function
-    if(componentStyle === 'banner'){
-        return {
-            inquiryData :resourceConfig,
-            callUiToShow: ui.showBanner
-        };
-    }
-    else if(componentStyle === 'banner_static'){
-        return {
-            inquiryData :resourceConfig,
-            callUiToShow: ui.showBannerStatic
-        };
-    }
-    else if(componentStyle === 'dialog'){
-        return {
-            inquiryData :resourceConfig,
-            callUiToShow: ui.showDialog
-        };
+    if (typeof data === 'string' || data instanceof String) {
+        return 'string';
     }
 
-    console.log('Did not get component inquiry data, no proper componentStyle found');
-    return undefined;
+    if (typeof data === 'object' && Object.keys(data).length !== 0 && Object.getPrototypeOf(data) === Object.prototype) {
+        return 'object';
+    }
+
+    return 'invalid';
 }

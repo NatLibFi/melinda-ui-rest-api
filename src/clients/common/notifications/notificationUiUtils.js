@@ -17,52 +17,14 @@ export function setStylings(paramObj){
     }
     const {backgroundToStyleElement, iconContainerElement, style, iconId} = paramObj;
 
-    const styleObj = getNotificationColoursAndIconsWithStyle(style);
+    const styleObj = getNotificationColoursAndIconsWithStyle({style: style});
 
     backgroundToStyleElement.style.setProperty(`--style-background-color`, styleObj.bg);
 
     iconContainerElement.style.setProperty(`--style-icon-color`, styleObj.iconBg);
     iconContainerElement.querySelector(`.${iconId} .material-icons`).innerHTML = styleObj.icon;
 }
-/**
- * @param {object} paramObj object delivery for function
- * @param {String} paramObj.style notification style (info/alert etc.) based visible stylings
- */
-export function getNotificationColoursAndIconsWithStyle(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {style} = paramObj;
 
-    if(style === 'success'){
-        return {
-          bg: 'var(--color-green-80)',
-          iconBg: 'var(--color-green-100)',
-          icon: 'check_circle_outline'
-        };
-      }
-      else if(style === 'alert'){
-        return {
-          bg: 'var(--color-yellow-80)',
-          iconBg: 'var(--color-blue-100)',
-          icon: 'warning_amber'
-        };
-      }
-      else if(style === 'error'){
-        return {
-          bg: 'var(--color-red-80)',
-          iconBg: 'var(--color-red-100)',
-          icon: 'report_gmailerrorred'
-        };
-      }
-
-      // style 'info' is the default status message
-      return {
-        bg: 'var(--color-blue-60)',
-        iconBg: 'var(--color-blue-100)',
-        icon: 'error_outline'
-      };
-}
 /**
  * Sets title, if not given sets default one
  *
@@ -80,29 +42,11 @@ export function addTitle(paramObj){
     const {noteElement, titleTextId, style, title} = paramObj;
 
     if(!title){
-        addText(noteElement, titleTextId, getDefaultTitleText(style));
+        addText({noteElement: noteElement, textId: titleTextId, text: getDefaultTitleText({style: style})});
         return;
     }
 
-    addText(noteElement, titleTextId, getDefaultTitleText(style));
-}
-/**
- * @param {object} paramObj object delivery for function
- * @param {String} paramObj.style notification style
- * @returns {String} default title conttent
- */
-export function getDefaultTitleText(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {style} = paramObj;
-
-    if(style === 'info'){return 'Huomasithan';}
-    else if(style === 'success'){return 'Onnistui';}
-    else if(style === 'alert'){return 'Huomio';}
-    else if(style === 'error'){return 'Virhe';}
-
-    return 'Tuntematon';
+    addText({noteElement: noteElement, textId: titleTextId, text: title});
 }
 
 /**
@@ -128,7 +72,7 @@ export function addText(paramObj){
  * @param {HTMLDivElement} paramObj.noteElement notification element
  * @param {Element} paramObj.buttonElement button element to add
  * @param {String} paramObj.buttonContainerId identification for where to place button
- * @param {boolean} [paramObj.removeContainer=true] if given button element is not available remove the container where its suppose to be set
+ * @param {boolean} [paramObj.removeContainer=true] if given button element is not available remove the container where its suppose to be set, defaults to true
  * @returns when data is not correct to set up button
  */
 export function addButton(paramObj){
@@ -140,7 +84,7 @@ export function addButton(paramObj){
     if(!buttonElement){
         //console.log('No button data to set. Skipping');
         if(removeContainer){
-            removeElementFromContainer(noteElement, buttonContainerId);
+            removeElementFromContainer({container: noteElement, idOrClassName: buttonContainerId});
         }
 
         return;
@@ -163,7 +107,7 @@ export function addButton(paramObj){
  * @param {boolean} paramObj.canDismiss can user close the notification
  * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
  * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
- * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines, defaults to true
  * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @returns
  */
@@ -174,33 +118,10 @@ export function handleCloseButton(paramObj){
     const {container, noteElement, closeButtonId, canDismiss=true, notificationId, closePrefix, removeElementOnClose = true, backgroundElement} = paramObj;
 
     if(canDismiss){
-        addCloseButton(container, noteElement, closeButtonId, notificationId, closePrefix, removeElementOnClose, backgroundElement);
+        addCloseButton({container: container, noteElement:noteElement, closeButtonId: closeButtonId, notificationId: notificationId,closePrefix: closePrefix, removeElementOnClose: removeElementOnClose, backgroundElement: backgroundElement});
         return;
     }
-    hideCloseButton(noteElement, closeButtonId);
-}
-
-/**
- *
- * @param {object} paramObj object delivery for function
- * @param {HTMLDivElement} paramObj.container root element holding noteElements
- * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
- * @param {String} paramObj.closeButtonId element id for close button
- * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
- * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
- * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
- * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
- */
-export function addCloseButton(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {container, noteElement, closeButtonId,  notificationId, closePrefix, removeElementOnClose = true, backgroundElement} = paramObj;
-
-    noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
-        eventHandled(event);
-        closeNotification(container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose);
-    });
+    hideCloseButton({noteElement: noteElement, closeButtonId: closeButtonId});
 }
 
 /**
@@ -212,14 +133,14 @@ export function addCloseButton(paramObj){
  * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
  * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
- * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines, defaults to true
  */
 export function closeNotification(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
     }
     const {container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose = true} = paramObj;
-    
+
     noteElement.style.visibility = 'collapse';
 
     if(notificationId && closePrefix){
@@ -228,71 +149,7 @@ export function closeNotification(paramObj){
     }
 
     if(removeElementOnClose){
-        removeItemFromContainer(container, noteElement, backgroundElement);
-    }
-}
-
-/**
- * Hide notification list background element if no active notifications on the list
- * Show with "setNotificationListBackground" within notification styles show function
- *
- * @param {object} paramObj object delivery for function
- * @param {HTMLDivElement} paramObj.container root element holding noteElements
- * @param {HTMLDivElement} paramObj.backgroundElement separate background element for content container to be hidden if last element was removed
- */
-export function hideBackgroundIfNoActiveChildren(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {container, backgroundElement} = paramObj;
-
-    //if no element provided ignore this
-    if(!container || !backgroundElement){
-        return;
-    }
-
-    //if has children visible ignore this
-    if(hasActiveChildren()){
-        return;
-    }
-
-    setNotificationListBackground(backgroundElement, false);
-
-    function hasActiveChildren(){
-        const children = Array.from(container.children);
-        let isActive = false;
-
-        //theres no breaking out of the foreach... so using helper variable
-        //personally I would have preferred for...of
-        children.forEach(child => {
-            const computedStyle = window.getComputedStyle(child);
-            const visibility = computedStyle.getPropertyValue('visibility');
-
-            if(visibility === 'visible'){
-              isActive = true;
-            }
-          });
-
-          return isActive;
-    }
-}
-
-/**
- *
- * @param {object} paramObj object delivery for function
- * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
- * @param {String} paramObj.closeButtonId element id for close button
- * @param {boolean} [paramObj.removeContainer=true] should remove whole container
- */
-export function hideCloseButton(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {noteElement, closeButtonId, removeContainer=true} = paramObj;
-
-    noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'collapse';
-    if(removeContainer){
-        removeElementFromContainer(noteElement, closeButtonId);
+        removeItemFromContainer({container: container, noteElement: noteElement, backgroundElement: backgroundElement});
     }
 }
 
@@ -396,75 +253,12 @@ export function displayNotificationWithAnimation(paramObj){
                 }
 
                 if(removeElementOnClose){
-                    closeNotification(container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose);
+                    closeNotification({container: container, noteElement:noteElement, notificationId: notificationId, closePrefix: closePrefix, backgroundElement: backgroundElement, removeElementOnClose: removeElementOnClose});
                 }
             }
         };
     }
 }
-
-/**
- * Remove notification item from container holding them, if theres a background element for that container check should it be hidden
- * Closing notificaiton or if timed animation closes it this should be called
- *
- * @param {object} paramObj object delivery for function
- * @param {HTMLDivElement} paramObj.container root element holding noteElements
- * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
- * @param {HTMLDivElement} [paramObj.backgroundElement]  optional - separate background element for content container to be hidden if last element was removed
- */
-export function removeItemFromContainer(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {container, noteElement, backgroundElement} = paramObj;
-
-    container.removeChild(noteElement);
-    hideBackgroundIfNoActiveChildren(container, backgroundElement);
-}
-
-/**
- * General remove function for easier removing some element from container
- *
- * @param {object} paramObj object delivery for function
- * @param {HTMLDivElement} paramObj.container upper element thats suppose to hold element thats required to remove
- * @param {String} paramObj.idOrClassName either class name or element id to seach
- * @param {boolean} [paramObj.useQuery=true] query based on class if false try to find with id
- */
-export function removeElementFromContainer(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {container, idOrClassName, useQuery=true} = paramObj;
-
-    if(!container || !idOrClassName){
-        console.log('removeElementFromContainer missing parameters');
-        return;
-    }
-    let element = fetchElement({container, idOrClassName, useQuery});
-    if(!element){
-        //console.log('No element to remove');
-        return;
-    }
-    //since element can be nested more deeply within container element just get the elements parent and with that remove child
-    const parent = element.parentNode;
-    if(!parent){
-        //console.log('Did not find element parent node to remove element');
-        return;
-    }
-    //remove sub element
-    parent.removeChild(element);
-
-    function fetchElement(subParamObj){
-        const {container, idOrClassName, useQuery} = subParamObj;
-
-        if(useQuery){
-            return container.querySelector(`.${idOrClassName}`);
-        }
-
-        return container.getElementById(idOrClassName);
-    }
-}
-
 
 /**
  * Creates clickable link button element.
@@ -495,7 +289,7 @@ export function createLinkButton(paramObj){
     //see if url given is relative or absolute
     //relative ones try to open with pages baseURI. We most likely want here to open external site so we want absolute
     //essentially we want url with http: or https:
-    if(!isAbsoluteURL({url})){
+    if(!isAbsoluteURL({testUrl: url})){
         console.log('Link button url set to relative please check url format');
         return undefined;
     }
@@ -622,4 +416,217 @@ export function createActionButton(paramObj){
         classArray.push('blue');
         return classArray;
     };
+}
+
+
+//************************************************************************************** */
+// Helper functions
+
+/**
+ * Remove notification item from container holding them, if theres a background element for that container check should it be hidden
+ * Closing notificaiton or if timed animation closes it this should be called
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container root element holding noteElements
+ * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
+ * @param {HTMLDivElement} [paramObj.backgroundElement]  optional - separate background element for content container to be hidden if last element was removed
+ */
+function removeItemFromContainer(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, noteElement, backgroundElement} = paramObj;
+
+    //container.removeChild(noteElement);
+    removeElementFromContainer({container: container, idOrClassName: noteElement.className});
+    hideBackgroundIfNoActiveChildren({container: container, backgroundElement: backgroundElement});
+}
+
+/**
+ * General remove function for easier removing some element from container
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container upper element thats suppose to hold element thats required to remove
+ * @param {String} paramObj.idOrClassName either class name or element id to seach
+ * @param {boolean} [paramObj.useQuery=true] query based on class if false try to find with id
+ */
+function removeElementFromContainer(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, idOrClassName, useQuery=true} = paramObj;
+
+    if(!container || !idOrClassName){
+        console.log('removeElementFromContainer missing parameters');
+        return;
+    }
+    let element = fetchElement({container, idOrClassName, useQuery});
+    if(!element){
+        //console.log('No element to remove');
+        return;
+    }
+    //since element can be nested more deeply within container element just get the elements parent and with that remove child
+    const parent = element.parentNode;
+    if(!parent){
+        //console.log('Did not find element parent node to remove element');
+        return;
+    }
+    //remove sub element
+    parent.removeChild(element);
+
+    function fetchElement(subParamObj){
+        const {container, idOrClassName, useQuery} = subParamObj;
+
+        if(useQuery){
+            return container.querySelector(`.${idOrClassName}`);
+        }
+
+        return container.getElementById(idOrClassName);
+    }
+}
+
+/**
+ * Hide notification list background element if no active notifications on the list
+ * Show with "setNotificationListBackground" within notification styles show function
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container root element holding noteElements
+ * @param {HTMLDivElement} paramObj.backgroundElement separate background element for content container to be hidden if last element was removed
+ */
+function hideBackgroundIfNoActiveChildren(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, backgroundElement} = paramObj;
+
+    //if no element provided ignore this
+    if(!container || !backgroundElement){
+        return;
+    }
+
+    //if has children visible ignore this
+    if(hasActiveChildren()){
+        return;
+    }
+
+    setNotificationListBackground({backgroundElement:backgroundElement, showBackground: false});
+
+    function hasActiveChildren(){
+        const children = Array.from(container.children);
+        let isActive = false;
+
+        //theres no breaking out of the foreach... so using helper variable
+        //personally I would have preferred for...of
+        children.forEach(child => {
+            const computedStyle = window.getComputedStyle(child);
+            const visibility = computedStyle.getPropertyValue('visibility');
+
+            if(visibility === 'visible'){
+              isActive = true;
+            }
+          });
+
+          return isActive;
+    }
+}
+
+/**
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
+ * @param {String} paramObj.closeButtonId element id for close button
+ * @param {boolean} [paramObj.removeContainer=true] should remove whole container
+ */
+function hideCloseButton(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {noteElement, closeButtonId, removeContainer=true} = paramObj;
+
+    noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'collapse';
+    if(removeContainer){
+        removeElementFromContainer({container: noteElement, idOrClassName: closeButtonId});
+    }
+}
+
+/**
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {HTMLDivElement} paramObj.container root element holding noteElements
+ * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
+ * @param {String} paramObj.closeButtonId element id for close button
+ * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
+ * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
+ * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
+ * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
+ */
+function addCloseButton(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {container, noteElement, closeButtonId,  notificationId, closePrefix, removeElementOnClose = true, backgroundElement} = paramObj;
+
+    noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
+        eventHandled(event);
+        closeNotification({container: container, noteElement: noteElement, notificationId: notificationId, closePrefix: closePrefix, backgroundElement: backgroundElement, removeElementOnClose: removeElementOnClose});
+    });
+}
+
+/**
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.style notification style
+ * @returns {String} default title conttent
+ */
+function getDefaultTitleText(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {style} = paramObj;
+
+    if(style === 'info'){return 'Huomasithan';}
+    else if(style === 'success'){return 'Onnistui';}
+    else if(style === 'alert'){return 'Huomio';}
+    else if(style === 'error'){return 'Virhe';}
+
+    return 'Tuntematon';
+}
+
+/**
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.style notification style (info/alert etc.) based visible stylings
+ */
+function getNotificationColoursAndIconsWithStyle(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {style} = paramObj;
+
+    if(style === 'success'){
+        return {
+          bg: 'var(--color-green-80)',
+          iconBg: 'var(--color-green-100)',
+          icon: 'check_circle_outline'
+        };
+      }
+      else if(style === 'alert'){
+        return {
+          bg: 'var(--color-yellow-80)',
+          iconBg: 'var(--color-blue-100)',
+          icon: 'warning_amber'
+        };
+      }
+      else if(style === 'error'){
+        return {
+          bg: 'var(--color-red-80)',
+          iconBg: 'var(--color-red-100)',
+          icon: 'report_gmailerrorred'
+        };
+      }
+
+      // style 'info' is the default status message
+      return {
+        bg: 'var(--color-blue-60)',
+        iconBg: 'var(--color-blue-100)',
+        icon: 'error_outline'
+      };
 }

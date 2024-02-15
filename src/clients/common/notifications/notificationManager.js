@@ -1,63 +1,7 @@
 import {getNotifications, dataUtils} from './notificationDataProcessor.js';
 import * as resouceUtils from './notificationResourceUtils.js';
 
-
-/**
- * Wrapper function for showing server notifications keeping other scripts a bit cleaner
- * Loads notifications from server and in certain cases triggers functions,
- *
- * @param {object} paramObj object delivery for function
- * @param {CallableFunction} paramObj.clientName client/page that requests server notifications
- * @param {CallableFunction} [paramObj.onSuccess] optional -triggers when loaded notification without blocks
- * @param {CallableFunction} [paramObj.onFailure] optional -triggers when error is thrown in process of loading or showing notification
- * @param {CallableFunction} [paramObj.onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
- * @param {CallableFunction} [paramObj.debug=false] optional - should debug features apply, for now if enabled on every reload clears data marks for notification read
- */
-export function showServerNotifications(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {clientName, onSuccess, onFailure, onBlock, debug=false} = paramObj;
-
-    getNotifications(clientName, debug)
-    .then(notificationObject => {
-      //generate appropriate ui items
-      if(notificationObject.hasBlocks){
-        showNotification(notificationObject.blocking);
-        if(onBlock){
-            onBlock();
-        }
-        return;
-      }
-
-      showNotification(notificationObject.notBlocking);
-
-      if(onSuccess){
-        onSuccess();
-        return;
-      }
-    })
-    .catch(err => {
-      console.log('Notification fetch failed');
-      console.log(err);
-
-      //failure/error could also indicate showing error so try to show error message but try catch it?
-      try {
-        showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
-      } catch (error) {
-        console.log('Issue on showing failure notificaiton');
-        console.log(error);
-      }
-
-      if(onFailure){
-        onFailure();
-        return;
-      }
-
-      console.log('On failure parameter missing');
-    });
-}
-
+//Notification features
 /**
  * Different notifications:
  *
@@ -99,14 +43,71 @@ export function showServerNotifications(paramObj){
  *
  */
 
+
+/**
+ * Wrapper function for showing server notifications keeping other scripts a bit cleaner
+ * Loads notifications from server and in certain cases triggers functions,
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {CallableFunction} paramObj.clientName client/page that requests server notifications
+ * @param {CallableFunction} [paramObj.onSuccess] optional -triggers when loaded notification without blocks
+ * @param {CallableFunction} [paramObj.onFailure] optional -triggers when error is thrown in process of loading or showing notification
+ * @param {CallableFunction} [paramObj.onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
+ * @param {CallableFunction} [paramObj.debug=false] optional - should debug features apply, for now if enabled on every reload clears data marks for notification read
+ */
+export function showServerNotifications(paramObj){
+    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
+        throw new Error('Malformed or missing param object on function');
+    }
+    const {clientName, onSuccess, onFailure, onBlock, debug=false} = paramObj;
+
+    getNotifications({clientName: clientName, debug: debug})
+    .then(notificationObject => {
+      //generate appropriate ui items
+      if(notificationObject.hasBlocks){
+        showNotification(notificationObject.blocking);
+
+        if(onBlock){
+            onBlock();
+        }
+        return;
+      }
+
+      showNotification(notificationObject.notBlocking);
+
+      if(onSuccess){
+        onSuccess();
+        return;
+      }
+    })
+    .catch(err => {
+      console.log('Notification fetch failed');
+      console.log(err);
+
+      //failure/error could also indicate showing error so try to show error message but try catch it?
+      try {
+        showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+      } catch (error) {
+        console.log('Issue on showing failure notificaiton');
+        console.log(error);
+      }
+
+      if(onFailure){
+        onFailure();
+        return;
+      }
+
+      console.log('On failure parameter missing');
+    });
+}
+
 /**
  * Show visible notification with single data or array of data
  * - in array each data object is validated so it could be either object or string
  * - if not array data can be object or string
  * - any string based data gets default values in data formatting before show
  *
- * @param {object} paramObj object delivery for function
- * @param {object|object[]|String|String[]} paramObj.notificationData
+ * @param {object|object[]|String|String[]} notificationData
  *
  * @example
  * //some example cases
@@ -156,19 +157,14 @@ export function showServerNotifications(paramObj){
  *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
  * });
  */
-export function showNotification(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {notificationData} = paramObj;
-
+export function showNotification(notificationData){
     if(!notificationData){
         console.log('No data for showNotification');
         return;
     }
 
     //if not valid type of data fail fast
-    if(!dataUtils.isDataValidType(notificationData, ['array', 'object', 'string'])){
+    if(!dataUtils.isDataValidType({data: notificationData, validTypeArray: ['array', 'object', 'string']})){
         console.log('Data for showNotification not correct type');
         return;
     }
@@ -176,7 +172,7 @@ export function showNotification(paramObj){
     //if data is in array show individual items
     if(Array.isArray(notificationData)){
         for (const obj of notificationData) {
-            if(dataUtils.isDataValidType(notificationData, ['object', 'string'])){
+            if(dataUtils.isDataValidType({data: notificationData, validTypeArray: ['object', 'string']})){
                 showSingleNotification(obj);
             }
         }
@@ -186,6 +182,10 @@ export function showNotification(paramObj){
     //object or string style data passed along, data formatted accordingly later
     showSingleNotification(notificationData);
 }
+
+
+//************************************************************************************** */
+// Helper functions
 
 /**
  * Script info
@@ -210,37 +210,32 @@ export function showNotification(paramObj){
  *          > set element stylings, add functionalities and missing elements,
  *          > add to notification to container
  *
- * @param {object} paramObj object delivery for function
- * @param {object} paramObj.data dataobject either from server or set by hand
- * @param {String} paramObj.data.componentStyle server data, also supply self, in what format do we show the notification banner/dialog ... ? default to banner if not set
- * @param {String} paramObj.data.style what kind of info notification show inffo/error etc. ?
- * @param {String} paramObj.data.text visible text to show
- * @param {String} [paramObj.data.title] optional - visible title text, used for dialog, if not given sets one
- * @param {String} [paramObj.data.id] optional - identification for data object, used for hiding/showing server message
- * @param {String} [paramObj.data.messageStyle] optional - server data, will be automatically moved to style field
- * @param {String} [paramObj.data.messageText] optional - server data, will be automatically moved to text field
- * @param {String} [paramObj.data.isDismissible] optional - server data, also supply self, used in dialog, can user close notification, if not given defaults to true
- * @param {String} [paramObj.data.blocksInteraction] optional - server data, also supply self, used in dialog, does notification have overlay behind it that blocks UI usage
- * @param {object} [paramObj.data.linkButtonData] optional - object for holding data for creating link button, overriden by url if present
- * @param {object} [paramObj.data.linkButtonData.text] optional - visible text for link button
- * @param {object} [paramObj.data.linkButtonData.url] optional - url to open
- * @param {Element} [paramObj.data.url] optional - can be server data, url to open with link button with, can be used for quick setting linkButton with default value for visible text
- * @param {object} [paramObj.data.actionButtonData] optional - data object for setting action button
- * @param {String} [paramObj.data.actionButtonData.text] optional - visible text
- * @param {CallableFunction} [paramObj.data.actionButtonData.onClick] optional - action upon click
+ * @param {object} data dataobject either from server or set by hand
+ * @param {String} data.componentStyle server data, also supply self, in what format do we show the notification banner/dialog ... ? default to banner if not set
+ * @param {String} data.style what kind of info notification show inffo/error etc. ?
+ * @param {String} data.text visible text to show
+ * @param {String} [data.title] optional - visible title text, used for dialog, if not given sets one
+ * @param {String} [data.id] optional - identification for data object, used for hiding/showing server message
+ * @param {String} [data.messageStyle] optional - server data, will be automatically moved to style field
+ * @param {String} [data.messageText] optional - server data, will be automatically moved to text field
+ * @param {String} [data.isDismissible] optional - server data, also supply self, used in dialog, can user close notification, if not given defaults to true
+ * @param {String} [data.blocksInteraction] optional - server data, also supply self, used in dialog, does notification have overlay behind it that blocks UI usage
+ * @param {object} [data.linkButtonData] optional - object for holding data for creating link button, overriden by url if present
+ * @param {object} [data.linkButtonData.text] optional - visible text for link button
+ * @param {object} [data.linkButtonData.url] optional - url to open
+ * @param {Element} [data.url] optional - can be server data, url to open with link button with, can be used for quick setting linkButton with default value for visible text
+ * @param {object} [data.actionButtonData] optional - data object for setting action button
+ * @param {String} [data.actionButtonData.text] optional - visible text
+ * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
-async function showSingleNotification(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {data} = paramObj;
+async function showSingleNotification(data){
     /**
      * Check data validity (is it in ok form)
      * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case)
      */
 
     //test if data is in acceptable format, additional checks not only surface typeof
-    const dataStatusObj = dataUtils.isInputDataFormatGood(data);
+    const dataStatusObj = dataUtils.isInputDataFormatGood({data: data});
     if(!dataStatusObj.isValid){
         console.log('showNotification data type is not valid');
         return;
@@ -268,7 +263,7 @@ async function showSingleNotification(paramObj){
     const isDataFromServer = data.id !== undefined;
     const style = isDataFromServer ?  data.messageStyle : data.style;
     const linkButtonCreationData = data.url ? {text:'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
-    const closePrefixKey = await dataUtils.getNotificationConfigKeyValue('localstorePrefixKey');
+    const closePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
     getComponentsAndShowUi({
         id: data.id,
         componentStyle: data.componentStyle ?? 'banner',
@@ -283,24 +278,15 @@ async function showSingleNotification(paramObj){
     });
 }
 
-//************************************************************************************** */
-// Helper functions
-
 /**
  * Using componentStyle get correct config data for getting correct components and pass all that for showing correct ui
  *
- * @param {object} paramObj object delivery for function
- * @param {object} paramObj.data all notificaiton relevant data
- * @returns {void}
+ * @param {object} data all notificaiton relevant data
  */
-async function getComponentsAndShowUi(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {data} = paramObj;
+async function getComponentsAndShowUi(data){
 
     //get config with resource info and show function
-    const showConfig = await dataUtils.getShowConfigData(data.componentStyle);
+    const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
     if(!showConfig || !showConfig.inquiryData){
         console.log('showConfig or inquiry data not available');
         return;
@@ -308,10 +294,12 @@ async function getComponentsAndShowUi(paramObj){
 
     //get component data and using matched show function pass relevant data
     //failed or null fetches should trigger catch
-    resouceUtils.getRequiredComponentData(showConfig.inquiryData)
+    resouceUtils.getRequiredComponentData({componentInquiryData: showConfig.inquiryData})
     .then(([container, noteElement])=>{
-        showConfig.callUiToShow(container, noteElement, data);
+        showConfig.callUiToShow({container: container, noteElement: noteElement, dataForUi: data});
     })
-    .catch(error => {console.log(error);});
+    .catch(error => {
+        console.log(error);
+    });
 }
 

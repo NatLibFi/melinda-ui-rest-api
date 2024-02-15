@@ -19,7 +19,7 @@ import {modifyRecord} from '../common/rest.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  showServerNotifications('edit', doLogin(authSuccess));
+  showServerNotifications({clientName: 'edit', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');

@@ -12,5 +12,5 @@ window.initialize = function () {
 window.onload = function() {
     console.log('On load');
 
-    showServerNotifications('login');
+    showServerNotifications({clientName: 'login'});
 };

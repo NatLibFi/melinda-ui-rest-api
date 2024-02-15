@@ -23,7 +23,7 @@ export async function getNotifications(paramObj){
     }
 
     //if client is not set (or valid) assume we want notifications for all
-    if(!clientName || !isClientValid(clientName)){
+    if(!clientName || !isClientValid({clientName: clientName})){
         clientName = 'all';
     }
 
@@ -34,13 +34,16 @@ export async function getNotifications(paramObj){
             throw new Error('No result or notifications from getServerNotifications');
         }
 
-        return filterNotificationsByBlockState(result.notifications);
+        return filterNotificationsByBlockState({notificationsDataArray: result.notifications});
     })
     .catch(err => {
         console.log(err);
         throw new Error(err);
     });
 }
+
+//************************************************************************************** */
+// Helper functions
 
 /**
  * See if can fetch for client has support/has own notifications
@@ -72,7 +75,7 @@ async function filterNotificationsByBlockState(paramObj) {
     }
     const {notificationsDataArray} = paramObj;
 
-    const storePrefixKey = await dataUtils.getNotificationConfigKeyValue('localstorePrefixKey');
+    const storePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
 
     //filter out any possibly user hidden notifications
     let notHiddenNotifications = notificationsDataArray.filter(obj => {

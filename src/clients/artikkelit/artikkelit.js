@@ -10,8 +10,7 @@ import {} from '/artikkelit/actions/articleStartNew.js';
 window.initialize = function () {
   console.log('Initializing artikkelit');
 
-  showServerNotifications('artikkelit', doLogin(authSuccess));
-
+  showServerNotifications({clientName: 'artikkelit', onSuccess: ()=>{doLogin(authSuccess);}});
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');
     accountMenu.classList.add('show');

@@ -2,7 +2,7 @@ import {showNotification, showServerNotifications, showTab} from '/./common/ui-u
 import {Account, doLogin, logout} from '/./common/auth.js';
 
 window.initialize = function () {
-  showServerNotifications('pageNotFound', doLogin(authSuccess));
+  showServerNotifications({clientName: 'pageNotFound', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
     showTab('pageNotFound');
