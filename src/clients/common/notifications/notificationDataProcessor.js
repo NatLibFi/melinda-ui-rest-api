@@ -77,11 +77,13 @@ async function filterNotificationsByBlockState(paramObj) {
 
     const storePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
 
-    //filter out any possibly user hidden notifications
-    let notHiddenNotifications = notificationsDataArray.filter(obj => {
+    //filter out any possibly user hidden notifications if storeprefix key is available
+    //prefix key is for recording when user closes notification, if not available do not filter
+    let notHiddenNotifications = Boolean(storePrefixKey) ? notificationsDataArray.filter(obj => {
+        //if does not have id or has id and is not hidden by user
         const localStoreKey = storePrefixKey ? `${storePrefixKey}_${obj.id}` : '';
         return !obj.id || (obj.id && storePrefixKey && localStorage.getItem(localStoreKey) === null);
-    });
+    }) : notificationsDataArray;
 
     //Filter out those that are nice to know and those that are blocking ones
     const blockingArray = notHiddenNotifications.filter(obj => { return obj.blocksInteraction === true; });

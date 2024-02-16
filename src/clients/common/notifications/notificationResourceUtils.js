@@ -52,7 +52,7 @@ async function getNotificationElement(paramObj){
     }
     const {templateId, elementId} = paramObj;
 
-    return getHtml('/../common/templates/notification.html')
+    return getHtml('/../common/templates/notification.html', 'notificationHtmlTemplates')
     .then(html => {
         const doc = getElementRootDocument(html, templateId, elementId);
         if(doc){
@@ -65,16 +65,15 @@ async function getNotificationElement(paramObj){
         throw new Error(error);
     });
 
-    async function getHtml(path){
-        //TODO: fetch might be not the best option for long run so this might need revisioning
-        //however its the most recommended way of handling it
-        return fetch(path)
-        .then(response => {
-            if(!response.ok){
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            return response.text();
+    async function getHtml(path, cacheKey){
+        return getFromCache({
+            key: cacheKey,
+            onNewDataRequired: () => fetch(path).then(response => {
+                if(!response.ok){
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
         })
         .then(html => {
             if(html){

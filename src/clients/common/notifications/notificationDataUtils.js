@@ -57,6 +57,7 @@ export async function clearNotificationLocalStorage(){
     //TODO: instead having multiple places with keys requiring to be matched make some config ?
     const notificationKey = await getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
     if(!notificationKey){
+        console.warn('Key missing on clearNotificationLocalStorage');
         return;
     }
     for (const key of Object.keys(localStorage)) {
@@ -81,7 +82,7 @@ export async function getNotificationConfigKeyValue(paramObj){
     const {key} = paramObj;
 
     const path = '/../common/notifications/notificationConfig.json';
-    return getConfigKeyValue({path: path, key: key});
+    return getConfigKeyValue({path: path, key: key, cacheKeyConfig: 'notificationConfig'});
 }
 
 /**
@@ -143,10 +144,11 @@ export async function getShowConfigData(paramObj){
 // Helper function
 
 /**
- * Get config data from config json
- * 
+ * Get config data from config json or cache
+ *
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.path path to config file
+ * @param {String} paramObj.cacheKey key for storing config data in cache
  * @returns {object} get object from config file
  * @throws {Error} if theres issue with getting config
  */
@@ -154,14 +156,16 @@ async function getConfig(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
     }
-    const {path} = paramObj;
+    const {path, cacheKey} = paramObj;
 
-    return fetch(path)
-    .then(response => {
-        if(!response.ok){
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
+    return getFromCache({
+        key: cacheKey,
+        onNewDataRequired: () => fetch(path).then(response => {
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
     })
     .catch(error => {
         const err = 'Could not get config for notifications';
@@ -177,15 +181,16 @@ async function getConfig(paramObj){
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.path path to config file
  * @param {String} paramObj.key fields key
+ * @param {String} paramObj.cacheKeyConfig key for cache storing config data
  * @returns {*|undefined} returns value of the key or undefined if key not found
  */
 async function getConfigKeyValue(paramObj){
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
         throw new Error('Malformed or missing param object on function');
     }
-    const {path, key} = paramObj;
+    const {path, key, cacheKeyConfig} = paramObj;
 
-    return getConfig({path: path})
+    return getConfig({path: path, cacheKey: cacheKeyConfig})
     .then(configData => {
         return configData?.[key];
     })
