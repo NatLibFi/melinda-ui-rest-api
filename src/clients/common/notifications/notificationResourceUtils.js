@@ -1,3 +1,5 @@
+import { getFromCache } from './notificationCacheService.js';
+
 //************************************************************************************** */
 // Resource helper functions for notificationManager.js, meant for getting required root resources from the files
 
