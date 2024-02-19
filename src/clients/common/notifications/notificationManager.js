@@ -53,15 +53,14 @@ import * as resouceUtils from '/../common/notifications/ui/notificationResourceU
  * @param {CallableFunction} [paramObj.onSuccess] optional -triggers when loaded notification without blocks
  * @param {CallableFunction} [paramObj.onFailure] optional -triggers when error is thrown in process of loading or showing notification
  * @param {CallableFunction} [paramObj.onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
- * @param {CallableFunction} [paramObj.debug=false] optional - should debug features apply, for now if enabled on every reload clears data marks for notification read
  */
 export function showServerNotifications(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {clientName, onSuccess, onFailure, onBlock, debug = false} = paramObj;
+  const {clientName, onSuccess, onFailure, onBlock} = paramObj;
 
-  getNotifications({clientName, debug})
+  getNotifications({clientName: clientName})
     .then(notificationObject => {
       //generate appropriate ui items
       if (notificationObject.hasBlocks) {

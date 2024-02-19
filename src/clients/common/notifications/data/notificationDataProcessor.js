@@ -8,16 +8,15 @@ export {dataUtils};
 /**
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.clientName name of the client doing the request, if not correct shows notifications for all clients
- * @param {boolean} [paramObj.debug=false] optional - debug flag for clearing local storage. Enables back all dismissed notifications. Mostly for internal usage
  * @returns {object} status object with 'blocking', 'notBlocking', 'hasBlocks' fields
  */
 export async function getNotifications(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {clientName, debug = false} = paramObj;
+  const {clientName} = paramObj;
 
-  if (debug) {
+  if (await dataUtils.getDebugValue({key: 'clearNotificationLocalStorageOnLoad'})) {
     //clears out melinda notifications not whole localstorage
     dataUtils.clearNotificationLocalStorage();
   }

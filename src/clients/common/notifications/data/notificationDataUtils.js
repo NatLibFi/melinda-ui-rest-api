@@ -67,6 +67,37 @@ export async function clearNotificationLocalStorage() {
 }
 
 /**
+ * Get from config debug and under it some config fields value
+ *
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.key key to look for in debug
+ * @returns {*|undefined} debug configs set value or if something is not right undefined
+ */
+export async function getDebugValue(paramObj){
+  if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
+    throw new Error('Malformed or missing param object on function');
+  }
+  const {key} = paramObj;
+
+  if(!key){
+    console.warn('Missing debug key');
+    return undefined;
+  }
+
+  const debugObject = await getNotificationConfigKeyValue({key: 'debug'});
+  if(!debugObject){
+    console.warn('Could not get debug object');
+    return undefined;
+  }
+  if(!debugObject.hasOwnProperty(key)){
+    console.warn('Debug field missing');
+    return undefined;
+  }
+
+  return debugObject[key];
+}
+
+/**
  * Get value from config json with key
  *
  * @param {object} paramObj object delivery for function
