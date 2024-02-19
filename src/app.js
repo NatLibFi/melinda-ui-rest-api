@@ -16,7 +16,7 @@ import createOntologyRoute from './ontologies/ontologyRoute';
 import createRecordRouter from './record/recordRouter';
 import createViewerRoute from './viewer/viewerRoute';
 import createPingRoute from './utilRoute/statusRoute';
-import createNotificationsRoute from './utilRoute/notificationsRoute';
+import createNotificationsRoute from './notifications/notificationsRoute';
 import {handlePageNotFound} from './requestUtils/handlePageNotFound';
 
 

@@ -1,5 +1,5 @@
-import {getNotifications, dataUtils} from './notificationDataProcessor.js';
-import * as resouceUtils from './notificationResourceUtils.js';
+import {getNotifications, dataUtils} from '/../common/notifications/data/notificationDataProcessor.js';
+import * as resouceUtils from '/../common/notifications/ui/notificationResourceUtils.js';
 
 //Notification features
 /**
@@ -55,27 +55,27 @@ import * as resouceUtils from './notificationResourceUtils.js';
  * @param {CallableFunction} [paramObj.onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
  * @param {CallableFunction} [paramObj.debug=false] optional - should debug features apply, for now if enabled on every reload clears data marks for notification read
  */
-export function showServerNotifications(paramObj){
-    if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <=  0){
-        throw new Error('Malformed or missing param object on function');
-    }
-    const {clientName, onSuccess, onFailure, onBlock, debug=false} = paramObj;
+export function showServerNotifications(paramObj) {
+  if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
+    throw new Error('Malformed or missing param object on function');
+  }
+  const {clientName, onSuccess, onFailure, onBlock, debug = false} = paramObj;
 
-    getNotifications({clientName: clientName, debug: debug})
+  getNotifications({clientName, debug})
     .then(notificationObject => {
       //generate appropriate ui items
-      if(notificationObject.hasBlocks){
+      if (notificationObject.hasBlocks) {
         showNotification(notificationObject.blocking);
 
-        if(onBlock){
-            onBlock();
+        if (onBlock) {
+          onBlock();
         }
         return;
       }
 
       showNotification(notificationObject.notBlocking);
 
-      if(onSuccess){
+      if (onSuccess) {
         onSuccess();
         return;
       }
@@ -92,7 +92,7 @@ export function showServerNotifications(paramObj){
         console.log(error);
       }
 
-      if(onFailure){
+      if (onFailure) {
         onFailure();
         return;
       }
@@ -157,30 +157,30 @@ export function showServerNotifications(paramObj){
  *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
  * });
  */
-export function showNotification(notificationData){
-    if(!notificationData){
-        console.log('No data for showNotification');
-        return;
-    }
+export function showNotification(notificationData) {
+  if (!notificationData) {
+    console.log('No data for showNotification');
+    return;
+  }
 
-    //if not valid type of data fail fast
-    if(!dataUtils.isDataValidType({data: notificationData, validTypeArray: ['array', 'object', 'string']})){
-        console.log('Data for showNotification not correct type');
-        return;
-    }
+  //if not valid type of data fail fast
+  if (!dataUtils.isDataValidType({data: notificationData, validTypeArray: ['array', 'object', 'string']})) {
+    console.log('Data for showNotification not correct type');
+    return;
+  }
 
-    //if data is in array show individual items
-    if(Array.isArray(notificationData)){
-        for (const obj of notificationData) {
-            if(dataUtils.isDataValidType({data: notificationData, validTypeArray: ['object', 'string']})){
-                showSingleNotification(obj);
-            }
-        }
-        return;
+  //if data is in array show individual items
+  if (Array.isArray(notificationData)) {
+    for (const obj of notificationData) {
+      if (dataUtils.isDataValidType({data: notificationData, validTypeArray: ['object', 'string']})) {
+        showSingleNotification(obj);
+      }
     }
+    return;
+  }
 
-    //object or string style data passed along, data formatted accordingly later
-    showSingleNotification(notificationData);
+  //object or string style data passed along, data formatted accordingly later
+  showSingleNotification(notificationData);
 }
 
 
@@ -228,31 +228,32 @@ export function showNotification(notificationData){
  * @param {String} [data.actionButtonData.text] optional - visible text
  * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
-async function showSingleNotification(data){
-    /**
+async function showSingleNotification(data) {
+
+  /**
      * Check data validity (is it in ok form)
      * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case)
      */
 
-    //test if data is in acceptable format, additional checks not only surface typeof
-    const dataStatusObj = dataUtils.isInputDataFormatGood({data: data});
-    if(!dataStatusObj.isValid){
-        console.log('showNotification data type is not valid');
-        return;
-    }
+  //test if data is in acceptable format, additional checks not only surface typeof
+  const dataStatusObj = dataUtils.isInputDataFormatGood({data});
+  if (!dataStatusObj.isValid) {
+    console.log('showNotification data type is not valid');
+    return;
+  }
 
-    //if data a string, use quick default values
-    if(dataStatusObj.type === 'string'){
-        //data is string so using default values and setting data as text
-        getComponentsAndShowUi({
-            componentStyle: 'banner',
-            style: 'info',
-            text: data,
-        });
-        return;
-    }
+  //if data a string, use quick default values
+  if (dataStatusObj.type === 'string') {
+    //data is string so using default values and setting data as text
+    getComponentsAndShowUi({
+      componentStyle: 'banner',
+      style: 'info',
+      text: data
+    });
+    return;
+  }
 
-    /**
+  /**
      * if data is object, as its expected to be:
      *
      * Format data for later usage, makes sure later we can expect same naming schema
@@ -260,22 +261,22 @@ async function showSingleNotification(data){
      * some optional data is for certain component style notification, (ie. isDismissible)
      * some optional data is provided by server data but in another field so move it into corrrect format (ie. messageText to text)
      */
-    const isDataFromServer = data.id !== undefined;
-    const style = isDataFromServer ?  data.messageStyle : data.style;
-    const linkButtonCreationData = data.url ? {text:'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
-    const closePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
-    getComponentsAndShowUi({
-        id: data.id,
-        componentStyle: data.componentStyle ?? 'banner',
-        title: data.title,
-        style: style,
-        text: isDataFromServer ?  data.messageText : data.text,
-        linkButtonData: linkButtonCreationData,
-        actionButtonData:  data.actionButtonData,
-        isDismissible: data.isDismissible,
-        blocksInteraction: data.blocksInteraction,
-        closePrefix: closePrefixKey
-    });
+  const isDataFromServer = data.id !== undefined;
+  const style = isDataFromServer ? data.messageStyle : data.style;
+  const linkButtonCreationData = data.url ? {text: 'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
+  const closePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
+  getComponentsAndShowUi({
+    id: data.id,
+    componentStyle: data.componentStyle ?? 'banner',
+    title: data.title,
+    style,
+    text: isDataFromServer ? data.messageText : data.text,
+    linkButtonData: linkButtonCreationData,
+    actionButtonData: data.actionButtonData,
+    isDismissible: data.isDismissible,
+    blocksInteraction: data.blocksInteraction,
+    closePrefix: closePrefixKey
+  });
 }
 
 /**
@@ -283,23 +284,23 @@ async function showSingleNotification(data){
  *
  * @param {object} data all notificaiton relevant data
  */
-async function getComponentsAndShowUi(data){
+async function getComponentsAndShowUi(data) {
 
-    //get config with resource info and show function
-    const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
-    if(!showConfig || !showConfig.inquiryData){
-        console.log('showConfig or inquiry data not available');
-        return;
-    }
+  //get config with resource info and show function
+  const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
+  if (!showConfig || !showConfig.inquiryData) {
+    console.log('showConfig or inquiry data not available');
+    return;
+  }
 
-    //get component data and using matched show function pass relevant data
-    //failed or null fetches should trigger catch
-    resouceUtils.getRequiredComponentData({componentInquiryData: showConfig.inquiryData})
-    .then(([container, noteElement])=>{
-        showConfig.callUiToShow({container: container, noteElement: noteElement, dataForUi: data});
+  //get component data and using matched show function pass relevant data
+  //failed or null fetches should trigger catch
+  resouceUtils.getRequiredComponentData({componentInquiryData: showConfig.inquiryData})
+    .then(([container, noteElement]) => {
+      showConfig.callUiToShow({container, noteElement, dataForUi: data});
     })
     .catch(error => {
-        console.log(error);
+      console.log(error);
     });
 }
 
