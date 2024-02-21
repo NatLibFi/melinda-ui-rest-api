@@ -36,7 +36,7 @@ export async function getNotifications(paramObj) {
       return filterNotificationsByBlockState({notificationsDataArray: result.notifications});
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       throw new Error(err);
     });
 }

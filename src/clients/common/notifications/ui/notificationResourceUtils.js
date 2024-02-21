@@ -28,7 +28,7 @@ export async function getRequiredComponentData(paramObj) {
       return [container, noteElement];
     })
     .catch(error => {
-      console.log(`Error in getting component data for ${componentStyle}`);
+      console.error(`Error in getting component data for ${componentStyle}`);
       throw new Error(error);
     });
 }
@@ -61,7 +61,7 @@ async function getNotificationElement(paramObj) {
       throw new Error('No document from html');
     })
     .catch(error => {
-      console.log('Error while fetching html: ', error);
+      console.error('Error while fetching html: ', error);
       throw new Error(error);
     });
 

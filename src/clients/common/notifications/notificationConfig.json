@@ -1,6 +1,5 @@
 {
     "debug":{
-        "enableTestData": false,
         "clearNotificationLocalStorageOnLoad": false
     },
     "localstorePrefixKey": "melinda_notification",

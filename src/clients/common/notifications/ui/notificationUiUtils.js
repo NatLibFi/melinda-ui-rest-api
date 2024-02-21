@@ -67,6 +67,7 @@ export function addText(paramObj) {
 
 /**
  * Add button element to div
+ * IF theres no button data on the buttonElement the div thats suppose to hold the button is removed
  *
  * @param {object} paramObj object delivery for function
  * @param {HTMLDivElement} paramObj.noteElement notification element
@@ -81,16 +82,18 @@ export function addButton(paramObj) {
   }
   const {noteElement, buttonElement, buttonContainerId, removeContainer = true} = paramObj;
 
+  //if no button data either remove container or move on without setting the button
+  //can be ovveriden, by default removes the container
   if (!buttonElement) {
-    //console.log('No button data to set. Skipping');
     if (removeContainer) {
-      removeElementFromContainer({container: noteElement, idOrClassName: buttonContainerId});
+      const buttonContainer = noteElement.querySelector(`.${buttonContainerId}`);
+      removeElementFromContainer({container: noteElement, elementToRemove: buttonContainer});
     }
 
     return;
   }
   if (buttonElement.nodeName !== 'BUTTON') {
-    console.log('Trying to set none button');
+    console.error('Trying to set none button');
     return;
   }
 
@@ -149,7 +152,7 @@ export function closeNotification(paramObj) {
   }
 
   if (removeElementOnClose) {
-    removeItemFromContainer({container, noteElement, backgroundElement});
+    removeNotificationElement({container, noteElement, backgroundElement});
   }
 }
 
@@ -167,8 +170,8 @@ export function setNotificationListBackground(paramObj) {
   const {backgroundElement, showBackground = false} = paramObj;
 
   if (!backgroundElement || !backgroundElement.style) {
-    //console.log('Background element missing');
-    return;
+    //if no element set skipt this option
+    throw new Error('Trying to set notification list background but required information is missing');
   }
 
   backgroundElement.style.visibility = showBackground ? 'visible' : 'hidden';
@@ -265,6 +268,8 @@ export function displayNotificationWithAnimation(paramObj) {
  * In order to open external url correctly its format is checked and only absolute format is accepted.
  * IF relative path is required please update
  *
+ * Returns undefined object if something goes wrong and if theres no button data later its not set
+ *
  * @param {object} paramObj object delivery for function
  * @param {object} paramObj.dataObject data object for holding
  * @param {String} paramObj.dataObject.text visible text for link
@@ -278,19 +283,18 @@ export function createLinkButton(paramObj) {
   const {dataObject} = paramObj;
 
   if (!dataObject) {
-    //console.log('Dataobject not set for linkbutton. Skipping');
     return undefined;
   }
   const {text, url} = dataObject;
   if (!text || !url) {
-    console.log('Missing data when creating link button');
+    console.warn('Missing data when creating link button');
     return undefined;
   }
   //see if url given is relative or absolute
   //relative ones try to open with pages baseURI. We most likely want here to open external site so we want absolute
   //essentially we want url with http: or https:
   if (!isAbsoluteURL({testUrl: url})) {
-    console.log('Link button url set to relative please check url format');
+    console.warn('Link button url set to relative please check url format');
     return undefined;
   }
 
@@ -321,7 +325,7 @@ export function createLinkButton(paramObj) {
       }
 
       //other error, default to it being relative because it fails out
-      console.log(error);
+      console.warn(error);
       return false;
     }
   }
@@ -346,7 +350,6 @@ export function createActionButton(paramObj) {
 
   //check priamry data
   if (!style || !buttonData) {
-    //console.log('Action Button misses some data');
     return undefined;
   }
 
@@ -354,7 +357,7 @@ export function createActionButton(paramObj) {
   const {text, onClick} = buttonData;
 
   if (!text || !onClick) {
-    console.log('Action buttons data object is lacking');
+    console.warn('Action buttons data object is lacking');
     return undefined;
   }
 
@@ -424,65 +427,57 @@ export function createActionButton(paramObj) {
 // Helper functions
 
 /**
- * Remove notification item from container holding them, if theres a background element for that container check should it be hidden
- * Closing notificaiton or if timed animation closes it this should be called
+ * Remove notification element item from container holding them, if theres a background element for that container check should it be hidden
+ *
+ * NOTE! NOT the same as closeNotification, this only removes elements and sets background if provided
+ * In use cases where notification close action is required use closeNotification as it does more
  *
  * @param {object} paramObj object delivery for function
  * @param {HTMLDivElement} paramObj.container root element holding noteElements
  * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
  * @param {HTMLDivElement} [paramObj.backgroundElement]  optional - separate background element for content container to be hidden if last element was removed
  */
-function removeItemFromContainer(paramObj) {
+function removeNotificationElement(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {container, noteElement, backgroundElement} = paramObj;
 
-  //container.removeChild(noteElement);
-  removeElementFromContainer({container, idOrClassName: noteElement.className});
+  removeElementFromContainer({container: container, elementToRemove: noteElement});
   hideBackgroundIfNoActiveChildren({container, backgroundElement});
 }
 
 /**
- * General remove function for easier removing some element from container
+ * Remove element from container. Find child node and remove it
  *
- * @param {object} paramObj object delivery for function
- * @param {HTMLDivElement} paramObj.container upper element thats suppose to hold element thats required to remove
- * @param {String} paramObj.idOrClassName either class name or element id to seach
- * @param {boolean} [paramObj.useQuery=true] query based on class if false try to find with id
+ * @param {object} paramObj
+ * @param {HTMLDivElement} paramObj.container - upper level container
+ * @param {element} paramObj.elementToRemove - item to remove
  */
-function removeElementFromContainer(paramObj) {
+function removeElementFromContainer(paramObj){
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {container, idOrClassName, useQuery = true} = paramObj;
+  const {container, elementToRemove} = paramObj;
+  if(!container || !elementToRemove){
+    throw new Error('Missing data in removeElementFromContainer');
+  }
 
-  if (!container || !idOrClassName) {
-    console.log('removeElementFromContainer missing parameters');
+  //test if container itself is element
+  if(container === elementToRemove){
+    callParentToRemoveChild({elementToRemove: elementToRemove});
     return;
   }
-  const element = fetchElement({container, idOrClassName, useQuery});
-  if (!element) {
-    //console.log('No element to remove');
-    return;
-  }
-  //since element can be nested more deeply within container element just get the elements parent and with that remove child
-  const parent = element.parentNode;
-  if (!parent) {
-    //console.log('Did not find element parent node to remove element');
-    return;
-  }
-  //remove sub element
-  parent.removeChild(element);
 
-  function fetchElement(subParamObj) {
-    const {container, idOrClassName, useQuery} = subParamObj;
-
-    if (useQuery) {
-      return container.querySelector(`.${idOrClassName}`);
+  //go through all child nodes, remove the one matching
+  const targetElement = Array.from(container.childNodes).find(childNode => childNode === elementToRemove);
+  if(targetElement){
+    const parent = targetElement.parentNode;
+    if(!parent){
+      //no parent (sad), so cant use parent removal
+      return;
     }
-
-    return container.getElementById(idOrClassName);
+    parent.removeChild(targetElement);
   }
 }
 
@@ -546,7 +541,8 @@ function hideCloseButton(paramObj) {
 
   noteElement.querySelector(`.${closeButtonId}`).style.visibility = 'collapse';
   if (removeContainer) {
-    removeElementFromContainer({container: noteElement, idOrClassName: closeButtonId});
+    const closeButtonContainer = noteElement.querySelector(`.${closeButtonId}`);
+    removeElementFromContainer({container: noteElement, elementToRemove: closeButtonContainer});
   }
 }
 

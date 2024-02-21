@@ -120,7 +120,8 @@ export async function getNotificationConfigKeyValue(paramObj) {
  *
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.componentStyle
- * @returns {object|undefined} with
+ * @returns {object} config data object
+ * @throws {error} throws erro if required config data is not available
  */
 export async function getShowConfigData(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
@@ -129,21 +130,18 @@ export async function getShowConfigData(paramObj) {
   const {componentStyle} = paramObj;
 
   if (!componentStyle) {
-    console.log('Missing param on getShowConfigData');
-    return undefined;
+    throw new Error('Missing param on getShowConfigData');
   }
 
   //try to find resource config for style
   const resourceConfigs = await getNotificationConfigKeyValue({key: 'resourceConfigs'});
   if (!resourceConfigs || !Array.isArray(resourceConfigs) || resourceConfigs.length <= 0) {
-    console.log('Resource configs missing from json');
-    return undefined;
+    throw new Error('Resource configs missing from json');
   }
 
   const resourceConfig = resourceConfigs.find(obj => obj.componentStyle === componentStyle);
   if (!resourceConfig) {
-    console.log(`Did not find resource configuration for ${componentStyle}`);
-    return undefined;
+    throw new Error(`Did not find resource configuration for ${componentStyle}`);
   }
 
   //format return data and add correct show function
@@ -164,8 +162,7 @@ export async function getShowConfigData(paramObj) {
     };
   }
 
-  console.log('Did not get component inquiry data, no proper componentStyle found');
-  return undefined;
+  throw new Error('Did not get component inquiry data, no proper componentStyle found');
 }
 
 //************************************************************************************** */
@@ -197,8 +194,8 @@ async function getConfig(paramObj) {
   })
     .catch(error => {
       const err = 'Could not get config for notifications';
-      console.log(err);
-      console.log(error);
+      console.error(err);
+      console.error(error);
       throw new Error(err);
     });
 }
@@ -222,8 +219,8 @@ async function getConfigKeyValue(paramObj) {
     .then(configData => configData?.[key])
     .catch(error => {
       const err = `Failed to get value for ${key}`;
-      console.log(err);
-      console.log(error);
+      console.error(err);
+      console.error(error);
       throw new Error(err);
     });
 }

@@ -39,7 +39,7 @@ export async function getFromCache(paramObj) {
         resolve(data);
       })
       .catch((error) => {
-        console.log('Error from fetching new data for cached data');
+        console.error('Error from fetching new data for cached data');
         reject(error);
       });
   });
@@ -53,7 +53,7 @@ export async function getFromCache(paramObj) {
  */
 export function clearCacheField(key) {
   if (!cache.hasOwnProperty(key)) {
-    console.warn(`No property ${key} in cache to clear`);
+    console.error(`No property ${key} in cache to clear`);
     return;
   }
 

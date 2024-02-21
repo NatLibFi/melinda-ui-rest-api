@@ -50,8 +50,8 @@ import * as resouceUtils from '/../common/notifications/ui/notificationResourceU
  *
  * @param {object} paramObj object delivery for function
  * @param {CallableFunction} paramObj.clientName client/page that requests server notifications
- * @param {CallableFunction} [paramObj.onSuccess] optional -triggers when loaded notification without blocks
- * @param {CallableFunction} [paramObj.onFailure] optional -triggers when error is thrown in process of loading or showing notification
+ * @param {CallableFunction} [paramObj.onSuccess] optional - triggers when loaded notification without blocks
+ * @param {CallableFunction} [paramObj.onFailure] optional - triggers when error is thrown in process of loading or showing notification
  * @param {CallableFunction} [paramObj.onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
  */
 export function showServerNotifications(paramObj) {
@@ -80,15 +80,15 @@ export function showServerNotifications(paramObj) {
       }
     })
     .catch(err => {
-      console.log('Notification fetch failed');
-      console.log(err);
+      console.error('Notification fetch or show failed');
+      console.error(err);
 
       //failure/error could also indicate showing error so try to show error message but try catch it?
       try {
         showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
       } catch (error) {
-        console.log('Issue on showing failure notificaiton');
-        console.log(error);
+        console.error('Issue on showing failure notificaiton');
+        console.error(error);
       }
 
       if (onFailure) {
@@ -96,7 +96,7 @@ export function showServerNotifications(paramObj) {
         return;
       }
 
-      console.log('On failure parameter missing');
+      console.error('On failure parameter missing');
     });
 }
 
@@ -158,13 +158,13 @@ export function showServerNotifications(paramObj) {
  */
 export function showNotification(notificationData) {
   if (!notificationData) {
-    console.log('No data for showNotification');
+    console.error('No data for showNotification');
     return;
   }
 
   //if not valid type of data fail fast
   if (!dataUtils.isDataValidType({data: notificationData, validTypeArray: ['array', 'object', 'string']})) {
-    console.log('Data for showNotification not correct type');
+    console.error('Data for showNotification not correct type');
     return;
   }
 
@@ -237,7 +237,7 @@ async function showSingleNotification(data) {
   //test if data is in acceptable format, additional checks not only surface typeof
   const dataStatusObj = dataUtils.isInputDataFormatGood({data});
   if (!dataStatusObj.isValid) {
-    console.log('showNotification data type is not valid');
+    console.error('showNotification data type is not valid');
     return;
   }
 
@@ -286,10 +286,11 @@ async function showSingleNotification(data) {
 async function getComponentsAndShowUi(data) {
 
   //get config with resource info and show function
-  const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
-  if (!showConfig || !showConfig.inquiryData) {
-    console.log('showConfig or inquiry data not available');
-    return;
+  let showConfig;
+  try {
+    showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
+  } catch (error) {
+    throw new Error(error);
   }
 
   //get component data and using matched show function pass relevant data
@@ -299,7 +300,7 @@ async function getComponentsAndShowUi(data) {
       showConfig.callUiToShow({container, noteElement, dataForUi: data});
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
     });
 }
 
