@@ -183,21 +183,28 @@ async function getConfig(paramObj) {
   }
   const {path, cacheKey} = paramObj;
 
-  return getFromCache({
-    key: cacheKey,
-    onNewDataRequired: () => fetch(path).then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const config = await getFromCache({
+        key: cacheKey,
+        onNewDataRequired: () => fetch(path).then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+      });
+
+      if(!config){
+        throw new Error('No config data found');
       }
-      return response.json();
-    })
-  })
-    .catch(error => {
-      const err = 'Could not get config for notifications';
-      console.error(err);
-      console.error(error);
-      throw new Error(err);
-    });
+
+      return config;
+  } catch (error) {
+    const err = 'Could not get config for notifications';
+    console.error(err);
+    console.error(error);
+    throw new Error(err);
+  }
 }
 
 /**
@@ -208,6 +215,7 @@ async function getConfig(paramObj) {
  * @param {String} paramObj.key fields key
  * @param {String} paramObj.cacheKeyConfig key for cache storing config data
  * @returns {*|undefined} returns value of the key or undefined if key not found
+ * @throws {Error} if theres issue or for some reason config is not available
  */
 async function getConfigKeyValue(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
@@ -215,14 +223,15 @@ async function getConfigKeyValue(paramObj) {
   }
   const {path, key, cacheKeyConfig} = paramObj;
 
-  return getConfig({path, cacheKey: cacheKeyConfig})
-    .then(configData => configData?.[key])
-    .catch(error => {
-      const err = `Failed to get value for ${key}`;
-      console.error(err);
-      console.error(error);
-      throw new Error(err);
-    });
+  try {
+    const configData = await getConfig({path, cacheKey: cacheKeyConfig});
+    return configData[key];
+  } catch (error) {
+    const err = `Failed to get value for ${key}`;
+    console.error(err);
+    console.error(error);
+    throw new Error(err);
+  }
 }
 
 /**

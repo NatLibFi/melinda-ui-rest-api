@@ -18,31 +18,29 @@ const cache = {};
  * });
  */
 export async function getFromCache(paramObj) {
-  return new Promise((resolve, reject) => {
     if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
-      reject(new Error('Malformed or missing param object on function'));
+      throw new Error('Malformed or missing param object on function');
     }
     const {key, onNewDataRequired} = paramObj;
 
     //id data stored return it
     if (cache[key]) {
-      return resolve(cache[key]);
+      return cache[key];
     }
 
     //if new data is required get it and update cache
-    onNewDataRequired()
-      .then((data) => {
-        //record the new data
-        cache[key] = data;
+    try {
+      const data = await onNewDataRequired();
 
-        //return new data
-        resolve(data);
-      })
-      .catch((error) => {
-        console.error('Error from fetching new data for cached data');
-        reject(error);
-      });
-  });
+      //record the new data
+      cache[key] = data;
+
+      //return new data
+      return data;
+    } catch (error) {
+      console.error('Error from fetching new data for cached data');
+      throw new Error(error);
+    }
 }
 
 /**

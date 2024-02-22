@@ -22,15 +22,14 @@ export async function getRequiredComponentData(paramObj) {
   const {componentInquiryData} = paramObj;
   const {componentStyle, templateId, elementId, containerId} = componentInquiryData;
 
-  return getNotificationElement({templateId, elementId})
-    .then(noteElement => {
-      const container = getContainerForNotifications({containerId});
-      return [container, noteElement];
-    })
-    .catch(error => {
-      console.error(`Error in getting component data for ${componentStyle}`);
-      throw new Error(error);
-    });
+  try {
+    const noteElement = await getNotificationElement({templateId, elementId});
+    const container = getContainerForNotifications({containerId});
+    return [container, noteElement];
+  } catch (error) {
+    console.error(`Error in getting component data for ${componentStyle}`);
+    throw new Error(error);
+  }
 }
 
 //************************************************************************************** */
@@ -52,40 +51,39 @@ async function getNotificationElement(paramObj) {
   }
   const {templateId, elementId} = paramObj;
 
-  return getHtml('/../common/notifications/ui/notification.html', 'notificationHtmlTemplates')
-    .then(html => {
+  try {
+    const html = await getHtml('/../common/notifications/ui/notification.html', 'notificationHtmlTemplates');
       const doc = getElementRootDocument(html, templateId, elementId);
-      if (doc) {
-        return doc;
+      if (!doc) {
+        throw new Error('No document from html');
       }
-      throw new Error('No document from html');
-    })
-    .catch(error => {
-      console.error('Error while fetching html: ', error);
-      throw new Error(error);
-    });
+      return doc;
+  } catch (error) {
+    console.error('Error while fetching html: ', error);
+    throw new Error(error);
+  }
 
   async function getHtml(path, cacheKey) {
-    return getFromCache({
-      key: cacheKey,
-      onNewDataRequired: () => fetch(path).then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-      })
-    })
-      .then(html => {
-        if (html) {
-          return html;
+    try {
+        const html = await getFromCache({
+          key: cacheKey,
+          onNewDataRequired: () => fetch(path).then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+          })
+        });
+
+        if(!html){
+          throw new Error('No html file found');
         }
 
-        throw new Error('No html file found');
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+        return html;
 
+    } catch (error) {
+      throw new Error(error);
+    }
   }
   //get template from document, and from template get spesific element root div
   function getElementRootDocument(html, templateId, elementId) {
@@ -101,11 +99,11 @@ async function getNotificationElement(paramObj) {
     const fragment = template.content.cloneNode(true);
     const element = fragment.getElementById(elementId);
 
-    if (element) {
-      return element;
+    if (!element) {
+      throw new Error('No element found from html');
     }
 
-    throw new Error('No element found from html');
+    return element;
   }
 }
 
@@ -126,9 +124,9 @@ function getContainerForNotifications(paramObj) {
   const {containerId} = paramObj;
 
   const container = document.getElementById(containerId);
-  if (container) {
-    return container;
+  if (!container) {
+    throw new Error(`No container for notification ${containerId}`);
   }
 
-  throw new Error(`No container for notification ${containerId}`);
+  return container;
 }

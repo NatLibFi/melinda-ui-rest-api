@@ -193,7 +193,7 @@ export function showDialog(paramObj) {
         'listenAnimationToEnd': false
       };
     }
-    //standard behaviour with auto close
+    //open item with animation but do not do any action after it, also keep item on screen
     uiUtils.displayNotificationWithAnimation({container: contentContainerElement, noteElement, animationInfoObj: animationUpdateObject, backgroundElement, notificationId: id});
   }
 }
