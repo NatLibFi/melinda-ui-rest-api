@@ -14,7 +14,7 @@
             "componentStyle": "banner_static",
             "templateId": "bannerStaticTemplate",
             "elementId": "bannerStatic",
-            "containerId": "bannner_statics"
+            "containerId": "bannnerStatics"
         },
         {
             "componentStyle": "dialog",
