@@ -1,3 +1,5 @@
+import {dataUtils} from '/../common/notifications/data/notificationDataProcessor.js';
+
 //************************************************************************************** */
 // Helper functions for notifiationUi.js
 
@@ -109,7 +111,6 @@ export function addButton(paramObj) {
  * @param {String} paramObj.closeButtonId element id for close button
  * @param {boolean} paramObj.canDismiss can user close the notification
  * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
- * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines, defaults to true
  * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @returns
@@ -118,10 +119,10 @@ export function handleCloseButton(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {container, noteElement, closeButtonId, canDismiss = true, notificationId, closePrefix, removeElementOnClose = true, backgroundElement} = paramObj;
+  const {container, noteElement, closeButtonId, canDismiss = true, notificationId, removeElementOnClose = true, backgroundElement} = paramObj;
 
   if (canDismiss) {
-    addCloseButton({container, noteElement, closeButtonId, notificationId, closePrefix, removeElementOnClose, backgroundElement});
+    addCloseButton({container, noteElement, closeButtonId, notificationId, removeElementOnClose, backgroundElement});
     return;
   }
   hideCloseButton({noteElement, closeButtonId});
@@ -134,21 +135,23 @@ export function handleCloseButton(paramObj) {
  * @param {HTMLDivElement} paramObj.container root element holding noteElements
  * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
  * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
- * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines, defaults to true
  */
-export function closeNotification(paramObj) {
+export async function closeNotification(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose = true} = paramObj;
+  const {container, noteElement, notificationId, backgroundElement, removeElementOnClose = true} = paramObj;
 
   noteElement.style.visibility = 'collapse';
 
-  if (notificationId && closePrefix) {
-    const idString = `${closePrefix}_${notificationId}`;
-    localStorage.setItem(idString, '1');
+  if (notificationId) {
+    const closePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
+    if(closePrefixKey){
+      const idString = `${closePrefixKey}_${notificationId}`;
+      localStorage.setItem(idString, '1');
+    }
   }
 
   if (removeElementOnClose) {
@@ -196,14 +199,13 @@ export function setNotificationListBackground(paramObj) {
  * @param {String} [paramObj.animationInfoObj.onAnimationEnd] optional - what to do after animation end (by default before this call hides element visibility)
  * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
- * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  *
  */
 export function displayNotificationWithAnimation(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {container, noteElement, animationInfoObj, backgroundElement, notificationId, closePrefix} = paramObj;
+  const {container, noteElement, animationInfoObj, backgroundElement, notificationId} = paramObj;
 
   //default settings
   const defaultAnimationSettings = {
@@ -256,7 +258,7 @@ export function displayNotificationWithAnimation(paramObj) {
         }
 
         if (removeElementOnClose) {
-          closeNotification({container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose});
+          closeNotification({container, noteElement, notificationId, backgroundElement, removeElementOnClose});
         }
       }
     };
@@ -553,7 +555,6 @@ function hideCloseButton(paramObj) {
  * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
  * @param {String} paramObj.closeButtonId element id for close button
  * @param {String} [paramObj.notificationId] optional - notification id if provided to record close action
- * @param {String} [paramObj.closePrefix] optional - prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {boolean} [paramObj.removeElementOnClose=true] optional - should the whole element be removed after close, self cleaning, no need for clean routines
  * @param {HTMLDivElement} [paramObj.backgroundElement] optional - separate background element for content container to be hidden if last element was removed
  */
@@ -561,11 +562,11 @@ function addCloseButton(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {container, noteElement, closeButtonId, notificationId, closePrefix, removeElementOnClose = true, backgroundElement} = paramObj;
+  const {container, noteElement, closeButtonId, notificationId, removeElementOnClose = true, backgroundElement} = paramObj;
 
   noteElement.querySelector(`.${closeButtonId}`).addEventListener('click', (event) => {
     eventHandled(event);
-    closeNotification({container, noteElement, notificationId, closePrefix, backgroundElement, removeElementOnClose});
+    closeNotification({container, noteElement, notificationId, backgroundElement, removeElementOnClose});
   });
 }
 

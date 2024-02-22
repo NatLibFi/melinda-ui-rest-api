@@ -15,7 +15,6 @@ import * as uiUtils from '/../common/notifications/ui/notificationUiUtils.js';
  * @param {object} paramObj.dataForUi object for holding required data to show on ui
  * @param {String} paramObj.dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} paramObj.dataForUi.text visible text
- * @param {String} paramObj.dataForUi.closePrefix prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {String} [paramObj.dataForUi.id] optional - id provided from server data, use for recording close action
  * @param {String} [paramObj.dataForUi.isDismissible=true] optional - can user close the notification
  * @param {object} [paramObj.dataForUi.linkButtonData] optional - object holding data for creating link button
@@ -30,7 +29,7 @@ export function showBanner(paramObj) {
     throw new Error('Malformed or missing param object on function');
   }
   const {container, noteElement, dataForUi} = paramObj;
-  const {style, text, linkButtonData, actionButtonData, id, closePrefix, isDismissible = true} = dataForUi;
+  const {style, text, linkButtonData, actionButtonData, id, isDismissible = true} = dataForUi;
 
   createBanner();
   addBanner();
@@ -44,7 +43,7 @@ export function showBanner(paramObj) {
 
     const linkButton = uiUtils.createLinkButton({dataObject: linkButtonData});
     const actionButton = uiUtils.createActionButton({style, buttonData: actionButtonData, afterClick: () => {
-      uiUtils.closeNotification({container, noteElement, notificationId: id, closePrefix});
+      uiUtils.closeNotification({container, noteElement, notificationId: id});
     }});
     const linkId = 'notificationbanner-link';
     const acationId = 'notificationbanner-action';
@@ -62,7 +61,7 @@ export function showBanner(paramObj) {
     uiUtils.addText({noteElement, textId: 'notificationbanner-text', text});
     uiUtils.addButton({noteElement, buttonElement: linkButton, buttonContainerId: 'notificationbanner-link'});
     uiUtils.addButton({noteElement, buttonElement: actionButton, buttonContainerId: 'notificationbanner-action'});
-    uiUtils.handleCloseButton({container, noteElement, closeButtonId: 'notificationbanner-close', canDismiss: isDismissible, notificationId: id, closePrefix});
+    uiUtils.handleCloseButton({container, noteElement, closeButtonId: 'notificationbanner-close', canDismiss: isDismissible, notificationId: id});
   }
 
   /**
@@ -78,7 +77,7 @@ export function showBanner(paramObj) {
      * if not given using default settings from the
      */
   function displayBannerWithAnimation() {
-    uiUtils.displayNotificationWithAnimation({container, noteElement, notificationId: id, closePrefix});
+    uiUtils.displayNotificationWithAnimation({container, noteElement, notificationId: id});
   }
 }
 
@@ -142,7 +141,6 @@ export function showBannerStatic(paramObj) {
  * @param {object} paramObj.dataForUi object for holding required data to show on ui
  * @param {String} paramObj.dataForUi.style how does the notification itself should look like info/error etc.
  * @param {String} paramObj.dataForUi.text visible text
- * @param {String} paramObj.dataForUi.closePrefix prefix for closing, used to save to local storage, comes from config, used only if id present
  * @param {String} [paramObj.dataForUi.id] optional - identification for data object, used to mark notification to hidden upon hide
  * @param {String} [paramObj.dataForUi.title] optional - visible title text, most likely not given and setter gets defaults from this script
  * @param {String} [paramObj.dataForUi.isDismissible=true] optional - can user close the notification
@@ -160,7 +158,7 @@ export function showDialog(paramObj) {
     throw new Error('Malformed or missing param object on function');
   }
   const {container, noteElement, dataForUi, isStatic = true} = paramObj;
-  const {style, text, linkButtonData, actionButtonData, closePrefix, id, title, isDismissible = true, blocksInteraction = false} = dataForUi;
+  const {style, text, linkButtonData, actionButtonData, id, title, isDismissible = true, blocksInteraction = false} = dataForUi;
 
   const backgroundElement = container.querySelector(`#notificationDialogsBg`);
   const contentContainerElement = container.querySelector(`#notificationDialogs`);
@@ -172,7 +170,7 @@ export function showDialog(paramObj) {
   function createDialog() {
     const linkButton = uiUtils.createLinkButton({dataObject: linkButtonData});
     const actionButton = uiUtils.createActionButton({style, buttonData: actionButtonData, afterClick: () => {
-      uiUtils.closeNotification({container: contentContainerElement, noteElement, notificationId: id, closePrefix, backgroundElement});
+      uiUtils.closeNotification({container: contentContainerElement, noteElement, notificationId: id, backgroundElement});
     }});
 
     uiUtils.setNotificationListBackground({backgroundElement, showBackground: blocksInteraction});
@@ -181,7 +179,7 @@ export function showDialog(paramObj) {
     uiUtils.addText({noteElement, textId: 'notificationdialog-text', text});
     uiUtils.addButton({noteElement, buttonElement: linkButton, buttonContainerId: 'notificationdialog-link'});
     uiUtils.addButton({noteElement, buttonElement: actionButton, buttonContainerId: 'notificationdialog-action'});
-    uiUtils.handleCloseButton({container: contentContainerElement, noteElement, closeButtonId: 'notificationdialog-close', canDismiss: isDismissible, notificationId: id, closePrefix, backgroundElement});
+    uiUtils.handleCloseButton({container: contentContainerElement, noteElement, closeButtonId: 'notificationdialog-close', canDismiss: isDismissible, notificationId: id, backgroundElement});
   }
   function addDialog() {
     contentContainerElement.prepend(noteElement);
@@ -196,6 +194,6 @@ export function showDialog(paramObj) {
       };
     }
     //standard behaviour with auto close
-    uiUtils.displayNotificationWithAnimation({container: contentContainerElement, noteElement, animationInfoObj: animationUpdateObject, backgroundElement, notificationId: id, closePrefix});
+    uiUtils.displayNotificationWithAnimation({container: contentContainerElement, noteElement, animationInfoObj: animationUpdateObject, backgroundElement, notificationId: id});
   }
 }

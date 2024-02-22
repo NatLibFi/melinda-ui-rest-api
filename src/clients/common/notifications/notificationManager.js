@@ -237,7 +237,7 @@ export function showNotification(notificationData) {
  * @param {String} [data.actionButtonData.text] optional - visible text
  * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
-async function showSingleNotification(data) {
+function showSingleNotification(data) {
 
   /**
      * Check data validity (is it in ok form)
@@ -273,7 +273,6 @@ async function showSingleNotification(data) {
   const isDataFromServer = data.id !== undefined;
   const style = isDataFromServer ? data.messageStyle : data.style;
   const linkButtonCreationData = data.url ? {text: 'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
-  const closePrefixKey = await dataUtils.getNotificationConfigKeyValue({key: 'localstorePrefixKey'});
   getComponentsAndShowUi({
     id: data.id,
     componentStyle: data.componentStyle ?? 'banner',
@@ -283,8 +282,7 @@ async function showSingleNotification(data) {
     linkButtonData: linkButtonCreationData,
     actionButtonData: data.actionButtonData,
     isDismissible: data.isDismissible,
-    blocksInteraction: data.blocksInteraction,
-    closePrefix: closePrefixKey
+    blocksInteraction: data.blocksInteraction
   });
 }
 
