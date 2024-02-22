@@ -8,7 +8,7 @@ export {dataUtils};
 /**
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.clientName name of the client doing the request, if not correct shows notifications for all clients
- * @returns {object} status object with 'blocking', 'notBlocking', 'hasBlocks' fields
+ * @returns {object} status object with 'blocking', 'notBlocking', 'hasBlocks' fields, HOWEVER if theres no data. Returns object with a field 'noNotifications' as true
  */
 export async function getNotifications(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
@@ -27,18 +27,25 @@ export async function getNotifications(paramObj) {
   }
 
   //do backend call and try filter them into different categories
-  return getServerNotifications(clientName)
-    .then(result => {
-      if (!result || !result.notifications) {
-        throw new Error('No result or notifications from getServerNotifications');
-      }
+  try {
+    const result = await getServerNotifications(clientName);
 
-      return filterNotificationsByBlockState({notificationsDataArray: result.notifications});
-    })
-    .catch(err => {
-      console.error(err);
-      throw new Error(err);
-    });
+    if (!result || !result.notifications) {
+      throw new Error('No result or notifications from getServerNotifications');
+    }
+
+    //if items filter them
+    if(result.notifications.length>0){
+      return await filterNotificationsByBlockState({notificationsDataArray: result.notifications});
+    }
+
+    //if no items return field for cleaner check
+    return {noNotifications: true};
+
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
 }
 
 //************************************************************************************** */

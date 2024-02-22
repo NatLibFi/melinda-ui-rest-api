@@ -54,34 +54,44 @@ import * as resouceUtils from '/../common/notifications/ui/notificationResourceU
  * @param {CallableFunction} [paramObj.onFailure] optional - triggers when error is thrown in process of loading or showing notification
  * @param {CallableFunction} [paramObj.onBlock] optional - triggers when loaded notifications have blocks, most likely cases where there are outages
  */
-export function showServerNotifications(paramObj) {
+export async function showServerNotifications(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {clientName, onSuccess, onFailure, onBlock} = paramObj;
 
-  getNotifications({clientName: clientName})
-    .then(notificationObject => {
-      //generate appropriate ui items
-      if (notificationObject.hasBlocks) {
-        showNotification(notificationObject.blocking);
-
-        if (onBlock) {
-          onBlock();
-        }
-        return;
-      }
-
-      showNotification(notificationObject.notBlocking);
-
-      if (onSuccess) {
+  try {
+    const notificationObject = await getNotifications({clientName: clientName});
+    //if no items to show exit quick, consider this a success, errors should have triggered by now
+    if(notificationObject.noNotifications){
+      console.log('No notifications to show.');
+      if(onSuccess){
         onSuccess();
-        return;
       }
-    })
-    .catch(err => {
-      console.error('Notification fetch or show failed');
-      console.error(err);
+      return;
+    }
+
+    //generate appropriate ui items
+    //blocking ones have own status
+    if (notificationObject.hasBlocks) {
+      showNotification(notificationObject.blocking);
+
+      if (onBlock) {
+        onBlock();
+      }
+      return;
+    }
+
+    //normal notifications
+    showNotification(notificationObject.notBlocking);
+
+    if (onSuccess) {
+      onSuccess();
+      return;
+    }
+  } catch (error) {
+    console.error('Notification fetch or show failed');
+      console.error(error);
 
       //failure/error could also indicate showing error so try to show error message but try catch it?
       try {
@@ -97,7 +107,7 @@ export function showServerNotifications(paramObj) {
       }
 
       console.error('On failure parameter missing');
-    });
+  }
 }
 
 /**
@@ -286,21 +296,13 @@ async function showSingleNotification(data) {
 async function getComponentsAndShowUi(data) {
 
   //get config with resource info and show function
-  let showConfig;
   try {
-    showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
+    const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
+    const [container, noteElement] = await resouceUtils.getRequiredComponentData({componentInquiryData: showConfig.inquiryData});
+    //componentData fetch should throw error if data missing already
+    showConfig.callUiToShow({container, noteElement, dataForUi: data});
   } catch (error) {
     throw new Error(error);
   }
-
-  //get component data and using matched show function pass relevant data
-  //failed or null fetches should trigger catch
-  resouceUtils.getRequiredComponentData({componentInquiryData: showConfig.inquiryData})
-    .then(([container, noteElement]) => {
-      showConfig.callUiToShow({container, noteElement, dataForUi: data});
-    })
-    .catch(error => {
-      console.error(error);
-    });
 }
 
