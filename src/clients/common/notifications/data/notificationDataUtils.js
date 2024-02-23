@@ -134,14 +134,10 @@ export async function getShowConfigData(paramObj) {
   }
 
   //try to find resource config for style
-  const resourceConfigs = await getNotificationConfigKeyValue({key: 'resourceConfigs'});
-  if (!resourceConfigs || !Array.isArray(resourceConfigs) || resourceConfigs.length <= 0) {
+  const resourceConfigs = await getNotificationConfigKeyValue({key: 'resourceConfigsForComponentStyles'});
+  const resourceConfig = resourceConfigs?.[componentStyle];
+  if (!resourceConfig || !resourceConfigs) {
     throw new Error('Resource configs missing from json');
-  }
-
-  const resourceConfig = resourceConfigs.find(obj => obj.componentStyle === componentStyle);
-  if (!resourceConfig) {
-    throw new Error(`Did not find resource configuration for ${componentStyle}`);
   }
 
   //format return data and add correct show function

@@ -8,7 +8,6 @@ import {getFromCache} from '/../common/cacheService.js';
  *
  * @param {object} paramObj object delivery for function
  * @param {object} paramObj.componentInquiryData to simplify functioncall
- * @param {String} paramObj.componentInquiryData.componentStyle notifications component style, for logging
  * @param {String} paramObj.componentInquiryData.templateId html files template to fetch
  * @param {String} paramObj.componentInquiryData.elementId element withing template
  * @param {String} paramObj.componentInquiryData.containerId container within document to put elements into
@@ -20,14 +19,14 @@ export async function getRequiredComponentData(paramObj) {
     throw new Error('Malformed or missing param object on function');
   }
   const {componentInquiryData} = paramObj;
-  const {componentStyle, templateId, elementId, containerId} = componentInquiryData;
+  const {templateId, elementId, containerId} = componentInquiryData;
 
   try {
     const noteElement = await getNotificationElement({templateId, elementId});
     const container = getContainerForNotifications({containerId});
     return [container, noteElement];
   } catch (error) {
-    console.error(`Error in getting component data for ${componentStyle}`);
+    console.error(`Error in getting component data`);
     throw new Error(error);
   }
 }

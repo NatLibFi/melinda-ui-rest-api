@@ -13,13 +13,13 @@ import {dataUtils} from '/../common/notifications/data/notificationDataProcessor
  * @param {String} paramObj.style what style is the element suppose to be
  * @param {String} paramObj.iconId element id for icon
  */
-export function setStylings(paramObj) {
+export async function setStylings(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {backgroundToStyleElement, iconContainerElement, style, iconId} = paramObj;
 
-  const styleObj = getNotificationColoursAndIconsWithStyle({style});
+  const styleObj = await getNotificationColoursAndIconsWithStyle({style});
 
   backgroundToStyleElement.style.setProperty(`--style-background-color`, styleObj.bg);
 
@@ -37,14 +37,15 @@ export function setStylings(paramObj) {
  * @param {String} [paramObj.title] optional - title text to show
  * @returns
  */
-export function addTitle(paramObj) {
+export async function addTitle(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {noteElement, titleTextId, style, title} = paramObj;
 
   if (!title) {
-    addText({noteElement, textId: titleTextId, text: getDefaultTitleText({style})});
+    const text = await getDefaultTitleText({ style });
+    addText({noteElement, textId: titleTextId, text: text});
     return;
   }
 
@@ -577,61 +578,50 @@ function addCloseButton(paramObj) {
 /**
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.style notification style
- * @returns {String} default title conttent
+ * @returns {String} default title conttent, fetched from config.json
  */
-function getDefaultTitleText(paramObj) {
+async function getDefaultTitleText(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {style} = paramObj;
 
-  if (style === 'info') {
-    return 'Huomasithan';
-  } else if (style === 'success') {
-    return 'Onnistui';
-  } else if (style === 'alert') {
-    return 'Huomio';
-  } else if (style === 'error') {
-    return 'Virhe';
+  try {
+    const titleConfig = await dataUtils.getNotificationConfigKeyValue({key: 'messageTitleConfig'});
+    const titleText = titleConfig?.[style];
+    if(!titleText || !titleConfig){
+      throw new Error('Missing title config');
+    }
+    return titleText;
+  } catch (error) {
+    console.error('Message title fetch failed');
+    console.error(error);
+    throw new Error(error);
   }
-
-  return 'Tuntematon';
 }
 
 /**
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.style notification style (info/alert etc.) based visible stylings
+ * @returns {object} style config object thas fetched from config.json
  */
-function getNotificationColoursAndIconsWithStyle(paramObj) {
+async function getNotificationColoursAndIconsWithStyle(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {style} = paramObj;
 
-  if (style === 'success') {
-    return {
-      bg: 'var(--color-green-80)',
-      iconBg: 'var(--color-green-100)',
-      icon: 'check_circle_outline'
-    };
-  } else if (style === 'alert') {
-    return {
-      bg: 'var(--color-yellow-80)',
-      iconBg: 'var(--color-blue-100)',
-      icon: 'warning_amber'
-    };
-  } else if (style === 'error') {
-    return {
-      bg: 'var(--color-red-80)',
-      iconBg: 'var(--color-red-100)',
-      icon: 'report_gmailerrorred'
-    };
-  }
+  try {
+    const messageStyleConfigs = await dataUtils.getNotificationConfigKeyValue({key: 'messageStyleConfigs'});
+    const styleConfig = messageStyleConfigs?.[style];
+    if(!styleConfig || !messageStyleConfigs){
+      throw new Error('Missing message style config');
+    }
 
-  // style 'info' is the default status message
-  return {
-    bg: 'var(--color-blue-60)',
-    iconBg: 'var(--color-blue-100)',
-    icon: 'error_outline'
-  };
+    return styleConfig;
+  } catch (error) {
+    console.error('Message style config fetch/setup failed');
+    console.error(error);
+    throw new Error(error);
+  }
 }
