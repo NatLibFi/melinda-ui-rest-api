@@ -1,4 +1,3 @@
-import * as ui from '/../common/notifications/ui/notificationUi.js';
 import {getFromCache} from '/../common/cacheService.js';
 
 //************************************************************************************** */
@@ -140,25 +139,7 @@ export async function getShowConfigData(paramObj) {
     throw new Error('Resource configs missing from json');
   }
 
-  //format return data and add correct show function
-  if (componentStyle === 'banner') {
-    return {
-      inquiryData: resourceConfig,
-      callUiToShow: ui.showBanner
-    };
-  } else if (componentStyle === 'banner_static') {
-    return {
-      inquiryData: resourceConfig,
-      callUiToShow: ui.showBannerStatic
-    };
-  } else if (componentStyle === 'dialog') {
-    return {
-      inquiryData: resourceConfig,
-      callUiToShow: ui.showDialog
-    };
-  }
-
-  throw new Error('Did not get component inquiry data, no proper componentStyle found');
+  return resourceConfig;
 }
 
 //************************************************************************************** */

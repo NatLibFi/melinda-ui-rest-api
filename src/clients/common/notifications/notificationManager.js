@@ -1,5 +1,6 @@
 import {getNotifications, dataUtils} from '/../common/notifications/data/notificationDataProcessor.js';
 import * as resouceUtils from '/../common/notifications/ui/notificationResourceUtils.js';
+import * as ui from '/../common/notifications/ui/notificationUi.js';
 
 //Notification features
 /**
@@ -296,9 +297,14 @@ async function getComponentsAndShowUi(data) {
   //get config with resource info and show function
   try {
     const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
-    const [container, noteElement] = await resouceUtils.getRequiredComponentData({componentInquiryData: showConfig.inquiryData});
-    //componentData fetch should throw error if data missing already
-    showConfig.callUiToShow({container, noteElement, dataForUi: data});
+    const [container, noteElement] = await resouceUtils.getRequiredComponentData({componentInquiryData: showConfig});
+
+    if(!showConfig.showFunctionName || typeof ui[showConfig.showFunctionName] !== 'function'){
+      throw new Error(`Could not call ${data.componentStyle} show function. Attempted to find function named ${showConfig.showFunctionName}. Please see config or getShowConfigData`);
+    }
+
+    ui[showConfig.showFunctionName]({container, noteElement, dataForUi: data});
+
   } catch (error) {
     throw new Error(error);
   }

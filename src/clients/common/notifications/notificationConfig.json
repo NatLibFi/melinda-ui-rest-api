@@ -7,17 +7,20 @@
         "banner":{
             "templateId": "bannerTemplate",
             "elementId": "banner",
-            "containerId": "banners"
+            "containerId": "banners",
+            "showFunctionName": "showBanner"
         },
         "banner_static":{
             "templateId": "bannerStaticTemplate",
             "elementId": "bannerStatic",
-            "containerId": "bannnerStatics"
+            "containerId": "bannnerStatics",
+            "showFunctionName": "showBannerStatic"
         },
         "dialog":{
             "templateId": "dialogTemplate",
             "elementId": "dialog",
-            "containerId": "dialogs"
+            "containerId": "dialogs",
+            "showFunctionName": "showDialog"
         }
     },
     "messageStyleConfigs":{
