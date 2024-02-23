@@ -270,7 +270,8 @@ export function displayNotificationWithAnimation(paramObj) {
  * In order to open external url correctly its format is checked and only absolute format is accepted.
  * IF relative path is required please update
  *
- * Returns undefined object if something goes wrong and if theres no button data later its not set
+ * Returns undefined object if something goes wrong and if theres no button data
+ * if created button is undefined addButton does not set rather it detects it handles it there onward
  *
  * @param {object} paramObj object delivery for function
  * @param {object} paramObj.dataObject data object for holding
@@ -336,12 +337,15 @@ export function createLinkButton(paramObj) {
 /**
  * Construct styled action button to given style
  *
+ * Returns undefined object if something goes wrong and if theres no button data
+ * if created button is undefined addButton does not set rather it detects it handles it there onward
+ *
  * @param {object} paramObj object delivery for function
  * @param {String} paramObj.style What style of notificaiton are we talking about
  * @param {object} paramObj.buttonData data object for holding
  * @param {String} paramObj.buttonData.text visible text
  * @param {CallableFunction} paramObj.buttonData.onClick action on press
- * @param {CallableFunction} paramObj.afterClick any cleanup work after click?
+ * @param {CallableFunction} [paramObj.afterClick] optional - any cleanup work after click?, mostly internal functionality, defined on ui script
  * @returns {undefined|Element} get button or nothing
  */
 export function createActionButton(paramObj) {
@@ -350,7 +354,7 @@ export function createActionButton(paramObj) {
   }
   const {style, buttonData, afterClick} = paramObj;
 
-  //check priamry data
+  //check primary data
   if (!style || !buttonData) {
     return undefined;
   }
@@ -371,7 +375,7 @@ export function createActionButton(paramObj) {
   actionBtn.addEventListener('click', () => {
     onClick();
 
-    //mosatly for cleanup job within this script, should not be expected from outside
+    //mostly for cleanup job within this script, should not be expected from outside
     if (afterClick) {
       afterClick();
     }
