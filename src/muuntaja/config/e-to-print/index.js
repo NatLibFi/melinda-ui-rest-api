@@ -100,9 +100,9 @@ function fieldsFennica(opts) {
     return [];
   }
   return [
-    //fillDefault('506/FENNI'), // excluded, MUU-382
+    // fillDefault('506/FENNI'), // MUU-382
     // fillDefault('530/FENNI'),
-    fillDefault('540/FENNI'),
+    //fillDefault('540/FENNI'), // MUU-378
     fillDefault('856/FENNI'),
     fillDefault('901/FENNI')
   ];
@@ -172,7 +172,19 @@ function mergeFields(opts) {
     //-------------------------------------------------------------------------
     // Huomautuskentät 5xx:
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
-    copy(/^5\d\d$/u),
+    //copy(/^5\d\d$/u), // previous version
+    // off: 506 & 540 (MUU-378)
+    copy(/^50[1-5]$/u), // was: copy(/^50[0-5]$/u) // MUU-379
+    copy(/^50[7-9]$/u),
+    copy(/^51\d$/u),
+    copy(/^52\d$/u),
+    copy(/^53\d$/u),
+    copy(/^54[1-9]$/u),
+    copy(/^55\d$/u),
+    copy(/^56\d$/u),
+    copy(/^57\d$/u),
+    copy(/^58\d$/u),
+    copy(/^59\d$/u),
     //update530(),
 
     //copy(/^5\d\d$/u),
