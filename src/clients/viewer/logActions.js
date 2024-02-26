@@ -124,7 +124,10 @@ function remove(id) {
   const force = '1';
 
   removeLog(id, force)
-    .then(() => {
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Response status ok:false');
+      }
       clearLogView();
       showSnackbar({status: 'success', text: `Poistettiin ID <span class="correlation-id-font">${id}</span>`});
       console.log(`Log ${id} removed`);

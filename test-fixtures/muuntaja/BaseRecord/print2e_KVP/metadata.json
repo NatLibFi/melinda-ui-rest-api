@@ -1,5 +1,9 @@
 {
+<<<<<<<< HEAD:test-fixtures/muuntaja/BaseRecord/print2e_KVP/metadata.json
   "description": "Print2e/KVP: Base record",
+========
+  "description": "print2e - default - BaseRecord",
+>>>>>>>> next:test-fixtures/muuntaja/print2e/default/BaseRecord/metadata.json
   "skip": false,
   "only": false,
   "succesRecords": 2,

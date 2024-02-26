@@ -1,10 +1,12 @@
-import {idbGet, idbClear, idbSet, idbAddValueToLastIndex, idbGetStoredValues} from '/artikkelit/indexDB.js';
-import {formToJson, setOptions, createIconButton, createP, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
-import {getPublicationByTitle, getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN} from '/common/rest.js';
-import {sortRecordData} from '/artikkelit/utils.js';
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
+import {sortRecordData} from '/artikkelit/utils/utils.js';
+import {getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN, getPublicationByTitle} from '/common/rest.js';
+import {createIconButton, createP, formToJson, setOptions, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
+
 
 export function initReviewSearch() {
-  console.log('initializing review search...');
+  //console.log('initializing review search...');
 
   document.getElementById('arvosteltu-teos-haku-tyyppi').addEventListener('change', showAndHideSearchInputs);
   document.getElementById('arvosteltu-teos-tulos-lista').addEventListener('change', searchResultChange);
@@ -18,10 +20,10 @@ export function initReviewSearch() {
 
   document.getElementById('arvosteltu-teos-haku-tyyppi').dispatchEvent(new Event('change'));
   refreshReviewsList();
-  resetSearchResultSelect();
+  resetReviewSearchResultSelect();
 }
 
-export function showAndHideSearchInputs(event) {
+function showAndHideSearchInputs(event) {
   document.getElementById(`arvosteltu-teos-haku-title-form`).style.display = 'none';
   document.getElementById(`arvosteltu-teos-haku-issn-form`).style.display = 'none';
   document.getElementById(`arvosteltu-teos-haku-isbn-form`).style.display = 'none';
@@ -34,7 +36,7 @@ export function showAndHideSearchInputs(event) {
   document.querySelector(`select#arvosteltu-teos-haku-tyyppi option[value='issn']`).setAttribute('hidden', 'hidden');;
 }
 
-export function searchResultChange(event) {
+function searchResultChange(event) {
   if (event.target.value !== '') {
     idbGet('artoTempReviews', parseInt(event.target.value)).then(data => {
       const [melindaId] = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
@@ -50,7 +52,7 @@ export function searchResultChange(event) {
   }
 }
 
-export function addReview(event) {
+function addReview(event) {
   event.preventDefault();
   const reviewIndex = document.getElementById('arvosteltu-teos-tulos-lista').value;
 
@@ -69,6 +71,7 @@ export function addReview(event) {
       }
 
       idbAddValueToLastIndex('artoReviews', tempReview).then(() => {
+        resetReview();
         refreshReviewsList();
       });
     });
@@ -104,14 +107,16 @@ export function refreshReviewsList() {
       document.getElementById('tyhjenna-arvostelut-form').style.display = 'none';
     }
   });
+
+  doUpdate();
 }
 
-export function clearReviews(event) {
+function clearReviews(event) {
   event.preventDefault();
   idbClear('artoReviews').then(() => refreshReviewsList());
 }
 
-function resetSearchResultSelect(searching) {
+export function resetReviewSearchResultSelect(searching) {
   const select = document.getElementById('arvosteltu-teos-tulos-lista');
   select.innerHTML = '';
   document.getElementById('teoksen-nimi').innerHTML = '';
@@ -134,7 +139,7 @@ function searchPublications(event) {
   startProcess();
   event.preventDefault();
   idbClear('artoTempReviews').then(() => {
-    resetSearchResultSelect(true);
+    resetReviewSearchResultSelect(true);
   });
 
   const collectionFilters = {
@@ -149,12 +154,12 @@ function searchPublications(event) {
   console.log(formJson)
 
   if (searchType === 'title') {
-    return getPublicationByTitle(formJson['arvosteltu-teos'], collectionFilters, sourceType)
+    return getPublicationByTitle(formJson['arvosteltu-teos-haku-title'], collectionFilters, sourceType)
       .then(result => {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetReviewSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt arvosteltuja tietueita!'});
         console.log('Error while trying to get review book by title', error);
       })
@@ -162,12 +167,12 @@ function searchPublications(event) {
   }
 
   if (searchType === 'melinda') {
-    return getPublicationByMelindaId(formJson['arvosteltu-teos'], collectionFilters, sourceType)
+    return getPublicationByMelindaId(formJson['arvosteltu-teos-haku-melinda'], collectionFilters, sourceType)
       .then(result => {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetReviewSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt arvosteltavaa tietuetta!'});
         console.log('Error while trying to get review book by Melinda ID', error);
       })
@@ -175,12 +180,12 @@ function searchPublications(event) {
   }
 
   if (searchType === 'isbn') {
-    return getPublicationByISBN(formJson['arvosteltu-teos'], collectionFilters, sourceType)
+    return getPublicationByISBN(formJson['arvosteltu-teos-haku-isbn'], collectionFilters, sourceType)
       .then(result => {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetReviewSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt arvosteltavaa tietuetta!'});
         console.log('Error while trying to get review book by ISBN', error);
       })
@@ -188,12 +193,12 @@ function searchPublications(event) {
   }
 
   if (searchType === 'issn') {
-    return getPublicationByISSN(formJson['arvosteltu-teos'], collectionFilters, sourceType)
+    return getPublicationByISSN(formJson['arvosteltu-teos-haku-issn'], collectionFilters, sourceType)
       .then(result => {
         setRecordsToSearch(result);
       })
       .catch(error => {
-        resetSearchResultSelect();
+        resetReviewSearchResultSelect();
         showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt arvosteltavaa tietuetta!'});
         console.log('Error while trying to get review book by ISSN', error);
       })
@@ -205,7 +210,7 @@ function searchPublications(event) {
 
 function setRecordsToSearch(records) {
   if (records.length === 0) {
-    return resetSearchResultSelect();
+    return resetReviewSearchResultSelect();
   }
 
   const promises = records.map((record, index) => {
@@ -242,7 +247,7 @@ function refreshSearchResultSelect() {
 }
 
 export function resetReview(event) {
-  event.preventDefault();
+  event?.preventDefault();
   idbClear('artoTempReviews').then(() => {
     document.getElementById('arvosteltu-teos-haku-title-form').reset();
     document.getElementById('arvosteltu-teos-haku-melinda-form').reset();
@@ -250,7 +255,18 @@ export function resetReview(event) {
     document.getElementById('arvosteltu-teos-haku-issn-form').reset();
     const searchTypeSelect = document.getElementById('arvosteltu-teos-haku-tyyppi');
     searchTypeSelect.selectedIndex = 0;
+    checkArticleForm();
     searchTypeSelect.dispatchEvent(new Event('change'));
-    resetSearchResultSelect();
+    resetReviewSearchResultSelect();
   });
 }
+
+window.resetReview = (event) => {
+  resetReview(event);
+};
+
+
+window.removeReviewedBook = (event, key) => {
+  event.preventDefault();
+  idbDel('artoReviews', key).then(() => refreshReviewsList());
+};

@@ -1,0 +1,10 @@
+{
+  "description": "e2p - default - 042",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "testBase": true,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}
