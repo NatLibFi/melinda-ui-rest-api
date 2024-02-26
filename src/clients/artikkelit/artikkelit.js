@@ -4,10 +4,11 @@ import {Account, doLogin, logout} from '/common/auth.js';
 import {showTab} from '/common/ui-utils.js';
 import {} from '/artikkelit/actions/articleCheck.js';
 import {} from '/artikkelit/actions/articleSave.js';
+import {} from '/artikkelit/actions/articleStartNew.js';
 
 
 window.initialize = function () {
-  console.log('Initializing');
+  console.log('Initializing artikkelit');
 
   doLogin(authSuccess);
 

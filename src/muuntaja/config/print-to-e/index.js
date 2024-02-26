@@ -169,9 +169,11 @@ function mergeFields(opts) {
     //-------------------------------------------------------------------------
     // Huomautuskentät 5xx:
     //"5..": {"action": "copy", "options": {"copyIf": {"9": {"value": "FENNI<KEEP>"}}}},
-    copy(/^5\d\d$/u),
-    //update530(),
+    copy(/^5[0-7]\d$/u),
+    opts.profile === 'KVP' ? copy(/^58[0,1,2,4,5,6,7,8,9]$/u) : copy(/^58\d$/u), // exclude 583 only for KVP/p2e (MUU-401)
+    // 59X pois <- MUU-380
 
+    //update530(),
     //copy(/^5\d\d$/u),
 
     //-------------------------------------------------------------------------
