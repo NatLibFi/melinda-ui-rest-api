@@ -1,0 +1,155 @@
+{
+   "leader": "00000cam^a22006134i^4500",
+   "fields": [
+    {
+     "tag": "007",
+     "value": "cr^||^||||||||",
+     "id": "7e290cd1-6bed-4447-8fc3-c1f7e41b760a"
+    },
+    {
+     "tag": "008",
+     "value": "^^^^^^s2038^^^^fi^||||^o^^^^^|0|^0|   |c",
+     "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95"
+    },
+    {
+     "tag": "020",
+     "ind1": " ",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": ""
+      },
+      {
+       "code": "q",
+       "value": ""
+      }
+     ],
+     "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a"
+    },
+    {
+     "tag": "040",
+     "ind1": " ",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": ""
+      },
+      {
+       "code": "b",
+       "value": "fin"
+      },
+      {
+       "code": "e",
+       "value": "rda"
+      }
+     ],
+     "id": "6f4d044c-28f4-4616-9edb-89ec47856cab"
+    },
+    {
+     "tag": "041",
+     "ind1": "0",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": ""
+      }
+     ],
+     "id": "ac44d08d-5532-49bc-b2b9-c863cf930b1a"
+    },   
+    {
+     "tag": "300",
+     "ind1": " ",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "1 verkkoaineisto"
+      }
+     ],
+     "id": "29b213aa-4cb5-44cf-83d5-a0042638f64f"
+    },
+    {
+     "tag": "337",
+     "ind1": " ",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "tietokonekäyttöinen"
+      },
+      {
+       "code": "b",
+       "value": "c"
+      },
+      {
+       "code": "2",
+       "value": "rdamedia"
+      }
+     ],
+     "id": "66029c77-30a4-42a2-bf23-6499ca97fe87"
+    },
+    {
+     "tag": "338",
+     "ind1": " ",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "verkkoaineisto"
+      },
+      {
+       "code": "b",
+       "value": "cr"
+      },
+      {
+       "code": "2",
+       "value": "rdacarrier"
+      }
+     ],
+     "id": "55e6067b-8eba-44c1-a53c-293641a40729"
+    },
+    {
+     "tag": "506",
+     "ind1": "0",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Aineisto  on vapaasti saatavissa."
+      },
+      {
+       "code": "f",
+       "value": "Unrestricted online access"
+      },
+      {
+       "code": "2",
+       "value": "star"
+      }
+     ],
+     "id": "6b459901-5a45-46d6-9469-f414cab03d2f"
+    },
+    {
+     "tag": "506",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Käytettävissä lisenssin hankkineissa organisaatioissa."
+      },
+      {
+       "code": "f",
+       "value": "Online access with authorization"
+      },
+      {
+       "code": "2",
+       "value": "star"
+      }
+     ],
+     "id": "39858a85-ef1e-4946-ba32-0daa8ee52381"
+    }
+   ]
+  }

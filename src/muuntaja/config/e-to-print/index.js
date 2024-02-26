@@ -100,7 +100,7 @@ function fieldsFennica(opts) {
     return [];
   }
   return [
-    fillDefault('506/FENNI'),
+    //fillDefault('506/FENNI'), // excluded, MUU-382
     // fillDefault('530/FENNI'),
     fillDefault('540/FENNI'),
     fillDefault('856/FENNI'),

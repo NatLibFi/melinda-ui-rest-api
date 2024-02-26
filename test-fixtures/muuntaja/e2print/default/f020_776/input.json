@@ -1,0 +1,40 @@
+{
+ "options": {
+  "type": "e2p",
+  "profile": "KVP",
+  "LOWTAG":"KVP"
+ },
+ "source": {
+  "leader": "1111111111",
+  "fields": [
+    {
+        "tag":"001",        
+        "value": "12345"
+    }
+  ]
+ },
+ "base": {
+  "leader": "222222222",
+  "fields": [
+   {
+    "tag": "020",
+    "ind1": "1",
+    "ind2": "2",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "978-1-62872-805-7"
+     },
+     {
+      "code": "q",
+      "value": "sidottu"
+     }     
+    ],
+    "id": "8d940405-3396-4b80-a774-8e2edf0c72e5"
+   }
+  ]
+ },
+ "exclude": {},
+ "replace": {},
+ "include": []
+}

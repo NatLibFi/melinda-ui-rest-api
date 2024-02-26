@@ -14,6 +14,7 @@ import {getDefaultValue} from './defaults';
 
 import {f008Split, f008Get} from '../../../marcUtils/marcUtils';
 import {updateLOW} from './updates';
+import {validationOff} from '../common';
 
 const logger = createLogger();
 
@@ -22,31 +23,17 @@ const logger = createLogger();
 
 export function createBase(options) {
 
-  const baseValidators = {
-    fields: false,
-    subfieldValues: false
-  };
-
   const baseRecord = new MarcRecord(
     {
       leader: getDefaultValue('LDR').value,
       fields: []
     },
-    baseValidators
+    validationOff
   );
-
-  //const sourceRecord = new MarcRecord(source, sourceValidators);
-  /*
-  const opts = {
-    ...options,
-    ...getSourceInfo(sourceRecord)
-  };
-  */
 
   //*
   return merger({
     base: baseRecord,
-    source: {},
     reducers: getReducers(options)
   }).sortFields();
 
@@ -67,6 +54,7 @@ export function createBase(options) {
 function getReducers(options) {
 
   const fenniFields = [
+    fillDefault('042'),
     //fillDefault('506/FENNI'),
     fillDefault('530/FENNI')
     //fillDefault('540/FENNI'),
@@ -93,7 +81,7 @@ function getReducers(options) {
     fillDefault('020'),
     fillDefault('040'),
     fillDefault('041'),
-    fillDefault('042'),
+    //fillDefault('042'),
     fillDefault('300'),
     fillDefault('337'),
     fillDefault('338'),
@@ -106,7 +94,7 @@ function getReducers(options) {
   ];
 
   function fillDefault(tag) {
-    return (base, source) => {
+    return (base) => {
       const field = getDefaultValue(tag, options);
       base.insertField(field);
       return base;
