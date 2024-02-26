@@ -20,7 +20,7 @@ export function createArtikkelitService(useMoment = 'now') {
     const {source, journalNumber, abstracts, article, authors, ontologyWords, notes, udks, otherRatings, collecting, sciences, metodologys, reviews} = data;
     const titleFor773t = source.title;
     const {isElectronic} = source;
-    const {issn, melindaId} = parseIncomingData(source);
+    const {isbn, issn, melindaId} = parseIncomingData(source);
     const {language: articleLanguage, title: articleTitle, titleOther: articleTitleOther} = article;
     const referenceLinks = article.link; // field 856
     const SourceTypeAsCode = source.sourceType; // eg. 'nnas', 'nnam' for field 773
@@ -29,7 +29,6 @@ export function createArtikkelitService(useMoment = 'now') {
     const today = new Date();
     const year = today.getFullYear(); // journal year form value / book year form value / current year form value
     const journalJufo = 'todo'; //https://wiki.eduuni.fi/display/cscvirtajtp/Jufo-tunnistus
-    const isbn = '951-isbn';
     const {f599a, f599x} = collecting;
 
     const record = {
@@ -71,10 +70,12 @@ export function createArtikkelitService(useMoment = 'now') {
 }
 
 export function parseIncomingData(data) {
+  const [isbn] = data.isbns || [''];
   const [issn] = data.issns || [''];
   const melindaId = data.sourceIds.filter(id => (/^\(FI-MELINDA\)\d{9}$/u).test(id));
 
   return {
+    isbn,
     issn,
     melindaId
   };
