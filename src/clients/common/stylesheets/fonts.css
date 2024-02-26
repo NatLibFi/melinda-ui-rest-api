@@ -4,7 +4,7 @@
 
 /* DM Serif Text | Designed by Colophon Foundry  | https://fonts.google.com/specimen/DM+Serif+Text */
 /* Public Sans | Designed by USWDS, Dan Williams, Pablo Impallari, Rodrigo Fuenzalida | https://fonts.google.com/specimen/Public+Sans */
-/* Roboto Mono | Designed by Christian Robertson | https://fonts.google.com/specimen/Roboto+Mono */
+/* Noto Sans Mono | Noto Fonts Project (directed by Google Fonts)  | https://fonts.google.com/noto/specimen/Noto+Sans+Mono */
 
 
 
@@ -61,17 +61,19 @@
 
 
 /* ---------------------------------------------------------------------*/
-/* ROBOTO MONO */
+
+/* NOTO SANS MONO */
 /*    - Regular 400 */
 
 @font-face {
-  font-family: 'Roboto Mono Regular (file)';
-  src: url('/common/fonts/RobotoMono-Regular.ttf') format('truetype');
+  font-family: 'Noto Sans Mono Regular (file)';
+  src: url('/common/fonts/NotoSansMono-Regular.ttf') format('truetype');
   font-stretch: normal;
   font-weight: 300 500;
   font-style: normal;
   font-display: swap
 }
+
 
 /* ---------------------------------------------------------------------*/
 
@@ -89,7 +91,7 @@
   /*    - second fallback: local system font (any suitable monospace, serif or sans-serif font available in user's system) */
 
   --font-family-brand: 'DM Serif Text', 'DM Serif Text Regular (file)', serif;
-  --font-family-mono: 'Roboto Mono', 'Roboto Mono Regular (file)', monospace;
+  --font-family-mono: 'Noto Sans Mono Regular', 'Noto Sans Mono Regular (file)', monospace;
   --font-family-button: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
   --font-family-content: 'Public Sans', 'Public Sans Light (file)', sans-serif;
   --font-family-headline: 'Public Sans', 'Public Sans SemiBold (file)', sans-serif;
