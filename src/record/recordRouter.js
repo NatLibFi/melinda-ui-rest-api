@@ -38,8 +38,9 @@ export default function (melindaApiOptions) {
     logger.verbose(`Adding article record: ${JSON.stringify(record)}`);
 
     try {
-      //placeholder for testing:
+      //placeholders for testing:
       //await res.sendStatus(httpStatus.CREATED);
+      //await res.sendStatus(httpStatus.CONFLICT);
 
       const result = await recordOperator.addRecord(record);
       res.json(result);
@@ -60,6 +61,8 @@ export default function (melindaApiOptions) {
       //placeholders for testing:
       //await res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
       //await res.sendStatus(httpStatus.OK);
+      //await res.sendStatus(httpStatus.CONFLICT);
+
 
       const result = await recordOperator.validateRecord(record);
       res.json(result);

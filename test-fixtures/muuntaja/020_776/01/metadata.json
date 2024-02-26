@@ -1,5 +1,5 @@
 {
-  "description": "print2e - default - BaseRecord",
+  "description": "test case for Muuntaja: 020-fields to 776-fields / default profile, print-to-e",
   "skip": false,
   "only": false,
   "succesRecords": 2,
