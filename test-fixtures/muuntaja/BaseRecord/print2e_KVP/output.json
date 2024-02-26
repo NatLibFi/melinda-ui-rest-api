@@ -58,11 +58,7 @@
       }
      ],
      "id": "ac44d08d-5532-49bc-b2b9-c863cf930b1a"
-<<<<<<<< HEAD:test-fixtures/muuntaja/BaseRecord/print2e_KVP/output.json
     },
-========
-    },   
->>>>>>>> next:test-fixtures/muuntaja/print2e/default/BaseRecord/output.json
     {
      "tag": "300",
      "ind1": " ",
