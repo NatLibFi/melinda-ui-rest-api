@@ -1,0 +1,10 @@
+{
+  "description": "Print2e/KVP: Base record",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "testBase": true,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

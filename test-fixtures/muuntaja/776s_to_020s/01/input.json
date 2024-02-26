@@ -1,0 +1,64 @@
+{
+ "options": {
+  "type": "p2e",
+  "profile": "KVP",
+  "format": "PDF",
+  "LOWTAG":"KVP"
+ },
+ "source": {
+  "leader": "1111111111",
+  "fields": [
+    {
+        "tag":"001",
+        "value": "12345"
+    }
+  ]
+ },
+ "base": {
+  "leader": "222222222",
+  "fields": [
+   {
+    "tag": "776",
+    "ind1": "0",
+    "ind2": "8",
+    "subfields": [
+     {
+      "code": "i",
+      "value": "Verkkoaineisto:"
+     },
+     {
+      "code": "z",
+      "value": "978-1-4443-2780-9"
+     }     
+    ]
+   },
+   {
+    "tag": "776",
+    "ind1": "0",
+    "ind2": "8",
+    "subfields": [
+     {
+      "code": "i",
+      "value": "Verkkoaineisto:"
+     },
+     {
+      "code": "z",
+      "value": "978-1-4443-2779-3"
+     }     
+    ]
+   },
+   {
+    "tag": "100",
+    "subfields": [
+     {
+      "code": "b",
+      "value": "bbb"
+     }
+    ]
+   }
+  ]
+ },
+ "exclude": {},
+ "replace": {},
+ "include": []
+}
