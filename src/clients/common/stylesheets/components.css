@@ -1,6 +1,3 @@
-@import "/common/stylesheets/colors.css";
-@import "/common/stylesheets/fonts.css";
-
 /* ---------------------------------------------------------------------------- */
 /* Styles for generic GUI components                                            */
 /* ---------------------------------------------------------------------------- */
@@ -1476,6 +1473,21 @@ dialog:modal {
   font-weight: var(--font-weight-button);
 }
 
+
+/* ---------------------------------------------------------------------------- */
+/* Highlighting elements */
+/* ---------------------------------------------------------------------------- */
+
+.highlight {
+  animation: highlight 5s ease-out 0s 1;
+}
+
+@keyframes highlight {
+  50% {
+    background-color: var(--highlightcolor, var(--color-yellow-60));
+    border-radius: 1em;
+  }
+}
 
 
 /* ---------------------------------------------------------------------------- */
