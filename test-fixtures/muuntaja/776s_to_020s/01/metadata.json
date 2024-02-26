@@ -1,0 +1,9 @@
+{
+  "description": "Each 776-field to separate 020-fields",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

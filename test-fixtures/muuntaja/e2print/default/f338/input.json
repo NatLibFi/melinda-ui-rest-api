@@ -1,0 +1,12 @@
+{
+  "options": {
+   "type": "e2p",
+   "profile": "KVP",
+   "LOWTAG":"KVP"
+  },
+  "source": {},
+  "base": {},
+  "exclude": {},
+  "replace": {},
+  "include": []
+ }

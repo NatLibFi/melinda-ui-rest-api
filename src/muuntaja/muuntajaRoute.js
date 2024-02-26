@@ -56,7 +56,7 @@ export default function (sruUrl) {
         'e2p': 'E-aineistosta > Painetuksi'
       },
       profile: {
-        'KVP': 'Kirjastoverkkopalvelut',
+        'KVP': 'Oletus',
         'FENNI': 'Fennica'
       },
       defaults: optDefaults

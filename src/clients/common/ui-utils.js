@@ -228,6 +228,16 @@ export function disableElement(element) {
   element.disabled = true;
 }
 
+// returns true if element is not visible
+export function isHidden(element) {
+  return (element.offsetParent === null)
+}
+
+// returns true if element is hidden
+export function isVisible(element) {
+  return (element.offsetParent !== null)
+}
+
 // highligts a html element with a background color for a moment
 // if no color is given as parameter, uses default color defined in the CSS
 export function highlightElement(element, color) {

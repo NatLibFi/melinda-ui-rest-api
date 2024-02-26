@@ -7,8 +7,15 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja') {
-  console.log('Show Record:', record);
+let onDeleteField = null;
+export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
+
+  if (logRecord) {
+    console.log('Show Record:', record);
+  }
+
+  const {replace, onDelete} = decorator;
+  onDeleteField = onDelete;
 
   // Get div to fill in the fields
   const recordDiv = document.querySelector(`#${recordDivName} .record-merge-panel #${dest} #Record`);
@@ -39,7 +46,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
 
   if (record.fields) {
     for (const field of record.fields) {
-      const content = decorator?.getContent ? decorator.getContent(field) : field;
+      const content = getContent(field);
       addField(recordDiv, content, decorator, dest);
     }
   }
@@ -51,6 +58,10 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
     }
     return humanReadableError;
   }
+  function getContent(field) {
+    return (replace && replace[field.id]) ?? field;
+  }
+  
 }
 
 //-----------------------------------------------------------------------------
@@ -62,11 +73,13 @@ function addField(div, field, decorator = null, recordDestination = '') {
   row.setAttribute('recordDestination', recordDestination);
 
   row.classList.add('row');
-  if (decorator?.decorateField) {
-    decorator.decorateField(row, field);
-  }
-  if (decorator?.onClick) {
-    row.addEventListener('click', event => decorator.onClick(event, field));
+
+  const {from, original, replace, exclude, onClick} = decorator ?? {};
+  decorateField(row, field);
+
+  if (onClick) {
+    row.classList.add('clickable');
+    row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? field));
   }
 
   addTag(row, field.tag);
@@ -132,6 +145,22 @@ function addField(div, field, decorator = null, recordDestination = '') {
   function makeSubfieldData(value, index = 0) {
     return makeSpan('value', value, null, index);
   }
+  function decorateField(div, field) {
+    if (exclude && exclude[field.id]) {
+      div.classList.add('row-excluded');
+    }
+    if (replace && replace[field.id]) {
+      div.classList.add('row-replaced');
+      return;
+    }
+    const source = from && from[field.id];
+    if (source == 'source') {
+      div.classList.add('row-fromSource');
+    }
+    if (source == 'base') {
+      div.classList.add('row-fromBase');
+    }
+  }
 }
 
 function makeDiv(className, value) {
@@ -187,21 +216,21 @@ export function editField(field, original = null, elementToPreactivate = null) {
 
   const tag = document.querySelector('#fieldEditDlg #tag');
   tag.innerHTML = '';
-  const tagInput = createInput('tag', 'tag', field.tag);
+  const tagInput = createInput('tag', 'tag', field.tag, undefined, undefined, onEditInputChange);
   tag.appendChild(tagInput);
   preactivateEdit(elementToPreactivate, 'tag', tagInput);
   addInputLimiter(tagInput, 3, ['number', 'upper'], null);
 
   const ind1 = document.querySelector('#fieldEditDlg #ind1');
   ind1.innerHTML = '';
-  const ind1Input = createInput('ind1', 'inds', field.ind1);
+  const ind1Input = createInput('ind1', 'inds', field.ind1, undefined, undefined, onEditInputChange);
   ind1.appendChild(ind1Input);
   preactivateEdit(elementToPreactivate, 'ind1' ,ind1Input);
   addInputLimiter(ind1Input, 1, ['lower', 'number', 'special'], [' ']);
 
   const ind2 = document.querySelector('#fieldEditDlg #ind2');
   ind2.innerHTML = '';
-  const ind2Input = createInput('ind2', 'inds', field.ind2);
+  const ind2Input = createInput('ind2', 'inds', field.ind2, undefined, undefined, onEditInputChange);
   ind2.appendChild(ind2Input);
   preactivateEdit(elementToPreactivate, 'ind2' ,ind2Input);
   addInputLimiter(ind2Input, 1, ['lower', 'number', 'special'], [' ']);
@@ -212,23 +241,23 @@ export function editField(field, original = null, elementToPreactivate = null) {
   const value = document.querySelector('#fieldEditDlg #value');
   value.innerHTML = '';
 
-  const isFixed = field.value !== null && field.value !== undefined;
+  const isFixed = isFieldFixedSized(field);
   toggleFieldTypeVisibility(isFixed);
+  setEditSaveButtonActiveState(false);
 
   // if field contains "value" and not "subfields"
   if (field.value) {
-    const valueInput = createInput('value', 'value', field.value);
+    const valueInput = createInput('value', 'value', field.value, undefined, undefined, onEditInputChange);
     value.appendChild(valueInput);
     preactivateEdit(elementToPreactivate, 'value' ,valueInput);
-    setEditSaveButtonActiveState(true);
 
   // if field contains "subfields" and not "value"
   } else if (field.subfields) {
 
     for (const [index, subfield] of field.subfields.entries()) {
       createSubfield(subfields, subfield, elementToPreactivate, index, ()=>{
-          setEditSaveButtonActiveState(hasActiveSubFields(subfields));
-      });
+          setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
+      }, onEditInputChange);
     }
 
     //*
@@ -240,7 +269,7 @@ export function editField(field, original = null, elementToPreactivate = null) {
     /**/
   }
   
-}
+};
 
 function hasActiveSubFields(subfields){
   var containsActiveFields = false;
@@ -278,6 +307,62 @@ function setElementState(elementId, isActive){
 function setElementVisibility(elementId, isVisible){
   document.getElementById(elementId).style.visibility = isVisible ? "visible" : "collapse";
 }
+function setElementText(elementId, text){
+  document.getElementById(elementId).textContent = text;
+}
+function onEditInputChange(e){
+  console.log(`Edit updated`);
+  
+  const hasChanged = hasDataChanged(editing);
+  hasChanged ? console.log('Data Changed') : console.log('Data did not change');
+  setElementState('editSaveButton', hasChanged);
+  setElementText('editCloseButton', hasChanged ? 'Peru muutokset' : 'Sulje');
+}
+
+function hasDataChanged(originalData){
+  const isFixed = isFieldFixedSized(originalData);
+  const currentField = JSON.parse(JSON.stringify(getCurrentField()));
+
+  if(
+    (currentField.tag !== originalData.tag) ||
+    (isFixed && currentField.value !== originalData.value) ||
+    (!isFixed && currentField.ind1.trim() !== originalData.ind1.trim()) ||
+    (!isFixed && currentField.ind2.trim() !== originalData.ind2.trim()) ||
+    (!isFixed && currentField.subfields.length !== originalData.subfields.length) ||
+    (!isFixed && currentField.subfields.length === originalData.subfields.length && hasSubfieldsValuesChanged())
+    ){
+      console.log('Editing view detected changes to original data');
+      return true;
+    }
+  
+  console.log('Editing view detected no changes to original data');
+  return false;
+
+  //called upon if arrays same length but some value might have changed
+  function hasSubfieldsValuesChanged(){
+    var hasChanged = false;
+    for (const [originalIndex, originalSubfield] of originalData.subfields.entries()) {
+      for (const [editedIndex ,currentSubfield] of currentField.subfields.entries()) {
+        //console.log(originalSubfield);
+        //console.log(currentSubfield);
+        if(
+          (originalSubfield.code === currentSubfield.code && originalSubfield.value !== currentSubfield.value) ||
+          (originalIndex === editedIndex && originalSubfield.code !== currentSubfield.code)
+          ){
+            console.log(`Subfield ${originalSubfield.code} value has changed`);
+            hasChanged = true;
+            break;
+        }
+      }
+    }
+    return hasChanged;
+  }
+}
+
+function isFieldFixedSized(fieldObj){
+  return fieldObj.value !== null && fieldObj.value !== undefined;
+}
+
 
 /**
  * 
@@ -423,13 +508,13 @@ function preactivateEdit(elementToPreactivate, inputClassName , input, index = 0
   }
 }
 
-function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRemovedCallback = null) {
+function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRemovedCallback = null, onInputChangeCallback = null) {
   const row = document.createElement('div');
   row.classList.add('subfield');
   row.appendChild(removeButton(onRemovedCallback));
 
-  const codeInput = createInput('code', 'code', subfield.code);
-  const valueInput = createInput('value', 'value', subfield.value);
+  const codeInput = createInput('code', 'code', subfield.code, undefined, index, onInputChangeCallback);
+  const valueInput = createInput('value', 'value', subfield.value, undefined, index, onInputChangeCallback);
 
   row.appendChild(codeInput);
   row.appendChild(valueInput);
@@ -468,12 +553,16 @@ function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRem
   }
 }
 
-function createInput(name, className, value, editable = true) {
+function createInput(name, className, value, editable = true, index = 0 ,onInputValueChanged = null) {
   const input = document.createElement('span');
   input.setAttribute('id', name);
+  input.setAttribute('index', index);
   input.classList.add(className);
   if (editable) {
     input.classList.add('editable');
+    if(onInputValueChanged){
+      input.addEventListener('input', onInputValueChanged);
+    }
   }
   input.textContent = value;
   input.contentEditable = editable;
@@ -484,14 +573,28 @@ window.onAddField = function (event) {
   const subfields = document.querySelector('#fieldEditDlg #fieldlist');
   const newIndex = subfields.children.length;
   createSubfield(subfields, {code: '?', value: '?'}, null, newIndex, () => {
-      setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+    setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
   });
-    setEditSaveButtonActiveState(hasActiveSubFields(subfields));
+
+  setEditSaveButtonActiveState(hasActiveSubFields(subfields) && hasDataChanged(editing));
   return eventHandled(event);
+};
+
+window.onDeleteField = function(event){
+  if(confirm(`Haluatko varmasti poistaa kentän ?`) === true){
+    onDeleteField(event, editing);
+    return editDlgClose(event);
+  }
 };
 
 window.editDlgOK = function (event) {
 
+  const field = getCurrentField();
+  editSaveField(field);
+  return editDlgClose(event);
+};
+
+function getCurrentField(){
   const query = (p) => document.querySelector(p);
 
   const field = {
@@ -515,9 +618,7 @@ window.editDlgOK = function (event) {
         value: elem.getElementsByClassName('value')[0].textContent
       }));
   }
-
-  editSaveField(field);
-  return editDlgClose(event);
+  return field;
 };
 
 window.editDlgUseOriginal = function (event) {
