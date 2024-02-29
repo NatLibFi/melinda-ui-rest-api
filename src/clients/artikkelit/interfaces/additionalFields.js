@@ -201,6 +201,13 @@ function addNote(event) {
     return;
   }
 
+  const lastChar = data.value.charAt(data.value.length - 1);
+
+  if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
+    showSnackbar({style: 'alert', text: 'Yleisen huomatuksen täytyy päättyä pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
+    return;
+  }
+
   idbGetStoredValues('artoNotes').then(notes => {
     if (notes.some(note => note.value === data.value)) {
       showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä yleinen huomautus'});

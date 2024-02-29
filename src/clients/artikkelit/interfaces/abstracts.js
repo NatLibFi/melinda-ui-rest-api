@@ -22,11 +22,18 @@ export function addAbstract(event) {
 
   const data = {
     language: {iso6391, iso6392b, ui},
-    abstract: formJson['tiivistelma-abstrakti']
+    abstract: formJson['tiivistelma-abstrakti'].trim()
   };
 
   if (data.abstract === '') {
     showNotification({componentStyle: 'banner', style: 'alert', text: 'Tiivistelmä ei voi olla tyhjä'});
+    return;
+  }
+
+  const lastChar = data.abstract.charAt(data.abstract.length - 1);
+
+  if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
+    showSnackbar({style: 'alert', text: 'Tiivistelmän täytyy päättyä pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
     return;
   }
 
@@ -115,7 +122,7 @@ window.resetAbstract = (event) => {
   const textbox = document.getElementById('tiivistelma-abstrakti');
   const languageSelect = document.getElementById('tiivistelma-kieli');
 
-  textbox.value= '';
+  textbox.value = '';
   languageSelect.selectedIndex = 0;
   checkArticleForm();
 }
