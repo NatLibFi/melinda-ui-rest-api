@@ -297,7 +297,7 @@ async function getComponentsAndShowUi(data) {
   //get config with resource info and show function
   try {
     const showConfig = await dataUtils.getShowConfigData({componentStyle: data.componentStyle});
-    const [container, noteElement] = await resouceUtils.getRequiredComponentData({componentInquiryData: showConfig});
+    const {container, noteElement} = await resouceUtils.getRequiredComponentData({componentInquiryData: showConfig});
 
     if(!showConfig.showFunctionName || typeof ui[showConfig.showFunctionName] !== 'function'){
       throw new Error(`Could not call ${data.componentStyle} show function. Attempted to find function named ${showConfig.showFunctionName}. Please see config or getShowConfigData`);

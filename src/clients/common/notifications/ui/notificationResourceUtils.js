@@ -12,7 +12,7 @@ import {getFromCache} from '/../common/cacheService.js';
  * @param {String} paramObj.componentInquiryData.elementId element withing template
  * @param {String} paramObj.componentInquiryData.containerId container within document to put elements into
  * @throws {Error} if at any point getting container and noteElement throws error
- * @returns {Promise}
+ * @returns {Promise.<Object>} promise that resolves with a container and note element
  */
 export async function getRequiredComponentData(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
@@ -24,7 +24,7 @@ export async function getRequiredComponentData(paramObj) {
   try {
     const noteElement = await getNotificationElement({templateId, elementId});
     const container = getContainerForNotifications({containerId});
-    return [container, noteElement];
+    return {container, noteElement};
   } catch (error) {
     console.error(`Error in getting component data`);
     throw new Error(error);
@@ -42,7 +42,7 @@ export async function getRequiredComponentData(paramObj) {
  * @param {String} paramObj.templateId to get template with id from html file
  * @param {String} paramObj.elementId to get element with id from template
  * @throws {Error} if no html document or root element is found, also if rootelement does not get argumens or error happens on the process
- * @returns {Promise} returns html document and if no html found throws error
+ * @returns {Promise.<Element>} returns element from html template document
  */
 async function getNotificationElement(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
@@ -52,11 +52,11 @@ async function getNotificationElement(paramObj) {
 
   try {
     const html = await getHtml('/../common/notifications/ui/notification.html', 'notificationHtmlTemplates');
-      const doc = getElementRootDocument(html, templateId, elementId);
-      if (!doc) {
-        throw new Error('No document from html');
-      }
-      return doc;
+    const element = getElementRootElement(html, templateId, elementId);
+    if (!element) {
+      throw new Error('No document from html');
+    }
+    return element;
   } catch (error) {
     console.error('Error while fetching html: ', error);
     throw new Error(error);
@@ -85,10 +85,10 @@ async function getNotificationElement(paramObj) {
     }
   }
   //get template from document, and from template get spesific element root div
-  function getElementRootDocument(html, templateId, elementId) {
+  function getElementRootElement(html, templateId, elementId) {
 
     if (arguments.length === 0 || !html || !templateId || !elementId) {
-      throw new Error('getElementRootDocument needs arguments');
+      throw new Error('getElementRootElement needs arguments');
     }
 
     const parser = new DOMParser();
