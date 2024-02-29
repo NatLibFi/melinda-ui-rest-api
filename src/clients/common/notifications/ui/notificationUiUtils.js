@@ -33,7 +33,6 @@ export async function setStylings(paramObj) {
  * @param {object} paramObj object delivery for function
  * @param {HTMLDivElement} paramObj.noteElement root element for visible notification item
  * @param {String} paramObj.titleTextId titles text id
- * @param {String} paramObj.style notification style
  * @param {String} [paramObj.title] optional - title text to show
  * @returns
  */
@@ -41,13 +40,7 @@ export async function addTitle(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {noteElement, titleTextId, style, title} = paramObj;
-
-  if (!title) {
-    const text = await getDefaultTitleText({ style });
-    addText({noteElement, textId: titleTextId, text: text});
-    return;
-  }
+  const {noteElement, titleTextId, title} = paramObj;
 
   addText({noteElement, textId: titleTextId, text: title});
 }
@@ -429,6 +422,31 @@ export function createActionButton(paramObj) {
   }
 }
 
+/**
+ * @param {object} paramObj object delivery for function
+ * @param {String} paramObj.style notification style
+ * @returns {String} default title conttent, fetched from config.json
+ */
+export async function getDefaultTitleText(paramObj) {
+  if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
+    throw new Error('Malformed or missing param object on function');
+  }
+  const {style} = paramObj;
+
+  try {
+    const titleConfig = await dataUtils.getNotificationConfigKeyValue({key: 'messageTitleConfig'});
+    const titleText = titleConfig?.[style];
+    if(!titleText || !titleConfig){
+      throw new Error('Missing title config');
+    }
+    return titleText;
+  } catch (error) {
+    console.error('Message title fetch failed');
+    console.error(error);
+    throw new Error(error);
+  }
+}
+
 
 //************************************************************************************** */
 // Helper functions
@@ -573,31 +591,6 @@ function addCloseButton(paramObj) {
     eventHandled(event);
     closeNotification({container, noteElement, notificationId, backgroundElement, removeElementOnClose});
   });
-}
-
-/**
- * @param {object} paramObj object delivery for function
- * @param {String} paramObj.style notification style
- * @returns {String} default title conttent, fetched from config.json
- */
-async function getDefaultTitleText(paramObj) {
-  if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
-    throw new Error('Malformed or missing param object on function');
-  }
-  const {style} = paramObj;
-
-  try {
-    const titleConfig = await dataUtils.getNotificationConfigKeyValue({key: 'messageTitleConfig'});
-    const titleText = titleConfig?.[style];
-    if(!titleText || !titleConfig){
-      throw new Error('Missing title config');
-    }
-    return titleText;
-  } catch (error) {
-    console.error('Message title fetch failed');
-    console.error(error);
-    throw new Error(error);
-  }
 }
 
 /**

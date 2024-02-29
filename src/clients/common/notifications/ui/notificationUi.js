@@ -167,15 +167,16 @@ export function showDialog(paramObj) {
   addDialog();
   displayDialog();
 
-  function createDialog() {
+  async function createDialog() {
     const linkButton = uiUtils.createLinkButton({dataObject: linkButtonData});
     const actionButton = uiUtils.createActionButton({style, buttonData: actionButtonData, afterClick: () => {
       uiUtils.closeNotification({container: contentContainerElement, noteElement, notificationId: id, backgroundElement});
     }});
+    const titleText = title ? title : await uiUtils.getDefaultTitleText({style});
 
     uiUtils.setNotificationListBackground({backgroundElement, showBackground: blocksInteraction});
     uiUtils.setStylings({backgroundToStyleElement: noteElement, iconContainerElement: noteElement, style, iconId: 'notificationdialog-icon'});
-    uiUtils.addTitle({noteElement, titleTextId: 'notificationdialog-title', style, title});
+    uiUtils.addTitle({noteElement, titleTextId: 'notificationdialog-title', title: titleText});
     uiUtils.addText({noteElement, textId: 'notificationdialog-text', text});
     uiUtils.addButton({noteElement, buttonElement: linkButton, buttonContainerId: 'notificationdialog-link'});
     uiUtils.addButton({noteElement, buttonElement: actionButton, buttonContainerId: 'notificationdialog-action'});
