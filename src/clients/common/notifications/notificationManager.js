@@ -75,7 +75,7 @@ export async function showServerNotifications(paramObj) {
     //generate appropriate ui items
     //blocking ones have own status
     if (notificationObject.hasBlocks) {
-      showNotification(notificationObject.blocking);
+      await showNotification(notificationObject.blocking);
 
       if (onBlock) {
         onBlock();
@@ -84,7 +84,7 @@ export async function showServerNotifications(paramObj) {
     }
 
     //normal notifications
-    showNotification(notificationObject.notBlocking);
+    await showNotification(notificationObject.notBlocking);
 
     if (onSuccess) {
       onSuccess();
@@ -92,22 +92,22 @@ export async function showServerNotifications(paramObj) {
     }
   } catch (error) {
     console.error('Notification fetch or show failed');
+    console.error(error);
+
+    //failure/error could also indicate showing error so try to show error message but try catch it?
+    try {
+      await showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
+    } catch (error) {
+      console.error('Issue on showing failure notificaiton');
       console.error(error);
+    }
 
-      //failure/error could also indicate showing error so try to show error message but try catch it?
-      try {
-        showNotification({componentStyle: 'dialog', style: 'alert', text: 'Palvelin viestien haku epäonnistui', isDismissible: true});
-      } catch (error) {
-        console.error('Issue on showing failure notificaiton');
-        console.error(error);
-      }
+    if (onFailure) {
+      onFailure();
+      return;
+    }
 
-      if (onFailure) {
-        onFailure();
-        return;
-      }
-
-      console.error('On failure parameter missing');
+    console.error('On failure parameter missing');
   }
 }
 
@@ -167,7 +167,7 @@ export async function showServerNotifications(paramObj) {
  *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
  * });
  */
-export function showNotification(notificationData) {
+export async function showNotification(notificationData) {
   if (!notificationData) {
     console.error('No data for showNotification');
     return;
@@ -183,14 +183,14 @@ export function showNotification(notificationData) {
   if (Array.isArray(notificationData)) {
     for (const obj of notificationData) {
       if (dataUtils.isDataValidType({data: notificationData, validTypeArray: ['object', 'string']})) {
-        showSingleNotification(obj);
+        await showSingleNotification(obj);
       }
     }
     return;
   }
 
   //object or string style data passed along, data formatted accordingly later
-  showSingleNotification(notificationData);
+  await showSingleNotification(notificationData);
 }
 
 
@@ -238,7 +238,7 @@ export function showNotification(notificationData) {
  * @param {String} [data.actionButtonData.text] optional - visible text
  * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
-function showSingleNotification(data) {
+async function showSingleNotification(data) {
 
   /**
      * Check data validity (is it in ok form)
@@ -255,7 +255,7 @@ function showSingleNotification(data) {
   //if data a string, use quick default values
   if (dataStatusObj.type === 'string') {
     //data is string so using default values and setting data as text
-    getComponentsAndShowUi({
+    await getComponentsAndShowUi({
       componentStyle: 'banner',
       style: 'info',
       text: data
@@ -274,7 +274,7 @@ function showSingleNotification(data) {
   const isDataFromServer = data.id !== undefined;
   const style = isDataFromServer ? data.messageStyle : data.style;
   const linkButtonCreationData = data.url ? {text: 'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
-  getComponentsAndShowUi({
+  await getComponentsAndShowUi({
     id: data.id,
     componentStyle: data.componentStyle ?? 'banner',
     title: data.title,
