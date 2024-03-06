@@ -44,7 +44,6 @@ import * as ui from '/../common/notifications/ui/notificationUi.js';
  *
  */
 
-
 /**
  * Wrapper function for showing server notifications keeping other scripts a bit cleaner
  * Loads notifications from server and in certain cases triggers functions,
@@ -121,9 +120,9 @@ export async function showServerNotifications(paramObj) {
  *
  * @example
  * //some example cases
- * In general you want to either pass string or object (or array with said data)
- * String with simple text
- * With object you want to set at least componentStyle, style and text
+ * //In general you want to either pass string or object (or array with said data)
+ * //String with simple text
+ * //With object you want to set at least componentStyle, style and text
  *
  * //Fast easy string, defaults to info banner with animation out and close button, can stack
  * showNotification('This is a test info');
@@ -169,28 +168,30 @@ export async function showServerNotifications(paramObj) {
  */
 export async function showNotification(notificationData) {
   if (!notificationData) {
-    console.error('No data for showNotification');
-    return;
+    const errorMessage = 'No data for showNotification';
+    console.error(errorMessage);
+    throw new Error(errorMessage);
   }
 
   //if not valid type of data fail fast
   if (!dataUtils.isDataValidType({data: notificationData, validTypeArray: ['array', 'object', 'string']})) {
-    console.error('Data for showNotification not correct type');
-    return;
+    const errorMessage = 'Data for showNotification not correct type';
+    console.error(errorMessage);
+    throw new Error(errorMessage);
   }
 
   //if data is in array show individual items
   if (Array.isArray(notificationData)) {
     for (const obj of notificationData) {
       if (dataUtils.isDataValidType({data: notificationData, validTypeArray: ['object', 'string']})) {
-        await showSingleNotification(obj);
+        await setupUiData(obj);
       }
     }
     return;
   }
 
   //object or string style data passed along, data formatted accordingly later
-  await showSingleNotification(notificationData);
+  await setupUiData(notificationData);
 }
 
 
@@ -200,25 +201,12 @@ export async function showNotification(notificationData) {
 /**
  * Script info
  *
+ * Data checks and formats from passed data "uniform" object data thats hanlded later with same naming style
+ *
  * This is a catch all function to take in either user thrown notification data or server formed data
  * If id field is present expect it to be from server so convert the data to format we want here
  *
- * Theres a bunch of fields that are optional andor are present in different name in server data than set by hand
- *
- * If unsure and you are throwing one notification by hand use only required ones (componentStyle, style, text)
- * or for quick info usage just pass your message as string instead of object, then system defaults to:
- * {
- *  componentStyle: banner
- *  style: info
- *  text: you_passed_string_here
- * }
- *
- * General logic structure:
- * > check data type generally and defaults
- *   > check style and formulate style dependent data, get container and elment/document, add to other data
- *      > show/create style spesific notification
- *          > set element stylings, add functionalities and missing elements,
- *          > add to notification to container
+ * Theres a bunch of fields that are optional andor are present in different name in server data than set by hand, update here in object formation
  *
  * @param {object} data dataobject either from server or set by hand
  * @param {String} data.componentStyle server data, also supply self, in what format do we show the notification banner/dialog ... ? default to banner if not set
@@ -238,24 +226,25 @@ export async function showNotification(notificationData) {
  * @param {String} [data.actionButtonData.text] optional - visible text
  * @param {CallableFunction} [data.actionButtonData.onClick] optional - action upon click
  */
-async function showSingleNotification(data) {
+async function setupUiData(data) {
 
   /**
-     * Check data validity (is it in ok form)
-     * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case)
-     */
+   * Check data validity (is it in ok form)
+   * String and Object based data have separation, string has default values while object expects to use provided data (some data optional, check in actual use case)
+   */
 
   //test if data is in acceptable format, additional checks not only surface typeof
   const dataStatusObj = dataUtils.isInputDataFormatGood({data});
   if (!dataStatusObj.isValid) {
-    console.error('showNotification data type is not valid');
-    return;
+    const dataTypeValidError = 'showNotification data type is not valid';
+    console.error(dataTypeValidError);
+    throw new Error(dataTypeValidError);
   }
 
   //if data a string, use quick default values
   if (dataStatusObj.type === 'string') {
     //data is string so using default values and setting data as text
-    await getComponentsAndShowUi({
+    await prepareAndShowUi({
       componentStyle: 'banner',
       style: 'info',
       text: data
@@ -264,17 +253,17 @@ async function showSingleNotification(data) {
   }
 
   /**
-     * if data is object, as its expected to be:
-     *
-     * Format data for later usage, makes sure later we can expect same naming schema
-     * some optional data can be undefined if data hand set (like id)
-     * some optional data is for certain component style notification, (ie. isDismissible)
-     * some optional data is provided by server data but in another field so move it into corrrect format (ie. messageText to text)
-     */
+   * if data is object, as its expected to be:
+   *
+   * Format data for later usage, makes sure later we can expect same naming schema
+   * some optional data can be undefined if data hand set (like id)
+   * some optional data is for certain component style notification, (ie. isDismissible)
+   * some optional data is provided by server data but in another field so move it into corrrect format (ie. messageText to text)
+   */
   const isDataFromServer = data.id !== undefined;
   const style = isDataFromServer ? data.messageStyle : data.style;
   const linkButtonCreationData = data.url ? {text: 'Lue Lisää Täältä', url: data.url} : data.linkButtonData;
-  await getComponentsAndShowUi({
+  await prepareAndShowUi({
     id: data.id,
     componentStyle: data.componentStyle ?? 'banner',
     title: data.title,
@@ -292,7 +281,7 @@ async function showSingleNotification(data) {
  *
  * @param {object} data all notificaiton relevant data
  */
-async function getComponentsAndShowUi(data) {
+async function prepareAndShowUi(data) {
 
   //get config with resource info and show function
   try {
