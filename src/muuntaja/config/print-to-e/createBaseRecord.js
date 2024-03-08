@@ -53,14 +53,15 @@ export function createBase(options) {
 
 function getReducers(options) {
 
-  const fenniFields = [];
-  //fillDefault('506/FENNI'),
-  //fillDefault('530/FENNI') // MUU-356
-  //fillDefault('540/FENNI'),
-  //fillDefault('856/FENNI'),
-  //fillDefault('901/FENNI')
+  function fillDefault(tag) {
+    return (base) => {
+      const field = getDefaultValue(tag, options);
+      base.insertField(field);
+      return base;
+    };
+  }
 
-  return [
+  const baseRecordCommon = [
     // Placeholders (for testing purposes)
     //fillDefault('LOW/KVP'),
     //fillDefault('LOW/ALMA'),
@@ -69,9 +70,6 @@ function getReducers(options) {
     //fillDefault('001'),
     //fillDefault('003'),
     //fillDefault('005')
-
-    // Fenni fields (for testing purposes)
-    ...options.LOWTAG === 'FENNI' ? fenniFields : [],
 
     // Default fields
     fillDefault('007'),
@@ -91,13 +89,21 @@ function getReducers(options) {
     //Reducers.copy({tagPattern: new RegExp(/^041$/u, 'u')}),
   ];
 
-  function fillDefault(tag) {
-    return (base) => {
-      const field = getDefaultValue(tag, options);
-      base.insertField(field);
-      return base;
-    };
+  const baseRecordDefault = [...baseRecordCommon];
+
+  const baseRecordFenni = [
+    //fillDefault('506/FENNI'),
+    //fillDefault('530/FENNI') // MUU-356
+    //fillDefault('540/FENNI'),
+    //fillDefault('856/FENNI'),
+    //fillDefault('901/FENNI')
+    ...baseRecordCommon
+  ];
+
+  if (options.profile === 'FENNI') {
+    return baseRecordFenni;
   }
+  return baseRecordDefault;
 }
 
 //-----------------------------------------------------------------------------
