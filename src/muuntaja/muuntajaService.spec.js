@@ -11,6 +11,26 @@ import {createLogger} from '@natlibfi/melinda-backend-commons/dist/utils.js';
 
 generateTests({
   callback: testTransform,
+  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'common'],
+  useMetadataFile: true,
+  recurse: true,
+  fixura: {
+    reader: READERS.JSON
+  }
+});
+
+generateTests({
+  callback: testTransform,
+  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'copy'],
+  useMetadataFile: true,
+  recurse: true,
+  fixura: {
+    reader: READERS.JSON
+  }
+});
+
+generateTests({
+  callback: testTransform,
   path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'print2e'],
   useMetadataFile: true,
   recurse: true,
@@ -36,27 +56,30 @@ const logger = createLogger(); // eslint-disable-line no-unused-vars
 //-----------------------------------------------------------------------------
 
 function testTransform({getFixture, testBase = false, expectToFail = false}) {
+
+  const input = getFixture('input.json');
+
+  // When setting options' property 'dateFormat' with value 'test'
+  //   - default field value generating functions do not use current date
+  //   - instead mock date '20380119' will be used for record default field generation
+  input.options.dateFormat = 'test'; // eslint-disable-line functional/immutable-data
+
+  const expectedResult = getFixture('output.json');
+  const {base, result} = getResultRecord(input);
+
+  //logger.debug(`Source: ${JSON.stringify(input.source, null, 2)}`);
+  //logger.debug(`Base..: ${JSON.stringify(input.base, null, 2)}`);
+  //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
+  //logger.debug(`Expect: ${JSON.stringify(expectedResult, null, 2)}`);
+
   try {
-
-    const input = getFixture('input.json');
-
-    // When setting options' property 'dateFormat' with value 'test'
-    //   - default field value generating functions do not use current date
-    //   - instead mock date '20380119' will be used for record default field generation
-    input.options.dateFormat = 'test'; // eslint-disable-line functional/immutable-data
-
-    const expectedResult = getFixture('output.json');
-    const {base, result} = getResultRecord(input);
-
-    //logger.debug(`Source: ${JSON.stringify(input.source, null, 2)}`);
-    //logger.debug(`Base..: ${JSON.stringify(input.base, null, 2)}`);
-    //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
-    //logger.debug(`Expect: ${JSON.stringify(expectedResult, null, 2)}`);
-
     expect(testBase ? base : result).to.deep.equal(expectedResult);
     expect(expectToFail, 'This is expected to succes').to.equal(false);
 
   } catch (error) {
+
+    logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
+
     if (!expectToFail) {
       throw error;
     }

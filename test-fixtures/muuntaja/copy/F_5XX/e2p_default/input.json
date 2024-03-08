@@ -1,0 +1,79 @@
+{
+  "options": {
+   "type": "e2p"
+  },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"tag": "001", "value": "A"}
+    ]
+  },
+  "source": {
+    "leader": "A",
+    "fields": [
+      {"tag": "500", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "501", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "502", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "504", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "505", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "506", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "507", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+
+      {"tag": "508", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "509", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "510", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "511", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "512", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "513", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "514", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "515", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "516", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "518", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "519", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "520", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "521", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "522", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "523", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "524", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "525", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "526", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "530", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "532", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "533", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "534", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "535", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "536", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "538", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "540", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "541", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "542", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "544", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "545", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "546", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "547", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "548", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "549", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "550", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "555", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "560", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "565", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "567", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "580", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "581", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "582", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "583", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "584", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "585", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "586", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "588", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+
+      {"tag": "CAT", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "SID", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "LOW", "subfields": [{"code": "a", "value": "X"}]}
+    ]
+  }
+ }

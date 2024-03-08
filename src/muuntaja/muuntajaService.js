@@ -13,6 +13,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import {v4 as uuid} from 'uuid';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {profiles} from './config/profiles';
+import {validationOff} from './config/common';
 
 export {uuid};
 
@@ -142,7 +143,7 @@ export async function getRecordWithIDs(bibService, record) {
 // Validate record and sort its fields
 //-----------------------------------------------------------------------------
 
-export function asMarcRecord(record, validationOptions = {}) {
+export function asMarcRecord(record, validationOptions = validationOff) {
   if (!record?.leader) {
     return record;
   }
