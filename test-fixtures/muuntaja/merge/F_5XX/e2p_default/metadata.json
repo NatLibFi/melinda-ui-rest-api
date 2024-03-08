@@ -1,5 +1,5 @@
 {
-  "description": "e2print - default - Copy 5XX",
+  "description": "Merge fields 5XX: e2print / default",
   "skip": false,
   "only": false
 }

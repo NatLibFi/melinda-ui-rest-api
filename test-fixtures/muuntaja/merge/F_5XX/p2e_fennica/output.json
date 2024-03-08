@@ -1,0 +1,70 @@
+{
+   "leader": "B",
+   "fields": [
+      {
+         "tag": "001",
+         "value": "A"
+      },
+      {
+         "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
+         "tag": "020",
+         "ind1": " ",
+         "ind2": " ",
+         "subfields": [
+            {
+               "code": "a", "value": ""
+            },
+            {
+               "code": "q","value": ""
+            }
+         ]
+      },
+      {"tag": "500", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "501", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "502", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "504", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "505", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "508", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "509", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "510", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "511", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "512", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "513", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "518", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "519", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "520", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "521", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "522", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "523", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "524", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "525", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "526", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "536", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "542", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "567", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "581", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "586", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {
+         "id": "ccb0cd8f-ea75-434e-a107-71a6278d23b0",
+         "tag": "856", "ind1": "4", "ind2": "0",
+         "subfields": [
+            {"code": "u", "value": "" },
+            {"code": "z", "value": "Käytettävissä vapaakappalekirjastoissa"},
+            {"code": "5", "value": "FI-Vapaa"}
+         ]
+      },
+      {
+         "id": "5b0d0d41-0975-4677-ab9b-314771f95fcb",
+         "tag": "901", "ind1": " ", "ind2": " ",
+         "subfields": [
+            {"code": "a", "value": "SU20380119" },
+            {"code": "5", "value": "FENNI" }
+         ]
+      }
+
+  ]
+}
