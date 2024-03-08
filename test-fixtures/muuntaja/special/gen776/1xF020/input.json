@@ -1,0 +1,18 @@
+{
+ "options": {
+  "type": "p2e"
+ },
+ "base": {
+  "leader": "B",
+  "fields": [
+    { "tag": "001", "value": "1"}
+  ]
+ },
+ "source": {
+  "leader": "S",
+  "fields": [
+    { "tag": "001", "value": "1"},
+    { "tag": "020", "subfields": [{ "code": "a", "value": "ISBN-1"}], "id": "1"}
+  ]
+ }
+}

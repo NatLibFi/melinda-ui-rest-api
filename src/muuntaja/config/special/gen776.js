@@ -31,6 +31,10 @@ export function generate776(opts) { // eslint-disable-line no-unused-vars
       return base;
     }
 
+    const formatTag = opts.type === 'p2e' ? 'Painettu:' : 'Verkkoaineisto:';
+    const fenniTag = opts.profile === 'FENNI' ? [{code: '9', value: 'FENNI<KEEP>'}] : [];
+
+    /*
     base.insertField({
       tag: '776',
       ind1: '0',
@@ -41,6 +45,17 @@ export function generate776(opts) { // eslint-disable-line no-unused-vars
         {code: '9', value: 'FENNI<KEEP>'}
       ]
     });
+    */
+    base.insertFields(sourceISBNs.map(isbn => ({
+      tag: '776',
+      ind1: '0',
+      ind2: '8',
+      subfields: [
+        {code: 'i', value: formatTag},
+        {code: 'z', value: isbn},
+        ...fenniTag
+      ]
+    })));
 
     return base;
   };

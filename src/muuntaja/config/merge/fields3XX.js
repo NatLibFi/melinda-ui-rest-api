@@ -25,17 +25,22 @@ const defaultFields = [
   '386|387|388' // otetaan
 ].join('|');
 
-const fenniFields = [
+function getFenniFields(opts) {
   //-------------------------------------------------------------------------
   // Fyysisen kuvailun kentät 3xx:
   //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},
   //opts.profile === 'KVP' ? '300' : /^39\d$/u, // add 300 when KVP/e2p; 39x is nonexistent; used as a placeholder
-  '336' // compare tags only
-].join('|');
+  //'336' // compare tags only
+
+  if (opts.profile === 'FENNI') {
+    return [Reducers.copy({tagPattern: '336|39\\d'})];
+  }
+  return [];
+}
 
 export function merge3XX(opts) {
-  if (opts.profile === 'FENNI') {
-    return [Reducers.copy({tagPattern: fenniFields})];
-  }
-  return [Reducers.copy({tagPattern: defaultFields})];
+  return [
+    Reducers.copy({tagPattern: defaultFields}),
+    ...getFenniFields(opts)
+  ];
 }
