@@ -54,42 +54,36 @@ export function e2pBaseRecord(options) {
 
 function getReducers(options) {
 
-  const fenniFields = [];
-  // finnDefault('506/FENNI'),
-  //fillDefault('530/FENNI') // MUU-356
-  // fillDefault('540/FENNI'),
-  // fillDefault('856/FENNI'),
-  // fillDefault('901/FENNI'),
+  function getFenniFields() {
+    if (options.profile !== 'FENNI') {
+      return [];
+    }
+    return [
+      fillDefault('042')
+      // finnDefault('506/FENNI'),
+      //fillDefault('530/FENNI') // MUU-356
+      // fillDefault('540/FENNI'),
+      // fillDefault('856/FENNI'),
+      // fillDefault('901/FENNI'),
+    ];
+  }
 
   return [
-    // Placeholders (for testing purposes)
-    // fillDefault('LOW/KVP'),
-    // fillDefault('LOW/ALMA'),
-    // fillDefault('LOW/FENNI')
-
-    // fillDefault('001'),
-    // fillDefault('003'),
-    // fillDefault('005')
-
-    // Fenni fields (for testing purposes)
-    ...options.LOWTAG === 'FENNI' ? fenniFields : [],
-
-    // Default fields
     // fillDefault('007'),
     fillDefault('008'),
     fillDefault('020'),
     // fillDefault('040'),
     //fillDefault('041'), // MUU-502
-    // fillDefault('042'),
     // fillDefault('300'),
     fillDefault('337'),
-    fillDefault('338')
+    fillDefault('338'),
     // fillDefault('506/1'),
     // fillDefault('506/2')
     // fillDefault('530') // 530 is added, if there is no generated 776
     // updateLOW(options)
 
     // Reducers.copy({tagPattern: new RegExp(/^041$/u, 'u')}),
+    ...getFenniFields()
   ];
 
   function fillDefault(tag) {

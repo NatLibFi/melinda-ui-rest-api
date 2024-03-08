@@ -26,11 +26,13 @@ import {merge7XX} from './merge/fields7XX';
 import {merge8XX} from './merge/fields8XX';
 import {merge9XX} from './merge/fields9XX';
 import {generateLOW} from './special/genLOW';
-import {getDefaultValue, getFieldOrDefault} from './print-to-e/defaults';
+import {generate020} from './special/gen020';
+import {generate776} from './special/gen776';
 
 import {p2eBaseRecord} from './print-to-e/baseRecord';
 import {e2pBaseRecord} from './e-to-print/baseRecord';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
+
 const logger = createLogger();
 
 const p2eProfile = {
@@ -69,6 +71,8 @@ function getReducers(opts) {
     ...merge7XX(opts),
     ...merge8XX(opts),
     ...merge9XX(opts),
+    generate020(opts),
+    generate776(opts),
     generateLOW(opts)
   ];
 }

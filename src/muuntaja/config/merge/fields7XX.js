@@ -7,6 +7,7 @@
 /* eslint-disable no-unused-vars, array-bracket-newline */
 
 import {Reducers} from '@natlibfi/marc-record-merge';
+import {generate776} from '../special/gen776';
 
 //-------------------------------------------------------------------------
 // Lisäkirjauskentät 70x - 75x:
@@ -31,5 +32,7 @@ export function merge7XX(opts) {
     return [Reducers.copy({tagPattern: fieldsE2P})];
   }
   */
-  return [Reducers.copy({tagPattern: fieldsDefault})];
+  return [
+    Reducers.copy({tagPattern: fieldsDefault})
+  ];
 }

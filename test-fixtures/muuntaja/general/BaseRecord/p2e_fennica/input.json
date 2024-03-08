@@ -1,8 +1,7 @@
 {
  "options": {
   "type": "p2e",
-  "profile": "FENNI",
-  "LOWTAG":"FENNI"
+  "profile": "FENNI"
  },
  "source": {},
  "base": {},

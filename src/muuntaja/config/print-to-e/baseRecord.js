@@ -22,16 +22,48 @@ const logger = createLogger();
 
 export function p2eBaseRecord(options) {
 
-  const p2eBaseCommon = [
-    // Placeholders (for testing purposes)
-    //fillDefault('LOW/KVP'),
-    //fillDefault('LOW/ALMA'),
-    //fillDefault('LOW/FENNI')
+  const baseRecord = new MarcRecord(
+    {
+      leader: getDefaultValue('LDR').value,
+      fields: []
+    },
+    validationOff
+  );
 
-    //fillDefault('001'),
-    //fillDefault('003'),
-    //fillDefault('005')
+  //*
+  return merger({
+    base: baseRecord,
+    reducers: getReducers(options)
+  }).sortFields();
 
+  /*/
+  const result = merger({
+    base: baseRecord,
+    source: sourceRecord,
+    reducers: getReducers(opts)
+  });
+  return sortFields(result);
+
+  /**/
+}
+
+function getReducers(options) {
+
+  function getFenniFields() {
+    if (options.profile !== 'FENNI') {
+      return [];
+    }
+    return [
+      fillDefault('042')
+      // finnDefault('506/FENNI'),
+      //fillDefault('530/FENNI') // MUU-356
+      // fillDefault('540/FENNI'),
+      // fillDefault('856/FENNI'),
+      // fillDefault('901/FENNI'),
+    ];
+  }
+
+  return [
     // Default fields
     fillDefault('007'),
     fillDefault('008'),
@@ -43,34 +75,11 @@ export function p2eBaseRecord(options) {
     fillDefault('337'),
     fillDefault('338'),
     fillDefault('506/1'),
-    fillDefault('506/2')
+    fillDefault('506/2'),
     //fillDefault('530') // 530 is added, if there is no generated 776
-    //updateLOW(options)
+    //updateLOW(options),
+    ...getFenniFields()
   ];
-
-  const p2eBaseDefault = [...p2eBaseCommon];
-
-  const p2eBaseFenni = [
-    //fillDefault('506/FENNI'),
-    //fillDefault('530/FENNI') // MUU-356
-    //fillDefault('540/FENNI'),
-    //fillDefault('856/FENNI'),
-    //fillDefault('901/FENNI')
-    ...p2eBaseCommon
-  ];
-
-  const baseRecord = new MarcRecord(
-    {
-      leader: getDefaultValue('LDR').value,
-      fields: []
-    },
-    validationOff
-  );
-
-  return merger({
-    base: baseRecord,
-    reducers: getReducers(options)
-  }).sortFields();
 
   //-----------------------------------------------------------------------------
   // Create base record
@@ -81,13 +90,5 @@ export function p2eBaseRecord(options) {
       base.insertField(field);
       return base;
     };
-  }
-
-  function getReducers(options) {
-
-    if (options.profile === 'FENNI') {
-      return p2eBaseFenni;
-    }
-    return p2eBaseDefault;
   }
 }

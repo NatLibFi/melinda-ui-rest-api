@@ -1,8 +1,7 @@
 {
  "options": {
   "type": "e2p",
-  "profile": "FENNI",
-  "LOWTAG":"FENNI"
+  "profile": "FENNI"
  },
  "source": {},
  "base": {},

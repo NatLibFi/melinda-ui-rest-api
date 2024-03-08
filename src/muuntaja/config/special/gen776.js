@@ -16,28 +16,32 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 const logger = createLogger();
 
 //-----------------------------------------------------------------------------
-// F020: Update ISBN & formats from source 776 fields
+// F776: Update ISBN & formats from source 020 fields
 //-----------------------------------------------------------------------------
 
-function fillMissing020(base, opts) {
-  fillIfMissing(base, '020');
-  return base;
-}
-
-export function generate020(opts) { // eslint-disable-line no-unused-vars
+export function generate776(opts) { // eslint-disable-line no-unused-vars
   return (baseRecord, sourceRecord) => { // eslint-disable-line no-unused-vars
     const base = new MarcRecord(baseRecord, validationOff);
     const source = new MarcRecord(sourceRecord, validationOff);
 
-    const source776s = Subfield.from(source, '776');
-    const ISBNs = Subfield.getByCode(source776s, 'z').map(s => s.value);
+    const source020s = Subfield.from(source, '020');
+    const sourceISBNs = Subfield.getByCode(source020s, 'a').map(s => s.value);
 
-    base.insertFields(ISBNs.map(s => ({
-      tag: '020', ind1: ' ', ind2: ' ',
-      subfields: [{'code': 'a', 'value': s}]
-    })));
+    if (!sourceISBNs.length) {
+      return base;
+    }
 
-    fillMissing020(base);
+    base.insertField({
+      tag: '776',
+      ind1: '0',
+      ind2: '8',
+      subfields: [
+        {code: 'i', value: 'Painettu:'},
+        ...sourceISBNs.map(isbn => ({code: 'z', value: isbn})),
+        {code: '9', value: 'FENNI<KEEP>'}
+      ]
+    });
+
     return base;
   };
 }

@@ -28,6 +28,7 @@ export const validationOff = {
 //    - returns the current date as string
 //    - the requested formatting is given as parameter
 //    - default formatting is 'YYYYMMDD'
+
 export function getDate(dateFormat = 'YYYYMMDD') {
 
   if (dateFormat === 'test') {

@@ -49,8 +49,5 @@ const fieldsToMerge = [
 ].join('|');
 
 export function merge0XX(opts) {
-  return [
-    Reducers.copy({tagPattern: fieldsToMerge}),
-    generate020(opts)
-  ];
+  return [Reducers.copy({tagPattern: fieldsToMerge})];
 }
