@@ -1,0 +1,29 @@
+{
+  "leader": "B",
+  "fields": [
+    {
+      "id": "1",
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {"code": "a", "value": "ISBN-1"}
+      ]
+    },
+    {
+      "id": "1",
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {"code": "a", "value": "ISBN-2"}
+      ]
+    },
+    {
+      "tag": "300",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [{"code": "a", "value": "1 Verkkoaineisto"}]
+    }
+  ]
+}

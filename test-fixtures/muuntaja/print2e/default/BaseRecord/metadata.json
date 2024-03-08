@@ -2,9 +2,5 @@
   "description": "print2e - default - BaseRecord",
   "skip": false,
   "only": false,
-  "succesRecords": 2,
-  "failedRecords": 0,
-  "testBase": true,
-  "expectedError": false,
-  "expectedErrorStatus": "200"
+  "testBase": true
 }

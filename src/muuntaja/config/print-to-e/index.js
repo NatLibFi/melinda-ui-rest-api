@@ -196,6 +196,7 @@ const fieldsToMerge = [
   //9XX ei oteta
 ].join('|');
 
+/*
 function mergeFields(opts) {
   return [
     //-------------------------------------------------------------------------
@@ -301,28 +302,37 @@ function mergeFields(opts) {
     updateLOW(opts)
   ];
 }
+*/
 
 //-----------------------------------------------------------------------------
 
 function getReducers(opts) {
-  return [
-    //...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)),
-    ...muuntajaReducers,
-    //...MelindaReducers,
-    //Reducers.copy({tagPattern: fieldsToMerge}),
-    //...mergeFields(opts)
-    //log()
-    (base, source) => base, // Dummy
-    (base, source) => base // Dummy
+
+  const commonReducers = [
+    Reducers.copy({tagPattern: fieldsToMerge}),
+    update020(opts),
+    updateLOW(opts),
+    (base, source) => base
   ];
+
+  const defaultReducers = [...commonReducers];
+
+  const fenniReducers = [...commonReducers];
+
+  if (opts.profile === 'FENNI') {
+    return fenniReducers;
+  }
+  return defaultReducers;
 
   /*
   return [
-    //...fieldsFennica(opts)
-    //...MelindaMuuntajaFennicaReducers.map(conf => Reducers.copy(conf)),
     //...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)),
-    //...MelindaReducers
-    //...copyReducers().map(conf => Reducers.copy(conf)),
+    //...muuntajaReducers,
+    //...MelindaReducers,
+    //...mergeFields(opts)
+    //log()
+    (base, source) => base // Dummy
   ];
   */
 }
+

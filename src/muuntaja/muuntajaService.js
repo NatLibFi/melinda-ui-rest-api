@@ -78,7 +78,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
         reducers
       });
 
-      // logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
+      //logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
 
       return {
         source: stripRecord(source),

@@ -10,7 +10,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 
 import {f008Split, f008Get, f008toString} from '../../../marcUtils/marcUtils';
 import {Subfield} from '../../../marcUtils/marcSubfields';
-import {getDefaultValue, getFieldOrDefault} from './defaults';
+import {fillIfMissing, getDefaultValue, getFieldOrDefault} from './defaults';
 import {validationOff} from '../common';
 
 import {createLogger} from '@natlibfi/melinda-backend-commons';
@@ -62,46 +62,52 @@ export function update008(opts) { // eslint-disable-line no-unused-vars
 // F020: Update ISBN & formats from source 776 fields
 //-----------------------------------------------------------------------------
 
+function f776to020(base, source776, opts) {
+  const sourceSubfields = Subfield.fromFields(source776);
+  const sourceISBNs = Subfield.getByCode(sourceSubfields, 'z').map(s => s.value);
+
+  if (!sourceISBNs.length) {
+    return;
+  }
+
+  const baseSubfields = Subfield.from(base, '020');
+  const baseISBNs = Subfield.getByCode(baseSubfields, 'a').map(s => s.value);
+
+  //logger.debug(`Base020: ${JSON.stringify(base020, null, 2)}`);
+  //logger.debug(`Base ISBNs: ${JSON.stringify(baseISBNs, null, 2)}`);
+
+  // New ISBNs
+  const newISBNs = [...sourceISBNs.filter(s => !baseISBNs.includes(s))];
+
+  if (!newISBNs.length) {
+    return;
+  }
+
+  //logger.debug(`New ISBNs: ${JSON.stringify(newISBNs, null, 2)}`);
+
+  return newISBNs.map(s => ({
+    tag: '020', ind1: ' ', ind2: ' ',
+    subfields: [{'code': 'a', 'value': s}],
+    id: source776.id
+  }));
+}
+
+function fillMissing020(base, opts) {
+  fillIfMissing(base, '020');
+  return base;
+}
+
 export function update020(opts) { // eslint-disable-line no-unused-vars
   return (baseRecord, sourceRecord) => { // eslint-disable-line no-unused-vars
     const base = new MarcRecord(baseRecord, validationOff);
     const source = new MarcRecord(sourceRecord, validationOff);
 
     // Get ISBNs (subcode z values) from source 776 fields
-    const source776 = Subfield.from(source, '776');
+    const source776s = source.get('776');
 
-    //logger.debug(`Source 776: ${JSON.stringify(source776, null, 2)}`);
-    const grouped = Subfield.groupByTrailingCode(source776, 'z');
-    grouped.forEach(g => logger.debug(`Grouped: ${JSON.stringify(g.map(s => s.value))}`));
-
-    const sourceISBNs = Subfield.getByCode(source776, 'z').map(s => s.value);
-
-    if (!sourceISBNs.length) {
-      return base;
-    }
-
-    //logger.debug(`Source ISBNs: ${JSON.stringify(sourceISBNs, null, 2)}`);
-
-    // Pop ISBNs (subcode a values) from base F020
-
-    const base020 = base.pop('020'); // eslint-disable-line functional/immutable-data
-
-    const baseSubfields = Subfield.fromFields(base020);
-    const baseISBNs = Subfield.getByCode(baseSubfields, 'a').map(s => s.value);
-
-    //logger.debug(`Base020: ${JSON.stringify(base020, null, 2)}`);
-    //logger.debug(`Base ISBNs: ${JSON.stringify(baseISBNs, null, 2)}`);
-
-    // New ISBNs
-    const newSubfields = [...sourceISBNs.filter(s => !baseISBNs.includes(s))].map(s => ({code: 'a', value: s}));
-
-    //logger.debug(`New ISBNs: ${JSON.stringify(newISBNs, null, 2)}`);
-
-    base.insertField({
-      tag: '020', ind1: ' ', ind2: ' ',
-      subfields: Subfield.concat(baseSubfields, newSubfields),
-      id: '09d0afca-a46b-4ca8-a869-a1b036a657d1'
-    });
+    const f020 = source776s.map(f776 => f776to020(base, f776, opts)).flat();
+    base.insertFields(f020);
+    fillMissing020(base);
     return base;
   };
 }
@@ -162,8 +168,8 @@ export function update776(opts) { // eslint-disable-line no-unused-vars
 
 export function updateLOW(opts) { // eslint-disable-line no-unused-vars
   return (baseRecord, sourceRecord) => {
-    const base = new MarcRecord(baseRecord);
-    const source = new MarcRecord(sourceRecord);
+    const base = new MarcRecord(baseRecord, validationOff);
+    //const source = new MarcRecord(sourceRecord, validationOff);
 
     const {LOWTAG} = opts;
 

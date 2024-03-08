@@ -1,0 +1,23 @@
+{
+ "options": {
+  "type": "p2e"
+ },
+ "source": {
+  "leader": "S",
+  "fields": [
+    {
+      "tag": "300",
+      "subfields": [{"code": "a", "value": "1 Verkkoaineisto"}]
+    }
+  ]
+ },
+ "base": {
+  "leader": "B",
+  "fields": [
+    {
+      "tag": "300",
+      "subfields": [{"code": "a", "value": "1 Verkkoaineisto"}]
+    }
+  ]
+ }
+}

@@ -74,7 +74,7 @@ function getReducers(options) {
     // Default fields
     fillDefault('007'),
     fillDefault('008'),
-    fillDefault('020'),
+    //fillDefault('020'),
     fillDefault('040'),
     //fillDefault('041'), // MUU-502
     //fillDefault('042'),

@@ -192,6 +192,14 @@ export function getFieldOrDefault(record, tag) {
   return fields;
 }
 
+export function fillIfMissing(record, tag) {
+  const fields = record.get(tag);
+  if (!fields.length) {
+    record.insertField(getDefaultValue(tag));
+    return;
+  }
+}
+
 function getLastChar(data) {
   const give = data === 'KVP' ? 'c' : '^';
   return give;
