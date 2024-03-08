@@ -1,0 +1,23 @@
+{
+  "options": {
+   "type": "p2e",
+   "LOWTAG":"TEST"
+  },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"tag": "001", "value": "A"}
+    ]
+  },
+  "source": {
+    "leader": "A",
+    "fields": [
+      {"tag": "CAT", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "CAT", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "SID", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "SID", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "LOW", "subfields": [{"code": "a", "value": "X"}]},
+      {"tag": "LOW", "subfields": [{"code": "a", "value": "X"}]}
+    ]
+  }
+ }

@@ -38,7 +38,7 @@ const p2eProfile = {
   description: 'Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.',
   mergeType: 'printToE',
 
-  getReducers: p2eReducers,
+  getReducers,
   createBase: p2eBaseRecord
 };
 
@@ -47,7 +47,7 @@ const e2pProfile = {
   description: 'Muunnos täydentää painetun aineiston tietueen e-aineiston tietueen tiedoilla. Muunnos ei käsittele osakohteita.',
   mergeType: 'eToPrint',
 
-  getReducers: e2pReducers,
+  getReducers,
   createBase: e2pBaseRecord
 };
 
@@ -56,66 +56,7 @@ export const profiles = {
   'e2p': e2pProfile
 };
 
-//-----------------------------------------------------------------------------
-
-function copy(tag, opts) {
-  return Reducers.copy({tagPattern: tag});
-}
-
-//-----------------------------------------------------------------------------
-// Merge fields
-
-/*
-const fieldsToMergeCommon = [
-].join('|');
-
-const p2eFieldsToMerge = [fieldsToMergeCommon].join('|');
-
-const e2pFieldsToMerge = [fieldsToMergeCommon].join('|');
-*/
-
-//-----------------------------------------------------------------------------
-// print-to-e
-//-----------------------------------------------------------------------------
-
-function p2eReducers(opts) {
-
-  const commonReducers = [
-    ...merge0XX(opts),
-    ...merge1XX(opts),
-    ...merge2XX(opts),
-    ...merge3XX(opts),
-    ...merge4XX(opts),
-    ...merge5XX(opts),
-    ...merge6XX(opts),
-    ...merge7XX(opts),
-    ...merge8XX(opts),
-    ...merge9XX(opts),
-    generateLOW(opts)
-  ];
-
-  if (opts.profile === 'FENNI') {
-    return commonReducers;
-  }
-  return commonReducers;
-
-  /*
-  return [
-    //...MelindaCopyReducerConfigs.map(conf => Reducers.copy(conf)),
-    //...muuntajaReducers,
-    //...MelindaReducers,
-    //...mergeFields(opts)
-    //log()
-    (base, source) => base // Dummy
-  ];
-  */
-}
-
-//-----------------------------------------------------------------------------
-// e-to-print
-//-----------------------------------------------------------------------------
-
-function e2pReducers(opts) {
+function getReducers(opts) {
 
   return [
     ...merge0XX(opts),
@@ -130,5 +71,4 @@ function e2pReducers(opts) {
     ...merge9XX(opts),
     generateLOW(opts)
   ];
-
 }

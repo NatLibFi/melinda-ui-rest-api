@@ -11,7 +11,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons/dist/utils.js';
 
 generateTests({
   callback: testTransform,
-  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'common'],
+  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'general'],
   useMetadataFile: true,
   recurse: true,
   fixura: {
@@ -21,7 +21,7 @@ generateTests({
 
 generateTests({
   callback: testTransform,
-  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'copy'],
+  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'special'],
   useMetadataFile: true,
   recurse: true,
   fixura: {
@@ -31,17 +31,7 @@ generateTests({
 
 generateTests({
   callback: testTransform,
-  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'print2e'],
-  useMetadataFile: true,
-  recurse: true,
-  fixura: {
-    reader: READERS.JSON
-  }
-});
-
-generateTests({
-  callback: testTransform,
-  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'e2print'],
+  path: [__dirname, '..', '..', 'test-fixtures', 'muuntaja', 'merge'],
   useMetadataFile: true,
   recurse: true,
   fixura: {
