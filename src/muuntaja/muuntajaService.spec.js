@@ -68,7 +68,7 @@ function testTransform({getFixture, testBase = false, expectToFail = false}) {
 
   } catch (error) {
 
-    logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
+    //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
 
     if (!expectToFail) {
       throw error;
