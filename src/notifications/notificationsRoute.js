@@ -6,9 +6,15 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-export default function () {
+//only when changes are merged and new npm package is done only then is available, install then and uncomment code
+//import createMongoNotesOperator from '@natlibfi/melinda-ui-commons/src/scripts/notes.js';// eslint-disable-line
+
+
+export default /*async*/ function (/*mongoUri*/) {
   const logger = createLogger();
   const appName = 'Notifications';
+  const debug = false;
+  //const mongoNotesOperator = await createMongoNotesOperator(mongoUri);// eslint-disable-line
 
   return new Router()
     .use(handleFailedQueryParams(appName))
@@ -16,111 +22,117 @@ export default function () {
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
-  function getNotifications(req, res, next) {
+  /*async*/ function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
-
     try {
-      logger.verbose('Getting notifications ...');
+      const {client} = req.params;
+      if (!client) {
+        throw new Error('Client param missing from from getNotifications');
+      }
 
-      //Placeholder data
-      //see melinda-ui-commons/mongoNotes.js for valid options
-      const debug = false;
-      const notifications = debug ? [
-        //test dialogs
-        {
-          id: '65805a34d500f6a4ff2eccc4',
-          messageStyle: 'info',
-          messageText: 'Tiesitkö että tämä on sinulle inffo.',
-          componentStyle: 'dialog',
-          blocksInteraction: false,
-          isDismissible: true,
-          endDate: new Date('2023-12-30T12:30:15.002'),
-          url: 'https://www.kansalliskirjasto.fi/',
-          context: ['muuntaja']
-        },
-        {
-          id: '65805a34d500f6a4ff2eccc5',
-          messageStyle: 'alert',
-          messageText: 'Hei. Huomaathan että.',
-          componentStyle: 'dialog',
-          blocksInteraction: false,
-          isDismissible: true,
-          endDate: new Date('2023-12-30T12:30:15.002'),
-          context: ['muuntaja', 'merge']
-        },
-        {
-          id: '65805a34d500f6a4ff2eccc6',
-          messageStyle: 'error',
-          messageText: 'Tapahtui virhe',
-          componentStyle: 'dialog',
-          blocksInteraction: false,
-          isDismissible: true,
-          endDate: new Date('2023-12-30T12:30:15.002'),
-          context: ['viewer']
-        },
-        //Success wont be needed in notifications, use it here to test clients UI
-        {
-          id: '65805a34d500f6a4ff2eccc7',
-          messageStyle: 'success',
-          messageText: 'Kaikki Onnistui',
-          componentStyle: 'dialog',
-          blocksInteraction: false,
-          isDismissible: true,
-          endDate: new Date('2023-12-30T12:30:15.002'),
-          context: ['all']
-        },
-        //test static banner
-        {
-          id: '65805a34d500f6a4ff2eccc8',
-          messageStyle: 'info',
-          messageText: 'Seuraavassa lähitulevaisuudessa tapahtuu asioita ja homma ei toimi x aikaan',
-          componentStyle: 'banner_static',
-          blocksInteraction: false,
-          isDismissible: false,
-          endDate: new Date('2023-12-30T12:30:15.002'),
-          context: ['muuntaja']
-        },
-        //throw single banner
-        {
-          id: '65805a34d500f6a4ff2eccc9',
-          messageStyle: 'success',
-          messageText: 'Kaikki Onnistui',
-          componentStyle: 'banner',
-          blocksInteraction: false,
-          isDismissible: false,
-          endDate: new Date('2023-12-30T12:30:15.002'),
-          context: ['muuntaja']
-        }
-        ////couple of blocking dialogs that take priority
-        // {
-        //   id: '65805a34d500f6a4ff2eccc10',
-        //   messageStyle: 'alert',
-        //   messageText: 'Jokin meni vikaan',
-        //   componentStyle: 'dialog',
-        //   blocksInteraction: true,
-        //   isDismissible: false,
-        //   endDate: new Date('2023-12-30T12:30:15.002'),
-        //   context: ['all']
-        // },
-        // {
-        //   id: '65805a34d500f6a4ff2eccc11',
-        //   messageStyle: 'error',
-        //   messageText: 'Jokin meni rikki',
-        //   componentStyle: 'dialog',
-        //   blocksInteraction: true,
-        //   isDismissible: false,
-        //   endDate: new Date('2023-12-30T12:30:15.002'),
-        //   context: ['all']
-        // }
-      ] : [];
+      logger.verbose('Getting notifications');
 
-      //proper backend fetch here// eslint-disable-line
-      const clientRequested = req.params.client;
-      const filteredItems = notifications.filter(obj => obj.context && (obj.context.includes(clientRequested) || obj.context.includes('all')));
-      res.json({'notifications': filteredItems});
+      const items = debug ? getDebugData(client) : [];//await mongoNotesOperator.getNoteItemsForApp(client);// eslint-disable-line
+      res.json({'notifications': items});
     } catch (error) {
       console.log(error); // eslint-disable-line
       return next(error);
     }
+  }
+  //remove debug data // eslint-disable-line
+  function getDebugData(client) {
+    //Placeholder data
+    //see melinda-ui-commons/mongoNotes.js for valid options
+    const notifications = [
+      //test dialogs
+      {
+        id: '65805a34d500f6a4ff2eccc4',
+        messageStyle: 'info',
+        messageText: 'Tiesitkö että tämä on sinulle inffo.',
+        componentStyle: 'dialog',
+        blocksInteraction: false,
+        isDismissible: true,
+        endDate: new Date('2023-12-30T12:30:15.002'),
+        url: 'https://www.kansalliskirjasto.fi/',
+        context: ['muuntaja']
+      },
+      {
+        id: '65805a34d500f6a4ff2eccc5',
+        messageStyle: 'alert',
+        messageText: 'Hei. Huomaathan että.',
+        componentStyle: 'dialog',
+        blocksInteraction: false,
+        isDismissible: true,
+        endDate: new Date('2023-12-30T12:30:15.002'),
+        context: ['muuntaja', 'merge']
+      },
+      {
+        id: '65805a34d500f6a4ff2eccc6',
+        messageStyle: 'error',
+        messageText: 'Tapahtui virhe',
+        componentStyle: 'dialog',
+        blocksInteraction: false,
+        isDismissible: true,
+        endDate: new Date('2023-12-30T12:30:15.002'),
+        context: ['viewer']
+      },
+      //Success wont be needed in notifications, use it here to test clients UI
+      {
+        id: '65805a34d500f6a4ff2eccc7',
+        messageStyle: 'success',
+        messageText: 'Kaikki Onnistui',
+        componentStyle: 'dialog',
+        blocksInteraction: false,
+        isDismissible: true,
+        endDate: new Date('2023-12-30T12:30:15.002'),
+        context: ['all']
+      },
+      //test static banner
+      {
+        id: '65805a34d500f6a4ff2eccc8',
+        messageStyle: 'info',
+        messageText: 'Seuraavassa lähitulevaisuudessa tapahtuu asioita ja homma ei toimi x aikaan',
+        componentStyle: 'banner_static',
+        blocksInteraction: false,
+        isDismissible: false,
+        endDate: new Date('2023-12-30T12:30:15.002'),
+        context: ['muuntaja']
+      },
+      //throw single banner
+      {
+        id: '65805a34d500f6a4ff2eccc9',
+        messageStyle: 'success',
+        messageText: 'Kaikki Onnistui',
+        componentStyle: 'banner',
+        blocksInteraction: false,
+        isDismissible: false,
+        endDate: new Date('2023-12-30T12:30:15.002'),
+        context: ['muuntaja']
+      }
+      ////couple of blocking dialogs that take priority
+      // {
+      //   id: '65805a34d500f6a4ff2eccc10',
+      //   messageStyle: 'alert',
+      //   messageText: 'Jokin meni vikaan',
+      //   componentStyle: 'dialog',
+      //   blocksInteraction: true,
+      //   isDismissible: false,
+      //   endDate: new Date('2023-12-30T12:30:15.002'),
+      //   context: ['all']
+      // },
+      // {
+      //   id: '65805a34d500f6a4ff2eccc11',
+      //   messageStyle: 'error',
+      //   messageText: 'Jokin meni rikki',
+      //   componentStyle: 'dialog',
+      //   blocksInteraction: true,
+      //   isDismissible: false,
+      //   endDate: new Date('2023-12-30T12:30:15.002'),
+      //   context: ['all']
+      // }
+    ];
+
+    const filteredItems = notifications.filter(obj => obj.context && (obj.context.includes(client) || obj.context.includes('all')));
+    return filteredItems;
   }
 }
