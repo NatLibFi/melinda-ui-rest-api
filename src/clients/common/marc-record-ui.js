@@ -61,7 +61,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   function getContent(field) {
     return (replace && replace[field.id]) ?? field;
   }
-  
+
 }
 
 //-----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ function addField(div, field, decorator = null, recordDestination = '') {
   const {from, original, replace, exclude, onClick} = decorator ?? {};
   decorateField(row, field);
 
-  if (onClick) {
+  if (onClick && field.id) {
     row.classList.add('clickable');
     row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? field));
   }
@@ -268,13 +268,13 @@ export function editField(field, original = null, elementToPreactivate = null) {
 
     /**/
   }
-  
+
 };
 
 function hasActiveSubFields(subfields){
   var containsActiveFields = false;
   for (const subfieldElement of subfields.children) {
-    var isActive = true; 
+    var isActive = true;
     try {
       isActive = subfieldElement.attributes.disabled.nodeValue !== 'true';
     } catch (error) {}
@@ -312,7 +312,7 @@ function setElementText(elementId, text){
 }
 function onEditInputChange(e){
   console.log(`Edit updated`);
-  
+
   const hasChanged = hasDataChanged(editing);
   hasChanged ? console.log('Data Changed') : console.log('Data did not change');
   setElementState('editSaveButton', hasChanged);
@@ -334,7 +334,7 @@ function hasDataChanged(originalData){
       console.log('Editing view detected changes to original data');
       return true;
     }
-  
+
   console.log('Editing view detected no changes to original data');
   return false;
 
@@ -365,13 +365,13 @@ function isFieldFixedSized(fieldObj){
 
 
 /**
- * 
+ *
  * @param {*} element - input element most likely editable div - cant be empty
  * @param {int} characterLimit - number of characters max, null if dont use
  * @param {[string]} allowedList - allowed character types list (lower/upper/number/speacial) -ie. ['lower', 'upper', 'special']s - null if dont use
  * @param {[string]} specialCharactersAllowed - only acceptable special characters - null if dont use, to work requires allowedlist['speacial']
  * @param {boolean} useDebug - some usefull console logs automatically to be used if true, defaults to false
- * 
+ *
  * Check with on key down and up what mark is placed into editable div.
  * With key down get the original value and check if key was recordable. Also detect if user long presses key.
  * On key up check any limitations on the new value set.
@@ -449,7 +449,7 @@ function addInputLimiter(element, characterLimit = null, allowedList = null, spe
       //firstly turn allowed list to forbidden list, aka whats not in the allowed list
       const availableList = Object.values(charModeKeys);
       var forbiddenList = availableList.filter(item => !allowedList.includes(item));
-      
+
       var hasForbiddenItems = false;
       for (const mode of forbiddenList) {
         switch (mode) {

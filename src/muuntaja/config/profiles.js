@@ -25,6 +25,7 @@ import {merge6XX} from './merge/fields6XX';
 import {merge7XX} from './merge/fields7XX';
 import {merge8XX} from './merge/fields8XX';
 import {merge9XX} from './merge/fields9XX';
+import {getFenniFields} from './merge/fieldsFenni';
 import {generateLOW} from './special/genLOW';
 import {generate020} from './special/gen020';
 import {generate776} from './special/gen776';
@@ -73,6 +74,7 @@ function getReducers(opts) {
     ...merge9XX(opts),
     generate020(opts),
     generate776(opts),
+    ...getFenniFields(opts),
     generateLOW(opts)
   ];
 }

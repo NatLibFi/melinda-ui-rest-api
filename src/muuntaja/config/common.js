@@ -20,7 +20,6 @@ export const validationOff = {
   strict: false // If true, set all validationOptions to true
 };
 
-
 // if function getDate is called with 'dateFormat' parameter value 'test':
 //   - returns string '20380119'
 //   - this date is used in test-fixtures
