@@ -53,14 +53,12 @@ export function createBase(options) {
 
 function getReducers(options) {
 
-  const fenniFields = [
-    fillDefault('042'),
-    //fillDefault('506/FENNI'),
-    fillDefault('530/FENNI')
-    //fillDefault('540/FENNI'),
-    //fillDefault('856/FENNI'),
-    //fillDefault('901/FENNI')
-  ];
+  const fenniFields = [];
+  //fillDefault('506/FENNI'),
+  //fillDefault('530/FENNI') // MUU-356
+  //fillDefault('540/FENNI'),
+  //fillDefault('856/FENNI'),
+  //fillDefault('901/FENNI')
 
   return [
     // Placeholders (for testing purposes)
@@ -80,7 +78,7 @@ function getReducers(options) {
     fillDefault('008'),
     fillDefault('020'),
     fillDefault('040'),
-    fillDefault('041'),
+    //fillDefault('041'), // MUU-502
     //fillDefault('042'),
     fillDefault('300'),
     fillDefault('337'),

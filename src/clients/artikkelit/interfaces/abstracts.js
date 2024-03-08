@@ -1,8 +1,9 @@
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, showSnackbar} from '/common/ui-utils.js';
+import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
+import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
 
 export function initAbstracts() {
-  console.log('initializing abstracts...');
+  //console.log('initializing abstracts...');
   document.getElementById('tiivistelma-lisaa-form').addEventListener('submit', addAbstract);
 
   document.getElementById('tyhjenna-tiivistelmat-form').addEventListener('submit', clearAbstracts);
@@ -21,11 +22,18 @@ export function addAbstract(event) {
 
   const data = {
     language: {iso6391, iso6392b, ui},
-    abstract: formJson['tiivistelma-abstrakti']
+    abstract: formJson['tiivistelma-abstrakti'].trim()
   };
 
   if (data.abstract === '') {
     showSnackbar({style: 'alert', text: 'Tiivistelmä ei voi olla tyhjä'});
+    return;
+  }
+
+  const lastChar = data.abstract.charAt(data.abstract.length - 1);
+
+  if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
+    showSnackbar({style: 'alert', text: 'Tiivistelmän täytyy päättyä pisteeseen, huutomerkkiin tai kysymysmerkkiin'});
     return;
   }
 
@@ -101,4 +109,20 @@ export function resetCharacterCounter(event) {
   const warning = document.getElementById('tiivistelma-merkkirajan-ylitys');
   warning.innerHTML = '';
   warning.style.padding = '';
+}
+
+
+window.removeAbstract = (event, key) => {
+  event.preventDefault();
+  idbDel('artoAbstracts', key).then(() => refreshAbstractList());
+};
+
+window.resetAbstract = (event) => {
+  event.preventDefault();
+  const textbox = document.getElementById('tiivistelma-abstrakti');
+  const languageSelect = document.getElementById('tiivistelma-kieli');
+
+  textbox.value = '';
+  languageSelect.selectedIndex = 0;
+  checkArticleForm();
 }

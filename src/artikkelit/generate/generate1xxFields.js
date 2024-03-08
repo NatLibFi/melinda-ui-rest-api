@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 
 export function generatef100sf110sf700sf710s(authors = []) {
 

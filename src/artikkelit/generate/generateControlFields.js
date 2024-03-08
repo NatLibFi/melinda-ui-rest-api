@@ -1,3 +1,5 @@
+/* eslint-disable max-params */
+
 export function generateLeader(sourceType) {
   if (sourceType === 'journal') {
     return '00000nab a22000005i 4500';

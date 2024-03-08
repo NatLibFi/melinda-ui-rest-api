@@ -483,6 +483,7 @@ function showTransformed(update = undefined) {
   });
   showRecord(result, keys.result, {
     onClick: editmode ? onEditClick : onToggleClick,
+    onDelete: onToggleClick,
     from,
     original,
     exclude: transformed.exclude,
@@ -496,29 +497,6 @@ function showTransformed(update = undefined) {
   function getLookup(fields) {
     return fields.reduce((a, field) => ({...a, [field.id]: field}), {});
   }
-}
-
-function getCustomDecorator(dest, originalDecorator, isEditModeActive = false){
-  //get deep copies to prevent crossreference connections (might be overkill...)
-  const copiedDecorator = getDeepCopyOfObject(originalDecorator);
-  //edit decorators for each as required based on dest
-  switch (dest) {
-    case keys.source:
-      //customise here
-      copiedDecorator.onClick = onToggleClick;
-      break;
-    case keys.base:
-      //customise here
-      copiedDecorator.onClick = onToggleClick;
-      break;
-    case keys.result:
-      copiedDecorator.onClick = isEditModeActive ? onEditClick : onToggleClick;
-      break;
-    default:
-      //use original setup
-      break;
-  }
-  return copiedDecorator;
 }
 
 function notFoundDlgOpen(recordType) {

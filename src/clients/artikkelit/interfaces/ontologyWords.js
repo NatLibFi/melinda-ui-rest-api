@@ -1,44 +1,159 @@
-import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from '/artikkelit/sessionStorageManager.js';
-import {idbAddValueToLastIndex, idbGetStoredValues, idbClear} from '/artikkelit/indexDB.js';
-import {formToJson, createIconButton, createP, setOptions, showSnackbar} from '/common/ui-utils.js';
+import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
+import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from '/artikkelit/utils/sessionStorageManager.js';
 import {getOntologyWords} from '/common/rest.js';
+import {formToJson, createIconButton, createP, setOptions, showSnackbar} from '/common/ui-utils.js';
 
 
 export function initOntologyWords() {
-  console.log('initializing ontology...');
-  document.getElementById('asiasana-haku-yso-form').addEventListener('submit', searchOntologyWords);
-  document.getElementById('asiasana-lisaa-form').addEventListener('submit', addOntologyWord);
+  //console.log('initializing ontology...');
 
+  document.getElementById('asiasana-lisaa-form').addEventListener('submit', addOntologyWord);
   document.getElementById('tyhjenna-asiasanat-form').addEventListener('submit', clearOntologyWords);
+  document.getElementById('asiasana-haku-yso-form').addEventListener('submit', searchOntologyWords);
+  document.getElementById('asiasana-ontologia').addEventListener('change', ontologyTypeChange);
 
   resetOntologySelect();
   refreshOntologyWordList();
 }
 
-export function searchOntologyWords(event) {
+
+export function ontologyTypeChange(event) {
+  event.preventDefault();
+  const ontologyType = event.target.value;
+
+  if ((/other/).test(ontologyType)) {
+    document.getElementById('haku-osio').style.display = 'none';
+    document.getElementById('asiasana-lisaa-select').style.display = 'none';
+    document.getElementById('asiasana-lisaa-input').style.display = 'flex';
+    const opts = event.target.options;
+    document.getElementById('asiasana-muu-label').innerHTML = `${opts[opts.selectedIndex].text}:`;
+    resetOntologySelect();
+  } else {
+    document.getElementById('haku-osio').style.display = 'flex';
+    document.getElementById('asiasana-lisaa-select').style.display = 'flex';
+    document.getElementById('asiasana-lisaa-input').style.display = 'none';
+    document.getElementById('asiasana-muu-label').innerHTML = '';
+    document.getElementById('asiasana-muu').value = '';
+  }
+}
+
+
+window.removeOntologyWord = (event, key) => {
+  event.preventDefault();
+  idbDel('artoOntologyWords', key).then(() => refreshOntologyWordList());
+};
+
+
+function addOntologyWord(event) {
+  event.preventDefault();
+
+  const formJson = formToJson(event);
+  const ontologyWord = getOntologyWord();
+  const ontologyWordOther = getOntologyWordOther();
+
+  if (!ontologyWord && !ontologyWordOther) {
+    showSnackbar({style: 'alert', text: 'Asiasana tai avainsana ei voi olla tyhjä'});
+    return;
+  }
+
+  addOntologyWordToIndexedDb(ontologyWord ?? ontologyWordOther);
+
+  function getOntologyWord() {
+    return getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
+  }
+
+
+  function getOntologyWordOther() {
+    const select = document.getElementById("asiasana-ontologia");
+    const ontologySelectLabel = formJson['asiasana-muu'];
+    const ontologySelectValue = select.value;
+    const ontologySelectText = select.options[select.selectedIndex].text;
+
+    return {
+      prefLabel: ontologySelectLabel,
+      vocab: ontologySelectValue,
+      text: ontologySelectText
+    }
+  };
+
+
+  function addOntologyWordToIndexedDb(newWord) {
+
+    if (duplicate(newWord)) {
+      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
+      return;
+    }
+
+    idbAddValueToLastIndex('artoOntologyWords', newWord)
+      .then(() => {
+        resetOntologyOtherInput();
+        resetOntologySelect();
+        refreshOntologyWordList();
+      });
+
+    function duplicate(newWord) {
+      idbGetStoredValues('artoOntologyWords')
+        .then((words) => {
+          return words.some(match);
+        })
+
+      function match(word) {
+        return newWord.localname
+          ? word.localname === newWord.localname
+          : word.prefLabel === newWord.prefLabel
+      }
+    }
+
+  }
+
+  function resetOntologyOtherInput() {
+    const otherInputField = document.getElementById('asiasana-muu');
+    otherInputField.value = '';
+  }
+
+}
+
+
+function clearOntologyWords(event) {
+  event.preventDefault();
+
+  idbClear('artoOntologyWords')
+    .then(() => {
+      refreshOntologyWordList();
+    });
+}
+
+
+function searchOntologyWords(event) {
   event.preventDefault();
   resetOntologySelect(true);
   const formJson = formToJson(event);
-  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo']}*`).then(data => setOntologyWords(data.results));
-  // Added an asterisk (*) after formJson['haku-arvo'] in order to find more matches/options with the search feature
-}
 
-export function setOntologyWords(words) {
-  if (words.length === 0) {
-    return resetOntologySelect();
+  // Added an asterisk (*) after formJson['haku-arvo'] in order to find more matches/options with the search feature
+  getOntologyWords(formJson['asiasana-ontologia'], `${formJson['haku-arvo']}*`)
+    .then((data) => {
+      setOntologyWords(data.results)
+    });
+
+  function setOntologyWords(words) {
+    if (words.length === 0) {
+      return resetOntologySelect();
+    }
+
+    const select = document.getElementById('asiasana-haku-tulos-lista');
+    const data = words.map((word, index) => {
+      const title = `${word.prefLabel}${word.altLabel ? ` (${word.altLabel})` : ''}`;
+      addValueToSessionStoreList('ontologyTempList', {identifier: index, ...word});
+      return {value: index, text: title};
+    });
+
+    setOptions(select, data);
   }
 
-  const select = document.getElementById('asiasana-haku-tulos-lista');
-  const data = words.map((word, index) => {
-    const title = `${word.prefLabel}${word.altLabel ? ` (${word.altLabel})` : ''}`;
-    addValueToSessionStoreList('ontologyTempList', {identifier: index, ...word});
-    return {value: index, text: title};
-  });
-
-  setOptions(select, data);
 }
 
-export function resetOntologySelect(searching) {
+
+function resetOntologySelect(searching) {
   const select = document.getElementById('asiasana-haku-tulos-lista');
   select.innerHTML = '';
 
@@ -50,38 +165,6 @@ export function resetOntologySelect(searching) {
   setOptions(select, [{value: '', text: 'Ei tuloksia'}], true);
 }
 
-
-export function addOntologyWord(event) {
-  event.preventDefault();
-  const formJson = formToJson(event);
-  const ontologyWord = getSessionStoreValue('ontologyTempList', formJson['asiasana-haku-tulos-lista']);
-  const ontologyWordOther = formJson['asiasana-muu'];
-
-  if (ontologyWord) {
-    var data = ontologyWord;
-  } else if (ontologyWordOther) {
-    var data = {
-      prefLabel: ontologyWordOther,
-      vocab: document.getElementById('asiasana-ontologia').value
-    };
-  } else {
-    showSnackbar({style: 'alert', text: 'Asia-/avainsana ei voi olla tyhjä'});
-    return;
-  }
-
-  idbGetStoredValues('artoOntologyWords').then(words => {
-    if (words.some(word => data.localname ? word.localname === data.localname : word.prefLabel === data.prefLabel)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
-      return;
-    }
-
-    idbAddValueToLastIndex('artoOntologyWords', data).then(() => {
-      document.getElementById('asiasana-muu').value = '';
-      resetOntologySelect();
-      refreshOntologyWordList();
-    });
-  });
-}
 
 export function refreshOntologyWordList() {
   const ontologyWordList = document.getElementById('asiasana-list');
@@ -120,15 +203,10 @@ export function refreshOntologyWordList() {
       return createP(`(${word.vocab}) yso/${word.lang}`, '&nbsp;-&nbsp;');
     }
     if ((/other/).test(word.vocab)) {
-      return createP(`${word.vocab}`, '&nbsp;-&nbsp;');
+      return createP(`${word.text}`, '&nbsp;-&nbsp;');
     }
     return createP(`${word.vocab}/${word.lang}`, '&nbsp;-&nbsp;');
   }
 
   doUpdate();
-}
-
-export function clearOntologyWords(event) {
-  event.preventDefault();
-  idbClear('artoOntologyWords').then(() => refreshOntologyWordList());
 }
