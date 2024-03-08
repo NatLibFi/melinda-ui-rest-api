@@ -1,0 +1,42 @@
+{
+   "leader": "B",
+   "fields": [
+      {
+         "tag": "001",
+         "value": "A"
+      },
+      {
+         "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
+         "tag": "020",
+         "ind1": " ",
+         "ind2": " ",
+         "subfields": [
+            {
+               "code": "a", "value": ""
+            },
+            {
+               "code": "q","value": ""
+            }
+         ]
+      },
+      {"tag": "810", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "811", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {
+         "id": "ccb0cd8f-ea75-434e-a107-71a6278d23b0",
+         "tag": "856", "ind1": "4", "ind2": "0",
+         "subfields": [
+            {"code": "u", "value": "" },
+            {"code": "z", "value": "Käytettävissä vapaakappalekirjastoissa"},
+            {"code": "5", "value": "FI-Vapaa"}
+         ]
+      },
+      {
+         "id": "5b0d0d41-0975-4677-ab9b-314771f95fcb",
+         "tag": "901", "ind1": " ", "ind2": " ",
+         "subfields": [
+            {"code": "a", "value": "SU20380119" },
+            {"code": "5", "value": "FENNI" }
+         ]
+      }
+  ]
+}
