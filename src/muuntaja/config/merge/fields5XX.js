@@ -61,7 +61,8 @@ const fieldsE2PCommon = [
   '54[1-9]', // exclude 540 (MUU-378)
   '55\\d',
   '56\\d',
-  '58[0,1,2,3,4,5,6,7,9]' // exclude 588 (MUU-377)
+  '58[0,1,2,4,5,6,7,9]', // exclude 588 (MUU-377)
+  '583' // ??? MUU-401
   // /^59\d$/u, // excludes all 59x (MUU-380 & MUU-410)
 ].join('|');
 

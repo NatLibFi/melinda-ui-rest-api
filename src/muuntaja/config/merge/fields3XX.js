@@ -25,6 +25,13 @@ const defaultFields = [
   '386|387|388' // otetaan
 ].join('|');
 
+const p2eFields = defaultFields;
+
+const e2pFields = [
+  defaultFields,
+  '300'
+].join('|');
+
 function getFenniFields(opts) {
   //-------------------------------------------------------------------------
   // Fyysisen kuvailun kentät 3xx:
@@ -40,7 +47,7 @@ function getFenniFields(opts) {
 
 export function merge3XX(opts) {
   return [
-    Reducers.copy({tagPattern: defaultFields}),
+    Reducers.copy({tagPattern: opts.type === 'p2e' ? p2eFields : e2pFields}),
     ...getFenniFields(opts)
   ];
 }
