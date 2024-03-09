@@ -19,7 +19,12 @@ import {Reducers} from '@natlibfi/marc-record-merge';
 //880 $6-osakentässä linkitetyn kentän mukaan
 //881-887 ei oteta (joku 883 $a muuntaja varmaan luodaan?)
 
+const fieldsDefault = [
+  '880'
+].join('|');
+
 const fieldsE2P = [
+  fieldsDefault,
   '810',
   '811'
   //copy('830'),
@@ -32,5 +37,7 @@ export function merge8XX(opts) {
       Reducers.copy({tagPattern: fieldsE2P})
     ];
   }
-  return [];
+  return [
+    Reducers.copy({tagPattern: fieldsDefault})
+  ];
 }

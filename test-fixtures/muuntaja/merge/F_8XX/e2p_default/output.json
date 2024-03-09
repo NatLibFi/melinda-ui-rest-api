@@ -20,6 +20,7 @@
          ]
       },
       {"tag": "810", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
-      {"tag": "811", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]}
+      {"tag": "811", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "880", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]}
   ]
 }
