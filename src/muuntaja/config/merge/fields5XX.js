@@ -47,14 +47,17 @@ const fieldsP2E = [
   //583-585 ei oteta
   '586' // otetaan
   //588 kuvailun perusta: ei oteta (vai otetaanko, vai lisätäänkö kenttään jollain sisällöllä?)
-  //59X en tunne näitä kauhean hyvin
+  //59X - excluded (MUU-379) en tunne näitä kauhean hyvin
 ].join('|');
 
 const fieldsE2PCommon = [
   fieldsAlways,
+  // 500 - exclude (MUU-379)
+  // 506 - exclude (MUU-382)
   '507',
   '514',
   '515',
+  // 516 - exclude (MUU-383)
   '54[1-9]', // exclude 540 (MUU-378)
   '55\\d',
   '56\\d',

@@ -10,7 +10,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 
 import {f008Split, f008Get, f008toString} from '../../../marcUtils/marcUtils';
 import {Subfield} from '../../../marcUtils/marcSubfields';
-import {fillIfMissing, getDefaultValue, getFieldOrDefault} from '../print-to-e/defaults';
+import {fillIfMissing, getDefaultValue, getFieldOrDefault} from '../baserecord/print2e';
 import {validationOff} from '../common';
 
 import {createLogger} from '@natlibfi/melinda-backend-commons';

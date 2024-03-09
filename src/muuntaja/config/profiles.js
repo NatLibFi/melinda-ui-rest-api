@@ -30,8 +30,8 @@ import {generateLOW} from './special/genLOW';
 import {generate020} from './special/gen020';
 import {generate776} from './special/gen776';
 
-import {p2eBaseRecord} from './print-to-e/baseRecord';
-import {e2pBaseRecord} from './e-to-print/baseRecord';
+import {p2eBaseRecord} from './baserecord/print2e';
+import {e2pBaseRecord} from './baserecord/e2print';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 const logger = createLogger();

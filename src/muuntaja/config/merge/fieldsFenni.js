@@ -7,7 +7,7 @@
 /* eslint-disable no-unused-vars, array-bracket-newline */
 
 import {Reducers} from '@natlibfi/marc-record-merge';
-import {getDefaultValue} from '../print-to-e/defaults';
+import {getDefaultValue} from '../baserecord/print2e';
 import {MarcRecord} from '@natlibfi/marc-record';
 import {validationOff} from '../common';
 

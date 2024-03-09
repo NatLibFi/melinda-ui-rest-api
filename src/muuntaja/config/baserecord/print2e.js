@@ -4,7 +4,18 @@
 //
 //*****************************************************************************
 
-import {getDate} from '../common.js';
+/* eslint-disable no-unused-vars */
+
+import {getDate, get008LibraryID} from '../common.js';
+
+import {MarcRecord} from '@natlibfi/marc-record';
+import merger, {Reducers} from '@natlibfi/marc-record-merge';
+import {createLogger} from '@natlibfi/melinda-backend-commons';
+
+//import {f008Split, f008Get} from '../../../marcUtils/marcUtils';
+import {validationOff} from '../common';
+
+const logger = createLogger();
 
 const defaultFieldValues = {
   'LDR': {value: '00000cam^a22006134i^4500'},
@@ -19,7 +30,7 @@ const defaultFieldValues = {
     id: '7e290cd1-6bed-4447-8fc3-c1f7e41b760a'
   },
   '008': (opts) => ({
-    value: `^^^^^^s${getDate(opts.dateFormat).substring(0, 4)}^^^^fi^||||^o^^^^^|0|^0|   |${getLastChar(opts.LOWTAG)}`,
+    value: `^^^^^^s${getDate(opts.dateFormat).substring(0, 4)}^^^^fi^||||^o^^^^^|0|^0|   |${get008LibraryID(opts)}`,
     id: '4bc968f1-9186-4d04-ba09-7537d0c4ee95'
   }),
   '020': (opts) => ({
@@ -200,7 +211,84 @@ export function fillIfMissing(record, tag) {
   }
 }
 
-function getLastChar(data) {
-  const give = data === 'KVP' ? 'c' : '^';
-  return give;
+//*****************************************************************************
+//
+// Create print-to-e base record from source and options
+//
+//*****************************************************************************
+
+//-----------------------------------------------------------------------------
+// Create base record from source and options
+
+export function p2eBaseRecord(options) {
+
+  const baseRecord = new MarcRecord(
+    {
+      leader: getDefaultValue('LDR').value,
+      fields: []
+    },
+    validationOff
+  );
+
+  //*
+  return merger({
+    base: baseRecord,
+    reducers: getReducers(options)
+  }).sortFields();
+
+  /*/
+  const result = merger({
+    base: baseRecord,
+    source: sourceRecord,
+    reducers: getReducers(opts)
+  });
+  return sortFields(result);
+
+  /**/
+}
+
+function getReducers(options) {
+
+  function getFenniFields() {
+    if (options.profile !== 'FENNI') {
+      return [fillDefault('530')];
+    }
+    return [
+      fillDefault('042')
+      // finnDefault('506/FENNI'),
+      //fillDefault('530/FENNI') // MUU-356
+      // fillDefault('540/FENNI'),
+      // fillDefault('856/FENNI'),
+      // fillDefault('901/FENNI'),
+    ];
+  }
+
+  return [
+    // Default fields
+    fillDefault('007'),
+    fillDefault('008'),
+    //fillDefault('020'),
+    fillDefault('040'),
+    //fillDefault('041'), // MUU-502
+    //fillDefault('042'),
+    fillDefault('300'),
+    fillDefault('337'),
+    fillDefault('338'),
+    fillDefault('506/1'),
+    fillDefault('506/2'),
+    //fillDefault('530') // 530 is added, if there is no generated 776
+    //updateLOW(options),
+    ...getFenniFields()
+  ];
+
+  //-----------------------------------------------------------------------------
+  // Create base record
+
+  function fillDefault(tag) {
+    return (base) => {
+      const field = getDefaultValue(tag, options);
+      base.insertField(field);
+      return base;
+    };
+  }
 }

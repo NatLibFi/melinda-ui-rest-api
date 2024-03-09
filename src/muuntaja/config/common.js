@@ -36,3 +36,9 @@ export function getDate(dateFormat = 'YYYYMMDD') {
 
   return moment().format(dateFormat).toString();
 }
+
+// Library marking for 008: FENNI -> empty, others -> c
+
+export function get008LibraryID(opts) {
+  return opts.profile === 'FENNI' ? '^' : 'c';
+}

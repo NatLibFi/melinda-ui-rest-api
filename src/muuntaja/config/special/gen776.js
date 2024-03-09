@@ -9,7 +9,6 @@
 import {MarcRecord} from '@natlibfi/marc-record';
 
 import {Subfield} from '../../../marcUtils/marcSubfields';
-import {fillIfMissing} from '../print-to-e/defaults';
 import {validationOff} from '../common';
 
 import {createLogger} from '@natlibfi/melinda-backend-commons';
