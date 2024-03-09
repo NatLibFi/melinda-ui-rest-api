@@ -42,3 +42,12 @@ export function getDate(dateFormat = 'YYYYMMDD') {
 export function get008LibraryID(opts) {
   return opts.profile === 'FENNI' ? '^' : 'c';
 }
+
+// Luetteloiva organisaatio
+
+export function get040SubfieldA(opts) {
+  if (opts.LOWTAG === 'KVP') {
+    return {code: 'a', value: 'FI-NL'};
+  }
+  return {code: 'a', value: ''};
+}

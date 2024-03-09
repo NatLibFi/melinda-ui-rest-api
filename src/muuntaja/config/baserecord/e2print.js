@@ -9,7 +9,10 @@
 
 /* eslint-disable no-unused-vars */
 
-import {getDate, get008LibraryID} from '../common.js';
+import {
+  getDate, get008LibraryID,
+  get040SubfieldA
+} from '../common.js';
 
 import {MarcRecord} from '@natlibfi/marc-record';
 import merger, {Reducers} from '@natlibfi/marc-record-merge';
@@ -42,15 +45,15 @@ const defaultFieldValues = {
     ],
     id: '1ed797e0-1026-425b-9ef4-fc4d3771914a'
   }),
-  '040': {
+  '040': (opts) => ({
     ind1: ' ', ind2: ' ',
     subfields: [
-      {code: 'a', value: ''}, // Get from user's profile (ISIL code)
+      get040SubfieldA(opts), // {code: 'a', value: ''}, // Get from user's profile (ISIL code)
       {code: 'b', value: 'fin'},
       {code: 'e', value: 'rda'}
     ],
     id: '6f4d044c-28f4-4616-9edb-89ec47856cab'
-  },
+  }),
   '041': (opts) => ({
     tag: '041', ind1: '0', ind2: ' ',
     subfields: [{code: 'a', value: opts.language || ''}],
