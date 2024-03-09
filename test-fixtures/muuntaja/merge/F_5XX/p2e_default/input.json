@@ -62,6 +62,8 @@
       {"tag": "565", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
       {"tag": "567", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
 
+      {"tag": "579", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+
       {"tag": "580", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
       {"tag": "581", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "582", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
