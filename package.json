@@ -35,15 +35,15 @@
     "coverage:unit": "nyc --silent npm run test:base",
     "coverage:report": "nyc report --reporter=text",
     "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
-    "dev": "cross-env DEBUG=@natlibfi/* NODE_ENV=development nodemon --watch src --exec 'npm run lint:dev && npm run start:dev'",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src --exec 'npm run lint:dev && npm run start:dev'",
     "dev:noDebug": "cross-env NODE_ENV=development nodemon --watch src --exec 'npm run lint:dev && npm run start:dev'",
-    "dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:dev'",
-    "dev:test:artikkelit": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:artikkelit'",
-    "dev:test:muuntaja": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:muuntaja'"
+    "dev:test": "cross-env NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:dev'",
+    "dev:test:artikkelit": "cross-env NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:artikkelit'",
+    "dev:test:muuntaja": "cross-env NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run lint:dev && npm run test:muuntaja'"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.2",
-    "@natlibfi/marc-record": "7.3.1",
+    "@natlibfi/marc-record": "8.1.0",
     "@natlibfi/marc-record-merge": "7.0.0",
     "@natlibfi/marc-record-validate": "^8.0.5",
     "@natlibfi/marc-record-validators-melinda": "^10.15.4",
