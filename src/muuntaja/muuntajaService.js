@@ -13,6 +13,7 @@ import {MarcRecord} from '@natlibfi/marc-record';
 import {v4 as uuid} from 'uuid';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {profiles} from './config/profiles';
+import {validationOff} from './config/common';
 
 export {uuid};
 
@@ -36,21 +37,15 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function withID(ID, record) {
-  return ID ? {ID, ...record} : record;
-}
-
-function withError(error, record) {
-  return error ? {error, ...record} : record;
-}
-
-function withNotes(notes, record) {
-  return notes ? {notes, ...record} : record;
-}
-
 function stripRecord({leader, fields, ID, error, notes}) {
 
-  return withID(ID, withError(error, withNotes(notes, {leader, fields})));
+  return {
+    leader,
+    fields,
+    ...ID ? {ID} : {},
+    ...error ? {error} : {},
+    ...notes ? {notes} : {}
+  };
 }
 
 export function getResultRecord({source, base: baseRecord, options, include, exclude, replace}) {
@@ -61,7 +56,6 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
   //   logger.debug(`* Base: ${JSON.stringify(baseRecord, null, 2)}`);
 
   try {
-
     const transformProfile = profiles[options.type];
 
     const base = baseRecord?.leader ? baseRecord : transformProfile.createBase(options);
@@ -74,27 +68,43 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
       };
     }
 
-    const reducers = transformProfile.getReducers(options);
+    try {
+      const reducers = transformProfile.getReducers(options);
 
-    const result = merger({
-      base: modifyRecord(base, null, exclude, null),
-      source: modifyRecord(source, null, exclude, null),
-      reducers
-    });
+      //logger.debug(`Reducers: ${JSON.stringify(reducers, null, 2)}`);
 
-    // logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
+      const result = merger({
+        base: asMarcRecord(modifyRecord(base, null, exclude, null)),
+        source: asMarcRecord(modifyRecord(source, null, exclude, null)),
+        reducers
+      });
 
-    return {
-      source: stripRecord(source),
-      base: stripRecord(base),
-      result: stripRecord(asMarcRecord(modifyRecord(result, null, null, replace)))
-    };
+      //logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
+
+      return {
+        source: stripRecord(source),
+        base: stripRecord(base),
+        result: stripRecord(modifyRecord(result, null, null, replace))
+      };
+    } catch (err) {
+      const error = err.toString();
+      logger.error(`getResultRecord: Error: ${error}`);
+      return {
+        source,
+        base,
+        result: {
+          error
+        }
+      };
+    }
   } catch (err) {
+    const error = err.toString();
+    logger.error(`getResultRecord: Error: ${error}`);
     return {
       source,
       base: baseRecord,
       result: {
-        error: String(err)
+        error
       }
     };
   }
@@ -133,19 +143,18 @@ export async function getRecordWithIDs(bibService, record) {
 // Validate record and sort its fields
 //-----------------------------------------------------------------------------
 
-export function asMarcRecord(record, validationOptions = {}) {
+export function asMarcRecord(record, validationOptions = validationOff) {
   if (!record?.leader) {
     return record;
   }
 
   try {
+    return new MarcRecord(record, validationOptions);
+  } catch (err) {
+    const error = err.toString();
+    logger.error(`AsMarcRecord: Error: ${error}`);
     return {
-      ...record,
-      fields: MarcRecord.clone(record, validationOptions).sortFields().fields
-    };
-  } catch (e) {
-    return {
-      error: e.toString(),
+      error,
       ...record
     };
   }

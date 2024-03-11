@@ -20,7 +20,6 @@ export const validationOff = {
   strict: false // If true, set all validationOptions to true
 };
 
-
 // if function getDate is called with 'dateFormat' parameter value 'test':
 //   - returns string '20380119'
 //   - this date is used in test-fixtures
@@ -28,6 +27,7 @@ export const validationOff = {
 //    - returns the current date as string
 //    - the requested formatting is given as parameter
 //    - default formatting is 'YYYYMMDD'
+
 export function getDate(dateFormat = 'YYYYMMDD') {
 
   if (dateFormat === 'test') {
@@ -35,4 +35,19 @@ export function getDate(dateFormat = 'YYYYMMDD') {
   }
 
   return moment().format(dateFormat).toString();
+}
+
+// Library marking for 008: FENNI -> empty, others -> c
+
+export function get008LibraryID(opts) {
+  return opts.profile === 'FENNI' ? '^' : 'c';
+}
+
+// Luetteloiva organisaatio
+
+export function get040SubfieldA(opts) {
+  if (opts.LOWTAG === 'KVP') {
+    return {code: 'a', value: 'FI-NL'};
+  }
+  return {code: 'a', value: ''};
 }
