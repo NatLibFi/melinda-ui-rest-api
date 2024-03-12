@@ -36,18 +36,6 @@
       "subfields": [{"code": "a", "value": "finb"}],
       "id": "f23d6e0c-5ccd-46b6-8170-4b8ad9f6ba64"
     },
-      {
-     "tag": "300",
-     "ind1": " ",
-     "ind2": " ",
-     "subfields": [
-      {
-       "code": "a",
-       "value": "1 verkkoaineisto"
-      }
-     ],
-     "id": "29b213aa-4cb5-44cf-83d5-a0042638f64f"
-    },
     {
      "tag": "337",
      "ind1": " ",

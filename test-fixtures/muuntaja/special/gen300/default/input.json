@@ -1,0 +1,26 @@
+{
+  "options": {
+   "type": "p2e"
+  },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"tag": "001", "value": "A"}
+    ]
+  },
+  "source": {
+    "leader": "A",
+    "fields": [
+      {
+        "id": "1",
+        "tag": "300",
+        "subfields": [
+          {"code": "a", "value": "X"},
+          {"code": "b", "value": "X"},
+          {"code": "c", "value": "X"},
+          {"code": "d", "value": "X"}
+        ]
+      }
+    ]
+  }
+ }
