@@ -15,18 +15,23 @@ import {validationOff} from '../common';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 const logger = createLogger();
 
+/* Koko kenttä, esim.:
+
+$a 397 s. : $b kuv. , kartt., nuott. ; $c 25 cm
+
+→ $a 1 verkkoaineisto (397 sivua) : $b kuvitettu, karttoja, nuotteja
+*/
+
 export function generate300(opts) { // eslint-disable-line no-unused-vars
   return (baseRecord, sourceRecord) => { // eslint-disable-line no-unused-vars
     const base = new MarcRecord(baseRecord, validationOff);
     const source = new MarcRecord(sourceRecord, validationOff);
 
-    const f300s = source.get('300');
+    const [f300] = source.get('300');
 
-    if (!f300s.length) {
+    if (!f300) {
       return base;
     }
-
-    const [f300] = f300s;
 
     //logger.debug(`F300: ${JSON.stringify(f300, null, 2)}`);
 

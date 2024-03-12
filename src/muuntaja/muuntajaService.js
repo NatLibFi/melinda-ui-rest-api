@@ -48,7 +48,7 @@ function stripRecord({leader, fields, ID, error, notes}) {
   };
 }
 
-export function getResultRecord({source, base: baseRecord, options, include, exclude, replace}) {
+export function getResultRecord({source, base: baseRecord, options, insert, exclude, replace}) {
   //logger.debug(`* now in getResultRecord`);
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
@@ -84,7 +84,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord(modifyRecord(result, null, null, replace))
+        result: stripRecord(asMarcRecord(modifyRecord(result, insert, null, replace)).sortFields())
       };
     } catch (err) {
       const error = err.toString();
@@ -176,7 +176,7 @@ export function addMissingIDs(record) {
 
 export function generateMissingIDs(fields) {
   if (!fields) {
-    return fields;
+    return [];
   }
   return fields.map(f => f.id ? f : {...f, id: uuid()});
 }
@@ -185,11 +185,11 @@ export function generateMissingIDs(fields) {
 // Record modify services
 //-----------------------------------------------------------------------------
 
-export function modifyRecord(record, include, exclude, replace) {
+export function modifyRecord(record, insert, exclude, replace) {
   if (!record) {
     return null;
   }
-  const result = replaceFields(excludeFields(includeFields(record, include), exclude), replace);
+  const result = replaceFields(excludeFields(insertFields(record, insert), exclude), replace);
 
   //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
 
@@ -198,7 +198,7 @@ export function modifyRecord(record, include, exclude, replace) {
 
 //-----------------------------------------------------------------------------
 
-export function includeFields(record, fields) {
+export function insertFields(record, fields) {
   if (!fields) {
     return record;
   }
@@ -207,7 +207,7 @@ export function includeFields(record, fields) {
     ...record,
     fields: [
       ...record?.fields ? record.fields : [],
-      ...generateMissingIDs(fields)
+      ...fields
     ]
   };
 }

@@ -1,0 +1,25 @@
+{
+ "options": {
+  "type": "p2e"
+ },
+ "source": {
+  "leader": "A",
+  "fields": [
+    {"id": "1", "tag": "001", "value": "A"},
+    {"id": "Y", "tag": "031", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]}
+  ]
+ },
+ "base": {
+  "leader": "B",
+  "fields": [
+    {"id": "2", "tag": "001", "value": "A"}
+  ]
+ },
+ "exclude": {},
+ "replace": {
+  "Y": {
+    "id": "Y", "tag": "032", "value": "A"
+  }
+ },
+ "include": []
+}
