@@ -5,19 +5,20 @@
   "source": {
     "leader": "A",
     "fields": [
-      {"id": "1", "tag": "001", "value": "A"}
+      {"tag": "001", "value": "Source"},
+      {"tag": "040", "value": "Source"}
     ]
   },
   "base": {
     "leader": "B",
     "fields": [
-      {"id": "2", "tag": "001", "value": "A"}
+      {"tag": "001", "value": "Base"}
     ]
   },
   "exclude": {},
   "replace": {},
   "include": [
-    {"id": "Y", "tag": "032", "value": "A"}
+    {"tag": "032", "value": "Include"}
   ]
 }
 

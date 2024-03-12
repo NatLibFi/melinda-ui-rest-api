@@ -84,7 +84,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord(modifyRecord(result, include, null, replace))
+        result: stripRecord(asMarcRecord(modifyRecord(result, include, null, replace)).sortFields())
       };
     } catch (err) {
       const error = err.toString();
@@ -207,7 +207,7 @@ export function includeFields(record, fields) {
     ...record,
     fields: [
       ...record?.fields ? record.fields : [],
-      ...generateMissingIDs(fields)
+      ...fields
     ]
   };
 }

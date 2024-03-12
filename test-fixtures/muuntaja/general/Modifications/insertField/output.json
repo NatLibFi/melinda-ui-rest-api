@@ -1,7 +1,7 @@
 {
   "leader": "B",
   "fields": [
-    {"id": "2", "tag": "001", "value": "A"},
+    {"tag": "001", "value": "Base"},
     {
       "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
       "tag": "020",
@@ -12,6 +12,7 @@
         {"code": "q", "value": ""}
       ]
     },
-    {"id": "Y", "tag": "032", "value": "A"}
+    {"tag": "032", "value": "Include"},
+    {"tag": "040", "value": "Source"}
   ]
 }
