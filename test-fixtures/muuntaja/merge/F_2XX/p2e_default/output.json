@@ -23,6 +23,8 @@
       {"tag": "211", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "222", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "233", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
-      {"tag": "244", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]}
+      {"tag": "244", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "264", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]}
    ]
 }

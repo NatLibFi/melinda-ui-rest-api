@@ -25,6 +25,8 @@
       {"tag": "233", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "244", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
 
+      {"tag": "264", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+
       {
          "id": "ccb0cd8f-ea75-434e-a107-71a6278d23b0",
          "tag": "856", "ind1": "4", "ind2": "0",
