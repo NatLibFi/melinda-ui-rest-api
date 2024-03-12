@@ -5,16 +5,14 @@ import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
-
-//only when changes are merged and new npm package is done only then is available, install then and uncomment code
-//import createMongoNotesOperator from '@natlibfi/melinda-ui-commons/src/scripts/notes.js';// eslint-disable-line
+import createMongoNotesOperator from '@natlibfi/melinda-ui-commons/src/scripts/notes.js';
 
 
-export default /*async*/ function (/*mongoUri*/) {
+export default async function (mongoUri) {
   const logger = createLogger();
   const appName = 'Notifications';
   const debug = false;
-  //const mongoNotesOperator = await createMongoNotesOperator(mongoUri);// eslint-disable-line
+  const mongoNotesOperator = mongoUri ? await createMongoNotesOperator(mongoUri) : undefined;
 
   return new Router()
     .use(handleFailedQueryParams(appName))
@@ -22,7 +20,7 @@ export default /*async*/ function (/*mongoUri*/) {
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
-  /*async*/ function getNotifications(req, res, next) {
+  function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
     try {
       const {client} = req.params;
@@ -32,14 +30,24 @@ export default /*async*/ function (/*mongoUri*/) {
 
       logger.verbose('Getting notifications');
 
-      const items = debug ? getDebugData(client) : [];//await mongoNotesOperator.getNoteItemsForApp(client);// eslint-disable-line
+      const items = debug ? getDebugData(client) : getDataFromMongo(client);
       res.json({'notifications': items});
     } catch (error) {
       console.log(error); // eslint-disable-line
       return next(error);
     }
   }
-  //remove debug data // eslint-disable-line
+  async function getDataFromMongo(client) {
+    if (!mongoNotesOperator) {
+      const operatorMissingWarning = `No mongo notes operator. See that mongo uri is set into env. Defaulting to empty array`;
+      console.log(operatorMissingWarning); // eslint-disable-line
+      logger.log('info', operatorMissingWarning);
+      return [];
+    }
+    const items = await mongoNotesOperator.getNoteItemsForApp(client);
+    return items;
+  }
+
   function getDebugData(client) {
     //Placeholder data
     //see melinda-ui-commons/mongoNotes.js for valid options
