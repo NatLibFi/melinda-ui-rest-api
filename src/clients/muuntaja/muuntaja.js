@@ -303,13 +303,13 @@ var transformed = {
   base: null,
   exclude: {},
   replace: {},
-  include: []
+  insert: []
 };
 
 const keys = {
   source: 'source',
   base: 'base',
-  include: 'include',
+  insert: 'insert',
   result: 'result'
 };
 
@@ -403,29 +403,65 @@ function onEditClick(event, field, original){
     }
   }
 }
+
+//-----------------------------------------------------------------------------
+// Field toggling
+//-----------------------------------------------------------------------------
+
 function onToggleClick(event, field){
   const {id} = field;
   console.log(`Toggle Click on ${id}`);
 
-    if (!transformed.exclude[id]) {
+  if(id) {
+    const isInserted = transformed.insert.filter(f => f.id === id).length > 0
+
+    if(isInserted) {
+      transformed.insert = [
+        ...transformed.insert.filter(f => f.id !== id),
+      ]
+    } else if (!transformed.exclude[id]) {
       transformed.exclude[id] = true;
     } else {
       delete transformed.exclude[id];
     }
 
     doTransform();
+  }
 }
+
+//-----------------------------------------------------------------------------
+// Saving edited field: if field is in source or base, add a replace rule.
+// If it is in insert array, replace it from there. If it has no ID, add
+// it to insert array.
+//-----------------------------------------------------------------------------
 
 window.editSaveField = function (field) {
   console.log('Saving field:', field);
 
-  if (field.id) {
-    transformed.replace[field.id] = field;
+  const {id} = field
+
+  if(!id) {
+    transformed.insert = [
+      ...transformed.insert,
+      field
+    ]
   } else {
-    transformed.include.push(field);
+    const isInserted = transformed.insert.filter(f => f.id === id).length > 0
+    if(isInserted) {
+      transformed.insert = [
+        ...transformed.insert.filter(f => f.id !== id),
+        field
+      ]
+    } else {
+      transformed.replace[field.id] = field;
+    }
   }
   doTransform();
 };
+
+//-----------------------------------------------------------------------------
+// Remove replacement
+//-----------------------------------------------------------------------------
 
 window.editUseOriginal = function (field) {
   delete transformed.replace[field.id];
@@ -451,12 +487,12 @@ function showTransformed(update = undefined) {
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
 
-  const {source, base, include, result} = transformed;
+  const {source, base, insert, result} = transformed;
 
   // Get field source for decorator
   const sourceFields = getFields(source);
   const baseFields = getFields(base);
-  const addedFields = include;
+  const addedFields = insert;
   const resultFields = getFields(result);
 
   const resultIDs = resultFields.map(f => f.id);
@@ -467,10 +503,10 @@ function showTransformed(update = undefined) {
   const from = {
     ...includedSourceIDs.reduce((a, id) => ({...a, [id]: keys.source}), {}),
     ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {}),
-    ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.include}), {})
+    ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.insert}), {})
   };
 
-  const original = getLookup(sourceFields.concat(baseFields).concat(addedFields));
+  const original = getLookup(sourceFields.concat(baseFields));
 
   //console.log(transformed.from)
 
@@ -491,7 +527,8 @@ function showTransformed(update = undefined) {
     from,
     original,
     exclude: transformed.exclude,
-    replace: transformed.replace
+    replace: transformed.replace,
+    insert: transformed.insert
   });
 
   function getFields(record) {

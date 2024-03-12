@@ -8,6 +8,7 @@
 //-----------------------------------------------------------------------------
 
 let onDeleteField = null;
+
 export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
 
   if (logRecord) {
@@ -74,12 +75,13 @@ function addField(div, field, decorator = null, recordDestination = '') {
 
   row.classList.add('row');
 
-  const {from, original, replace, exclude, onClick} = decorator ?? {};
+  const {from, original, replace, exclude, insert, onClick} = decorator ?? {};
   decorateField(row, field);
 
   if (onClick && field.id) {
     row.classList.add('clickable');
-    row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? field));
+    //row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? field));
+    row.addEventListener('click', event => onClick(event, field, (original && original[field.id]) ?? undefined));
   }
 
   addTag(row, field.tag);
@@ -145,6 +147,7 @@ function addField(div, field, decorator = null, recordDestination = '') {
   function makeSubfieldData(value, index = 0) {
     return makeSpan('value', value, null, index);
   }
+
   function decorateField(div, field) {
     if (exclude && exclude[field.id]) {
       div.classList.add('row-excluded');
@@ -160,8 +163,8 @@ function addField(div, field, decorator = null, recordDestination = '') {
     if (source == 'base') {
       div.classList.add('row-fromBase');
     }
-    if (source == 'include') {
-      div.classList.add('row-fromInclude');
+    if (source == 'insert') {
+      div.classList.add('row-fromInsert');
     }
   }
 }
