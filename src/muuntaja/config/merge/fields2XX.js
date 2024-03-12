@@ -9,7 +9,8 @@
 import {Reducers} from '@natlibfi/marc-record-merge';
 
 const fieldsToMerge = [
-  '2[0|1|2|3|4]\\d' // 20X-24X otetaan (ainakin 245$k pitä tiputtaa pois)
+  '2[0|1|2|3|4]\\d', // 20X-24X otetaan (ainakin 245$k pitä tiputtaa pois)
+  '264' // MUU-595
   //250-270 ei oteta
 ].join('|');
 

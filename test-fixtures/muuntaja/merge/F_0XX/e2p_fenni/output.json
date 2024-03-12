@@ -22,7 +22,6 @@
       },
       {"tag": "031", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "033", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
-      {"tag": "040", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "041", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "043", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "045", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},

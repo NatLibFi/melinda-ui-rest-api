@@ -26,7 +26,7 @@ const fieldsToMerge = [
   //035 ei oteta (melinda-id voidaan laittaa luotavaan 776$w:hen)
   //036-038 ei oteta
   //039 ei oteta(?)
-  '040', // mergetään, sourcen $a muuttuu $d:ksi
+  //'040', // mergetään, sourcen $a muuttuu $d:ksi
   '041', // otetaan (toistettava kenttä, mutta ei tehdä kahta kenttää, vaan kirjoitetaan yli, jos on. jos puuttuu, pidetään originaali)
   //042 ei oteta (?)
   '043', // otetaan

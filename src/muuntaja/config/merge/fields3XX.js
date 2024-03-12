@@ -7,8 +7,11 @@
 /* eslint-disable no-unused-vars */
 
 import {Reducers} from '@natlibfi/marc-record-merge';
+import {generate300} from '../special/gen300';
 
 const defaultFields = [
+  //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},
+  //opts.profile === 'KVP' ? '300' : /^39\d$/u, // add 300 when KVP/e2p; 39x is nonexistent; used as a placeholder
   //300-340 ei oteta
   //341 saavutettavuus... pääosin jättäisin pois. pitäs ehkä ottaa osin, osin generoida, esim. $b selkokielinen vois olla pidettävä
   //342-347 ei oteta
@@ -27,16 +30,11 @@ const defaultFields = [
 
 const p2eFields = defaultFields;
 
-const e2pFields = [
-  defaultFields,
-  '300'
-].join('|');
+const e2pFields = [defaultFields].join('|');
 
 function getFenniFields(opts) {
   //-------------------------------------------------------------------------
   // Fyysisen kuvailun kentät 3xx:
-  //"300": {"action": "createFrom", "options": {"subfields": {"a": {modifications: [{type: "replace", args: [/ [;:]$/u, ""]}, {type: "replace", args: [/ s\./u, " sivua"]}, {type: "wrap", args: ["1 verkkoaineisto (", ")"]}]}, "b": {}}}},
-  //opts.profile === 'KVP' ? '300' : /^39\d$/u, // add 300 when KVP/e2p; 39x is nonexistent; used as a placeholder
   //'336' // compare tags only
 
   if (opts.profile === 'FENNI') {
@@ -48,6 +46,7 @@ function getFenniFields(opts) {
 export function merge3XX(opts) {
   return [
     Reducers.copy({tagPattern: opts.type === 'p2e' ? p2eFields : e2pFields}),
+    generate300(opts),
     ...getFenniFields(opts)
   ];
 }
