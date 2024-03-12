@@ -19,6 +19,7 @@
 
       {"tag": "250", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
       {"tag": "260", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "264", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
       {"tag": "270", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]}
     ]
   }

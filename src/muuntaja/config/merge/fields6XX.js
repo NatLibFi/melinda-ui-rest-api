@@ -15,7 +15,9 @@ import {Reducers} from '@natlibfi/marc-record-merge';
 // FENNI = kopioidaan vain ne, joissa on FENNI<KEEP>
 
 const fieldsDefault = [
-  '6\\d\\d' // 6XX otetaan kaikki
+  // Exclude 653
+  '6[0,1,2,3,4,6,7,8,9]\\d',
+  '65[0,1,2,4,5,6,7,8,9]'
 ].join('|');
 
 const fieldsE2P = [

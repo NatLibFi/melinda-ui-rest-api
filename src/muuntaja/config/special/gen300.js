@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// Update base fields from source
+// From source 300, take everything but subfield a - insert it as empty.
 //
 //*****************************************************************************
 
@@ -15,29 +15,31 @@ import {validationOff} from '../common';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
 const logger = createLogger();
 
-//-----------------------------------------------------------------------------
-// F020: Update ISBN & formats from source 776 fields
-//-----------------------------------------------------------------------------
-
-function fillMissing020(base, opts) {
-  fillIfMissing(base, '020');
-  return base;
-}
-
-export function generate020(opts) { // eslint-disable-line no-unused-vars
+export function generate300(opts) { // eslint-disable-line no-unused-vars
   return (baseRecord, sourceRecord) => { // eslint-disable-line no-unused-vars
     const base = new MarcRecord(baseRecord, validationOff);
     const source = new MarcRecord(sourceRecord, validationOff);
 
-    const source776s = Subfield.from(source, '776');
-    const ISBNs = Subfield.getByCode(source776s, 'z').map(s => s.value);
+    const f300s = source.get('300');
 
-    base.insertFields(ISBNs.map(s => ({
-      tag: '020', ind1: ' ', ind2: ' ',
-      subfields: [{code: 'a', value: s}, {code: 'q', value: ''}]
-    })));
+    if (!f300s.length) {
+      return base;
+    }
 
-    fillMissing020(base);
+    const [f300] = f300s;
+
+    //logger.debug(`F300: ${JSON.stringify(f300, null, 2)}`);
+
+    const f300subfields = Subfield.dropByCode(f300.subfields, 'a');
+
+    base.insertField({
+      ...f300,
+      subfields: [
+        {code: 'a', value: ''},
+        ...f300subfields
+      ]
+    });
+
     return base;
   };
 }
