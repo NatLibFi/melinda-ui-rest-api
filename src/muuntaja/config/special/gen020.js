@@ -34,7 +34,7 @@ export function generate020(opts) { // eslint-disable-line no-unused-vars
 
     base.insertFields(ISBNs.map(s => ({
       tag: '020', ind1: ' ', ind2: ' ',
-      subfields: [{'code': 'a', 'value': s}]
+      subfields: [{code: 'a', value: s}, {code: 'q', value: ''}]
     })));
 
     fillMissing020(base);
