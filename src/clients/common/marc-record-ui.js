@@ -160,6 +160,9 @@ function addField(div, field, decorator = null, recordDestination = '') {
     if (source == 'base') {
       div.classList.add('row-fromBase');
     }
+    if (source == 'include') {
+      div.classList.add('row-fromInclude');
+    }
   }
 }
 
@@ -524,7 +527,7 @@ function createSubfield(parent, subfield, elementToPreactivate, index = 0, onRem
   preactivateEdit(elementToPreactivate, 'code', codeInput, index);
   preactivateEdit(elementToPreactivate, 'value', valueInput, index);
 
-  addInputLimiter(codeInput, 1, ['lower', 'number', 'special'], [' ']);
+  //addInputLimiter(codeInput, 1, ['lower', 'number', 'special'], [' ']);
 
   return row;
 

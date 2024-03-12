@@ -97,7 +97,10 @@ export function profileRequest() {
 
 export function transformRequest(transformed) {
   const url = `${RESTurl}/muuntaja/transform`;
-  const body = JSON.stringify(transformed);
+  const body = JSON.stringify({
+    ...transformed,
+    include: [{ id: "1", tag: "001", value: "Test"}]
+  });
   return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
 }
 

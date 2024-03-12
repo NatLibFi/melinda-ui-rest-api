@@ -88,7 +88,7 @@ window.initialize = function () {
     }
   }
 
-  
+
 };
 
 function updateRecordSwapButtonState(){
@@ -309,6 +309,7 @@ var transformed = {
 const keys = {
   source: 'source',
   base: 'base',
+  include: 'include',
   result: 'result'
 };
 
@@ -365,7 +366,7 @@ window.doTransform = function (event = undefined) {
 function onEditClick(event, field, original){
   const {id} = field;
   console.log(`Edit Click on ${id}`);
-  
+
   //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
   //span uses as class classname/id
   var subElement = null;
@@ -386,7 +387,7 @@ function onEditClick(event, field, original){
   }
 
   editField(field, original, subElement);
-  
+
   return eventHandled(event);
 
   function isSubElementAcceptable(elementRequested){
@@ -450,23 +451,26 @@ function showTransformed(update = undefined) {
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
 
-  const {source, base, result} = transformed;
+  const {source, base, include, result} = transformed;
 
   // Get field source for decorator
   const sourceFields = getFields(source);
   const baseFields = getFields(base);
+  const addedFields = include;
   const resultFields = getFields(result);
 
   const resultIDs = resultFields.map(f => f.id);
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id));
   const includedBaseIDs = baseFields.map(f => f.id).filter(id => resultIDs.includes(id));
+  const includedAddedIDs = addedFields.map(f => f.id).filter(id => resultIDs.includes(id));
 
   const from = {
     ...includedSourceIDs.reduce((a, id) => ({...a, [id]: keys.source}), {}),
-    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {})
+    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {}),
+    ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.include}), {})
   };
 
-  const original = getLookup(sourceFields.concat(baseFields));
+  const original = getLookup(sourceFields.concat(baseFields).concat(addedFields));
 
   //console.log(transformed.from)
 

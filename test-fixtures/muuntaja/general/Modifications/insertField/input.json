@@ -2,6 +2,13 @@
   "options": {
     "type": "p2e"
   },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"tag": "001", "value": "Base"}
+    ]
+  },
+  "comment": "Ensure, that fields are getting sorted after insertion",
   "source": {
     "leader": "A",
     "fields": [
@@ -9,14 +16,6 @@
       {"tag": "040", "value": "Source"}
     ]
   },
-  "base": {
-    "leader": "B",
-    "fields": [
-      {"tag": "001", "value": "Base"}
-    ]
-  },
-  "exclude": {},
-  "replace": {},
   "include": [
     {"tag": "032", "value": "Include"}
   ]
