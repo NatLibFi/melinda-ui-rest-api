@@ -106,13 +106,15 @@ export default function (sruUrl) {
 
     //-------------------------------------------------------------------------
 
+    const fieldsToInsert = generateMissingIDs(include);
+
     const result = muuntajaService.getResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
       exclude,
       replace,
-      include: generateMissingIDs(include)
+      include: fieldsToInsert
     });
     //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
 
@@ -121,7 +123,7 @@ export default function (sruUrl) {
       options: req.body.options,
       exclude,
       replace,
-      include: []
+      include: fieldsToInsert
     });
 
     //-------------------------------------------------------------------------

@@ -84,7 +84,7 @@ export function getResultRecord({source, base: baseRecord, options, include, exc
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord(modifyRecord(result, null, null, replace))
+        result: stripRecord(modifyRecord(result, include, null, replace))
       };
     } catch (err) {
       const error = err.toString();

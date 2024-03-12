@@ -1,0 +1,23 @@
+{
+  "options": {
+    "type": "p2e"
+  },
+  "source": {
+    "leader": "A",
+    "fields": [
+      {"id": "1", "tag": "001", "value": "A"}
+    ]
+  },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"id": "2", "tag": "001", "value": "A"}
+    ]
+  },
+  "exclude": {},
+  "replace": {},
+  "include": [
+    {"id": "Y", "tag": "032", "value": "A"}
+  ]
+}
+
