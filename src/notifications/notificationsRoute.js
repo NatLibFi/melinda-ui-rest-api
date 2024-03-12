@@ -12,6 +12,7 @@ export default async function (mongoUri) {
   const logger = createLogger();
   const appName = 'Notifications';
   const debug = false;
+  //const createMongoNotesOperator = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
   const mongoNotesOperator = mongoUri ? await createMongoNotesOperator(mongoUri) : undefined;
 
   return new Router()
