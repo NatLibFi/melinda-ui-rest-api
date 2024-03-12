@@ -333,19 +333,28 @@ window.doTransform = function (event = undefined) {
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
   //exception, if source and base ids are the same inform user, ignore empty searches
+
   if(sourceID && baseID && sourceID === baseID){
     console.log('Source and base ID:s match. This is not permitted');
     alert('Lähde ja Pohja tietueet eivät voi olla samat');
     return;
   }
 
-  if (!transformed.source || sourceID != transformed.source.ID) {
-    transformed.source = {ID: sourceID};
+  // If source is changed, clear the corresponding records and all the edits
+
+  if (sourceID != transformed?.source?.ID) {
+    transformed = {
+      options: transformed.options,
+      base: transformed.base,
+      source: {ID: sourceID}
+    }
   }
 
   if (!transformed.base || baseID != transformed.base.ID) {
     transformed.base = {ID: baseID};
   }
+
+  // Do transform
 
   startProcess();
 
