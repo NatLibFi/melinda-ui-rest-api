@@ -254,7 +254,7 @@ function getReducers(options) {
 
   function getFenniFields() {
     if (options.profile !== 'FENNI') {
-      return [fillDefault('530')];
+      return [];
     }
     return [
       fillDefault('042')
