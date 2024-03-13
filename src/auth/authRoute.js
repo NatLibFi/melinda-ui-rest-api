@@ -31,9 +31,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   }
 
   function create(req, res) {
-    // Strip files
+    logger.debug(`User: ${JSON.stringify(req.user)}`);
     const user = {
       Name: req.user.displayName,
+      Authorization: req.user.authorization,
       Token: generateJwtToken(req.user, jwtOptions)
     };
 
