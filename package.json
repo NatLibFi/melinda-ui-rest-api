@@ -94,6 +94,7 @@
       [
         "@babel/preset-env",
         {
+          "exclude": ["proposal-dynamic-import"],
           "targets": "maintained node versions"
         }
       ]
