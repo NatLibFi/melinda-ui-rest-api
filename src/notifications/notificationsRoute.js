@@ -5,14 +5,14 @@ import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
-import createMongoNotesOperator from '@natlibfi/melinda-ui-commons/src/scripts/notes.js';
 
 
 export default async function (mongoUri) {
   const logger = createLogger();
   const appName = 'Notifications';
   const debug = false;
-  //const createMongoNotesOperator = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
+  const module = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
+  const createMongoNotesOperator = module.default;
   const mongoNotesOperator = mongoUri ? await createMongoNotesOperator(mongoUri) : undefined;
 
   return new Router()
