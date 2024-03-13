@@ -6,14 +6,10 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-
-export default async function (mongoUri) {
+export default function (mongoUri) {
   const logger = createLogger();
   const appName = 'Notifications';
   const debug = false;
-  const module = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
-  const createMongoNotesOperator = module.default;
-  const mongoNotesOperator = mongoUri ? await createMongoNotesOperator(mongoUri) : undefined;
 
   return new Router()
     .use(handleFailedQueryParams(appName))
@@ -21,7 +17,7 @@ export default async function (mongoUri) {
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
-  function getNotifications(req, res, next) {
+  async function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
     try {
       const {client} = req.params;
@@ -31,7 +27,7 @@ export default async function (mongoUri) {
 
       logger.verbose('Getting notifications');
 
-      const items = debug ? getDebugData(client) : getDataFromMongo(client);
+      const items = debug ? getDebugData(client) : await getDataFromMongo(client);
       res.json({'notifications': items});
     } catch (error) {
       console.log(error); // eslint-disable-line
@@ -39,6 +35,7 @@ export default async function (mongoUri) {
     }
   }
   async function getDataFromMongo(client) {
+    const mongoNotesOperator = getOperator();
     if (!mongoNotesOperator) {
       const operatorMissingWarning = `No mongo notes operator. See that mongo uri is set into env. Defaulting to empty array`;
       console.log(operatorMissingWarning); // eslint-disable-line
@@ -48,7 +45,6 @@ export default async function (mongoUri) {
     const items = await mongoNotesOperator.getNoteItemsForApp(client);
     return items;
   }
-
   function getDebugData(client) {
     //Placeholder data
     //see melinda-ui-commons/mongoNotes.js for valid options
@@ -143,5 +139,13 @@ export default async function (mongoUri) {
 
     const filteredItems = notifications.filter(obj => obj.context && (obj.context.includes(client) || obj.context.includes('all')));
     return filteredItems;
+  }
+
+  //This should probably be called once per route creation and used/shared by different gets etc.
+  async function getOperator() {
+    const module = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
+    const createMongoNotesOperator = module.default;
+    const mongoNotesOperator = mongoUri ? await createMongoNotesOperator(mongoUri) : undefined;
+    return mongoNotesOperator;
   }
 }
