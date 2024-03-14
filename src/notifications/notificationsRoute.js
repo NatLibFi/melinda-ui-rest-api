@@ -6,10 +6,35 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-export default function (mongoUri) {
+/**
+ * @param {String} uri config uri see NOTE_MONGO_URI env variable
+ * @returns {Router}
+ */
+export default function (uri) {
   const logger = createLogger();
   const appName = 'Notifications';
   const debug = false;
+  const operatorCreator = (() => {
+    const operators = new Map();
+    const cacheKeyForOperator = 'mongo_operator';
+
+    return async function() {
+      //check cache
+      if (operators.has(cacheKeyForOperator)) {
+        return operators.get(cacheKeyForOperator);
+      }
+
+      //try to create, update cache and return the operator
+      try {
+        const operator = await getOperator(uri);
+        operators.set(cacheKeyForOperator, operator);
+        return operator;
+      } catch (error) {
+        console.error('Error initializing operator:', error);// eslint-disable-line
+        return undefined;
+      }
+    };
+  })();
 
   return new Router()
     .use(handleFailedQueryParams(appName))
@@ -17,34 +42,58 @@ export default function (mongoUri) {
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
+  /**
+   * Get handler
+   *
+   * @param {String} req.params.client client requesting notifications
+   * @returns {JSON}
+   */
   async function getNotifications(req, res, next) {
     logger.log('info', `statusRoute/getNotifications, httpStatus: ${httpStatus.OK}`);
+    logger.verbose('Getting notifications');
     try {
       const {client} = req.params;
       if (!client) {
         throw new Error('Client param missing from from getNotifications');
       }
 
-      logger.verbose('Getting notifications');
-
-      const items = debug ? getDebugData(client) : await getDataFromMongo(client);
+      const items = debug ? getDebugData(client) : await getNoteItemsFromDb(client);
       res.json({'notifications': items});
     } catch (error) {
       console.log(error); // eslint-disable-line
       return next(error);
     }
   }
-  async function getDataFromMongo(client) {
-    const mongoNotesOperator = getOperator();
-    if (!mongoNotesOperator) {
-      const operatorMissingWarning = `No mongo notes operator. See that mongo uri is set into env. Defaulting to empty array`;
-      console.log(operatorMissingWarning); // eslint-disable-line
-      logger.log('info', operatorMissingWarning);
+
+  /**
+   * Using mongo notes operator get from database notification items relevant to client
+   *
+   * @param {String} client what spesific client requests their notificaitons
+   * @returns {Array} resolves to array of objects, can be empty array
+   */
+  async function getNoteItemsFromDb(client) {
+    try {
+      const mongoNotesOperator = await operatorCreator(uri);
+      if (!mongoNotesOperator) {
+        const operatorMissingWarning = `No mongo notes operator. See that mongo uri is set into env. Defaulting to empty array`;
+        throw new Error(operatorMissingWarning);
+      }
+      const items = await mongoNotesOperator.getNoteItemsForApp(client);
+      return items;
+    } catch (error) {
+      console.log(error); // eslint-disable-line
+      logger.log('info', error);
       return [];
     }
-    const items = await mongoNotesOperator.getNoteItemsForApp(client);
-    return items;
   }
+
+  /**
+   *
+   * Simulates data fetched from db. More controll for debug purposes, most likely later deleted
+   *
+   * @param {String} client what spesific client requests their notificaitons
+   * @returns {Array} resolves to array of objects, can be empty array
+   */
   function getDebugData(client) {
     //Placeholder data
     //see melinda-ui-commons/mongoNotes.js for valid options
@@ -141,11 +190,18 @@ export default function (mongoUri) {
     return filteredItems;
   }
 
-  //This should probably be called once per route creation and used/shared by different gets etc.
+  /**
+   * Dynamically load mongo notes script and try to create usable operator
+   */
   async function getOperator() {
-    const module = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
-    const createMongoNotesOperator = module.default;
-    const mongoNotesOperator = mongoUri ? await createMongoNotesOperator(mongoUri) : undefined;
-    return mongoNotesOperator;
+    try {
+      const module = await import('@natlibfi/melinda-ui-commons/src/scripts/notes.js');
+      const createMongoNotesOperator = module.default;
+      return uri ? await createMongoNotesOperator(uri) : undefined;
+    } catch (error) {
+      console.error('Error loading operator operator:', error);// eslint-disable-line
+      return undefined;
+    }
   }
+
 }
