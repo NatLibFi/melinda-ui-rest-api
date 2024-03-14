@@ -500,11 +500,22 @@ function updateRecordSwapButtonState(){
   document.getElementById('swap-button').disabled = !sourceID || !baseID;
 };
 
+function updateEditButtonState(transformed) {
+  const {stored} = transformed
+  const editbtn = document.getElementById("edit-button")
+
+  if(stored) {
+    editbtn.disabled = true
+  } else {
+    editbtn.disabled = false
+  }
+}
+
 function updateSaveButtonState(transformed) {
-  const {result, stored} = transformed
+  const {result} = transformed
 
   const savebtn = document.getElementById("save-button")
-  if(stored || (result?.leader)) {
+  if(result.ID || (result?.leader)) {
     savebtn.disabled = false
   } else {
     savebtn.disabled = true
@@ -598,6 +609,7 @@ function showTransformed(update = undefined) {
   // Update button states according to result
   updateRecordSwapButtonState();
   updateSaveButtonState(transformed);
+  updateEditButtonState(transformed)
   updateStoredID(transformed);
 
   function getFields(record) {

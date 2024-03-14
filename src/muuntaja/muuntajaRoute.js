@@ -179,8 +179,8 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       return;
     }
 
-    //const ID = '017735845';
-    const {ID} = result;
+    const ID = '017735845';
+    //const {ID} = result;
 
     logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
     logger.debug(`User...: ${JSON.stringify(user)}`);
