@@ -95,7 +95,11 @@ window.initialize = function () {
 
 function setProfiles(options) {
   console.log('Profiles:', options);
-  transformed.options = options.defaults;
+
+  transformed.options = {
+    type: options.type[0],
+    profile: options.profile[0],
+  };
 
   const typeOptions = document.querySelector('#type-options');
   typeOptions.innerHTML = '';
@@ -107,8 +111,8 @@ function setProfiles(options) {
   typeOptions.appendChild(typeDropdown);
   typeDropdown.appendChild(typeSelect);
 
-  for (const type in options.type) {
-    typeSelect.appendChild(createSelectOption(type, options.type[type]));
+  for (const type of options.type) {
+    typeSelect.appendChild(createSelectOption(type.tag, type.name));
   }
 
   const profileOptions = document.querySelector('#profile-options');
@@ -121,15 +125,15 @@ function setProfiles(options) {
   profileOptions.appendChild(profileDropdown);
   profileDropdown.appendChild(profileSelect);
 
-  for (const profile in options.profile) {
-    profileSelect.appendChild(createSelectOption(profile, options.profile[profile]));
+  for (const profile of options.profile) {
+    profileSelect.appendChild(createSelectOption(profile.tag, profile.name));
   }
 }
 
 function setTransformType(event, value) {
   console.log('Type:', value);
   transformed.options.type = value;
-  delete transformed.base.record;
+  if(!transformed.base?.ID) delete transformed.base;
   delete transformed.stored;
   doTransform();
   return eventHandled(event);
@@ -138,7 +142,7 @@ function setTransformType(event, value) {
 function setTransformProfile(event, value) {
   console.log('Profile:', value);
   transformed.options.profile = value;
-  delete transformed.base.record;
+  if(!transformed.base?.ID) delete transformed.base;
   delete transformed.stored;
   doTransform();
   return eventHandled(event);

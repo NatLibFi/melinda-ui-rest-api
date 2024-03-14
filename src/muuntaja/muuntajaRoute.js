@@ -26,12 +26,6 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   const bibService = createBibMuuntajaService(sruUrl, melindaApiOptions, restApiParams);
   const muuntajaService = createMuuntajaService();
 
-  const optDefaults = {
-    type: 'p2e',
-    profile: 'KVP',
-    format: ''
-  };
-
   //logger.debug('Creating muuntaja route');
 
   return new Router()
@@ -50,18 +44,33 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   //---------------------------------------------------------------------------
 
   function getProfiles(req, res) {
-    //logger.debug('Get profiles');
+    logger.debug('Get profiles');
+
+    const {user} = req;
+
+    //logger.debug(`User...: ${JSON.stringify(user)}`);
+    logger.debug(`User ID......: ${JSON.stringify(user.id)}`);
+    logger.debug(`Authorization: ${JSON.stringify(user.authorization)}`);
+
     res.json({
-      type: {
-        'p2e': 'Painetusta > E-aineistoksi',
-        'e2p': 'E-aineistosta > Painetuksi'
-      },
-      profile: {
-        'KVP': 'Oletus',
-        'FENNI': 'Fennica'
-      },
-      defaults: optDefaults
+      type: [
+        {tag: 'p2e', name: 'Painetusta > E-aineistoksi'},
+        {tag: 'e2p', name: 'E-aineistosta > Painetuksi'}
+      ],
+      profile: user.authorization.map(org => organizationToProfile(org))
     });
+
+    function organizationToProfile(org) {
+      const profiles = {
+        'KVP': {tag: 'KVP', name: 'Kirjastoverkkopalvelut'},
+        'FENNI': {tag: 'FENNI', name: 'Fennica'}
+      };
+
+      if (org in profiles) {
+        return profiles[org];
+      }
+      return {tag: org, name: org};
+    }
   }
 
   //---------------------------------------------------------------------------
@@ -74,13 +83,15 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
+    const transform = req.body;
+
     const {source, base, insert, exclude, replace, stored} = {
       source: null,
       base: null,
       insert: [],
       exclude: {},
       replace: {},
-      ...req.body
+      ...transform
     };
 
     const fieldsToInsert = generateMissingIDs(insert);
@@ -101,13 +112,19 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       return;
     }
 
-    const options = (opts => ({
-      ...optDefaults,
-      ...opts,
-      LOWTAG: opts?.profile ?? 'XXX'
-    }))(req.body.options);
+    const options = {
+      type: transform.options.type,
+      profile: getProfileByOrganization(transform.options.profile),
+      LOWTAG: transform.options.profile
+    };
 
-    //const transformProfile = profiles[options.type];
+    function getProfileByOrganization(org) {
+      if (org === 'FENNI') {
+        return 'FENNI';
+      }
+      return;
+    }
+
     //logger.debug(`transformProfile: ${transformProfile}`);
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
@@ -137,7 +154,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
 
     res.json({
       ...result,
-      options: req.body.options,
+      options: transform.options,
       exclude,
       replace,
       insert: fieldsToInsert
