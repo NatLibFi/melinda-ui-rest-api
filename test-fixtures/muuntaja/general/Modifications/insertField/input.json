@@ -1,0 +1,23 @@
+{
+  "options": {
+    "type": "p2e"
+  },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"tag": "001", "value": "Base"}
+    ]
+  },
+  "comment": "Ensure, that fields are getting sorted after insertion",
+  "source": {
+    "leader": "A",
+    "fields": [
+      {"tag": "001", "value": "Source"},
+      {"tag": "033", "value": "Source"}
+    ]
+  },
+  "insert": [
+    {"tag": "032", "value": "Inserted"}
+  ]
+}
+

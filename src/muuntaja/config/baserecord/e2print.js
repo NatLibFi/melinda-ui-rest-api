@@ -8,6 +8,7 @@
 //*****************************************************************************
 
 /* eslint-disable no-unused-vars */
+/* eslint-disable array-bracket-newline */
 
 import {
   getDate, get008LibraryID,
@@ -45,21 +46,30 @@ const defaultFieldValues = {
     ],
     id: '1ed797e0-1026-425b-9ef4-fc4d3771914a'
   }),
-  '040': (opts) => ({
-    ind1: ' ', ind2: ' ',
+  '040': {
+    tag: '040', ind1: ' ', ind2: ' ',
     subfields: [
-      get040SubfieldA(opts), // {code: 'a', value: ''}, // Get from user's profile (ISIL code)
+      {code: 'a', value: ''}, // Get from user's profile (ISIL code)
       {code: 'b', value: 'fin'},
       {code: 'e', value: 'rda'}
     ],
     id: '6f4d044c-28f4-4616-9edb-89ec47856cab'
-  }),
+  },
+  '040/FENNI': {
+    tag: '040', ind1: ' ', ind2: ' ',
+    subfields: [
+      {code: 'a', value: 'FI-NL'}, // Get from user's profile (ISIL code)
+      {code: 'b', value: 'fin'},
+      {code: 'e', value: 'rda'}
+    ],
+    id: '6f4d044c-28f4-4616-9edb-89ec47856cab'
+  },
   '041': (opts) => ({
     tag: '041', ind1: '0', ind2: ' ',
     subfields: [{code: 'a', value: opts.language || ''}],
     id: 'ac44d08d-5532-49bc-b2b9-c863cf930b1a'
   }),
-  '042': {
+  '042/FENNI': {
     tag: '042', ind1: ' ', ind2: ' ',
     subfields: [{code: 'a', value: 'finb'}],
     id: 'f23d6e0c-5ccd-46b6-8170-4b8ad9f6ba64'
@@ -251,16 +261,19 @@ export function e2pBaseRecord(options) {
 function getReducers(options) {
 
   function getFenniFields() {
-    if (options.profile !== 'FENNI') {
-      return [];
+    if (options.profile === 'FENNI') {
+      return [
+        fillDefault('040/FENNI'),
+        fillDefault('042/FENNI')
+        // finnDefault('506/FENNI'),
+        //fillDefault('530/FENNI') // MUU-356
+        // fillDefault('540/FENNI'),
+        // fillDefault('856/FENNI'),
+        // fillDefault('901/FENNI'),
+      ];
     }
     return [
-      fillDefault('042')
-      // finnDefault('506/FENNI'),
-      //fillDefault('530/FENNI') // MUU-356
-      // fillDefault('540/FENNI'),
-      // fillDefault('856/FENNI'),
-      // fillDefault('901/FENNI'),
+      fillDefault('040')
     ];
   }
 

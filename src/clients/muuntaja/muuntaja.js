@@ -88,7 +88,7 @@ window.initialize = function () {
     }
   }
 
-  
+
 };
 
 function updateRecordSwapButtonState(){
@@ -303,12 +303,13 @@ var transformed = {
   base: null,
   exclude: {},
   replace: {},
-  include: []
+  insert: []
 };
 
 const keys = {
   source: 'source',
   base: 'base',
+  insert: 'insert',
   result: 'result'
 };
 
@@ -332,19 +333,28 @@ window.doTransform = function (event = undefined) {
   const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
 
   //exception, if source and base ids are the same inform user, ignore empty searches
+
   if(sourceID && baseID && sourceID === baseID){
     console.log('Source and base ID:s match. This is not permitted');
     alert('Lähde ja Pohja tietueet eivät voi olla samat');
     return;
   }
 
-  if (!transformed.source || sourceID != transformed.source.ID) {
-    transformed.source = {ID: sourceID};
+  // If source is changed, clear the corresponding records and all the edits
+
+  if (sourceID != transformed?.source?.ID) {
+    transformed = {
+      options: transformed.options,
+      base: transformed.base,
+      source: {ID: sourceID}
+    }
   }
 
   if (!transformed.base || baseID != transformed.base.ID) {
     transformed.base = {ID: baseID};
   }
+
+  // Do transform
 
   startProcess();
 
@@ -365,7 +375,7 @@ window.doTransform = function (event = undefined) {
 function onEditClick(event, field, original){
   const {id} = field;
   console.log(`Edit Click on ${id}`);
-  
+
   //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
   //span uses as class classname/id
   var subElement = null;
@@ -386,7 +396,7 @@ function onEditClick(event, field, original){
   }
 
   editField(field, original, subElement);
-  
+
   return eventHandled(event);
 
   function isSubElementAcceptable(elementRequested){
@@ -402,29 +412,65 @@ function onEditClick(event, field, original){
     }
   }
 }
+
+//-----------------------------------------------------------------------------
+// Field toggling
+//-----------------------------------------------------------------------------
+
 function onToggleClick(event, field){
   const {id} = field;
   console.log(`Toggle Click on ${id}`);
 
-    if (!transformed.exclude[id]) {
+  if(id) {
+    const isInserted = transformed.insert.filter(f => f.id === id).length > 0
+
+    if(isInserted) {
+      transformed.insert = [
+        ...transformed.insert.filter(f => f.id !== id),
+      ]
+    } else if (!transformed.exclude[id]) {
       transformed.exclude[id] = true;
     } else {
       delete transformed.exclude[id];
     }
 
     doTransform();
+  }
 }
+
+//-----------------------------------------------------------------------------
+// Saving edited field: if field is in source or base, add a replace rule.
+// If it is in insert array, replace it from there. If it has no ID, add
+// it to insert array.
+//-----------------------------------------------------------------------------
 
 window.editSaveField = function (field) {
   console.log('Saving field:', field);
 
-  if (field.id) {
-    transformed.replace[field.id] = field;
+  const {id} = field
+
+  if(!id) {
+    transformed.insert = [
+      ...transformed.insert,
+      field
+    ]
   } else {
-    transformed.include.push(field);
+    const isInserted = transformed.insert.filter(f => f.id === id).length > 0
+    if(isInserted) {
+      transformed.insert = [
+        ...transformed.insert.filter(f => f.id !== id),
+        field
+      ]
+    } else {
+      transformed.replace[field.id] = field;
+    }
   }
   doTransform();
 };
+
+//-----------------------------------------------------------------------------
+// Remove replacement
+//-----------------------------------------------------------------------------
 
 window.editUseOriginal = function (field) {
   delete transformed.replace[field.id];
@@ -450,20 +496,23 @@ function showTransformed(update = undefined) {
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
 
-  const {source, base, result} = transformed;
+  const {source, base, insert, result} = transformed;
 
   // Get field source for decorator
   const sourceFields = getFields(source);
   const baseFields = getFields(base);
+  const addedFields = insert;
   const resultFields = getFields(result);
 
   const resultIDs = resultFields.map(f => f.id);
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id));
   const includedBaseIDs = baseFields.map(f => f.id).filter(id => resultIDs.includes(id));
+  const includedAddedIDs = addedFields.map(f => f.id).filter(id => resultIDs.includes(id));
 
   const from = {
     ...includedSourceIDs.reduce((a, id) => ({...a, [id]: keys.source}), {}),
-    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {})
+    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {}),
+    ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.insert}), {})
   };
 
   const original = getLookup(sourceFields.concat(baseFields));
@@ -487,7 +536,8 @@ function showTransformed(update = undefined) {
     from,
     original,
     exclude: transformed.exclude,
-    replace: transformed.replace
+    replace: transformed.replace,
+    insert: transformed.insert
   });
 
   function getFields(record) {

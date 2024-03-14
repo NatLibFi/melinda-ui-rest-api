@@ -176,8 +176,6 @@
               </div>
               <button class="material-icons tooltip icon-only" tooltip-text="Hae"
                 onclick="doTransform(event)">search</button>
-              <button class="material-icons tooltip icon-only" tooltip-text="Lisää kenttä"
-                onClick="onNewField(event)" style="visibility:collapse;">add</button>
             </form>
             <div id="Record" class="marc-record">
             </div>
@@ -186,10 +184,12 @@
           <div id="result" class="col BoxShadow">
             <div class="ToolBar HBox header">
               <div class="Filler">TULOSTIETUE</div>
+              <button class="material-icons tooltip icon-only" tooltip-text="Lisää kenttä"
+                onClick="onNewField(event)">add</button>
               <button class="material-icons tooltip icon-only" tooltip-text="Muokkaa"
-              onClick="onEdit(event)">edit</button>
+                onClick="onEdit(event)">edit</button>
               <button class="material-icons tooltip icon-only" tooltip-text="Tallenna" onClick="onSave(event)"
-              disabled>save</button>
+                disabled>save</button>
             </div>
             <div id="Record" class="marc-record">
             </div>

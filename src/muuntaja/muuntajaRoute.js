@@ -73,10 +73,10 @@ export default function (sruUrl) {
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, include, exclude, replace} = {
+    const {source, base, insert, exclude, replace} = {
       source: null,
       base: null,
-      include: null,
+      insert: [],
       exclude: {},
       replace: {},
       ...req.body
@@ -106,22 +106,24 @@ export default function (sruUrl) {
 
     //-------------------------------------------------------------------------
 
+    const fieldsToInsert = generateMissingIDs(insert);
+
     const result = muuntajaService.getResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
       exclude,
       replace,
-      include: generateMissingIDs(include)
+      insert: fieldsToInsert
     });
-    //logger.debug(`Result record: ${JSON.stringify(resultRecord)}`);
+    //logger.debug(`Result record: ${JSON.stringify(result)}`);
 
     res.json({
       ...result,
       options: req.body.options,
       exclude,
       replace,
-      include: []
+      insert: fieldsToInsert
     });
 
     //-------------------------------------------------------------------------

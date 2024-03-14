@@ -44,15 +44,24 @@ const defaultFieldValues = {
     ],
     id: '1ed797e0-1026-425b-9ef4-fc4d3771914a'
   }),
-  '040': (opts) => ({
-    ind1: ' ', ind2: ' ',
+  '040': {
+    tag: '040', ind1: ' ', ind2: ' ',
     subfields: [
-      get040SubfieldA(opts), // {code: 'a', value: ''}, // Get from user's profile (ISIL code)
+      {code: 'a', value: ''}, // Get from user's profile (ISIL code)
       {code: 'b', value: 'fin'},
       {code: 'e', value: 'rda'}
     ],
     id: '6f4d044c-28f4-4616-9edb-89ec47856cab'
-  }),
+  },
+  '040/FENNI': {
+    tag: '040', ind1: ' ', ind2: ' ',
+    subfields: [
+      {code: 'a', value: 'FI-NL'}, // Get from user's profile (ISIL code)
+      {code: 'b', value: 'fin'},
+      {code: 'e', value: 'rda'}
+    ],
+    id: '6f4d044c-28f4-4616-9edb-89ec47856cab'
+  },
   '041': (opts) => ({
     tag: '041', ind1: '0', ind2: ' ',
     subfields: [{code: 'a', value: opts.language || ''}],
@@ -253,17 +262,18 @@ export function p2eBaseRecord(options) {
 function getReducers(options) {
 
   function getFenniFields() {
-    if (options.profile !== 'FENNI') {
-      return [fillDefault('530')];
+    if (options.profile === 'FENNI') {
+      return [
+        fillDefault('040/FENNI'),
+        fillDefault('042')
+        // finnDefault('506/FENNI'),
+        //fillDefault('530/FENNI') // MUU-356
+        // fillDefault('540/FENNI'),
+        // fillDefault('856/FENNI'),
+        // fillDefault('901/FENNI'),
+      ];
     }
-    return [
-      fillDefault('042')
-      // finnDefault('506/FENNI'),
-      //fillDefault('530/FENNI') // MUU-356
-      // fillDefault('540/FENNI'),
-      // fillDefault('856/FENNI'),
-      // fillDefault('901/FENNI'),
-    ];
+    return [fillDefault('040')];
   }
 
   return [
@@ -271,10 +281,10 @@ function getReducers(options) {
     fillDefault('007'),
     fillDefault('008'),
     //fillDefault('020'),
-    fillDefault('040'),
+    //fillDefault('040'),
     //fillDefault('041'), // MUU-502
     //fillDefault('042'),
-    fillDefault('300'),
+    //fillDefault('300'),
     fillDefault('337'),
     fillDefault('338'),
     fillDefault('506/1'),
