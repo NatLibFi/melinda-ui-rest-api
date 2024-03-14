@@ -166,6 +166,50 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   // Store result record
   //---------------------------------------------------------------------------
 
+  async function storeTransformed(req, res) { // eslint-disable-line max-statements
+    logger.debug(`Store`);
+
+    const {user} = req;
+    const transformed = req.body;
+
+    const {options, source, base, stored, result} = transformed;
+
+    if (!result) {
+      res.json(transformed);
+      return;
+    }
+
+    //const ID = '017735845';
+    const {ID} = result;
+
+    logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
+    logger.debug(`User...: ${JSON.stringify(user)}`);
+    //logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
+
+    try {
+      const response = await storeRecord(user, ID, result);
+      res.json({
+        options, source, base,
+        ...await getStoredRecord(response, stored, result)
+      });
+    } catch (err) {
+      res.json({
+        ...transformed,
+        result: {
+          ...result,
+          error: err.toString()
+        }
+      });
+    }
+  }
+
+  function storeRecord(user, ID, record) {
+    if (ID) {
+      return bibService.updateOne(ID, record, user?.id, restApiParams);
+    }
+    return bibService.createOne(record, user?.id, restApiParams);
+  }
+
   async function getStoredRecord(response, stored, result) {
     try {
       const updated = await bibService.getRecordById(response.ID);
@@ -186,59 +230,6 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
           ...result
         }
       };
-    }
-  }
-
-  async function storeTransformed(req, res) { // eslint-disable-line max-statements
-    logger.debug(`Store`);
-
-    const {user} = req;
-    const transformed = req.body;
-
-    const {options, source, base, stored, result} = transformed;
-
-    if (!result) {
-      res.json(transformed);
-      return;
-    }
-
-    //const ID = '017735845';
-    const {ID} = result;
-
-    logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
-    //logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
-
-    try {
-      const response = await storeRecord(ID, result);
-      res.json({
-        options, source, base,
-        ...await getStoredRecord(response, stored, result)
-      });
-    } catch (err) {
-      res.json({
-        ...transformed,
-        result: {
-          ...result,
-          error: err.toString()
-        }
-      });
-      return;
-    }
-
-    /*
-    res.json({
-      options,
-      source,
-      base,
-      ...getStoredRecord(ID, stored, result)
-    });
-*/
-
-    function storeRecord(ID, record) {
-      if (ID) {
-        return bibService.updateOne(ID, record, user?.id, restApiParams);
-      }
-      return bibService.createOne(record, user?.id, restApiParams);
     }
   }
 }
