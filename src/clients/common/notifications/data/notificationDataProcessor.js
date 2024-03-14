@@ -14,7 +14,7 @@ export async function getNotifications(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
-  const {clientName} = paramObj;
+  let {clientName} = paramObj;
 
   if (await dataUtils.getDebugValue({key: 'clearNotificationLocalStorageOnLoad'})) {
     //clears out melinda notifications not whole localstorage
