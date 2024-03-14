@@ -73,18 +73,21 @@ export function getResultRecord({source, base: baseRecord, options, insert, excl
 
       //logger.debug(`Reducers: ${JSON.stringify(reducers, null, 2)}`);
 
-      const result = merger({
+      const merged = merger({
         base: asMarcRecord(modifyRecord(base, null, exclude, null)),
         source: asMarcRecord(modifyRecord(source, null, exclude, null)),
         reducers
       });
+
+      const postprocessed = modifyRecord(merged, insert, null, replace);
+      const result = asMarcRecord(postprocessed).sortFields();
 
       //logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
 
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord(asMarcRecord(modifyRecord(result, insert, null, replace)).sortFields())
+        result: stripRecord(result)
       };
     } catch (err) {
       const error = err.toString();

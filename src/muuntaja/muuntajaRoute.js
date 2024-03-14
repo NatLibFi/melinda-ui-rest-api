@@ -39,6 +39,7 @@ export default function (sruUrl) {
     .use(express.json())
     .get('/profiles', handleFailedRouteParams(appName), getProfiles)
     .post('/transform', handleFailedRouteParams(appName), doTransform)
+    .post('/store', handleFailedRouteParams(appName), storeTransformed)
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
@@ -73,12 +74,13 @@ export default function (sruUrl) {
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, insert, exclude, replace} = {
+    const {source, base, insert, exclude, replace, stored} = {
       source: null,
       base: null,
       insert: [],
       exclude: {},
       replace: {},
+      stored: undefined,
       ...req.body
     };
 
@@ -123,7 +125,8 @@ export default function (sruUrl) {
       options: req.body.options,
       exclude,
       replace,
-      insert: fieldsToInsert
+      insert: fieldsToInsert,
+      stored
     });
 
     //-------------------------------------------------------------------------
@@ -150,5 +153,26 @@ export default function (sruUrl) {
         };
       }
     }
+  }
+
+  //---------------------------------------------------------------------------
+  // Store result record
+  //---------------------------------------------------------------------------
+
+  function storeTransformed(req, res) { // eslint-disable-line max-statements
+    logger.debug(`Store`);
+
+    const transformed = req.body;
+
+    const {result} = transformed;
+
+    logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
+
+    res.json({
+      ...transformed,
+      stored: {
+        ID: 'XXXX'
+      }
+    });
   }
 }

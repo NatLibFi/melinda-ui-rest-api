@@ -12,7 +12,7 @@ import {
 } from '/common/ui-utils.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
-import {profileRequest, transformRequest} from '/common/rest.js';
+import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
 
 //-----------------------------------------------------------------------------
@@ -91,14 +91,6 @@ window.initialize = function () {
 
 };
 
-function updateRecordSwapButtonState(){
-  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
-
-  document.getElementById('swap-button').disabled = !sourceID || !baseID;
-};
-
-
 //-----------------------------------------------------------------------------
 
 function setProfiles(options) {
@@ -138,6 +130,7 @@ function setTransformType(event, value) {
   console.log('Type:', value);
   transformed.options.type = value;
   delete transformed.base.record;
+  delete transformed.stored;
   doTransform();
   return eventHandled(event);
 }
@@ -146,6 +139,7 @@ function setTransformProfile(event, value) {
   console.log('Profile:', value);
   transformed.options.profile = value;
   delete transformed.base.record;
+  delete transformed.stored;
   doTransform();
   return eventHandled(event);
 }
@@ -200,15 +194,8 @@ window.onNewField = function (e) {
 window.onNewInstance = function(e){
 
   const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
-  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
-
-  //clear inputs
   sourceInput.value = '';
-  baseInput.value = '';
-
-  //trigger input event listener to update required values (ie. url parameters)
   sourceInput.dispatchEvent(new Event('input'));
-  baseInput.dispatchEvent(new Event('input'));
 
   //set content
   doTransform();
@@ -219,11 +206,6 @@ window.onSearch = function (e) {
   //const dialog = document.getElementById('searchDlg');
   //console.log('Dialog:', dialog);
   //dialog.show();
-};
-
-window.onSave = function (e) {
-  console.log('Save:', e);
-  return eventHandled(e);
 };
 
 window.onRecordSwap = function(e){
@@ -287,6 +269,24 @@ window.copyLink = function (e) {
 
   showSnackbar({style: 'success', text: 'Linkki kopioitu!'});
 };
+
+window.onSave = function(e) {
+  console.log("Save:", e)
+
+  // Do transform
+
+  startProcess();
+
+  storeTransformedRequest(transformed)
+    .then(response => response.json())
+    .then(records => {
+      stopProcess();
+      console.log('Transformed:', records);
+      showTransformed(records);
+    });
+
+  return eventHandled(e);
+}
 
 //-----------------------------------------------------------------------------
 // info needed for muuntaja merge REST call:
@@ -352,6 +352,7 @@ window.doTransform = function (event = undefined) {
 
   if (!transformed.base || baseID != transformed.base.ID) {
     transformed.base = {ID: baseID};
+    delete transformed.stored;
   }
 
   // Do transform
@@ -363,7 +364,6 @@ window.doTransform = function (event = undefined) {
     .then(records => {
       stopProcess();
       console.log('Transformed:', records);
-      updateRecordSwapButtonState();
       showTransformed(records);
     });
 };
@@ -481,6 +481,31 @@ window.editUseOriginal = function (field) {
 // Show transformation results
 //-----------------------------------------------------------------------------
 
+function updateRecordSwapButtonState(){
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  document.getElementById('swap-button').disabled = !sourceID || !baseID;
+};
+
+function updateSaveButtonState(transformed) {
+  const {result} = transformed
+
+  const savebtn = document.getElementById("save-button")
+  if(result?.leader && !result.error) {
+    savebtn.disabled = false
+  } else {
+    savebtn.disabled = true
+  }
+}
+
+function updateResultInfo(transformed) {
+  const {stored} = transformed
+  const resultID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`);
+
+  resultID.textContent = stored?.ID
+}
+
 function showTransformed(update = undefined) {
   //updateTransformed(update);
   if (update) {
@@ -539,6 +564,11 @@ function showTransformed(update = undefined) {
     replace: transformed.replace,
     insert: transformed.insert
   });
+
+  // Update button states according to result
+  updateRecordSwapButtonState();
+  updateSaveButtonState(transformed);
+  updateResultInfo(transformed);
 
   function getFields(record) {
     return record?.fields ?? [];
