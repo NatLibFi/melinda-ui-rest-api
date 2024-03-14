@@ -9,21 +9,21 @@
 
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-import {createBibService} from '../bib/bibService';
+import {createBibMuuntajaService} from '../bib/bibMuuntajaService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord} from './muuntajaService';
+import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs} from './muuntajaService';
 
 const appName = 'Muuntaja';
 
 //-----------------------------------------------------------------------------
 
-export default function (sruUrl) {
+export default function (sruUrl, melindaApiOptions, restApiParams) {
   const logger = createLogger();
-  const bibService = createBibService(sruUrl);
+  const bibService = createBibMuuntajaService(sruUrl, melindaApiOptions, restApiParams);
   const muuntajaService = createMuuntajaService();
 
   const optDefaults = {
@@ -80,9 +80,26 @@ export default function (sruUrl) {
       insert: [],
       exclude: {},
       replace: {},
-      stored: undefined,
       ...req.body
     };
+
+    const fieldsToInsert = generateMissingIDs(insert);
+
+    if (stored) {
+      const modified = muuntajaService.postprocessRecord(stored, fieldsToInsert, exclude, replace);
+
+      res.json({
+        source, base,
+        options: req.body.options,
+        exclude,
+        replace,
+        insert: fieldsToInsert,
+        stored,
+        result: modified
+      });
+
+      return;
+    }
 
     const options = (opts => ({
       ...optDefaults,
@@ -108,9 +125,7 @@ export default function (sruUrl) {
 
     //-------------------------------------------------------------------------
 
-    const fieldsToInsert = generateMissingIDs(insert);
-
-    const result = muuntajaService.getResultRecord({
+    const result = muuntajaService.generateResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
@@ -125,8 +140,7 @@ export default function (sruUrl) {
       options: req.body.options,
       exclude,
       replace,
-      insert: fieldsToInsert,
-      stored
+      insert: fieldsToInsert
     });
 
     //-------------------------------------------------------------------------
@@ -159,20 +173,49 @@ export default function (sruUrl) {
   // Store result record
   //---------------------------------------------------------------------------
 
-  function storeTransformed(req, res) { // eslint-disable-line max-statements
+  async function storeTransformed(req, res) { // eslint-disable-line max-statements
     logger.debug(`Store`);
 
+    const {user} = req;
     const transformed = req.body;
 
-    const {result} = transformed;
+    const {options, source, base, result} = transformed;
 
-    logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
+    if (!result) {
+      res.json(transformed);
+      return;
+    }
+
+    //const ID = '017735845';
+    const {ID} = result;
+
+    logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
+    //logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
+    const stored = await storeRecord();
+    const withIDs = addMissingIDs(stored);
 
     res.json({
-      ...transformed,
-      stored: {
-        ID: 'XXXX'
-      }
+      options,
+      source,
+      base,
+      stored: withIDs,
+      result: withIDs
     });
+
+    async function storeRecord() {
+      //const stored = await bibService.createOne(result, req.user?.id, restApiParams);
+      try {
+        if (ID) {
+          return await bibService.updateOne(ID, result, user?.id, restApiParams);
+        }
+        return await bibService.createOne(result, user?.id, restApiParams);
+      } catch (err) {
+        logger.error(`storeRecord: ${JSON.stringify(err)}`);
+        return {
+          ...result,
+          error: err.toString()
+        };
+      }
+    }
   }
 }

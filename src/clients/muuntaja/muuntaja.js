@@ -288,6 +288,15 @@ window.onSave = function(e) {
   return eventHandled(e);
 }
 
+window.onClearEdits = function(e) {
+  transformed.insert = []
+  transformed.exclude = {}
+  transformed.replace = {}
+
+  doTransform()
+  return eventHandled(e);
+}
+
 //-----------------------------------------------------------------------------
 // info needed for muuntaja merge REST call:
 // - Base record
@@ -327,10 +336,11 @@ window.doTransform = function (event = undefined) {
 
   //console.log('Source ID:', sourceID);
   //console.log('Base ID:', baseID);
-  console.log('Transforming:', transformed);
 
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+  const baseIDString = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  const baseID = baseIDString ? baseIDString : undefined
 
   //exception, if source and base ids are the same inform user, ignore empty searches
 
@@ -350,12 +360,14 @@ window.doTransform = function (event = undefined) {
     }
   }
 
-  if (!transformed.base || baseID != transformed.base.ID) {
+  if (!transformed.base || baseID !== transformed.base.ID) {
     transformed.base = {ID: baseID};
     delete transformed.stored;
   }
 
   // Do transform
+
+  console.log('Transforming:', transformed);
 
   startProcess();
 
@@ -489,27 +501,42 @@ function updateRecordSwapButtonState(){
 };
 
 function updateSaveButtonState(transformed) {
-  const {result} = transformed
+  const {result, stored} = transformed
 
   const savebtn = document.getElementById("save-button")
-  if(result?.leader && !result.error) {
+  if(stored || (result?.leader && !result.error)) {
     savebtn.disabled = false
   } else {
     savebtn.disabled = true
   }
 }
 
-function updateResultInfo(transformed) {
+function updateStoredID(transformed) {
   const {stored} = transformed
-  const resultID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`);
+  const storedID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`)
 
-  resultID.textContent = stored?.ID
+  //console.log("Stored:", stored)
+
+  if(stored?.ID) {
+    storedID.textContent = "TIETUE ID=" + stored?.ID
+  } else {
+    storedID.textContent = "TULOSTIETUE"
+  }
 }
 
 function showTransformed(update = undefined) {
   //updateTransformed(update);
   if (update) {
-    transformed = update;
+    transformed = {
+      source: null,
+      base: null,
+      insert: [],
+      exclude: {},
+      replace: {},
+      result: null,
+      stored: null,
+      ...update
+    }
   }
 
   if (update?.source?.status == 404) {
@@ -521,13 +548,16 @@ function showTransformed(update = undefined) {
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
 
-  const {source, base, insert, result} = transformed;
+  const {source, base, insert, stored, result} = transformed;
+
+  const isStored = !!stored
 
   // Get field source for decorator
   const sourceFields = getFields(source);
   const baseFields = getFields(base);
   const addedFields = insert;
   const resultFields = getFields(result);
+  const storedFields = getFields(stored);
 
   const resultIDs = resultFields.map(f => f.id);
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id));
@@ -540,7 +570,7 @@ function showTransformed(update = undefined) {
     ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.insert}), {})
   };
 
-  const original = getLookup(sourceFields.concat(baseFields));
+  const original = getLookup(sourceFields.concat(baseFields).concat(storedFields));
 
   //console.log(transformed.from)
 
@@ -556,7 +586,7 @@ function showTransformed(update = undefined) {
     exclude: transformed.exclude
   });
   showRecord(result, keys.result, {
-    onClick: editmode ? onEditClick : onToggleClick,
+    onClick: (editmode || isStored) ? onEditClick : onToggleClick,
     onDelete: onToggleClick,
     from,
     original,
@@ -568,7 +598,7 @@ function showTransformed(update = undefined) {
   // Update button states according to result
   updateRecordSwapButtonState();
   updateSaveButtonState(transformed);
-  updateResultInfo(transformed);
+  updateStoredID(transformed);
 
   function getFields(record) {
     return record?.fields ?? [];

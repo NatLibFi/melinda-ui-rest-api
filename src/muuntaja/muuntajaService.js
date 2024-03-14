@@ -26,7 +26,8 @@ const logger = createLogger();
 export function createMuuntajaService() {
 
   return {
-    getResultRecord
+    generateResultRecord,
+    postprocessRecord
   };
 }
 
@@ -48,7 +49,7 @@ function stripRecord({leader, fields, ID, error, notes}) {
   };
 }
 
-export function getResultRecord({source, base: baseRecord, options, insert, exclude, replace}) {
+export function generateResultRecord({source, base: baseRecord, options, insert, exclude, replace}) {
   //logger.debug(`* now in getResultRecord`);
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
@@ -79,8 +80,9 @@ export function getResultRecord({source, base: baseRecord, options, insert, excl
         reducers
       });
 
-      const postprocessed = modifyRecord(merged, insert, null, replace);
-      const result = asMarcRecord(postprocessed).sortFields();
+      //const postprocessed = modifyRecord(merged, insert, null, replace);
+      //const result = asMarcRecord(postprocessed).sortFields();
+      const result = postprocessRecord(merged, insert, null, replace);
 
       //logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
 
@@ -109,6 +111,25 @@ export function getResultRecord({source, base: baseRecord, options, insert, excl
       result: {
         error
       }
+    };
+  }
+}
+
+export function postprocessRecord(record, insert, exclude, replace) {
+  try {
+    const postprocessed = modifyRecord(record, insert, exclude, replace);
+    const result = asMarcRecord(postprocessed).sortFields();
+    const stripped = stripRecord(result);
+
+    return {
+      ...record,
+      ...stripped
+    };
+  } catch (err) {
+    logger.error(`postprocessRecord: Error: ${err}`);
+    return {
+      ...record,
+      error: err.toString()
     };
   }
 }
