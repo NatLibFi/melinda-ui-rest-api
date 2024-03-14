@@ -204,7 +204,17 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     //logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
 
     try {
+
+      /*
+      const record2Store = {
+        leader: result.leader,
+        fields: result.fields.filter(f => f.tag !== 'CAT')
+      };
+      logger.debug(`Record: ${JSON.stringify(record2Store, null, 2)}`);
+      */
+
       const response = await storeRecord(user, ID, result);
+
       res.json({
         options, source, base,
         ...await getStoredRecord(response, stored, result)
