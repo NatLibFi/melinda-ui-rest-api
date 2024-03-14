@@ -504,7 +504,7 @@ function updateSaveButtonState(transformed) {
   const {result, stored} = transformed
 
   const savebtn = document.getElementById("save-button")
-  if(stored || (result?.leader && !result.error)) {
+  if(stored || (result?.leader)) {
     savebtn.disabled = false
   } else {
     savebtn.disabled = true

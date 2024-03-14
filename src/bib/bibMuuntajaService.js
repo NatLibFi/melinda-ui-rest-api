@@ -9,6 +9,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 import {createMelindaApiRecordClient} from '@natlibfi/melinda-rest-api-client';
 
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-unreachable */
 
 export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
   const logger = createLogger();
@@ -20,22 +21,22 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
   async function getRecordById(id, typeParam, collectionQueryParams, additionalQueryParams) {
 
     try {
-      const records = await sruOperator.getRecordById(id, collectionQueryParams, additionalQueryParams);
-      return records;
+      //return await melindaRestApiClient.read(id);
+
+      const [record] = await sruOperator.getRecordById(id, collectionQueryParams, additionalQueryParams);
+      return record;
     } catch (err) {
       logger.error(`getRecordById: ${JSON.stringify(err)}`);
-      return [
-        {
-          ID: id,
-          status: err?.stats,
-          error: err?.payload ?? err.toString()
-        }
-      ];
+      return {
+        ID: id,
+        status: err?.stats,
+        error: err?.payload ?? err.toString()
+      };
     }
   }
 
   function getError(response) {
-    if (response.status === 'ERROR') {
+    if (response.status === 'ERROR' || response.recordStatus === 'ERROR') {
       return {
         error: response.message
       };
@@ -48,7 +49,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
     return {};
   }
 
-  async function createOne(record, cataloger, restApiParams) { // eslint-disable-line no-unused-vars
+  async function createOne(record, cataloger, restApiParams) {
 
     //logger.debug(`createOne: cataloger=${cataloger}`);
 
@@ -57,21 +58,23 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
     }
 
     const params = {
-      unique: restApiParams.unique,
-      merge: restApiParams.merge,
+      ...restApiParams,
       noop: 0,
       cataloger
     };
 
-    //const response = await melindaRestApiClient.create(record, params);
-    const response = {
-      databaseId: '017735845'
+    return {
+      ID: '017735845',
+      notes: 'Found 0 matching records in the database. - Created record 017735845.'
     };
+
+    const response = await melindaRestApiClient.create(record, params);
+    //const response = ;
 
     //logger.debug(response.status);
     logger.debug(`Create response= ${JSON.stringify(response, null, 2)}`);
 
-    const createdRecord = await melindaRestApiClient.read(response.databaseId);
+    //const createdRecord = await melindaRestApiClient.read(response.databaseId);
     //const createdRecord = {record};
     //logger.debug(`Create record: ${JSON.stringify(createdRecord)}`);
 
@@ -79,9 +82,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       ID: response.databaseId,
       //status: response.recordStatus,
       //detailedStatus: response.detailedRecordStatus,
-      ...getError(response),
-      leader: createdRecord.record.leader,
-      fields: createdRecord.record.fields
+      ...getError(response)
     };
   }
 
@@ -100,7 +101,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
 
     logger.debug(`Update response: ${JSON.stringify(response)}`);
 
-    const updatedRecord = await melindaRestApiClient.read(recordId);
+    //const updatedRecord = await melindaRestApiClient.read(recordId);
 
     //logger.debug(`Updated record: ${JSON.stringify(updatedRecord)}`);
 
@@ -108,9 +109,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       ID: response.databaseId,
       //status: response.recordStatus,
       //detailedStatus: response.detailedRecordStatus,
-      ...getError(response),
-      leader: updatedRecord.record.leader,
-      fields: updatedRecord.record.fields
+      ...getError(response)
     };
   }
 }

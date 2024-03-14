@@ -155,7 +155,7 @@ export async function getRecordWithIDs(bibService, record) {
     return record;
   }
 
-  const [result] = await bibService.getRecordById(record.ID);
+  const result = await bibService.getRecordById(record.ID);
   //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
   return {
     ...record,
