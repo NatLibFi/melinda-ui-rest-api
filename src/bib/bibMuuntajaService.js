@@ -21,6 +21,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
   async function getRecordById(recordId, typeParam, collectionQueryParams, additionalQueryParams) {
 
     try {
+      logger.debug(`SRU.getRecordById: ID=${recordId}`);
       const [record] = await sruOperator.getRecordById(recordId, collectionQueryParams, additionalQueryParams);
       return record;
     } catch (err) {

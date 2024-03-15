@@ -17,6 +17,12 @@ import {handleError} from '../requestUtils/handleError';
 
 import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs, stripFields, bareRecord} from './muuntajaService';
 
+import {promisify} from 'util';
+
+const sleep = promisify(setTimeout);
+
+//setTimeoutPromise(50);
+
 const appName = 'Muuntaja';
 
 //-----------------------------------------------------------------------------
@@ -272,10 +278,14 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   // Second, get the updated record from database
 
   async function getStoredRecord(response, stored, result) {
+    //logger.debug('Waiting...');
+    //await sleep(1000);
+    logger.debug('Retrieving updated record');
+
     try {
       //const updated = await melindaRestApiClient.read(id);
-      //const updated = await bibService.getRecordById(response.ID);
-      const updated = await bibService.getUpdated(response.ID);
+      const updated = await bibService.getRecordById(response.ID);
+      //const updated = await bibService.getUpdated(response.ID);
 
       //logger.debug(`Updated: ${JSON.stringify(updated)}`);
 
