@@ -314,33 +314,12 @@ window.editmode = false;
 // Do transform
 //-----------------------------------------------------------------------------
 
-function clearErrors(transformed) {
-  if(transformed.source) {
-    delete transformed.source.error
-    delete transformed.source.notes
-  }
-  if(transformed.base) {
-    delete transformed.base.error
-    delete transformed.base.notes
-  }
-  if(transformed.result) {
-    delete transformed.result.error
-    delete transformed.result.notes
-  }
-  if(transformed.stored) {
-    delete transformed.stored.error
-    delete transformed.stored.notes
-  }
-}
-
 window.onSave = function(e) {
   //console.log("Save:", e)
 
   // Do transform
 
   startProcess();
-
-  //clearErrors(transformed)
 
   console.log("Storing:", transformed)
 
@@ -399,8 +378,6 @@ window.doTransform = function (event = undefined) {
   console.log('Transforming:', transformed);
 
   startProcess();
-
-  //clearErrors(transformed)
 
   transformRequest(transformed)
     .then(response => response.json())
