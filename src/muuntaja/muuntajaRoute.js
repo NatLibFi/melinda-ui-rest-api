@@ -15,7 +15,7 @@ import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs} from './muuntajaService';
+import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs, stripFields} from './muuntajaService';
 
 const appName = 'Muuntaja';
 
@@ -196,30 +196,27 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       return;
     }
 
-    const ID = '017735845';
-    //const {ID} = result;
+    //const ID = '017735845';
+    const {ID} = result;
 
     logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
     logger.debug(`User...: ${JSON.stringify(user)}`);
-    //logger.debug(`Storing: ${JSON.stringify(result, null, 2)}`);
 
     try {
+      const stripped = stripFields(result);
 
-      /*
-      const record2Store = {
-        leader: result.leader,
-        fields: result.fields.filter(f => f.tag !== 'CAT')
-      };
-      logger.debug(`Record: ${JSON.stringify(record2Store, null, 2)}`);
-      */
+      logger.debug(`Record to store: ${JSON.stringify(stripped, null, 2)}`);
 
-      const response = await storeRecord(user, ID, result);
+      const response = await storeRecord(user, ID, stripped);
 
       res.json({
-        options, source, base,
+        options,
+        source: stripFields(source),
+        base: stripFields(base),
         ...await getStoredRecord(response, stored, result)
       });
     } catch (err) {
+      logger.error(`storeTransformed: ${JSON.stringify(err)}`);
       res.json({
         ...transformed,
         result: {

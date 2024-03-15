@@ -205,6 +205,19 @@ export function generateMissingIDs(fields) {
   return fields.map(f => f.id ? f : {...f, id: uuid()});
 }
 
+export function stripFields(record) {
+  return {
+    ...record,
+    fields: record.fields.map(f => ({
+      tag: f.tag,
+      ind1: f.ind1,
+      ind2: f.ind2,
+      ...f.value ? {value: f.value} : {},
+      ...f.subfields ? {subfields: f.subfields} : {}
+    }))
+  };
+}
+
 //-----------------------------------------------------------------------------
 // Record modify services
 //-----------------------------------------------------------------------------

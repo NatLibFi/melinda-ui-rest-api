@@ -51,7 +51,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
 
   async function createOne(record, cataloger, restApiParams) {
 
-    //logger.debug(`createOne: cataloger=${cataloger}`);
+    logger.debug(`createOne: cataloger=${cataloger}`);
 
     if (!cataloger) {
       throw new Error('Invalid parameter: cataloger');
@@ -63,10 +63,12 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       cataloger
     };
 
+    /*
     return {
       ID: '017735845',
       notes: 'Found 0 matching records in the database. - Created record 017735845.'
     };
+    */
 
     const response = await melindaRestApiClient.create(record, params);
     //const response = ;

@@ -357,6 +357,7 @@ window.doTransform = function (event = undefined) {
   // If source is changed, clear the corresponding records and all the edits
 
   if (sourceID != transformed?.source?.ID) {
+    console.log("Source ID mismatch:", sourceID, "!==", transformed?.source?.ID)
     transformed = {
       options: transformed.options,
       base: transformed.base,
@@ -365,6 +366,7 @@ window.doTransform = function (event = undefined) {
   }
 
   if (!transformed.base || baseID !== transformed.base.ID) {
+    console.log("Base ID mismatch")
     transformed.base = {ID: baseID};
     delete transformed.stored;
   }
@@ -533,7 +535,7 @@ function updateStoredID(transformed) {
   //console.log("Stored:", stored)
 
   if(stored?.ID) {
-    storedID.textContent = "TIETUE ID=" + stored?.ID
+    storedID.textContent = "TIETUE " + stored?.ID
   } else {
     storedID.textContent = "TULOSTIETUE"
   }
