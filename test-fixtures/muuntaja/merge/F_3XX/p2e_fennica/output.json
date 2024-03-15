@@ -21,7 +21,6 @@
       },
       {"tag": "300", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": ""}, {"code": "c", "value": ""} ]},
 
-      {"tag": "336", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
       {"tag": "348", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
       {"tag": "355", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
 

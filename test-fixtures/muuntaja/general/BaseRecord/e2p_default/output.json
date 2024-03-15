@@ -15,6 +15,16 @@
     ],
     "id": "6f4d044c-28f4-4616-9edb-89ec47856cab"
   },
+  {
+    "tag": "336",
+    "ind1": " ", "ind2": " ",
+    "subfields": [
+      {"code": "a", "value": "teksti"},
+      {"code": "b", "value": "txt"},
+      {"code": "c", "value": "rdacontent"}
+    ],
+    "id": "0194c712-c561-456c-993d-18368030ea5b"
+  },
    {
     "tag": "337",
     "ind1": " ",

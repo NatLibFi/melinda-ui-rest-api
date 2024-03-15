@@ -38,7 +38,7 @@ function getFenniFields(opts) {
   //'336' // compare tags only
 
   if (opts.profile === 'FENNI') {
-    return [Reducers.copy({tagPattern: '336|39\\d'})];
+    return [Reducers.copy({tagPattern: '39\\d'})];
   }
   return [];
 }

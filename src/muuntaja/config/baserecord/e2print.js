@@ -79,6 +79,15 @@ const defaultFieldValues = {
     subfields: [{code: 'a', value: '1 verkkoaineisto'}],
     id: '29b213aa-4cb5-44cf-83d5-a0042638f64f'
   },
+  '336': {
+    ind1: ' ', ind2: ' ',
+    subfields: [
+      {code: 'a', value: 'teksti'},
+      {code: 'b', value: 'txt'},
+      {code: 'c', value: 'rdacontent'}
+    ],
+    id: '0194c712-c561-456c-993d-18368030ea5b'
+  },
   '337': {
     ind1: ' ', ind2: ' ',
     subfields: [
@@ -258,6 +267,11 @@ export function e2pBaseRecord(options) {
 //-----------------------------------------------------------------------------
 // Create base record
 
+// Field 336: Fennica-profiilissa 336 siirtyy ihan ok molemmissa muunnostyypeissä,
+// mutta oletusprofiilien tulsotietueeseen se ei siirry kummassakaan tyypissä. Jos
+// se on tehnyt tätä koko ajan, en ole huomannut aiemmin. Molemmissa muunnostyypissä
+// tulostietueihin pitäisi siis tulla 336$ teksti $b txt $c rdacontent.
+
 function getReducers(options) {
 
   function getFenniFields() {
@@ -284,6 +298,7 @@ function getReducers(options) {
     // fillDefault('040'),
     //fillDefault('041'), // MUU-502
     // fillDefault('300'),
+    fillDefault('336'),
     fillDefault('337'),
     fillDefault('338'),
     // fillDefault('506/1'),
