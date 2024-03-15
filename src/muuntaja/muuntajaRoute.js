@@ -80,18 +80,22 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   function stripInformationFields(transform) {
 
     function stripRecordErrors(record) {
+      if (!record) {
+        return undefined;
+      }
       return {
-        ...record,
-        notes: undefined,
-        error: undefined
+        ...record.ID ? {ID: record.ID} : {},
+        ...record.leader ? {leader: record.leader} : {},
+        ...record.fields ? {fields: record.fields} : {}
       };
     }
+
     return {
       ...transform,
-      ...transform.source ? stripRecordErrors(transform.source) : {},
-      ...transform.base ? stripRecordErrors(transform.base) : {},
-      ...transform.result ? stripRecordErrors(transform.result) : {},
-      ...transform.stored ? stripRecordErrors(transform.stored) : {}
+      source: stripRecordErrors(transform.source),
+      base: stripRecordErrors(transform.base),
+      result: stripRecordErrors(transform.result),
+      stored: stripRecordErrors(transform.stored)
     };
   }
 
@@ -105,34 +109,42 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
+    //-------------------------------------------------------------------------
+    // Strip incoming records and fill defaults
+
     const transform = stripInformationFields(req.body);
 
-    const {source, base, insert, exclude, replace, stored} = {
+    const {source, base, exclude, replace, stored} = {
       source: null,
       base: null,
-      insert: [],
       exclude: {},
       replace: {},
       ...transform
     };
 
-    const fieldsToInsert = generateMissingIDs(insert);
+    const insert = generateMissingIDs(transform.insert);
+
+    //-------------------------------------------------------------------------
+    // If we have already stored the record, do modifications, but do not do transformation
 
     if (stored) {
-      const modified = muuntajaService.postprocessRecord(stored, fieldsToInsert, exclude, replace);
+      const modified = muuntajaService.postprocessRecord(stored, insert, exclude, replace);
 
       res.json({
-        source, base,
         options: req.body.options,
+        source, base,
         exclude,
         replace,
-        insert: fieldsToInsert,
+        insert,
         stored,
         result: modified
       });
 
       return;
     }
+
+    //-------------------------------------------------------------------------
+    // Get transform options
 
     const options = {
       type: transform.options.type,
@@ -156,13 +168,12 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     //logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
 
     //-------------------------------------------------------------------------
-
-    //const include = generateMissingIDs(req.body.include ?? []);
+    // Load source & base if needed
 
     const [sourceRecord, baseRecord] = await load(source, base);
-    //const {sourceRecord, baseRecord} = await loadRecords(source, base);
 
     //-------------------------------------------------------------------------
+    // Create result record from source & base, according to options
 
     const result = muuntajaService.generateResultRecord({
       source: sourceRecord,
@@ -170,7 +181,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       options,
       exclude,
       replace,
-      insert: fieldsToInsert
+      insert
     });
     //logger.debug(`Result record: ${JSON.stringify(result)}`);
 
@@ -179,7 +190,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       options: transform.options,
       exclude,
       replace,
-      insert: fieldsToInsert
+      insert
     });
 
     //-------------------------------------------------------------------------
@@ -222,12 +233,12 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     const {ID} = result;
 
     logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
-    logger.debug(`User...: ${JSON.stringify(user)}`);
+    //logger.debug(`User...: ${JSON.stringify(user)}`);
 
     try {
       const bare = bareRecord(result);
 
-      logger.debug(`Record to store: ${JSON.stringify(bare, null, 2)}`);
+      //logger.debug(`Record to store: ${JSON.stringify(bare, null, 2)}`);
 
       const response = await storeRecord(user, ID, bare);
 
@@ -266,7 +277,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       //const updated = await bibService.getRecordById(response.ID);
       const updated = await bibService.getUpdated(response.ID);
 
-      logger.debug(`Updated: ${JSON.stringify(updated)}`);
+      //logger.debug(`Updated: ${JSON.stringify(updated)}`);
 
       const withIDs = {
         ...response,

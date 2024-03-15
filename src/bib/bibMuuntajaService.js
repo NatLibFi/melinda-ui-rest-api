@@ -60,8 +60,8 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       cataloger
     };
 
-    logger.debug(`createOne params: ${JSON.stringify(params, null, 2)}`);
-    logger.debug(`createOne record: ${JSON.stringify(record, null, 2)}`);
+    //logger.debug(`createOne params: ${JSON.stringify(params, null, 2)}`);
+    //logger.debug(`createOne record: ${JSON.stringify(record, null, 2)}`);
 
     //*
     return {
@@ -100,8 +100,8 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       cataloger
     };
 
-    logger.debug(`updateOne params: ${JSON.stringify(params, null, 2)}`);
-    logger.debug(`updateOne record: ${JSON.stringify(record, null, 2)}`);
+    //logger.debug(`updateOne params: ${JSON.stringify(params, null, 2)}`);
+    //logger.debug(`updateOne record: ${JSON.stringify(record, null, 2)}`);
 
     const response = await melindaRestApiClient.update(record, recordId, params);
 
