@@ -18,11 +18,11 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
 
   return {getRecordById, createOne, updateOne, getUpdated};
 
-  async function getRecordById(recordId, typeParam, collectionQueryParams, additionalQueryParams) {
+  async function getRecordById(recordId) {
 
     try {
-      logger.debug(`SRU.getRecordById: ID=${recordId}`);
-      const [record] = await sruOperator.getRecordById(recordId, collectionQueryParams, additionalQueryParams);
+      //logger.debug(`SRU.getRecordById: ID=${recordId}`);
+      const [record] = await sruOperator.getRecordById(recordId);
       return record;
     } catch (err) {
       logger.error(`getRecordById: ${JSON.stringify(err)}`);
@@ -34,19 +34,23 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
     }
   }
 
-  function getError(response) {
-    if (response.status === 'ERROR' || response.recordStatus === 'ERROR') {
+  // Resolve error message from REST API response
+
+  function getRestApiError(response) {
+    if (response?.status === 'ERROR' || response?.recordStatus === 'ERROR') {
       return {
         error: response.message
       };
     }
-    if (response.message) {
+    if (response?.message) {
       return {
         notes: response.message
       };
     }
     return {};
   }
+
+  // Create a new record
 
   async function createOne(record, cataloger, restApiParams) { // eslint-disable-line require-await
 
@@ -91,6 +95,8 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
     /**/
   }
 
+  // Update an existing record
+
   async function updateOne(recordId, record, cataloger, restApiParams) { // eslint-disable-line no-unused-vars
     if (!recordId || !cataloger) {
       throw new Error(`invalid parameters:${cataloger ? '' : ' cataloger'}${recordId ? '' : ' recordId'}`);
@@ -116,7 +122,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       ID: response.databaseId,
       //status: response.recordStatus,
       //detailedStatus: response.detailedRecordStatus,
-      ...getError(response)
+      ...getRestApiError(response)
     };
   }
 

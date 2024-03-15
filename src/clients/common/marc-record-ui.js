@@ -12,7 +12,7 @@ let onDeleteField = null;
 export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
 
   if (logRecord) {
-    console.log('Show Record:', record);
+    console.log('Show Record:', dest, record);
   }
 
   const {replace, onDelete} = decorator;
@@ -30,7 +30,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
     const error = document.createElement('div');
     error.classList.add('error');
     error.textContent = getHumanReadableErrorMessage(record.error);
-    console.log("Record error:", record.error);
+    //console.log("Record error:", record.error);
     recordDiv.appendChild(error);
   }
 

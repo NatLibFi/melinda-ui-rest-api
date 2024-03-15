@@ -83,7 +83,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   // Strip errors & notes from incoming transform request records
   //---------------------------------------------------------------------------
 
-  function stripInformationFields(transform) {
+  function stripTransformInfoFields(transform) {
 
     function stripRecordErrors(record) {
       if (!record) {
@@ -118,7 +118,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     //-------------------------------------------------------------------------
     // Strip incoming records and fill defaults
 
-    const transform = stripInformationFields(req.body);
+    const transform = stripTransformInfoFields(req.body);
 
     const {source, base, exclude, replace, stored} = {
       source: null,
@@ -226,7 +226,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     logger.debug(`Store`);
 
     const {user} = req;
-    const transformed = stripInformationFields(req.body);
+    const transformed = stripTransformInfoFields(req.body);
 
     const {options, source, base, stored, result} = transformed;
 
@@ -235,18 +235,15 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
       return;
     }
 
-    //const ID = '017735845';
     const {ID} = result;
 
     logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
     //logger.debug(`User...: ${JSON.stringify(user)}`);
 
     try {
-      const bare = bareRecord(result);
-
       //logger.debug(`Record to store: ${JSON.stringify(bare, null, 2)}`);
 
-      const response = await storeRecord(user, ID, bare);
+      const response = await storeRecord(user, ID, result);
 
       res.json({
         options,
@@ -269,10 +266,12 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   // First, create or update the record, and get the response
 
   function storeRecord(user, ID, record) {
+    // Strip all extra info from record to be stored
+    const bare = bareRecord(record);
     if (ID) {
-      return bibService.updateOne(ID, record, user?.id, restApiParams);
+      return bibService.updateOne(ID, bare, user?.id, restApiParams);
     }
-    return bibService.createOne(record, user?.id, restApiParams);
+    return bibService.createOne(bare, user?.id, restApiParams);
   }
 
   // Second, get the updated record from database
@@ -283,7 +282,6 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     logger.debug('Retrieving updated record');
 
     try {
-      //const updated = await melindaRestApiClient.read(id);
       const updated = await bibService.getRecordById(response.ID);
       //const updated = await bibService.getUpdated(response.ID);
 
