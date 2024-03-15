@@ -218,6 +218,14 @@ export function stripFields(record) {
   };
 }
 
+export function bareRecord(record) {
+  const stripped = stripFields(record);
+  return {
+    leader: stripped.leader,
+    fields: stripped.fields
+  };
+}
+
 //-----------------------------------------------------------------------------
 // Record modify services
 //-----------------------------------------------------------------------------

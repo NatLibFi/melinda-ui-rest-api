@@ -274,24 +274,6 @@ window.copyLink = function (e) {
   showSnackbar({style: 'success', text: 'Linkki kopioitu!'});
 };
 
-window.onSave = function(e) {
-  console.log("Save:", e)
-
-  // Do transform
-
-  startProcess();
-
-  storeTransformedRequest(transformed)
-    .then(response => response.json())
-    .then(records => {
-      stopProcess();
-      console.log('Transformed:', records);
-      showTransformed(records);
-    });
-
-  return eventHandled(e);
-}
-
 window.onClearEdits = function(e) {
   transformed.insert = []
   transformed.exclude = {}
@@ -331,6 +313,47 @@ window.editmode = false;
 //-----------------------------------------------------------------------------
 // Do transform
 //-----------------------------------------------------------------------------
+
+function clearErrors(transformed) {
+  if(transformed.source) {
+    delete transformed.source.error
+    delete transformed.source.notes
+  }
+  if(transformed.base) {
+    delete transformed.base.error
+    delete transformed.base.notes
+  }
+  if(transformed.result) {
+    delete transformed.result.error
+    delete transformed.result.notes
+  }
+  if(transformed.stored) {
+    delete transformed.stored.error
+    delete transformed.stored.notes
+  }
+}
+
+window.onSave = function(e) {
+  //console.log("Save:", e)
+
+  // Do transform
+
+  startProcess();
+
+  //clearErrors(transformed)
+
+  console.log("Storing:", transformed)
+
+  storeTransformedRequest(transformed)
+    .then(response => response.json())
+    .then(records => {
+      stopProcess();
+      console.log('Transformed:', records);
+      showTransformed(records);
+    });
+
+  return eventHandled(e);
+}
 
 window.doTransform = function (event = undefined) {
   console.log('Transforming');
@@ -376,6 +399,8 @@ window.doTransform = function (event = undefined) {
   console.log('Transforming:', transformed);
 
   startProcess();
+
+  //clearErrors(transformed)
 
   transformRequest(transformed)
     .then(response => response.json())
