@@ -74,7 +74,7 @@ function getReducers(opts) {
     ...merge9XX(opts),
     generate020(opts),
     generate776(opts),
-    ...getFenniFields(opts),
-    generateLOW(opts)
+    ...getFenniFields(opts)
+    //generateLOW(opts)
   ];
 }
