@@ -282,6 +282,8 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     logger.debug('Retrieving updated record');
 
     try {
+      // Dummy search to prevent yaz to return cached record
+      await bibService.getRecordById('999999998');
       const updated = await bibService.getRecordById(response.ID);
       //const updated = await bibService.getUpdated(response.ID);
 

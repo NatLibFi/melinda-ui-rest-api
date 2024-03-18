@@ -68,7 +68,7 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
     //logger.debug(`createOne params: ${JSON.stringify(params, null, 2)}`);
     //logger.debug(`createOne record: ${JSON.stringify(record, null, 2)}`);
 
-    //*
+    /*
     return {
       ID: '017735845',
       notes: 'Found 0 matching records in the database. - Created record 017735845.'
@@ -90,8 +90,9 @@ export function createBibMuuntajaService(sruUrl, melindaApiOptions) {
       ID: response.databaseId,
       //status: response.recordStatus,
       //detailedStatus: response.detailedRecordStatus,
-      ...getError(response)
+      ...getRestApiError(response)
     };
+
     /**/
   }
 
