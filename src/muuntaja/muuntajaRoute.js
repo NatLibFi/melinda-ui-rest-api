@@ -9,28 +9,28 @@
 
 import express, {Router} from 'express';
 import {createLogger} from '@natlibfi/melinda-backend-commons';
-import {createBibService} from '../bib/bibService';
+import {createBibMuuntajaService} from '../bib/bibMuuntajaService';
 import {handleFailedQueryParams} from '../requestUtils/handleFailedQueryParams';
 import {handleFailedRouteParams} from '../requestUtils/handleFailedRouteParams';
 import {handleRouteNotFound} from '../requestUtils/handleRouteNotFound';
 import {handleError} from '../requestUtils/handleError';
 
-import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord} from './muuntajaService';
+import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs, stripFields, bareRecord} from './muuntajaService';
+
+import {promisify} from 'util';
+
+const sleep = promisify(setTimeout);
+
+//setTimeoutPromise(50);
 
 const appName = 'Muuntaja';
 
 //-----------------------------------------------------------------------------
 
-export default function (sruUrl) {
+export default function (sruUrl, melindaApiOptions, restApiParams) {
   const logger = createLogger();
-  const bibService = createBibService(sruUrl);
+  const bibService = createBibMuuntajaService(sruUrl, melindaApiOptions, restApiParams);
   const muuntajaService = createMuuntajaService();
-
-  const optDefaults = {
-    type: 'p2e',
-    profile: 'KVP',
-    format: ''
-  };
 
   //logger.debug('Creating muuntaja route');
 
@@ -39,6 +39,7 @@ export default function (sruUrl) {
     .use(express.json())
     .get('/profiles', handleFailedRouteParams(appName), getProfiles)
     .post('/transform', handleFailedRouteParams(appName), doTransform)
+    .post('/store', handleFailedRouteParams(appName), storeTransformed)
     .use(handleRouteNotFound(appName))
     .use(handleError(appName));
 
@@ -49,18 +50,59 @@ export default function (sruUrl) {
   //---------------------------------------------------------------------------
 
   function getProfiles(req, res) {
-    //logger.debug('Get profiles');
+    logger.debug('Get profiles');
+
+    const {user} = req;
+
+    //logger.debug(`User...: ${JSON.stringify(user)}`);
+    logger.debug(`User ID......: ${JSON.stringify(user.id)}`);
+    logger.debug(`Authorization: ${JSON.stringify(user.authorization)}`);
+
     res.json({
-      type: {
-        'p2e': 'Painetusta > E-aineistoksi',
-        'e2p': 'E-aineistosta > Painetuksi'
-      },
-      profile: {
-        'KVP': 'Oletus',
-        'FENNI': 'Fennica'
-      },
-      defaults: optDefaults
+      type: [
+        {tag: 'p2e', name: 'Painetusta > E-aineistoksi'},
+        {tag: 'e2p', name: 'E-aineistosta > Painetuksi'}
+      ],
+      profile: user.authorization.map(org => organizationToProfile(org))
     });
+
+    function organizationToProfile(org) {
+      const profiles = {
+        'KVP': {tag: 'KVP', name: 'Kirjastoverkkopalvelut'},
+        'FENNI': {tag: 'FENNI', name: 'Fennica'}
+      };
+
+      if (org in profiles) {
+        return profiles[org];
+      }
+      return {tag: org, name: org};
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  // Strip errors & notes from incoming transform request records
+  //---------------------------------------------------------------------------
+
+  function stripTransformInfoFields(transform) {
+
+    function stripRecordErrors(record) {
+      if (!record) {
+        return undefined;
+      }
+      return {
+        ...record.ID ? {ID: record.ID} : {},
+        ...record.leader ? {leader: record.leader} : {},
+        ...record.fields ? {fields: record.fields} : {}
+      };
+    }
+
+    return {
+      ...transform,
+      source: stripRecordErrors(transform.source),
+      base: stripRecordErrors(transform.base),
+      result: stripRecordErrors(transform.result),
+      stored: stripRecordErrors(transform.stored)
+    };
   }
 
   //---------------------------------------------------------------------------
@@ -73,22 +115,56 @@ export default function (sruUrl) {
   async function doTransform(req, res) { // eslint-disable-line max-statements
     logger.debug(`Transform`);
 
-    const {source, base, insert, exclude, replace} = {
+    //-------------------------------------------------------------------------
+    // Strip incoming records and fill defaults
+
+    const transform = stripTransformInfoFields(req.body);
+
+    const {source, base, exclude, replace, stored} = {
       source: null,
       base: null,
-      insert: [],
       exclude: {},
       replace: {},
-      ...req.body
+      ...transform
     };
 
-    const options = (opts => ({
-      ...optDefaults,
-      ...opts,
-      LOWTAG: opts?.profile ?? 'XXX'
-    }))(req.body.options);
+    const insert = generateMissingIDs(transform.insert);
 
-    //const transformProfile = profiles[options.type];
+    //-------------------------------------------------------------------------
+    // If we have already stored the record, do modifications, but do not do transformation
+
+    if (stored) {
+      const modified = muuntajaService.postprocessRecord(stored, insert, exclude, replace);
+
+      res.json({
+        options: req.body.options,
+        source, base,
+        exclude,
+        replace,
+        insert,
+        stored,
+        result: modified
+      });
+
+      return;
+    }
+
+    //-------------------------------------------------------------------------
+    // Get transform options
+
+    const options = {
+      type: transform.options.type,
+      profile: getProfileByOrganization(transform.options.profile),
+      LOWTAG: transform.options.profile
+    };
+
+    function getProfileByOrganization(org) {
+      if (org === 'FENNI') {
+        return 'FENNI';
+      }
+      return;
+    }
+
     //logger.debug(`transformProfile: ${transformProfile}`);
 
     //logger.debug(`Options[muuntajaRoute]: ${JSON.stringify(options, null, 2)}`);
@@ -98,32 +174,29 @@ export default function (sruUrl) {
     //logger.debug(`Replaced: ${JSON.stringify(replace, null, 2)}`);
 
     //-------------------------------------------------------------------------
-
-    //const include = generateMissingIDs(req.body.include ?? []);
+    // Load source & base if needed
 
     const [sourceRecord, baseRecord] = await load(source, base);
-    //const {sourceRecord, baseRecord} = await loadRecords(source, base);
 
     //-------------------------------------------------------------------------
+    // Create result record from source & base, according to options
 
-    const fieldsToInsert = generateMissingIDs(insert);
-
-    const result = muuntajaService.getResultRecord({
+    const result = muuntajaService.generateResultRecord({
       source: sourceRecord,
       base: baseRecord,
       options,
       exclude,
       replace,
-      insert: fieldsToInsert
+      insert
     });
     //logger.debug(`Result record: ${JSON.stringify(result)}`);
 
     res.json({
       ...result,
-      options: req.body.options,
+      options: transform.options,
       exclude,
       replace,
-      insert: fieldsToInsert
+      insert
     });
 
     //-------------------------------------------------------------------------
@@ -138,17 +211,101 @@ export default function (sruUrl) {
     }
 
     function fetchRecord(record) {
-      try {
-        logger.debug(`Fetching: ID=${record?.ID}`);
-        //logger.debug(`Record: ${JSON.stringify(record)}`);
+      logger.debug(`Fetching: ID=${record?.ID}`);
+      //logger.debug(`Record: ${JSON.stringify(record)}`);
 
-        return getRecordWithIDs(bibService, record);
-      } catch (e) {
-        return {
-          ...record,
-          error: e.toString()
-        };
-      }
+      return getRecordWithIDs(bibService, record);
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  // Store result record
+  //---------------------------------------------------------------------------
+
+  async function storeTransformed(req, res) { // eslint-disable-line max-statements
+    logger.debug(`Store`);
+
+    const {user} = req;
+    const transformed = stripTransformInfoFields(req.body);
+
+    const {options, source, base, stored, result} = transformed;
+
+    if (!result) {
+      res.json(transformed);
+      return;
+    }
+
+    const {ID} = result;
+
+    logger.debug(`Storing: ID=${JSON.stringify(ID)}`);
+    //logger.debug(`User...: ${JSON.stringify(user)}`);
+
+    try {
+      //logger.debug(`Record to store: ${JSON.stringify(bare, null, 2)}`);
+
+      const response = await storeRecord(user, ID, result);
+
+      res.json({
+        options,
+        source: stripFields(source),
+        base: stripFields(base),
+        ...await getStoredRecord(response, stored, result)
+      });
+    } catch (err) {
+      logger.error(`storeTransformed: ${JSON.stringify(err)}`);
+      res.json({
+        ...transformed,
+        result: {
+          ...result,
+          error: err.toString()
+        }
+      });
+    }
+  }
+
+  // First, create or update the record, and get the response
+
+  function storeRecord(user, ID, record) {
+    // Strip all extra info from record to be stored
+    const bare = bareRecord(record);
+    if (ID) {
+      return bibService.updateOne(ID, bare, user?.id, restApiParams);
+    }
+    return bibService.createOne(bare, user?.id, restApiParams);
+  }
+
+  // Second, get the updated record from database
+
+  async function getStoredRecord(response, stored, result) {
+    //logger.debug('Waiting...');
+    //await sleep(1000);
+    logger.debug('Retrieving updated record');
+
+    try {
+      // Dummy search to prevent yaz to return cached record
+      await bibService.getRecordById('999999998');
+      const updated = await bibService.getRecordById(response.ID);
+      //const updated = await bibService.getUpdated(response.ID);
+
+      //logger.debug(`Updated: ${JSON.stringify(updated)}`);
+
+      const withIDs = {
+        ...response,
+        ...addMissingIDs(updated)
+      };
+
+      return {
+        stored: withIDs,
+        result: withIDs
+      };
+    } catch (err) {
+      return {
+        stored,
+        result: {
+          ...response,
+          ...result
+        }
+      };
     }
   }
 }

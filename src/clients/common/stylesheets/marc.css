@@ -36,6 +36,12 @@
   margin-bottom: 8px;
 }
 
+.marc-record .notes {
+  background-color: rgb(236, 246, 236);
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
 .marc-record .row-included {
   background-color: #f8fcd8;
 }

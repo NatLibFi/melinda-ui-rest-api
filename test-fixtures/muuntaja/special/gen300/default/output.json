@@ -27,7 +27,7 @@
          "subfields": [
            {"code": "a", "value": ""},
            {"code": "b", "value": "X"},
-           {"code": "c", "value": "X"},
+           {"code": "c", "value": ""},
            {"code": "d", "value": "X"}
          ]
        }

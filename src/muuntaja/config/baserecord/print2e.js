@@ -77,6 +77,15 @@ const defaultFieldValues = {
     subfields: [{code: 'a', value: '1 verkkoaineisto'}],
     id: '29b213aa-4cb5-44cf-83d5-a0042638f64f'
   },
+  '336': {
+    ind1: ' ', ind2: ' ',
+    subfields: [
+      {code: 'a', value: 'teksti'},
+      {code: 'b', value: 'txt'},
+      {code: 'c', value: 'rdacontent'}
+    ],
+    id: '0194c712-c561-456c-993d-18368030ea5b'
+  },
   '337': {
     ind1: ' ', ind2: ' ',
     subfields: [
@@ -285,6 +294,7 @@ function getReducers(options) {
     //fillDefault('041'), // MUU-502
     //fillDefault('042'),
     //fillDefault('300'),
+    fillDefault('336'),
     fillDefault('337'),
     fillDefault('338'),
     fillDefault('506/1'),

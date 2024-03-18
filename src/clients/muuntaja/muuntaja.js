@@ -12,7 +12,7 @@ import {
 } from '/common/ui-utils.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
-import {profileRequest, transformRequest} from '/common/rest.js';
+import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
 
 //-----------------------------------------------------------------------------
@@ -91,19 +91,15 @@ window.initialize = function () {
 
 };
 
-function updateRecordSwapButtonState(){
-  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
-
-  document.getElementById('swap-button').disabled = !sourceID || !baseID;
-};
-
-
 //-----------------------------------------------------------------------------
 
 function setProfiles(options) {
   console.log('Profiles:', options);
-  transformed.options = options.defaults;
+
+  transformed.options = {
+    type: options.type[0],
+    profile: options.profile[0],
+  };
 
   const typeOptions = document.querySelector('#type-options');
   typeOptions.innerHTML = '';
@@ -115,8 +111,8 @@ function setProfiles(options) {
   typeOptions.appendChild(typeDropdown);
   typeDropdown.appendChild(typeSelect);
 
-  for (const type in options.type) {
-    typeSelect.appendChild(createSelectOption(type, options.type[type]));
+  for (const type of options.type) {
+    typeSelect.appendChild(createSelectOption(type.tag, type.name));
   }
 
   const profileOptions = document.querySelector('#profile-options');
@@ -129,15 +125,16 @@ function setProfiles(options) {
   profileOptions.appendChild(profileDropdown);
   profileDropdown.appendChild(profileSelect);
 
-  for (const profile in options.profile) {
-    profileSelect.appendChild(createSelectOption(profile, options.profile[profile]));
+  for (const profile of options.profile) {
+    profileSelect.appendChild(createSelectOption(profile.tag, profile.name));
   }
 }
 
 function setTransformType(event, value) {
   console.log('Type:', value);
   transformed.options.type = value;
-  delete transformed.base.record;
+  if(!transformed.base?.ID) delete transformed.base;
+  delete transformed.stored;
   doTransform();
   return eventHandled(event);
 }
@@ -145,7 +142,8 @@ function setTransformType(event, value) {
 function setTransformProfile(event, value) {
   console.log('Profile:', value);
   transformed.options.profile = value;
-  delete transformed.base.record;
+  if(!transformed.base?.ID) delete transformed.base;
+  delete transformed.stored;
   doTransform();
   return eventHandled(event);
 }
@@ -200,15 +198,8 @@ window.onNewField = function (e) {
 window.onNewInstance = function(e){
 
   const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
-  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
-
-  //clear inputs
   sourceInput.value = '';
-  baseInput.value = '';
-
-  //trigger input event listener to update required values (ie. url parameters)
   sourceInput.dispatchEvent(new Event('input'));
-  baseInput.dispatchEvent(new Event('input'));
 
   //set content
   doTransform();
@@ -219,11 +210,6 @@ window.onSearch = function (e) {
   //const dialog = document.getElementById('searchDlg');
   //console.log('Dialog:', dialog);
   //dialog.show();
-};
-
-window.onSave = function (e) {
-  console.log('Save:', e);
-  return eventHandled(e);
 };
 
 window.onRecordSwap = function(e){
@@ -288,6 +274,15 @@ window.copyLink = function (e) {
   showSnackbar({style: 'success', text: 'Linkki kopioitu!'});
 };
 
+window.onClearEdits = function(e) {
+  transformed.insert = []
+  transformed.exclude = {}
+  transformed.replace = {}
+
+  doTransform()
+  return eventHandled(e);
+}
+
 //-----------------------------------------------------------------------------
 // info needed for muuntaja merge REST call:
 // - Base record
@@ -319,6 +314,26 @@ window.editmode = false;
 // Do transform
 //-----------------------------------------------------------------------------
 
+window.onSave = function(e) {
+  //console.log("Save:", e)
+
+  // Do transform
+
+  startProcess();
+
+  console.log("Storing:", transformed)
+
+  storeTransformedRequest(transformed)
+    .then(response => response.json())
+    .then(records => {
+      stopProcess();
+      console.log('Transformed:', records);
+      showTransformed(records);
+    });
+
+  return eventHandled(e);
+}
+
 window.doTransform = function (event = undefined) {
   console.log('Transforming');
   if (event) {
@@ -327,10 +342,11 @@ window.doTransform = function (event = undefined) {
 
   //console.log('Source ID:', sourceID);
   //console.log('Base ID:', baseID);
-  console.log('Transforming:', transformed);
 
   const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+  const baseIDString = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  const baseID = baseIDString ? baseIDString : undefined
 
   //exception, if source and base ids are the same inform user, ignore empty searches
 
@@ -343,6 +359,7 @@ window.doTransform = function (event = undefined) {
   // If source is changed, clear the corresponding records and all the edits
 
   if (sourceID != transformed?.source?.ID) {
+    console.log("Source ID mismatch:", sourceID, "!==", transformed?.source?.ID)
     transformed = {
       options: transformed.options,
       base: transformed.base,
@@ -350,11 +367,15 @@ window.doTransform = function (event = undefined) {
     }
   }
 
-  if (!transformed.base || baseID != transformed.base.ID) {
+  if (!transformed.base || baseID !== transformed.base.ID) {
+    console.log("Base ID mismatch")
     transformed.base = {ID: baseID};
+    delete transformed.stored;
   }
 
   // Do transform
+
+  console.log('Transforming:', transformed);
 
   startProcess();
 
@@ -363,7 +384,6 @@ window.doTransform = function (event = undefined) {
     .then(records => {
       stopProcess();
       console.log('Transformed:', records);
-      updateRecordSwapButtonState();
       showTransformed(records);
     });
 };
@@ -481,10 +501,61 @@ window.editUseOriginal = function (field) {
 // Show transformation results
 //-----------------------------------------------------------------------------
 
+function updateRecordSwapButtonState(){
+  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
+  const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+
+  document.getElementById('swap-button').disabled = !sourceID || !baseID;
+};
+
+function updateEditButtonState(transformed) {
+  const {stored} = transformed
+  const editbtn = document.getElementById("edit-button")
+
+  if(stored) {
+    editbtn.disabled = true
+  } else {
+    editbtn.disabled = false
+  }
+}
+
+function updateSaveButtonState(transformed) {
+  const {result} = transformed
+
+  const savebtn = document.getElementById("save-button")
+  if(result.ID || (result?.leader)) {
+    savebtn.disabled = false
+  } else {
+    savebtn.disabled = true
+  }
+}
+
+function updateStoredID(transformed) {
+  const {stored} = transformed
+  const storedID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`)
+
+  //console.log("Stored:", stored)
+
+  if(stored?.ID) {
+    storedID.textContent = "TIETUE " + stored?.ID
+  } else {
+    storedID.textContent = "TULOSTIETUE"
+  }
+}
+
 function showTransformed(update = undefined) {
   //updateTransformed(update);
   if (update) {
-    transformed = update;
+    transformed = {
+      source: null,
+      base: null,
+      insert: [],
+      exclude: {},
+      replace: {},
+      result: null,
+      stored: null,
+      ...update
+    }
   }
 
   if (update?.source?.status == 404) {
@@ -496,13 +567,16 @@ function showTransformed(update = undefined) {
     // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
   }
 
-  const {source, base, insert, result} = transformed;
+  const {source, base, insert, stored, result} = transformed;
+
+  const isStored = !!stored
 
   // Get field source for decorator
   const sourceFields = getFields(source);
   const baseFields = getFields(base);
   const addedFields = insert;
   const resultFields = getFields(result);
+  const storedFields = getFields(stored);
 
   const resultIDs = resultFields.map(f => f.id);
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id));
@@ -515,7 +589,7 @@ function showTransformed(update = undefined) {
     ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.insert}), {})
   };
 
-  const original = getLookup(sourceFields.concat(baseFields));
+  const original = getLookup(sourceFields.concat(baseFields).concat(storedFields));
 
   //console.log(transformed.from)
 
@@ -531,7 +605,7 @@ function showTransformed(update = undefined) {
     exclude: transformed.exclude
   });
   showRecord(result, keys.result, {
-    onClick: editmode ? onEditClick : onToggleClick,
+    onClick: (editmode || isStored) ? onEditClick : onToggleClick,
     onDelete: onToggleClick,
     from,
     original,
@@ -539,6 +613,12 @@ function showTransformed(update = undefined) {
     replace: transformed.replace,
     insert: transformed.insert
   });
+
+  // Update button states according to result
+  updateRecordSwapButtonState();
+  updateSaveButtonState(transformed);
+  updateEditButtonState(transformed)
+  updateStoredID(transformed);
 
   function getFields(record) {
     return record?.fields ?? [];

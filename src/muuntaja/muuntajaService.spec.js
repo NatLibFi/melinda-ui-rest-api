@@ -2,7 +2,7 @@
 import {READERS} from '@natlibfi/fixura';
 import {expect} from 'chai';
 import generateTests from '@natlibfi/fixugen';
-import {getResultRecord} from './muuntajaService.js';
+import {generateResultRecord} from './muuntajaService.js';
 import {createLogger} from '@natlibfi/melinda-backend-commons/dist/utils.js';
 
 //-----------------------------------------------------------------------------
@@ -54,8 +54,9 @@ function testTransform({getFixture, testBase = false, expectToFail = false}) {
   //   - instead mock date '20380119' will be used for record default field generation
   input.options.dateFormat = 'test'; // eslint-disable-line functional/immutable-data
 
+  const {base, result} = generateResultRecord(input);
+
   const expectedResult = getFixture('output.json');
-  const {base, result} = getResultRecord(input);
 
   //logger.debug(`Source: ${JSON.stringify(input.source, null, 2)}`);
   //logger.debug(`Base..: ${JSON.stringify(input.base, null, 2)}`);
