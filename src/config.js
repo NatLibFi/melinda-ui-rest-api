@@ -28,3 +28,9 @@ export const melindaApiOptions = {
   melindaApiUsername: readEnvironmentVariable('MELINDA_API_USERNAME', {defaultValue: ''}),
   melindaApiPassword: readEnvironmentVariable('MELINDA_API_PASSWORD', {defaultValue: ''})
 };
+
+export const restApiParams = {
+  noop: readEnvironmentVariable('MELINDA_REST_API_NOOP', {defaultValue: 1}),
+  unique: readEnvironmentVariable('MELINDA_REST_API_UNIQUE', {defaultValue: 1}),
+  merge: readEnvironmentVariable('MELINDA_REST_API_MERGE', {defaultValue: 1})
+};

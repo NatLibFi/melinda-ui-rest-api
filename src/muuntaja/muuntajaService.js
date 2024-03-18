@@ -26,7 +26,8 @@ const logger = createLogger();
 export function createMuuntajaService() {
 
   return {
-    getResultRecord
+    generateResultRecord,
+    postprocessRecord
   };
 }
 
@@ -48,7 +49,7 @@ function stripRecord({leader, fields, ID, error, notes}) {
   };
 }
 
-export function getResultRecord({source, base: baseRecord, options, insert, exclude, replace}) {
+export function generateResultRecord({source, base: baseRecord, options, insert, exclude, replace}) {
   //logger.debug(`* now in getResultRecord`);
   //logger.debug(`* OPTIONS: ${JSON.stringify(options, null, 2)}`);
   //logger.debug(`* data.options.profile: ${JSON.stringify(data.options.profile, null, 2)}`);
@@ -73,18 +74,22 @@ export function getResultRecord({source, base: baseRecord, options, insert, excl
 
       //logger.debug(`Reducers: ${JSON.stringify(reducers, null, 2)}`);
 
-      const result = merger({
+      const merged = merger({
         base: asMarcRecord(modifyRecord(base, null, exclude, null)),
         source: asMarcRecord(modifyRecord(source, null, exclude, null)),
         reducers
       });
+
+      //const postprocessed = modifyRecord(merged, insert, null, replace);
+      //const result = asMarcRecord(postprocessed).sortFields();
+      const result = postprocessRecord(merged, insert, null, replace);
 
       //logger.debug(`* getResultRecord/result: ${JSON.stringify(result, null, 2)}`);
 
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord(asMarcRecord(modifyRecord(result, insert, null, replace)).sortFields())
+        result: stripRecord(result)
       };
     } catch (err) {
       const error = err.toString();
@@ -110,6 +115,25 @@ export function getResultRecord({source, base: baseRecord, options, insert, excl
   }
 }
 
+export function postprocessRecord(record, insert, exclude, replace) {
+  try {
+    const postprocessed = modifyRecord(record, insert, exclude, replace);
+    const result = asMarcRecord(postprocessed).sortFields();
+    const stripped = stripRecord(result);
+
+    return {
+      ...record,
+      ...stripped
+    };
+  } catch (err) {
+    logger.error(`postprocessRecord: Error: ${err}`);
+    return {
+      ...record,
+      error: err.toString()
+    };
+  }
+}
+
 /******************************************************************************
  *
  * Services for record fetching & modifying
@@ -131,7 +155,7 @@ export async function getRecordWithIDs(bibService, record) {
     return record;
   }
 
-  const [result] = await bibService.getRecordById(record.ID);
+  const result = await bibService.getRecordById(record.ID);
   //logger.debug(`Result: ${JSON.stringify(result, null, 2)}`);
   return {
     ...record,
@@ -179,6 +203,27 @@ export function generateMissingIDs(fields) {
     return [];
   }
   return fields.map(f => f.id ? f : {...f, id: uuid()});
+}
+
+export function stripFields(record) {
+  return {
+    ...record,
+    fields: record.fields.map(f => ({
+      tag: f.tag,
+      ind1: f.ind1,
+      ind2: f.ind2,
+      ...f.value ? {value: f.value} : {},
+      ...f.subfields ? {subfields: f.subfields} : {}
+    }))
+  };
+}
+
+export function bareRecord(record) {
+  const stripped = stripFields(record);
+  return {
+    leader: stripped.leader,
+    fields: stripped.fields
+  };
 }
 
 //-----------------------------------------------------------------------------

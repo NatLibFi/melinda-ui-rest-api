@@ -35,15 +35,21 @@ export function generate300(opts) { // eslint-disable-line no-unused-vars
 
     //logger.debug(`F300: ${JSON.stringify(f300, null, 2)}`);
 
-    const f300subfields = Subfield.dropByCode(f300.subfields, 'a');
-
-    base.insertField({
+    const f300b = Subfield.getByCode(f300.subfields, /b/u);
+    const f300rest = Subfield.getByCode(f300.subfields, /[^abc]/u);
+    const f300new = {
       ...f300,
       subfields: [
         {code: 'a', value: ''},
-        ...f300subfields
+        ...f300b,
+        {code: 'c', value: ''},
+        ...f300rest
       ]
-    });
+    };
+
+    //logger.debug(`New F300: ${JSON.stringify(f300new, null, 2)}`);
+
+    base.insertField(f300new);
 
     return base;
   };
