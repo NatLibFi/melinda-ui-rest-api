@@ -101,6 +101,11 @@ export function transformRequest(transformed) {
   return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
 }
 
+export function storeTransformedRequest(transformed) {
+  const url = `${RESTurl}/muuntaja/store`;
+  const body = JSON.stringify(transformed);
+  return doRestCall({url: url, method: 'POST', contentType: 'application/json', body: body});
+}
 
 //*****************************************************************************
 // PUBLICATIONS, ARTICLES AND ONTOLOGY WORDS (artikkelit)

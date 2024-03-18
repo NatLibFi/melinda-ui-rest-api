@@ -12,7 +12,7 @@ let onDeleteField = null;
 export function showRecord(record, dest, decorator = {}, recordDivName = 'muuntaja', logRecord = true) {
 
   if (logRecord) {
-    console.log('Show Record:', record);
+    console.log('Show Record:', dest, record);
   }
 
   const {replace, onDelete} = decorator;
@@ -30,7 +30,7 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
     const error = document.createElement('div');
     error.classList.add('error');
     error.textContent = getHumanReadableErrorMessage(record.error);
-    console.error(record.error);
+    //console.log("Record error:", record.error);
     recordDiv.appendChild(error);
   }
 
@@ -53,11 +53,10 @@ export function showRecord(record, dest, decorator = {}, recordDivName = 'muunta
   }
 
   function getHumanReadableErrorMessage(errorMessage){
-    var humanReadableError = 'Tapahtui virhe';
     if(errorMessage.includes('Record is invalid')){
-      humanReadableError = 'Tietueen validointi ei onnistunut. Tarkistathan merkatut kentät.';
+      return 'Tietueen validointi ei onnistunut. Tarkistathan merkatut kentät.';
     }
-    return humanReadableError;
+    return "Tapahtui virhe: " + errorMessage;
   }
   function getContent(field) {
     return (replace && replace[field.id]) ?? field;
@@ -606,8 +605,6 @@ function getCurrentField(){
   const field = {
     id: editing.id,
     tag: query('#fieldEditDlg #tag #tag').textContent,
-    ind1: query('#fieldEditDlg #ind1 #ind1').textContent,
-    ind2: query('#fieldEditDlg #ind2 #ind2').textContent
   };
 
   // if field contains "value" and not "subfields"
@@ -616,6 +613,8 @@ function getCurrentField(){
 
   // if field contains "subfields" and not "value"
   } else if (editing.subfields) {
+    field.ind1 = query('#fieldEditDlg #ind1 #ind1').textContent
+    field.ind2 = query('#fieldEditDlg #ind2 #ind2').textContent
     field.subfields = Array.from(query('#fieldEditDlg #fieldlist').childNodes)
       .filter(e => e.classList.contains('subfield'))
       .filter(e => !e.getAttribute('disabled'))
