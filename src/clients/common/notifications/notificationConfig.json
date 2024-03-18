@@ -3,6 +3,12 @@
         "clearNotificationLocalStorageOnLoad": false
     },
     "localstorePrefixKey": "melinda_notification",
+    "accepted_clients":[
+        "artikkelit",
+        "viewer",
+        "muuntaja",
+        "edit"
+    ],
     "resourceConfigsForComponentStyles": {
         "banner":{
             "templateId": "bannerTemplate",

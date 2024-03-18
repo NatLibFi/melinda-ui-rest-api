@@ -22,9 +22,7 @@ export async function getNotifications(paramObj) {
   }
 
   //if client is not set (or valid) assume we want notifications for all
-  if (!clientName || !isClientValid({clientName})) {
-    clientName = 'all';
-  }
+  clientName = await validateOverrideClientName({clientName});
 
   //do backend call and try filter them into different categories
   try {
@@ -58,15 +56,19 @@ export async function getNotifications(paramObj) {
  * @param {String} paramObj.clientName app/client name to check
  * @returns {boolean} was client given correct
  */
-function isClientValid(paramObj) {
+async function isClientValid(paramObj) {
   if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
     throw new Error('Malformed or missing param object on function');
   }
   const {clientName} = paramObj;
 
-  //TODO: update clients fetching notifications
-  const validClients = ['artikkelit', 'viewer', 'muuntaja', 'edit'];
-  return validClients.includes(clientName.toLowerCase());
+  try {
+    const validClients = await dataUtils.getNotificationConfigKeyValue({key: 'accepted_clients'});
+    return validClients.includes(clientName.toLowerCase());
+  } catch (error) {
+    console.error('Client validity check failed. Using default.', error);
+    return false;
+  }
 }
 
 /**
@@ -100,4 +102,26 @@ async function filterNotificationsByBlockState(paramObj) {
     'notBlocking': notBlockingArray,
     hasBlocks
   };
+}
+
+/**
+ * Check if client name is acceptable, if not use generalized all
+ *
+ * @param {object} paramObj object delivery for function
+ * @returns {String} either return same client name or override it with just all if its not valid
+ */
+async function validateOverrideClientName(paramObj){
+  if (!paramObj || typeof paramObj !== 'object' || Object.keys(paramObj).length <= 0) {
+    throw new Error('Malformed or missing param object on function');
+  }
+  const {clientName} = paramObj;
+  const defaultOverrideName = 'all';
+
+  if(!clientName){
+    return defaultOverrideName;
+  }
+
+  const isValid = await isClientValid({clientName});
+
+  return isValid ? clientName : defaultOverrideName;
 }
