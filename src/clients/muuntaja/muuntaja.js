@@ -530,16 +530,16 @@ function updateSaveButtonState(transformed) {
   }
 }
 
-function updateStoredID(transformed) {
-  const {stored} = transformed
-  const storedID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`)
+function updateResultID(transformed) {
+  const {result} = transformed
+  const resultID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`)
 
   //console.log("Stored:", stored)
 
-  if(stored?.ID) {
-    storedID.textContent = "TIETUE " + stored?.ID
+  if(result?.ID) {
+    resultID.textContent = "TIETUE " + result?.ID
   } else {
-    storedID.textContent = "TULOSTIETUE"
+    resultID.textContent = "TULOSTIETUE"
   }
 }
 
@@ -558,15 +558,6 @@ function showTransformed(update = undefined) {
     }
   }
 
-  if (update?.source?.status == 404) {
-    notFoundDlgOpen('Lähde');
-  }
-
-  if (update?.base?.status == 404) {
-    notFoundDlgOpen('Pohja');
-    // alert("Tietuetta ei löytynyt annetulla hakuehdolla");
-  }
-
   const {source, base, insert, stored, result} = transformed;
 
   const isStored = !!stored
@@ -578,7 +569,7 @@ function showTransformed(update = undefined) {
   const resultFields = getFields(result);
   const storedFields = getFields(stored);
 
-  const resultIDs = resultFields.map(f => f.id);
+  const resultIDs = resultFields.filter(f => !!f.id).map(f => f.id);
   const includedSourceIDs = sourceFields.map(f => f.id).filter(id => resultIDs.includes(id));
   const includedBaseIDs = baseFields.map(f => f.id).filter(id => resultIDs.includes(id));
   const includedAddedIDs = addedFields.map(f => f.id).filter(id => resultIDs.includes(id));
@@ -618,7 +609,7 @@ function showTransformed(update = undefined) {
   updateRecordSwapButtonState();
   updateSaveButtonState(transformed);
   updateEditButtonState(transformed)
-  updateStoredID(transformed);
+  updateResultID(transformed);
 
   function getFields(record) {
     return record?.fields ?? [];

@@ -89,7 +89,7 @@ export function generateResultRecord({source, base: baseRecord, options, insert,
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord(result)
+        result: stripRecord({ID: base.ID, ...result})
       };
     } catch (err) {
       const error = err.toString();
@@ -198,11 +198,19 @@ export function addMissingIDs(record) {
   };
 }
 
-export function generateMissingIDs(fields) {
+export function generateMissingIDs(fields, exclude = ['CAT', '001', '003', '005']) {
   if (!fields) {
     return [];
   }
-  return fields.map(f => f.id ? f : {...f, id: uuid()});
+  return fields.map(f => {
+    if (exclude.includes(f.tag)) {
+      return f;
+    }
+    if (f.id) {
+      return f;
+    }
+    return {...f, id: uuid()};
+  });
 }
 
 export function stripFields(record) {
