@@ -1,0 +1,48 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for progress bar component                                            */
+/* ---------------------------------------------------------------------------- */
+
+.progress-bar-inactive {
+  width: 100%;
+  margin: 0;
+  padding-bottom: 10px;
+}
+
+.progress-bar-inactive.grey-20 {
+  background-color: var(--color-grey-20);
+}
+
+.progress-bar,
+.progress-bar:before {
+  height: 10px;
+  width: 100%;
+  margin: 0;
+}
+
+.progress-bar {
+  background-color: var(--color-melinda-green-custom);
+  display: flex;
+}
+
+.progress-bar:before {
+  background-color: var(--color-melinda-lightblue-custom);
+  content: '';
+  animation: running-progress 1s linear infinite;
+}
+
+@keyframes running-progress {
+  0% {
+    margin-left: 0px;
+    margin-right: 100%;
+  }
+
+  50% {
+    margin-left: 0%;
+    margin-right: 0%;
+  }
+
+  100% {
+    margin-left: 100%;
+    margin-right: 0%;
+  }
+}

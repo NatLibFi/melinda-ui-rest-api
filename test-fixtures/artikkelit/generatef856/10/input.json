@@ -1,0 +1,22 @@
+{
+    "source": {     
+    "isElectronic": false
+    },
+    "article": {
+        "title": "",
+        "titleOther": "",
+        "language": {
+            "iso6391": "fi",
+            "iso6392b": "fin",
+            "ui": "Suomi"
+        },
+        "link": [
+            "https://app.slack.com/",
+            "https://wearehelsinkiuni.helsinki.fi/fi/wearehelsinkiuni",
+            "www.ursa.fi"
+        ],
+        "type": "A1 - Vertaisarvioitu alkuperäisartikkeli tieteellisessä aikakauslehdessä",
+        "reviewType": "",
+        "sectionOrColumn": ""
+        }
+}

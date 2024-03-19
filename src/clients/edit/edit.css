@@ -1,0 +1,42 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for MUOKKAUS app                                                      */
+/* ---------------------------------------------------------------------------- */
+
+
+@import "/common/stylesheets/main.css";
+
+#muuntaja {
+  background-color: var(--color-primary-white);
+}
+
+
+#muuntaja .record-merge-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.record-merge-panel .col {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  margin: 8pt;
+}
+
+.col>* {
+  padding: 8pt;
+}
+
+.col .header {
+  height: 48px;
+  border-bottom: 1px solid var(--color-grey-60);
+  align-items: center;
+}
+
+.header .material-icons {
+  padding: 8px;
+  font-size: 32px;
+}
+
+.header label {
+  font-size: 12pt;
+}

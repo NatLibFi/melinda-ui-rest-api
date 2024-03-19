@@ -1,0 +1,47 @@
+[
+    {
+     "tag": "856",
+     "ind1": "4",
+     "ind2": "0",
+     "subfields": [
+      {
+       "code": "u",
+       "value": "https://app.slack.com/"
+      },
+      {
+       "code": "y",
+       "value": "Linkki verkkoaineistoon"
+      }
+     ]
+    },
+    {
+     "tag": "856",
+     "ind1": "4",
+     "ind2": "0",
+     "subfields": [
+      {
+       "code": "u",
+       "value": "https://wearehelsinkiuni.helsinki.fi/fi/wearehelsinkiuni"
+      },
+      {
+       "code": "y",
+       "value": "Linkki verkkoaineistoon"
+      }
+     ]
+    },
+    {
+     "tag": "856",
+     "ind1": "4",
+     "ind2": "0",
+     "subfields": [
+      {
+       "code": "u",
+       "value": "www.ursa.fi"
+      },
+      {
+       "code": "y",
+       "value": "Linkki verkkoaineistoon"
+      }
+     ]
+    }
+   ]

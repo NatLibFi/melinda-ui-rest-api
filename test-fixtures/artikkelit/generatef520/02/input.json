@@ -1,0 +1,23 @@
+{
+    "abstracts": [
+        {
+         "key": 1,
+         "language": {
+          "iso6391": "fi",
+          "iso6392b": "fin",
+          "ui": "Suomi"
+         },
+         "abstract": "Tässä Tiivistelmä, lomakkeen kohdasta Tiivistelmän tiedot"
+        },
+        {
+         "key": 2,
+         "language": {
+          "iso6391": "fi",
+          "iso6392b": "fin",
+          "ui": "Suomi"
+         },
+         "abstract": "Toinen tiivistelmä"
+        }
+       ]
+}
+

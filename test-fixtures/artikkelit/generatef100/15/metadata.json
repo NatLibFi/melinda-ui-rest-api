@@ -1,0 +1,8 @@
+{
+  "description": "generatef100 - case kirjoittaja, kuvittaja and yhteisö. With: authorsTempOrganizations.",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

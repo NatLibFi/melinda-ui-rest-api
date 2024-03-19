@@ -1,0 +1,7 @@
+{
+  "description": "generatef084 - field 084, other classifications",
+  "skip": false,
+  "only": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

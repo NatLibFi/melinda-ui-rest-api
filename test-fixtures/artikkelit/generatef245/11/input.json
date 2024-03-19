@@ -1,0 +1,25 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Friedrich",
+     "lastName": "Schiller",
+     "corporateName": "",     
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+   "article": {
+    "title": "Artikkelin tiedot - Otsikko ja lopussa syötetty piste.",
+    "titleOther": "",
+    "language": {
+     "iso6391": "en",
+     "iso6392b": "eng",
+     "ui": "Englanti"
+    },
+    "link": "",
+    "type": "",
+    "reviewType": "",
+    "sectionOrColumn": ""
+   }
+}

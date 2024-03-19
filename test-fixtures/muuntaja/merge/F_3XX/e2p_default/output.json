@@ -1,0 +1,42 @@
+{
+   "leader": "B",
+   "fields": [
+      {
+         "tag": "001",
+         "value": "A"
+      },
+      {
+         "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
+         "tag": "020",
+         "ind1": " ",
+         "ind2": " ",
+         "subfields": [
+            {
+               "code": "a", "value": ""
+            },
+            {
+               "code": "q","value": ""
+            }
+         ]
+      },
+      {"tag": "300", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": ""}, {"code": "c", "value": ""} ]},
+
+      {"tag": "348", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "355", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "370", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "377", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "378", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "379", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "380", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "381", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "382", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "383", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "384", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "385", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "386", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "387", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "388", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]}
+  ]
+}

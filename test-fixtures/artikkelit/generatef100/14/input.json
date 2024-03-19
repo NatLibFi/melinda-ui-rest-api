@@ -1,0 +1,27 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "",
+     "lastName": "",
+     "corporateName": "Kirjailijayhteisö",     
+     "relator": "yhteisö",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 2,
+     "firstName": "",
+     "lastName": "",
+     "corporateName": "Kuvittajayhteisö",     
+     "relator": "yhteisö",
+     "authorsTempOrganizations": [
+      {
+       "key": 1,
+       "organizationName": "Kuvataideakatemia",
+       "code": "1740",
+       "note": false
+      }
+     ]
+    }
+   ]
+}

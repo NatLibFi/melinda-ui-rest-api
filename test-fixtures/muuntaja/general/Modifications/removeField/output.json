@@ -1,0 +1,17 @@
+{
+  "leader": "B",
+  "fields": [
+    {"id": "2", "tag": "001", "value": "A"},
+    {
+      "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
+      "tag": "020",
+      "ind1": " ",
+      "ind2": " ",
+      "subfields": [
+        {"code": "a", "value": ""},
+        {"code": "q", "value": ""}
+      ]
+    },
+    {"id": "Y", "tag": "031", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]}
+  ]
+}

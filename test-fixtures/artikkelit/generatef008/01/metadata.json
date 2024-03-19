@@ -1,0 +1,9 @@
+{
+  "description": "generatef008 - field 008, publYear none, sourceType journal, isElectronic false, language esp",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

@@ -1,0 +1,69 @@
+{
+  "leader": "00000cam^a22006134i^4500",
+  "fields": [
+   {
+    "tag": "008",
+    "value": "^^^^^^s2038^^^^fi^||||^^^^^^^|0|^0|fin|c",
+    "id": "4bc968f1-9186-4d04-ba09-7537d0c4ee95"
+   },
+   {
+    "tag": "040", "ind1": " ", "ind2": " ",
+    "subfields": [
+      {"code": "a", "value": ""},
+      {"code": "b", "value": "fin"},
+      {"code": "e", "value": "rda"}
+    ],
+    "id": "6f4d044c-28f4-4616-9edb-89ec47856cab"
+  },
+  {
+    "tag": "336",
+    "ind1": " ", "ind2": " ",
+    "subfields": [
+      {"code": "a", "value": "teksti"},
+      {"code": "b", "value": "txt"},
+      {"code": "c", "value": "rdacontent"}
+    ],
+    "id": "0194c712-c561-456c-993d-18368030ea5b"
+  },
+   {
+    "tag": "337",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "käytettävissä ilman laitetta"
+     },
+     {
+      "code": "b",
+      "value": "n"
+     },
+     {
+      "code": "2",
+      "value": "rdamedia"
+     }
+    ],
+    "id": "66029c77-30a4-42a2-bf23-6499ca97fe87"
+   },
+   {
+    "tag": "338",
+    "ind1": " ",
+    "ind2": " ",
+    "subfields": [
+     {
+      "code": "a",
+      "value": "nide"
+     },
+     {
+      "code": "b",
+      "value": "nc"
+     },
+     {
+      "code": "2",
+      "value": "rdacarrier"
+     }
+    ],
+    "id": "55e6067b-8eba-44c1-a53c-293641a40729"
+   }
+  ]
+ }

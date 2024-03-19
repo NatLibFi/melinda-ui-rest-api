@@ -1,0 +1,40 @@
+[
+  {
+   "tag": "648",
+   "ind1": " ",
+   "ind2": "7",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "1930-luku"
+    },
+    {
+     "code": "2",
+     "value": "yso/fin"
+    },
+    {
+     "code": "0",
+     "value": "http://www.yso.fi/onto/yso/p6193061939"
+    }
+   ]
+  },
+  {
+   "tag": "650",
+   "ind1": " ",
+   "ind2": "7",
+   "subfields": [
+    {
+     "code": "a",
+     "value": "talous"
+    },
+    {
+     "code": "2",
+     "value": "yso/fin"
+    },
+    {
+     "code": "0",
+     "value": "http://www.yso.fi/onto/yso/p2555"
+    }
+   ]
+  }
+ ]

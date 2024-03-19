@@ -1,0 +1,9 @@
+{
+  "description": "generatef6xxx - Field 600 case Muu-Henkilo with subfields a and t (d)",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

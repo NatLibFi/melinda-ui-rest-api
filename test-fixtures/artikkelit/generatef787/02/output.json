@@ -1,0 +1,60 @@
+[
+  {
+   "tag": "787",
+   "ind1": "0",
+   "ind2": "8",
+   "subfields": [
+    {
+     "code": "i",
+     "value": "Arvosteltu teos:"
+    },
+    {
+     "code": "t",
+     "value": "Suomen urheilutoimittajat 1986."
+    },
+    {
+     "code": "d",
+     "value": "[Hki] : [Urheilutoimittajain liitto], 1986"
+    },
+    {
+     "code": "z",
+     "value": ""
+    },
+    {
+     "code": "w",
+     "value": [
+      "(FI-MELINDA)000007760"
+     ]
+    }
+   ]
+  },
+  {
+   "tag": "787",
+   "ind1": "0",
+   "ind2": "8",
+   "subfields": [
+    {
+     "code": "i",
+     "value": "Arvosteltu teos:"
+    },
+    {
+     "code": "t",
+     "value": "Maineen tieltä : Suomen urheiluliitto 1906-1981 : 3."
+    },
+    {
+     "code": "d",
+     "value": "Hki : Suomen urheiluliitto, 1981"
+    },
+    {
+     "code": "z",
+     "value": ""
+    },
+    {
+     "code": "w",
+     "value": [
+      "(FI-MELINDA)000005587"
+     ]
+    }
+   ]
+  }
+ ]

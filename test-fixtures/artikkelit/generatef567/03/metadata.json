@@ -1,0 +1,9 @@
+{
+  "description": "generatef567 - field 567, metodologys no input",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

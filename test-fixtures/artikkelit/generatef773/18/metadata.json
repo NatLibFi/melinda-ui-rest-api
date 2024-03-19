@@ -1,0 +1,9 @@
+{
+  "description": "generatef773 - field 773, kokoomateosartikkeli: nnam, book, no page numbers (1)",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

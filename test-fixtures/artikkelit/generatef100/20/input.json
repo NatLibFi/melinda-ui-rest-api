@@ -1,0 +1,20 @@
+{
+    "authors" :
+    [
+        {
+         "key": 1,
+         "firstName": "Jakke",
+         "lastName": "Jäyhä",
+         "corporateName": "",         
+         "relator": "kirjoittaja",
+         "authorsTempOrganizations": [
+          {
+           "key": 1,
+           "organizationName": "Aalto yliopisto",
+           "code": "10076",
+           "note": false
+          }
+         ]
+        }
+       ]
+  }

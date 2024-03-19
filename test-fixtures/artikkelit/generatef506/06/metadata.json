@@ -1,0 +1,10 @@
+{
+  "description": "generatef506 - field 506, contains no input: isElectronic & link",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "422"
+}

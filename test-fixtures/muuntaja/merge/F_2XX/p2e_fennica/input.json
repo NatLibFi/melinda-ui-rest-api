@@ -1,0 +1,27 @@
+{
+  "options": {
+   "type": "p2e",
+   "profile": "FENNI"
+  },
+  "base": {
+    "leader": "B",
+    "fields": [
+      {"tag": "001", "value": "A"}
+    ]
+  },
+  "source": {
+    "leader": "A",
+    "fields": [
+      {"tag": "200", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "211", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "222", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "233", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "244", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "250", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "260", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "264", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "270", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]}
+    ]
+  }
+ }

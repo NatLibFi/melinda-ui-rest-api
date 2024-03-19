@@ -1,0 +1,121 @@
+/* ---------------------------------------------------------------------------- */
+/* Some generic CSS elements                                                    */
+/* ---------------------------------------------------------------------------- */
+
+/* Remove margins and paddings, and set default font to sans-serif */
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-content-medium);
+  font-size: 100%;
+}
+
+div {
+  padding: 0;
+  margin: 0;
+}
+
+p,
+select,
+option,
+.content-text {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-medium);
+  font-weight: var(--font-weight-content);
+  line-height: var(--font-line-height-content-medium);
+}
+
+a {
+  color: var(--color-functional-blue);
+  font-family: var(--font-family-link);
+  font-size: var(--font-size-link-medium);
+  font-weight: var(--font-weight-link);
+}
+
+button {
+  font-family: var(--font-family-button);
+  font-size: var(--font-size-button-medium);
+  font-weight: var(--font-weight-button);
+}
+
+h1 {
+  font-family: var(--font-family-brand);
+  font-size: var(--font-size-brand);
+  font-weight: var(--font-weight-brand);
+  line-height: var(--font-line-height-brand);
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-headline);
+  font-weight: var(--font-weight-headline);
+}
+
+h2 {
+  font-size: var(--font-size-headline-extra-large);
+  line-height: var(--font-line-height-headline-large);
+}
+
+h3 {
+  font-size: var(--font-size-headline-large);
+  line-height: var(--font-line-height-headline-large);
+}
+
+h4 {
+  font-size: var(--font-size-headline-medium);
+  line-height: var(--font-line-height-headline-medium);
+}
+
+h5 {
+  font-size: var(--font-size-headline-small);
+  line-height: var(--font-line-height-headline-small);
+}
+
+h6 {
+  font-size: var(--font-size-headline-extra-small);
+  line-height: var(--font-line-height-headline-small);
+}
+
+input {
+  font-family: var(--font-family-input);
+  font-size: var(--font-size-input-medium);
+  font-weight: var(--font-weight-input);
+}
+
+::placeholder {
+  font-family: var(--font-family-placeholder);
+  font-size: var(--font-size-placeholder-medium);
+  font-weight: var(--font-weight-placeholder);
+}
+
+label,
+.label-text {
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-label);
+  line-height: var(--font-line-height-label-medium);
+}
+
+ul,
+li {
+  font-family: var(--font-family-list);
+  font-size: var(--font-size-list-medium);
+  font-weight: var(--font-weight-list);
+  line-height: var(--font-line-height-list-medium);
+}
+
+title,
+.title-text,
+legend {
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-title-medium);
+  font-weight: var(--font-weight-title);
+  line-height: var(--font-line-height-title-medium);
+}

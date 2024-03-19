@@ -1,0 +1,47 @@
+[
+    {
+     "tag": "700",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Toimittaja, Toni,"
+      },
+      {
+       "code": "e",
+       "value": "toimittaja."
+      }
+     ]
+    },
+    {
+     "tag": "700",
+     "ind1": "1",
+     "ind2": " ",
+     "subfields": [
+      {
+       "code": "a",
+       "value": "Kääntäjä, Kale,"
+      },
+      {
+       "code": "e",
+       "value": "kääntäjä."
+      }
+     ]
+    },
+    {
+        "tag": "700",
+        "ind1": "1",
+        "ind2": " ",
+        "subfields": [
+         {
+          "code": "a",
+          "value": "Dore, Gustav,"
+         },
+         {
+          "code": "e",
+          "value": "kuvittaja."
+         }
+        ]
+       }    
+]

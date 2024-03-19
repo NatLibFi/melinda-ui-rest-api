@@ -1,0 +1,17 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p94320",
+         "type": [
+          "skos:Concept"
+         ],
+         "localname": "p94320",
+         "prefLabel": "Oulu",
+         "lang": "fi",
+         "vocab": "yso-paikat"
+        }
+       ]
+}
+

@@ -1,0 +1,84 @@
+/* ---------------------------------------------------------------------------- */
+/* Color styles                                                                 */
+/* ---------------------------------------------------------------------------- */
+
+:root {
+
+    /* MELINDA COLORS ORIGINAL*/
+    --color-melinda-green: #0DB14B;
+    --color-melinda-darkblue: #00224F;
+    --color-melinda-lightblue: #00B3F0;
+    
+    /* MELINDA CUSTOM COLORS (MUTED FOR APPLICAITON) */
+    --color-melinda-green-custom: #248f4d;
+    --color-melinda-lightblue-custom: #28a4cf;
+
+    /* PRIMARY COLORS */
+    /*  - blue: primary text colour, main brand colour */
+    /*  - white: secondary text and link colour, primary background colour */
+    --color-primary-blue: #002855;
+    --color-primary-white: #FFFFFF;
+    --color-primary-black: #000000;
+
+
+    /* FUNCTIONAL COLORS */
+    /*  - blue: primary link and button colour, in forms used as a focus colour */
+    /*  - red: warning, error, rejected. Use in forms and alerts */
+    /*  - green: OK, pass, accepted. use in forms and alerts */
+    /*  - yellow: alert, attention, use in only bacground color */
+    --color-functional-blue: #0D2FC4;
+    --color-functional-red: #A0270A;
+    --color-functional-green: #3A785E;
+    --color-functional-yellow: #FAE196;
+
+
+    /* COLOR PALETTE BLUE */
+    --color-blue-100: #002855;
+    --color-blue-80: #5D7999;
+    --color-blue-60: #B8C9DB;
+    --color-blue-40: #DFE5ED;
+    --color-blue-20: #F2F5F7;
+
+    /* COLOR PALETTE RED */
+    --color-red-100: #A0270A;
+    --color-red-80: #D6958B;
+    --color-red-60: #EBC1B9;
+    --color-red-40: #F7DEDA;
+    --color-red-20: #FAEFED;
+
+    /* COLOR PALETTE GREEN */
+    --color-green-100: #3A785E;
+    --color-green-80: #8AB59C;
+    --color-green-60: #B8D9C7;
+    --color-green-40: #DDEDE3;
+    --color-green-20: #F0F7F3;
+
+    /* COLOR PALETTE YELLOW */
+    --color-yellow-100: #BD9562;
+    --color-yellow-80: #E8C482;
+    --color-yellow-60: #FAE196;
+    --color-yellow-40: #FFF2C9;
+    --color-yellow-20: #FFF9EB;
+
+    /* COLOR PALETTE GREY (SILVER)*/
+    --color-grey-100: #707070;
+    --color-grey-80: #A0A0A0;
+    --color-grey-60: #CFCFCF;
+    --color-grey-40: #E6E6E6;
+    --color-grey-20: #F5F5F5;
+
+    /* COLOR PALETTE BROWN (GOLD) */
+    --color-brown-100: #786444;
+    --color-brown-80: #A69271;
+    --color-brown-60: #C6B9A3;
+    --color-brown-40: #E2DBD0;
+    --color-brown-20: #F2EFEB;
+
+    /* COLOR PALETTE TEAL */
+    --color-teal-100: #1B708C;
+    --color-teal-80: #6CADC4;
+    --color-teal-60: #A2D4E0;
+    --color-teal-40: #D3ECF2;
+    --color-teal-20: #E6F7FA;
+
+}

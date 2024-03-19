@@ -1,0 +1,25 @@
+{
+ "options": {
+  "type": "p2e"
+ },
+ "source": {
+  "leader": "S",
+  "fields": [
+    { "tag": "001", "value": "1"},
+    {
+        "tag":"776",
+        "subfields": [
+          { "code": "i", "value": "Verkkoaineisto:" },
+          { "code": "z", "value": "ISBN-1"}
+        ],
+        "id": "1"
+    }
+  ]
+ },
+ "base": {
+  "leader": "B",
+  "fields": [
+    { "tag": "001", "value": "1"}
+  ]
+ }
+}

@@ -1,0 +1,155 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for snackbar component                                                */
+/* ---------------------------------------------------------------------------- */
+
+
+/* Container for snackbars */
+/* Several snackbars are stacked*/
+/* User can click other elements under snackbar */
+.snackbars {
+  position: fixed;
+  top: 5px;
+  display: flex;
+  flex-direction: column-reverse;
+  z-index: 6;
+  align-items: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Container for one snackbar */
+/* Snackbar contains: */
+/*    - icon */
+/*    - text */
+/*    - link button */
+/*    - close button*/
+.snackbar-container {
+  display: none;
+  align-items: center;
+  background-color: var(--style-background-color, var(--color-blue-60));
+  min-width: 550px;
+  max-height: 68px;
+  overflow: auto;
+  margin: 0.5em;
+  pointer-events: all;
+  padding: 14px
+}
+
+
+/* Snackbar icon is container for a message style icon */
+.snackbar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--style-icon-color, var(--color-blue-100));
+}
+
+.snackbar-icon span.material-icons {
+  font-size: var(--font-size-icon-extra-large);
+  align-items: center;
+}
+
+
+/* Snackbar text is the message in snackbar */
+.snackbar-text {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+  letter-spacing: 1px;
+  align-items: center;
+  font-family: var(--font-family-label);
+  font-size: var(--font-size-label-large);
+  color: var(--color-primary-blue);
+  padding-right: 16px;
+}
+
+/* Snackbar link is container for an link button  */
+.snackbar-link {
+  display: none;
+  padding-right: 16px;
+}
+
+.snackbar-link button {
+  border: none;
+  background-color: transparent;
+  color: var(--color-functional-blue);
+  text-decoration: underline dotted var(--color-functional-blue) 0.1rem;
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+  font-size: var(--font-size-link-large);
+  padding: 0px;
+  margin: 0px;
+  height: 24px;
+}
+
+.snackbar-close {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 12px;
+  font-family: var(--font-family-link);
+  font-weight: var(--font-weight-link);
+  font-size: var(--font-size-link-medium);
+  color: var(--color-primary-blue);
+  letter-spacing: 1px;
+}
+
+.snackbar-close span.material-icons {
+  font-size: var(--font-size-icon-small);
+  padding-left: 4px;
+}
+
+.snackbar-link button:hover,
+.snackbar-close:hover {
+  cursor: pointer;
+}
+
+.snackbar-link button:hover {
+  color: var(--color-primary-blue);
+  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
+}
+
+.snackbar-close:hover {
+  color: var(--color-functional-blue);
+}
+
+.snackbar-close:hover .snackbar-close-text {
+  text-decoration: underline solid var(--color-functional-blue) 0.1rem;
+}
+
+.snackbar-close:active,
+.snackbar-link button:active {
+  color: var(--color-primary-blue);
+}
+
+.snackbar-link button:active,
+.snackbar-close:active .snackbar-close-text {
+  text-decoration: underline solid var(--color-primary-blue) 0.1rem;
+}
+
+/* Snackbar is shown with animations */
+.snackbar-container.show-and-hide {
+  display: inline-flex;
+  animation: fadein 1s, fadeout 1s 5s forwards;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

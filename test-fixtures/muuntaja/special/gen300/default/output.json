@@ -1,0 +1,35 @@
+{
+   "leader": "B",
+   "fields": [
+      {
+         "tag": "001",
+         "value": "A"
+      },
+      {
+         "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
+         "tag": "020",
+         "ind1": " ",
+         "ind2": " ",
+         "subfields": [
+            {
+               "code": "a", "value": ""
+            },
+            {
+               "code": "q","value": ""
+            }
+         ]
+      },
+      {
+         "id": "1",
+         "tag": "300",
+         "ind1": " ",
+         "ind2": " ",
+         "subfields": [
+           {"code": "a", "value": ""},
+           {"code": "b", "value": "X"},
+           {"code": "c", "value": ""},
+           {"code": "d", "value": "X"}
+         ]
+       }
+    ]
+}

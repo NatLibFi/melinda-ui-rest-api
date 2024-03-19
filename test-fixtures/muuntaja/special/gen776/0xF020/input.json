@@ -1,0 +1,17 @@
+{
+ "options": {
+  "type": "p2e"
+ },
+ "base": {
+  "leader": "B",
+  "fields": [
+    { "tag": "001", "value": "1"}
+  ]
+ },
+ "source": {
+  "leader": "S",
+  "fields": [
+    { "tag": "001", "value": "1"}
+  ]
+ }
+}

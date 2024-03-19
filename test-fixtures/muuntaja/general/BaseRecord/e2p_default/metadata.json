@@ -1,0 +1,6 @@
+{
+  "description": "e2p - default - BaseRecord",
+  "skip": false,
+  "only": false,
+  "testBase": true
+}

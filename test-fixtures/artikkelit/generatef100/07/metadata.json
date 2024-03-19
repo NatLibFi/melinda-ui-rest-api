@@ -1,0 +1,8 @@
+{
+  "description": "generatef100 - generates fields for cases arvonimi, yksiniminen, toimittaja with authorsTempOrganizations",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

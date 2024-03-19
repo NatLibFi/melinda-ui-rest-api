@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- Head -->
+<!-- -------------------------------------------------------------------------- -->
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="/common/images/favicon.ico">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Public+Sans:wght@300;500;600&family=Noto+Sans+Mono&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="keycloakLogin.css" />
+
+  <script src="https://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi/js/keycloak.js"></script>
+  <script type="module" src="keycloakLogin.js"></script>
+  <script>
+
+    var keycloak = Keycloak();
+
+    keycloak.onAuthSuccess = function () {
+      kcEvent('Auth Success');
+    };
+
+    keycloak.onAuthError = function (errorData) {
+      kcEvent("Auth Error: " + JSON.stringify(errorData));
+    };
+
+    keycloak.onAuthRefreshSuccess = function () {
+      kcEvent('Auth Refresh Success');
+    };
+
+    keycloak.onAuthRefreshError = function () {
+      kcEvent('Auth Refresh Error');
+    };
+
+    keycloak.onAuthLogout = function () {
+      kcEvent('Auth Logout');
+    };
+
+    keycloak.onTokenExpired = function () {
+      kcEvent('Access token expired.');
+    };
+
+    keycloak.onActionUpdate = function (status) {
+      switch (status) {
+        case 'success':
+          kcEvent('Action completed successfully'); break;
+        case 'cancelled':
+          kcEvent('Action cancelled by user'); break;
+        case 'error':
+          kcEvent('Action failed'); break;
+      }
+    };
+
+    // Flow can be changed to 'implicit' or 'hybrid', but then client must enable implicit flow in admin console too 
+    var initOptions = {
+      responseMode: 'fragment',
+      flow: 'standard'
+    };
+
+    keycloak.init(initOptions).then(function (authenticated) {
+      output('Init Success (' + (authenticated ? 'Authenticated' : 'Not Authenticated') + ')');
+    }).catch(function () {
+      output('Init Error');
+    });
+
+
+    function loadProfile() {
+      keycloak.loadUserProfile().success(function (profile) {
+        output(profile);
+      }).error(function () {
+        output('Failed to load profile');
+      });
+    }
+
+    function updateProfile() {
+      var url = keycloak.createAccountUrl().split('?')[0];
+      var req = new XMLHttpRequest();
+      req.open('POST', url, true);
+      req.setRequestHeader('Accept', 'application/json');
+      req.setRequestHeader('Content-Type', 'application/json');
+      req.setRequestHeader('Authorization', 'bearer ' + keycloak.token);
+
+      req.onreadystatechange = function () {
+        if (req.readyState == 4) {
+          if (req.status == 200) {
+            output('Success');
+          } else {
+            output('Failed');
+          }
+        }
+      }
+
+      req.send('{"email":"myemail@foo.bar","firstName":"test","lastName":"bar"}');
+    }
+
+    function loadUserInfo() {
+      keycloak.loadUserInfo().success(function (userInfo) {
+        output(userInfo);
+      }).error(function () {
+        output('Failed to load user info');
+      });
+    }
+
+    function refreshToken(minValidity) {
+      keycloak.updateToken(minValidity).then(function (refreshed) {
+        if (refreshed) {
+          output(keycloak.tokenParsed);
+        } else {
+          output('Token not refreshed, valid for ' + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+        }
+      }).catch(function () {
+        output('Failed to refresh token');
+      });
+    }
+
+    function showExpires() {
+      if (!keycloak.tokenParsed) {
+        output("Not authenticated");
+        return;
+      }
+
+      var o = 'Token Expires:\t\t' + new Date((keycloak.tokenParsed.exp + keycloak.timeSkew) * 1000).toLocaleString() + '\n';
+      o += 'Token Expires in:\t' + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds\n';
+
+      if (keycloak.refreshTokenParsed) {
+        o += 'Refresh Token Expires:\t' + new Date((keycloak.refreshTokenParsed.exp + keycloak.timeSkew) * 1000).toLocaleString() + '\n';
+        o += 'Refresh Expires in:\t' + Math.round(keycloak.refreshTokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds';
+      }
+
+      output(o);
+    }
+
+    function output(data) {
+      if (typeof data === 'object') {
+        data = JSON.stringify(data, null, '  ');
+      }
+      document.getElementById('output').innerHTML = data;
+    }
+
+    function kcEvent(event) {
+      var e = document.getElementById('events').innerHTML;
+      document.getElementById('events').innerHTML = new Date().toLocaleString() + "\t" + event + "\n" + e;
+    }
+  </script>
+</head>
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- Body -->
+<!-- -------------------------------------------------------------------------- -->
+
+<body onload="initialize()">
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Nav bar -->
+
+  <div id="navbar"></div>
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- Application "tabs" -->
+
+  <div id="root">
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Loading "screen" -->
+
+    <div id="loading">
+    </div>
+
+    <div>
+      <button onclick="keycloak.login()">Login</button>
+      <button onclick="keycloak.login({ action: 'UPDATE_PASSWORD' })">Update Password</button>
+      <button onclick="keycloak.logout()">Logout</button>
+      <button onclick="keycloak.register()">Register</button>
+      <button onclick="keycloak.accountManagement()">Account</button>
+      <button onclick="refreshToken(9999)">Refresh Token</button>
+      <button onclick="refreshToken(30)">Refresh Token (if ~30s validity)</button>
+      <button onclick="loadProfile()">Get Profile</button>
+      <button onclick="updateProfile()">Update profile</button>
+      <button onclick="loadUserInfo()">Get User Info</button>
+      <button onclick="output(keycloak.tokenParsed)">Show Token</button>
+      <button onclick="output(keycloak.refreshTokenParsed)">Show Refresh Token</button>
+      <button onclick="output(keycloak.idTokenParsed)">Show ID Token</button>
+      <button onclick="showExpires()">Show Expires</button>
+      <button onclick="output(keycloak)">Show Details</button>
+      <button onclick="output(keycloak.createLoginUrl())">Show Login URL</button>
+      <button onclick="output(keycloak.createLogoutUrl())">Show Logout URL</button>
+      <button onclick="output(keycloak.createRegisterUrl())">Show Register URL</button>
+      <button onclick="output(keycloak.createAccountUrl())">Show Account URL</button>
+
+    </div>
+
+    <h2>Result</h2>
+    <pre
+      style="background-color: #ddd; border: 1px solid #ccc; padding: 10px; word-wrap: break-word; white-space: pre-wrap;"
+      id="output"></pre>
+
+    <h2>Events</h2>
+    <pre
+      style="background-color: #ddd; border: 1px solid #ccc; padding: 10px; word-wrap: break-word; white-space: pre-wrap;"
+      id="events"></pre>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Search dialog -->
+  <dialog id="searchDlg">
+    Testi
+  </dialog>
+
+  <!-- ---------------------------------------------------------------------- -->
+  <!-- Tab for server side notes -->
+  <div id="server-note" hidden>
+  </div>
+
+</body>
+
+</html>

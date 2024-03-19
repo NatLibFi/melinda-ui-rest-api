@@ -1,0 +1,99 @@
+{
+    "source": {
+     "title": "Uudenlainen Hyvinkää kirja",
+     "isElectronic": false,
+     "years": "1980.",
+     "issns": [],
+     "isbns": [
+      [
+       "951-95580-1-2"
+      ]
+     ],
+     "sourceIds": [
+      "(FI-MELINDA)000046551"
+     ],
+     "publishing": "Hyvinkää : Medialehdet, 1980.",
+     "publisherInfo": {
+      "publisherLocation": "Hyvinkää",
+      "publisher": "Medialehdet",
+      "publisherYears": {
+       "start": "1980"
+      }
+     },
+     "notices": [],
+     "authors": [
+      {
+       "firstName": "Riitta",
+       "lastName": "Harkoma-Laine",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000043301"
+      },
+      {
+       "firstName": "Mikko",
+       "lastName": "Ahvenlampi",
+       "relator": "",
+       "organisations": []
+      },
+      {
+       "firstName": "Juha",
+       "lastName": "Ahokas",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000110347"
+      }
+     ],
+     "recordType": "Monografia",
+     "sourceType": "nnam"
+    },
+    "journalNumber": {
+     "publishingYear": "2000",
+     "volume": "1",
+     "number": "12",
+     "pages": "100-102"
+    },
+    "article": {
+     "title": "",
+     "titleOther": "",
+     "language": {
+      "iso6391": "fi",
+      "iso6392b": "fin",
+      "ui": "Suomi"
+     },
+     "link": [
+      ""
+     ],
+     "type": "A3 - Vertaisarvioitu kirjan tai muun kokoomateoksen osa",
+     "reviewType": "",
+     "sectionOrColumn": ""
+    },
+    "collecting": {
+     "f589a": "",
+     "f599a": "",
+     "f599x": ""
+    },
+    "sciences": [
+     {
+      "key": 1,
+      "department": "1",
+      "departmentName": "Luonnontieteet",
+      "subCategory": "112",
+      "subject": "Tilastotiede"
+     }
+    ],
+    "metodologys": [],
+    "authors": [],
+    "ontologyWords": [],
+    "abstracts": [],
+    "notes": [],
+    "udks": [
+     {
+      "key": 1,
+      "a080": "aaa",
+      "x080": "bbb",
+      "two080": ""
+     }
+    ],
+    "otherRatings": []
+   }
+   

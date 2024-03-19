@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+
+  <!-- template for a snackbar container -->
+  <!-- all snackbars are rendered in "snackbars" container div -->
+  <template id="snackbarTemplate">
+
+    <!-- base for one snackbar -->
+    <!-- one snackbar has always text, the message for user -->
+    <!-- snackbar has optionally link button for additional action -->
+    <!-- and always a close button for dismissing the snackbar -->
+
+    <div id="snackbar" class="snackbar-container">
+      <div class="snackbar-icon">
+        <span class="material-icons">error_outline</span>
+      </div>
+      <div class="snackbar-text"></div>
+      <div class="snackbar-link"></div>
+      <div class="snackbar-close">
+        <div class="snackbar-close-text">
+          Sulje
+        </div>
+        <span class="material-icons snackbar-close-icon">close</span>
+      </div>
+    </div>
+
+  </template>
+
+</body>
+
+</html>

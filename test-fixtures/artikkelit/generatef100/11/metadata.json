@@ -1,0 +1,8 @@
+{
+  "description": "generatef100 - such roles as toimittaja, kuvittaja, kääntäjä always to 700-fields.",
+  "skip": false,
+  "only": false,
+  "expectToFail": false,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

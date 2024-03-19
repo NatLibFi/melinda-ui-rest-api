@@ -1,0 +1,10 @@
+{
+  "description": "generatef960 - field 960, constant; subfield a is ARTO",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectToFail": true,
+  "expectedErrorStatus": "200"
+}

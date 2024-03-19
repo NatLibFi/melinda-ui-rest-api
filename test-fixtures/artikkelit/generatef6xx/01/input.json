@@ -1,0 +1,18 @@
+{
+    "ontologyWords": [
+        {
+         "key": 1,
+         "identifier": 0,
+         "uri": "http://www.yso.fi/onto/yso/p2555",
+         "type": [
+          "skos:Concept",
+          "http://www.yso.fi/onto/yso-meta/Concept"
+         ],
+         "localname": "p2555",
+         "prefLabel": "talous",
+         "lang": "fi",
+         "vocab": "yso"
+        }
+       ]
+}
+

@@ -1,0 +1,916 @@
+{
+  "reviews": [
+    {
+     "key": 1,
+     "title": "Suomen urheilutoimittajat 1986",
+     "isElectronic": false,
+     "years": "1986",
+     "issns": [],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)000007760"
+     ],
+     "publishing": "[Hki] : [Urheilutoimittajain liitto], 1986",
+     "publisherInfo": {
+      "publisherLocation": "[Hki]",
+      "publisher": "[Urheilutoimittajain liitto]",
+      "publisherYears": {
+       "start": "1986"
+      }
+     },
+     "notices": [],
+     "authors": [
+      {
+       "firstName": "Antti O",
+       "lastName": "Arponen",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000040710"
+      },
+      {
+       "firstName": "Ilmo",
+       "lastName": "Lounasheimo",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000051268"
+      },
+      {
+       "lastName": "Urheilutoimittajain liitto",
+       "relator": "yhteisö",
+       "organisations": [],
+       "asteriId": "000006048"
+      }
+     ],
+     "simpleGroups": {
+      "universalDecimalClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "929"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796/799"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796.072"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "06.02"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "06.02:796.072"
+        },
+        {
+         "code": "x",
+         "value": "(480):929"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796.072"
+        },
+        {
+         "code": "x",
+         "value": "(480)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796.072"
+        },
+        {
+         "code": "x",
+         "value": "(480)"
+        },
+        {
+         "code": "x",
+         "value": "(03)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796.072"
+        },
+        {
+         "code": "x",
+         "value": "(480):929:06.02"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "929"
+        },
+        {
+         "code": "x",
+         "value": "(480)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "929"
+        },
+        {
+         "code": "x",
+         "value": "(480):796.072"
+        }
+       ]
+      ],
+      "otherClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "99.2"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "99.2207"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "HIS:21.7"
+        },
+        {
+         "code": "2",
+         "value": "z"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "HIS:23.2.2"
+        },
+        {
+         "code": "2",
+         "value": "z"
+        }
+       ]
+      ],
+      "abstract": {
+       "term": [
+        "S 86-143: Matrikkeli"
+       ],
+       "language": [
+        "swe"
+       ]
+      },
+      "localNotes599": []
+     },
+     "simpleElements": {
+      "referenceLink": [],
+      "f655s": [],
+      "f653s": [
+       "sportredaktörer"
+      ],
+      "f651s": [
+       [
+        {
+         "code": "a",
+         "value": "Suomi"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p94426"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Finland"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p94426"
+        }
+       ]
+      ],
+      "f650s": [
+       [
+        {
+         "code": "a",
+         "value": "urheilu"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p965"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "järjestöt"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1393"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "matrikkelit"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p6020"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "urheilutoimittajat"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p16743"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "henkilöhistoria"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p2718"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "järjestöhistoriikit"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1794"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "journalister"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1021"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "idrott"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p965"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "föreningar"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1393"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "matriklar"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p6020"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "sportjournalister"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p16743"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "personhistoria"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p2718"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "organisationshistoriker"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1794"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "toimittajat (media)"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1021"
+        }
+       ]
+      ],
+      "f648s": [],
+      "f610s": [
+       [
+        {
+         "code": "a",
+         "value": "Urheilutoimittajain liitto."
+        },
+        {
+         "code": "0",
+         "value": "(FI-ASTERI-N)000006048"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Urheilutoimittajain liitto"
+        },
+        {
+         "code": "0",
+         "value": "(FI-ASTERI-N)000006048"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Urheilutoimittajain liitto"
+        },
+        {
+         "code": "0",
+         "value": "(FI-ASTERI-N)000006048"
+        }
+       ]
+      ],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [
+       "Sisältää vuoden urheilijat 1947-1985."
+      ],
+      "methodology": []
+     },
+     "recordType": "Monografia",
+     "sourceType": "nnam"
+    },
+    {
+     "key": 2,
+     "title": "Maineen tieltä : Suomen urheiluliitto 1906-1981 : 3",
+     "isElectronic": false,
+     "years": "1981",
+     "issns": [],
+     "isbns": [],
+     "sourceIds": [
+      "(FI-MELINDA)000005587"
+     ],
+     "publishing": "Hki : Suomen urheiluliitto, 1981",
+     "publisherInfo": {
+      "publisherLocation": "Hki",
+      "publisher": "Suomen urheiluliitto",
+      "publisherYears": {
+       "start": "1981"
+      }
+     },
+     "notices": [],
+     "authors": [
+      {
+       "firstName": "Matti",
+       "lastName": "Hannus",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000043226"
+      },
+      {
+       "firstName": "Antero",
+       "lastName": "Raevuori",
+       "relator": "",
+       "organisations": [],
+       "asteriId": "000056260"
+      }
+     ],
+     "simpleGroups": {
+      "universalDecimalClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "796/799"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "061.237"
+        },
+        {
+         "code": "x",
+         "value": "(091)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796.4"
+        },
+        {
+         "code": "x",
+         "value": "(091)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796/799"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "061.237"
+        },
+        {
+         "code": "x",
+         "value": "(091)"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "796.4"
+        },
+        {
+         "code": "x",
+         "value": "(091)"
+        }
+       ]
+      ],
+      "otherClassificationNumber": [
+       [
+        {
+         "code": "a",
+         "value": "79.109"
+        },
+        {
+         "code": "2",
+         "value": "ykl"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "HIS:21.7"
+        },
+        {
+         "code": "2",
+         "value": "z"
+        }
+       ]
+      ],
+      "abstract": {
+       "term": [],
+       "language": []
+      },
+      "localNotes599": []
+     },
+     "simpleElements": {
+      "referenceLink": [],
+      "f655s": [],
+      "f653s": [],
+      "f651s": [
+       [
+        {
+         "code": "a",
+         "value": "Suomi"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p94426"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Finland"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p94426"
+        }
+       ]
+      ],
+      "f650s": [
+       [
+        {
+         "code": "a",
+         "value": "yleisurheilu"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p935"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "historia"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1780"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "urheilijat"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p3315"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "huippu-urheilu"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p14285"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "henkilöhistoria"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p2718"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "suomalaiset"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p3180"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "urheilu- ja liikuntajärjestöt"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p2042"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "järjestöhistoriikit"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1794"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "urheilu"
+        },
+        {
+         "code": "2",
+         "value": "yso/fin"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p965"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "friidrott"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p935"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "historia"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1780"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "idrottare"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p3315"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "toppidrott"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p14285"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "personhistoria"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p2718"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "finländare"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p3180"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "sport- och idrottsorganisationer"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p2042"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "organisationshistoriker"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p1794"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "idrott"
+        },
+        {
+         "code": "2",
+         "value": "yso/swe"
+        },
+        {
+         "code": "0",
+         "value": "http://www.yso.fi/onto/yso/p965"
+        }
+       ]
+      ],
+      "f648s": [],
+      "f610s": [
+       [
+        {
+         "code": "a",
+         "value": "Suomen urheiluliitto."
+        },
+        {
+         "code": "0",
+         "value": "(FI-ASTERI-N)000005005"
+        }
+       ],
+       [
+        {
+         "code": "a",
+         "value": "Suomen urheiluliitto"
+        },
+        {
+         "code": "0",
+         "value": "(FI-ASTERI-N)000005005"
+        }
+       ]
+      ],
+      "f600s": [],
+      "articleLanguage": [
+       "fin"
+      ],
+      "articleReference": [],
+      "articleSciences": [],
+      "titleOther": [],
+      "localNotes598": [],
+      "noteGeneral": [
+       "Osat 1-2 ilm. nimellä Yleisurheilumme maineen tieltä 1956 ja 1966."
+      ],
+      "methodology": []
+     },
+     "recordType": "Monografia",
+     "sourceType": "nnam"
+    }
+   ]
+}

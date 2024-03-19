@@ -1,0 +1,9 @@
+{
+  "description": "generatef080 - field 080, input: subfields a and 2",
+  "skip": false,
+  "only": false,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "200"
+}

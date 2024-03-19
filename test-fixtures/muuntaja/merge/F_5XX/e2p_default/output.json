@@ -1,0 +1,68 @@
+{
+   "leader": "B",
+   "fields": [
+      {
+         "tag": "001",
+         "value": "A"
+      },
+      {
+         "id": "1ed797e0-1026-425b-9ef4-fc4d3771914a",
+         "tag": "020",
+         "ind1": " ",
+         "ind2": " ",
+         "subfields": [
+            {
+               "code": "a", "value": ""
+            },
+            {
+               "code": "q","value": ""
+            }
+         ]
+      },
+      {"tag": "501", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "502", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "504", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "505", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "507", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "508", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "509", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "510", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "511", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "512", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "513", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "514", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "515", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "518", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "519", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "520", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "521", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "522", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "523", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "524", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "525", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "526", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "541", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "542", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "544", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "545", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "546", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "547", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "548", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "549", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "550", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "555", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "560", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "565", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "567", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+
+      {"tag": "580", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "581", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]},
+      {"tag": "582", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "583", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "584", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "585", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "X"} ]},
+      {"tag": "586", "ind1": " ", "ind2": " ", "subfields": [ {"code": "a", "value": "A"} ]}
+   ]
+}

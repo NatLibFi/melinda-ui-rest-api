@@ -1,0 +1,143 @@
+/* ---------------------------------------------------------------------------- */
+/* Styles for MARC record viewing                                               */
+/* ---------------------------------------------------------------------------- */
+
+.marc-record {
+  font-family: var(--font-family-mono);
+  font-size: 14.5px;
+}
+
+.marc-record > * {
+  font: inherit;
+}
+
+.marc-record .row {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px var(--color-primary-white) solid;
+  padding-left: 8px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  white-space: pre-wrap;
+}
+
+.marc-record .row:hover {
+  border: 1px dashed var(--color-grey-80)
+}
+
+.marc-record .row.clickable:hover{
+  cursor: pointer;
+}
+
+.marc-record .error {
+  background-color: #eba0a060;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.marc-record .notes {
+  background-color: rgb(236, 246, 236);
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.marc-record .row-included {
+  background-color: #f8fcd8;
+}
+
+.marc-record .row-excluded {
+  opacity: 0.5;
+  text-decoration-line: line-through;
+  text-decoration-color: gray;
+}
+
+.marc-record .row-replaced {
+  background-color: rgb(255, 238, 241);
+}
+
+.marc-record .row-fromSource {
+  background-color: #ebfaf9;
+}
+
+.marc-record .row-fromBase {
+  background-color: #f8fcd8;
+}
+
+.marc-record .row-fromInsert {
+  background-color: rgb(255, 238, 241);
+}
+
+.marc-record .tag {
+  color: var(--color-melinda-green-custom);
+  margin-right: 9pt;
+}
+
+.marc-record .inds {
+  color: var(--color-melinda-green-custom);
+  margin-right: 9pt;
+}
+
+.marc-record .subfield {
+  margin-right: 4px;
+  overflow-wrap: anywhere;
+}
+
+.marc-record .subfield .code {
+  color: var(--color-melinda-lightblue-custom);
+  margin-right: 2px;
+}
+
+.marc-record .subfield .code:before {
+  content: "\2021";
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Styles for MARC record field edit */
+
+.modal-content button {
+  margin: 2px 8px;
+}
+
+.fieldedit .editable {
+  border: 1px solid var(--color-grey-60);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.fieldedit .subfield {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  margin: 2px 0px;
+}
+
+.fieldedit .subfield:hover {
+  background-color: rgb(236, 236, 236);
+}
+
+.fieldedit .subfield[disabled] {
+  color: var(--color-grey-60);
+}
+
+.fieldedit .ghost-row {
+  background-color: lightblue;
+}
+
+.fieldedit button.material-icons {
+  font-size: 16px;
+  color: inherit;
+  border: 0;
+  background-color: transparent;
+  padding: 4px 4px;
+  cursor: pointer;
+}
+
+.fieldedit button.material-icons:disabled {
+  color: var(--color-grey-80);
+  cursor: default;
+}
+
+.fieldedit button.material-icons:enabled:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+}

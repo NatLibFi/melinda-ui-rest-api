@@ -1,0 +1,21 @@
+{
+  "authors" :  
+  [
+    {
+      "key": 1,
+      "firstName": "",
+      "lastName": "",
+      "corporateName": "",      
+      "relator": "kirjoittaja",
+      "authorsTempOrganizations": []
+    },
+    {
+      "key": 2,
+      "firstName": "Gustave",
+      "lastName": "Dore",
+      "corporateName": "",      
+      "relator": "kuvittaja",
+      "authorsTempOrganizations": []
+    }
+  ]
+}

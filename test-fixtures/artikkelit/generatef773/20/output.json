@@ -1,0 +1,31 @@
+[
+  {
+   "tag": "773",
+   "ind1": "0",
+   "ind2": "8",
+   "subfields": [
+    {
+     "code": "i",
+     "value": "Sisältyy manifestaatioon:"
+    },
+    {
+     "code": "t",
+     "value": "Uudenlainen Hyvinkää kirja."
+    },
+    {
+     "code": "z",
+     "value": "951-isbn"
+    },
+    {
+     "code": "w",
+     "value": [
+      "(FI-MELINDA)000046551"
+     ]
+    },
+    {
+     "code": "7",
+     "value": "nnam"
+    }
+   ]
+  }
+]

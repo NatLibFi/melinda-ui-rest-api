@@ -1,0 +1,35 @@
+[
+  {
+   "tag": "591",
+   "ind1": " ",
+   "ind2": " ",
+   "subfields": [
+    {
+     "code": "d",
+     "value": [
+      "E1"
+     ]
+    },
+    {
+     "code": "h",
+     "value": "Matematiikka"
+    },
+    {
+     "code": "i",
+     "value": "111"
+    },
+    {
+     "code": "h",
+     "value": "Tilastotiede"
+    },
+    {
+     "code": "i",
+     "value": "112"
+    },
+    {
+     "code": "5",
+     "value": "ARTO"
+    }
+   ]
+  }
+ ]

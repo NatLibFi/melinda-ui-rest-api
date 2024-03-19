@@ -1,0 +1,129 @@
+{
+  "name": "melinda-ui-rest-api",
+  "version": "1.0.0",
+  "description": "Restfull api for melinda ui softwares",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "keywords": [
+    "melinda",
+    "natlibfi"
+  ],
+  "author": "The National Library of Finland",
+  "license": "AGPL-3.0+",
+  "homepage": "https://github.com/NatLibFi/melinda-ui-rest-api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NatLibFi/melinda-ui-rest-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NatLibFi/melinda-ui-rest-api/issues"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "start:dev": "babel-node ./src/index",
+    "prepare": "npm run build",
+    "lint": "eslint src",
+    "lint:dev": "eslint --fix src",
+    "test": "npm run lint && npm run test:base",
+    "test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 'src/**/*.spec.js'",
+    "test:artikkelit": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 'src/artikkelit/generate/*.spec.js'",
+    "test:muuntaja": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 'src/muuntaja/*.spec.js'",
+    "test:dev": "clear && npm run lint:dev && npm run test:base && npm run coverage",
+    "coverage": "npm run coverage:unit && npm run coverage:report",
+    "coverage:unit": "nyc --silent npm run test:base",
+    "coverage:report": "nyc report --reporter=text",
+    "build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src --exec 'npm run lint:dev && npm run start:dev'",
+    "dev:noDebug": "cross-env NODE_ENV=development nodemon --watch src --exec 'npm run lint:dev && npm run start:dev'",
+    "dev:test": "cross-env NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:dev'",
+    "dev:test:artikkelit": "cross-env NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run test:artikkelit'",
+    "dev:test:muuntaja": "cross-env NODE_ENV=test nodemon --watch src --watch test-fixtures --exec 'npm run lint:dev && npm run test:muuntaja'"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.23.2",
+    "@natlibfi/marc-record": "8.1.0",
+    "@natlibfi/marc-record-merge": "7.0.0",
+    "@natlibfi/marc-record-validate": "^8.0.5",
+    "@natlibfi/marc-record-validators-melinda": "^10.15.4",
+    "@natlibfi/melinda-backend-commons": "^2.3.0-alpha.9",
+    "@natlibfi/melinda-commons": "^13.0.12",
+    "@natlibfi/melinda-marc-record-merge-reducers": "2.0.24",
+    "@natlibfi/melinda-rest-api-client": "^5.0.4-alpha.3",
+    "@natlibfi/passport-melinda-aleph": "^2.0.4",
+    "@natlibfi/passport-melinda-jwt": "^1.0.5",
+    "@natlibfi/sru-client": "^6.0.10-alpha.3",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "express": "^4.18.2",
+    "idb": "^7.1.1",
+    "isbn3": "^1.1.43",
+    "passport": "^0.6.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/eslint-parser": "^7.22.15",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.2",
+    "@natlibfi/eslint-config-melinda-backend": "^3.0.3",
+    "@natlibfi/fixugen": "^2.0.2",
+    "@natlibfi/fixura": "^3.0.2",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.53.0",
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.1",
+    "nyc": "^15.1.0"
+  },
+  "overrides": {
+    "semver": "^7.5.3"
+  },
+  "eslintConfig": {
+    "extends": "@natlibfi/melinda-backend",
+    "ignorePatterns": [
+      "src/clients/*",
+      "src/muuntaja/reference/*"
+    ]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": "maintained node versions"
+        }
+      ]
+    ],
+    "ignore": [
+      "src/clients/*",
+      "src/muuntaja/reference/*"
+    ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "src/clients",
+      "src/muuntaja/reference"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "*/*.spec.js"
+    ],
+    "reporter": [
+      "lcov",
+      "html"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100
+  }
+}

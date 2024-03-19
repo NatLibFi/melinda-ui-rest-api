@@ -1,0 +1,10 @@
+{
+  "description": "generatef506 - field 506, contains no input, this test expected to fail: 422",
+  "skip": false,
+  "only": false,
+  "expectToFail": true,
+  "succesRecords": 2,
+  "failedRecords": 0,
+  "expectedError": false,
+  "expectedErrorStatus": "422"
+}

@@ -1,0 +1,43 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "c metropoliitta",
+     "lastName": "Panteleimon",
+     "corporateName": "",     
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 2,
+     "firstName": "",
+     "lastName": "Yksiniminen",
+     "corporateName": "",     
+     "relator": "kääntäjä",
+     "authorsTempOrganizations": []
+    },
+    {
+     "key": 3,
+     "firstName": "Gustav",
+     "lastName": "Dore",
+     "corporateName": "",     
+     "relator": "kuvittaja",     
+     "authorsTempOrganizations": [
+      {
+       "key": 1,
+       "organizationName": "Kuvataideakatemia",
+       "code": "1740",
+       "note": false
+      }
+     ]
+    },
+    {
+     "key": 4,
+     "firstName": "Reino",
+     "lastName": "Walden",
+     "corporateName": "",     
+     "relator": "toimittaja",
+     "authorsTempOrganizations": []
+    }
+   ]
+}

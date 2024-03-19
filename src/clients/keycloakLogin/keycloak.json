@@ -1,0 +1,8 @@
+{
+  "realm": "melinda",
+  "auth-server-url": "https://keycloak-sso.apps.ocp-kk-test-0.k8s.it.helsinki.fi/",
+  "ssl-required": "external",
+  "resource": "melinda-keycloak-passport-client",
+  "public-client": true,
+  "enable-cors": true
+}

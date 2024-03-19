@@ -1,0 +1,21 @@
+{
+  "authors": [
+    {
+     "key": 1,
+     "firstName": "Dan",
+     "lastName": "Truffles",
+     "corporateName": "",     
+     "relator": "kirjoittaja",
+     "authorsTempOrganizations": []
+    }
+   ],
+   "article": {
+    "title": "Like they say in Finland, Hellurei!",
+    "titleOther": "",
+    "language": {
+     "iso6391": "en",
+     "iso6392b": "eng",
+     "ui": "Englanti"
+    }
+  }
+}
