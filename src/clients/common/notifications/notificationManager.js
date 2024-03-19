@@ -42,6 +42,13 @@ import * as ui from '/../common/notifications/ui/notificationUi.js';
  *          - if data sets action button (and automatically closes notification after action)
  *          - autoremove on close
  *
+ *
+ * Notification message styles:
+ *    - alert
+ *    - error
+ *    - info
+ *    - success
+ *
  */
 
 /**
@@ -125,46 +132,66 @@ export async function showServerNotifications(paramObj) {
  * //With object you want to set at least componentStyle, style and text
  *
  * //Fast easy string, defaults to info banner with animation out and close button, can stack
- * showNotification('This is a test info');
+   showNotification('This is a test info');
  *
  * //Using object. Dialog with alert style. Remains on screen and can be closed. Does not block UI interaction, can stack
- * showNotification({componentStyle: 'dialog', style:'alert', text: 'This is a bit more space needing information'});
+   showNotification({componentStyle: 'dialog', style:'alert', text: 'This is a bit more space needing information'});
  *
  * //Mass data handling, for example data array from server, array of objects
- * showNotification(dataArrayFromServer);
+   showNotification(dataArrayFromServer);
  *
  * //Can even throw multiple quick ones if so needed
- * showNotification(['One Test', 'Second test']);
+   showNotification(['One Test', 'Second test']);
  *
  * //Static reminder on top of the page. Supports multiple ones but in normal usercase we might want to have just one, use it sparingly
- * showNotification({componentStyle: 'banner_static', style: 'info', text: 'Did you know that...'});
+   showNotification({componentStyle: 'banner_static', style: 'info', text: 'Did you know that...'});
+ *
+ * //you can throw a dialog that blocks user from interacting with the UI, though this should be used sparingly and kept in mind how user can interact with dialogs
+ * //IF user closes the last blocking dialog the block layer is removed
+ * //Blocking dialogs take priority so try to bunddle blocking dialogs if you need to throw multiple
+ * //this is a simple dialog with blocking layer, user MUST at least close it to acknowledge its existance
+   showNotification({componentStyle: 'dialog', style: 'alert', text: 'For your immediate attention!', blocksInteraction: true});
+ *
+ * //this is informative blocking dialog that cant be closed itself.
+ * //Action button here makes sure user can go back to some view so they are not stuck, unless you want it, then remove actionButtonData
+   showNotification({
+    componentStyle: 'dialog',
+    style: 'info',
+    text: 'This view is not usable...',
+    blocksInteraction: true,
+    isDismissible: false,
+    actionButtonData:{
+      text:'Go To Main Page',
+      onClick:()=>{
+        //code here
+      }}
+   });
  *
  * //action and link buttons are enabled in banner and dialog componentStyle:s
  * //they work independently, meaning they can be enabled at the same time (tho in banner if theres no close button action button moves right, and if thres no action button or close the link button moves to right - to save space)
- *
  * //heres basic example usage (note that current show functions iteration uses after action to close notification, after your onClick has been dealt with)
  * //show banner with close button, link and action button
- * showNotification({
- *      componentStyle: 'banner', style: 'info', text:'Simple test',
- *      linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
- *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
- * });
- * //show banner with link and action button
- * showNotification({
- *      componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
- *      linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
- *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
- * });
+   showNotification({
+        componentStyle: 'banner', style: 'info', text:'Simple test',
+        linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
+        actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
+   });
+   //show banner with link and action button
+   showNotification({
+        componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
+        linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
+        actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
+   });
  * //show banner with link button
- * showNotification({
- *      componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
- *      linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
- * });
+   showNotification({
+        componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
+        linkButtonData:{text: 'go to search', url: 'https://www.google.com'},
+   });
  * //show banner with action button
- * showNotification({
- *      componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
- *      actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
- * });
+   showNotification({
+        componentStyle: 'banner', style: 'info', text:'Simple test', isDismissible: false,
+        actionButtonData:{text:'Press Here To Print And Close', onClick:()=>{console.log('Hello world');}},
+   });
  */
 export async function showNotification(notificationData) {
   if (!notificationData) {
