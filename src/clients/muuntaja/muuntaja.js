@@ -44,7 +44,7 @@ window.initialize = function () {
     const sourceId = urlParams.get('sourceId') || '';
     const baseId = urlParams.get('baseId') || '';
     const type = urlParams.get('type') || 'p2e';
-    const profile = urlParams.get('profile') || 'KVP';
+    const profile = urlParams.get('profile') || 'DEFAULT';
 
     document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
     document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
