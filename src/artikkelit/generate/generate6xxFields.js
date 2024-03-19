@@ -20,15 +20,15 @@ export function generatef6xxs(terms) {
   const f648other = terms.filter(({vocab}) => ['otherTime'].includes(vocab));
 
   const sortedTerms = [
-    ...f600s,
-    ...f610s,
-    ...sortedF648s,
-    ...f648other,
-    ...sortedF650s,
-    ...sortedF651s,
-    ...f653s,
-    ...sortedF655s
-  ];
+    f600s,
+    f610s,
+    sortedF648s,
+    f648other,
+    sortedF650s,
+    sortedF651s,
+    f653s,
+    sortedF655s
+  ].flat();
 
   return sortedTerms.flatMap(({vocab, prefLabel, lang, uri, subdivision = false}) => {
     if (['otherPerson'].includes(vocab)) {

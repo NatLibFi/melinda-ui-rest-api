@@ -34,34 +34,34 @@ export function createArtikkelitService(useMoment = 'now') {
     const record = {
       leader: generateLeader(sourceTypeAsText),
       fields: [
-        ...generatef005(),
-        ...generatef007(isElectronic),
-        ...generatef008(useMoment, journalNumber.publishingYear, sourceTypeAsText, isElectronic, articleLanguage),
-        ...generatef041(articleLanguage.iso6392b, abstractLanguages),
-        ...generatef080(udks), // (lisäkentät)
-        ...generatef084(otherRatings), // (lisäkentät)
-        ...generatef100sf110sf700sf710s(authors),
-        ...generatef245(articleTitle, authors, article.language.iso6392b),
-        ...generatef246(articleTitleOther),
-        ...generatef336(),
-        ...generatef337(isElectronic),
-        ...generatef490(article.sectionOrColumn),
-        ...generatef500(notes), // general notes
-        ...generatef506(referenceLinks, isElectronic),
-        ...generatef520(abstracts), // Abstracts
-        ...generatef540(article),
-        ...generatef567(metodologys),
-        ...generatef591(sciences, article.type),
-        ...generatef593(journalJufo, year),
-        ...generatef598(collecting.f589a),
-        ...generatef599(f599a, f599x),
-        ...generatef6xxs(ontologyWords),
-        ...generatef655reviews(reviews),
-        ...generatef773(sourceTypeAsText, journalNumber, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t),
-        ...generatef787(reviews), // review books
-        ...generatef856(referenceLinks, isElectronic),
-        ...generatef960()
-      ]
+        generatef005(),
+        generatef007(isElectronic),
+        generatef008(useMoment, journalNumber.publishingYear, sourceTypeAsText, isElectronic, articleLanguage),
+        generatef041(articleLanguage.iso6392b, abstractLanguages),
+        generatef080(udks), // (lisäkentät)
+        generatef084(otherRatings), // (lisäkentät)
+        generatef100sf110sf700sf710s(authors),
+        generatef245(articleTitle, authors, article.language.iso6392b),
+        generatef246(articleTitleOther),
+        generatef336(),
+        generatef337(isElectronic),
+        generatef490(article.sectionOrColumn),
+        generatef500(notes), // general notes
+        generatef506(referenceLinks, isElectronic),
+        generatef520(abstracts), // Abstracts
+        generatef540(article),
+        generatef567(metodologys),
+        generatef591(sciences, article.type),
+        generatef593(journalJufo, year),
+        generatef598(collecting.f589a),
+        generatef599(f599a, f599x),
+        generatef6xxs(ontologyWords),
+        generatef655reviews(reviews),
+        generatef773(sourceTypeAsText, journalNumber, melindaId, isbn, issn, SourceTypeAsCode, titleFor773t),
+        generatef787(reviews), // review books
+        generatef856(referenceLinks, isElectronic),
+        generatef960()
+      ].flat()
     };
 
     return record;
