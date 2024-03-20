@@ -28,13 +28,14 @@ export function ontologyTypeChange(event) {
     const opts = event.target.options;
     document.getElementById('asiasana-muu-label').innerHTML = `${opts[opts.selectedIndex].text}:`;
     resetOntologySelect();
-  } else {
-    document.getElementById('haku-osio').style.display = 'flex';
-    document.getElementById('asiasana-lisaa-select').style.display = 'flex';
-    document.getElementById('asiasana-lisaa-input').style.display = 'none';
-    document.getElementById('asiasana-muu-label').innerHTML = '';
-    document.getElementById('asiasana-muu').value = '';
+    return ;
   }
+
+  document.getElementById('haku-osio').style.display = 'flex';
+  document.getElementById('asiasana-lisaa-select').style.display = 'flex';
+  document.getElementById('asiasana-lisaa-input').style.display = 'none';
+  document.getElementById('asiasana-muu-label').innerHTML = '';
+  document.getElementById('asiasana-muu').value = '';
 }
 
 
