@@ -38,7 +38,13 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function stripRecord({leader, fields, ID, error, notes}) {
+function stripRecord(record) {
+
+  if (!record) {
+    return record;
+  }
+
+  const {leader, fields, ID, error, notes} = record;
 
   return {
     leader,
