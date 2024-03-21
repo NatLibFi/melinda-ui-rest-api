@@ -6,7 +6,7 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload, showSnackbar,
+  showTab, resetForms, reload, showNotification, showServerNotifications,
   createDropdownItem, createSelectItem,
   createSelectOption
 } from '/common/ui-utils.js';
@@ -15,6 +15,7 @@ import {Account, doLogin, logout} from '/common/auth.js';
 import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
 
+
 //-----------------------------------------------------------------------------
 // on page load:
 //-----------------------------------------------------------------------------
@@ -22,7 +23,7 @@ import {showRecord, editField} from '/common/marc-record-ui.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  doLogin(authSuccess);
+  showServerNotifications({clientName: 'muuntaja', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
 
@@ -38,7 +39,6 @@ window.initialize = function () {
         doTransform();
       });
   }
-
   function parseUrlParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const sourceId = urlParams.get('sourceId') || '';
@@ -271,7 +271,7 @@ window.copyLink = function (e) {
 
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
 
-  showSnackbar({style: 'success', text: 'Linkki kopioitu!'});
+  showNotification({componentStyle: 'banner', style: 'success', text: 'Linkki kopioitu!'});
 };
 
 window.onClearEdits = function(e) {

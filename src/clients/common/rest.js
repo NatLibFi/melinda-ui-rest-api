@@ -194,3 +194,13 @@ export function removeLog(id, force) {
   const url = `${RESTurl}/viewer/remove/${id}${force ? `?force=${force}` : ''}`;
   return doRestCall({url: url, method: 'DELETE'});
 }
+
+
+//*****************************************************************************
+// Notifications
+//*****************************************************************************
+
+export function getServerNotifications(client){
+  const url = `${RESTurl}/notification/${client}`;
+  return doRestCall({url: url, method: 'GET', resultAsJson: true});
+}

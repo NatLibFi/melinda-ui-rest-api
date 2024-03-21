@@ -3,7 +3,7 @@ import {resetAndHideCcLicense} from '/artikkelit/interfaces/articleBasic.js';
 import {resetPublicationSearchResultSelect} from '/artikkelit/interfaces/publicationSearch.js';
 import {resetReviewSearchResultSelect} from '/artikkelit/interfaces/reviewSearch.js';
 import {idbClear, getTableNames} from '/artikkelit/utils/indexedDB.js';
-import {disableElement, enableElement, showSnackbar} from '/common/ui-utils.js';
+import {disableElement, enableElement, showNotification} from '/common/ui-utils.js';
 
 
 export function idbClearAllTables() {
@@ -21,7 +21,7 @@ window.clearAllFields = function () {
   resetTextareaFields();
   resetSelectFields();
   resetAndHideCcLicense();
-  showSnackbar({style: 'info', text: 'Lomake tyhjennetty'});
+  showNotification({componentStyle: 'banner', style: 'info', text: 'Lomake tyhjennetty'});
 };
 
 function resetInputFields() {
