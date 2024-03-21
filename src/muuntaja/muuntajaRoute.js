@@ -64,9 +64,15 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
         {tag: 'e2p', name: 'E-aineistosta > Painetuksi'}
       ],
       profile: [
+
+        //*
         {tag: 'DEFAULT', name: 'Oletus'},
         {tag: 'FENNI', name: 'Fennica'}
-        //...user.authorization.map(org => organizationToProfile(org))
+
+        /*/
+        ...user.authorization.map(org => organizationToProfile(org))
+
+        /**/
       ]
     });
 
