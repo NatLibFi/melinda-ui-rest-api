@@ -89,7 +89,8 @@ export function generateResultRecord({source, base: baseRecord, options, insert,
       return {
         source: stripRecord(source),
         base: stripRecord(base),
-        result: stripRecord({ID: base.ID, ...result})
+        //result: stripRecord({ID: base.ID, ...result})
+        result: stripRecord(result)
       };
     } catch (err) {
       const error = err.toString();
