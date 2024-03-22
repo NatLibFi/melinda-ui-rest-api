@@ -17,11 +17,11 @@ import {handleError} from '../requestUtils/handleError';
 
 import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs, stripFields, bareRecord} from './muuntajaService';
 
+/*
 import {promisify} from 'util';
 
 const sleep = promisify(setTimeout);
-
-//setTimeoutPromise(50);
+*/
 
 const appName = 'Muuntaja';
 
