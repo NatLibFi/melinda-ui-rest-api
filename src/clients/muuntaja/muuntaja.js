@@ -15,6 +15,50 @@ import {Account, doLogin, logout} from '/common/auth.js';
 import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
 
+//-----------------------------------------------------------------------------
+// URL parameters
+//-----------------------------------------------------------------------------
+
+function parseUrlParameters() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sourceId = urlParams.get('sourceId') || '';
+  const baseId = urlParams.get('baseId') || '';
+  const type = urlParams.get('type') || 'p2e';
+  const profile = urlParams.get('profile') || 'DEFAULT';
+
+  document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
+  document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
+  document.querySelector('#type-options [name=\'type\']').value = type;
+  document.querySelector('#profile-options [name=\'profile\']').value = profile;
+
+  transformed.options.type = type;
+  transformed.options.profile = profile;
+}
+
+function updateUrlParameters(transformed) {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const {options, source, base} = transformed
+
+  setUrlParam("type", options?.type)
+  setUrlParam("profile", options?.profile)
+  setUrlParam("baseId", base?.ID)
+  setUrlParam("sourceId", source?.ID)
+
+  window.history.replaceState({}, '', decodeURIComponent(`${window.location.pathname}?${urlParams}`));
+
+  if (window.location.search === '') {
+    window.history.replaceState({}, '', '/muuntaja/');
+  }
+
+  function setUrlParam(id, value) {
+    if(value) {
+      urlParams.set(id, value)
+    } else {
+      urlParams.delete(id)
+    }
+  }
+}
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -39,56 +83,6 @@ window.initialize = function () {
         doTransform();
       });
   }
-  function parseUrlParameters() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sourceId = urlParams.get('sourceId') || '';
-    const baseId = urlParams.get('baseId') || '';
-    const type = urlParams.get('type') || 'p2e';
-    const profile = urlParams.get('profile') || 'DEFAULT';
-
-    document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
-    document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
-    document.querySelector('#type-options [name=\'type\']').value = type;
-    transformed.options.type = type;
-    document.querySelector('#profile-options [name=\'profile\']').value = profile;
-    transformed.options.profile = profile;
-  }
-
-  document.querySelector('.record-merge-panel #source #ID').addEventListener('input', onMergePanelInputChange);
-  document.querySelector('.record-merge-panel #base #ID').addEventListener('input', onMergePanelInputChange);
-
-  function onMergePanelInputChange(e){
-    updateUrlParameters(e);
-    updateRecordSwapButtonState();
-  }
-
-  function updateUrlParameters(e) {
-    const isOnPath = (id) => e.composedPath().some(element => element.id === id);
-    const removeIfEmpty = (id) => {
-      if (e.target.value === '') {
-        urlParams.delete(id);
-      }
-    };
-    const urlParams = new URLSearchParams(window.location.search);
-
-    if (isOnPath('source') && isOnPath('ID')) {
-      urlParams.set('sourceId', e.target.value);
-      removeIfEmpty('sourceId');
-    }
-
-    if (isOnPath('base') && isOnPath('ID')) {
-      urlParams.set('baseId', e.target.value);
-      removeIfEmpty('baseId');
-    }
-
-    window.history.replaceState({}, '', decodeURIComponent(`${window.location.pathname}?${urlParams}`));
-
-    if (window.location.search === '') {
-      window.history.replaceState({}, '', '/muuntaja/');
-    }
-  }
-
-
 };
 
 //-----------------------------------------------------------------------------
@@ -605,7 +599,8 @@ function showTransformed(update = undefined) {
     insert: transformed.insert
   });
 
-  // Update button states according to result
+  // Update UI states according to result
+  updateUrlParameters(transformed);
   updateRecordSwapButtonState();
   updateSaveButtonState(transformed);
   updateEditButtonState(transformed)
