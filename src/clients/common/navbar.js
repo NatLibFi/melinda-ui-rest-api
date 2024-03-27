@@ -143,7 +143,7 @@ class Navbar extends HTMLElement {
       const currentUrl = window.location.href;
       const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
       const appNameDiv = document.getElementById('appName');
-      const appNames = ['viewer', 'muuntaja', 'edit', 'artikkelit', ''];
+      const appNames = ['viewer', 'muuntaja', 'merge', 'edit', 'artikkelit', ''];
       const appLinkDiv = document.getElementById('appLink');
 
       if (appNames.includes(appName)) {
