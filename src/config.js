@@ -14,7 +14,7 @@ export const ownAuthzApiKey = readEnvironmentVariable('OWN_AUTHZ_API_KEY');
 export const sruUrl = readEnvironmentVariable('SRU_URL');
 export const fintoUrl = readEnvironmentVariable('FINTO_URL');
 
-export const notificationMongoUri = readEnvironmentVariable('NOTE_MONGO_URI');
+export const notificationMongoUri = readEnvironmentVariable('NOTE_MONGO_URI', {defaultValue: ''});
 
 export const jwtOptions = {
   secretOrPrivateKey: readEnvironmentVariable('JWT_SECRET'),
