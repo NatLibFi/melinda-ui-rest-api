@@ -35,7 +35,7 @@ function showAppName(currentUrl) {
   const appLinkDiv = document.getElementById('appLink');
   const goBackDiv = document.getElementById('goBack');
 
-  const appNames = ['viewer', 'muuntaja', 'edit', 'artikkelit'];
+  const appNames = ['viewer', 'muuntaja', 'merge', 'edit', 'artikkelit'];
   const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
 
   appNames.includes(appName)
