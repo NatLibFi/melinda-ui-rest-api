@@ -6,15 +6,23 @@
 
 import {
   startProcess, stopProcess,
-  showTab, resetForms, reload, showNotification, showServerNotifications,
-  createDropdownItem, createSelectItem,
-  createSelectOption
+  showTab, resetForms, showNotification, showServerNotifications,
 } from '/common/ui-utils.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
-import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
+import {transformRequest, storeTransformedRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
 
+/**
+ * Gets options object containing fixed values for the mergeprocess
+ * @returns {object} object with hard set values
+ */
+function getOptions(){
+  return {
+    type: "merge",
+    profile: undefined
+  };
+}
 //-----------------------------------------------------------------------------
 // URL parameters
 //-----------------------------------------------------------------------------
@@ -23,25 +31,16 @@ function parseUrlParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   const sourceId = urlParams.get('sourceId') || '';
   const baseId = urlParams.get('baseId') || '';
-  const type = urlParams.get('type') || 'p2e';
-  const profile = urlParams.get('profile') || 'DEFAULT';
 
   document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
   document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
-  document.querySelector('#type-options [name=\'type\']').value = type;
-  document.querySelector('#profile-options [name=\'profile\']').value = profile;
-
-  transformed.options.type = type;
-  transformed.options.profile = profile;
 }
 
 function updateUrlParameters(transformed) {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const {options, source, base} = transformed
+  const {source, base} = transformed
 
-  setUrlParam("type", options?.type)
-  setUrlParam("profile", options?.profile)
   setUrlParam("baseId", base?.ID)
   setUrlParam("sourceId", source?.ID)
 
@@ -70,76 +69,23 @@ window.initialize = function () {
   showServerNotifications({clientName: 'merge', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
-
-    profileRequest()
-      .then(profiles => {
-        setProfiles(profiles);
-        const accountMenu = document.getElementById('accountMenu');
-        accountMenu.classList.add('show');
-        const username = document.querySelector('#accountMenu #username');
-        username.innerHTML = Account.get().Name;
-        showTab('muuntaja');
-        parseUrlParameters();
-        doTransform();
-      });
+    setOptions();
+    const accountMenu = document.getElementById('accountMenu');
+    accountMenu.classList.add('show');
+    const username = document.querySelector('#accountMenu #username');
+    username.innerHTML = Account.get().Name;
+    showTab('muuntaja'); //refers to tab in merge.html, its still with the name of muuntaja
+    parseUrlParameters();
+    doTransform();
   }
 };
 
 //-----------------------------------------------------------------------------
 
-function setProfiles(options) {
-  console.log('Profiles:', options);
-
-  transformed.options = {
-    type: options.type[0],
-    profile: options.profile[0],
-  };
-
-  const typeOptions = document.querySelector('#type-options');
-  typeOptions.innerHTML = '';
-
-  const typeDropdown = createDropdownItem('', ['Select', 'VBox'], 'Muunnostyyppi');
-  const typeSelect = createSelectItem('type');
-  typeSelect.addEventListener('change', (event) => setTransformType(event, event.target.value));
-
-  typeOptions.appendChild(typeDropdown);
-  typeDropdown.appendChild(typeSelect);
-
-  for (const type of options.type) {
-    typeSelect.appendChild(createSelectOption(type.tag, type.name));
-  }
-
-  const profileOptions = document.querySelector('#profile-options');
-  profileOptions.innerHTML = '';
-
-  const profileDropdown = createDropdownItem('', ['Select', 'VBox'], 'Muunnosprofiili');
-  const profileSelect = createSelectItem('profile');
-  profileSelect.addEventListener('change', (event) => setTransformProfile(event, event.target.value));
-
-  profileOptions.appendChild(profileDropdown);
-  profileDropdown.appendChild(profileSelect);
-
-  for (const profile of options.profile) {
-    profileSelect.appendChild(createSelectOption(profile.tag, profile.name));
-  }
-}
-
-function setTransformType(event, value) {
-  console.log('Type:', value);
-  transformed.options.type = value;
+function setOptions() {
+  transformed.options = getOptions();
   if(!transformed.base?.ID) delete transformed.base;
   delete transformed.stored;
-  doTransform();
-  return eventHandled(event);
-}
-
-function setTransformProfile(event, value) {
-  console.log('Profile:', value);
-  transformed.options.profile = value;
-  if(!transformed.base?.ID) delete transformed.base;
-  delete transformed.stored;
-  doTransform();
-  return eventHandled(event);
 }
 
 //-----------------------------------------------------------------------------
@@ -251,8 +197,9 @@ window.onAccount = function (e) {
 window.copyLink = function (e) {
   eventHandled(e);
 
-  const type = document.querySelector('#type-options [name=\'type\']').value;
-  const profile = document.querySelector('#profile-options [name=\'profile\']').value;
+  const type = getOptions()?.type;
+  const profile = getOptions()?.profile;
+
   let leadingChar = '';
 
   if (window.location.href.includes('?')) {
@@ -673,8 +620,6 @@ window.saveJson = function (event) {
   const record = document.querySelector('#recordAsJson');
   transformed = JSON.parse(record.textContent);
   doTransform();
-  document.querySelector('#type-options [name=\'type\']').value = transformed.options.type;
-  document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
   jsonDlgClose(event);
 };
 
