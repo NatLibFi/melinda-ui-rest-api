@@ -8,6 +8,7 @@ import {
   startProcess, stopProcess,
   showTab, resetForms, showNotification, showServerNotifications,
 } from '/common/ui-utils.js';
+import {testImport} from '/merge/common.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
 import {transformRequest, storeTransformedRequest} from '/common/rest.js';

@@ -11,6 +11,7 @@ import {
   createSelectOption
 } from '/common/ui-utils.js';
 
+import {testImport} from '/merge/common.js';
 import {Account, doLogin, logout} from '/common/auth.js';
 import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
