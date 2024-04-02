@@ -678,7 +678,3 @@ window.saveJson = function (event) {
   document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
   jsonDlgClose(event);
 };
-
-function getDeepCopyOfObject(obj){
-  return JSON.parse(JSON.stringify(obj));
-}

@@ -623,7 +623,3 @@ window.saveJson = function (event) {
   doTransform();
   jsonDlgClose(event);
 };
-
-function getDeepCopyOfObject(obj){
-  return JSON.parse(JSON.stringify(obj));
-}
