@@ -77,6 +77,7 @@ export default async function ({
     app.use('/keycloak', express.static(path.join(__dirname, 'clients/keycloakLogin/'), {index: 'keycloakLogin.html'}));
     app.use('/login', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/merge', express.static(path.join(__dirname, 'clients/merge/'), {index: 'merge.html'}));
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
 
     // REST API

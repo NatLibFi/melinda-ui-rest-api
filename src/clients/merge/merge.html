@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- Head -->
+<!-- -------------------------------------------------------------------------- -->
+
+<head>
+  <title>MUUNTAJA | Melinda</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="/common/images/favicon.ico">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Public+Sans:wght@300;500;600&family=Noto+Sans+Mono&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="merge.css">
+
+  <script src="/common/sortable.min.js"></script>
+  <script type="module" src="merge.js"></script>
+  <script type="module" src="/common/navbar.js"></script>
+  <script type="module" src="/common/footer.js"></script>
+</head>
+
+<!-- -------------------------------------------------------------------------- -->
+<!-- Body -->
+<!-- -------------------------------------------------------------------------- -->
+
+<body onload="initialize()">
+
+  <div id="bodywrapper" class="viewport-full VBox">
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Notifications-->
+    <div id="notifications">
+      <!--Take note of the order these lists are set-->
+      <div id="bannnerStatics" class="notificationstaticbannerstatics"></div>
+      <div id="dialogs">
+        <div id="notificationDialogsBg" class="notificationDialogsBg" style="visibility: hidden;"></div>
+        <div id="notificationDialogs" class="notificationdialogs"></div>
+      </div>
+      <div id="banners" class="notificationbanners"></div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Navigation bar -->
+    <melinda-navbar></melinda-navbar>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
+
+    <!-- Application -->
+    <div id="root">
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Loading "screen" -->
+      <div id="loading"></div>
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Login tab -->
+      <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
+      <form id="login" class="VBox BoxShadow form-modal" style="display: none;">
+
+        <div class="form-headline">
+          <h3>Kirjaudu sisään</h3>
+        </div>
+
+        <div class="form-content">
+
+          <div id="loginFormUsername" class="HBox form-field-container full-width">
+            <div class="label-wrapper">
+              <label for="login-username">
+                Käyttäjätunnus <span class="form-field-required">*</span>
+              </label>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-icons">person_outline</span>
+              <input id="login-username" type="text" name="username" required="true" autofocus="true" spellcheck="false"
+                autocomplete="username" placeholder="Syötä Melinda-tunnus" title="Käyttäjätunnus on vaadittu kenttä">
+            </div>
+          </div>
+
+          <div id="loginFormPassword" class="HBox form-field-container full-width">
+            <div class="label-wrapper">
+              <label for="login-password">Salasana <span class="form-field-required">*</label>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-icons">lock_outline</span>
+              <input id="login-password" type="password" name="password" required="true" spellcheck="false"
+                autocomplete="current-password" placeholder="Syötä salasana" title="Salasana on vaadittu kenttä">
+            </div>
+          </div>
+
+          <div id="loginFormAcceptTerms" class="VBox">
+
+            <div class="HBox form-field-container checkbox full-width">
+              <div class="label-wrapper">
+                <label for="acceptterms">
+
+                  <div class="input-wrapper">
+                    <input id="acceptterms" type="checkbox">
+                    <span class="material-icons"></span>
+                  </div>
+
+                  <div class="outer-link">
+                    Hyväksyn
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank"
+                      rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      tietosuojaselosteen <span class="material-icons open-in-new">open_in_new</span></a>
+                    ja evästeiden käytön. Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.
+                  </div>
+
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-action">
+          <button onClick="return login(event)">
+            Kirjaudu
+          </button>
+          <div id="info"></div>
+        </div>
+
+      </form>
+
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Muuntaja tab -->
+      <div id="muuntaja" hidden>
+        <!-- Muuntaja Toolbar -->
+        <div class="tools ToolBar">
+          <!-- Tools and settings for searching, editing, saving and sharing records -->
+          <div class="HBox">
+            <button class="material-icons tooltip icon-only" tooltip-text="Jaa linkki"
+              onClick="copyLink(event)">share</button>
+            <button class="material-icons tooltip icon-only" tooltip-text="Tietue"
+              onclick="jsonDlgOpen(event)">edit_note</button>
+            <button class="material-icons tooltip icon-only" tooltip-text="Uusi"
+              onClick="onNewInstance(event)">add</button>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------------------------------------ -->
+        <!-- Record-Merge Panel -->
+        <div class="record-merge-panel">
+          <div id="source" class="col BoxShadow">
+            <form class="ToolBar HBox header">
+              <div class="Filler VBox Input">
+                <label>Lähdetietue</label>
+                <input id="ID" />
+              </div>
+              <button class="material-icons tooltip icon-only" tooltip-text="Hae"
+                onclick="return doTransform(event)">search</button>
+              <button class="material-icons tooltip icon-only" id="swap-button" tooltip-text="Vaihda"
+                onclick="return onRecordSwap(event)">swap_horiz</button>
+            </form>
+            <div id="Record" class="marc-record">
+            </div>
+          </div>
+
+          <div id="base" class="col BoxShadow">
+            <form class="ToolBar HBox header">
+              <div class="Filler VBox Input">
+                <label>Pohjatietue</label>
+                <input id="ID" />
+              </div>
+              <button class="material-icons tooltip icon-only" tooltip-text="Hae"
+                onclick="doTransform(event)">search</button>
+            </form>
+            <div id="Record" class="marc-record">
+            </div>
+          </div>
+
+          <div id="result" class="col BoxShadow">
+            <div class="ToolBar HBox header">
+              <div class="Filler" id="ID">TULOSTIETUE</div>
+              <button id="edit-button" class="material-icons tooltip icon-only" tooltip-text="Muokkaustila"
+                onClick="onEdit(event)">edit</button>
+              <button class="material-icons tooltip icon-only" tooltip-text="Lisää kenttä"
+                onClick="onNewField(event)">add</button>
+              <button class="material-icons tooltip icon-only" tooltip-text="Peru muokkaukset"
+                onClick="onClearEdits(event)">close</button>
+              <button id="save-button" class="material-icons tooltip icon-only" tooltip-text="Tallenna" onClick="onSave(event)"
+                disabled>save</button>
+            </div>
+            <div id="Record" class="marc-record"></div>
+          </div>
+        </div>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Field edit dialog -->
+        <div id="fieldEditDlg" class="modal" onclick="return editDlgClose(event)">
+          <div class="modal-content BoxShadow" onclick="return ignore(event)">
+            <div id="original" hidden>
+              <div id="field" class="marc-record"></div><br />
+              <div style="display: flex; justify-content: right;">
+                <button onclick="return editDlgUseOriginal(event)">Käytä alkuperäistä</button>
+              </div>
+              <hr />
+            </div>
+
+            <div class="fieldedit marc-record">
+              <div style="display: flex;">
+                Kenttä: <div id="tag"></div>
+                <div id="indicators" style="display: flex;">
+                  1. indikaattori: <div id="ind1"></div>
+                  2. indikaattori: <div id="ind2"></div>
+                </div>
+              </div>
+              <hr />
+              <div id="fixedFields">
+                <div style="margin-bottom: 5px;">Arvo:</div>
+                <div id="value"></div>
+              </div>
+              <div id="flexFields">
+                <div id="fieldlist" width="100%"></div>
+                <button id="editAddSubFieldButton" onclick="return onAddField(event)">Uusi osakenttä</button>
+              </div>
+            </div>
+
+            <hr />
+
+            <div style="display: flex; justify-content: right;">
+              <button id="editCloseButton" onclick="return editDlgClose(event)">Sulje</button>
+              <button id="editSaveButton" onclick="return editDlgOK(event)" disabled>Tallenna muutokset</button>
+            </div>
+
+            <hr />
+            <div style="display: flex; justify-content: center;">
+              <button id="deleteField" onclick="return onDeleteField(event)">Poista kenttä</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Record not found dialog -->
+        <div id="notFoundDlg" class="modal" onclick="return notFoundDlgClose(event)">
+          <div class="modal-content BoxShadow" style="min-height: 5%;" onclick="return ignore(event)">
+            <!-- <span id="msgHeader" class="marc-record"></span><br/>
+      <hr/> -->
+            <div id="msg" class="marc-record"><span id="recordType"></span>tietuetta ei löytynyt annetulla hakuehdolla
+            </div>
+            <br />
+            <div style="display: flex; justify-content: right;">
+              <button onclick="return notFoundDlgClose(event)">Sulje</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- JSON dialog -->
+        <div id="jsonDlg" class="modal" onclick="return jsonDlgClose(event)">
+          <div class="modal-content BoxShadow"
+            style="min-height: 5%; max-height: 50%; overflow-y: auto; overflow-x: hidden; padding-top: 0px;"
+            onclick="return ignore(event)">
+            <div style="position: sticky; top: 0; background-color: white; padding-top: 16px;">
+              <div style="display: flex; justify-content: right;">
+                <button onclick="return saveJson(event)">Tallenna muutokset</button>
+                <button onclick="return selectJson(event)">Valitse koko sisältö</button>
+                <button onclick="return jsonDlgClose(event)">Sulje ikkuna</button>
+              </div>
+              <hr />
+            </div>
+            <div id="jsonContent" class="marc-record"></div>
+          </div>
+        </div>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Search dialog -->
+        <dialog id="searchDlg">
+          Testi
+        </dialog>
+
+        <!-- ---------------------------------------------------------------------- -->
+        <!-- Tab for server side notes -->
+        <div id="server-note" hidden>
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- Footer -->
+    <melinda-footer class="Filler VBox"></melinda-footer>
+
+  </div>
+
+</body>
+
+</html>
