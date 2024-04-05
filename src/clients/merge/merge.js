@@ -5,24 +5,19 @@
 //*****************************************************************************
 
 import {
-  startProcess, stopProcess,
-  showTab, resetForms, reload, showNotification, showServerNotifications,
-  createDropdownItem, createSelectItem,
-  createSelectOption
+  showServerNotifications,
+  showTab
 } from '/common/ui-utils.js';
 
 import {
-  initModule,
-  sharedSaveJson,
-  parseUrlParameters,
+  deleteFromTransformed,
   getTransformed,
-  updateTransformed,
-  deleteFromTransformed
+  initModule,
+  parseUrlParameters,
+  sharedSaveJson
 } from '/merge/common.js';
 
-import {Account, doLogin, logout} from '/common/auth.js';
-import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
-import {showRecord, editField} from '/common/marc-record-ui.js';
+import { Account, doLogin } from '/common/auth.js';
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -38,7 +33,7 @@ window.initialize = function () {
     }
   });
 
-  showServerNotifications({clientName: 'merge', onSuccess: ()=>{doLogin(authSuccess);}});
+  showServerNotifications({ clientName: 'merge', onSuccess: () => { doLogin(authSuccess); } });
 
   function authSuccess(user) {
     setOptions();
@@ -55,7 +50,7 @@ window.initialize = function () {
 //-----------------------------------------------------------------------------
 
 function setOptions() {
-  if(!getTransformed().base?.ID) deleteFromTransformed('base');//delete transformed.base;
+  if (!getTransformed().base?.ID) deleteFromTransformed('base');//delete transformed.base;
   deleteFromTransformed('stored');
 }
 
@@ -64,4 +59,4 @@ function setOptions() {
 // Show transformation results
 //-----------------------------------------------------------------------------
 
-window.saveJson = (event) => sharedSaveJson({event, hasOptionsToUpdate:true});
+window.saveJson = (event) => sharedSaveJson({ event, hasOptionsToUpdate: true });

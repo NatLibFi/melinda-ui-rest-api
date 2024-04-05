@@ -5,24 +5,23 @@
 //*****************************************************************************
 
 import {
-  startProcess, stopProcess,
-  showTab, resetForms, reload, showNotification, showServerNotifications,
   createDropdownItem, createSelectItem,
-  createSelectOption
+  createSelectOption,
+  showServerNotifications,
+  showTab
 } from '/common/ui-utils.js';
 
 import {
-    initModule,
-    sharedSaveJson,
-    parseUrlParameters,
-    getTransformed,
-    updateTransformed,
-    deleteFromTransformed
+  deleteFromTransformed,
+  getTransformed,
+  initModule,
+  parseUrlParameters,
+  sharedSaveJson,
+  updateTransformed
 } from '/merge/common.js';
 
-import {Account, doLogin, logout} from '/common/auth.js';
-import {profileRequest, transformRequest, storeTransformedRequest} from '/common/rest.js';
-import {showRecord, editField} from '/common/marc-record-ui.js';
+import { Account, doLogin } from '/common/auth.js';
+import { profileRequest } from '/common/rest.js';
 
 //-----------------------------------------------------------------------------
 // on page load:
@@ -32,7 +31,7 @@ window.initialize = function () {
   console.log('Initializing');
   initModule();
 
-  showServerNotifications({clientName: 'muuntaja', onSuccess: ()=>{doLogin(authSuccess);}});
+  showServerNotifications({ clientName: 'muuntaja', onSuccess: () => { doLogin(authSuccess); } });
 
   function authSuccess(user) {
 
@@ -55,10 +54,12 @@ window.initialize = function () {
 function setProfiles(options) {
   console.log('Profiles:', options);
 
-  const updateTransformOptions = {options:{
-    type: options.type[0],
-    profile: options.profile[0],
-  }};
+  const updateTransformOptions = {
+    options: {
+      type: options.type[0],
+      profile: options.profile[0],
+    }
+  };
   updateTransformed(updateTransformOptions);
 
   const typeOptions = document.querySelector('#type-options');
@@ -92,8 +93,8 @@ function setProfiles(options) {
 
 function setTransformType(event, value) {
   console.log('Type:', value);
-  updateTransformed({options:{type: value}});
-  if(!getTransformed().base?.ID) deleteFromTransformed('base');
+  updateTransformed({ options: { type: value } });
+  if (!getTransformed().base?.ID) deleteFromTransformed('base');
   deleteFromTransformed('stored');
   doTransform();
   return eventHandled(event);
@@ -101,8 +102,8 @@ function setTransformType(event, value) {
 
 function setTransformProfile(event, value) {
   console.log('Profile:', value);
-  updateTransformed({options:{profile: value}});
-  if(!getTransformed().base?.ID) deleteFromTransformed('base');
+  updateTransformed({ options: { profile: value } });
+  if (!getTransformed().base?.ID) deleteFromTransformed('base');
   deleteFromTransformed('stored');
   doTransform();
   return eventHandled(event);
@@ -115,4 +116,4 @@ function setTransformProfile(event, value) {
 // Show transformation results
 //-----------------------------------------------------------------------------
 
-window.saveJson = (event) => sharedSaveJson({event, hasOptionsToUpdate:true});
+window.saveJson = (event) => sharedSaveJson({ event, hasOptionsToUpdate: true });

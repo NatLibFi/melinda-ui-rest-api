@@ -14,13 +14,13 @@
 // Imports
 //-----------------------------------------------------------------------------
 import {
-  startProcess, stopProcess,
-  resetForms, showNotification
+  resetForms, showNotification,
+  startProcess, stopProcess
 } from '/common/ui-utils.js';
 
-import {logout} from '/common/auth.js';
-import {transformRequest, storeTransformedRequest} from '/common/rest.js';
-import {showRecord, editField} from '/common/marc-record-ui.js';
+import { logout } from '/common/auth.js';
+import { editField, showRecord } from '/common/marc-record-ui.js';
+import { storeTransformedRequest, transformRequest } from '/common/rest.js';
 
 //-----------------------------------------------------------------------------
 // Global variables
@@ -28,37 +28,32 @@ import {showRecord, editField} from '/common/marc-record-ui.js';
 let transformed, useProfileType;
 window.editMode = false;
 const keys = {
-    source: 'source',
-    base: 'base',
-    insert: 'insert',
-    result: 'result'
+  source: 'source',
+  base: 'base',
+  insert: 'insert',
+  result: 'result'
 };
 
 //-----------------------------------------------------------------------------
 // Exposed
 //-----------------------------------------------------------------------------
 export {
-    initModule,
-    sharedSaveJson,
-    parseUrlParameters,
-    getTransformed,
-    updateTransformed,
-    deleteFromTransformed
+  deleteFromTransformed, getTransformed, initModule, parseUrlParameters, sharedSaveJson, updateTransformed
 };
 
 /**
  * Clears any variables shared within imported script module,
  * gets called on importing scripts init
  */
-function initModule(initData = {}){
-  const {canUseProfileType=true, transformedOptions = undefined} = initData;
+function initModule(initData = {}) {
+  const { canUseProfileType = true, transformedOptions = undefined } = initData;
 
   transformed = Object.create(initTransformed());
   editMode = false;
   useProfileType = canUseProfileType;
 
   //override options
-  if(transformedOptions){
+  if (transformedOptions) {
     transformed.options = transformedOptions;
   }
 }
@@ -81,7 +76,7 @@ window.onEdit = function (e) {
   showTransformed(null);
   return eventHandled(e);
 
-  function styleBasedOnEditState(){
+  function styleBasedOnEditState() {
     const originalStyle = getComputedStyle(document.querySelector('.record-merge-panel'));
     const borderStyleActive = "solid";
     const borderColorActive = originalStyle.getPropertyValue('--color-melinda-green-custom');
@@ -89,12 +84,12 @@ window.onEdit = function (e) {
     //use .record-merge-panel #source/#base/#result #some-sub-id/.some-sub-class
     const resultPanel = document.querySelector('.record-merge-panel #result ');
 
-    if(editMode){
+    if (editMode) {
       resultPanel.style.borderStyle = borderStyleActive;
       resultPanel.style.borderColor = borderColorActive;
       resultPanel.style.borderWidth = "2px";
     }
-    else{
+    else {
       resultPanel.style.borderStyle = "initial";
     }
   }
@@ -106,7 +101,7 @@ window.onNewField = function (e) {
   });
   return eventHandled(e);
 }
-window.onNewInstance = function(e){
+window.onNewInstance = function (e) {
 
   const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
   sourceInput.value = '';
@@ -121,7 +116,7 @@ window.onSearch = function (e) {
   //console.log('Dialog:', dialog);
   //dialog.show();
 }
-window.onRecordSwap = function(e){
+window.onRecordSwap = function (e) {
 
   const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
   const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
@@ -140,7 +135,7 @@ window.onRecordSwap = function(e){
   baseInput.dispatchEvent(new Event('input'));
 
   //swap records around
-  if(transformed){
+  if (transformed) {
     const sourceData = transformed.source;
     const baseData = transformed.base;
 
@@ -177,9 +172,9 @@ window.copyLink = function (e) {
 
   navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
 
-  showNotification({componentStyle: 'banner', style: 'success', text: 'Linkki kopioitu!'});
+  showNotification({ componentStyle: 'banner', style: 'success', text: 'Linkki kopioitu!' });
 }
-window.onClearEdits = function(e) {
+window.onClearEdits = function (e) {
   transformed.insert = []
   transformed.exclude = {}
   transformed.replace = {}
@@ -187,7 +182,7 @@ window.onClearEdits = function(e) {
   doTransform()
   return eventHandled(e);
 }
-window.onSave = function(e) {
+window.onSave = function (e) {
   //console.log("Save:", e)
 
   // Do transform
@@ -206,7 +201,7 @@ window.onSave = function(e) {
 
   return eventHandled(e);
 }
-window.doTransform = function(event = undefined){
+window.doTransform = function (event = undefined) {
   console.log('Transforming');
   if (event) {
     event.preventDefault();
@@ -222,7 +217,7 @@ window.doTransform = function(event = undefined){
 
   //exception, if source and base ids are the same inform user, ignore empty searches
 
-  if(sourceID && baseID && sourceID === baseID){
+  if (sourceID && baseID && sourceID === baseID) {
     console.log('Source and base ID:s match. This is not permitted');
     alert('Lähde ja Pohja tietueet eivät voi olla samat');
     return;
@@ -234,13 +229,13 @@ window.doTransform = function(event = undefined){
     transformed = {
       options: transformed.options,
       base: transformed.base,
-      source: {ID: sourceID}
+      source: { ID: sourceID }
     }
   }
 
   if (!transformed.base || baseID !== transformed.base.ID) {
     console.log("Base ID mismatch")
-    transformed.base = {ID: baseID};
+    transformed.base = { ID: baseID };
     delete transformed.stored;
   }
 
@@ -258,7 +253,7 @@ window.doTransform = function(event = undefined){
       showTransformed(records);
     });
 }
-window.editSaveField = function(field){
+window.editSaveField = function (field) {
   //-----------------------------------------------------------------------------
   // Saving edited field: if field is in source or base, add a replace rule.
   // If it is in insert array, replace it from there. If it has no ID, add
@@ -267,16 +262,16 @@ window.editSaveField = function(field){
 
   console.log('Saving field:', field);
 
-  const {id} = field
+  const { id } = field
 
-  if(!id) {
+  if (!id) {
     transformed.insert = [
       ...transformed.insert,
       field
     ]
   } else {
     const isInserted = transformed.insert.filter(f => f.id === id).length > 0
-    if(isInserted) {
+    if (isInserted) {
       transformed.insert = [
         ...transformed.insert.filter(f => f.id !== id),
         field
@@ -287,28 +282,28 @@ window.editSaveField = function(field){
   }
   doTransform();
 }
-window.editUseOriginal = function(field){
+window.editUseOriginal = function (field) {
   delete transformed.replace[field.id];
   doTransform();
 }
-window.notFoundDlgClose = function(event){
+window.notFoundDlgClose = function (event) {
   const dlg = document.querySelector('#notFoundDlg');
   dlg.style.display = 'none';
   return eventHandled(event);
 }
-window.jsonDlgOpen = function(event){
+window.jsonDlgOpen = function (event) {
   const dlg = document.querySelector('#jsonDlg');
   dlg.style.display = 'flex';
   const content = document.querySelector('#jsonDlg #jsonContent');
   content.innerHTML = '';
-  content.appendChild(createJsonInput({id:'recordAsJson', className:'recordAsJson', content: JSON.stringify(transformed, null, 1)}));
+  content.appendChild(createJsonInput({ id: 'recordAsJson', className: 'recordAsJson', content: JSON.stringify(transformed, null, 1) }));
 }
-window.jsonDlgClose = function(event){
-const dlg = document.querySelector('#jsonDlg');
-dlg.style.display = 'none';
-return eventHandled(event);
+window.jsonDlgClose = function (event) {
+  const dlg = document.querySelector('#jsonDlg');
+  dlg.style.display = 'none';
+  return eventHandled(event);
 }
-window.selectJson = function(event){
+window.selectJson = function (event) {
   const record = document.querySelector('#recordAsJson');
   if (document.body.createTextRange) {
     var range = document.body.createTextRange();
@@ -325,41 +320,39 @@ window.selectJson = function(event){
 
 //exported functions
 //this is in order to be able to configure bahaviour to that client spesifically
-function sharedSaveJson({event, hasOptionsToUpdate}){
-    const record = document.querySelector('#recordAsJson');
-    transformed = JSON.parse(record.textContent);
-    doTransform();
-    if(hasOptionsToUpdate){
-        document.querySelector('#type-options [name=\'type\']').value = transformed.options.type;
-        document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
-    }
-    jsonDlgClose(event);
+function sharedSaveJson({ event, hasOptionsToUpdate }) {
+  const record = document.querySelector('#recordAsJson');
+  transformed = JSON.parse(record.textContent);
+  doTransform();
+  if (hasOptionsToUpdate) {
+    document.querySelector('#type-options [name=\'type\']').value = transformed.options.type;
+    document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
+  }
+  jsonDlgClose(event);
 }
 function parseUrlParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   const sourceId = urlParams.get('sourceId') || '';
   const baseId = urlParams.get('baseId') || '';
-  const type = urlParams.get('type') || 'p2e';
-  const profile = urlParams.get('profile') || 'DEFAULT';
+
 
   document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
   document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
 
-  if(useProfileType){
+  if (useProfileType) {
+    const type = urlParams.get('type') || 'p2e';
+    const profile = urlParams.get('profile') || 'DEFAULT';
+
     document.querySelector('#type-options [name=\'type\']').value = type;
     document.querySelector('#profile-options [name=\'profile\']').value = profile;
 
     transformed.options.type = type;
     transformed.options.profile = profile;
   }
-
-  //todo: set from init the options ?
-  //transformed.options.type = useProfileType ? type : "merge";
-  //transformed.options.profile = useProfileType ? profile : undefined;
 }
-function getTransformed(){return transformed;}
-function updateTransformed({updateData}){transformed.update(updateData);}
-function deleteFromTransformed(propertyPathInString){transformed.deleteProperty(propertyPathInString);}
+function getTransformed() { return transformed; }
+function updateTransformed({ updateData }) { transformed.update(updateData); }
+function deleteFromTransformed(propertyPathInString) { transformed.deleteProperty(propertyPathInString); }
 
 //-----------------------------------------------------------------------------
 // Private
@@ -370,38 +363,38 @@ function deleteFromTransformed(propertyPathInString){transformed.deleteProperty(
  *
  * @returns {object} unmodified transformed object
  */
-function initTransformed(){
-  return{
-      options: {},
-      source: null,
-      base: null,
-      exclude: {},
-      replace: {},
-      insert: [],
+function initTransformed() {
+  return {
+    options: {},
+    source: null,
+    base: null,
+    exclude: {},
+    replace: {},
+    insert: [],
 
-      //update one or all fields with object containing field or fields to update
-      update(newData){
-          Object.assign(this, newData);
-      },
-      deleteProperty(propertyPathInString){
-        //simple object field
-        if (propertyPathInString in this) {
-          delete this[propertyPathInString];
+    //update one or all fields with object containing field or fields to update
+    update(newData) {
+      Object.assign(this, newData);
+    },
+    deleteProperty(propertyPathInString) {
+      //simple object field
+      if (propertyPathInString in this) {
+        delete this[propertyPathInString];
+        return;
+      }
+
+      //nested property
+      const propertiesInPath = propertyPathInString.split('.');
+      let currentObj = this;
+      for (const property of propertiesInPath.slice(0, -1)) {
+        if (!(property in currentObj)) {
+          //console.log(`Nested property '${propertyPathInString}' does not exist.`);
           return;
         }
-
-        //nested property
-        const propertiesInPath = propertyPathInString.split('.');
-        let currentObj = this;
-        for (const property of propertiesInPath.slice(0, -1)) {
-          if (!(property in currentObj)) {
-            //console.log(`Nested property '${propertyPathInString}' does not exist.`);
-            return;
-          }
-          currentObj = currentObj[property];
-        }
-        delete currentObj[propertiesInPath[propertiesInPath.length - 1]];
+        currentObj = currentObj[property];
       }
+      delete currentObj[propertiesInPath[propertiesInPath.length - 1]];
+    }
   };
 }
 
@@ -420,7 +413,7 @@ function showTransformed(update = undefined) {
     }
   }
 
-  const {source, base, insert, stored, result} = transformed;
+  const { source, base, insert, stored, result } = transformed;
 
   const isStored = !!stored
 
@@ -437,9 +430,9 @@ function showTransformed(update = undefined) {
   const includedAddedIDs = addedFields.map(f => f.id).filter(id => resultIDs.includes(id));
 
   const from = {
-    ...includedSourceIDs.reduce((a, id) => ({...a, [id]: keys.source}), {}),
-    ...includedBaseIDs.reduce((a, id) => ({...a, [id]: keys.base}), {}),
-    ...includedAddedIDs.reduce((a, id) => ({...a, [id]: keys.insert}), {})
+    ...includedSourceIDs.reduce((a, id) => ({ ...a, [id]: keys.source }), {}),
+    ...includedBaseIDs.reduce((a, id) => ({ ...a, [id]: keys.base }), {}),
+    ...includedAddedIDs.reduce((a, id) => ({ ...a, [id]: keys.insert }), {})
   };
 
   const original = getLookup(sourceFields.concat(baseFields).concat(storedFields));
@@ -478,54 +471,54 @@ function showTransformed(update = undefined) {
     return record?.fields ?? [];
   }
   function getLookup(fields) {
-    return fields.reduce((a, field) => ({...a, [field.id]: field}), {});
+    return fields.reduce((a, field) => ({ ...a, [field.id]: field }), {});
   }
   function updateResultID(transformed) {
-    const {result} = transformed
+    const { result } = transformed
     const resultID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`)
-  
+
     //console.log("Stored:", stored)
-  
-    if(result?.ID) {
+
+    if (result?.ID) {
       resultID.textContent = "TIETUE " + result?.ID
     } else {
       resultID.textContent = "TULOSTIETUE"
     }
   }
   function updateSaveButtonState(transformed) {
-    const {result} = transformed
-  
+    const { result } = transformed
+
     const savebtn = document.getElementById("save-button")
-    if(result.ID || (result?.leader)) {
+    if (result.ID || (result?.leader)) {
       savebtn.disabled = false
     } else {
       savebtn.disabled = true
     }
   }
   function updateEditButtonState(transformed) {
-    const {stored} = transformed
+    const { stored } = transformed
     const editbtn = document.getElementById("edit-button")
-  
-    if(stored) {
+
+    if (stored) {
       editbtn.disabled = true
     } else {
       editbtn.disabled = false
     }
   }
-  function updateRecordSwapButtonState(){
+  function updateRecordSwapButtonState() {
     const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
     const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
-  
+
     document.getElementById('swap-button').disabled = !sourceID || !baseID;
   };
 }
-function notFoundDlgOpen({document, recordType}){
+function notFoundDlgOpen({ document, recordType }) {
   const dlg = document.querySelector('#notFoundDlg');
   dlg.style.display = 'flex';
   const prefix = document.querySelector('#notFoundDlg #recordType');
   prefix.innerHTML = recordType;
 }
-function createJsonInput({id, className, content, editable = true}) {
+function createJsonInput({ id, className, content, editable = true }) {
   const input = document.createElement('pre');
   input.setAttribute('id', id);
   input.classList.add(className);
@@ -536,14 +529,14 @@ function createJsonInput({id, className, content, editable = true}) {
   input.contentEditable = editable;
   return input;
 }
-function onFieldToggleClick(event, field){
-  const {id} = field;
+function onFieldToggleClick(event, field) {
+  const { id } = field;
   console.log(`Toggle Click on ${id}`);
 
-  if(id) {
+  if (id) {
     const isInserted = transformed.insert.filter(f => f.id === id).length > 0
 
-    if(isInserted) {
+    if (isInserted) {
       transformed.insert = [
         ...transformed.insert.filter(f => f.id !== id),
       ]
@@ -558,8 +551,8 @@ function onFieldToggleClick(event, field){
 }
 
 // Field view decorator
-function onEditClick(event, field, original){
-  const {id} = field;
+function onEditClick(event, field, original) {
+  const { id } = field;
   console.log(`Edit Click on ${id}`);
 
   //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
@@ -576,17 +569,17 @@ function onEditClick(event, field, original){
   }
   //make sure only certain values can be auto edit focus requested
   //if not correct later expects null and does nothing
-  if(subElement && !isSubElementAcceptable(subElement.class)){
-      console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
-      subElement = null;
+  if (subElement && !isSubElementAcceptable(subElement.class)) {
+    console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
+    subElement = null;
   }
 
   editField(field, original, subElement);
 
   return eventHandled(event);
 
-  function isSubElementAcceptable(elementRequested){
-    switch (elementRequested){
+  function isSubElementAcceptable(elementRequested) {
+    switch (elementRequested) {
       case 'tag':
       case 'ind1':
       case 'ind2':
@@ -603,9 +596,9 @@ function onEditClick(event, field, original){
 function updateUrlParameters(transformed) {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const {options, source, base} = transformed
+  const { options, source, base } = transformed
 
-  if(useProfileType){
+  if (useProfileType) {
     setUrlParam("type", options?.type)
     setUrlParam("profile", options?.profile)
   }
@@ -620,7 +613,7 @@ function updateUrlParameters(transformed) {
   }
 
   function setUrlParam(id, value) {
-    if(value) {
+    if (value) {
       urlParams.set(id, value)
     } else {
       urlParams.delete(id)
@@ -628,6 +621,6 @@ function updateUrlParameters(transformed) {
   }
 }
 
-function resetTransformed(){
+function resetTransformed() {
   transformed = Object.create(initTransformed());
 }
