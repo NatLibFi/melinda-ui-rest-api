@@ -26,11 +26,13 @@ import { profileRequest } from '/common/rest.js';
 // on page load:
 //-----------------------------------------------------------------------------
 
+const clientName = 'muuntaja';
+
 window.initialize = function () {
   console.log('Initializing');
   initModule();
 
-  showServerNotifications({ clientName: 'muuntaja', onSuccess: () => { doLogin(authSuccess); } });
+  showServerNotifications({ clientName: clientName, onSuccess: () => { doLogin(authSuccess); } });
 
   function authSuccess(user) {
 
@@ -41,7 +43,7 @@ window.initialize = function () {
         accountMenu.classList.add('show');
         const username = document.querySelector('#accountMenu #username');
         username.innerHTML = Account.get().Name;
-        showTab('muuntaja');
+        showTab(clientName);
         parseUrlParameters();
         doTransform();
       });

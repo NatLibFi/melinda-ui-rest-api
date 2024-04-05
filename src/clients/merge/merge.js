@@ -22,10 +22,13 @@ import { Account, doLogin } from '/common/auth.js';
 // on page load:
 //-----------------------------------------------------------------------------
 
+const clientName = 'merge';
+
+
 window.initialize = function () {
   console.log('Initializing');
   initModule({
-    client: 'muuntaja',
+    client: clientName,
     canUseProfileType: false,
     transformedOptions: {
       type: 'merge',
@@ -33,7 +36,7 @@ window.initialize = function () {
     }
   });
 
-  showServerNotifications({ clientName: 'merge', onSuccess: () => { doLogin(authSuccess); } });
+  showServerNotifications({ clientName: clientName, onSuccess: () => { doLogin(authSuccess); } });
 
   function authSuccess(user) {
     setOptions();
@@ -41,7 +44,7 @@ window.initialize = function () {
     accountMenu.classList.add('show');
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
-    showTab('muuntaja'); //refers to tab in merge.html, its still with the name of muuntaja
+    showTab(clientName);
     parseUrlParameters();
     doTransform();
   }
