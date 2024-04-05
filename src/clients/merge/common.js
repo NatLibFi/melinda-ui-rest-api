@@ -25,7 +25,7 @@ import { storeTransformedRequest, transformRequest } from '/common/rest.js';
 //-----------------------------------------------------------------------------
 // Global variables
 //-----------------------------------------------------------------------------
-let transformed, useProfileType;
+let transformed, useProfileType, clientName;
 window.editMode = false;
 const keys = {
   source: 'source',
@@ -35,33 +35,69 @@ const keys = {
 };
 
 //-----------------------------------------------------------------------------
-// Exposed
+// Exported
 //-----------------------------------------------------------------------------
+
+//*******************
+// By hand
+//*******************
 export {
-  deleteFromTransformed, getTransformed, initModule, parseUrlParameters, sharedSaveJson, updateTransformed
+  deleteFromTransformed, getTransformed, initModule, parseUrlParameters, updateTransformed
 };
 
 /**
  * Clears any variables shared within imported script module,
  * gets called on importing scripts init
+ * 
+ * Default to 'muuntaja' client baviour
+ * @param {object|undefined} initData object holding some configuration data for common
+ * @param {boolean} initData.canUseProfileType - can user select profile and type for transformation
+ * @param {object} initData.transformedOptions - options to override transformed objects options on default
+ * @param {object} initData.client - what named client we are using, available locally on clientName, used to find from html correct div and what to set to url, use lowercase
  */
 function initModule(initData = {}) {
-  const { canUseProfileType = true, transformedOptions = undefined } = initData;
+  const { canUseProfileType = true, transformedOptions = undefined, client = 'muuntaja' } = initData;
 
   transformed = Object.create(initTransformed());
   editMode = false;
   useProfileType = canUseProfileType;
+  clientName = client;
 
   //override options
   if (transformedOptions) {
     transformed.options = transformedOptions;
   }
 }
+function parseUrlParameters() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sourceId = urlParams.get('sourceId') || '';
+  const baseId = urlParams.get('baseId') || '';
 
-//globally accessed through window
+
+  document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
+  document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
+
+  if (useProfileType) {
+    const type = urlParams.get('type') || 'p2e';
+    const profile = urlParams.get('profile') || 'DEFAULT';
+
+    document.querySelector('#type-options [name=\'type\']').value = type;
+    document.querySelector('#profile-options [name=\'profile\']').value = profile;
+
+    transformed.options.type = type;
+    transformed.options.profile = profile;
+  }
+}
+function getTransformed() { return transformed; }
+function updateTransformed({ updateData }) { transformed.update(updateData); }
+function deleteFromTransformed(propertyPathInString) { transformed.deleteProperty(propertyPathInString); }
+
+//*******************
+// through window
+//*******************
 window.onNew = function (e) {
   console.log('New:', e);
-  resetForms(document.getElementById('muuntaja'));
+  resetForms(document.getElementById(clientName));
   return eventHandled(e);
 }
 window.onEdit = function (e) {
@@ -103,7 +139,7 @@ window.onNewField = function (e) {
 }
 window.onNewInstance = function (e) {
 
-  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
+  const sourceInput = document.querySelector(`#${clientName} .record-merge-panel #source #ID`);
   sourceInput.value = '';
   sourceInput.dispatchEvent(new Event('input'));
 
@@ -118,8 +154,8 @@ window.onSearch = function (e) {
 }
 window.onRecordSwap = function (e) {
 
-  const sourceInput = document.querySelector(`#muuntaja .record-merge-panel #source #ID`);
-  const baseInput = document.querySelector(`#muuntaja .record-merge-panel #base #ID`);
+  const sourceInput = document.querySelector(`#${clientName} .record-merge-panel #source #ID`);
+  const baseInput = document.querySelector(`#${clientName} .record-merge-panel #base #ID`);
 
   console.log('Swap:ing between source and base');
 
@@ -210,8 +246,8 @@ window.doTransform = function (event = undefined) {
   //console.log('Source ID:', sourceID);
   //console.log('Base ID:', baseID);
 
-  const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-  const baseIDString = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+  const sourceID = document.querySelector(`#${clientName} .record-merge-panel #source #ID`).value;
+  const baseIDString = document.querySelector(`#${clientName} .record-merge-panel #base #ID`).value;
 
   const baseID = baseIDString ? baseIDString : undefined
 
@@ -317,42 +353,16 @@ window.selectJson = function (event) {
     selection.addRange(range);
   }
 }
-
-//exported functions
-//this is in order to be able to configure bahaviour to that client spesifically
-function sharedSaveJson({ event, hasOptionsToUpdate }) {
+window.saveJson = function sharedSaveJson(event) {
   const record = document.querySelector('#recordAsJson');
   transformed = JSON.parse(record.textContent);
   doTransform();
-  if (hasOptionsToUpdate) {
+  if (useProfileType) {
     document.querySelector('#type-options [name=\'type\']').value = transformed.options.type;
     document.querySelector('#profile-options [name=\'profile\']').value = transformed.options.profile;
   }
   jsonDlgClose(event);
 }
-function parseUrlParameters() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const sourceId = urlParams.get('sourceId') || '';
-  const baseId = urlParams.get('baseId') || '';
-
-
-  document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
-  document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
-
-  if (useProfileType) {
-    const type = urlParams.get('type') || 'p2e';
-    const profile = urlParams.get('profile') || 'DEFAULT';
-
-    document.querySelector('#type-options [name=\'type\']').value = type;
-    document.querySelector('#profile-options [name=\'profile\']').value = profile;
-
-    transformed.options.type = type;
-    transformed.options.profile = profile;
-  }
-}
-function getTransformed() { return transformed; }
-function updateTransformed({ updateData }) { transformed.update(updateData); }
-function deleteFromTransformed(propertyPathInString) { transformed.deleteProperty(propertyPathInString); }
 
 //-----------------------------------------------------------------------------
 // Private
@@ -444,12 +454,12 @@ function showTransformed(update = undefined) {
     onClick: onFieldToggleClick,
     from,
     exclude: transformed.exclude
-  });
+  }, clientName);
   showRecord(base, keys.base, {
     onClick: onFieldToggleClick,
     from,
     exclude: transformed.exclude
-  });
+  }, clientName);
   showRecord(result, keys.result, {
     onClick: (editMode || isStored) ? onEditClick : onFieldToggleClick,
     onDelete: onFieldToggleClick,
@@ -458,7 +468,7 @@ function showTransformed(update = undefined) {
     exclude: transformed.exclude,
     replace: transformed.replace,
     insert: transformed.insert
-  });
+  }, clientName);
 
   // Update UI states according to result
   updateUrlParameters(transformed);
@@ -475,7 +485,7 @@ function showTransformed(update = undefined) {
   }
   function updateResultID(transformed) {
     const { result } = transformed
-    const resultID = document.querySelector(`#muuntaja .record-merge-panel #result #ID`)
+    const resultID = document.querySelector(`#${clientName} .record-merge-panel #result #ID`)
 
     //console.log("Stored:", stored)
 
@@ -506,8 +516,8 @@ function showTransformed(update = undefined) {
     }
   }
   function updateRecordSwapButtonState() {
-    const sourceID = document.querySelector(`#muuntaja .record-merge-panel #source #ID`).value;
-    const baseID = document.querySelector(`#muuntaja .record-merge-panel #base #ID`).value;
+    const sourceID = document.querySelector(`#${clientName} .record-merge-panel #source #ID`).value;
+    const baseID = document.querySelector(`#${clientName} .record-merge-panel #base #ID`).value;
 
     document.getElementById('swap-button').disabled = !sourceID || !baseID;
   };
@@ -591,8 +601,6 @@ function onEditClick(event, field, original) {
     }
   }
 }
-
-
 function updateUrlParameters(transformed) {
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -609,7 +617,7 @@ function updateUrlParameters(transformed) {
   window.history.replaceState({}, '', decodeURIComponent(`${window.location.pathname}?${urlParams}`));
 
   if (window.location.search === '') {
-    window.history.replaceState({}, '', '/muuntaja/');
+    window.history.replaceState({}, '', `/${clientName}/`);
   }
 
   function setUrlParam(id, value) {
@@ -620,7 +628,6 @@ function updateUrlParameters(transformed) {
     }
   }
 }
-
 function resetTransformed() {
   transformed = Object.create(initTransformed());
 }

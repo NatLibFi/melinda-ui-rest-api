@@ -13,8 +13,7 @@ import {
   deleteFromTransformed,
   getTransformed,
   initModule,
-  parseUrlParameters,
-  sharedSaveJson
+  parseUrlParameters
 } from '/merge/common.js';
 
 import { Account, doLogin } from '/common/auth.js';
@@ -26,6 +25,7 @@ import { Account, doLogin } from '/common/auth.js';
 window.initialize = function () {
   console.log('Initializing');
   initModule({
+    client: 'muuntaja',
     canUseProfileType: false,
     transformedOptions: {
       type: 'merge',
@@ -47,16 +47,7 @@ window.initialize = function () {
   }
 };
 
-//-----------------------------------------------------------------------------
-
 function setOptions() {
   if (!getTransformed().base?.ID) deleteFromTransformed('base');//delete transformed.base;
   deleteFromTransformed('stored');
 }
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-// Show transformation results
-//-----------------------------------------------------------------------------
-
-window.saveJson = (event) => sharedSaveJson({ event, hasOptionsToUpdate: true });

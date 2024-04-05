@@ -16,7 +16,6 @@ import {
   getTransformed,
   initModule,
   parseUrlParameters,
-  sharedSaveJson,
   updateTransformed
 } from '/merge/common.js';
 
@@ -110,10 +109,3 @@ function setTransformProfile(event, value) {
 }
 
 //-----------------------------------------------------------------------------
-
-
-//-----------------------------------------------------------------------------
-// Show transformation results
-//-----------------------------------------------------------------------------
-
-window.saveJson = (event) => sharedSaveJson({ event, hasOptionsToUpdate: true });
