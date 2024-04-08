@@ -42,13 +42,13 @@ const keys = {
 // By hand
 //*******************
 export {
-  deleteFromTransformed, getTransformed, initModule, parseUrlParameters, updateTransformed
+  deleteFromTransformed, getTransformed, initModule, parseUrlParameters, updateTransformed, resetTransformed
 };
 
 /**
  * Clears any variables shared within imported script module,
  * gets called on importing scripts init
- * 
+ *
  * Default to 'muuntaja' client baviour
  * @param {object|undefined} initData object holding some configuration data for common
  * @param {boolean} initData.canUseProfileType - can user select profile and type for transformation
@@ -68,6 +68,11 @@ function initModule(initData = {}) {
     transformed.options = transformedOptions;
   }
 }
+/**
+ * Parse data from url parameters
+ * get data from url parameters (has defaults) and sets id to source and bas
+ * IF profile and type are enabled set updates type and profile dropdown selector and update transformed options from them
+ */
 function parseUrlParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   const sourceId = urlParams.get('sourceId') || '';
@@ -88,9 +93,13 @@ function parseUrlParameters() {
     transformed.options.profile = profile;
   }
 }
+//common transformed edit functions
 function getTransformed() { return transformed; }
 function updateTransformed({ updateData }) { transformed.update(updateData); }
 function deleteFromTransformed(propertyPathInString) { transformed.deleteProperty(propertyPathInString); }
+function resetTransformed() {
+  transformed = Object.create(initTransformed());
+}
 
 //*******************
 // through window
@@ -369,7 +378,7 @@ window.saveJson = function sharedSaveJson(event) {
 //-----------------------------------------------------------------------------
 
 /**
- * Get basic transformed object
+ * Get basic transformed object with
  *
  * @returns {object} unmodified transformed object
  */
@@ -407,8 +416,18 @@ function initTransformed() {
     }
   };
 }
-
+/**
+ * Main function for showing transformed data on ui
+ * TODO: add more description
+ * - resets and updates transformed with update data
+ * - get fields and handle id data bundling
+ * - show record for source, base and result
+ * - udpates different button states based on current state
+ *
+ * @param {object} [update=undefined] - update object for updating transformed object, defaults to undefined
+ */
 function showTransformed(update = undefined) {
+  //TODO: should the update handled elsewhere separetely and not updated here ?
   //updateTransformed(update);
   if (update) {
     transformed = {
@@ -522,12 +541,28 @@ function showTransformed(update = undefined) {
     document.getElementById('swap-button').disabled = !sourceID || !baseID;
   };
 }
-function notFoundDlgOpen({ document, recordType }) {
+/**
+ * Set in ui dialog visible and show record type
+ *
+ * @param {object} object - data set trough object
+ * @param {string} object.recordType - record type that was not found
+ */
+function notFoundDlgOpen({recordType}) {
   const dlg = document.querySelector('#notFoundDlg');
   dlg.style.display = 'flex';
   const prefix = document.querySelector('#notFoundDlg #recordType');
   prefix.innerHTML = recordType;
 }
+/**
+ * Creates a preformatted text element, sets some data to its attribute and classList
+ *
+ * @param {object} object - data set trough object
+ * @param {object} object.id - record id
+ * @param {object} object.className - any class you want to add to elements classList
+ * @param {string} object.content - json as text
+ * @param {boolean} [object.editable=true] - should the text be editable
+ * @returns {HTMLElement} created input '<pre>' element (preformatted text element)
+ */
 function createJsonInput({ id, className, content, editable = true }) {
   const input = document.createElement('pre');
   input.setAttribute('id', id);
@@ -539,6 +574,12 @@ function createJsonInput({ id, className, content, editable = true }) {
   input.contentEditable = editable;
   return input;
 }
+/**
+ * Clicking the records field, toggles it on/off
+ *
+ * @param {Event} event - on clicking the field data
+ * @param {object} field - field data
+ */
 function onFieldToggleClick(event, field) {
   const { id } = field;
   console.log(`Toggle Click on ${id}`);
@@ -559,8 +600,15 @@ function onFieldToggleClick(event, field) {
     doTransform();
   }
 }
-
 // Field view decorator
+/**
+ * Clicking on (edit enabled) the record field.
+ *
+ * @param {Event} event - on clicking the field data
+ * @param {object} field - field data
+ * @param {object} original - result of reduction in showTransformed getLookup. Essentially object with fields array values as sub objects with each objects id field value set objects field key
+ * @returns {boolean} True if the event was handled, false otherwise.
+ */
 function onEditClick(event, field, original) {
   const { id } = field;
   console.log(`Edit Click on ${id}`);
@@ -601,6 +649,13 @@ function onEditClick(event, field, original) {
     }
   }
 }
+/**
+ * Updates pages url search params.
+ * empty seach defaults to client name provided
+ * useProfileType variable configures if profile and type are available in url params
+ *
+ * @param {object} transformed transformed dataobject
+ */
 function updateUrlParameters(transformed) {
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -627,7 +682,4 @@ function updateUrlParameters(transformed) {
       urlParams.delete(id)
     }
   }
-}
-function resetTransformed() {
-  transformed = Object.create(initTransformed());
 }
