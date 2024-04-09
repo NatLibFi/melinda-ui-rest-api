@@ -53,7 +53,7 @@ export {
  * @param {object|undefined} initData object holding some configuration data for common
  * @param {boolean} initData.canUseProfileType - can user select profile and type for transformation
  * @param {object} initData.transformedOptions - options to override transformed objects options on default
- * @param {object} initData.client - what named client we are using, available locally on clientName, used to find from html correct div and what to set to url, use lowercase
+ * @param {string} initData.client - what named client we are using, available locally on clientName, used to find from html correct div and what to set to url, use lowercase
  */
 function initModule(initData = {}) {
   const { canUseProfileType = true, transformedOptions = undefined, client = 'muuntaja' } = initData;
