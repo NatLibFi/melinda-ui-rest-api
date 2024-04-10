@@ -104,22 +104,22 @@ function resetTransformed() {
 //*******************
 // through window
 //*******************
-window.onNew = function (e) {
-  console.log('New:', e);
+window.onNew = function (event) {
+  console.log('New:', event);
   resetForms(document.getElementById(clientName));
-  return eventHandled(e);
+  return eventHandled(event);
 }
-window.onEdit = function (e) {
-  console.log('Edit:', e);
+window.onEdit = function (event) {
+  console.log('Edit:', event);
   editMode = !editMode;
   if (editMode) {
-    e.target.classList.add('edit-mode');
+    event.target.classList.add('edit-mode');
   } else {
-    e.target.classList.remove('edit-mode');
+    event.target.classList.remove('edit-mode');
   }
   styleBasedOnEditState();
   showTransformed(null);
-  return eventHandled(e);
+  return eventHandled(event);
 
   function styleBasedOnEditState() {
     const originalStyle = getComputedStyle(document.querySelector('.record-merge-panel'));
@@ -139,14 +139,14 @@ window.onEdit = function (e) {
     }
   }
 }
-window.onNewField = function (e) {
+window.onNewField = function (event) {
   editField({
     tag: '', ind1: '', ind2: '',
     subfields: []
   });
-  return eventHandled(e);
+  return eventHandled(event);
 }
-window.onNewInstance = function (e) {
+window.onNewInstance = function (event) {
 
   const sourceInput = document.querySelector(`#${clientName} .record-merge-panel #source #ID`);
   sourceInput.value = '';
@@ -155,13 +155,13 @@ window.onNewInstance = function (e) {
   //set content
   doTransform();
 }
-window.onSearch = function (e) {
-  console.log('Search:', e);
+window.onSearch = function (event) {
+  console.log('Search:', event);
   //const dialog = document.getElementById('searchDlg');
   //console.log('Dialog:', dialog);
   //dialog.show();
 }
-window.onRecordSwap = function (e) {
+window.onRecordSwap = function (event) {
 
   const sourceInput = document.querySelector(`#${clientName} .record-merge-panel #source #ID`);
   const baseInput = document.querySelector(`#${clientName} .record-merge-panel #base #ID`);
@@ -190,18 +190,18 @@ window.onRecordSwap = function (e) {
     doTransform();
   }
 
-  return eventHandled(e);
+  return eventHandled(event);
 }
-window.onSettings = function (e) {
-  console.log('Settings:', e);
-  return eventHandled(e);
+window.onSettings = function (event) {
+  console.log('Settings:', event);
+  return eventHandled(event);
 }
-window.onAccount = function (e) {
-  console.log('Account:', e);
+window.onAccount = function (event) {
+  console.log('Account:', event);
   logout();
 }
-window.copyLink = function (e) {
-  eventHandled(e);
+window.copyLink = function (event) {
+  eventHandled(event);
 
   const type = useProfileType ? document.querySelector('#type-options [name=\'type\']').value : transformed?.options?.type;
   const profile = useProfileType ? document.querySelector('#profile-options [name=\'profile\']').value : transformed?.options?.profile;
@@ -219,16 +219,16 @@ window.copyLink = function (e) {
 
   showNotification({ componentStyle: 'banner', style: 'success', text: 'Linkki kopioitu!' });
 }
-window.onClearEdits = function (e) {
+window.onClearEdits = function (event) {
   transformed.insert = []
   transformed.exclude = {}
   transformed.replace = {}
 
   doTransform()
-  return eventHandled(e);
+  return eventHandled(event);
 }
-window.onSave = function (e) {
-  //console.log("Save:", e)
+window.onSave = function (event) {
+  //console.log("Save:", event)
 
   // Do transform
 
@@ -244,7 +244,7 @@ window.onSave = function (e) {
       showTransformed(records);
     });
 
-  return eventHandled(e);
+  return eventHandled(event);
 }
 window.doTransform = function (event = undefined) {
   console.log('Transforming');
