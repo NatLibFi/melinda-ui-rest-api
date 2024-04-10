@@ -144,12 +144,32 @@ button.small.icon-only {
   width: 32px;
 }
 
+/* ---------------------------------------------------------------------------- */
+/* Colored buttons for special use                                              */
+button.yellow{
+  background-color: var(--color-yellow-100);
+  border-color: var(--color-yellow-100);
+}
+button.red{
+  background-color: var(--color-red-100);
+  border-color: var(--color-red-100);
+}
+button.green{
+  background-color: var(--color-green-100);
+  border-color: var(--color-green-100);
+}
+button.blue {
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
 
 
 /* ---------------------------------------------------------------------------- */
 /* Alternate colored buttons for special use                                    */
 /* - red for example clearing forms, green accepting etc.                       */
 
+button.alternate-yellow,
 button.alternate-red,
 button.alternate-green,
 button.alternate-blue {
@@ -171,6 +191,10 @@ button.alternate-blue {
   border-color: var(--color-blue-100);
 }
 
+button.alternate-yellow {
+  color: var(--color-yellow-100);
+  border-color: var(--color-yellow-100);
+}
 
 
 /* ---------------------------------------------------------------------------- */
@@ -210,6 +234,7 @@ button.inverse {
   border-color: var(--color-blue-40);
 }
 
+button.alternate-yellow.inverse,
 button.alternate-red.inverse,
 button.alternate-green.inverse,
 button.alternate-blue.inverse {
@@ -227,6 +252,10 @@ button.alternate-green.inverse {
 
 button.alternate-blue.inverse {
   color: var(--color-blue-100);
+}
+
+button.alternate-yellow.inverse {
+  color: var(--color-yellow-100);
 }
 
 button.minimal.inverse {
@@ -270,6 +299,33 @@ button.alternate-blue:hover {
   border-color: var(--color-blue-100);
 }
 
+/* melinda specific alternate yellow hover style */
+button.alternate-yellow:hover {
+  color: var(--color-primary-white);
+  background-color: var(--color-yellow-100);
+  border-color: var(--color-yellow-100);
+}
+
+button.yellow:hover{
+  color: var(--color-yellow-100);
+  background-color: var(--color-primary-white);
+  border-color: var(--color-yellow-100);
+}
+button.red:hover{
+  color: var(--color-red-100);
+  background-color: var(--color-primary-white);
+  border-color: var(--color-red-100);
+}
+button.green:hover{
+  color: var(--color-green-100);
+  background-color: var(--color-primary-white);
+  border-color: var(--color-green-100);
+}
+button.blue:hover{
+  color: var(--color-blue-100);
+  background-color: var(--color-primary-white);
+  border-color: var(--color-blue-100);
+}
 
 /* ---------------------------------------------------------------------------- */
 /* Button active effects                                                        */

@@ -17,11 +17,11 @@ import {handleError} from '../requestUtils/handleError';
 
 import {createMuuntajaService, getRecordWithIDs, generateMissingIDs, modifyRecord, addMissingIDs, stripFields, bareRecord} from './muuntajaService';
 
+/*
 import {promisify} from 'util';
 
 const sleep = promisify(setTimeout);
-
-//setTimeoutPromise(50);
+*/
 
 const appName = 'Muuntaja';
 
@@ -61,12 +61,19 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     res.json({
       type: [
         {tag: 'p2e', name: 'Painetusta > E-aineistoksi'},
-        {tag: 'e2p', name: 'E-aineistosta > Painetuksi'}
+        {tag: 'e2p', name: 'E-aineistosta > Painetuksi'},
+        {tag: 'merge', name: 'Yhdistä tietueet'}
       ],
       profile: [
+
+        //*
         {tag: 'DEFAULT', name: 'Oletus'},
         {tag: 'FENNI', name: 'Fennica'}
-        //...user.authorization.map(org => organizationToProfile(org))
+
+        /*/
+        ...user.authorization.map(org => organizationToProfile(org))
+
+        /**/
       ]
     });
 
@@ -110,6 +117,30 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
   }
 
   //---------------------------------------------------------------------------
+  // Get transform options
+  //---------------------------------------------------------------------------
+
+  function getTransformOptions(transform) {
+
+    if (!transform.options) {
+      return {};
+    }
+
+    return {
+      type: transform.options.type,
+      profile: getProfileByOrganization(transform.options.profile),
+      LOWTAG: transform.options.profile
+    };
+
+    function getProfileByOrganization(org) {
+      if (org === 'FENNI') {
+        return 'FENNI';
+      }
+      return;
+    }
+  }
+
+  //---------------------------------------------------------------------------
   // Process user data for record transform
   //---------------------------------------------------------------------------
 
@@ -124,9 +155,9 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
 
     const transform = stripTransformInfoFields(req.body);
 
+    const options = getTransformOptions(transform);
+
     const {source, base, exclude, replace, stored} = {
-      source: null,
-      base: null,
       exclude: {},
       replace: {},
       ...transform
@@ -138,7 +169,7 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     // If we have already stored the record, do modifications, but do not do transformation
 
     if (stored) {
-      const modified = muuntajaService.postprocessRecord(stored, insert, exclude, replace);
+      const result = muuntajaService.postprocessRecord(stored, insert, exclude, replace);
 
       res.json({
         options: req.body.options,
@@ -147,25 +178,9 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
         replace,
         insert,
         stored,
-        result: modified
+        result
       });
 
-      return;
-    }
-
-    //-------------------------------------------------------------------------
-    // Get transform options
-
-    const options = {
-      type: transform.options.type,
-      profile: getProfileByOrganization(transform.options.profile),
-      LOWTAG: transform.options.profile
-    };
-
-    function getProfileByOrganization(org) {
-      if (org === 'FENNI') {
-        return 'FENNI';
-      }
       return;
     }
 

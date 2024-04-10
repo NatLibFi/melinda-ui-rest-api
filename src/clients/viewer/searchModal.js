@@ -1,4 +1,4 @@
-import {startProcess, stopProcess, showSnackbar, highlightElement} from '/common/ui-utils.js';
+import {startProcess, stopProcess, showNotification, highlightElement} from '/common/ui-utils.js';
 import {idbSetList, idbGetList, idbClearList} from '/viewer/indexDB.js';
 import {getCorrelationIdList} from '/common/rest.js';
 
@@ -235,7 +235,7 @@ function updateCorrelationIdListModal() {
     })
     .catch((error) => {
       console.log('Error getting correlation id list from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({style: 'info', text: 'Odota hetki listan päivittymistä'})
+      showNotification({componentStyle: 'banner', style: 'info', text: 'Odota hetki listan päivittymistä'})
     })
 }
 

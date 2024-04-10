@@ -1,7 +1,7 @@
 import {validateForm} from '/artikkelit/actions/articleValidateForm.js';
 import {idbGet} from '/artikkelit/utils/indexedDB.js';
 import {validateArticleRecord} from '/common/rest.js';
-import {enableElement, highlightElement, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
+import {enableElement, highlightElement, showNotification, startProcess, stopProcess} from '/common/ui-utils.js';
 
 
 
@@ -112,7 +112,7 @@ function checkArticleRecord(event = undefined) {
     })
     .catch((error) => {
       console.log('Error getting record from indexedDB (if undefined, probably it is not yet set): ', error);
-      showSnackbar({style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'})
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tietueen käsittelyssä tapahtui virhe'})
     })
 }
 
@@ -159,7 +159,7 @@ function validateRecord(data) {
     })
     .catch((error) => {
       console.log('Error validating record: ', error);
-      showSnackbar({style: 'error', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
+      showNotification({componentStyle: 'banner', style: 'error', text: 'Valitettavasti tietuetta ei voitu tarkistaa'});
     })
     .finally(() => {
       stopProcess();
@@ -178,7 +178,7 @@ function validateRecord(data) {
 
     enableElement(saveArticleRecordButton);
     forwardIcon.classList.add('proceed');
-    showSnackbar({style: 'info', text: 'Voit nyt tallentaa tietueen'});
+    showNotification({componentStyle: 'banner', style: 'info', text: 'Voit nyt tallentaa tietueen'});
   }
 
 
@@ -191,7 +191,7 @@ function validateRecord(data) {
 
     highlightElement(recordNotes);
     highlightElement(recordNotes);
-    showSnackbar({style: 'alert', text: 'Korjaa tietue ja yritä sitten tarkistusta uudelleen.'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Korjaa tietue ja yritä sitten tarkistusta uudelleen.'});
   }
 
 
@@ -202,7 +202,7 @@ function validateRecord(data) {
     recordNotes.classList.add('record-error');
     recordNotes.classList.remove('record-valid');
     highlightElement(recordNotes);
-    showSnackbar({style: 'alert', text: 'Tarkista onko vastaava tietue jo luotu aiemmin.'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Tarkista onko vastaava tietue jo luotu aiemmin.'});
   }
 
 

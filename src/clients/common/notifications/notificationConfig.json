@@ -1,0 +1,61 @@
+{
+    "debug":{
+        "clearNotificationLocalStorageOnLoad": false
+    },
+    "localstorePrefixKey": "melinda_notification",
+    "accepted_clients":[
+        "artikkelit",
+        "viewer",
+        "muuntaja",
+        "merge",
+        "edit"
+    ],
+    "resourceConfigsForComponentStyles": {
+        "banner":{
+            "templateId": "bannerTemplate",
+            "elementId": "banner",
+            "containerId": "banners",
+            "showFunctionName": "showBanner"
+        },
+        "banner_static":{
+            "templateId": "bannerStaticTemplate",
+            "elementId": "bannerStatic",
+            "containerId": "bannnerStatics",
+            "showFunctionName": "showBannerStatic"
+        },
+        "dialog":{
+            "templateId": "dialogTemplate",
+            "elementId": "dialog",
+            "containerId": "dialogs",
+            "showFunctionName": "showDialog"
+        }
+    },
+    "messageStyleConfigs":{
+        "info":{
+            "bg": "var(--color-blue-60)",
+            "iconBg": "var(--color-blue-100)",
+            "icon": "error_outline"
+        },
+        "success":{
+            "bg": "var(--color-green-80)",
+            "iconBg": "var(--color-green-100)",
+            "icon": "check_circle_outline"
+        },
+        "alert":{
+            "bg": "var(--color-yellow-80)",
+            "iconBg": "var(--color-blue-100)",
+            "icon": "warning_amber"
+        },
+        "error":{
+            "bg": "var(--color-red-80)",
+            "iconBg": "var(--color-red-100)",
+            "icon": "report_gmailerrorred"
+        }
+    },
+    "messageTitleConfig":{
+        "info":"Huomasithan",
+        "success":"Onnistui",
+        "alert":"Huomio",
+        "error":"Virhe"
+    }
+}

@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="login.css" />
 
+  <script type="module" src="login.js"></script>
   <script type="module" src="/common/ui-utils.js"></script>
   <script type="module" src="/common/navbar.js"></script>
   <script type="module" src="/common/footer.js"></script>
@@ -29,6 +30,18 @@
 <body>
 
   <div id="bodywrapper" class="viewport-full VBox">
+
+    <!-- ---------------------------------------------------------------------- -->
+    <!-- Notifications-->
+    <div id="notifications">
+      <!--Take note of the order these lists are set-->
+      <div id="bannnerStatics" class="notificationstaticbannerstatics"></div>
+      <div id="dialogs">
+        <div id="notificationDialogsBg" class="notificationDialogsBg" style="visibility: hidden;"></div>
+        <div id="notificationDialogs" class="notificationdialogs"></div>
+      </div>
+      <div id="banners" class="notificationbanners"></div>
+    </div>
 
     <!-- ------------------------------------------------------------------------ -->
     <!-- Navigation bar -->
@@ -93,28 +106,6 @@
 
             <div class="homepage-services-list">
 
-              <a href="/artikkelit">
-                <div class="service-link">
-                  <div class="service-link-icon icon-arrow">
-                    <span class="material-icons">east</span>
-                  </div>
-                  <div class="service-link-text">
-                    Artikkelien kuvailutyökalu
-                  </div>
-                </div>
-              </a>
-
-              <a href="/edit">
-                <div class="service-link">
-                  <div class="service-link-icon icon-arrow">
-                    <span class="material-icons">east</span>
-                  </div>
-                  <div class="service-link-text">
-                    Muokkaus
-                  </div>
-                </div>
-              </a>
-
               <a href="/muuntaja">
                 <div class="service-link">
                   <div class="service-link-icon icon-arrow">
@@ -122,17 +113,6 @@
                   </div>
                   <div class="service-link-text">
                     Muuntaja
-                  </div>
-                </div>
-              </a>
-
-              <a href="/viewer">
-                <div class="service-link">
-                  <div class="service-link-icon icon-arrow">
-                    <span class="material-icons">east</span>
-                  </div>
-                  <div class="service-link-text">
-                    Viewer
                   </div>
                 </div>
               </a>
@@ -405,8 +385,6 @@
 
       </div>
 
-      <!-- For displaying info messages and errors to user -->
-      <div id="snackbars" class="snackbars"></div>
 
     </div>
 

@@ -5,7 +5,7 @@
 //*****************************************************************************
 
 import {authVerify, authRequest} from './rest.js';
-import {reload, resetForms, showSnackbar, showTab} from './ui-utils.js';
+import {reload, resetForms, showNotification, showTab} from './ui-utils.js';
 import {startProcess, stopProcess} from './ui-utils.js';
 
 //*****************************************************************************
