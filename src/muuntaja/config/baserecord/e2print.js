@@ -84,7 +84,7 @@ const defaultFieldValues = {
     subfields: [
       {code: 'a', value: 'teksti'},
       {code: 'b', value: 'txt'},
-      {code: 'c', value: 'rdacontent'}
+      {code: '2', value: 'rdacontent'}
     ],
     id: '0194c712-c561-456c-993d-18368030ea5b'
   },
