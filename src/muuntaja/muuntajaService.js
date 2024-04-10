@@ -38,7 +38,13 @@ export function createMuuntajaService() {
  ******************************************************************************
  */
 
-function stripRecord({leader, fields, ID, error, notes}) {
+function stripRecord(record) {
+
+  if (!record) {
+    return record;
+  }
+
+  const {leader, fields, ID, error, notes} = record;
 
   return {
     leader,
@@ -89,6 +95,7 @@ export function generateResultRecord({source, base: baseRecord, options, insert,
       return {
         source: stripRecord(source),
         base: stripRecord(base),
+        //result: stripRecord({ID: base.ID, ...result})
         result: stripRecord(result)
       };
     } catch (err) {
@@ -198,11 +205,19 @@ export function addMissingIDs(record) {
   };
 }
 
-export function generateMissingIDs(fields) {
+export function generateMissingIDs(fields, exclude = ['CAT', '001', '003', '005']) {
   if (!fields) {
     return [];
   }
-  return fields.map(f => f.id ? f : {...f, id: uuid()});
+  return fields.map(f => {
+    if (exclude.includes(f.tag)) {
+      return f;
+    }
+    if (f.id) {
+      return f;
+    }
+    return {...f, id: uuid()};
+  });
 }
 
 export function stripFields(record) {

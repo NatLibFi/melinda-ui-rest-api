@@ -1,6 +1,6 @@
 import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
-import {createIconButton, createP, formToJson, showSnackbar} from '/common/ui-utils.js';
+import {createIconButton, createP, formToJson, showNotification} from '/common/ui-utils.js';
 
 
 export function initAuthors() {
@@ -167,17 +167,17 @@ function addAuthor(event) {
     const organizationInputField = document.getElementById('tekija-organisaatio');
 
     if (['kirjoittaja', 'kuvittaja', 'kääntäjä', 'toimittaja'].includes(data.relator) && data.lastName === '') {
-      showSnackbar({text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
+      showNotification({componentStyle: 'banner', text: 'Tekijän sukunimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
     if (data.relator === 'yhteisö' && data.corporateName === '') {
-      showSnackbar({text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
+      showNotification({componentStyle: 'banner', text: 'Yhteisön nimi ei voi olla tyhjä', closeButton: 'true'});
       return;
     }
 
     if (data.lastName === ' ' || data.firstName === ' ' || data.corporateName === ' ') {
-      showSnackbar({text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
+      showNotification({componentStyle: 'banner', text: 'Tarkista kentät: tekijän nimi ei voi olla välilyönti', closeButton: 'true'});
       return;
     }
 
@@ -200,7 +200,7 @@ function addOrganizationForAuthor(event) {
   const organizationInputValue = formJson['tekija-organisaatio'];
 
   if (organizationInputValue === '') {
-    showSnackbar({style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Organisaatio ei voi olla tyhjä'});
     return;
   }
 
@@ -216,7 +216,7 @@ function addOrganizationForAuthor(event) {
 
   idbGetStoredValues('artoAuthorTempOrg').then(organizations => {
     if (organizations.some(org => org.organizationName === organizationName || org.code === code)) {
-      showSnackbar({style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Tekijälle on jo lisätty tämä organisaatio'});
       return;
     }
 

@@ -36,10 +36,18 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 const logger = createLogger();
 
+const mergeProfile = {
+  name: 'Merge',
+  description: 'Yhdistää kaksi tietuetta toisiinsa',
+
+  //getReducers: opts => [],
+  getReducers: opts => MelindaReducers,
+  createBase: opts => undefined
+};
+
 const p2eProfile = {
   name: 'Oletus',
   description: 'Muunnos täydentää e-aineiston tietueen painetun aineiston tietueen tiedoilla. Luokitus- ja sisällönkuvailukentistä kopioidaan vain omalle organisaatiolle merkityt kentät. Muunnos ei käsittele osakohteita.',
-  mergeType: 'printToE',
 
   getReducers,
   createBase: p2eBaseRecord
@@ -48,7 +56,6 @@ const p2eProfile = {
 const e2pProfile = {
   name: 'Oletus',
   description: 'Muunnos täydentää painetun aineiston tietueen e-aineiston tietueen tiedoilla. Muunnos ei käsittele osakohteita.',
-  mergeType: 'eToPrint',
 
   getReducers,
   createBase: e2pBaseRecord
@@ -56,25 +63,26 @@ const e2pProfile = {
 
 export const profiles = {
   'p2e': p2eProfile,
-  'e2p': e2pProfile
+  'e2p': e2pProfile,
+  'merge': mergeProfile
 };
 
 function getReducers(opts) {
 
   return [
-    ...merge0XX(opts),
-    ...merge1XX(opts),
-    ...merge2XX(opts),
-    ...merge3XX(opts),
-    ...merge4XX(opts),
-    ...merge5XX(opts),
-    ...merge6XX(opts),
-    ...merge7XX(opts),
-    ...merge8XX(opts),
-    ...merge9XX(opts),
+    merge0XX(opts),
+    merge1XX(opts),
+    merge2XX(opts),
+    merge3XX(opts),
+    merge4XX(opts),
+    merge5XX(opts),
+    merge6XX(opts),
+    merge7XX(opts),
+    merge8XX(opts),
+    merge9XX(opts),
     generate020(opts),
     generate776(opts),
-    ...getFenniFields(opts)
+    getFenniFields(opts)
     //generateLOW(opts)
-  ];
+  ].flat();
 }

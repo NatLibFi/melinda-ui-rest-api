@@ -2,7 +2,7 @@ import {checkArticleForm} from '/artikkelit/actions/articleCheck.js';
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGet, idbSet, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {sortRecordData} from '/artikkelit/utils/utils.js';
 import {getPublicationByMelindaId, getPublicationByISBN, getPublicationByISSN, getPublicationByTitle} from '/common/rest.js';
-import {createIconButton, createP, formToJson, setOptions, showSnackbar, startProcess, stopProcess} from '/common/ui-utils.js';
+import {createIconButton, createP, formToJson, setOptions, showNotification, startProcess, stopProcess} from '/common/ui-utils.js';
 
 
 export function initReviewSearch() {
@@ -57,7 +57,7 @@ function addReview(event) {
   const reviewIndex = document.getElementById('arvosteltu-teos-tulos-lista').value;
 
   if (reviewIndex === '') {
-    showSnackbar({style: 'alert', text: 'Arvostelu ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Arvostelu ei voi olla tyhjä'});
     return;
   }
 
@@ -66,7 +66,7 @@ function addReview(event) {
 
     idbGetStoredValues('artoReviews').then(reviews => {
       if (reviews.some(review => review.title === tempReview.title || review.sourceIds === tempReview.sourceIds)) {
-        showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä arvostelu'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä arvostelu'});
         return;
       }
 
@@ -160,7 +160,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetReviewSearchResultSelect();
-        showSnackbar({style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt arvosteltuja tietueita!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä nimikkeellä ei löytynyt arvosteltuja tietueita!'});
         console.log('Error while trying to get review book by title', error);
       })
       .finally(() => stopProcess());
@@ -173,7 +173,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetReviewSearchResultSelect();
-        showSnackbar({style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt arvosteltavaa tietuetta!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä Melinda-ID:llä ei löytynyt arvosteltavaa tietuetta!'});
         console.log('Error while trying to get review book by Melinda ID', error);
       })
       .finally(() => stopProcess());
@@ -186,7 +186,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetReviewSearchResultSelect();
-        showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt arvosteltavaa tietuetta!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä ISBN:llä ei löytynyt arvosteltavaa tietuetta!'});
         console.log('Error while trying to get review book by ISBN', error);
       })
       .finally(() => stopProcess());
@@ -199,7 +199,7 @@ function searchPublications(event) {
       })
       .catch(error => {
         resetReviewSearchResultSelect();
-        showSnackbar({style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt arvosteltavaa tietuetta!'});
+        showNotification({componentStyle: 'banner', style: 'alert', text: 'Valitettavasti tällä ISSN:llä ei löytynyt arvosteltavaa tietuetta!'});
         console.log('Error while trying to get review book by ISSN', error);
       })
       .finally(() => stopProcess());

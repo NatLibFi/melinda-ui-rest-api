@@ -1,5 +1,5 @@
 import {showFormActionsOnEdit} from '/artikkelit/actions/articleModes.js';
-import {showSnackbar} from '/common/ui-utils.js';
+import {showNotification} from '/common/ui-utils.js';
 
 
 /*****************************************************************************/
@@ -16,7 +16,7 @@ window.startNewEmptyForm = function (event = undefined) {
   showFormActionsOnEdit();
   showArticleFormEditMode();
   clearAllFields();
-  showSnackbar({style: 'info', text: 'Aloitetaan uusi kuvailu tyhjältä pohjalta'})
+  showNotification({componentStyle: 'banner', style: 'info', text: 'Aloitetaan uusi kuvailu tyhjältä pohjalta'})
 }
 
 //---------------------------------------------------------------------------//

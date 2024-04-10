@@ -6,7 +6,7 @@
 
 import {startProcess, stopProcess} from '/common/ui-utils.js';
 import {showTab, resetForms, reload} from '/common/ui-utils.js';
-import {createMenuBreak, createMenuItem, createMenuSelection} from '../common/ui-utils.js';
+import {createMenuBreak, createMenuItem, createMenuSelection, showNotification, showServerNotifications} from '../common/ui-utils.js';
 
 import {Account, doLogin, logout} from '/common/auth.js';
 import {showRecord, editField} from '/common/marc-record-ui.js';
@@ -19,7 +19,7 @@ import {modifyRecord} from '../common/rest.js';
 window.initialize = function () {
   console.log('Initializing');
 
-  doLogin(authSuccess);
+  showServerNotifications({clientName: 'edit', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');

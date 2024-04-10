@@ -1,7 +1,7 @@
 import {idbAddValueToLastIndex, idbClear, idbDel, idbGetStoredValues} from '/artikkelit/utils/indexedDB.js';
 import {addValueToSessionStoreList, getSessionStoreValue, resetSessionStoreList} from '/artikkelit/utils/sessionStorageManager.js';
 import {getOntologyWords} from '/common/rest.js';
-import {formToJson, createIconButton, createP, setOptions, showSnackbar} from '/common/ui-utils.js';
+import {formToJson, createIconButton, createP, setOptions, showNotification} from '/common/ui-utils.js';
 
 
 export function initOntologyWords() {
@@ -53,7 +53,7 @@ function addOntologyWord(event) {
   const ontologyWordOther = getOntologyWordOther();
 
   if (!ontologyWord && !ontologyWordOther) {
-    showSnackbar({style: 'alert', text: 'Asiasana tai avainsana ei voi olla tyhjä'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Asiasana tai avainsana ei voi olla tyhjä'});
     return;
   }
 
@@ -81,7 +81,7 @@ function addOntologyWord(event) {
   function addOntologyWordToIndexedDb(newWord) {
 
     if (duplicate(newWord)) {
-      showSnackbar({style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
+      showNotification({componentStyle: 'banner', style: 'alert', text: 'Artikkelille on jo lisätty tämä asia-/avainsana'});
       return;
     }
 

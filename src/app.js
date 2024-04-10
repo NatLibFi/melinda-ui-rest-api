@@ -16,6 +16,7 @@ import createOntologyRoute from './ontologies/ontologyRoute';
 import createRecordRouter from './record/recordRouter';
 import createViewerRoute from './viewer/viewerRoute';
 import createPingRoute from './utilRoute/statusRoute';
+import createNotificationsRoute from './notifications/notificationsRoute';
 import {handlePageNotFound} from './requestUtils/handlePageNotFound';
 
 
@@ -28,7 +29,7 @@ export default async function ({
   xServiceURL, userLibrary,
   ownAuthzURL, ownAuthzApiKey,
   sruUrl, jwtOptions, melindaApiOptions, restApiParams,
-  fintoUrl
+  fintoUrl, notificationMongoUri
 }) {
   const logger = createLogger();
   const server = await initExpress();
@@ -76,6 +77,7 @@ export default async function ({
     app.use('/keycloak', express.static(path.join(__dirname, 'clients/keycloakLogin/'), {index: 'keycloakLogin.html'}));
     app.use('/login', express.static(path.join(__dirname, 'clients/login/'), {index: 'login.html'}));
     app.use('/muuntaja', express.static(path.join(__dirname, 'clients/muuntaja/'), {index: 'muuntaja.html'}));
+    app.use('/merge', express.static(path.join(__dirname, 'clients/merge/'), {index: 'merge.html'}));
     app.use('/viewer', express.static(path.join(__dirname, 'clients/viewer/'), {index: 'viewer.html'}));
 
     // REST API
@@ -87,6 +89,7 @@ export default async function ({
     app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRouter(melindaApiOptions));
     app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
     app.use('/rest/ping', createPingRoute());
+    app.use('/rest/notification', createNotificationsRoute(notificationMongoUri));
 
     // middleware 'handlePageNotFound' is used for catching all the requests for routes not handled by clients or rest api
     // app.all() handles all HTTP request methods and '*' matches all routes

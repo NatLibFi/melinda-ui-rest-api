@@ -1,7 +1,7 @@
 import {idbClearAllTables} from '/artikkelit/actions/articleReset.js'
 import {initArticleForm} from '/artikkelit/actions/articleInitialize.js';
 import {Account, doLogin, logout} from '/common/auth.js';
-import {showTab} from '/common/ui-utils.js';
+import {showTab, showNotification, showServerNotifications} from '/common/ui-utils.js';
 import {} from '/artikkelit/actions/articleCheck.js';
 import {} from '/artikkelit/actions/articleSave.js';
 import {} from '/artikkelit/actions/articleStartNew.js';
@@ -10,8 +10,7 @@ import {} from '/artikkelit/actions/articleStartNew.js';
 window.initialize = function () {
   console.log('Initializing artikkelit');
 
-  doLogin(authSuccess);
-
+  showServerNotifications({clientName: 'artikkelit', onSuccess: ()=>{doLogin(authSuccess);}});
   function authSuccess(user) {
     const accountMenu = document.getElementById('accountMenu');
     accountMenu.classList.add('show');

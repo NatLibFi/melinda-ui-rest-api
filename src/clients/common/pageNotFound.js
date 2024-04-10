@@ -1,12 +1,12 @@
-import {showSnackbar, showTab} from '/./common/ui-utils.js';
+import {showNotification, showServerNotifications, showTab} from '/./common/ui-utils.js';
 import {Account, doLogin, logout} from '/./common/auth.js';
 
 window.initialize = function () {
-  doLogin(authSuccess);
+  showServerNotifications({clientName: 'pageNotFound', onSuccess: ()=>{doLogin(authSuccess);}});
 
   function authSuccess(user) {
     showTab('pageNotFound');
-    showSnackbar({style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
+    showNotification({componentStyle: 'banner', style: 'alert', text: 'Sivua ei löytynyt, tarkista sivun osoite ja yritä uudelleen!'});
     showAppName(window.location.href);
     const accountMenu = document.getElementById('accountMenu');
     accountMenu.classList.add('show');
@@ -35,7 +35,7 @@ function showAppName(currentUrl) {
   const appLinkDiv = document.getElementById('appLink');
   const goBackDiv = document.getElementById('goBack');
 
-  const appNames = ['viewer', 'muuntaja', 'edit', 'artikkelit'];
+  const appNames = ['viewer', 'muuntaja', 'merge', 'edit', 'artikkelit'];
   const appName = new URL(currentUrl).pathname.split('/').slice(1, 2)[0];
 
   appNames.includes(appName)
