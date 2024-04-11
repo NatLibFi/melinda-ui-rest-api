@@ -61,8 +61,8 @@ export default function (sruUrl, melindaApiOptions, restApiParams) {
     res.json({
       type: [
         {tag: 'p2e', name: 'Painetusta > E-aineistoksi'},
-        {tag: 'e2p', name: 'E-aineistosta > Painetuksi'},
-        {tag: 'merge', name: 'Yhdistä tietueet'}
+        {tag: 'e2p', name: 'E-aineistosta > Painetuksi'}
+        //{tag: 'merge', name: 'Yhdistä tietueet'}
       ],
       profile: [
 
