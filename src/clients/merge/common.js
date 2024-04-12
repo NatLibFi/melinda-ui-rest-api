@@ -665,13 +665,13 @@ function updateUrlParameters(transformed) {
   const { options, source, base } = transformed;
 
   const urlParamConfigs = [
-    {id:"type", defaultPosition: 1, value:options?.type, isAcative: useProfileType},
-    {id:"profile", defaultPosition: 2,value:options?.profile, isAcative: useProfileType},
-    {id:"baseId", defaultPosition: 4, value:base?.ID, isAcative:true},
-    {id:"sourceId", defaultPosition: 3,value:source?.ID, isAcative:true}
+    {id:"type", defaultPosition: 1, value:options?.type, isActive: useProfileType},
+    {id:"profile", defaultPosition: 2,value:options?.profile, isActive: useProfileType},
+    {id:"baseId", defaultPosition: 4, value:base?.ID, isActive: true},
+    {id:"sourceId", defaultPosition: 3,value:source?.ID, isActive: true}
   ];
   //filer not needed ones out, (those with not value or not active are left out)
-  const filteredParamConfigs = urlParamConfigs.filter(obj => (obj.isAcative && obj.value));
+  const filteredParamConfigs = urlParamConfigs.filter(obj => (obj.isActive && obj.value));
   //order by position
   filteredParamConfigs.sort((a, b) => a.defaultPosition - b.defaultPosition);
   //set param values
