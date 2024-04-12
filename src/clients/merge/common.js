@@ -82,6 +82,7 @@ function parseUrlParameters() {
   document.querySelector('.record-merge-panel #source #ID').defaultValue = sourceId;
   document.querySelector('.record-merge-panel #base #ID').defaultValue = baseId;
 
+  //only read additional parameters if prompted by client to do so
   if (useProfileType) {
     const type = urlParams.get('type') || 'p2e';
     const profile = urlParams.get('profile') || 'DEFAULT';
@@ -657,29 +658,30 @@ function onEditClick(event, field, original) {
  * @param {object} transformed transformed dataobject
  */
 function updateUrlParameters(transformed) {
-  const urlParams = new URLSearchParams(window.location.search);
+  //clear whole url search param stack
+  //not passing window.location.search to search params we are resetting all params, param reads should have happened by now already
+  const urlParams = new URLSearchParams();
 
-  const { options, source, base } = transformed
+  const { options, source, base } = transformed;
 
-  if (useProfileType) {
-    setUrlParam("type", options?.type)
-    setUrlParam("profile", options?.profile)
+  const urlParamConfigs = [
+    {id:"type", defaultPosition: 1, value:options?.type, isAcative: useProfileType},
+    {id:"profile", defaultPosition: 2,value:options?.profile, isAcative: useProfileType},
+    {id:"baseId", defaultPosition: 4, value:base?.ID, isAcative:true},
+    {id:"sourceId", defaultPosition: 3,value:source?.ID, isAcative:true}
+  ];
+  //filer not needed ones out, (those with not value or not active are left out)
+  const filteredParamConfigs = urlParamConfigs.filter(obj => (obj.isAcative && obj.value));
+  //order by position
+  filteredParamConfigs.sort((a, b) => a.defaultPosition - b.defaultPosition);
+  //set param values
+  for (const urlParam of filteredParamConfigs) {
+      urlParams.set(urlParam.id, urlParam.value)
   }
 
-  setUrlParam("baseId", base?.ID)
-  setUrlParam("sourceId", source?.ID)
-
+  //handle state
   window.history.replaceState({}, '', decodeURIComponent(`${window.location.pathname}?${urlParams}`));
-
   if (window.location.search === '') {
     window.history.replaceState({}, '', `/${clientName}/`);
-  }
-
-  function setUrlParam(id, value) {
-    if (value) {
-      urlParams.set(id, value)
-    } else {
-      urlParams.delete(id)
-    }
   }
 }
