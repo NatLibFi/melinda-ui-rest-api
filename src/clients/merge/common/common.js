@@ -20,8 +20,10 @@ import {
   resetForms, showNotification,
   startProcess, stopProcess
 } from '/common/ui-utils.js';
-import * as dataModule from '/merge/common/data.js';
+import * as dataModule from '/merge/common/dataHandler.js';
 import * as urlModule from '/merge/common/urlHandler.js';
+import * as dlgModule from '/merge/common/dlgHandler.js';
+import * as jsonModule from '/merge/common/jsonHandler.js';
 
 //-----------------------------------------------------------------------------
 // Exported
@@ -45,7 +47,10 @@ export {
  * @param {string} initData.client - what named client we are using, available locally on dataModule.getClientName(), used to find from html correct div and what to set to url, use lowercase
  */
 function initCommonModule(data = {}) {
-  dataModule.initData(data);
+  dataModule.init(data);
+  urlModule.init();
+  dlgModule.init();
+  jsonModule.init();
 }
 
 //*******************
@@ -296,48 +301,6 @@ window.editUseOriginal = function (field) {
   dataModule.deleteFromTransformed(deletePath);
   doTransform();
 }
-window.notFoundDlgClose = function (event) {
-  const dlg = document.querySelector('#notFoundDlg');
-  dlg.style.display = 'none';
-  return eventHandled(event);
-}
-window.jsonDlgOpen = function (event) {
-  const dlg = document.querySelector('#jsonDlg');
-  dlg.style.display = 'flex';
-  const content = document.querySelector('#jsonDlg #jsonContent');
-  content.innerHTML = '';
-  content.appendChild(createJsonInput({ id: 'recordAsJson', className: 'recordAsJson', content: JSON.stringify(dataModule.getTransformed(), null, 1) }));
-}
-window.jsonDlgClose = function (event) {
-  const dlg = document.querySelector('#jsonDlg');
-  dlg.style.display = 'none';
-  return eventHandled(event);
-}
-window.selectJson = function (event) {
-  const record = document.querySelector('#recordAsJson');
-  if (document.body.createTextRange) {
-    var range = document.body.createTextRange();
-    range.moveToElementText(record);
-    range.select();
-  } else if (window.getSelection) {
-    const selection = window.getSelection();
-    var range = document.createRange();
-    range.selectNodeContents(record);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-}
-window.saveJson = function sharedSaveJson(event) {
-  const record = document.querySelector('#recordAsJson');
-  dataModule.resetTransformed();
-  dataModule.updateTransformed(JSON.parse(record.textContent));
-  doTransform();
-  if (dataModule.getUseProfileType()) {
-    document.querySelector('#type-options [name=\'type\']').value = dataModule.getTransformed().options.type;
-    document.querySelector('#profile-options [name=\'profile\']').value = dataModule.getTransformed().options.profile;
-  }
-  jsonDlgClose(event);
-}
 
 //-----------------------------------------------------------------------------
 // Private
@@ -462,39 +425,7 @@ function showTransformed(update = undefined) {
     document.getElementById('swap-button').disabled = !sourceID || !baseID;
   };
 }
-/**
- * Set in ui dialog visible and show record type
- *
- * @param {object} object - data set trough object
- * @param {string} object.recordType - record type that was not found
- */
-function notFoundDlgOpen({recordType}) {
-  const dlg = document.querySelector('#notFoundDlg');
-  dlg.style.display = 'flex';
-  const prefix = document.querySelector('#notFoundDlg #recordType');
-  prefix.innerHTML = recordType;
-}
-/**
- * Creates a preformatted text element, sets some data to its attribute and classList
- *
- * @param {object} object - data set trough object
- * @param {object} object.id - record id
- * @param {object} object.className - any class you want to add to elements classList
- * @param {string} object.content - json as text
- * @param {boolean} [object.editable=true] - should the text be editable
- * @returns {HTMLElement} created input '<pre>' element (preformatted text element)
- */
-function createJsonInput({ id, className, content, editable = true }) {
-  const input = document.createElement('pre');
-  input.setAttribute('id', id);
-  input.classList.add(className);
-  if (editable) {
-    input.classList.add('editable');
-  }
-  input.textContent = content;
-  input.contentEditable = editable;
-  return input;
-}
+
 /**
  * Clicking the records field, toggles it on/off
  *

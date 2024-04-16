@@ -1,12 +1,13 @@
 import * as dataModule from '/merge/common/data.js';
 
 export {
-    parseUrlParameters, updateUrlParameters
+    parseUrlParameters, updateUrlParameters, init
 };
 
 //-----------------------------------------------------------------------------
 // Exported
 //-----------------------------------------------------------------------------
+function init(){}
 /**
  * Parse data from url parameters
  * get data from url parameters (has defaults) and sets id to source and bas

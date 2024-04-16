@@ -8,11 +8,12 @@ export {
     getKeys,
     getTransformed,
     getUseProfileType,
-    initData,
+    init,
     resetTransformed,
     updateTransformed
 };
 
+//for transformed data see init and initTransformed functions
 let transformed, useProfileType, clientName, overrideOptions;
 window.editMode = false;
 const keys = {
@@ -26,7 +27,7 @@ const keys = {
 // Exported
 //-----------------------------------------------------------------------------
 
-function initData(data = {}){
+function init(data = {}){
     const { canUseProfileType = true, transformedDefaultOptions = undefined, client = 'muuntaja' } = data;
 
     transformed = Object.create(initTransformed());
