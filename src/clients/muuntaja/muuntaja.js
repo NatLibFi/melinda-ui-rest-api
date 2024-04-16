@@ -12,12 +12,10 @@ import {
 } from '/common/ui-utils.js';
 
 import {
-  deleteFromTransformed,
-  getTransformed,
-  initModule,
+  dataModule,
+  initCommonModule,
   parseUrlParameters,
-  updateTransformed
-} from '/merge/common.js';
+} from '/merge/common/common.js';
 
 import { Account, doLogin } from '/common/auth.js';
 import { profileRequest } from '/common/rest.js';
@@ -30,7 +28,14 @@ const clientName = 'muuntaja';
 
 window.initialize = function () {
   console.log('Initializing');
-  initModule();
+  initCommonModule({
+    client: clientName,
+    canUseProfileType: true,
+    transformedDefaultOptions: {
+      type: 'p2e',
+      profile: 'DEFAULT'
+    }
+  });
 
   showServerNotifications({ clientName: clientName, onSuccess: () => { doLogin(authSuccess); } });
 
@@ -57,11 +62,11 @@ function setProfiles(options) {
 
   const updateTransformOptions = {
     options: {
-      type: options.type[0],
-      profile: options.profile[0],
+      type: options.type[0].tag,
+      profile: options.profile[0].tag,
     }
   };
-  updateTransformed(updateTransformOptions);
+  dataModule.updateTransformed(updateTransformOptions);
 
   const typeOptions = document.querySelector('#type-options');
   typeOptions.innerHTML = '';
@@ -94,18 +99,22 @@ function setProfiles(options) {
 
 function setTransformType(event, value) {
   console.log('Type:', value);
-  updateTransformed({ options: { type: value } });
-  if (!getTransformed().base?.ID) deleteFromTransformed('base');
-  deleteFromTransformed('stored');
+  const tmpTransformedOptions = dataModule.getTransformed()?.options;
+  tmpTransformedOptions.type = value;
+  dataModule.updateTransformed({ options: tmpTransformedOptions});
+  if (!dataModule.getTransformed().base?.ID) dataModule.deleteFromTransformed('base');
+  dataModule.deleteFromTransformed('stored');
   doTransform();
   return eventHandled(event);
 }
 
 function setTransformProfile(event, value) {
   console.log('Profile:', value);
-  updateTransformed({ options: { profile: value } });
-  if (!getTransformed().base?.ID) deleteFromTransformed('base');
-  deleteFromTransformed('stored');
+  const tmpTransformedOptions = dataModule.getTransformed()?.options;
+  tmpTransformedOptions.profile = value;
+  dataModule.updateTransformed({ options: tmpTransformedOptions });
+  if (!dataModule.getTransformed().base?.ID) dataModule.deleteFromTransformed('base');
+  dataModule.deleteFromTransformed('stored');
   doTransform();
   return eventHandled(event);
 }
