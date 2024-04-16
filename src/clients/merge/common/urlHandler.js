@@ -1,4 +1,4 @@
-import * as dataModule from '/merge/common/data.js';
+import * as dataModule from '/merge/common/dataHandler.js';
 
 export {
     parseUrlParameters, updateUrlParameters, init
