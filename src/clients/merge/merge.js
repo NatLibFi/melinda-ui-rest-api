@@ -12,7 +12,7 @@ import {
 import {
   dataModule,
   initCommonModule,
-  parseUrlParameters
+  urlModule
 } from '/merge/common/common.js';
 
 import { Account, doLogin } from '/common/auth.js';
@@ -44,7 +44,7 @@ window.initialize = function () {
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
     showTab(clientName);
-    parseUrlParameters();
+    urlModule.parseUrlParameters();
     doTransform();
   }
 };
