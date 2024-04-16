@@ -5,31 +5,32 @@ export {
 //-----------------------------------------------------------------------------
 // Exported
 //-----------------------------------------------------------------------------
-function init(){}
+function init() { console.log('json module OK'); }
+
 window.selectJson = function (event) {
     const record = document.querySelector('#recordAsJson');
     if (document.body.createTextRange) {
-      var range = document.body.createTextRange();
-      range.moveToElementText(record);
-      range.select();
+        var range = document.body.createTextRange();
+        range.moveToElementText(record);
+        range.select();
     } else if (window.getSelection) {
-      const selection = window.getSelection();
-      var range = document.createRange();
-      range.selectNodeContents(record);
-      selection.removeAllRanges();
-      selection.addRange(range);
+        const selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(record);
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
-  }
-window.saveJson = function sharedSaveJson(event) {
-const record = document.querySelector('#recordAsJson');
-dataModule.resetTransformed();
-dataModule.updateTransformed(JSON.parse(record.textContent));
-doTransform();
-if (dataModule.getUseProfileType()) {
-    document.querySelector('#type-options [name=\'type\']').value = dataModule.getTransformed().options.type;
-    document.querySelector('#profile-options [name=\'profile\']').value = dataModule.getTransformed().options.profile;
 }
-jsonDlgClose(event);
+window.saveJson = function sharedSaveJson(event) {
+    const record = document.querySelector('#recordAsJson');
+    dataModule.resetTransformed();
+    dataModule.updateTransformed(JSON.parse(record.textContent));
+    doTransform();
+    if (dataModule.getUseProfileType()) {
+        document.querySelector('#type-options [name=\'type\']').value = dataModule.getTransformed().options.type;
+        document.querySelector('#profile-options [name=\'profile\']').value = dataModule.getTransformed().options.profile;
+    }
+    jsonDlgClose(event);
 }
 /**
  * Creates a preformatted text element, sets some data to its attribute and classList
@@ -46,7 +47,7 @@ function createJsonInput({ id, className, content, editable = true }) {
     input.setAttribute('id', id);
     input.classList.add(className);
     if (editable) {
-      input.classList.add('editable');
+        input.classList.add('editable');
     }
     input.textContent = content;
     input.contentEditable = editable;
