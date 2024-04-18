@@ -48,6 +48,10 @@ function parseUrlParameters() {
  * @param {object} transformed transformed dataobject
  */
 function updateUrlParameters(transformed) {
+    //get fresh from datamodule if not given
+    if(!transformed){
+        transformed = dataModule.getTransformed();
+    }
     //clear whole url search param stack
     //not passing window.location.search to search params we are resetting all params, param reads should have happened by now already
     const urlParams = new URLSearchParams();

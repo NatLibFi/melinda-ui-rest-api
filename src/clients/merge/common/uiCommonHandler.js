@@ -6,6 +6,7 @@ import {
 } from '/common/ui-utils.js';
 import * as dataModule from '/merge/common/dataHandler.js';
 import * as uiEditModule from '/merge/common/uiEditHandler.js';
+import * as urlModule from '/merge/common/urlHandler.js';
 
 
 export {
@@ -103,19 +104,9 @@ window.onAccount = function (event) {
 window.copyLink = function (event) {
     eventHandled(event);
 
-    const type = dataModule.getUseProfileType() ? document.querySelector('#type-options [name=\'type\']').value : dataModule.getTransformed()?.options?.type;
-    const profile = dataModule.getUseProfileType() ? document.querySelector('#profile-options [name=\'profile\']').value : dataModule.getTransformed()?.options?.profile;
-    let leadingChar = '';
-
-    if (window.location.href.includes('?')) {
-        if (window.location.search !== '') {
-            leadingChar = '&';
-        }
-    } else {
-        leadingChar = '?';
-    }
-
-    navigator.clipboard.writeText(`${window.location}${leadingChar}type=${type}&profile=${profile}`);
+    urlModule.updateUrlParameters();
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
 
     showNotification({ componentStyle: 'banner', style: 'success', text: 'Linkki kopioitu!' });
 }
