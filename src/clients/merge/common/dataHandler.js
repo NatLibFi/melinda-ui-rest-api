@@ -44,9 +44,9 @@ function init(data = {}) {
     overrideOptions = transformedDefaultOptions;
   }
   //if configuration given override
-  if(clientConfigOverride){
+  if (clientConfigOverride) {
     clientConfigs = clientConfigOverride;
-  }else{
+  } else {
     clientConfigs = initClientConfigs();
   }
 }
@@ -68,14 +68,14 @@ function getKeys() { return keys; }
 
 //edit mode (edit mode is globally available through window but lets try to avoid direct mutations)
 function flipEditMode() { editMode = !editMode; }
-function turnEditModeOff(){ editMode = false; }
+function turnEditModeOff() { editMode = false; }
 function getEditMode() { return editMode; }
 
 //other
-function getClientConfigs(){return clientConfigs;}
-function getFromClientConfig(configKey){return clientConfigs[configKey];}
+function getClientConfigs() { return clientConfigs; }
+function getFromClientConfig(configKey) { return clientConfigs[configKey]; }
 function getUseProfileType() { return clientConfigs.canUseProfileType; }
-function getOnNewInstanceRemoveBaseRecord(){return getFromClientConfig('onNewInstanceRemoveBaseRecord');}
+function getOnNewInstanceRemoveBaseRecord() { return getFromClientConfig('onNewInstanceRemoveBaseRecord'); }
 
 function getClientName() { return clientName; }
 
@@ -129,7 +129,7 @@ function initTransformed() {
  * this is more of a reminder what settings can be used
  * @returns {object} - clientconfig init data
  */
-function initClientConfigs(){
+function initClientConfigs() {
   return {
     canUseProfileType: true,
     onNewInstanceRemoveBaseRecord: false

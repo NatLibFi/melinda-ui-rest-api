@@ -1,3 +1,5 @@
+import * as dataModule from '/merge/common/dataHandler.js';
+
 export {
     createJsonInput, init
 };

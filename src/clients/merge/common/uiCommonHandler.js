@@ -38,14 +38,14 @@ window.onNewInstance = function (event) {
     sourceInput.dispatchEvent(new Event('input'));
 
     //if client wants to, remove also base record
-    if(dataModule.getOnNewInstanceRemoveBaseRecord()){
+    if (dataModule.getOnNewInstanceRemoveBaseRecord()) {
         const baseInput = document.querySelector(`#${dataModule.getClientName()} .record-merge-panel #base #ID`);
         baseInput.value = '';
         baseInput.dispatchEvent(new Event('input'));
     }
 
     //if edit mode is still on turn it off
-    if(dataModule.getEditMode()){
+    if (dataModule.getEditMode()) {
         uiEditModule.turnEditModeOff();
     }
 

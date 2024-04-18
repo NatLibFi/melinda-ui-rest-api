@@ -1,3 +1,4 @@
+import * as dataModule from '/merge/common/dataHandler.js';
 import * as jsonModule from '/merge/common/jsonHandler.js';
 
 export {

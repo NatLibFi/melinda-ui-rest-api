@@ -207,7 +207,7 @@ function styleResultPanelBasedOnEditState() {
 /**
  * Updates edit mode data and updates visual to correspond to it
  */
-function turnEditModeOff(){
+function turnEditModeOff() {
     dataModule.turnEditModeOff();
     styleResultPanelBasedOnEditState();
 }
