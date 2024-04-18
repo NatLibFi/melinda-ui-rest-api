@@ -5,11 +5,21 @@ import {
 } from '/common/ui-utils.js';
 
 import * as dataModule from '/merge/common/dataHandler.js';
+import * as uiEditModule from '/merge/common/uiEditHandler.js';
 import * as urlModule from '/merge/common/urlHandler.js';
 
 export {
-    init, showTransformed
+    init
 };
+
+//-----------------------------------------------------------------------------
+// info needed for muuntaja merge REST call:
+// - Base record
+// - Transform options
+// - Source record
+// - Field selections
+// - User edits
+//-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
 // Exported
@@ -71,11 +81,6 @@ window.doTransform = function (event = undefined) {
             showTransformed(records);
         });
 }
-
-//-----------------------------------------------------------------------------
-// Private
-//-----------------------------------------------------------------------------
-
 /**
  * Main function for showing transformed data on ui
  * TODO: add more description
@@ -86,7 +91,7 @@ window.doTransform = function (event = undefined) {
  *
  * @param {object} [update=undefined] - update object for updating transformed object, defaults to undefined
  */
-function showTransformed(update = undefined) {
+window.showTransformed = function (update = undefined) {
     //TODO: should the update handled elsewhere separetely and not updated here ?
     //updateTransformed(update);
     if (update) {
@@ -124,18 +129,18 @@ function showTransformed(update = undefined) {
 
     // Show records
     showRecord(source, dataModule.getKeys().source, {
-        onClick: onFieldToggleClick,
+        onClick: uiEditModule.onFieldToggleClick,
         from,
         exclude: dataModule.getTransformed().exclude
     }, dataModule.getClientName());
     showRecord(base, dataModule.getKeys().base, {
-        onClick: onFieldToggleClick,
+        onClick: uiEditModule.onFieldToggleClick,
         from,
         exclude: dataModule.getTransformed().exclude
     }, dataModule.getClientName());
     showRecord(result, dataModule.getKeys().result, {
-        onClick: (dataModule.getEditMode() || isStored) ? onEditClick : onFieldToggleClick,
-        onDelete: onFieldToggleClick,
+        onClick: (dataModule.getEditMode() || isStored) ? uiEditModule.onEditClick : uiEditModule.onFieldToggleClick,
+        onDelete: uiEditModule.onFieldToggleClick,
         from,
         original,
         exclude: dataModule.getTransformed().exclude,
@@ -195,86 +200,11 @@ function showTransformed(update = undefined) {
         document.getElementById('swap-button').disabled = !sourceID || !baseID;
     };
 }
-/**
- * Clicking the records field, toggles it on/off
- *
- * @param {Event} event - on clicking the field data
- * @param {object} field - field data
- */
-function onFieldToggleClick(event, field) {
-    const { id } = field;
-    console.log(`Toggle Click on ${id}`);
 
-    if (id) {
-        const insertData = dataModule.getTransformed().insert;
-        const isInserted = insertData.filter(f => f.id === id).length > 0
 
-        if (isInserted) {
-            dataModule.updateTransformed({
-                insert: [
-                    ...insertData.filter(f => f.id !== id),
-                ]
-            });
-        } else if (!dataModule.getTransformed().exclude[id]) {
-            const exclude = dataModule.getTransformed().exclude;
-            exclude[id] = true;
-            dataModule.updateTransformed({
-                exclude: exclude
-            });
-        } else {
-            const deletePath = `exclude.${id}`;
-            dataModule.deleteFromTransformed(deletePath);
-        }
+//-----------------------------------------------------------------------------
+// Private
+//-----------------------------------------------------------------------------
 
-        doTransform();
-    }
-}
-// Field view decorator
-/**
- * Clicking on (edit enabled) the record field.
- *
- * @param {Event} event - on clicking the field data
- * @param {object} field - field data
- * @param {object} original - result of reduction in showTransformed getLookup. Essentially object with fields array values as sub objects with each objects id field value set objects field key
- * @returns {boolean} True if the event was handled, false otherwise.
- */
-function onEditClick(event, field, original) {
-    const { id } = field;
-    console.log(`Edit Click on ${id}`);
 
-    //returns sub element of the field clicked, if no specific subelement it returns just row row-fromBase
-    //span uses as class classname/id
-    var subElement = null;
-    try {
-        subElement = {};
-        subElement.class = event.originalTarget.attributes.class.nodeValue;
-        subElement.index = parseInt(event.originalTarget.attributes.index.nodeValue);
-    } catch (error) {
-        console.log(`Getting field sub element encountered error: ${error}.`);
-        console.log('Or maybe user clicked on some parent element without required attributes. Skipping preactivation for a spesific value.');
-        subElement = null;
-    }
-    //make sure only certain values can be auto edit focus requested
-    //if not correct later expects null and does nothing
-    if (subElement && !isSubElementAcceptable(subElement.class)) {
-        console.log(`Fields sub element ${subElement.class} is not acceptable for pre activation`);
-        subElement = null;
-    }
 
-    editField(field, original, subElement);
-
-    return eventHandled(event);
-
-    function isSubElementAcceptable(elementRequested) {
-        switch (elementRequested) {
-            case 'tag':
-            case 'ind1':
-            case 'ind2':
-            case 'code':
-            case 'value':
-                return true;
-            default:
-                return false;
-        }
-    }
-}
