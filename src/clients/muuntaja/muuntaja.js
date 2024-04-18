@@ -30,10 +30,13 @@ window.initialize = function () {
   console.log('Initializing');
   initCommonModule({
     client: clientName,
-    canUseProfileType: true,
     transformedDefaultOptions: {
       type: 'p2e',
       profile: 'DEFAULT'
+    },
+    clientConfigOverride:{
+      canUseProfileType: true,
+      onNewInstanceRemoveBaseRecord: false
     }
   });
 

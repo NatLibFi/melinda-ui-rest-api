@@ -5,16 +5,18 @@ export {
   flipEditMode,
   getClientName,
   getEditMode,
+  turnEditModeOff,
   getKeys,
   getTransformed,
   getUseProfileType,
   init,
   resetTransformed,
-  updateTransformed
+  updateTransformed,
+  getOnNewInstanceRemoveBaseRecord
 };
 
 //for transformed data see init and initTransformed functions
-let transformed, useProfileType, clientName, overrideOptions;
+let transformed, clientName, overrideOptions, clientConfigs;
 window.editMode = false;
 const keys = {
   source: 'source',
@@ -22,24 +24,30 @@ const keys = {
   insert: 'insert',
   result: 'result'
 };
-
 //-----------------------------------------------------------------------------
 // Exported
 //-----------------------------------------------------------------------------
 
 function init(data = {}) {
   console.log('data module OK');
-  const { canUseProfileType = true, transformedDefaultOptions = undefined, client = 'muuntaja' } = data;
+  const { client = 'muuntaja', transformedDefaultOptions = undefined, clientConfigOverride } = data;
+
 
   transformed = Object.create(initTransformed());
   editMode = false;
-  useProfileType = canUseProfileType;
   clientName = client;
 
-  //override options
+
+  //override transformed options
   if (transformedDefaultOptions) {
     transformed.options = transformedDefaultOptions;
     overrideOptions = transformedDefaultOptions;
+  }
+  //if configuration given override
+  if(clientConfigOverride){
+    clientConfigs = clientConfigOverride;
+  }else{
+    clientConfigs = initClientConfigs();
   }
 }
 
@@ -60,10 +68,15 @@ function getKeys() { return keys; }
 
 //edit mode (edit mode is globally available through window but lets try to avoid direct mutations)
 function flipEditMode() { editMode = !editMode; }
+function turnEditModeOff(){ editMode = false; }
 function getEditMode() { return editMode; }
 
-//other get
-function getUseProfileType() { return useProfileType; }
+//other
+function getClientConfigs(){return clientConfigs;}
+function getFromClientConfig(configKey){return clientConfigs[configKey];}
+function getUseProfileType() { return clientConfigs.canUseProfileType; }
+function getOnNewInstanceRemoveBaseRecord(){return getFromClientConfig('onNewInstanceRemoveBaseRecord');}
+
 function getClientName() { return clientName; }
 
 //-----------------------------------------------------------------------------
@@ -108,6 +121,18 @@ function initTransformed() {
       }
       delete currentObj[propertiesInPath[propertiesInPath.length - 1]];
     }
+  };
+}
+
+/**
+ * default to 'muuntaja' client settings
+ * this is more of a reminder what settings can be used
+ * @returns {object} - clientconfig init data
+ */
+function initClientConfigs(){
+  return {
+    canUseProfileType: true,
+    onNewInstanceRemoveBaseRecord: false
   };
 }
 

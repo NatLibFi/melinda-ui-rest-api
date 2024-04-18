@@ -28,10 +28,13 @@ window.initialize = function () {
   console.log('Initializing');
   initCommonModule({
     client: clientName,
-    canUseProfileType: false,
     transformedDefaultOptions: {
       type: 'merge',
       profile: undefined
+    },
+    clientConfigOverride:{
+      canUseProfileType: false,
+      onNewInstanceRemoveBaseRecord: true
     }
   });
 
