@@ -8,7 +8,7 @@ import {
 import * as dataModule from '/merge/common/dataHandler.js';
 
 export {
-    init, onEditClick, onFieldToggleClick
+    init, onEditClick, onFieldToggleClick, turnEditModeOff
 };
 
 
@@ -105,32 +105,10 @@ function onEditClick(event, field, original) {
 window.onEdit = function (event) {
     console.log('Edit:', event);
     dataModule.flipEditMode();
-    if (dataModule.getEditMode()) {
-        event.target.classList.add('edit-mode');
-    } else {
-        event.target.classList.remove('edit-mode');
-    }
-    styleBasedOnEditState();
+
+    styleResultPanelBasedOnEditState();
     showTransformed(null);
     return eventHandled(event);
-
-    function styleBasedOnEditState() {
-        const originalStyle = getComputedStyle(document.querySelector('.record-merge-panel'));
-        const borderStyleActive = "solid";
-        const borderColorActive = originalStyle.getPropertyValue('--color-melinda-green-custom');
-
-        //use .record-merge-panel #source/#base/#result #some-sub-id/.some-sub-class
-        const resultPanel = document.querySelector('.record-merge-panel #result ');
-
-        if (dataModule.getEditMode()) {
-            resultPanel.style.borderStyle = borderStyleActive;
-            resultPanel.style.borderColor = borderColorActive;
-            resultPanel.style.borderWidth = "2px";
-        }
-        else {
-            resultPanel.style.borderStyle = "initial";
-        }
-    }
 }
 window.editSaveField = function (field) {
     //-----------------------------------------------------------------------------
@@ -203,6 +181,35 @@ window.onSave = function (event) {
         });
 
     return eventHandled(event);
+}
+
+function styleResultPanelBasedOnEditState() {
+    const originalStyle = getComputedStyle(document.querySelector('.record-merge-panel'));
+    const borderStyleActive = "solid";
+    const borderColorActive = originalStyle.getPropertyValue('--color-melinda-green-custom');
+
+    //use .record-merge-panel #source/#base/#result #some-sub-id/.some-sub-class
+    const resultPanel = document.querySelector('.record-merge-panel #result ');
+    const editButton = document.querySelector('.record-merge-panel #edit-button');
+
+    if (dataModule.getEditMode()) {
+        editButton.classList.add('edit-mode');
+        resultPanel.style.borderStyle = borderStyleActive;
+        resultPanel.style.borderColor = borderColorActive;
+        resultPanel.style.borderWidth = "2px";
+    }
+    else {
+        editButton.classList.remove('edit-mode');
+        resultPanel.style.borderStyle = "initial";
+    }
+}
+
+/**
+ * Updates edit mode data and updates visual to correspond to it
+ */
+function turnEditModeOff(){
+    dataModule.turnEditModeOff();
+    styleResultPanelBasedOnEditState();
 }
 
 

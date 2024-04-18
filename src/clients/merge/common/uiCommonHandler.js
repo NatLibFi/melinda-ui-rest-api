@@ -4,6 +4,8 @@ import { editField } from '/common/marc-record-ui.js';
 import {
     resetForms, showNotification
 } from '/common/ui-utils.js';
+import * as dataModule from '/merge/common/dataHandler.js';
+import * as uiEditModule from '/merge/common/uiEditHandler.js';
 
 
 export {
@@ -28,11 +30,24 @@ window.onNewField = function (event) {
     });
     return eventHandled(event);
 }
+//+ button, new operation
 window.onNewInstance = function (event) {
 
     const sourceInput = document.querySelector(`#${dataModule.getClientName()} .record-merge-panel #source #ID`);
     sourceInput.value = '';
     sourceInput.dispatchEvent(new Event('input'));
+
+    //if client wants to, remove also base record
+    if(dataModule.getOnNewInstanceRemoveBaseRecord()){
+        const baseInput = document.querySelector(`#${dataModule.getClientName()} .record-merge-panel #base #ID`);
+        baseInput.value = '';
+        baseInput.dispatchEvent(new Event('input'));
+    }
+
+    //if edit mode is still on turn it off
+    if(dataModule.getEditMode()){
+        uiEditModule.turnEditModeOff();
+    }
 
     //set content
     doTransform();
