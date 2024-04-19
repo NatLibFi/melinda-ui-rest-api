@@ -10,11 +10,10 @@ import {
 } from '/common/ui-utils.js';
 
 import {
-  deleteFromTransformed,
-  getTransformed,
-  initModule,
-  parseUrlParameters
-} from '/merge/common.js';
+  dataModule,
+  initCommonModule,
+  urlModule
+} from '/merge/common/common.js';
 
 import { Account, doLogin } from '/common/auth.js';
 
@@ -27,12 +26,15 @@ const clientName = 'merge';
 
 window.initialize = function () {
   console.log('Initializing');
-  initModule({
+  initCommonModule({
     client: clientName,
-    canUseProfileType: false,
-    transformedOptions: {
+    transformedDefaultOptions: {
       type: 'merge',
       profile: undefined
+    },
+    clientConfigOverride:{
+      canUseProfileType: false,
+      onNewInstanceRemoveBaseRecord: true
     }
   });
 
@@ -45,12 +47,12 @@ window.initialize = function () {
     const username = document.querySelector('#accountMenu #username');
     username.innerHTML = Account.get().Name;
     showTab(clientName);
-    parseUrlParameters();
+    urlModule.parseUrlParameters();
     doTransform();
   }
 };
 
 function setOptions() {
-  if (!getTransformed().base?.ID) deleteFromTransformed('base');//delete transformed.base;
-  deleteFromTransformed('stored');
+  if (!dataModule.getTransformed().base?.ID) dataModule.deleteFromTransformed('base');//delete transformed.base;
+  dataModule.deleteFromTransformed('stored');
 }
