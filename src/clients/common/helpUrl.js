@@ -11,10 +11,6 @@ const helpUrlConfig = {
     viewer: "",
     muuntaja: "https://www.kiwi.fi/display/melinda/Uusi+Muuntaja+-+testiversio",
     merge: "https://www.kiwi.fi/pages/viewpage.action?pageId=77365409",
-    edit: "",
-    artikkelit: "https://www.kiwi.fi/pages/viewpage.action?pageId=155648846",
-    cyrillux: "https://www.kiwi.fi/display/melinda/Cyrillux-ohjelma%3A+kyrilliikan+translitterointi",
-    poistot: "https://www.kiwi.fi/pages/viewpage.action?pageId=75203830"
 };
 
 export { setOnHelpClicked };
