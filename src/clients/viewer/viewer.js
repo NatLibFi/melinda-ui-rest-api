@@ -20,6 +20,7 @@ import {getMatchLog, getMergeLog} from '/common/rest.js';
 import {unselectDateButtons, oneDayInMs} from './searchModal.js';
 import {checkFile} from './fileHandling.js';
 import {setProtectButton} from './logActions.js';
+import {setOnHelpClicked} from '/common/helpUrl.js';
 
 //-----------------------------------------------------------------------------------------
 // Initialize on page load
@@ -39,6 +40,7 @@ window.initialize = function () {
     accountMenu.classList.add('show');
     const username = document.querySelector(`#accountMenu #username`);
     username.innerHTML = Account.get().Name;
+    setOnHelpClicked({elementId:'helpButton', clientName: 'viewer'});
     showTab('viewer');
     parseUrlParameters();
     doIndexedDbCheck();

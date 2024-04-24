@@ -19,6 +19,7 @@ import * as transformModule from '/merge/common/transformationHandler.js';
 import * as uiCommonModule from '/merge/common/uiCommonHandler.js';
 import * as uiEditModule from '/merge/common/uiEditHandler.js';
 import * as urlModule from '/merge/common/urlHandler.js';
+import {setOnHelpClicked} from '/common/helpUrl.js';
 
 //-----------------------------------------------------------------------------
 // Exported
@@ -48,10 +49,16 @@ function initCommonModule(data = {}) {
   uiEditModule.init();
   transformModule.init();
   console.log('All modules initialized');
+
+  setup();
 }
 
 //-----------------------------------------------------------------------------
 // Private
 //-----------------------------------------------------------------------------
-
-
+/**
+ * Some general setups
+ */
+function setup(){
+  setOnHelpClicked({elementId:'helpButton', clientName: dataModule.getClientName()});
+}
