@@ -275,9 +275,9 @@ function getReducers(options) {
       return [
         fillDefault('040/FENNI'),
         fillDefault('042'),
-        fillDefault('506/FENNI')
+        fillDefault('506/FENNI'),
         //fillDefault('530/FENNI') // MUU-356
-        // fillDefault('540/FENNI'),
+        fillDefault('540/FENNI')
         // fillDefault('856/FENNI'),
         // fillDefault('901/FENNI'),
       ];
