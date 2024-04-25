@@ -274,15 +274,19 @@ function getReducers(options) {
     if (options.profile === 'FENNI') {
       return [
         fillDefault('040/FENNI'),
-        fillDefault('042')
-        // finnDefault('506/FENNI'),
+        fillDefault('042'),
+        fillDefault('506/FENNI'),
         //fillDefault('530/FENNI') // MUU-356
-        // fillDefault('540/FENNI'),
+        fillDefault('540/FENNI')
         // fillDefault('856/FENNI'),
         // fillDefault('901/FENNI'),
       ];
     }
-    return [fillDefault('040')];
+    return [
+      fillDefault('040'),
+      fillDefault('506/1'),
+      fillDefault('506/2')
+    ];
   }
 
   return [
@@ -297,8 +301,6 @@ function getReducers(options) {
     fillDefault('336'),
     fillDefault('337'),
     fillDefault('338'),
-    fillDefault('506/1'),
-    fillDefault('506/2'),
     //fillDefault('530') // 530 is added, if there is no generated 776
     //updateLOW(options),
     ...getFenniFields()

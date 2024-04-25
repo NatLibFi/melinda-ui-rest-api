@@ -87,44 +87,27 @@
      "id": "55e6067b-8eba-44c1-a53c-293641a40729"
     },
     {
-     "tag": "506",
-     "ind1": "0",
-     "ind2": " ",
-     "subfields": [
-      {
-       "code": "a",
-       "value": "Aineisto  on vapaasti saatavissa."
-      },
-      {
-       "code": "f",
-       "value": "Unrestricted online access"
-      },
-      {
-       "code": "2",
-       "value": "star"
-      }
-     ],
-     "id": "6b459901-5a45-46d6-9469-f414cab03d2f"
+      "tag": "506", "ind1": "1", "ind2": " ",
+      "subfields": [
+        {"code": "a", "value": "Aineisto on käytettävissä vapaakappalekirjastoissa."},
+        {"code": "f", "value": "Online access with authorization."},
+        {"code": "2", "value": "star"},
+        {"code": "5", "value": "FI-Vapaa"},
+        {"code": "9", "value": "FENNI<KEEP>"}
+      ],
+      "id": "52527d71-596e-47b1-86c7-d6978554d24b"
     },
     {
-     "tag": "506",
-     "ind1": "1",
-     "ind2": " ",
-     "subfields": [
-      {
-       "code": "a",
-       "value": "Käytettävissä lisenssin hankkineissa organisaatioissa."
-      },
-      {
-       "code": "f",
-       "value": "Online access with authorization"
-      },
-      {
-       "code": "2",
-       "value": "star"
-      }
-     ],
-     "id": "39858a85-ef1e-4946-ba32-0daa8ee52381"
+      "tag": "540", "ind1": " ", "ind2": " ",
+      "subfields": [
+        {"code": "a", "value": "Aineisto on käytettävissä tutkimus- ja muihin tarkoituksiin;"},
+        {"code": "b", "value": "Kansalliskirjasto;"},
+        {"code": "c", "value": "Laki kulttuuriaineistojen tallettamisesta ja säilyttämisestä"},
+        {"code": "u", "value": "http://www.finlex.fi/fi/laki/ajantasa/2007/20071433"},
+        {"code": "5", "value": "FI-Vapaa"},
+        {"code": "9", "value": "FENNI<KEEP>"}
+      ],
+      "id": "c5e997c8-cf6b-4a98-ba17-9cfb42a71f86"
     }
    ]
   }
