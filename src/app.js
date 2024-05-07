@@ -4,7 +4,7 @@ import passport from 'passport';
 import cors from 'cors';
 
 import AlephStrategy from '@natlibfi/passport-melinda-aleph';
-import MelindaJwtStrategy, {verify, jwtFromRequest, cookieExtractor} from '@natlibfi/passport-melinda-jwt';
+import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
