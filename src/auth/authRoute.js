@@ -46,12 +46,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
   function getCookieOptions() {
     const isInProduction = process.env.NODE_ENV === 'production';// eslint-disable-line
-    //43200 = 12h
     if (isInProduction) {
-      return {httpOnly: false, SameSite: 'None', secure: true, maxAge: 43200};
+      return {httpOnly: false, SameSite: 'None', secure: true, maxAge: 12 * 60 * 60 * 1000};
     }
 
-    return {httpOnly: false, SameSite: 'Lax', secure: false, maxAge: 43200};
+    return {httpOnly: false, SameSite: 'None', secure: false, maxAge: 12 * 60 * 60 * 1000};
   }
 
   function verify(req, res) {
