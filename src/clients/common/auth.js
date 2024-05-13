@@ -4,9 +4,10 @@
 //
 //*****************************************************************************
 
-import {authVerify, authRequest} from './rest.js';
-import {reload, resetForms, showNotification, showTab} from './ui-utils.js';
-import {startProcess, stopProcess} from './ui-utils.js';
+import { authVerify, authRequest } from './rest.js';
+import { reload, resetForms, showNotification, showTab } from './ui-utils.js';
+import { startProcess, stopProcess } from './ui-utils.js';
+import { getCookie, clearCookies } from './cookieService.js';
 
 //*****************************************************************************
 //
@@ -14,53 +15,64 @@ import {startProcess, stopProcess} from './ui-utils.js';
 //
 //*****************************************************************************
 
+//use cookies for data storage
+/**
+ * Expected userdata has name and token, see authRoute
+ */
 export const Account = {
-  storage: window.sessionStorage,
-  name: 'melinda-user',
-
-  //---------------------------------------------------------------------------
-
-  get(jsonField = this.name) {
-    try {
-      return JSON.parse(this.storage.getItem(jsonField));
-    } catch (e) {
-      return undefined;
+  cookieNameForUserName: 'melinda-user-name',
+  cookieNameForUserToken: 'melinda-user-token',
+  //Data set/get
+  get() {
+    return {
+      Name: getCookie(this.cookieNameForUserName),
+      Token: getCookie(this.cookieNameForUserToken)
     }
   },
-  set(token) {
-    return this.storage.setItem(this.name, JSON.stringify(token));
-  },
-  remove() {
-    return this.storage.removeItem(this.name);
-  },
-
   getToken() {
-    const user = Account.get();
+    const user = this.get();
     if (!user) {
       return null;
     }
 
     return user.Token;
   },
-
-  //---------------------------------------------------------------------------
-
-  verify() {
-    return authVerify(this.getToken());
+  remove() {
+    clearCookies([
+      this.cookieNameForUserName,
+      this.cookieNameForUserToken
+    ]);
   },
 
-  login(username, password) {
+  //actions for account
+  verify() {
+    return new Promise((resolve, reject) => {
+      const token = this.getToken();
+      if (token) {
+        resolve(authVerify(this.getToken()));
+      }
+      const message = 'Token was not available. Skip verify, request login';
+      console.warn(message);
+      reject(new Error(message));
+    });
+  },
+  async login(username, password) {
     const token = createToken(username, password);
 
-    return authRequest(token).then(user => {
-      if (user) {
-        //console.log("Storing user", user);
-        this.set(user);
-      }
+    const user = await authRequest(token);
+    // if (user) {
+    //     //console.log("Storing user", user);
+    //     this.set(user);
+    // }
+    //console.log(user);
+    //console.log(this.get());
+    //return user;
 
-      console.log(user);
-      return user;
-    });
+    const cookieUser = this.get();
+    //console.log(user);
+    //console.log(cookieUser);
+    //console.log('Are tokens same: ', user.Token === cookieUser.Token);
+    return cookieUser;
 
     function createToken(username, password = '') {
       //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
@@ -68,13 +80,11 @@ export const Account = {
       return `Basic ${encoded}`;
     }
   },
-
   logout() {
     this.remove();
   }
-
-  //---------------------------------------------------------------------------
 };
+
 
 //*****************************************************************************
 //
@@ -101,7 +111,7 @@ export function doLogin(onSuccess) {
     startProcess();
 
     Account.login(username, password)
-      .then(user => onSuccess(user))
+      .then((user) => { onSuccess(user); })
       .catch(err => {
         console.log(err);
         Account.remove();
@@ -115,10 +125,14 @@ export function doLogin(onSuccess) {
   };
 
   Account.verify()
-    .then(response => onSuccess(Account.get()))
+    .then(response => {
+      console.log('Verify got reponse, essentially verify is success');
+      onSuccess(Account.get());
+    })
     .catch(noAuth);
 
   function noAuth() {
+    console.log('Auth failed. Clear local data and require relogin.');
     Account.remove();
     resetForms(document.getElementById('root'));
     showTab('login');

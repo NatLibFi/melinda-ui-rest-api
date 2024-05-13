@@ -37,9 +37,21 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
       Token: generateJwtToken(req.user, jwtOptions)
     };
 
-    res
-      .status(HttpStatus.OK)
-      .json(user);
+    //set required data to cookie with proper options
+    const cookieOptions = getCookieOptions();
+    res.cookie('melinda-user-name', user.Name, cookieOptions);
+    res.cookie('melinda-user-token', user.Token, cookieOptions); //update options httponly true and handle all token handling on server side
+    res.status(HttpStatus.OK).json(user);
+  }
+
+  function getCookieOptions() {
+    const isInProduction = process.env.NODE_ENV === 'production';// eslint-disable-line
+    //43200 = 12h
+    if (isInProduction) {
+      return {httpOnly: false, SameSite: 'None', secure: true, maxAge: 43200};
+    }
+
+    return {httpOnly: false, SameSite: 'Lax', secure: false, maxAge: 43200};
   }
 
   function verify(req, res) {
