@@ -49,11 +49,11 @@ export const Account = {
     return new Promise((resolve, reject) => {
       const token = this.getToken();
       if (token) {
-        resolve(authVerify(this.getToken()));
+        return resolve(authVerify(this.getToken()));
       }
       const message = 'Token was not available. Skip verify, request login';
       console.warn(message);
-      reject(new Error(message));
+      return reject(new Error(message));
     });
   },
   async login(username, password) {
@@ -111,7 +111,7 @@ export function doLogin(onSuccess) {
     startProcess();
 
     Account.login(username, password)
-      .then((user) => { onSuccess(user); })
+      .then((user) => { console.log('Login Success'); onSuccess(user); })
       .catch(err => {
         console.log(err);
         Account.remove();
@@ -126,7 +126,7 @@ export function doLogin(onSuccess) {
 
   Account.verify()
     .then(response => {
-      console.log('Verify got reponse, essentially verify is success');
+      console.log('Verify has success');
       onSuccess(Account.get());
     })
     .catch(noAuth);
