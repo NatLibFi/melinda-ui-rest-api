@@ -24,6 +24,6 @@ window.onload = function() {
 };
 
 window.onAccount = function (e) {
-    console.log('Account:', e);
+    //console.log('Account:', e);
     logout();
   };

@@ -20,10 +20,9 @@ const knownCookieNamesForClient = [
  * Get value from cookies available to client
  *
  * @param {String} name - name of the cookie available for client side code
- * @param {boolean} [parseValue=false] - if the value is stringified object use this to parse the value before return, defaults to false
  * @returns {*|undefined} value or undefined
  */
-export function getCookie(name, parseValue = false) {
+export function getCookie(name) {
     const value = getRawCookieValue(name);
     if(!value){
         console.log('No requested cookie found');

@@ -19,12 +19,23 @@ const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
 // AUTHENTICATION
 //*****************************************************************************
 
+//login (with locally created token - encoded username and password)
+//see auth.js login();
+//uses route /auth/
 export function authRequest(token) {
   return doAuthRequest(token).then(response => response.json());
 }
 
+//verify token
+//uses route /auth/verify
 export function authVerify(token) {
   return doAuthRequest(token, 'verify');
+}
+
+//logout
+//uses route /auth/logout
+export function authLogout(token){
+  return doAuthRequest(token, 'logout');
 }
 
 function doAuthRequest(token, url = '') {

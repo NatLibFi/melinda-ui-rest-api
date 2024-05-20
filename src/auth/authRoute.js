@@ -18,11 +18,16 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   //logger.debug('Creating auth route');
+  const cookieNames = {
+    userName: 'melinda-user-name',
+    userToken: 'melinda-user-token'
+  };
 
   return new Router()
     //.use(sanitaze)
     .post('/verify', verify)
     .post('/', create)
+    .post('/logout', logout)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -30,6 +35,11 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     next();
   }
 
+  //************************ */
+  //route functions
+  //************************ */
+
+  //login
   function create(req, res) {
     // Strip files
     const user = {
@@ -39,27 +49,49 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
     //set required data to cookie with proper options
     const cookieOptions = getCookieOptions();
-    res.cookie('melinda-user-name', user.Name, cookieOptions);
-    res.cookie('melinda-user-token', user.Token, cookieOptions); //update options httponly true and handle all token handling on server side
+    res.cookie(cookieNames.userName, user.Name, cookieOptions);
+    res.cookie(cookieNames.userToken, user.Token, cookieOptions); //update options httponly true and handle all token handling on server side
     res.status(HttpStatus.OK).json(user);
   }
 
+  //verify token (token set to headers and auth checked in app.js, if gets here its ok)
+  function verify(req, res) {
+    res.sendStatus(HttpStatus.OK);
+  }
+
+  function logout(req, res) {
+    Object.keys(cookieNames).forEach(cookieKey => {
+      const cookieName = cookieNames[cookieKey];
+      res.clearCookie(cookieName);
+    });
+    res.sendStatus(HttpStatus.OK);
+  }
+
+  //************************ */
+  //helper functions
+  //************************ */
   function getCookieOptions() {
     const isInProduction = process.env.NODE_ENV === 'production';// eslint-disable-line
     const timeToLive = getHoursInMilliSeconds(12);
     //logger.debug(timeToLive);
     if (isInProduction) {
-      return {httpOnly: false, SameSite: 'None', secure: true, maxAge: timeToLive};
+      return {
+        httpOnly: false,
+        SameSite: 'None',
+        secure: true,
+        maxAge: timeToLive
+      };
     }
 
-    return {httpOnly: false, SameSite: 'None', secure: false, maxAge: timeToLive};
+    return {
+      httpOnly: false,
+      SameSite: 'None',
+      secure: false,
+      maxAge: timeToLive
+    };
 
     function getHoursInMilliSeconds(requestedHourCount) {
       return requestedHourCount * 60 * 60 * 1000;
     }
-  }
-
-  function verify(req, res) {
-    res.sendStatus(HttpStatus.OK);
   }
 }
