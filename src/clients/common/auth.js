@@ -4,7 +4,7 @@
 //
 //*****************************************************************************
 
-import { authVerify, authRequest } from './rest.js';
+import { authVerify, authRequest, authLogout } from './rest.js';
 import { reload, resetForms, showNotification, showTab } from './ui-utils.js';
 import { startProcess, stopProcess } from './ui-utils.js';
 import { getCookie, clearCookies } from './cookieService.js';
@@ -80,8 +80,19 @@ export const Account = {
       return `Basic ${encoded}`;
     }
   },
-  logout() {
-    this.remove();
+  async logout() {
+    //this.remove();
+    //Logout should remove relevant tokens from server side (httpOnly: true)
+    try {
+      const token = this.getToken();
+      await authLogout(token);
+      console.log('Logout success');
+    } catch (error) {
+      console.warn(error);
+    }
+
+    //just in case clear local ? (cookies are already cleared if logout was success)
+    //this.remove();
   }
 };
 
@@ -139,7 +150,7 @@ export function doLogin(onSuccess) {
   }
 }
 
-export function logout(e) {
-  Account.logout();
+export async function logout(e) {
+  await Account.logout();
   reload();
 }
