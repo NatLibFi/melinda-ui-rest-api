@@ -15,7 +15,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
-export default function (jwtOptions) { // eslint-disable-line no-unused-vars
+export default function (passport, jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   //logger.debug('Creating auth route');
   const cookieNames = {
@@ -25,9 +25,10 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
 
   return new Router()
     //.use(sanitaze)
-    .post('/verify', verify)
-    .post('/', create)
-    .post('/logout', logout)
+    .post('/', passport.authenticate(['melinda', 'jwt'], {session: false}), create)
+    .get('/verifyBasic', passport.authenticate(['melinda', 'jwt'], {session: false}), verifyBasic)
+    .get('/verifyJwt', passport.authenticate(['melinda', 'jwt'], {session: false}), verifyJwt)
+    .post('/logout', passport.authenticate(['melinda', 'jwt'], {session: false}), logout)
     .use(handleError);
 
   function handleError(req, res, next) {
@@ -48,14 +49,37 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
     };
 
     //set required data to cookie with proper options
-    const cookieOptions = getCookieOptions();
-    res.cookie(cookieNames.userName, user.Name, cookieOptions);
-    res.cookie(cookieNames.userToken, user.Token, cookieOptions); //update options httponly true and handle all token handling on server side
+    const isInProduction = process.env.NODE_ENV === 'production';// eslint-disable-line
+    const timeToLive = getHoursInMilliSeconds(12);
+    //username should be available to client
+    const nameCookieOptions = {
+      httpOnly: false,
+      SameSite: 'None',
+      secure: false,
+      maxAge: timeToLive
+    };
+    const tokenCookieOptions = {
+      httpOnly: false,
+      SameSite: 'None',
+      secure: false,
+      maxAge: timeToLive
+    };
+    const productionTokenCookieOption = {
+      httpOnly: true,
+      SameSite: 'None',
+      secure: true,
+      maxAge: timeToLive
+    };
+    res.cookie(cookieNames.userName, user.Name, nameCookieOptions);
+    res.cookie(cookieNames.userToken, user.Token, isInProduction ? productionTokenCookieOption : tokenCookieOptions);
     res.status(HttpStatus.OK).json(user);
   }
 
   //verify token (token set to headers and auth checked in app.js, if gets here its ok)
-  function verify(req, res) {
+  function verifyBasic(req, res) {
+    res.sendStatus(HttpStatus.OK);
+  }
+  function verifyJwt(req, res) {
     res.sendStatus(HttpStatus.OK);
   }
 
@@ -70,28 +94,8 @@ export default function (jwtOptions) { // eslint-disable-line no-unused-vars
   //************************ */
   //helper functions
   //************************ */
-  function getCookieOptions() {
-    const isInProduction = process.env.NODE_ENV === 'production';// eslint-disable-line
-    const timeToLive = getHoursInMilliSeconds(12);
-    //logger.debug(timeToLive);
-    if (isInProduction) {
-      return {
-        httpOnly: false,
-        SameSite: 'None',
-        secure: true,
-        maxAge: timeToLive
-      };
-    }
 
-    return {
-      httpOnly: false,
-      SameSite: 'None',
-      secure: false,
-      maxAge: timeToLive
-    };
-
-    function getHoursInMilliSeconds(requestedHourCount) {
-      return requestedHourCount * 60 * 60 * 1000;
-    }
+  function getHoursInMilliSeconds(requestedHourCount) {
+    return requestedHourCount * 60 * 60 * 1000;
   }
 }

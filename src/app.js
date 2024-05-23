@@ -86,7 +86,7 @@ export default async function ({
 
     // REST API
     app.use('/rest/artikkelit', createArtikkelitRoute());
-    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
+    app.use('/rest/auth', createAuthRoute(passport, jwtOptions));
     app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
     app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), await createMuuntajaRoute(sruUrl, melindaApiOptions, restApiParams));
     app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));

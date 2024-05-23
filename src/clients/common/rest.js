@@ -29,7 +29,7 @@ export function authRequest(token) {
 //verify token
 //uses route /auth/verify
 export function authVerify(token) {
-  return doAuthRequest(token, 'verify');
+  return doAuthRequest(token, 'verifyBasic', 'GET');
 }
 
 //logout
@@ -38,11 +38,11 @@ export function authLogout(token){
   return doAuthRequest(token, 'logout');
 }
 
-function doAuthRequest(token, url = '') {
+function doAuthRequest(token, url = '', method = 'POST') {
   return fetch(
     `${RESTurl}/auth/${url}`,
     {
-      method: 'POST',
+      method: method,
       headers: {
         Authorization: token
       }
