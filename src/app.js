@@ -4,7 +4,7 @@ import passport from 'passport';
 import cors from 'cors';
 
 import AlephStrategy from '@natlibfi/passport-melinda-aleph';
-import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
+import {MelindaJwtStrategy, verify, cookieExtractor} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
 
@@ -68,7 +68,7 @@ export default async function ({
     passport.use(new MelindaJwtStrategy({
       ...jwtOptions,
       secretOrKey: jwtOptions.secretOrPrivateKey,
-      jwtFromRequest
+      jwtFromRequest: cookieExtractor
     }, verify));
 
     app.use(passport.initialize());

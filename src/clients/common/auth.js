@@ -21,12 +21,10 @@ import { getCookie, clearCookies } from './cookieService.js';
  */
 export const Account = {
   cookieNameForUserName: 'melinda-user-name',
-  cookieNameForUserToken: 'melinda-user-token',
   //Data set/get
   get() {
     return {
-      Name: getCookie(this.cookieNameForUserName),
-      Token: getCookie(this.cookieNameForUserToken)
+      Name: getCookie(this.cookieNameForUserName)
     }
   },
   getToken() {
@@ -39,29 +37,28 @@ export const Account = {
   },
   remove() {
     clearCookies([
-      this.cookieNameForUserName,
-      this.cookieNameForUserToken
+      this.cookieNameForUserName
     ]);
   },
 
   //actions for account
   verify() {
-    return new Promise((resolve, reject) => {
-      const token = this.getToken();
-      if (token) {
-        return resolve(authVerify(this.getToken()));
-      }
-      const message = 'Token was not available. Skip verify, request login';
-      console.warn(message);
-      return reject(new Error(message));
-    });
+    // return new Promise((resolve, reject) => {
+    //   const token = this.getToken();
+    //   if (token) {
+    //     return resolve(authVerify(this.getToken()));
+    //   }
+    //   const message = 'Token was not available. Skip verify, request login';
+    //   console.warn(message);
+    //   return reject(new Error(message));
+    // });
+    return authVerify();
   },
   async login(username, password) {
     try {
       //const localToken = createBasicLocalToken(username, password);
       const baseToken = await authGetBaseToken({username: username, password: password});
-      const user = await authLogin(baseToken);
-      //user will have jwt token generated on login
+      const response = await authLogin(baseToken);
 
       const cookieUser = this.get();
       return cookieUser
@@ -96,8 +93,7 @@ export const Account = {
     //this.remove();
     //Logout should remove relevant tokens from server side (httpOnly: true)
     try {
-      const token = this.getToken();
-      await authLogout(token);
+      await authLogout();
       console.log('Logout success');
     } catch (error) {
       console.warn(error);

@@ -53,7 +53,7 @@
     "@natlibfi/melinda-rest-api-client": "^5.0.4-alpha.3",
     "@natlibfi/melinda-ui-commons": "^5.0.0-alpha.9",
     "@natlibfi/passport-melinda-aleph": "^2.0.4",
-    "@natlibfi/passport-melinda-jwt": "^1.0.5",
+    "@natlibfi/passport-melinda-jwt": "^2.0.0-alpha.2",
     "@natlibfi/sru-client": "^6.0.10-alpha.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

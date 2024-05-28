@@ -22,7 +22,8 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
   //logger.debug('Creating auth route');
   const cookieNames = {
     userName: 'melinda-user-name',
-    userToken: 'melinda-user-token'
+    userToken: 'melinda', //'melinda-user-token',
+    jwtToken: 'melinda'
   };
 
   return new Router()
@@ -62,7 +63,7 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
       maxAge: timeToLive
     };
     const tokenCookieOptions = {
-      httpOnly: false,
+      httpOnly: true,
       SameSite: 'None',
       secure: false,
       maxAge: timeToLive
@@ -75,7 +76,8 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
     };
     res.cookie(cookieNames.userName, user.Name, nameCookieOptions);
     res.cookie(cookieNames.userToken, user.Token, isInProduction ? productionTokenCookieOption : tokenCookieOptions);
-    res.status(HttpStatus.OK).json(user);
+    //res.status(HttpStatus.OK).json(user);
+    res.sendStatus(HttpStatus.OK);
   }
   function getBaseToken(req, res) {
     //logger.debug('base');

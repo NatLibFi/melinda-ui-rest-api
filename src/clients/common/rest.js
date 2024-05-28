@@ -20,7 +20,7 @@ const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
 //*****************************************************************************
 
 export function authLogin(token) {
-  return doAuthRequest({ token, url: 'login' }).then(response => response.json());
+  return doAuthRequest({ token, url: 'login' });
 }
 export async function authGetBaseToken(body) {
   try {
@@ -32,15 +32,14 @@ export async function authGetBaseToken(body) {
     console.error('Issue with auth getting base token', error);
   }
 }
-export function authVerify(token) {
-  return doAuthRequest({ token, url: 'verify', method: 'GET' });
+export function authVerify() {
+  return doAuthRequest({ url: 'verify', method: 'GET' });
 }
-export function authLogout(token) {
-  return doAuthRequest({ token, url: 'logout' });
+export function authLogout() {
+  return doAuthRequest({ url: 'logout' });
 }
 
-async function doAuthRequest(data) {
-  const { token, url = '', method = 'POST', body } = data;
+async function doAuthRequest({ url = '', method = 'POST', token = undefined, body = undefined }) {
   const requestUrl = `${RESTurl}/auth/${url}`;
   const requestConfig = {
     method: method.toUpperCase(),
@@ -60,14 +59,14 @@ async function doAuthRequest(data) {
 
   try {
     const response = await fetch(requestUrl, requestConfig);
-      if (!response.ok) {
-        warnAndAbort('Auth not ok');
-      }
-      return response;
+    if (!response.ok) {
+      throw undefined;
+    }
+    return response;
   } catch (error) {
-    warnAndAbort('Auth errored out');
+    warnAndAbort('Auht not ok');
   }
-  function setAuthHeaders(){
+  function setAuthHeaders() {
     if (token) {
       requestConfig.headers['Authorization'] = token;
       return;
@@ -76,7 +75,7 @@ async function doAuthRequest(data) {
     requestConfig.headers['Access-Control-Allow-Credentials'] = true;
     requestConfig.headers['Access-Control-Allow-Headers'] = ['Origin', 'Content-Type', 'Accept', 'Authorization', 'Set-Cookie'];
   }
-  function warnAndAbort(message){
+  function warnAndAbort(message) {
     console.warn(message);
     throw undefined;
   };
