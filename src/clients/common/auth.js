@@ -4,7 +4,7 @@
 //
 //*****************************************************************************
 
-import { authVerify, authRequest, authLogout } from './rest.js';
+import { authGetBaseToken, authVerify, authLogin, authLogout } from './rest.js';
 import { reload, resetForms, showNotification, showTab } from './ui-utils.js';
 import { startProcess, stopProcess } from './ui-utils.js';
 import { getCookie, clearCookies } from './cookieService.js';
@@ -57,28 +57,40 @@ export const Account = {
     });
   },
   async login(username, password) {
-    const token = createToken(username, password);
+    try {
+      //const localToken = createBasicLocalToken(username, password);
+      const baseToken = await authGetBaseToken({username: username, password: password});
+      const user = await authLogin(baseToken);
+      //user will have jwt token generated on login
 
-    const user = await authRequest(token);
-    // if (user) {
-    //     //console.log("Storing user", user);
-    //     this.set(user);
-    // }
-    //console.log(user);
-    //console.log(this.get());
-    //return user;
-
-    const cookieUser = this.get();
-    //console.log(user);
-    //console.log(cookieUser);
-    //console.log('Are tokens same: ', user.Token === cookieUser.Token);
-    return cookieUser;
-
-    function createToken(username, password = '') {
-      //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
-      const encoded = btoa(`${username}:${password}`);
-      return `Basic ${encoded}`;
+      const cookieUser = this.get();
+      return cookieUser
+    } catch (error) {
+      console.log('issue in login process', error);
+      throw undefined;
     }
+    // const token = createBasicToken(username, password);
+
+    // const user = await authLogin(token);
+    // // if (user) {
+    // //     //console.log("Storing user", user);
+    // //     this.set(user);
+    // // }
+    // //console.log(user);
+    // //console.log(this.get());
+    // //return user;
+
+    // const cookieUser = this.get();
+    // //console.log(user);
+    // //console.log(cookieUser);
+    // //console.log('Are tokens same: ', user.Token === cookieUser.Token);
+    // return cookieUser;
+
+    // function createBasicLocalToken(username, password = '') {
+    //   //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+    //   const encoded = btoa(`${username}:${password}`);
+    //   return `Basic ${encoded}`;
+    // }
   },
   async logout() {
     //this.remove();
