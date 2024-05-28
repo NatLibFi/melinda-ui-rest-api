@@ -10,7 +10,7 @@ const helpUrlConfig = {
     default: "https://www.kiwi.fi/display/melinda/Ohjeet",
     viewer: "",
     muuntaja: "https://www.kiwi.fi/display/melinda/Uusi+Muuntaja+-+testiversio",
-    merge: "https://www.kiwi.fi/pages/viewpage.action?pageId=77365409",
+    merge: "https://www.kiwi.fi/pages/viewpage.action?pageId=409534894",
 };
 
 export { setOnHelpClicked };
