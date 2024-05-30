@@ -7,7 +7,6 @@
 import { authGetBaseToken, authVerify, authLogin, authLogout } from './rest.js';
 import { reload, resetForms, showNotification, showTab } from './ui-utils.js';
 import { startProcess, stopProcess } from './ui-utils.js';
-import { getCookie, clearCookies } from './cookieService.js';
 
 //*****************************************************************************
 //
@@ -20,89 +19,43 @@ import { getCookie, clearCookies } from './cookieService.js';
  * Expected userdata has name and token, see authRoute
  */
 export const Account = {
-  cookieNameForUserName: 'melinda-user-name',
-  //Data set/get
+  data: {},
+  defaultData: { name: 'melinda-user' },
   get() {
-    return {
-      Name: getCookie(this.cookieNameForUserName)
-    }
+    return this.data
   },
-  getToken() {
-    const user = this.get();
-    if (!user) {
-      return null;
-    }
-
-    return user.Token;
-  },
-  remove() {
-    clearCookies([
-      this.cookieNameForUserName
-    ]);
-  },
+  update(updateData) { this.data = updateData; },
+  reset() { this.data = JSON.parse(JSON.stringify(this.defaultData)); },
+  remove() { this.reset(); },
 
   //actions for account
   verify() {
-    // return new Promise((resolve, reject) => {
-    //   const token = this.getToken();
-    //   if (token) {
-    //     return resolve(authVerify(this.getToken()));
-    //   }
-    //   const message = 'Token was not available. Skip verify, request login';
-    //   console.warn(message);
-    //   return reject(new Error(message));
-    // });
     return authVerify();
   },
   async login(username, password) {
     try {
       //const localToken = createBasicLocalToken(username, password);
-      const baseToken = await authGetBaseToken({username: username, password: password});
-      const response = await authLogin(baseToken);
+      const baseToken = await authGetBaseToken({ username: username, password: password });
+      const userData = await authLogin(baseToken);
 
-      const cookieUser = this.get();
-      return cookieUser
+      return userData;
     } catch (error) {
       console.log('issue in login process', error);
       throw undefined;
     }
-    // const token = createBasicToken(username, password);
-
-    // const user = await authLogin(token);
-    // // if (user) {
-    // //     //console.log("Storing user", user);
-    // //     this.set(user);
-    // // }
-    // //console.log(user);
-    // //console.log(this.get());
-    // //return user;
-
-    // const cookieUser = this.get();
-    // //console.log(user);
-    // //console.log(cookieUser);
-    // //console.log('Are tokens same: ', user.Token === cookieUser.Token);
-    // return cookieUser;
-
-    // function createBasicLocalToken(username, password = '') {
-    //   //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
-    //   const encoded = btoa(`${username}:${password}`);
-    //   return `Basic ${encoded}`;
-    // }
   },
   async logout() {
-    //this.remove();
     //Logout should remove relevant tokens from server side (httpOnly: true)
     try {
       await authLogout();
+      this.remove();
       console.log('Logout success');
     } catch (error) {
       console.warn(error);
     }
-
-    //just in case clear local ? (cookies are already cleared if logout was success)
-    //this.remove();
   }
 };
+Account.reset();
 
 
 //*****************************************************************************
@@ -130,7 +83,11 @@ export function doLogin(onSuccess) {
     startProcess();
 
     Account.login(username, password)
-      .then((user) => { console.log('Login Success'); onSuccess(user); })
+      .then((user) => {
+        console.log('Login Success');
+        Account.update(user);
+        onSuccess(user);
+      })
       .catch(err => {
         console.log(err);
         Account.remove();
@@ -144,9 +101,10 @@ export function doLogin(onSuccess) {
   };
 
   Account.verify()
-    .then(response => {
+    .then(userData => {
       console.log('Verify has success');
-      onSuccess(Account.get());
+      Account.update(userData);
+      onSuccess();
     })
     .catch(noAuth);
 

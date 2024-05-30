@@ -24,18 +24,18 @@ const knownCookieNamesForClient = [
  */
 export function getCookie(name) {
     const value = getRawCookieValue(name);
-    if(!value){
+    if (!value) {
         console.log('No requested cookie found');
         return undefined;
     }
     return decodeURIComponent(value);
 }
-function getRawCookieValue(name){
+function getRawCookieValue(name) {
     const cookieRow = document.cookie
-    .split('; ')
-    .find(row => row.startsWith(name));
+        .split('; ')
+        .find(row => row.startsWith(name));
 
-    if(cookieRow)
+    if (cookieRow)
         return cookieRow.split('=')[1];
 
     return undefined;

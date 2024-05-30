@@ -20,7 +20,7 @@ const RESTurl = `${window.location.protocol}//${window.location.host}/rest`;
 //*****************************************************************************
 
 export function authLogin(token) {
-  return doAuthRequest({ token, url: 'login' });
+  return doAuthRequest({ token, url: 'login' }).then(response => response.json());;
 }
 export async function authGetBaseToken(body) {
   try {
@@ -33,7 +33,7 @@ export async function authGetBaseToken(body) {
   }
 }
 export function authVerify() {
-  return doAuthRequest({ url: 'verify', method: 'GET' });
+  return doAuthRequest({ url: 'verify', method: 'GET' }).then(response => response.json());;
 }
 export function authLogout() {
   return doAuthRequest({ url: 'logout' });
@@ -66,6 +66,7 @@ async function doAuthRequest({ url = '', method = 'POST', token = undefined, bod
   } catch (error) {
     warnAndAbort('Auht not ok');
   }
+
   function setAuthHeaders() {
     if (token) {
       requestConfig.headers['Authorization'] = token;
@@ -90,7 +91,8 @@ async function doRestCall({ url = undefined, method = undefined, body = undefine
 
   const headers = {
     'Accept': 'application/json',
-    'Authorization': Account.getToken(),
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Headers': ['Origin', 'Content-Type', 'Accept', 'Authorization', 'Set-Cookie'],
     ...contentType ? { 'Content-Type': contentType } : {}
   };
 
