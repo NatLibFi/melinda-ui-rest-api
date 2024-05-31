@@ -13,7 +13,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {generateAuthorizationHeader} from '@natlibfi/melinda-commons';
-import {sanitaze} from '../services/authService.js';
+import {sanitaze} from './authService.js';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
