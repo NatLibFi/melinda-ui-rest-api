@@ -13,7 +13,7 @@ import {createLogger} from '@natlibfi/melinda-backend-commons';
 //import createClient from '@natlibfi/sru-client';
 //import {MARCXML} from '@natlibfi/marc-record-serializers';
 import {generateAuthorizationHeader} from '@natlibfi/melinda-commons';
-import {sanitaze} from './authService.js';
+import {sanitizeString} from './authService.js';
 
 // https://github.com/NatLibFi/marc-record-serializers
 
@@ -70,9 +70,14 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
       res.status(500).json({error: 'username or password malformed or missing'});
       return;
     }
-    const cleanUserName = sanitaze(username);
-    const authToken = generateAuthorizationHeader(cleanUserName, password);
-    res.json({token: authToken});
+    try {
+      const cleanUserName = sanitizeString({value: username, options: {allowedPattern: 'a-zA-Z0-9_\\-äöåÄÖÅ'}});
+      const authToken = generateAuthorizationHeader(cleanUserName, password);
+
+      res.json({token: authToken});
+    } catch (error) {
+      res.status(500).json({error: 'Failed to either process user info or generate token.'});
+    }
   }
   //will use jwt to verification
   function verify(req, res) {
