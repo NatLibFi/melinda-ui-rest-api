@@ -60,11 +60,16 @@ export default async function ({
 
     app.use(cookieParser());
 
+    //login via auth header with token created from username and password
+    //strategy name 'melinda'
+    //token generation and auth usage in authRoute.js
     passport.use(new AlephStrategy({
       xServiceURL, userLibrary,
       ownAuthzURL, ownAuthzApiKey
     }));
 
+    //strategy name 'jwt'
+    //autheticate via 'melinda' named cookie with jwt token
     passport.use(new MelindaJwtStrategy({
       ...jwtOptions,
       secretOrKey: jwtOptions.secretOrPrivateKey,

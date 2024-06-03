@@ -20,15 +20,25 @@ import {sanitizeString} from './authService.js';
 export default function (passport, jwtOptions) { // eslint-disable-line no-unused-vars
   const logger = createLogger();
   //logger.debug('Creating auth route');
+
+  //expected cookie name for jwt token is from passport-melinda-jwt-js cookieExtractor function,
+  //set to be used in app.js MelindaJwtStrategy jwtFromRequest
   const cookieNames = {
     userToken: 'melinda'
   };
 
+  /**
+   * 'melinda' is passport-melinda-aleph-js projects extended basic authentication strategy, used in app.js as AlephStrategy for passport auth
+   * 'jwt' is refering passport-melinda-jwt-js projects extended JwtStrategy, used in app.js as MelindaJwtStrategy for passport auth,
+   *
+   * 'melinda' looks for 'Authorization' header with token
+   * 'jwt' looks for token from cookie named 'melinda', cookie should be 'httpOnly:true' so clientside scripts cant use it
+   */
   return new Router()
     //.use(sanitaze)
     .use(express.json())
-    .post('/login', passport.authenticate('melinda', {session: false}), login)
     .post('/getBaseToken', getBaseToken)
+    .post('/login', passport.authenticate('melinda', {session: false}), login)
     .get('/verify', passport.authenticate('jwt', {session: false}), verify)
     .post('/logout', passport.authenticate('jwt', {session: false}), logout)
     .use(handleError);
@@ -42,13 +52,16 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
   //route functions
   //************************ */
 
+  //login with base auth token, generate proper jwt token to cookie and return user
   function login(req, res) {
     // Strip files
-    const jwtToken = generateJwtToken(req.user, jwtOptions);
+    //token itself is valid 120h
+    const {displayName, id, authorization} = req.user;
+    const jwtToken = generateJwtToken({displayName, id, authorization}, jwtOptions);
 
     //set required data to cookie with proper options
     const isInProduction = process.env.NODE_ENV === 'production';// eslint-disable-line
-    //age in hours
+    //cookie age in hours
     const cookieAgeDevelopment = 12;
     const cookieAgeProduction = 9;
     const cookieAge = getHoursInMilliSeconds(isInProduction ? cookieAgeDevelopment : cookieAgeProduction);
@@ -64,6 +77,7 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
     //res.sendStatus(HttpStatus.OK);
     res.status(HttpStatus.OK).json({name: req.user.displayName});
   }
+  //sanitize user login data and try to generate base auth token
   function getBaseToken(req, res) {
     const {username, password} = req.body;
     if (!username || !password) {
@@ -79,12 +93,12 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
       res.status(500).json({error: 'Failed to either process user info or generate token.'});
     }
   }
-  //will use jwt to verification
+  //will use jwt token in cookie for verification, returns some user data
   function verify(req, res) {
     //res.sendStatus(HttpStatus.OK);
     res.status(HttpStatus.OK).json({name: req.user.displayName});
   }
-
+  //clear relevant tokens upon logout
   function logout(req, res) {
     Object.keys(cookieNames).forEach(cookieKey => {
       const cookieName = cookieNames[cookieKey];
