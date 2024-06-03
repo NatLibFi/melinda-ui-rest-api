@@ -74,7 +74,6 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
     };
     res.cookie(cookieNames.userToken, jwtToken, tokenCookieOptions);
 
-    //res.sendStatus(HttpStatus.OK);
     res.status(HttpStatus.OK).json({name: req.user.displayName});
   }
   //sanitize user login data and try to generate base auth token

@@ -92,11 +92,11 @@ export default async function ({
     // REST API
     app.use('/rest/artikkelit', createArtikkelitRoute());
     app.use('/rest/auth', createAuthRoute(passport, jwtOptions));
-    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
-    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), await createMuuntajaRoute(sruUrl, melindaApiOptions, restApiParams));
-    app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
-    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRouter(melindaApiOptions));
-    app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
+    app.use('/rest/bib', passport.authenticate('jwt', {session: false}), await createBibRoute(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate('jwt', {session: false}), await createMuuntajaRoute(sruUrl, melindaApiOptions, restApiParams));
+    app.use('/rest/ontologies', passport.authenticate('jwt', {session: false}), createOntologyRoute(fintoUrl));
+    app.use('/rest/record', passport.authenticate('jwt', {session: false}), createRecordRouter(melindaApiOptions));
+    app.use('/rest/viewer', passport.authenticate('jwt', {session: false}), createViewerRoute(melindaApiOptions));
     app.use('/rest/ping', createPingRoute());
     app.use('/rest/notification', createNotificationsRoute(notificationMongoUri));
 
