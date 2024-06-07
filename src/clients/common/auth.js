@@ -4,9 +4,9 @@
 //
 //*****************************************************************************
 
-import {authVerify, authRequest} from './rest.js';
-import {reload, resetForms, showNotification, showTab} from './ui-utils.js';
-import {startProcess, stopProcess} from './ui-utils.js';
+import { authGetBaseToken, authVerify, authLogin, authLogout } from './rest.js';
+import { reload, resetForms, showNotification, showTab } from './ui-utils.js';
+import { startProcess, stopProcess } from './ui-utils.js';
 
 //*****************************************************************************
 //
@@ -14,67 +14,49 @@ import {startProcess, stopProcess} from './ui-utils.js';
 //
 //*****************************************************************************
 
+//use cookies for data storage
+/**
+ * Expected userdata has name and token, see authRoute
+ */
 export const Account = {
-  storage: window.sessionStorage,
-  name: 'melinda-user',
-
-  //---------------------------------------------------------------------------
-
-  get(jsonField = this.name) {
-    try {
-      return JSON.parse(this.storage.getItem(jsonField));
-    } catch (e) {
-      return undefined;
-    }
+  data: {},
+  defaultData: { name: 'melinda-user' },
+  get() {
+    return this.data
   },
-  set(token) {
-    return this.storage.setItem(this.name, JSON.stringify(token));
-  },
-  remove() {
-    return this.storage.removeItem(this.name);
-  },
+  update(updateData) { this.data = updateData; },
+  reset() { this.data = JSON.parse(JSON.stringify(this.defaultData)); },
+  remove() { this.reset(); },
 
-  getToken() {
-    const user = Account.get();
-    if (!user) {
-      return null;
-    }
-
-    return user.Token;
-  },
-
-  //---------------------------------------------------------------------------
-
+  //actions for account
   verify() {
-    return authVerify(this.getToken());
+    return authVerify();
   },
+  async login(username, password) {
+    try {
+      //const localToken = createBasicLocalToken(username, password);
+      const baseToken = await authGetBaseToken({ username: username, password: password });
+      const userData = await authLogin(baseToken);
 
-  login(username, password) {
-    const token = createToken(username, password);
-
-    return authRequest(token).then(user => {
-      if (user) {
-        //console.log("Storing user", user);
-        this.set(user);
-      }
-
-      console.log(user);
-      return user;
-    });
-
-    function createToken(username, password = '') {
-      //const encoded = Buffer.from(`${username}:${password}`).toString('base64');
-      const encoded = btoa(`${username}:${password}`);
-      return `Basic ${encoded}`;
+      return userData;
+    } catch (error) {
+      console.log('issue in login process', error);
+      throw undefined;
     }
   },
-
-  logout() {
-    this.remove();
+  async logout() {
+    //Logout should remove relevant tokens from server side (httpOnly: true)
+    try {
+      await authLogout();
+      this.remove();
+      console.log('Logout success');
+    } catch (error) {
+      console.warn(error);
+    }
   }
-
-  //---------------------------------------------------------------------------
 };
+Account.reset();
+
 
 //*****************************************************************************
 //
@@ -101,7 +83,11 @@ export function doLogin(onSuccess) {
     startProcess();
 
     Account.login(username, password)
-      .then(user => onSuccess(user))
+      .then((user) => {
+        console.log('Login Success');
+        Account.update(user);
+        onSuccess(user);
+      })
       .catch(err => {
         console.log(err);
         Account.remove();
@@ -115,17 +101,22 @@ export function doLogin(onSuccess) {
   };
 
   Account.verify()
-    .then(response => onSuccess(Account.get()))
+    .then(userData => {
+      console.log('Verify has success');
+      Account.update(userData);
+      onSuccess();
+    })
     .catch(noAuth);
 
   function noAuth() {
+    console.log('Auth failed. Clear local data and require relogin.');
     Account.remove();
     resetForms(document.getElementById('root'));
     showTab('login');
   }
 }
 
-export function logout(e) {
-  Account.logout();
+export async function logout(e) {
+  await Account.logout();
   reload();
 }

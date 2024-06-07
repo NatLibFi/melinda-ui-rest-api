@@ -4,9 +4,11 @@ import passport from 'passport';
 import cors from 'cors';
 
 import AlephStrategy from '@natlibfi/passport-melinda-aleph';
-import MelindaJwtStrategy, {verify, jwtFromRequest} from '@natlibfi/passport-melinda-jwt';
+import {MelindaJwtStrategy, verify, cookieExtractor} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
+
+import cookieParser from 'cookie-parser';
 
 import createArtikkelitRoute from './artikkelit/artikkelitRoute';
 import createAuthRoute from './auth/authRoute';
@@ -56,15 +58,22 @@ export default async function ({
 
     app.use(cors());
 
+    app.use(cookieParser());
+
+    //login via auth header with token created from username and password
+    //strategy name 'melinda'
+    //token generation and auth usage in authRoute.js
     passport.use(new AlephStrategy({
       xServiceURL, userLibrary,
       ownAuthzURL, ownAuthzApiKey
     }));
 
+    //strategy name 'jwt'
+    //autheticate via 'melinda' named cookie with jwt token
     passport.use(new MelindaJwtStrategy({
       ...jwtOptions,
       secretOrKey: jwtOptions.secretOrPrivateKey,
-      jwtFromRequest
+      jwtFromRequest: cookieExtractor
     }, verify));
 
     app.use(passport.initialize());
@@ -82,12 +91,12 @@ export default async function ({
 
     // REST API
     app.use('/rest/artikkelit', createArtikkelitRoute());
-    app.use('/rest/auth', passport.authenticate(['melinda', 'jwt'], {session: false}), createAuthRoute(jwtOptions));
-    app.use('/rest/bib', passport.authenticate(['melinda', 'jwt'], {session: false}), await createBibRoute(sruUrl));
-    app.use('/rest/muuntaja', passport.authenticate(['melinda', 'jwt'], {session: false}), await createMuuntajaRoute(sruUrl, melindaApiOptions, restApiParams));
-    app.use('/rest/ontologies', passport.authenticate(['melinda', 'jwt'], {session: false}), createOntologyRoute(fintoUrl));
-    app.use('/rest/record', passport.authenticate(['melinda', 'jwt'], {session: false}), createRecordRouter(melindaApiOptions));
-    app.use('/rest/viewer', passport.authenticate(['melinda', 'jwt'], {session: false}), createViewerRoute(melindaApiOptions));
+    app.use('/rest/auth', createAuthRoute(passport, jwtOptions));
+    app.use('/rest/bib', passport.authenticate('jwt', {session: false}), await createBibRoute(sruUrl));
+    app.use('/rest/muuntaja', passport.authenticate('jwt', {session: false}), await createMuuntajaRoute(sruUrl, melindaApiOptions, restApiParams));
+    app.use('/rest/ontologies', passport.authenticate('jwt', {session: false}), createOntologyRoute(fintoUrl));
+    app.use('/rest/record', passport.authenticate('jwt', {session: false}), createRecordRouter(melindaApiOptions));
+    app.use('/rest/viewer', passport.authenticate('jwt', {session: false}), createViewerRoute(melindaApiOptions));
     app.use('/rest/ping', createPingRoute());
     app.use('/rest/notification', createNotificationsRoute(notificationMongoUri));
 

@@ -15,7 +15,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Public+Sans:wght@300;500;600&family=Noto+Sans+Mono&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="login.css" />
+  <!--<link rel="stylesheet" href="login.css" />-->
+  <link rel="preload" href="login.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
   <script type="module" src="login.js"></script>
   <script type="module" src="/common/ui-utils.js"></script>
@@ -48,118 +49,120 @@
     <melinda-navbar></melinda-navbar>
 
     <!-- ------------------------------------------------------------------------ -->
-    <!-- Home page -->
-    <div id="homePage">
+    <!-- Progress bar -->
+    <div id="progressbar" class="progress-bar-inactive"></div>
 
-      <!-- ------------------------------------------------------------------------ -->
-      <!-- Progress bar -->
-      <div id="progressbar" class="progress-bar-inactive"></div>
+    <!-- Application -->
+    <div id="root">
 
-      <!-- ------------------------------------------------------------------------ -->
-      <!-- Homepage Melinda info and service links -->
-      <div class="homepage-content">
+      <!-- ---------------------------------------------------------------------- -->
+      <!-- Login tab -->
+      <!-- NOTE: hidden attribute does not work on forms, so we use element style -->
+      <form id="login" class="VBox BoxShadow form-modal" style="display: none;">
 
-        <!-- Home page info section -->
-        <div class="homepage-info">
+        <div class="form-headline">
+          <h3>Kirjaudu sisään</h3>
+        </div>
 
-          <!-- Home page main headline -->
-          <div class="homepage-info-header">
-            Melinda-kuvailijan aputyökalut
+        <div class="form-content">
+
+          <div id="loginFormUsername" class="HBox form-field-container full-width">
+            <div class="label-wrapper">
+              <label for="login-username">
+                Käyttäjätunnus <span class="form-field-required">*</span>
+              </label>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-icons">person_outline</span>
+              <input id="login-username" type="text" name="username" required="true" autofocus="true" spellcheck="false"
+                autocomplete="username" placeholder="Syötä Melinda-tunnus" title="Käyttäjätunnus on vaadittu kenttä">
+            </div>
           </div>
 
-          <!-- Home page info text -->
-          <div class="homepage-info-text">
-            Melinda on kansallinen kuvailun yhteistyöympäristö ja metatietovaranto, joka kokoaa kirjastoaineistojen
-            kuvailevat metatiedot yhteen paikkaan.
+          <div id="loginFormPassword" class="HBox form-field-container full-width">
+            <div class="label-wrapper">
+              <label for="login-password">Salasana <span class="form-field-required">*</label>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-icons">lock_outline</span>
+              <input id="login-password" type="password" name="password" required="true" spellcheck="false"
+                autocomplete="current-password" placeholder="Syötä salasana" title="Salasana on vaadittu kenttä">
+            </div>
           </div>
 
-          <!-- Home page link to wiki -->
-          <div class="homepage-info-link">
+          <div id="loginFormAcceptTerms" class="VBox">
 
-            <a href="https://www.kiwi.fi/display/melinda" target="_blank" rel="noopener noreferrer"
-              title="Avautuu uuteen välilehteen">
-              <div class="service-link">
-                <div class="service-link-icon icon-arrow">
-                  <span class="material-icons">east</span>
-                </div>
-                <div class="service-link-text">
-                  Melindan asiakaswiki
-                  <span class="material-icons service-link-icon open-in-new">open_in_new</span>
-                </div>
+            <div class="HBox form-field-container checkbox full-width">
+              <div class="label-wrapper">
+                <label for="acceptterms">
+
+                  <div class="input-wrapper">
+                    <input id="acceptterms" type="checkbox">
+                    <span class="material-icons"></span>
+                  </div>
+
+                  <div class="outer-link">
+                    Hyväksyn
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=148177248" target="_blank"
+                      rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      tietosuojaselosteen <span class="material-icons open-in-new">open_in_new</span></a>
+                    ja evästeiden käytön. Evästeitä käytetään käyttäjän autentikoimiseen istunnon aikana.
+                  </div>
+
+                </label>
               </div>
-            </a>
+            </div>
 
           </div>
-
 
         </div>
 
-        <!-- Home page services section -->
-        <div class="homepage-services">
+        <div class="form-action">
+          <button onClick="return login(event)">
+            Kirjaudu
+          </button>
+          <div id="info"></div>
+        </div>
 
-          <!-- List of tool services -->
-          <div class="services-tools">
+      </form>
 
-            <div class="homepage-services-header">
-              Melinda-kuvailu
+      <!-- ------------------------------------------------------------------------ -->
+      <!-- Home page -->
+      <div id="homePage" style="display: none;">
+
+        <!-- ------------------------------------------------------------------------ -->
+        <!-- Progress bar -->
+        <!--<div id="progressbar" class="progress-bar-inactive"></div>-->
+
+        <!-- ------------------------------------------------------------------------ -->
+        <!-- Homepage Melinda info and service links -->
+        <div class="homepage-content">
+
+          <!-- Home page info section -->
+          <div class="homepage-info">
+
+            <!-- Home page main headline -->
+            <div class="homepage-info-header">
+              Melinda-kuvailijan aputyökalut
             </div>
 
-            <div class="homepage-services-list">
-
-              <a href="/muuntaja">
-                <div class="service-link">
-                  <div class="service-link-icon icon-arrow">
-                    <span class="material-icons">east</span>
-                  </div>
-                  <div class="service-link-text">
-                    Muuntaja
-                  </div>
-                </div>
-              </a>
-
-              <a href="/merge">
-                <div class="service-link">
-                  <div class="service-link-icon icon-arrow">
-                    <span class="material-icons">east</span>
-                  </div>
-                  <div class="service-link-text">
-                    Merge
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <!-- List of user services -->
-          <div class="services-user">
-
-            <div class="homepage-services-header">
-              Melinda-tunnus
+            <!-- Home page info text -->
+            <div class="homepage-info-text">
+              Melinda on kansallinen kuvailun yhteistyöympäristö ja metatietovaranto, joka kokoaa kirjastoaineistojen
+              kuvailevat metatiedot yhteen paikkaan.
             </div>
 
-            <div class="homepage-services-list">
+            <!-- Home page link to wiki -->
+            <div class="homepage-info-link">
 
-              <a href="https://asetukset.melinda.kansalliskirjasto.fi/" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.kiwi.fi/display/melinda" target="_blank" rel="noopener noreferrer"
                 title="Avautuu uuteen välilehteen">
                 <div class="service-link">
                   <div class="service-link-icon icon-arrow">
                     <span class="material-icons">east</span>
                   </div>
                   <div class="service-link-text">
-                    Muuta salasanaa
-                    <span class="material-icons service-link-icon open-in-new">open_in_new</span>
-                  </div>
-                </div>
-              </a>
-
-              <a href="https://melinda.kansalliskirjasto.fi/users/" target="_blank" rel="noopener noreferrer"
-                title="Avautuu uuteen välilehteen">
-                <div class="service-link">
-                  <div class="service-link-icon icon-arrow">
-                    <span class="material-icons">east</span>
-                  </div>
-                  <div class="service-link-text">
-                    Käyttäjänhallinta
+                    Melindan asiakaswiki
                     <span class="material-icons service-link-icon open-in-new">open_in_new</span>
                   </div>
                 </div>
@@ -167,234 +170,312 @@
 
             </div>
 
+
+          </div>
+
+          <!-- Home page services section -->
+          <div class="homepage-services">
+
+            <!-- List of tool services -->
+            <div class="services-tools">
+
+              <div class="homepage-services-header">
+                Melinda-kuvailu
+              </div>
+
+              <div class="homepage-services-list">
+
+                <a href="/muuntaja">
+                  <div class="service-link">
+                    <div class="service-link-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                    <div class="service-link-text">
+                      Muuntaja
+                    </div>
+                  </div>
+                </a>
+
+                <a href="/merge">
+                  <div class="service-link">
+                    <div class="service-link-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                    <div class="service-link-text">
+                      Merge
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- List of user services -->
+            <div class="services-user">
+
+              <div class="homepage-services-header">
+                Melinda-tunnus
+              </div>
+
+              <div class="homepage-services-list">
+
+                <a href="https://asetukset.melinda.kansalliskirjasto.fi/" target="_blank" rel="noopener noreferrer"
+                  title="Avautuu uuteen välilehteen">
+                  <div class="service-link">
+                    <div class="service-link-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                    <div class="service-link-text">
+                      Muuta salasanaa
+                      <span class="material-icons service-link-icon open-in-new">open_in_new</span>
+                    </div>
+                  </div>
+                </a>
+
+                <a href="https://melinda.kansalliskirjasto.fi/users/" target="_blank" rel="noopener noreferrer"
+                  title="Avautuu uuteen välilehteen">
+                  <div class="service-link">
+                    <div class="service-link-icon icon-arrow">
+                      <span class="material-icons">east</span>
+                    </div>
+                    <div class="service-link-text">
+                      Käyttäjänhallinta
+                      <span class="material-icons service-link-icon open-in-new">open_in_new</span>
+                    </div>
+                  </div>
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Home page contact information and service support -->
+          <div class="homepage-contact-and-help">
+
+            <!-- Accordion with help info -->
+            <div class="accordion">
+
+              <div id="homepageHelpAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
+                <div class="accordion-heading-icon collapsed">
+                  <span class="material-icons">
+                    <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
+                  </span>
+                </div>
+                <div class="accordion-heading-text">
+                  Tarvitsetko apua?
+                </div>
+              </div>
+
+              <div class="accordion-content info-contact-and-help-content">
+
+                <!-- List of instruction resources -->
+                <div class="info-contact-and-help-list">
+
+                  <div class="info-contact-and-help-list-heading">
+                    Ohjeet
+                  </div>
+
+                  <div class="info-contact-and-help-list-items">
+
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=334659878" target="_blank"
+                      rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Tietoa Melinda-kuvailijan aputyökaluista
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                    <a href="https://www.kiwi.fi/display/melinda/Muuntaja-ohjelma%3A+tietueiden+muunnokset"
+                      target="_blank" rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Muuntajan käyttöohjeet
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=155648846" target="_blank"
+                      rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Artikkelien kuvailutyökalun käyttöohjeet
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                  </div>
+
+                </div>
+
+                <!-- List of support resources -->
+                <div class="info-contact-and-help-list">
+
+                  <div class="info-contact-and-help-list-heading">
+                    Tukipalvelut
+                  </div>
+
+                  <div class="info-contact-and-help-list-items">
+
+                    <a href="mailto:melinda-posti@helsinki.fi">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            alternate_email
+                          </span>
+                        </div>
+                        <div class="list-item-text email">
+                          melinda-posti@helsinki.fi
+                        </div>
+                      </div>
+                    </a>
+
+                    <a href="https://www.kiwi.fi/display/melinda/Palvelun+tuki" target="_blank" rel="noopener noreferrer"
+                      title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Lähetä tukipyyntö
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=95585192#S%C3%A4hk%C3%B6postilistatjapalvelupostit-S%C3%A4hk%C3%B6postilistat"
+                      target="_blank" rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Liity sähköpostilistalle
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                    <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=95585192#S%C3%A4hk%C3%B6postilistatjapalvelupostit-Palvelupostit"
+                      target="_blank" rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Kaikki kuvailun palvelupostiosoitteet
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Accordion with contact info -->
+            <div class="accordion">
+
+              <div id="homepageContactAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
+                <div class="accordion-heading-icon collapsed">
+                  <span class="material-icons">
+                    <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
+                  </span>
+                </div>
+                <div class="accordion-heading-text">
+                  Yhteystiedot
+                </div>
+              </div>
+
+              <div class="accordion-content info-contact-and-help-content">
+
+                <div class="info-contact-and-help-heading">
+
+                  <div class="contact-and-help-heading-icon">
+                    <img src="/common/images/logo-melinda-favicon-color-cropped.png">
+                  </div>
+
+                  <div class="contact-and-help-heading-text">
+                    Melinda-palvelu
+                  </div>
+
+                </div>
+
+                <div class="info-contact-and-help-list">
+
+                  <div class="info-contact-and-help-list-items">
+
+                    <a href="mailto:melinda-posti@helsinki.fi">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            alternate_email
+                          </span>
+                        </div>
+                        <div class="list-item-text email">
+                          melinda-posti@helsinki.fi
+                        </div>
+                      </div>
+                    </a>
+
+                    <a href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank" rel="noopener noreferrer"
+                      title="Avautuu uuteen välilehteen">
+                      <div class="contact-and-help-list-item">
+                        <div class="list-item-icon">
+                          <span class="material-icons">
+                            info_outline
+                          </span>
+                        </div>
+                        <div class="list-item-text">
+                          Kaikki yhteystiedot
+                          <span class="material-icons open-in-new">open_in_new</span>
+                        </div>
+                      </div>
+                    </a>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
 
-        <!-- Home page contact information and service support -->
-        <div class="homepage-contact-and-help">
-
-          <!-- Accordion with help info -->
-          <div class="accordion">
-
-            <div id="homepageHelpAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
-              <div class="accordion-heading-icon collapsed">
-                <span class="material-icons">
-                  <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
-                </span>
-              </div>
-              <div class="accordion-heading-text">
-                Tarvitsetko apua?
-              </div>
-            </div>
-
-            <div class="accordion-content info-contact-and-help-content">
-
-              <!-- List of instruction resources -->
-              <div class="info-contact-and-help-list">
-
-                <div class="info-contact-and-help-list-heading">
-                  Ohjeet
-                </div>
-
-                <div class="info-contact-and-help-list-items">
-
-                  <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=334659878" target="_blank"
-                    rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Tietoa Melinda-kuvailijan aputyökaluista
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.kiwi.fi/display/melinda/Muuntaja-ohjelma%3A+tietueiden+muunnokset"
-                    target="_blank" rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Muuntajan käyttöohjeet
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=155648846" target="_blank"
-                    rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Artikkelien kuvailutyökalun käyttöohjeet
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                </div>
-
-              </div>
-
-              <!-- List of support resources -->
-              <div class="info-contact-and-help-list">
-
-                <div class="info-contact-and-help-list-heading">
-                  Tukipalvelut
-                </div>
-
-                <div class="info-contact-and-help-list-items">
-
-                  <a href="mailto:melinda-posti@helsinki.fi">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          alternate_email
-                        </span>
-                      </div>
-                      <div class="list-item-text email">
-                        melinda-posti@helsinki.fi
-                      </div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.kiwi.fi/display/melinda/Palvelun+tuki" target="_blank" rel="noopener noreferrer"
-                    title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Lähetä tukipyyntö
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=95585192#S%C3%A4hk%C3%B6postilistatjapalvelupostit-S%C3%A4hk%C3%B6postilistat"
-                    target="_blank" rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Liity sähköpostilistalle
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.kiwi.fi/pages/viewpage.action?pageId=95585192#S%C3%A4hk%C3%B6postilistatjapalvelupostit-Palvelupostit"
-                    target="_blank" rel="noopener noreferrer" title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Kaikki kuvailun palvelupostiosoitteet
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- Accordion with contact info -->
-          <div class="accordion">
-
-            <div id="homepageContactAccordion" class="accordion-heading" onClick="return toggleAccordion(event)">
-              <div class="accordion-heading-icon collapsed">
-                <span class="material-icons">
-                  <!-- + icon when accordion is collapsed, - icon when accordion is expanded -->
-                </span>
-              </div>
-              <div class="accordion-heading-text">
-                Yhteystiedot
-              </div>
-            </div>
-
-            <div class="accordion-content info-contact-and-help-content">
-
-              <div class="info-contact-and-help-heading">
-
-                <div class="contact-and-help-heading-icon">
-                  <img src="/common/images/logo-melinda-favicon-color-cropped.png">
-                </div>
-
-                <div class="contact-and-help-heading-text">
-                  Melinda-palvelu
-                </div>
-
-              </div>
-
-              <div class="info-contact-and-help-list">
-
-                <div class="info-contact-and-help-list-items">
-
-                  <a href="mailto:melinda-posti@helsinki.fi">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          alternate_email
-                        </span>
-                      </div>
-                      <div class="list-item-text email">
-                        melinda-posti@helsinki.fi
-                      </div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.kiwi.fi/display/melinda/Yhteystiedot" target="_blank" rel="noopener noreferrer"
-                    title="Avautuu uuteen välilehteen">
-                    <div class="contact-and-help-list-item">
-                      <div class="list-item-icon">
-                        <span class="material-icons">
-                          info_outline
-                        </span>
-                      </div>
-                      <div class="list-item-text">
-                        Kaikki yhteystiedot
-                        <span class="material-icons open-in-new">open_in_new</span>
-                      </div>
-                    </div>
-                  </a>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
 
       </div>
-
 
     </div>
 

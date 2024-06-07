@@ -50,7 +50,7 @@ window.initialize = function () {
         const accountMenu = document.getElementById('accountMenu');
         accountMenu.classList.add('show');
         const username = document.querySelector('#accountMenu #username');
-        username.innerHTML = Account.get().Name;
+        username.innerHTML = Account.get().name;
         showTab(clientName);
         urlModule.parseUrlParameters();
         doTransform();
