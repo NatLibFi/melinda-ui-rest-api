@@ -56,7 +56,8 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
   function login(req, res) {
     // Strip files
     //token itself is valid 120h
-    const {displayName, id, authorization} = req.user;
+    const {id, authorization} = req.user;
+    const displayName = getAuthUserDisplayName(req);
     const jwtToken = generateJwtToken({displayName, id, authorization}, jwtOptions);
 
     //set required data to cookie with proper options
@@ -74,7 +75,7 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
     };
     res.cookie(cookieNames.userToken, jwtToken, tokenCookieOptions);
 
-    res.status(HttpStatus.OK).json({name: req.user.displayName});
+    res.status(HttpStatus.OK).json({name: displayName});
   }
   //sanitize user login data and try to generate base auth token
   function getBaseToken(req, res) {
@@ -94,8 +95,7 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
   }
   //will use jwt token in cookie for verification, returns some user data
   function verify(req, res) {
-    //res.sendStatus(HttpStatus.OK);
-    res.status(HttpStatus.OK).json({name: req.user.displayName});
+    res.status(HttpStatus.OK).json({name: getAuthUserDisplayName(req)});
   }
   //clear relevant tokens upon logout
   function logout(req, res) {
@@ -113,4 +113,14 @@ export default function (passport, jwtOptions) { // eslint-disable-line no-unuse
   function getHoursInMilliSeconds(requestedHourCount) {
     return requestedHourCount * 60 * 60 * 1000;
   }
+}
+
+/**
+* Make sure authenticated user does have some name available, even if some data is not filled in to user account
+*
+* @param {object} req request, that should have user field
+* @returns {string}
+*/
+export function getAuthUserDisplayName(req) {
+  return req.user.displayName || req.user.id || 'melinda-user';
 }
