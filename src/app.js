@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import passport from 'passport';
 import cors from 'cors';
 
-import AlephStrategy from '@natlibfi/passport-melinda-aleph';
+import {AlephStrategy} from '@natlibfi/passport-melinda-aleph';
 import {MelindaJwtStrategy, verify, cookieExtractor} from '@natlibfi/passport-melinda-jwt';
 import {createLogger, createExpressLogger} from '@natlibfi/melinda-backend-commons';
 import {Error as ApiError} from '@natlibfi/melinda-commons';
